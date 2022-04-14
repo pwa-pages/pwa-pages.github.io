@@ -1,0 +1,237 @@
+<html>
+<head>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (location.protocol == "http:") {
+            location.protocol = "https:";
+        }
+
+        var showState = 0;
+        var currentCard = '';
+
+
+        function init() {
+
+        }
+
+        function showCard(c) {
+
+
+            showState++;
+
+            if (showState == 0) {
+
+
+                document.querySelectorAll('.fullcard').forEach(function (el) {
+                    el.style.display = 'none';
+                });
+                document.querySelectorAll('.container').forEach(function (el) {
+                    el.style.display = 'grid';
+                });
+
+
+            }
+            else if (showState == 1) {
+                currentCard = c;
+                document.querySelectorAll('.fullcardfirst').forEach(function (el) {
+                    el.style.display = 'block';
+                    el.querySelectorAll('.cardinner div').forEach(function (el) {
+                        el.innerHTML = currentCard;
+                    });
+                });
+                document.querySelectorAll('.container').forEach(function (el) {
+                    el.style.display = 'none';
+                });
+            }
+            else if (showState == 2) {
+                document.querySelectorAll('.fullcard').forEach(function (el) {
+                    el.style.display = 'none';
+                });
+                document.querySelectorAll('.container').forEach(function (el) {
+                    el.style.display = 'none';
+                });
+            }
+            else if (showState == 3) {
+                document.querySelectorAll('.fullcardreveal').forEach(function (el) {
+                    el.style.display = 'block';
+                    el.querySelectorAll('.cardinner div').forEach(function (el) {
+                        el.innerHTML = currentCard;
+                    });
+                });
+                document.querySelectorAll('.container').forEach(function (el) {
+                    el.style.display = 'none';
+                });
+                showState = -1;
+            }
+        }
+
+
+        init();
+
+
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow: hidden;
+            background: white;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            cursor: pointer;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: 100%;
+            height: 100%;
+        }
+
+        :root {
+            --gridcardsize: 9vmin;
+            --gridcardradius: 1.2vmin;
+            --gridcardborderwidth: 0.75vmin;
+            --gridcardborderwidthdouble: 1.5vmin;
+            --gridcardheight: 30vmin;
+            --gridcardwidth: 19vmin;
+            --gridcardmargin: 3vmin;
+            --gridcardmargintop: 8vmin;
+            --gridcardpadding: 1vmin;
+            --gridcardinnerheight: 26.9vmin;
+            --scalefactor: .8;
+        }
+
+        .card {
+            color: white;
+            border-radius: calc(var(--gridcardradius) * var(--scalefactor));
+            border: calc(var(--gridcardborderwidth) * var(--scalefactor)) solid grey;
+            height: calc(var(--gridcardheight) * var(--scalefactor));
+            width: calc(var(--gridcardwidth) * var(--scalefactor));
+            margin: calc(var(--gridcardmargin) * var(--scalefactor));
+            text-align: center;
+            float: left;
+            padding: calc(var(--gridcardpadding) * var(--scalefactor));
+            cursor: pointer;
+        }
+
+        .fullcard {
+            --gridcardsize: 9vh;
+            --gridcardradius: 1.2vh;
+            --gridcardborderwidth: 0.75vh;
+            --gridcardborderwidthdouble: 1.5vh;
+            --gridcardheight: 30vh;
+            --gridcardwidth: 19vh;
+            --gridcardmargin: 3vh;
+            --gridcardmargintop: 8vh;
+            --gridcardpadding: 1vh;
+            --gridcardinnerheight: 26.9vh;
+            --scalefactor: 2.1;
+            float: none;
+            margin: 0 auto;
+            margin-top: 14vh;
+            display: none;
+        }
+
+        .card > div > div {
+            margin-top: calc(var(--gridcardmargintop) * var(--scalefactor));
+        }
+
+        .cardinner {
+            color: black;
+            font-weight: bold;
+            font-family: sans-serif;
+            font-size: calc(var(--gridcardsize) * var(--scalefactor));
+            border-radius: calc(var(--gridcardradius) * var(--scalefactor));
+            border: calc(var(--gridcardborderwidthdouble) * var(--scalefactor)) solid rgb(71, 139, 30);
+            height: calc(var(--gridcardinnerheight) * var(--scalefactor));
+            margin: 0px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body onclick="showCard()">
+    <div class="container">
+        <div class="card">
+            <div class="cardinner" onclick="showCard('?');event.stopPropagation();">
+                <div>?</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('0');event.stopPropagation();">
+                <div>0</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('&#189;');event.stopPropagation();">
+                <div>&#189;</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('1');event.stopPropagation();">
+                <div>1</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('2');event.stopPropagation();">
+                <div>2</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('3');event.stopPropagation();">
+                <div>3</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('5');event.stopPropagation();">
+                <div>5</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('8');event.stopPropagation();">
+                <div>8</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('13');event.stopPropagation();">
+                <div>13</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('20');event.stopPropagation();">
+                <div>20</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('40');event.stopPropagation();">
+                <div>40</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="cardinner" onclick="showCard('100');event.stopPropagation();">
+                <div>100</div>
+            </div>
+        </div>
+    </div>
+    <div class="fullcardfirst fullcard card">
+        <div class="cardinner" onclick="showCard();event.stopPropagation();">
+            <div>100</div>
+        </div>
+    </div>
+    <div class="fullcardreveal fullcard card">
+        <div class="cardinner" onclick="showCard();event.stopPropagation();">
+            <div>100</div>
+        </div>
+    </div>
+</body>
+</html>
