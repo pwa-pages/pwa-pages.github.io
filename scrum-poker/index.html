@@ -15,53 +15,66 @@
 
         }
 
-        function showCard(c) {
+        function hide(selector) {
+            document.querySelectorAll(selector).forEach(function (el) {
+                el.style.display = 'none';
+            });
+        }
+
+        function show(element,selector, type) {
+            element.querySelectorAll(selector).forEach(function (el) {
+                el.style.display = type;
+            });
+        }
+
+        function showCard(selector, val) {
 
 
+            document.querySelectorAll(selector).forEach(function (el) {
+                el.style.display = 'block';
+                if (val) {
+                    el.querySelectorAll('.cardinner div').forEach(function (el) {
+                        el.innerHTML = val;
+                        
+                    });
+
+                    
+                }
+            });
+            
+            
+        }
+
+        function animateShowCard() {
+            document.querySelectorAll('.fullcardcontainer').forEach(function (el) {
+                el.classList.toggle('is-flipped');
+            });
+        }
+
+        function toggleCards(c) {
+
+            if (showState == 0 && !c) {
+                return;
+            }
             showState++;
 
             if (showState == 0) {
-
-
-                document.querySelectorAll('.fullcard').forEach(function (el) {
-                    el.style.display = 'none';
-                });
-                document.querySelectorAll('.container').forEach(function (el) {
-                    el.style.display = 'grid';
-                });
-
-
+                hide('.fullcard');
+                animateShowCard();
+                show(document, '.container', 'grid');
             }
             else if (showState == 1) {
                 currentCard = c;
-                document.querySelectorAll('.fullcardfirst').forEach(function (el) {
-                    el.style.display = 'block';
-                    el.querySelectorAll('.cardinner div').forEach(function (el) {
-                        el.innerHTML = currentCard;
-                    });
-                });
-                document.querySelectorAll('.container').forEach(function (el) {
-                    el.style.display = 'none';
-                });
+                showCard('.fullcardfirst', currentCard); 
+                showCard('.fullcardback');
+                animateShowCard();
+                hide('.container');
             }
             else if (showState == 2) {
-                document.querySelectorAll('.fullcard').forEach(function (el) {
-                    el.style.display = 'none';
-                });
-                document.querySelectorAll('.container').forEach(function (el) {
-                    el.style.display = 'none';
-                });
+                animateShowCard();
             }
             else if (showState == 3) {
-                document.querySelectorAll('.fullcardreveal').forEach(function (el) {
-                    el.style.display = 'block';
-                    el.querySelectorAll('.cardinner div').forEach(function (el) {
-                        el.innerHTML = currentCard;
-                    });
-                });
-                document.querySelectorAll('.container').forEach(function (el) {
-                    el.style.display = 'none';
-                });
+                animateShowCard();
                 showState = -1;
             }
         }
@@ -80,6 +93,13 @@
         body {
             overflow: hidden;
             background: white;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            perspective: 600vw;
         }
 
         body,
@@ -123,7 +143,21 @@
             float: left;
             padding: calc(var(--gridcardpadding) * var(--scalefactor));
             cursor: pointer;
+
         }
+
+        .fullcardcontainer {
+            
+            transform-style: preserve-3d;
+            transform-origin: center right;
+            transition: transform 1s;
+                
+        }
+
+        .is-flipped {
+            transform: translateX(-100%) rotateY(-180deg);
+        }
+
 
         .fullcard {
             --gridcardsize: 9vh;
@@ -140,8 +174,13 @@
             float: none;
             margin: 0 auto;
             margin-top: 14vh;
-            display: none;
+            left: 0;
+            right: 0;
+            display: inline-block;
+            backface-visibility: hidden;
+            position: absolute;
         }
+
 
         .card > div > div {
             margin-top: calc(var(--gridcardmargintop) * var(--scalefactor));
@@ -158,80 +197,98 @@
             margin: 0px;
             text-align: center;
         }
+
+        .fullcardback {
+            transform: rotateY(180deg);
+        }
+        
+
+        .fullcardback .cardinner {
+            color: rgb(71, 139, 30);
+            font-size: 50vh;
+        }
+
+            .fullcardback .cardinner > div {
+                margin-top: 0;
+            }
+
     </style>
 </head>
-<body onclick="showCard()">
+<body onclick="toggleCards()">
     <div class="container">
         <div class="card">
-            <div class="cardinner" onclick="showCard('?');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('?');event.stopPropagation();">
                 <div>?</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('0');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('0');event.stopPropagation();">
                 <div>0</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('&#189;');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('&#189;');event.stopPropagation();">
                 <div>&#189;</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('1');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('1');event.stopPropagation();">
                 <div>1</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('2');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('2');event.stopPropagation();">
                 <div>2</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('3');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('3');event.stopPropagation();">
                 <div>3</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('5');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('5');event.stopPropagation();">
                 <div>5</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('8');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('8');event.stopPropagation();">
                 <div>8</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('13');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('13');event.stopPropagation();">
                 <div>13</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('20');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('20');event.stopPropagation();">
                 <div>20</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('40');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('40');event.stopPropagation();">
                 <div>40</div>
             </div>
         </div>
         <div class="card">
-            <div class="cardinner" onclick="showCard('100');event.stopPropagation();">
+            <div class="cardinner" onclick="toggleCards('100');event.stopPropagation();">
                 <div>100</div>
             </div>
         </div>
     </div>
+
+    <div class="fullcardcontainer is-flipped">
     <div class="fullcardfirst fullcard card">
-        <div class="cardinner" onclick="showCard();event.stopPropagation();">
+        <div class="cardinner" onclick="toggleCards();event.stopPropagation();">
             <div>100</div>
         </div>
     </div>
-    <div class="fullcardreveal fullcard card">
-        <div class="cardinner" onclick="showCard();event.stopPropagation();">
-            <div>100</div>
+    <div class="fullcardback fullcard card">
+        <div class="cardinner" onclick="toggleCards();event.stopPropagation();">
+            <div>&#8226;</div>
         </div>
+    </div>
     </div>
 </body>
-</html>
+</html> 
