@@ -1,11 +1,11 @@
- {
+{
   "name": "Scrum poker",
   "short_name": "Scrum poker",
   
   "icons": [ {
-      "src": "https://raw.githubusercontent.com/scrum-poker/pwa-pages.github.io/master/scrumpoker.png",
-      "sizes": "256x256",
-      "type": "image/png"
+      "src": "https://pwa-pages.github.io/scrum-poker/scrumpoker.png",
+            "sizes": "375x375",
+            "type": "image/png"
     }],
   
   "start_url": "index.html",
