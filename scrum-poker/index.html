@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <link rel="manifest" href="manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,15 +11,11 @@
         var showState = 0;
         var currentCard = '';
 
-
-
-		if ("serviceWorker" in navigator) {
-			try {
-				navigator.serviceWorker.register("sw.js");
-			} catch (error) {
-				
-			}
-		}
+        if ("serviceWorker" in navigator) {
+            try {
+                navigator.serviceWorker.register("sw.js");
+            } catch (error) {}
+        }
 
 
         function init() {
@@ -26,13 +23,13 @@
         }
 
         function hide(selector) {
-            document.querySelectorAll(selector).forEach(function (el) {
+            document.querySelectorAll(selector).forEach(function(el) {
                 el.style.display = 'none';
             });
         }
 
-        function show(element,selector, type) {
-            element.querySelectorAll(selector).forEach(function (el) {
+        function show(element, selector, type) {
+            element.querySelectorAll(selector).forEach(function(el) {
                 el.style.display = type;
             });
         }
@@ -40,23 +37,23 @@
         function showCard(selector, val) {
 
 
-            document.querySelectorAll(selector).forEach(function (el) {
+            document.querySelectorAll(selector).forEach(function(el) {
                 el.style.display = 'block';
                 if (val) {
-                    el.querySelectorAll('.cardinner div').forEach(function (el) {
+                    el.querySelectorAll('.cardinner div').forEach(function(el) {
                         el.innerHTML = val;
-                        
+
                     });
 
-                    
+
                 }
             });
-            
-            
+
+
         }
 
         function animateShowCard() {
-            document.querySelectorAll('.fullcardcontainer').forEach(function (el) {
+            document.querySelectorAll('.fullcardcontainer').forEach(function(el) {
                 el.classList.toggle('is-flipped');
             });
         }
@@ -72,18 +69,15 @@
                 hide('.fullcard');
                 animateShowCard();
                 show(document, '.container', 'grid');
-            }
-            else if (showState == 1) {
+            } else if (showState == 1) {
                 currentCard = c;
-                showCard('.fullcardfirst', currentCard); 
+                showCard('.fullcardfirst', currentCard);
                 showCard('.fullcardback');
                 animateShowCard();
                 hide('.container');
-            }
-            else if (showState == 2) {
+            } else if (showState == 2) {
                 animateShowCard();
-            }
-            else if (showState == 3) {
+            } else if (showState == 3) {
                 animateShowCard();
                 showState = -1;
             }
@@ -91,7 +85,6 @@
 
 
         init();
-
 
     </script>
     <style>
@@ -136,17 +129,17 @@
         }
 
         :root {
-            --gridcardsize: 9vmin;
-            --gridcardradius: 1.2vmin;
-            --gridcardborderwidth: 0.75vmin;
-            --gridcardborderwidthdouble: 1.5vmin;
-            --gridcardheight: 30vmin;
-            --gridcardwidth: 19vmin;
-            --gridcardmargin: 3vmin;
-            --gridcardmargintop: 8vmin;
-            --gridcardpadding: 1vmin;
-            --gridcardinnerheight: 26.9vmin;
-            --scalefactor: .8;
+            --gridcardsize: 9;
+            --gridcardradius: 1.2;
+            --gridcardborderwidth: 0.75;
+            --gridcardborderwidthdouble: 1.5;
+            --gridcardheight: 30;
+            --gridcardwidth: 19;
+            --gridcardmargin: 3;
+            --gridcardmargintop: 8;
+            --gridcardpadding: 1;
+            --gridcardinnerheight: 26.9;
+            --scalefactor: .8vmin;
         }
 
         .card {
@@ -164,11 +157,11 @@
         }
 
         .fullcardcontainer {
-            
+
             transform-style: preserve-3d;
             transform-origin: center right;
             transition: transform 1s;
-                
+
         }
 
         .is-flipped {
@@ -177,17 +170,7 @@
 
 
         .fullcard {
-            --gridcardsize: 9vh;
-            --gridcardradius: 1.2vh;
-            --gridcardborderwidth: 0.75vh;
-            --gridcardborderwidthdouble: 1.5vh;
-            --gridcardheight: 30vh;
-            --gridcardwidth: 19vh;
-            --gridcardmargin: 3vh;
-            --gridcardmargintop: 8vh;
-            --gridcardpadding: 1vh;
-            --gridcardinnerheight: 26.9vh;
-            --scalefactor: 2.1;
+            --scalefactor: 1.7vh;
             float: none;
             margin: 0 auto;
             margin-top: 14vh;
@@ -199,7 +182,7 @@
         }
 
 
-        .card > div > div {
+        .card>div>div {
             margin-top: calc(var(--gridcardmargintop) * var(--scalefactor));
         }
 
@@ -218,19 +201,20 @@
         .fullcardback {
             transform: rotateY(180deg);
         }
-        
+
 
         .fullcardback .cardinner {
             color: rgb(71, 139, 30);
             font-size: 50vh;
         }
 
-            .fullcardback .cardinner > div {
-                margin-top: 0;
-            }
+        .fullcardback .cardinner>div {
+            margin-top: -5.5vh;
+        }
 
     </style>
 </head>
+
 <body onclick="toggleCards()">
     <div class="container">
         <div class="card">
@@ -296,16 +280,17 @@
     </div>
 
     <div class="fullcardcontainer is-flipped">
-    <div class="fullcardfirst fullcard card">
-        <div class="cardinner" onclick="toggleCards();event.stopPropagation();">
-            <div>100</div>
+        <div class="fullcardfirst fullcard card">
+            <div class="cardinner" onclick="toggleCards();event.stopPropagation();">
+                <div>100</div>
+            </div>
         </div>
-    </div>
-    <div class="fullcardback fullcard card">
-        <div class="cardinner" onclick="toggleCards();event.stopPropagation();">
-            <div>&#8226;</div>
+        <div class="fullcardback fullcard card">
+            <div class="cardinner" onclick="toggleCards();event.stopPropagation();">
+                <div>&#8226;</div>
+            </div>
         </div>
-    </div>
     </div>
 </body>
+
 </html>
