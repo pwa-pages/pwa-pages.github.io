@@ -1,3 +1,4 @@
+
 <html>
 
 <head>
@@ -208,9 +209,15 @@
             font-size: 50vh;
         }
 
-        .fullcardback .cardinner>div {
-            margin-top: -5.5vh;
-        }
+		
+		.dot {
+		  height: 16vh;
+		  width: 16vh;
+		  background-color: rgb(71, 139, 30);
+		  border-radius: 50%;
+		  display: inline-block;
+		  
+		}
 
     </style>
 </head>
@@ -287,7 +294,7 @@
         </div>
         <div class="fullcardback fullcard card">
             <div class="cardinner" onclick="toggleCards();event.stopPropagation();">
-                <div>&#8226;</div>
+                <div class = "dot"></div>
             </div>
         </div>
     </div>
