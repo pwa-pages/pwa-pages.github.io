@@ -446,13 +446,13 @@
 		
 		allsettings.push( {
 				transparency : 0,
-				maxDepth : 1,
-				scaleFactor : 50,
-				numRememberCircles : 400,
+				maxDepth : 10,
+				scaleFactor : 1,
+				numRememberCircles : 1,
 				rememberCircleDist : -Math.PI*.2,
-				circleFactor : 50,
-				internalRadius : .2,
-				externalRadius : .2,
+				circleFactor : 31,
+				internalRadius : 1,
+				externalRadius : 1,
 				externalBorderColor : { r : 255, g : 255, b : 255, t : 1},
 				circleColor : [],
 				circleColor2 : [],
@@ -461,13 +461,13 @@
 		
 		allsettings.push( {
 			transparency : 0,
-			maxDepth : 1,
-			scaleFactor : 50,
-			numRememberCircles : 400,
-			rememberCircleDist : -Math.PI*.1,
-			circleFactor : 50,
-			internalRadius : .2,
-			externalRadius : .2,
+			maxDepth : 10,
+			scaleFactor : 1,
+			numRememberCircles : 1,
+			rememberCircleDist : -Math.PI*.2,
+			circleFactor : 31,
+			internalRadius : 1,
+			externalRadius : 1,
 			externalBorderColor : { r : 255, g : 255, b : 255, t : 1},
 			circleColor : [],
 			circleColor2 : [],
@@ -528,7 +528,7 @@
 		  
 		}*/
 		
-		var globalSpeedFactor = 10;
+		var globalSpeedFactor = .1;
 		var o = 1000;
 		primes = [];
 	
@@ -1395,7 +1395,7 @@
 		function addCircles(){
 			
 			
-			for(k=0;k<500; k++){
+			for(k=0;k<11111; k++){
 					var v = addCircle(getSettings().maxDepth);
 					if(!v)break;
 				}
@@ -1591,7 +1591,7 @@
 				
 			}
 			
-			bgcolor = '#000000';
+			bgcolor = '#ffffff';
 			
 			
 			function drawlines(rot, sctx) {
@@ -2055,7 +2055,7 @@
 				
 				nx2 = nx2 + x;
 				ny2 = ny2 + y;
-				u=0.5;
+				u=0.5+cs1/4;
 				
 				
 				//cr-=  iter ;
@@ -2064,9 +2064,9 @@
 				var c1 =  {x:nx1, y:ny1, radius:cr*u};
 				var c2 =  {x:nx2, y:ny2, radius:cr*(1-u)};
 				
-				/*
-				c1 = zoomCircle(0.5, 0.5, c1, 6 * (iter) / getSettings().numRememberCircles);
-				c2 = zoomCircle(0.5, 0.5, c2, 6 * (iter) / getSettings().numRememberCircles);*/
+				
+				//c1 = zoomCircle(0.5, 0.5, c1, 6 * (iter) / getSettings().numRememberCircles);
+				//c2 = zoomCircle(0.5, 0.5, c2, 6 * (iter) / getSettings().numRememberCircles);
 				addInitial(c1.x , c1.y ,c1.radius, 
 						c2.x , c2.y ,c2.radius);
 				
@@ -2452,12 +2452,12 @@
 				
 				var f = getSettings().circleFactor;
 				
-				f = 1 * f * (getSettings().numRememberCircles - (iter ) % getSettings().numRememberCircles) / getSettings().numRememberCircles;
+				f = 1 * f * (getSettings().numRememberCircles - (iter) % getSettings().numRememberCircles) / getSettings().numRememberCircles;
 				
 				initialCircleRadius =  Math.min( (viewRect.r - viewRect.l)/f, (viewRect.b - viewRect.t)/f)  ;
 				
 				
-				circleRadius = initialCircleRadius;
+				circleRadius = initialCircleRadius*2;
 				
 				
 				
