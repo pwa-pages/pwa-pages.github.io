@@ -1,0 +1,119 @@
+
+<html>
+<head>
+<title></title>
+</head>
+<body  style = "margin: 0; height: 100%; overflow: hidden; background : black"  onclick="randomize()">
+	<canvas id="MyCanvas" ></canvas>
+	<script>
+		var canvas = document.getElementById("MyCanvas");
+		
+		
+		
+		if (canvas.getContext) {
+			
+			function resizeLines(){
+				if(canvas.width != document.body.clientWidth || canvas.height != document.body.clientHeight){
+					canvas.width = document.body.clientWidth ;
+					canvas.height = document.body.clientHeight ;
+					
+					ctx = canvas.getContext("2d");
+					ctx.globalCompositeOperation = 'xor';
+				}
+			}
+			
+			function drawRotatedlines(rot, width) {
+				ctx.globalCompositeOperation = 'xor';
+				
+				resizeLines();
+				
+				ctx.translate(canvas.width/2, canvas.height/2);
+
+				ctx.rotate(rot);
+				for (i = 0; i < nxLines; i++) {
+					
+						tx = (i - nxLines / 2) * width;
+						ty = (-nyLines / 2) * width;
+						ctx.beginPath();
+						ctx.translate(tx, ty);
+						
+						
+						ctx.rect(0, 0, width, width*nyLines);
+						if (i%2 == 0) {
+							ctx.fillStyle = '#ffffff';
+							ctx.fill();
+						}
+						ctx.translate(-tx, -ty);
+				}
+				ctx.rotate(-rot);
+
+				ctx.translate(-canvas.width/2, -canvas.height/2);
+
+			}
+
+			function drawLines() {
+				
+
+				ctx.clearRect(0, 0, 2000, 2000);
+
+				var pi = 3.14159265359;
+				
+				
+				
+				var b1 = 113/52;
+				var b2 = 331/131;
+				var b3 = 173/111;
+				var b4 = 112/111;
+				var b5 = 1112/77;
+				var b6 = 1324/96;
+				
+				var tyy = Math.sin(rLines*b1);
+				var txx = Math.sin(rLines*b2 + pi / 2);
+				var tzz = Math.sin(rLines*b3 + pi / 3);
+				var tww = Math.sin(rLines*b4 + pi / 4);
+				var tuu = Math.sin(rLines*b5 + pi / 5);
+				var tvv = Math.sin(rLines*b6 + pi / 6);
+			
+				
+				drawRotatedlines(rLines*b1,             wLines*(2+tyy));
+				drawRotatedlines(rLines*b2/pi,       wLines*(2+txx));
+				drawRotatedlines(-rLines*b3,             wLines*(2+tzz));
+				drawRotatedlines(-rLines*b4/pi,       wLines*(2+tww));
+				
+				rrLines = rrLines + rdif;
+				
+				var s1 = 1;
+				rLines = rLines +  rdif * (s1 + 0.11244 + s1*Math.sin(rrLines+20));
+				
+				
+				
+				
+				requestAnimationFrame(drawLines);
+
+			}
+			
+
+			var ctx = canvas.getContext("2d");
+			ctx.globalCompositeOperation = 'xor';
+			var rdif;
+
+			var rrLines;
+			var rLines;
+
+			function initLines() {
+				rdif = 3.14159265359 / 500;
+
+				nxLines = 100;
+				nyLines = 100;
+				wLines =15;
+				rLines = Math.random()*10000;
+				rrLines = Math.random()*10000;
+
+			}
+			initLines();
+			drawLines();
+
+		}
+	</script>
+</html>
+

@@ -1,0 +1,470 @@
+<html>
+<head>
+<title></title>
+
+<style>
+canvas {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+}
+
+.formula {
+	padding: 5px;
+	font-family: monospace;
+}
+
+.formula a {
+	font-size: 15px;
+}
+
+body {
+	padding: 20px;
+}
+
+* {
+	font-size: 20px;
+}
+
+a {
+	text-decoration: none;
+	color: green;
+}
+
+#titlediv {
+	font-size: 25px !important;
+}
+
+#textBox {
+	position: absolute;
+	z-index: 100;
+}
+</style>
+</head>
+<body
+	style="background: white; margin: 0; height: 100%; overflow: hidden"
+	onkeydown="restart();" onresize="resize();">
+
+
+	<div id="textBox">
+
+		<div id="titlediv">Arctic Circle</div>
+
+		<br />
+		<div>
+			Inspired by <a target="_blank"
+				href="https://www.youtube.com/watch?v=Yy7Q8IWNfHM">this video of
+				Mathologer</a>
+		</div>
+
+		<br />
+
+		<div>Selection formula:</div>
+		<br />
+		<div class="formula">
+			<a onclick="restart(0);" ontouchend="restart(0);" href="#">Math.random()
+				> .5 (arctic circle)</a>
+		</div>
+
+		<div class="formula">
+			<a onclick="restart(1);" ontouchend="restart(1);" href="#">(x/y +
+				y/x ) > 0</a>
+		</div>
+
+
+		<div class="formula">
+			<a onclick="restart(2);" ontouchend="restart(2);" href="#">(x +
+				y) % 2 == 0</a>
+		</div>
+
+
+		<div class="formula">
+			<a onclick="restart(3);" ontouchend="restart(3);" href="#">x * x
+				== y * y</a>
+		</div>
+
+
+
+
+	</div>
+
+	<canvas id="MyCanvas"></canvas>
+	<script>
+        document.addEventListener('touchstart', function(e) {
+
+            restart();
+
+        }, false);
+
+        var iteration = 0;
+        var canvas = document.getElementById("MyCanvas");
+        var tilesgrid = [];
+        var boundingRect = getRect(0, 0, 1, 1);
+        var m_canvas = document.createElement('canvas');;
+        var formula = 0;
+        
+
+        
+        function restart(frm){
+            
+            if(frm || frm ==0){
+                formula = frm;
+            }
+            
+            
+
+                tilesgrid = [];
+
+                tilesgrid[0] = [];
+                tilesgrid[1] = [];
+
+                tilesgrid[0][1] = {
+                    dx : -1,
+                    dy : 0
+                };
+                tilesgrid[0][0] = {
+                    dx : -1,
+                    dy : 0
+                }
+                tilesgrid[1][1] = {
+                    dx : 1,
+                    dy : 0
+                };
+                tilesgrid[1][0] = {
+                    dx : 1,
+                    dy : 0
+                };
+                boundingRect = getRect(0, 0, 1, 1);
+                
+                if (iteration / nMove > maxMove){
+                    iteration = 0;
+                    gen();
+                }
+                iteration = 0;
+                    
+        }
+        
+        var nMove = 5;
+        var maxMove = 150;
+        function initiate() {
+
+            restart();
+
+                gen();
+            
+        }
+
+        var tileCounter = 0;
+        function createNewTiles(x, y) {
+            var tl1, tl2;
+            
+            tileCounter ++;
+
+            var t = formula == 0 && Math.random() > .5;
+            
+            t = t || (formula == 1 &&  (x/y + y/x )  > 0);
+            t = t || (formula == 2 && (x + y)%2 == 0);
+            t = t || (formula == 3 && x * x == y * y);
+            if (t) {
+                tilesgrid[x][y].dx = 0, tilesgrid[x][y].dy = -1;
+                tilesgrid[x + 1][y].dx = 0, tilesgrid[x + 1][y].dy = -1;
+
+                tilesgrid[x][y + 1].dx = 0, tilesgrid[x][y + 1].dy = 1;
+                tilesgrid[x + 1][y + 1].dx = 0, tilesgrid[x + 1][y + 1].dy = 1;
+            } else {
+                tilesgrid[x][y].dy = 0, tilesgrid[x][y].dx = -1;
+                tilesgrid[x][y + 1].dy = 0, tilesgrid[x][y + 1].dx = -1;
+
+                tilesgrid[x + 1][y].dy = 0, tilesgrid[x + 1][y].dx = 1;
+                tilesgrid[x + 1][y + 1].dy = 0, tilesgrid[x + 1][y + 1].dx = 1;
+            }
+
+        }
+
+        function createTilesInEmptiedSpaces() {
+            for (i = boundingRect.l; i <= boundingRect.r; i++) {
+                for (j = boundingRect.t; j <= boundingRect.b; j++) {
+
+                    if (tilesgrid[i] && tilesgrid[i][j]
+                            && tilesgrid[i][j].dx == 0
+                            && tilesgrid[i][j].dy == 0) {
+
+                        createNewTiles(i, j);
+                    }
+                }
+            }
+        }
+
+        function moveTile(x, y, togrid) {
+
+            if (tilesgrid[x] && tilesgrid[x][y]) {
+
+                if (tilesgrid[x][y].dx == -1 || tilesgrid[x][y].dx == 1
+                        || tilesgrid[x][y].dy == -1 || tilesgrid[x][y].dy == 1) {
+
+                    if (!togrid[x][y]) {
+                        togrid[x][y] = {};
+                        togrid[x][y].dx = 0;
+                        togrid[x][y].dy = 0;
+                    }
+
+                    togrid[x + tilesgrid[x][y].dx][y + tilesgrid[x][y].dy] = {};
+                    togrid[x + tilesgrid[x][y].dx][y + tilesgrid[x][y].dy].dx = tilesgrid[x][y].dx;
+                    togrid[x + tilesgrid[x][y].dx][y + tilesgrid[x][y].dy].dy = tilesgrid[x][y].dy;
+                }
+
+            }
+        }
+
+        function moveTiles() {
+            var newTiles = [];
+
+            var m;
+            var n;
+            for (m = boundingRect.r; m >= boundingRect.l; m--) {
+                newTiles[m] = [];
+                for (n = boundingRect.b; n >= boundingRect.t; n--) {
+
+                    if (tilesgrid[m][n] && tilesgrid[m][n].dx == 0
+                            && tilesgrid[m][n].dy == 0) {
+                        newTiles[m][n] = tilesgrid[m][n];
+                    }
+
+                }
+            }
+
+            for (m = boundingRect.r - 1; m >= boundingRect.l + 1; m--) {
+                for (n = boundingRect.b - 1; n >= boundingRect.t + 1; n--) {
+
+                    moveTile(m, n, newTiles);
+                }
+            }
+
+            tilesgrid = newTiles;
+        }
+
+        function removeTiles() {
+
+            var newTiles = [];
+
+            for (i = boundingRect.l + 1; i <= boundingRect.r - 1; i++) {
+                for (j = boundingRect.t + 1; j <= boundingRect.b - 1; j++) {
+
+                    if (tilesgrid[i] && tilesgrid[i][j]) {
+
+                        if (tilesgrid[i][j].dx == -1 || tilesgrid[i][j].dx == 1) {
+                            if (tilesgrid[i + tilesgrid[i][j].dx][j].dx == -tilesgrid[i][j].dx) {
+                                tilesgrid[i + tilesgrid[i][j].dx][j].dx = 0;
+                                tilesgrid[i + tilesgrid[i][j].dx][j].dy = 0;
+                                tilesgrid[i][j].dx = 0;
+                                tilesgrid[i][j].dy = 0;
+
+                            }
+                        }
+
+                        if (tilesgrid[i][j].dy == -1 || tilesgrid[i][j].dy == 1) {
+                            if (tilesgrid[i][j + tilesgrid[i][j].dy].dy == -tilesgrid[i][j].dy) {
+                                tilesgrid[i][j + tilesgrid[i][j].dy].dx = 0;
+                                tilesgrid[i][j + tilesgrid[i][j].dy].dy = 0;
+                                tilesgrid[i][j].dx = 0;
+                                tilesgrid[i][j].dy = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function updateBounding(x, y) {
+            if (x < boundingRect.l) {
+                boundingRect.l = x;
+            }
+            if (x > boundingRect.r) {
+                boundingRect.r = x;
+            }
+            if (y < boundingRect.t) {
+                boundingRect.t = y;
+            }
+            if (y > boundingRect.b) {
+                boundingRect.b = y;
+            }
+        }
+
+        function tryAddEmptyTile(x, y) {
+            if (!tilesgrid[x]) {
+                tilesgrid[x] = [];
+            }
+
+            if (!tilesgrid[x][y]) {
+                tilesgrid[x][y] = {};
+                tilesgrid[x][y].dx = 0;
+                tilesgrid[x][y].dy = 0;
+                updateBounding(x, y);
+            }
+
+        }
+
+        function addEmptyTiles() {
+
+            for (i = boundingRect.l; i <= boundingRect.r; i++) {
+                for (j = boundingRect.t; j <= boundingRect.b; j++) {
+
+                    if (tilesgrid[i]
+                            && tilesgrid[i][j]
+                            && (tilesgrid[i][j].dx != 0 || tilesgrid[i][j].dy != 0)) {
+                        tryAddEmptyTile(i - 1, j);
+                        tryAddEmptyTile(i + 1, j);
+                        tryAddEmptyTile(i, j - 1);
+                        tryAddEmptyTile(i, j + 1);
+                    }
+
+                }
+            }
+        }
+
+        function gen() {
+
+            
+
+            var iter = (iteration) % (nMove + 2);
+
+            if (iter == 0) {
+
+                createTilesInEmptiedSpaces();
+                
+                iteration++;
+                gen();
+
+            }
+            if (iter >= 1 && iter < (nMove + 1)) {
+
+                var l = (iter - 1) / (nMove);
+                drawTiles(l);
+
+                requestAnimationFrame(gen);
+                iteration++;
+            }
+            if(iter == nMove+1){
+                
+                if (iteration / nMove > maxMove)
+                    return;
+                
+                addEmptyTiles();
+                removeTiles();
+                moveTiles();
+                iteration++;
+                gen();
+            }
+
+        }
+
+        function getRect(l, t, r, b) {
+            var o = {
+                l : l,
+                t : t,
+                r : r,
+                b : b,
+                getWidth : function() {
+                    return this.r - this.l;
+                },
+                getHeight : function() {
+                    return this.b - this.t;
+                }
+            }
+
+            return o;
+        }
+
+        var ctx = m_canvas.getContext("2d");
+
+        function drawTiles(moveFac) {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            var border = 40;
+
+            var bw = boundingRect.getWidth() + moveFac * 2;
+            var bh = boundingRect.getHeight() + moveFac * 2;
+
+            var tw = (canvas.width - border * 2) / (bw + 1);
+            var th = (canvas.height - border * 2) / (bh + 1);
+
+            var tsz = Math.min(tw, th);
+
+            var sx = (canvas.width - tsz * (bw + 1)) / 2;
+            var sy = (canvas.height - tsz * (bh + 1)) / 2;
+
+            for (var i = boundingRect.l; i <= boundingRect.r; i++) {
+
+                var x = sx;
+                x = x + (i + moveFac - boundingRect.l) * tsz;
+
+                for (var j = boundingRect.t; j <= boundingRect.b; j++) {
+                    var y = sy;
+                    y = y + (j + moveFac - boundingRect.t) * tsz;
+
+                    if (tilesgrid[i] && tilesgrid[i][j]
+                            && tilesgrid[i][j].dx == 0
+                            && tilesgrid[i][j].dy == 0) {
+                    } else if (tilesgrid[i] && tilesgrid[i][j]) {
+
+                        if (tilesgrid[i][j].dx == -1) {
+                            ctx.fillStyle = "rgba(0, 150, 0, 1)";
+                        } else if (tilesgrid[i][j].dx == 1) {
+                            ctx.fillStyle = "rgba(255,0,0, 1)";
+                        } else if (tilesgrid[i][j].dy == -1) {
+                            ctx.fillStyle = "rgba(255 ,255,0, 1)";
+                        } else if (tilesgrid[i][j].dy == 1) {
+                            ctx.fillStyle = "rgba(0, 0, 255, 1)";
+                        }
+
+                        var tx = x - tilesgrid[i][j].dx * tsz
+                                + tilesgrid[i][j].dx * (moveFac) * tsz;
+                        var ty = y - tilesgrid[i][j].dy * tsz
+                                + tilesgrid[i][j].dy * (moveFac) * tsz;
+
+                        
+                        
+                        ctx.beginPath();
+                        ctx.rect(tx, ty, tsz /2, tsz /2);
+                        ctx.lineWidth = tsz/2;
+                        ctx.strokeStyle = 'black';
+                        ctx.stroke();
+                        
+                        
+                        var sz = .95;
+                        ctx.beginPath();
+                        ctx.rect(tx, ty, sz * tsz /2, sz * tsz /2);
+                        ctx.lineWidth = sz * tsz/2;
+                        ctx.strokeStyle = ctx.fillStyle;
+                        ctx.stroke();
+
+                    }
+                }
+            }
+            
+            
+            canvas.getContext("2d").drawImage(m_canvas, 0, 0);
+            
+        }
+
+        function resize() {
+            canvas.width = document.body.clientWidth;
+            canvas.height = document.body.clientHeight;
+            
+            
+	    		m_canvas.width = document.body.clientWidth;
+	    		m_canvas.height = document.body.clientHeight;
+            drawTiles();
+        }
+
+        function initcanvas() {
+            resize();
+        }
+
+        initcanvas();
+        initiate();
+    </script>
+</html>
+

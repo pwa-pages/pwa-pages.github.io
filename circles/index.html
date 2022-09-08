@@ -1,0 +1,2525 @@
+
+	
+	<html>
+	<head>
+	<title></title>
+	
+	<link rel="manifest" href="manifestcircles.json"/>
+	
+	
+	</head>
+	<body style = "background:white; margin: 0; height: 100%; overflow: hidden" onkeydown="toggle(event);">
+	
+		<canvas id="MyCanvas"></canvas>
+		<script>
+		
+		
+		var el = document.getElementById("MyCanvas");
+		document.addEventListener('touchstart', function (e) {
+			
+			//toggleIt(currentAnimation);
+			//currentAnimation = (currentAnimation+1)%5;
+			//toggleIt(currentAnimation);
+			toggle(e);
+			
+			
+			  }, false);
+		
+		/*
+		lelijk:
+		 -0.07459650777609786   -0.18862119393010296 0.23683592373179138  0.010688790796125268  -0.9254799841086936   -0.9274131924997275
+		
+		 -0.0006700424338565413 -0.023257780607844877 -0.3480267107496996 0.029548805963557787 0.8678595449974574 0.001192983597263666
+		 
+		 -0.00515860800875471   -0.00045446461918833056 -0.429176171588223 0.12711195009035994 0.48120823445762956 0.01755993892947922
+		 
+		 -0.007124053454270969   0.02396139540284023 -0.0006757873491559588 -0.09809967022391541 -0.5505413874756176 -0.0437555532476393
+		 -0.22883809909960118    0.19728374927192818 0.3669474866059887     -0.0302147266643802  0.4158651817646253   0.022307275606416863
+		 -0.0037520714649363347  0.4979487174368354 -0.053948185183059015  -0.08773372714239362 -0.6221663059005061   0.03951640084931526
+		 -0.015397087741463252 -0.14894064795888032 0.07867317615328176   -0.000010768272454912409 0.3018346034111011 -0.006778283660718025
+		 0.000006698725210004256 -0.0006152456512533674 0.03509024487208126 0.043264539413883606 0.5010661295621129 -0.04683157426198503
+		 -0.0096605537677005 0.9400856410325794 -0.04063677412368941 0.07535177159650451 0.19970869521395265 0.008095660199992393
+		 0.2853016227487175 -0.2759306656382998 0.4791168044321434 0.01071674213170886 -0.42654215130450895 0.11595268780929585
+		 mooi:
+			 
+			 
+			 0.39706375844465003    0.054014310837005385   -0.32538431307433663 0.2282937395765205   0.0009041087726927628 0.03732197315800229
+			 -0.13043358223523727   -0.0008006006863108621 -0.13657171009221766 0.191908777324087    -0.01950411747610055  -0.01423783744287128
+			 -0.05539302653633999   -0.014363941906288293   0.36680132115685005 0.4621802183550723  -0.21711146249280758 -0.17253865487285028
+			 0.3517825861335521     -0.0182838958639187    -0.11348189000489546 0.316943720800488   0.012633004471567367 -0.14545271120326136
+			 -0.24936788246664407   0.2732452742828426     -0.26076812547631467 0.05103403437392671 -0.08278662664020854 0.018128590349931785
+			 0.4423905716938993 0.009909510090842344 -0.38884833162473187 0.19892822179977634 0.0032438876583733363 -6.20108823507786e-7
+			 0.4573941242840915 -0.15539815473747856 -0.3518328159260109 -0.18012998281328582 -0.002479183041173003 -0.021886287642978678
+			 */
+		 
+	
+			 
+		
+		
+		var currentAnimation = 0;
+		
+		function startAnimation(ev){
+		    artMode = 'animate';
+		    
+		    for(var p=0; p<nAnimations; p++){
+			
+				if(artMode == 'paint'){
+					//nsingle[p] = 100+p*13;
+					nsingle[p] = 50;
+					ndouble[p] = 200;
+					
+				}
+				else if(artMode == 'animate'){
+					nsingle[p] = 40;
+					ndouble[p] = 40;
+					
+				}
+				
+				if(ev == null){
+					idouble[p]=ndouble[p]+1;
+					isingle[p]=0;
+				}
+		    }
+			
+		}
+		
+		function toggleIt(key){
+			
+			
+			
+			if(key && (key == '1' || key == '2' || key == '3' || key == '4' || key == '5')){
+				currentAnimation = parseInt(key)-1;
+				
+				if(isAnimationActive(currentAnimation)){
+					ifade[currentAnimation] = -1;
+					fadestep[currentAnimation] = -1;
+				}
+				else	{
+					ifade[currentAnimation] = Math.floor(nfade/3);
+					fadestep[currentAnimation] = -1;
+				}
+			}
+			
+			
+			 
+			
+
+			
+			
+			
+		}
+		
+		function toggle(ev){
+			var r = null;
+			
+			if(ev){
+				r = ev.key;
+			}
+			toggleIt(r);
+			
+			
+		}
+		
+		
+		var allsettings = [];
+		var nAnimations = 5;
+		
+	
+		
+		var t = .001;
+		
+		function getRnd(){
+			return Math.random();
+			t = t + .05;
+			t = t % 1;
+			return t;
+		}
+		
+		
+		function getFc(fc, i, compl, np){
+			
+			if(compl){
+				return fc;
+			}
+			else{
+				return 1-fc;
+			}
+			
+			/*
+			if(rndmap[2] == i)
+				
+				if(compl){
+					return fc;
+				}
+				else{
+					return 1-fc;
+				}
+			
+				
+			else
+				{
+				return .5;
+				}
+		
+			*/
+			/*
+			if(i > np){
+				return null;
+			}
+			
+			if(fc * np >= i + 1){
+				if(compl){
+					return 1;
+				}
+				else{
+					return 0;
+				}
+				
+			}
+			
+			if(fc * np <= i){
+				if(compl){
+					return 0;
+				}
+				else{
+					return 1;
+				}
+			}*/
+			
+			
+			if(compl){
+				
+				return EasingFunctions[i](fc );
+			}
+			else{
+				return EasingFunctions[i](1-fc);
+			}
+			
+			
+			
+		
+			
+			
+		}
+		
+		EasingFunctions = [
+			function (t) { return t*t },
+			  // decelerating to zero velocity
+			  function (t) { return t*(2-t) },
+			  // acceleration until halfway, then deceleration
+			  function (t) { return t<.5 ? 2*t*t : -1+(4-2*t)*t },
+			  // accelerating from zero velocity 
+			  function (t) { return t*t*t },
+			  // decelerating to zero velocity 
+			  function (t) { return (--t)*t*t+1 },
+			  // acceleration until halfway, then deceleration 
+			  function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
+			  // accelerating from zero velocity 
+			  function (t) { return t*t*t*t },
+			  // decelerating to zero velocity 
+			  function (t) { return 1-(--t)*t*t*t },
+			  // acceleration until halfway, then deceleration
+			  function (t) { return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
+			  // accelerating from zero velocity
+			  function (t) { return t*t*t*t*t },
+			  // decelerating to zero velocity
+			  function (t) { return 1+(--t)*t*t*t*t },
+			  // acceleration until halfway, then deceleration 
+			  function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t },function (t) { return t*t },
+			  // decelerating to zero velocity
+			  function (t) { return t*(2-t) },
+			  // acceleration until halfway, then deceleration
+			  function (t) { return t<.5 ? 2*t*t : -1+(4-2*t)*t },
+			  // accelerating from zero velocity 
+			  function (t) { return t*t*t },
+			  // decelerating to zero velocity 
+			  function (t) { return (--t)*t*t+1 },
+			  // acceleration until halfway, then deceleration 
+			  function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
+			  // accelerating from zero velocity 
+			  function (t) { return t*t*t*t },
+			  // decelerating to zero velocity 
+			  function (t) { return 1-(--t)*t*t*t },
+			  // acceleration until halfway, then deceleration
+			  function (t) { return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
+			  // accelerating from zero velocity
+			  function (t) { return t*t*t*t*t },
+			  // decelerating to zero velocity
+			  function (t) { return 1+(--t)*t*t*t*t },
+			  // acceleration until halfway, then deceleration 
+			  function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
+				];
+		
+		easing  = EasingFunctions[Math.floor(getRnd() * EasingFunctions.length)];
+		
+		function getSettings(){
+			
+			
+			var ts = iAnimation;
+			
+			var id = idouble[iAnimation];
+			var nd = ndouble[iAnimation];
+			var ifd = ifade[iAnimation];
+			
+			if(id > nd){
+				id = nd;
+			}
+			
+			var settingskey = "" + id / nd + ( "_" + ifd + "_" + iAnimation);
+			
+			
+			
+			if(settingskey == settingscachekey[ts]){
+				
+				
+				return settingscache[ts];
+				
+			}
+			
+			settingscachekey[ts] = settingskey;
+			
+			
+			for(var p=0; p<nAnimations; p++){
+				rsettings[p] = {
+						transparency : 0,
+						maxDepth : 0,
+						scaleFactor : 0,
+						numRememberCircles : 0,
+						rememberCircleDist : 0,
+						circleFactor : 0,
+						internalRadius : 0,
+						externalRadius : 0,
+						externalBorderColor : { r : 0, g : 0, b : 0, t : 0},
+						circleColor : { r : 0, g : 0, b : 0, t : 0},
+						circleColor2 : { r : 0, g : 0, b : 0, t : 0},
+						cinit : 0
+					};
+			}
+			var fc = .48;
+			
+			
+			
+			
+			updateSettingsByFac(setting1, false);
+			updateSettingsByFac(setting2, true);
+			
+			
+			/*
+			for(var k=0; k<settingfactors.length; k++){
+	
+				
+				updateSettingsByFac(k);
+	
+			}*/
+			
+			
+			
+			/*
+			if(rsettings.maxDepth * rsettings.maxDepth * rsettings.numRememberCircles * ( 10 * (rsettings.cinit + .1) ) > 1000){
+				var f = 1000 / (rsettings.maxDepth * rsettings.maxDepth * rsettings.numRememberCircles) * ( 10 * (rsettings.cinit + .1) );
+				
+				rsettings.maxDepth = rsettings.maxDepth * Math.cbrt(f);
+				rsettings.numRememberCircles = rsettings.numRememberCircles * Math.cbrt(f);
+				rsettings.cinit = rsettings.cinit * Math.cbrt(f);
+				
+			}*/
+			
+			
+			
+			
+			settingscache[ts] = rsettings[ts];
+			return rsettings[ts];
+			
+			
+		}
+		
+		function getFaceFactor(fi, fo){
+			
+			//if(fi == nfade)
+			//ifadein
+		}
+		
+		function updateSettingsByFac(k, compl){
+			for(var p=0; p<nAnimations; p++){
+				
+				if(isAnimationActive(p)){
+					var fc = idouble[p] / ndouble[p];
+					
+					var fadefc;
+					
+					if(ifade[p] < 0){
+						fadefc = Math.pow(2, 10*(ifade[p])/nfade);
+					}
+					else{
+						fadefc = Math.pow(2, 10*(ifade[p])/nfade);
+					}
+					
+					
+					
+					
+					
+					rsettings[p].numRememberCircles = rsettings[p].numRememberCircles + getFc(fc, rndmap[0], compl, nMaps) * allsettings[k[p]].numRememberCircles;
+					rsettings[p].maxDepth = rsettings[p].maxDepth + getFc(fc, rndmap[1], compl, nMaps) * allsettings[k[p]].maxDepth;
+					rsettings[p].cinit = rsettings[p].cinit + getFc(fc, rndmap[2], compl, nMaps) * allsettings[k[p]].cinit;
+					
+					rsettings[p].transparency = rsettings[p].transparency + getFc(fc, rndmap[3], compl, nMaps) * allsettings[k[p]].transparency;
+					
+					
+					
+					
+					
+					var f =  allsettings[k[p]].scaleFactor;// * fadefc;
+					
+					
+					
+					rsettings[p].scaleFactor = rsettings[p].scaleFactor + getFc(fc, rndmap[4], compl, nMaps) * f;
+					
+					rsettings[p].rememberCircleDist = rsettings[p].rememberCircleDist + getFc(fc, rndmap[5], compl, nMaps) * allsettings[k[p]].rememberCircleDist;
+					
+					
+					f =  allsettings[k[p]].circleFactor * fadefc;
+					
+					rsettings[p].circleFactor = rsettings[p].circleFactor + getFc(fc, rndmap[6], compl, nMaps) * f;
+					
+					
+					rsettings[p].internalRadius = rsettings[p].internalRadius + getFc(fc, rndmap[7], compl, nMaps) * allsettings[k[p]].internalRadius;
+					rsettings[p].externalRadius = rsettings[p].externalRadius + getFc(fc, rndmap[7], compl, nMaps) * allsettings[k[p]].externalRadius;
+					
+					
+				    rsettings[p].externalBorderColor.r = rsettings[p].externalBorderColor.r + getFc(fc, rndmap[8], compl, nMaps) * allsettings[k[p]].externalBorderColor.r;
+				    rsettings[p].externalBorderColor.g = rsettings[p].externalBorderColor.g + getFc(fc, rndmap[8], compl, nMaps) * allsettings[k[p]].externalBorderColor.g;
+				    rsettings[p].externalBorderColor.b = rsettings[p].externalBorderColor.b + getFc(fc, rndmap[8], compl, nMaps) * allsettings[k[p]].externalBorderColor.b;
+				    rsettings[p].externalBorderColor.t = rsettings[p].externalBorderColor.t + getFc(fc, rndmap[8], compl, nMaps) * allsettings[k[p]].externalBorderColor.t;
+				    
+				    
+				    
+				    var p1 = (p+1)%allsettings[k[p]].circleColor.length;
+				    
+				    if(!allsettings[k[p]].circleColor[p] || !allsettings[k[p]].circleColor[p1]){
+				    		allsettings[setting2[p]].circleColor = circleColors.slice();
+						shuffle(allsettings[setting2[p]].circleColor);
+				    }
+				    
+				    
+				    
+				    if(allsettings[k[p]].circleColor[p]){
+				    	 	rsettings[p].circleColor.r = rsettings[p].circleColor.r + getFc(fc, rndmap[9], compl, nMaps) * allsettings[k[p]].circleColor[p].r;
+					    rsettings[p].circleColor.g = rsettings[p].circleColor.g + getFc(fc, rndmap[9], compl, nMaps) * allsettings[k[p]].circleColor[p].g;
+						rsettings[p].circleColor.b = rsettings[p].circleColor.b + getFc(fc, rndmap[9], compl, nMaps) * allsettings[k[p]].circleColor[p].b;
+						rsettings[p].circleColor.t = rsettings[p].circleColor.t + getFc(fc, rndmap[9], compl, nMaps) * allsettings[k[p]].circleColor[p].t;
+						
+						rsettings[p].circleColor2.r = rsettings[p].circleColor2.r + getFc(fc, rndmap[9], compl, nMaps) * allsettings[k[p]].circleColor[p1].r;
+					    rsettings[p].circleColor2.g = rsettings[p].circleColor2.g + getFc(fc, rndmap[9], compl, nMaps) * allsettings[k[p]].circleColor[p1].g;
+						rsettings[p].circleColor2.b = rsettings[p].circleColor2.b + getFc(fc, rndmap[9], compl, nMaps) * allsettings[k[p]].circleColor[p1].b;
+						rsettings[p].circleColor2.t = rsettings[p].circleColor2.t + getFc(fc, rndmap[9], compl, nMaps) * allsettings[k[p]].circleColor[p1].t;
+						
+				    }
+				    
+				}
+			
+				
+			    
+			   
+			}
+		    
+		    
+		}
+		
+		
+		
+		
+		
+	allsettings[-1] = {
+			transparency : 0,
+			maxDepth : 0,
+			scaleFactor : 0,
+			numRememberCircles : 0,
+			rememberCircleDist : 0,
+			circleFactor : 1,
+			internalRadius : 0,
+			externalRadius : 0,
+			externalBorderColor : { r : 0, g : 0, b : 0, t : 0},
+			circleColor : [],
+			circleColor2 : [],
+			cinit : 0
+		};
+		
+		allsettings.push( {
+				transparency : 0,
+				maxDepth : 1,
+				scaleFactor : 50,
+				numRememberCircles : 400,
+				rememberCircleDist : -Math.PI*.2,
+				circleFactor : 50,
+				internalRadius : .2,
+				externalRadius : .2,
+				externalBorderColor : { r : 255, g : 255, b : 255, t : 1},
+				circleColor : [],
+				circleColor2 : [],
+				cinit : 0
+			} );
+		
+		allsettings.push( {
+			transparency : 0,
+			maxDepth : 1,
+			scaleFactor : 50,
+			numRememberCircles : 400,
+			rememberCircleDist : -Math.PI*.1,
+			circleFactor : 50,
+			internalRadius : .2,
+			externalRadius : .2,
+			externalBorderColor : { r : 255, g : 255, b : 255, t : 1},
+			circleColor : [],
+			circleColor2 : [],
+			cinit : 0
+		} );
+	
+		
+	
+	
+		
+		var canvas = document.getElementById("MyCanvas");
+		
+		function getCircle(x, y, r){
+			var c = {
+				    x:x,
+				    y:y,
+				    radius:r
+				};
+			
+			return c;
+			
+		}
+		
+		var clickedCircles = [];
+		
+		
+		var nSines = 4;
+		var nParams = 10;
+		var nMaps = 10;
+		var primes = [];
+		var rndmap = [];
+		
+		var circleColors = [];
+		var primeFreq = 1;
+		
+		
+		
+		
+		circleColors.push({ r : 0, g : 80, b : 128, t : 0});
+		circleColors.push({ r : 0, g : 128, b : 0, t : 0});
+		circleColors.push({ r : 156, g : 0, b : 0, t : 0});
+		circleColors.push({r : 120, g : 0, b : 120, t : 0});
+		circleColors.push({ r : 204, g : 153, b : 0, t : 0});
+		
+		
+		
+		
+		
+		
+		/*
+		for(var n=101;primes.length <= nSines;n++) {
+			
+		  if(primes.every(function(prime){return n%prime!=0}))
+		  {
+		    primes.push(n);
+		    primeFreq *= n;
+		  }
+		  
+		}*/
+		
+		var globalSpeedFactor = 10;
+		var o = 1000;
+		primes = [];
+	
+		
+		function resetPrimes(){
+			for(i=0;i<6;i++){
+				primes[i] = [];
+
+				for(j=0;j<6;j++){
+				  	var u = Math.floor(getRnd() * 6);
+					primes[i].push( Math.floor(getRnd() * (o))/2 + o*u );
+				}
+				
+			}
+		}
+		
+		
+		
+		function resetPrimes(){
+			for(i=0;i<6;i++){
+				primes[i] = [];
+
+				for(j=0;j<6;j++){
+				  	var u = Math.floor(getRnd() * 6);
+					primes[i].push( Math.floor(getRnd() * (o))/2 + o*u );
+				}
+				
+			}
+		}
+		
+		resetPrimes();
+		
+		for(var n=0;n < 15;n++) {
+			
+			rndmap.push(n);	  
+		}
+		
+		
+		shuffle(rndmap);
+		
+		//primes.unshift(2);
+		//shuffle(primes);
+	
+		
+		function shuffle(a) {
+			
+		    var j, x, i;
+		    for (i = a.length - 1; i > 0; i--) {
+		        j = Math.floor(getRnd() * (i + 1));
+		        x = a[i];
+		        a[i] = a[j];
+		        a[j] = x;
+		    }
+		    return a;
+		}
+		
+	
+		function zoomCircle(x, y, c, zm){
+			
+			
+			var newCircle =  {x:0, y:0, radius:0};
+			
+			var xp = (viewRect.l + x * (viewRect.r - viewRect.l));
+			var yp = (viewRect.t + y * (viewRect.b - viewRect.t));
+			
+			
+			newCircle.x = xp +  (c.x - xp) * zm;
+			newCircle.y = yp +  (c.y - yp) * zm;
+			newCircle.radius = c.radius * zm;
+			
+			return newCircle;
+			
+			
+		}
+		
+		
+		function doClick(e){
+			
+			
+			
+			var x = e.clientX / canvas.width;
+			var y = e.clientY / canvas.height;
+			
+		}
+		
+		
+		function apolloniusCircle(x1, y1, r1, x2, y2, r2, x3, y3, r3) {
+	
+			 
+			  var a2 = 2 * (x1 - x2),
+			      b2 = 2 * (y1 - y2),
+			      c2 = 2 * (r2 - r1),
+			      d2 = x1 * x1 + y1 * y1 - r1 * r1 - x2 * x2 - y2 * y2 + r2 * r2,
+			      a3 = 2 * (x1 - x3),
+			      b3 = 2 * (y1 - y3),
+			      c3 = 2 * (r3 - r1),
+			      d3 = x1 * x1 + y1 * y1 - r1 * r1 - x3 * x3 - y3 * y3 + r3 * r3;
+	
+			  var ab = a3 * b2 - a2 * b3,
+			      xa = (b2 * d3 - b3 * d2) / ab - x1,
+			      xb = (b3 * c2 - b2 * c3) / ab;
+	
+			
+			  var ya = (a3 * d2 - a2 * d3) / ab - y1,
+			      yb = (a2 * c3 - a3 * c2) / ab;
+	
+			  
+			  var A = xb * xb + yb * yb - 1,
+			      B = 2 * (xa * xb + ya * yb + r1),
+			      C = xa * xa + ya * ya - r1 * r1,
+			      rr = A ? (-B - Math.sqrt(B * B - 4 * A * C)) / (2 * A) : (-C / B);
+			  return isNaN(rr) ? null : {x: xa + xb * rr + x1, y: ya + yb * rr + y1, radius: rr < 0 ? -rr : rr};
+			}
+	
+		
+		function intersection(x0, y0, r0, x1, y1, r1) {
+	        var a, dx, dy, d, h, rx, ry;
+	        var x2, y2;
+	
+	  
+	        dx = x1 - x0;
+	        dy = y1 - y0;
+	        
+	        if (dx > (r0 + r1)) {
+	            return -1;
+	        }
+	        
+	        
+	        if (dy > (r0 + r1)) {
+	            return -1;
+	        }
+	        
+	        d = Math.sqrt((dy*dy) + (dx*dx));
+	
+	        if (d > (r0 + r1)) {
+	            return -1;
+	        }
+	        if (d <= Math.abs(r0 - r1)) {
+	            return -2;
+	        }
+	
+	        a = ((r0*r0) - (r1*r1) + (d*d)) / (2.0 * d) ;
+	
+	        x2 = x0 + (dx * a/d);
+	        y2 = y0 + (dy * a/d);
+	
+	        h = Math.sqrt((r0*r0) - (a*a));
+	
+	        rx = -dy * (h/d);
+	        ry = dx * (h/d);
+	
+	        var xi = x2 + rx;
+	        var xi_prime = x2 - rx;
+	        var yi = y2 + ry;
+	        var yi_prime = y2 - ry;
+	
+	        return [xi, xi_prime, yi, yi_prime];
+	    }
+		
+		function getOverlap(c1, c2){
+			
+			
+			if(c1 == null || c2 == null){
+				return;
+			}
+			
+			inters = intersection(c1.x, c1.y, c1.radius, c2.x,  c2.y,  c2.radius);
+			
+			if(inters == -1){
+				return 0;
+			}
+			
+			if(inters == -2){
+				
+				return c1.radius + c2.radius;
+			}
+			
+			dy = inters[0]-inters[1];
+			dx = inters[2]-inters[3];
+			
+			
+			
+			return Math.sqrt((dy*dy) + (dx*dx));
+		}
+		
+		
+	
+		
+		
+		function findOverlappedCircles(c, c1, c2, newCircleDirection, excludeCircles, candidateCircle){
+			
+			return findPossibleOverlappingCircles(c, c1, c2, excludeCircles, candidateCircle);
+			
+			
+		}
+		
+		
+		function rectInCircle(circle,rect){
+			
+			dx = Math.max( Math.abs(circle.x - rect.l), Math.abs(rect.r - circle.x)); 
+			dy = Math.max( Math.abs(circle.y - rect.t), Math.abs(rect.b - circle.y));
+			return circle.radius*circle.radius >= dx*dx + dy*dy
+		}
+		
+		
+		
+		function rectCircleColliding(circle,rect){
+			
+			
+			var w = rect.r - rect.l;
+			var h = rect.b - rect.t;
+			
+		    var distX = Math.abs(circle.x - rect.l - w/2);
+		    var distY = Math.abs(circle.y - rect.t - h/2);
+	
+		    if (distX > (w/2 + circle.radius)) { return false; }
+		    if (distY > (h/2 + circle.radius)) { return false; }
+	
+		    if (distX <= (w/2)) { return true; } 
+		    if (distY <= (h/2)) { return true; }
+	
+		    var dx=distX-w/2;
+		    var dy=distY-h/2;
+		    return dx*dx+dy*dy<=(circle.radius*circle.radius);
+		}
+		
+		
+		function findPossibleOverlappingCircles(c, c1, c2, excludeCircles, candidateCircle){
+			var overlapped = [];
+			
+			var b = findBspCircles(c, c1, c2, overlapped, bspcircles, excludeCircles, c, candidateCircle);
+			
+			
+			return b;
+			
+		}
+		
+		function hasOverlap(c){
+			var overlapped = [];
+			
+			for (var i = 0; i < circles.length; i++) {
+				
+				if(getOverlap(circles[i], c) > 0.001){
+					return true;
+				}
+				
+			}
+			
+			return false;
+			
+		}
+		
+		function aCircle(c1, c2, bc, c){
+			
+			if(!getOverlap(bc, c)){
+				return c;
+			}
+			
+			
+			var a = apolloniusCircle(c1.x, c1.y, -c1.radius, c2.x, c2.y, -c2.radius, bc.x, bc.y, -bc.radius);
+			
+			
+			if(!a){
+				return null;
+			}
+			var co = isCorrectSide(c1, c2, c, a);
+			if(!co){
+				a = apolloniusCircle(c1.x, c1.y, c1.radius, c2.x, c2.y, c2.radius, bc.x, bc.y, bc.radius);
+			}
+			
+			if(getDist(c1, a) > 0.01){
+				return null;
+			}
+			
+			if(getDist(c2, a) > 0.01){
+				return null;
+			}
+			
+			
+			if(getOverlap(a, c1) > 0.0001 || getOverlap(a, c2) > 0.0001){
+				
+				return null;
+			}
+			
+			
+		
+			return a;
+		}
+		
+		function findBspCircles(c, c1, c2, overlapped, binCircles, excludeCircles, bestCircle, candidateCircle){
+			
+			var i;
+			var j;
+			
+			if(binCircles.circles){
+				
+				for(i=0; i<binCircles.circles.length; i++){
+					
+					var f = false;
+					
+					var bc = binCircles.circles[i];
+					
+					if(candidateCircle && bc.id == candidateCircle.id){
+						
+					}
+					
+					
+					for(j=0; j<excludeCircles.length; j++){
+						if(excludeCircles[j].id == bc.id){
+							//f = true;
+						}
+					}
+					if(!f){
+						
+						
+						f = true;
+						
+						if(c.x < bc.x && c.x + c.radius < bc.x - bc.radius){
+							f = false;
+						}
+						else if(c.y < bc.y && c.y + c.radius < bc.y - bc.radius){
+							f = false;
+						}
+						else if(c.x > bc.x && c.x - c.radius > bc.x + bc.radius){
+							f = false;
+						}
+						else if(c.y > bc.y && c.y - c.radius > bc.y + bc.radius){
+							f = false;
+						}
+						
+						if(f){
+							
+							
+							var a = aCircle(c1, c2, bc, c);
+							 
+							if(a && !isNaN(a.x)){
+								
+								
+								if(bestCircle == null || a.radius < bestCircle.radius){
+									bestCircle = a;
+									
+								}
+								overlapped.push(bc);
+							}
+							
+						}
+					}
+					
+				}
+			}
+			
+			
+			if(binCircles.b1){
+				if(rectCircleColliding(c, binCircles.b1.rect) )
+				{
+					bestCircle = findBspCircles(c, c1, c2, overlapped, binCircles.b1, excludeCircles, bestCircle, candidateCircle);
+				}
+			}
+			
+			if(binCircles.b2){
+				if(rectCircleColliding(c, binCircles.b2.rect) )
+				{
+					bestCircle = findBspCircles(c, c1, c2, overlapped, binCircles.b2, excludeCircles, bestCircle, candidateCircle);
+				}
+			}
+			
+			return bestCircle;
+		}
+		
+		
+		function addSingleBspCircle(c){
+			
+			
+			addBspCircle(c, viewRect, 0, bspcircles);
+		}
+		
+		function addBspCircle(c, rect, d, binCircles){
+			
+			if(d == 6 || rectInCircle(c, rect)){
+				
+				return true;
+			}
+			
+			var r1 = {};
+			var r2 = {};
+			
+			var w = rect.r - rect.l;
+			var h = rect.b - rect.t;
+			
+			if(rect.r - rect.l > rect.b - rect.t){
+				r1.l = rect.l;
+				r1.r = rect.l + w/2;
+				r1.t = rect.t;
+				r1.b = rect.b;
+				
+				r2.l = rect.l + w/2;
+				r2.r = rect.r;
+				r2.t = rect.t;
+				r2.b = rect.b;
+			}
+			else{
+				r1.l = rect.l;
+				r1.r = rect.r;
+				r1.t = rect.t;
+				r1.b = rect.t + h/2;
+				
+				r2.l = rect.l;
+				r2.r = rect.r;
+				r2.t = rect.t + h/2;
+				r2.b = rect.b;
+			}
+			
+			var cl1 = rectCircleColliding(c, r1);
+			var cl2 = rectCircleColliding(c, r2);
+			
+				
+			
+			var r = false;
+			if(cl1){
+				if(!binCircles.b1){
+					binCircles.b1 = {circles:[], b1:null, b2:null, rect:r1};
+				}
+				
+				r = r || addBspCircle(c, r1, d+1, binCircles.b1);
+			}
+			
+			if(cl2){
+				
+				if(!binCircles.b2){
+					binCircles.b2 = {circles:[], b1:null, b2:null, rect:r2};
+				}
+				
+				r = r || addBspCircle(c, r2, d+1, binCircles.b2);
+			}
+			
+			if(r){
+				binCircles.circles.push(c);
+			}
+			
+			return false;
+			
+		}
+		
+		function addSingleCircle(newCircle){
+			
+			
+			if(isNaN(newCircle.x)){
+				//console.log(newCircle);
+			}
+			if(boundRect){
+				
+				
+				if(newCircle.x - newCircle.radius < boundRect.l){
+					boundRect.l = newCircle.x - newCircle.radius;
+				}
+				if(newCircle.y - newCircle.radius < boundRect.t){
+					boundRect.t = newCircle.y - newCircle.radius;
+				}
+				if(newCircle.x + newCircle.radius > boundRect.r){
+					boundRect.r = newCircle.x + newCircle.radius;
+				}
+				if(newCircle.y + newCircle.radius > boundRect.b){
+					boundRect.b = newCircle.y + newCircle.radius;
+				}
+			}
+			
+			circles.push(newCircle);
+			addSingleBspCircle(newCircle);
+		}
+		
+		
+		function isCorrectSide(c1, c2, c, d){
+			var g = (c.x-c1.x)*(c2.y-c1.y)-(c.y-c1.y)*(c2.x-c1.x);
+			var f = (d.x-c1.x)*(c2.y-c1.y)-(d.y-c1.y)*(c2.x-c1.x);
+			
+			if(g > 0){
+				return f > 0;
+			}
+			
+			else{
+				return f < 0;
+			}
+		}
+		
+		function getEnclosingCircleRadius(){
+			
+			return Math.min(enclosingFactor*(viewRect.r-viewRect.l), enclosingFactor*(viewRect.b-viewRect.t));
+			
+		}
+		
+		function getAppolonius(c1, c2, c5, newCircle){
+			var a = apolloniusCircle(c1.x, c1.y, -c1.radius, c2.x, c2.y, -c2.radius, c5.x, c5.y, -c5.radius);
+			
+			if(a != null){
+				var co = isCorrectSide(c1, c2, newCircle, a);
+				if(!co){
+					a = apolloniusCircle(c1.x, c1.y, c1.radius, c2.x, c2.y, c2.radius, c5.x, c5.y, c5.radius);
+				}
+			}
+			
+			
+			return a;
+		}
+		
+		function applyBounds(c1, c2, newCircle){
+			if(boundMode == 'circle'){
+				
+				var mn = getEnclosingCircleRadius();
+				
+				var c5 = { 
+						   x:viewRect.l + (viewRect.r-viewRect.l)/2, 
+						   y:viewRect.t + (viewRect.b-viewRect.t)/2, 
+						   radius:mn,
+						   d: 1
+						 };
+				
+		       		var b = apolloniusCircle(c1.x, c1.y, -c1.radius, c2.x, c2.y, -c2.radius, c5.x, c5.y, c5.radius);
+				
+				var co = isCorrectSide(c1, c2, newCircle, b);
+				if(!co){
+					b = apolloniusCircle(c1.x, c1.y, c1.radius, c2.x, c2.y, c2.radius, c5.x, c5.y, -c5.radius);
+				}
+				
+				
+				return b;
+			}
+			else if(boundMode == 'rect'){
+				
+				var smallest = newCircle;
+				var w = 99999;
+				var bn = 200;
+				
+				if(newCircle.y - newCircle.radius - (viewRect.b-viewRect.t)/bn < viewRect.t){
+					
+					
+					var c5 = { 
+							   x:viewRect.l + (viewRect.r-viewRect.l)/2, 
+							   y:viewRect.t - w, 
+							   radius:w+(viewRect.b-viewRect.t)/bn,
+							   d: 1
+							 };
+					
+					var a = getAppolonius(c1, c2, c5, newCircle);
+					
+					if(a && a.radius < smallest.radius){
+						smallest = a;
+					}
+				}
+				
+				if(newCircle.y + newCircle.radius + (viewRect.b-viewRect.t)/bn > viewRect.b){
+					
+					
+					var c5 = { 
+							   x:viewRect.l + (viewRect.r-viewRect.l)/2, 
+							   y:viewRect.b + w, 
+							   radius:w+(viewRect.b-viewRect.t)/bn,
+							   d: 1
+							 };
+					
+					var a = getAppolonius(c1, c2, c5, newCircle);
+					
+					if(a && a.radius < smallest.radius){
+						smallest = a;
+					}
+				}
+				
+				if(newCircle.x - newCircle.radius - (viewRect.r-viewRect.l)/bn < viewRect.l){
+					var c5 = { 
+							   x:viewRect.l - w, 
+							   y:viewRect.t + (viewRect.b-viewRect.t)/2, 
+							   radius:w+(viewRect.r-viewRect.l)/bn,
+							   d: 1
+							 };
+					
+					var a = getAppolonius(c1, c2, c5, newCircle);
+					
+					if(a && smallest && a.radius < smallest.radius){
+						smallest = a;
+					}
+					
+					
+					
+				}
+				
+				if(newCircle.x + newCircle.radius + (viewRect.r-viewRect.l)/bn> viewRect.r){
+					
+					
+					var c5 = { 
+							   x:viewRect.r + w, 
+							   y:viewRect.t + (viewRect.b-viewRect.t)/2, 
+							   radius:w+(viewRect.r-viewRect.l)/bn,
+							   d: 1
+							 };
+					
+					var a = getAppolonius(c1, c2, c5, newCircle);
+					
+					if(a && smallest && a.radius < smallest.radius){
+						smallest = a;
+					}
+					
+				}
+				
+				
+				
+				return smallest;
+				
+				
+				
+			}
+		}
+		
+		function findThirdCircle(c1, c2, newCircle, newRadius, newCircleDirection, candidateCircle){
+			
+			var overlappedCircles = [];
+			var excludeCircles = [c1, c2];
+			var r = newCircle;
+			var smallest = newRadius;
+			
+			
+			
+			var a = null;
+			var fb = false;
+			
+			
+			if(candidateCircle){
+				
+				if(isCorrectSide(c1, c2, candidateCircle, newCircle))
+				{
+					a = aCircle(c1, c2, candidateCircle, newCircle);
+					
+					if(a && !isNaN(a.x) && a.radius < smallest){
+						smallest = a.radius;
+						r = a;
+						fb = true;
+						
+						
+					}
+					else
+					{
+					   a = null;
+					}
+					return null;
+				}
+				
+			}
+			
+			
+			if(!a){
+				a = findOverlappedCircles(newCircle, c1, c2, newCircleDirection, excludeCircles, null);
+				
+				if(a && !isNaN(a.x) && a.radius < smallest){
+					smallest = a.radius;
+					r = a;
+					
+				}
+			}
+			
+			
+			
+			var b = applyBounds(c1, c2, newCircle);
+				
+				
+			if(b.radius < r.radius){
+				
+				r = b;
+				smallest = b.radius;
+				bc = null;
+				
+			}
+			
+			
+			
+			if(isRadiusTooSmall(smallest)){
+				return null;
+			}
+			
+			
+			r.d = newCircle.d;
+			
+			
+		
+		
+			
+			
+			
+			return r;
+			
+			
+		}
+		
+		
+		function isRadiusTooSmall(r){
+			if(r < initialCircleRadius/10){
+				return true;
+			}
+			
+			return false;
+		}
+		
+		function computeNewCircle(circlepair, newRadius, side){
+			
+			if(circlepair.c1.radius + circlepair.c2.radius < getDist(circlepair.c1, circlepair.c2) - 0.01 ){
+				return null;
+			}
+			return computeCircle(circlepair, newRadius, side);
+		
+			
+		}
+		
+		function computeCircle(circlepair, newRadius, side){
+			
+			
+			var c1 = circlepair.c1;
+			var c2 = circlepair.c2;
+	
+			
+		
+			var intersections = intersection(c1.x, c1.y, c1.radius + newRadius, c2.x, c2.y, c2.radius + newRadius);
+			if(intersections < 0){
+				return null;
+			}
+			
+			
+			var oldx = null;
+			
+		
+			var d = Math.max(circlepair.c1.d, circlepair.c2.d)+1;
+			 
+			var nc1 =  {x:intersections[0], y:intersections[2], radius:newRadius, d:d};
+			var nc2 =  {x:intersections[1], y:intersections[3], radius:newRadius, d:d};
+			var ret = null;
+			
+			
+			if(side == 0){
+				
+				var dir = { dx : nc1.x - nc2.x,  dy : nc1.y - nc2.y};
+				
+				
+				
+				var t1 = findThirdCircle(c1, c2, nc1, newRadius, dir, circlepair.exclude);
+				
+				
+				
+				
+				if(t1 != null){
+					t1.d = Math.max(c1.d, c2.d)+1;
+					ret = t1;
+					
+				}
+				
+			}
+			else{
+				var dir = { dx : nc2.x - nc1.x,  dy : nc2.y - nc1.y};
+				var t2 = findThirdCircle(c1, c2, nc2, newRadius, dir, circlepair.exclude);
+				
+				if(t2 != null){
+					t2.d = Math.max(c1.d, c2.d)+1;
+					ret = t2;
+				}
+			}
+		
+		
+			
+			
+			return ret;
+			
+			
+		}
+		
+		
+		function getDist(c1, c2){
+			var dx = c2.x-c1.x;
+			var dy = c2.y-c1.y;
+			
+			var t = dx*dx + dy*dy - (c1.radius + c2.radius) * (c1.radius + c2.radius);
+			
+			return t;
+		}
+	
+		
+		function addCirclePair(c1, c2, exclude){
+			
+			
+			
+			
+			
+			
+			var np1 = {c1, c2, exclude};
+			circlepairs.push(np1);
+			
+			
+		}
+		
+		
+		function addCircleAndPair(newCircle){
+			
+			
+		
+			
+			newCircle.id = id++;
+			
+			
+			
+			addCirclePair(circlepairs[circlepairsoffset].c1, newCircle, circlepairs[circlepairsoffset].c2);
+			addCirclePair(circlepairs[circlepairsoffset].c2, newCircle, circlepairs[circlepairsoffset].c1);
+			
+			
+			addSingleCircle(newCircle);
+			
+			
+			
+			
+			return true;
+		}
+		
+		function addCircle(md){
+			
+			
+			while(circlepairs.length > 0){
+				var newCircle = null;
+				var newCircle1 = null;
+				
+				var i = circleRadius;
+				
+				
+				if(!circlepairs[circlepairsoffset]){
+					return false;
+				}
+				
+				if(circlepairs[circlepairsoffset].c1.d >= md || circlepairs[circlepairsoffset].c2.d >= md){
+					return false;
+				}
+				
+				i = getNewRadius(circlepairs[circlepairsoffset].c1, circlepairs[circlepairsoffset].c2);
+				
+				
+				newCircle = computeNewCircle(circlepairs[circlepairsoffset], i, 0);
+				
+				
+				if(newCircle){
+					
+					addCircleAndPair(newCircle, 0);
+				}
+				
+				newCircle1 = computeNewCircle(circlepairs[circlepairsoffset], i, 1);
+				
+				
+				if(newCircle1){
+					
+					addCircleAndPair(newCircle1, 1);
+					
+				}
+					
+				
+				circlepairsoffset++;
+				return true;
+				
+			}
+			
+			
+			
+		}
+		
+		function addCircles(){
+			
+			
+			for(k=0;k<500; k++){
+					var v = addCircle(getSettings().maxDepth);
+					if(!v)break;
+				}
+			
+		}
+		
+		
+		
+		if (canvas.getContext) {
+			
+			function resize(){
+				if(canvas.width != document.body.clientWidth || canvas.height != document.body.clientHeight){
+					canvas.width = document.body.clientWidth ;
+					canvas.height = document.body.clientHeight ;
+					
+					
+					m_canvas = document.createElement('canvas');
+					m_canvas.width = document.body.clientWidth;
+					m_canvas.height = document.body.clientHeight;
+					
+					initViewRect();
+					
+					ctx = m_canvas.getContext("2d");
+					
+					//ctx.globalCompositeOperation = 'xor';
+				}
+			}
+			
+			
+			
+			
+			function arc(x, y, r){
+				
+				if(r < 0){
+					return;
+				}
+				x = canvas.width * (x - viewRect.l)/(viewRect.r-viewRect.l);
+				y = canvas.height * (y - viewRect.t)/(viewRect.b-viewRect.t);
+				r = r * canvas.width / (viewRect.r - viewRect.l)
+				
+				
+				//ctx.rect(x-r/2, y-r/2, r, r);
+				
+				ctx.arc(x,y,r,0,2*Math.PI);
+			}
+			
+			
+			
+			
+			
+			
+			function getFactor(c){
+				
+				
+				
+				var g = 1;
+				
+				if(c.d - getSettings().maxDepth > 0){
+					g = 1 - c.d + getSettings().maxDepth;
+					
+				}
+				
+					
+				
+				if(getSettings().numRememberCircles - irememberCircle < 1 && getSettings().numRememberCircles - irememberCircle > 0){
+					g = g * (getSettings().numRememberCircles - irememberCircle);
+					return g;
+				} 
+				return 1;
+			}
+			
+			
+			
+			function drawCircleBorder(x, y, r, color, bordercolor){
+				
+				
+			    
+			    ctx.beginPath();
+				arc(x, y, r);
+				//rect(x-r/2, y-r/2, x+r/2, );
+				//ctx.lineWidth=r/50;
+				ctx.lineWidth=1;
+				ctx.strokeStyle = bordercolor;
+				ctx.stroke();
+			}
+			
+			function drawCircleWithBorder(x, y, r, color, bordercolor, useshade){
+				
+				var cc =  {x:x, y:y, radius:r};
+				if(!isCircleVisible(cc)){
+					return false;
+					
+				}
+				
+				if(useshade){
+					
+					
+					var grd = ctx.createRadialGradient(x-r/2, y-r/3, 0, x-r/2, y-r/3, r/2);
+					grd.addColorStop(0, "rgba(255,255,255," + 1 + ")");
+					grd.addColorStop(1, color);
+					ctx.fillStyle = grd;
+				}
+				else{
+					ctx.fillStyle =  color;
+				}
+				
+			
+				
+				
+			    ctx.beginPath();
+			    arc(x, y, r);
+			    ctx.fill();
+			    
+			    
+			    
+			    
+			    drawCircleBorder(x, y, r, color, bordercolor);
+			    
+			   
+			}
+			
+			
+			function drawCircle(c, color,i){
+				
+				
+			
+				/*ctx.moveTo(0, 0);
+			
+				ctx.lineTo(c.x, c.y);
+				ctx.lineWidth=1;
+				ctx.strokeStyle = 'white';
+				ctx.stroke();
+				return;
+				*/
+				
+				var x = c.x;
+				var y = c.y;
+				
+				var u =(1.5 + 0.5 * Math.sin(r[0]/6.2344)  );
+				
+				var p = getFactor(c);
+				u=getSettings().externalRadius/**getFactor(c)*/;
+				
+				
+		
+				var fc = 1 + 0.4 * Math.sin((r[1]+1)*1.231 ) ; 
+				
+				
+				fc = 1;
+				fc = fc * getSettings().internalRadius;
+				
+				
+				
+				
+				var w_color = "rgba(255,255,255," + getSettings().transparency * p + ")";
+				var w_b_color = "rgba(" +  getSettings().externalBorderColor.r + "," +  getSettings().externalBorderColor.g + "," +  getSettings().externalBorderColor.b + "," + getSettings().externalBorderColor.t * p + ")";
+				
+				var tr;
+				
+				if(artMode == 'paint'){
+					tr = .05;
+				}
+				else{
+					tr = .4;
+				}
+				
+				tr = .5;
+				var cr = getSettings().circleColor;
+				
+				if(i == 1){
+					cr = getSettings().circleColor2;
+				}
+				
+				var s_color = "rgba(" +  cr.r + "," +  cr.g + "," +  cr.b + "," + tr + ")";
+				var s_b_color = "rgba(0,0,0," + p + ")";;
+			
+				
+				if(artMode != 'paint'){
+					//drawCircleWithBorder(c.x, c.y, c.radius*u, w_color, w_b_color, false);
+				}
+				
+				
+				drawCircleWithBorder(c.x, c.y, c.radius*fc, s_color, s_b_color, true);
+				
+			
+				
+				//drawCircleWithBorder(c.x, c.y, c.radius*fc*u*3/10, "rgba(255,255,255," + .1 + ")", s_b_color);
+				
+				
+				
+				
+				
+				
+			}
+			
+			bgcolor = '#000000';
+			
+			
+			function drawlines(rot, sctx) {
+				
+				var nx = 40;
+				var ny = 40;
+				var width = canvas.width/20;
+				
+				resize();
+				
+				sctx.translate(canvas.width/2, canvas.height/2);
+	
+				sctx.rotate(rot);
+				for (i = 0; i < nx; i++) {
+					
+						tx = (i - nx / 2) * width;
+						ty = (-ny / 2) * width;
+						sctx.beginPath();
+						sctx.translate(tx, ty);
+						
+						
+						sctx.rect(0, 0, width/10, width*ny);
+						if (i%2 == 0) {
+							sctx.fillStyle = 'black';
+							sctx.fill();
+						}
+						sctx.translate(-tx, -ty);
+				}
+				sctx.rotate(-rot);
+	
+				sctx.translate(-canvas.width/2, -canvas.height/2);
+	
+			}
+			
+			function initcanvas(){
+				
+				//ctx.clearRect(0, 0, 2000, 2000);
+				resize();
+				
+				color = 'green';
+				
+				
+				if(boundMode == 'circle'){
+					var mn = getEnclosingCircleRadius();
+					var c5 = { 
+							   x:viewRect.l + (viewRect.r-viewRect.l)/2, 
+							   y:viewRect.t + (viewRect.b-viewRect.t)/2, 
+							   radius:mn,
+							   d: 1
+							 };
+					
+					
+					ctx.strokeStyle=bgcolor;
+					ctx.lineWidth=1;
+					ctx.beginPath();
+					ctx.fillStyle = bgcolor;
+					
+					
+					arc(c5.x,c5.y,c5.radius);
+					ctx.fill();
+					ctx.stroke();
+				}
+				else if(boundMode == 'rect'){
+					ctx.fillStyle = bgcolor;
+					
+					if(artMode != 'paint'){
+						ctx.fillRect(0, 0, canvas.width, canvas.height);
+						
+						
+						/*
+						screenCtx = canvas.getContext("2d");
+						screenCtx.clearRect(0, 0, 2000, 2000);
+						ctx.clearRect(0, 0, 2000, 2000);
+						
+						var t = ctx.globalCompositeOperation;
+						ctx.globalCompositeOperation = 'xor';
+						drawlines(r[0], ctx);
+						drawlines(r[1], ctx);
+						drawlines(r[2], ctx);
+						drawlines(r[3], ctx);
+						
+						ctx.globalCompositeOperation = t;
+						
+						ctx.fillStyle = "rgba(0, 0, 0 , 0)"
+							ctx.fillRect(0, 0, canvas.width, canvas.height);
+						canvas.getContext("2d").drawImage(m_canvas, 0, 0);
+					*/	
+					}
+					
+				}
+			}
+			
+			
+			
+			function cloneCircle(c){
+				var c1 = { 
+						   x:c.x, 
+						   y:c.y, 
+						   radius:c.radius,
+						   d: c.d,
+						   id: c.id
+						 };
+				
+				return c1;
+			}
+			
+			var reflect = function(c, x0, y0, x1, y1) {
+				
+				var cn = cloneCircle(c);
+				
+		        var dx, dy, a, b, x, y;
+	
+		        dx = x1 - x0;
+		        dy = y1 - y0;
+		        a = (dx * dx - dy * dy) / (dx * dx + dy * dy);
+		        b = 2 * dx * dy / (dx * dx + dy * dy);
+		        x = Math.round(a * (c.x - x0) + b * (c.y - y0) + x0); 
+		        y = Math.round(b * (c.x - x0) - a * (c.y - y0) + y0);
+	
+		        cn.x = x;
+		        cn.y = y;
+		        
+		        return cn;
+		    }
+			
+				
+			function drawcircles(prevCircles) {
+	
+				color = 'green';
+				
+				
+				
+				
+				for (var i = 0; i < circles.length; i++) {
+					/*
+					if(i == 0){
+						ctx.moveTo(circles[i].x, circles[i].y);
+					}
+					else{
+						ctx.lineTo(circles[i].x, circles[i].y);
+						ctx.lineWidth=1;
+						ctx.strokeStyle = "rgba(255,255,255," + 1 + ")";
+						ctx.stroke();
+						
+					}
+						*/
+					
+					
+					
+					
+					
+					ctx.strokeStyle=bgcolor;
+					ctx.lineWidth=1;
+					
+					
+					drawCircle(circles[i], color, i);
+					
+					/*
+					if(prevCircles && prevCircles[i]){
+						
+						
+						var dx = circles[i].x - prevCircles[i].x;
+						var dy = circles[i].y - prevCircles[i].y;
+						
+						
+						
+						var c = {};
+						c.radius = Math.sqrt(dx*dx + dy*dy)*2;
+						c.x = (circles[i].x + prevCircles[i].x)/2;
+						c.y = (circles[i].y + prevCircles[i].y)/2;
+						
+						drawCircle(c, color);
+						
+					}*/
+					
+				}
+				
+			
+				
+				
+				
+						
+			}
+			
+			
+			function updateSettings(s1, s2, p){
+				
+				
+				
+			}
+			
+			function isAnimationActive(i){
+				return ifade[i] != -nfade;
+			}
+			
+			function getRandomSetting(){
+				return Math.floor(getRnd() * (allsettings.length));
+			}
+			
+			function updateMixingState(){
+				
+				
+				for(var p=0; p<nAnimations; p++){
+				
+				
+					if(allsettings[setting1[p]].circleColor.length == 0){
+						allsettings[setting1[p]].circleColor = circleColors; 
+						shuffle(allsettings[setting1[p]].circleColor);
+					}
+				}
+				
+				for(var p=0; p<nAnimations; p++){
+					
+					
+					if(ifade[p] != 0 && ifade[p] != -nfade){
+						ifade[p]+=fadestep[p];
+						
+						
+						
+					}
+					
+					
+					
+					if(idouble[p] == 0){
+						isingle[p]++;
+						
+						
+						if(isingle[p]  > nsingle[p] && isAnimationActive(p)){
+							isingle[p]  = 0;
+							idouble[p]  = 1;
+							
+						}
+						
+					}
+					else{
+						
+						isAnimationActive(p)
+					
+						idouble[p] ++;
+						
+						
+						if(idouble[p]  > ndouble[p]  && isAnimationActive(p)){
+							
+							isingle[p]  = 1;
+							idouble[p]  = 0;
+						
+							var j = setting2[p];
+							var k = j;
+							
+							while(k == j){
+								k = getRandomSetting();
+							}
+							
+							setting1[p] = j;
+							setting2[p] = k;
+							
+							updateSettings(allsettings[setting1[p]], allsettings[setting2[p]], p);
+							
+							
+							allsettings[setting2[p]].circleColor = circleColors.slice();
+							shuffle(allsettings[setting2[p]].circleColor);
+						}
+					}
+				}
+			}
+			
+			function doAnimate(){
+				
+				for(i=0;i<6;i++){
+					
+					for(j=0;j<6;j++){
+					  
+						//primes[i][j]+=.000001;
+					}
+					
+				}
+				updateMixingState();
+				initcanvas();
+				iteration++;
+				
+				boundRect = {l:10000, t:10000, r:-10000, b:-100000};
+				
+				var nDivs = 1;
+				
+				
+				
+				for(var u=0; u<nDivs; u++){
+					for(var i=0; i<nAnimations; i++){
+						
+						
+						if(isAnimationActive(i)){
+							iAnimation = i;
+							var prevCircles = null;
+							
+							for(f=u*getSettings().numRememberCircles/nDivs; f<(u+1)*getSettings().numRememberCircles/nDivs; f++){
+								
+								
+								
+								
+								irememberCircle = f;
+								
+								var pc = init(irememberCircle, (f + iteration*2) % getSettings().numRememberCircles);
+								
+								addCircles();
+								drawcircles(prevCircles);
+								
+								prevCircles = circles.slice();
+							}
+						}
+						
+						
+					}
+				}
+				
+				
+				canvas.getContext("2d").drawImage(m_canvas, 0, 0);
+				
+				init(-1, 0);
+				
+				
+				
+				requestAnimationFrame(doAnimate);
+			}
+			
+			
+	
+		
+			function getNewRadius(c1, c2){
+				
+				 
+				return circleRadius;
+				
+			}
+			
+			
+			function getDistanceFromCenter(c){
+				
+				
+				var dx = c.x - (viewRect.l + (viewRect.r-viewRect.l)/2);
+				var dy = c.y - (viewRect.t + (viewRect.b-viewRect.t)/2);
+				
+				var dr = Math.sqrt(dx*dx + dy*dy);
+				
+				return dr;
+			}
+			
+			function isCircleInRadius(c, radius){
+				
+				
+				var dr = getDistanceFromCenter(c);
+				
+				if(dr > radius){
+					return false;
+				}
+				
+				return true;
+			}
+			
+			function getInitial(x1, y1, r1, x2, y2, r2){
+				var c1 = { 
+						   x:x1, 
+						   y:y1, 
+						   radius:r1,
+						   d: 1,
+						   id: id++
+						 };
+				
+				var c2 = { 
+						   x:x2, 
+						   y:y2, 
+						   radius:r2,
+						   d: 1,
+						   id: id++
+						 };
+			
+				
+				return {c1:c1, c2:c2};
+				
+			}
+			
+			function addInitial(x1, y1, r1, x2, y2, r2){
+				
+				
+				
+				
+				if(isRadiusTooSmall(r1) || isRadiusTooSmall(r2)){
+					return null;
+				}
+				
+							
+				var p1 = getInitial(x1, y1, r1, x2, y2, r2);
+				
+				
+				circlepairs[circlepairs.length] = p1;
+				
+				addSingleCircle(p1.c1);
+				addSingleCircle(p1.c2); 
+				
+				return p1;
+				
+			}
+			
+			function isCircleVisible(c){
+				
+				var mn = getEnclosingCircleRadius();
+				
+				var dx = c.x - (viewRect.l + (viewRect.r-viewRect.l)/2);
+				var dy = c.y - (viewRect.t + (viewRect.b-viewRect.t)/2);
+				
+				var dr = Math.sqrt(dx*dx + dy*dy);
+				
+				if(dr/2 > mn){
+					return false;
+				}
+				/*
+				if(c.radius > mn/100){
+					return false;
+				}*/
+	
+				
+				
+				return true;
+			}
+			
+			
+			
+			
+			function add2(x, y, cr, offset, speed, iter){
+				
+				
+				var u =  0.5+ 0.45*pfnr(0,offset);
+				
+				id = 0;
+				
+				var x1 = 0;
+				
+				
+				
+				var y1 = -cr*u;
+				
+				var x2 = 0;
+				var y2 = cr*(1-u);
+				
+				
+				
+				var cs1 = Math.cos( ((r[3]+offset+iter/200)*speed  )  );
+				var s1 = Math.sin( ((r[3]+offset+iter/200)*speed )  );
+				
+				
+				
+				
+				var nx1 = cs1 * x1 - s1 * y1;
+				var ny1 = s1 * x1 + cs1 * y1;
+				
+				var nx2 = cs1 * x2 - s1 * y2;
+				var ny2 = s1 * x2 + cs1 * y2;
+				
+				
+				nx1 = nx1 + x;
+				ny1 = ny1 + y;
+				
+				nx2 = nx2 + x;
+				ny2 = ny2 + y;
+				u=0.5;
+				
+				
+				//cr-=  iter ;
+				
+				
+				var c1 =  {x:nx1, y:ny1, radius:cr*u};
+				var c2 =  {x:nx2, y:ny2, radius:cr*(1-u)};
+				
+				/*
+				c1 = zoomCircle(0.5, 0.5, c1, 6 * (iter) / getSettings().numRememberCircles);
+				c2 = zoomCircle(0.5, 0.5, c2, 6 * (iter) / getSettings().numRememberCircles);*/
+				addInitial(c1.x , c1.y ,c1.radius, 
+						c2.x , c2.y ,c2.radius);
+				
+				
+				
+			}
+			
+			
+		
+			
+			function initialize2(iter){
+				
+				 //console.log(iter);
+				var t = pfnr(1, 1000)  ;
+				var s = pfnr(1, 100000)  ;
+				
+				
+				var nx1 = t*canvas.width/2;
+				var ny1 = s*canvas.height/2;
+				
+				
+				var cr = circleRadius;
+				
+				
+				var sf = getSettings().scaleFactor;
+				
+				
+				cr = cr * (1 + (pfnr(2, 100)) * sf);
+				
+				
+				
+				add2(canvas.width/2 + nx1/2, canvas.height/2 + ny1/2, cr*2, 0, .3, iter);
+				var ocr = circleRadius;
+				//circleRadius = cr;
+				
+				var ci = getSettings().cinit;
+				
+				
+				
+				if(getSettings().cinit > 0.01)
+				{
+					
+					circlepairsoffset = 0;
+					for(var i=0; i<3; i++){
+						addCircle(99999);
+					}
+					
+					var cb = circles.slice();
+					
+					cleanCircles();
+					circlepairsoffset = 0;
+					
+					var l = cb.length;
+					for(var i=0; i<cb.length; i++){
+					//for(var i=0; i<1; i++){
+						
+						
+						var f = getFc(ci, i, false, l);
+						
+						if(i == 0){
+							
+							var nx = cb[i].x * (1-f) + (canvas.width/2 + nx1/2) * (f);
+							var ny = cb[i].y * (1-f) + (canvas.height/2 + ny1/2) * (f);
+							var nr = cb[i].radius*.5*(1-f) + cr*2 * (f);
+							
+							add2(nx, ny, nr,  i*100*ci ,  1 + ci*pfn(5, r[6]/50+i*110)/10, null, iter);
+						}
+						else{
+							
+							
+							
+							
+							if(f < .99){
+								var x = cb[i].x - canvas.width/2;
+								var y = cb[i].y - canvas.height/2;
+								
+								var d = Math.sqrt(x*x+y*y);
+								
+								var tx = canvas.width*1.5*x/d;
+								var ty = canvas.height*1.5*y/d;
+								
+								x = cb[i].x + (tx-x)*f;
+								y = cb[i].y + (ty-y)*f;
+								
+								add2(x, y, cb[i].radius*.5, i*100, pfn(r[6]/50+i*110)/10, null, iter);
+								
+								
+							}
+							
+							
+							
+						}
+						
+					
+						
+					}
+					
+					
+				}
+				
+				
+				circlepairsoffset = 0;
+				
+				
+			}
+			
+			
+			function rotate(c){
+				var x1 = c.x - canvas.width/2;
+				var y1 = c.y - canvas.height/2;
+				
+				
+				var nx1 = Math.cos(r[7]) * x1 - Math.sin(r[7]) * y1;
+				var ny1 = Math.sin(r[7]) * x1 + Math.cos(r[7]) * y1;
+			
+				c.x = nx1 + canvas.width/2;
+				c.y = ny1 + canvas.height/2;
+				
+				return c;
+			}
+			
+			function addGridCircles(cp, d, rd){
+				
+				if(hasOverlap(cp.c1) && hasOverlap(cp.c2)){
+					return;
+				}
+				if(d >= 2){
+					return;
+				}
+				
+				if(d != 0){
+					
+					
+					
+					addInitial(cp.c1.x, cp.c1.y, cp.c1.radius, cp.c2.x, cp.c2.y, cp.c2.radius);
+				}
+				
+				
+				
+				
+				
+				
+				var cpn;
+				
+				cpn= getInitial(cp.c1.x + circleRadius*2 , cp.c1.y ,rd, 
+						   cp.c1.x , cp.c1.y, rd);
+				
+				cpn.c2 = cp.c1;
+				
+				addGridCircles(cpn, d+1, rd);
+				
+				cpn = getInitial(cp.c1.x- circleRadius*2 , cp.c1.y ,rd, 
+						   cp.c1.x  , cp.c1.y, rd);
+				cpn.c2 = cp.c1;
+				
+				addGridCircles(cpn, d+1, rd);
+				
+				
+				
+				
+				cpn = getInitial(cp.c1.x , cp.c1.y+ circleRadius*2 ,rd, 
+						   cp.c1.x  , cp.c1.y, rd);
+				
+				cpn.c2 = cp.c1;
+				
+				addGridCircles(cpn, d+1, rd);
+				
+				cpn = getInitial(cp.c1.x , cp.c1.y- circleRadius*2 ,rd, 
+						   cp.c1.x , cp.c1.y , rd);
+				
+				cpn.c2 = cp.c1;
+				
+				addGridCircles(cpn, d+1, rd);
+				
+				
+				
+				
+				
+				
+			}
+			
+			function initializeGrid(){
+				
+				var x = canvas.width/2;
+				var y = canvas.height/2;
+				
+				
+				var u =  1;
+				
+				var cp = getInitial(x , y ,circleRadius*u, 
+								   x + circleRadius*2 , y, circleRadius*u);
+				
+				
+				addGridCircles(cp, 0, circleRadius*u);
+				
+				
+				for (var i = 0; i < circlepairs.length; i++) {
+					
+					circlepairs[i].c1 = rotate(circlepairs[i].c1);
+					circlepairs[i].c2 = rotate(circlepairs[i].c2);
+					
+				}
+				
+				reInitializeBspCircles();
+				circlepairsoffset = 0;
+		
+			}
+			
+			function reInitializeBspCircles(){
+				
+				bspcircles = {circles:[], b1:null, b2:null, rect:viewRect};
+				
+				for (var i = 0; i < circles.length; i++) {
+					
+					addSingleBspCircle(circles[i]);
+				}
+				
+				
+			}
+			
+			
+			
+			function pfnr(i, s){
+				
+				return pfn(i, r[i] + s);
+			}
+			
+			function pfn(ip, s){
+				
+				
+				s = s + iAnimation * 300000;
+				
+				
+				var ret = 0;
+				var np = 1;
+				for(j=0; j<np; j++){
+					
+					var rslt = 1;
+					for(i=0;i<nSines; i++){
+	
+						rslt = rslt * Math.sin( (s+j*.1) /primes[ip][i]  );
+						
+					}
+					
+					ret = ret + rslt/np;
+				}
+				
+				
+				//console.log(rslt);
+				return rslt;
+			}
+			
+			
+			
+			
+	
+			function cleanCircles(){
+				circlepairs = [];
+				circles = [];
+				bspcircles = {circles:[], b1:null, b2:null, rect:viewRect};
+				
+					
+				
+				
+			}
+			
+			
+			function initializeCircles(iter){
+				
+				cleanCircles();
+				initialize2(iter);
+					
+				
+				
+			}
+			
+			
+			
+			var ctx = canvas.getContext("2d");
+			//ctx.globalCompositeOperation = 'xor';
+			
+			var circleRadius;
+			
+			
+			var rr = 1111111;
+			
+			
+			var r = [0, 0, 0, 0, 0, 0, 0, 0];
+			var s = [0, 0, 0, 0, 0, 0, 0, 0];
+			
+			
+			var g = 420;
+			var rb;
+			var sb;
+			
+			rb = [Math.PI*g, Math.PI*g, Math.PI*g, Math.PI*g, Math.PI*g, Math.PI*g, Math.PI*g, Math.PI*g];
+			sb = [Math.PI*g, Math.PI*g, Math.PI*g, Math.PI*g, Math.PI*g, Math.PI*g, Math.PI*g, Math.PI*g];
+			
+			
+			
+			rb = [getRnd()*rr, getRnd()*rr, getRnd()*rr, getRnd()*rr, getRnd()*rr, getRnd()*rr, getRnd()*rr, getRnd()*rr];
+			sb = [getRnd()*rr, getRnd()*rr, getRnd()*rr, getRnd()*rr, getRnd()*rr, getRnd()*rr, getRnd()*rr, getRnd()*rr];
+			
+			
+			
+			
+			var circles = [];
+			var bspcircles = {circles:[], b1:null, b2:null};
+			var viewRect = null;
+			var boundRect = null;
+			var circlepairsoffset = 0;
+			var id = 0;
+			var iteration = 0;
+			var enclosingFactor;
+			var boundMode = 'rect';
+			var artMode = 'paint';
+			var m_canvas;
+			var irememberCircle = 0;
+			
+			
+			
+			var settingscachekey = [{},{}];
+			var settingscache = [{},{}];
+			
+			var ndouble = [];
+			var nsingle = [];
+			var idouble = [];
+			var isingle = [];
+			var setting1 = [0,0,0,0,0];
+			var setting2 = [0,0,0,0,0];
+			
+			var nfade = 100;
+			var ifade = [0, -nfade, -nfade, -nfade, -nfade];
+			var fadestep = [0, 0, 0, 0, 0];
+			
+			
+			
+			var rsettings = [{},{}];
+			
+			startAnimation(null);
+			
+			var iAnimation = 0;
+			
+			updateMixingState();
+			
+			
+			
+			function initViewRect(){
+				
+				viewRect = {l:0, t:0, r:canvas.width, b:canvas.height};
+				
+			}
+			
+			
+			var alpha = 0;
+			var beta = 0;
+			var gamma = 0;
+				
+			
+			
+			window.addEventListener("deviceorientation", handleOrientation, true);
+			
+			function handleOrientation(event) {
+				  alpha    = event.alpha;
+				  beta     = event.beta;
+				  gamma    = event.gamma;
+	
+				  console.log('alpha = ' + alpha);
+				  console.log('beta = ' + beta);
+				  console.log('gamma = ' + gamma);
+				}
+			
+			
+			function init(ir, iter) {
+				
+				var factor = getSettings().rememberCircleDist * ir;
+				
+				
+				if(viewRect == null){
+					initViewRect();
+				}
+				
+				
+				var f = getSettings().circleFactor;
+				
+				f = 1 * f * (getSettings().numRememberCircles - (iter ) % getSettings().numRememberCircles) / getSettings().numRememberCircles;
+				
+				initialCircleRadius =  Math.min( (viewRect.r - viewRect.l)/f, (viewRect.b - viewRect.t)/f)  ;
+				
+				
+				circleRadius = initialCircleRadius;
+				
+				
+				
+				enclosingFactor = 5.3/11;
+				
+				if(ir == -1){
+					for(i=0;i<8; i++){
+						r[i] = rb[i];
+						s[i] = sb[i]; 
+					}
+				}
+				
+				
+				
+				
+				var tf = factor;
+				
+				if(ir == -1){
+					tf = 1;
+					//tf = 0;
+				}
+				
+	
+				
+				
+				for(var i=0; i<8; i++){
+					
+					s[i] = sb[i] + Math.PI/400;
+					r[i] = rb[i] + globalSpeedFactor * pfn(5, s[i]) * tf  ;
+					
+					
+				}
+				
+				
+				if(ir == -1){
+					for(i=0;i<8; i++){
+						rb[i] = r[i];
+						sb[i] = s[i];
+					}
+				}
+				
+				initializeCircles(iter);
+				
+				
+				
+	
+			}
+			resize();
+			//init();
+			//addCircles();
+			//drawcircles();
+			doAnimate();
+			
+			
+			
+			
+	
+	
+		}
+		</script>
+		
+		
+		
+	</html>
+	
