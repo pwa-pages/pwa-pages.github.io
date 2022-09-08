@@ -451,8 +451,8 @@
 				numRememberCircles : 1,
 				rememberCircleDist : -Math.PI*.2,
 				circleFactor : 31,
-				internalRadius : 1,
-				externalRadius : 1,
+				internalRadius : .90,
+				externalRadius : .90,
 				externalBorderColor : { r : 255, g : 255, b : 255, t : 1},
 				circleColor : [],
 				circleColor2 : [],
@@ -466,8 +466,8 @@
 			numRememberCircles : 1,
 			rememberCircleDist : -Math.PI*.2,
 			circleFactor : 31,
-			internalRadius : 1,
-			externalRadius : 1,
+			internalRadius : .90,
+			externalRadius : .90,
 			externalBorderColor : { r : 255, g : 255, b : 255, t : 1},
 			circleColor : [],
 			circleColor2 : [],
@@ -907,7 +907,7 @@
 		
 		function addBspCircle(c, rect, d, binCircles){
 			
-			if(d == 6 || rectInCircle(c, rect)){
+			if(d == 8 || rectInCircle(c, rect)){
 				
 				return true;
 			}
@@ -1221,7 +1221,7 @@
 		
 		
 		function isRadiusTooSmall(r){
-			if(r < initialCircleRadius/10){
+			if(r < initialCircleRadius/7){
 				return true;
 			}
 			
@@ -1395,7 +1395,7 @@
 		function addCircles(){
 			
 			
-			for(k=0;k<11111; k++){
+			for(k=0;k<111111; k++){
 					var v = addCircle(getSettings().maxDepth);
 					if(!v)break;
 				}
@@ -1562,12 +1562,10 @@
 					tr = .4;
 				}
 				
-				tr = .5;
+				tr = 1;
 				var cr = getSettings().circleColor;
 				
-				if(i == 1){
-					cr = getSettings().circleColor2;
-				}
+				
 				
 				var s_color = "rgba(" +  cr.r + "," +  cr.g + "," +  cr.b + "," + tr + ")";
 				var s_b_color = "rgba(0,0,0," + p + ")";;
@@ -1578,7 +1576,7 @@
 				}
 				
 				
-				drawCircleWithBorder(c.x, c.y, c.radius*fc, s_color, s_b_color, true);
+				drawCircleWithBorder(c.x, c.y, c.radius*fc, s_color, s_b_color, f);
 				
 			
 				
