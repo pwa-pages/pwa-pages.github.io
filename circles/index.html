@@ -446,11 +446,11 @@
 		
 		allsettings.push( {
 				transparency : 0,
-				maxDepth : 10,
+				maxDepth : 17,
 				scaleFactor : 1,
 				numRememberCircles : 1,
 				rememberCircleDist : -Math.PI*.2,
-				circleFactor : 31,
+				circleFactor : 30,
 				internalRadius : .90,
 				externalRadius : .90,
 				externalBorderColor : { r : 255, g : 255, b : 255, t : 1},
@@ -461,11 +461,11 @@
 		
 		allsettings.push( {
 			transparency : 0,
-			maxDepth : 10,
+			maxDepth : 17,
 			scaleFactor : 1,
 			numRememberCircles : 1,
 			rememberCircleDist : -Math.PI*.2,
-			circleFactor : 31,
+			circleFactor : 30,
 			internalRadius : .90,
 			externalRadius : .90,
 			externalBorderColor : { r : 255, g : 255, b : 255, t : 1},
@@ -771,7 +771,7 @@
 			
 			for (var i = 0; i < circles.length; i++) {
 				
-				if(getOverlap(circles[i], c) > 0.001){
+				if(getOverlap(circles[i], c) > 0.0001){
 					return true;
 				}
 				
@@ -808,7 +808,7 @@
 			}
 			
 			
-			if(getOverlap(a, c1) > 0.0001 || getOverlap(a, c2) > 0.0001){
+			if(getOverlap(a, c1) > 0.01 || getOverlap(a, c2) > 0.01){
 				
 				return null;
 			}
@@ -2379,7 +2379,7 @@
 			var id = 0;
 			var iteration = 0;
 			var enclosingFactor;
-			var boundMode = 'rect';
+			var boundMode = 'circle';
 			var artMode = 'paint';
 			var m_canvas;
 			var irememberCircle = 0;
