@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule, // Add HttpClientModule to imports
+    HttpClientModule, 
     CommonModule
   ],
   providers: [],
