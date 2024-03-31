@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    padding: 0;
+    margin: 0px !important;
+
+    background-color: #f7f7f7; /* Background color for the lines */
+    background: linear-gradient(135deg, #f7f7f7 25%, #fff 25%, #fff 50%, #f7f7f7 50%, #f7f7f7 75%, #fff 75%, #fff 100%);
+    background-size: 1vw 1vw; 
+}
