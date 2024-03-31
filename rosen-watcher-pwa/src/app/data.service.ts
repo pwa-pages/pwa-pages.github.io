@@ -14,9 +14,15 @@ export class DataService {
     return 'Hello from DataService';
   }
 
-  downloadTransactions(address: string, offset: number = 0, limit: number = 500): Observable<any> {
+  downloadTransactionsTestText(address: string, offset: number = 0, limit: number = 500): Observable<any> {
     const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
     return this.http.get(url,  { responseType: 'text' });
   }
+
+  downloadTransactions(address: string, offset: number = 0, limit: number = 500): Observable<any> {
+    const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
+    return this.http.get(url);
+  }
+
 }
 
