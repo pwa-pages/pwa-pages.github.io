@@ -4,34 +4,43 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class StorageService {
-  dbName = 'ergoDatabase12';
+  dbName = 'ergoDatabase14';
   storeName = 'inputBoxes';
-  db!: IDBDatabase;
+  dbPromise: Promise<IDBDatabase>;
 
   constructor() {
-    this.initIndexedDB();
+    this.dbPromise = this.initIndexedDB();
   }
 
-  initIndexedDB() {
-    const request = window.indexedDB.open(this.dbName, 1);
-
-    request.onupgradeneeded = (event: any) => {
-      this.db = event.target.result;
-      this.db.createObjectStore(this.storeName, { keyPath: 'boxId' });
-    };
-
-    request.onsuccess = (event: any) => {
-      this.db = event.target.result;
-    };
-
-    request.onerror = (event: any) => {
-      console.error('Error opening IndexedDB:', event.target.error);
-    };
-  }
-
-  getData(): Promise<any[]> {
+  initIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction([this.storeName], 'readonly');
+      const request = window.indexedDB.open(this.dbName, 1);
+
+      request.onupgradeneeded = (event: any) => {
+        const db = event.target.result;
+        db.createObjectStore(this.storeName, { keyPath: 'boxId' });
+      };
+
+      request.onsuccess = (event: any) => {
+        const db = event.target.result;
+        resolve(db);
+      };
+
+      request.onerror = (event: any) => {
+        console.error('Error opening IndexedDB:', event.target.error);
+        reject(event.target.error);
+      };
+    });
+  }
+
+  async getDB(): Promise<IDBDatabase> {
+    return await this.dbPromise;
+  }
+
+  async getData(): Promise<any[]> {
+    const db = await this.getDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([this.storeName], 'readonly');
       const objectStore = transaction.objectStore(this.storeName);
       const request = objectStore.getAll();
 
@@ -45,12 +54,14 @@ export class StorageService {
     });
   }
 
-  addData(address:string, newData: any): Promise<void> {
-
+  async addData(address: string, newData: any): Promise<void> {
+    const db = await this.getDB();
     newData.outputAddress = address;
 
+    
+
     return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction([this.storeName], 'readwrite');
+      const transaction = db.transaction([this.storeName], 'readwrite');
       const objectStore = transaction.objectStore(this.storeName);
       const request = objectStore.put(newData);
 

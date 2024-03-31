@@ -1,6 +1,5 @@
 // src/app/data.service.ts
 import { Injectable } from '@angular/core';
-import { DownloadService } from './download.service';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -12,7 +11,7 @@ export class DataService {
   readonly rewardsErgoAddress: string = "2Eit2LFRqu2Mo33z3pYTJRHNCPYS33MrU9QgeNcRsF9359pYMahqnLvKsHwwH72C6WDSZRj7G7WC5heVyUEawcSLSx821iJXT4xWf2F5fjVWDUmvtxr3QSv1aLwThLXxeqYCCc34xjxZDPqPyNGYvWLNeBZxATvBeDuQ6pSiiRFknqmvYVsm9eH4Et3eRHCyxDJEoqZsAahwfVSya34dZNHmjaPQkwWo3Coc17pxiEnWuWmG38wSJz1awE6cymzhojnjxDTbbXgjR1yfYU3AU2v9zttnT8Gz3gUzZNSwjiXSPu3G9zkDaFZVKqb5QwTWY3Pp6SFJgBQfx3C3sp4a9d3n9c98pfWFWAGQN5EfkoHosF8BQTDuzXG3NU8gVCNeNPXYA8iWCbvY3XpxQMvQUxqkjDv9VQfUNvAKVHLW43chi2rdBrQ7Teu6NnesLRWUKXpzSxpByWftkCCdBppjZtYmhhCHqpQGkQyTcMRoP2krFKe7xKbfnFkdkhaYH9TTdKuTuKtGb265RXxiqrc34KvkZpaBBQB5UvoCU4iLSDngNTjqkNPnWekDahzNHLd6CtcdC1B19jdGEXWeNADemDtdK4zrMNg7U8iVpyGYhLDnkeLVrcbhoxkHxrFwfrN19XvitDosQqmt9dseR6SWHBCDZJdmJecCiEwd2wBiwN5N5umEy3Dd4Hznv7kDr6eX7KtYxp";
 
 
-  constructor(private downloadService: DownloadService, private storageService: StorageService) { }
+  constructor(private storageService: StorageService) { }
 
   async getInputs(): Promise<any[]> {
     var inputsPromise = this.storageService.getData();
@@ -27,16 +26,14 @@ export class DataService {
         input.assets = input.assets
           .filter((asset: any) => asset.name === 'RSN')
           .map((asset_1: any) => {
-            console.log(input.outputAddress + " " + asset_1.amount);
+            
             return asset_1;
           });
 
       });
       return await new Promise<any[]>((resolve, reject) => {
 
-        setTimeout(() => {
-          resolve(result_1);
-        }, 1000);
+        resolve(result_1);
       });
     } catch (error) {
       console.error(error);
@@ -44,7 +41,7 @@ export class DataService {
     }
   }
 
-  async getTotalRewards(): Promise<number> {
+  async getTotalRewards(): Promise<string> {
     var inputsPromise = this.getInputs();
 
     try {
@@ -54,19 +51,17 @@ export class DataService {
         var assetAmount = 0;
 
         o.assets.forEach((asset: any) => {
-          assetAmount += asset.amount;
+          assetAmount += asset.amount / Math.pow(10, asset.decimals);
         });
 
         return accumulator + assetAmount;
       }, 0);
-      return await new Promise<number>((resolve, reject) => {
-        setTimeout(() => {
-          resolve(sum);
-        }, 1000);
+      return await new Promise<string>((resolve, reject) => {
+        resolve(sum.toFixed(3));
       });
     } catch (error) {
       console.error(error);
-      return -1;
+      return "";
     }
   }
 }
