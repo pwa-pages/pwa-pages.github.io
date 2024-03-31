@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class StorageService {
-  dbName = 'ergoDatabase3';
+  dbName = 'ergoDatabase11';
   storeName = 'inputBoxes';
   db!: IDBDatabase;
 
@@ -45,7 +45,10 @@ export class StorageService {
     });
   }
 
-  addData(newData: any): Promise<void> {
+  addData(address:string, newData: any): Promise<void> {
+
+    newData.outputAddress = address;
+
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([this.storeName], 'readwrite');
       const objectStore = transaction.objectStore(this.storeName);
