@@ -1,38 +1,49 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import Chart from 'chart.js/auto';
+import 'chartjs-adapter-date-fns';
 
 @Component({
   selector: 'app-reward-chart',
   templateUrl: './reward.chart.component.html',
   styleUrls: ['./reward.chart.component.css'],
-  encapsulation: ViewEncapsulation.None 
+  encapsulation: ViewEncapsulation.None
 })
 export class RewardChartComponent implements OnInit {
 
-  constructor() { }
+  @Input() chartData: any[];
+  chart: Chart<"line", any[][], unknown> | undefined;
 
-  ngOnInit(): void {
-    this.createChart();
+  constructor() {
+    this.chartData = [];
+
   }
 
-  public chart: any;
+  ngOnInit(): void {
+    this.chart = this.createChart();
+  }
 
-  createChart() {
-    this.chart = new Chart("RewardChart", {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['chartData'] && !changes['chartData'].firstChange) {
+
+      this.updateChart();
+    }
+  }
+
+  updateChart(): void {
+    if (this.chart) {
+      this.chart.data.datasets[0].data = this.chartData;
+      this.chart.update();
+    }
+  }
+
+  createChart(): Chart<"line", any[][], unknown> {
+    return new Chart("RewardChart", {
       type: 'line',
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [
           {
             label: "Total rewards earned",
-            data: [ { x: new Date(2024, 3, 1), y: 10 },
-              { x: new Date(2024, 3, 2), y: 20 },
-              { x: new Date(2024, 3, 3), y: 30 },
-              { x: new Date(2024, 3, 4), y: 30 },
-              { x: new Date(2024, 3, ), y: 30 },
-              { x: new Date(2024, 3, 4), y: 30 },
-              { x: new Date(2024, 3, 4), y: 30 },
-              { x: new Date(2024, 3, 5), y: 30 }
+            data: [this.chartData
             ],
             borderColor: 'rgb(138, 128, 128)',
             backgroundColor: 'rgba(138, 128, 128, 0.2)',
@@ -52,6 +63,7 @@ export class RewardChartComponent implements OnInit {
             }
           },
           x: {
+            type: 'time',
             grid: {
               color: 'rgba(0, 0, 0, 0.1)',
             }
@@ -75,7 +87,7 @@ export class RewardChartComponent implements OnInit {
               }
             }
           }
-        ,
+          ,
         }
       }
     });
