@@ -1,30 +1,37 @@
 
 
   .amount {
-    font-size: 4vw; 
+    font-size: 4vh; 
     font-weight: bold;
-    color: #333; /* Adjust the color as needed */
+    color: #333; 
     animation: fadeIn 1s ease-in-out forwards;
     opacity: 0;
-    border-bottom-right-radius: 1vw;
-    border-bottom-left-radius: 1vw;
+    border-bottom-right-radius: 1vh;
+    border-bottom-left-radius: 1vh;
     background:rgba(138, 128, 128);
   }
 
-  .block {
-    font-size: 3vw; 
+  .amountblock {
+    font-size: 3vh; 
     text-align: center;
     font-weight: bold;
-    color: #333; /* Adjust the color as needed */
+    color: #333; 
     animation: fadeIn 1s ease-in-out forwards;
     opacity: 0;
-    width: 10vh;
+    width: 60vh;
     justify-content: center; 
     background:rgba(238, 228, 218);
-    border-radius: 1vw;
-    margin-left:25vw;
-    margin-top:2vh;
+    border-radius: 1vh;
+
   }
+
+  .amountcontainer {
+    justify-content: center;
+    display: flex;
+    padding:1vh;
+
+  }
+
 
   @keyframes fadeIn {
     0% {
