@@ -58,8 +58,6 @@ export class StorageService {
     const db = await this.getDB();
     newData.outputAddress = address;
 
-    
-
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.storeName], 'readwrite');
       const objectStore = transaction.objectStore(this.storeName);

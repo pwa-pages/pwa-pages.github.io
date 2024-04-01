@@ -1,43 +1,13 @@
 
 
-  .amount {
-    font-size: 4vh; 
-    font-weight: bold;
-    color: #333; 
-    animation: fadeIn 1s ease-in-out forwards;
+
+
+@keyframes fadeIn {
+  0% {
     opacity: 0;
-    border-bottom-right-radius: 1vh;
-    border-bottom-left-radius: 1vh;
-    background:rgba(138, 128, 128);
   }
 
-  .amountblock {
-    font-size: 3vh; 
-    text-align: center;
-    font-weight: bold;
-    color: #333; 
-    animation: fadeIn 1s ease-in-out forwards;
-    opacity: 0;
-    width: 60vh;
-    justify-content: center; 
-    background:rgba(238, 228, 218);
-    border-radius: 1vh;
-
+  100% {
+    opacity: 1;
   }
-
-  .amountcontainer {
-    justify-content: center;
-    display: flex;
-    padding:1vh;
-
-  }
-
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
+}

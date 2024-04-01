@@ -1,24 +1,24 @@
-// app.module.ts
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
-import { CommonModule } from '@angular/common'; // Import CommonModule
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { RewardChartComponent } from './reward.chart/reward.chart.component';
 
 @NgModule({
   declarations: [
-    
+    AppComponent,
+    RewardChartComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule, 
-    CommonModule, ServiceWorkerModule.register('ngsw-worker.js', {
-  enabled: !isDevMode(),
-  // Register the ServiceWorker as soon as the application is stable
-  // or after 30 seconds (whichever comes first).
-  registrationStrategy: 'registerWhenStable:30000'
-})
+    HttpClientModule,
+    CommonModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -64,5 +64,26 @@ export class DataService {
       return "";
     }
   }
+
+  async getAddresses(): Promise<string[]> {
+    var inputsPromise = this.getInputs();
+    var addresses: string[] = [];
+
+    try {
+      const inputs = await inputsPromise;
+      
+      inputs.forEach( (input: any) => {
+          addresses[input.outputAddress] = "";
+      });
+
+      return await new Promise<string[]>((resolve, reject) => {
+        resolve(addresses);
+      });
+    } catch (error) {
+      console.error(error);
+      return addresses;
+    }
+    
+  }
 }
 
