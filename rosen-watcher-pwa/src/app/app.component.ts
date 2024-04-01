@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DownloadService } from './download.service';
 import { StorageService } from './storage.service';
 import { DataService } from './data.service';
-
+import { forkJoin, Observable } from 'rxjs';
 
 
 @Component({
@@ -35,12 +35,9 @@ export class AppComponent implements OnInit {
     this.rewardsChart = [];
   }
 
-  retrieveData(): void{
+  retrieveData(): void {
     this.dataService.getTotalRewards().then(t => this.data = t);
-
-    this.dataService.getRewardsChart().then(r => this.rewardsChart  = r);
-    
-
+    this.dataService.getRewardsChart().then(r => this.rewardsChart = r);
   }
 
   ngOnInit(): void {
@@ -48,25 +45,41 @@ export class AppComponent implements OnInit {
     var storageService = this.storageService;
 
     this.retrieveData();
+    var downLoads: Observable<any>[] = [];
 
     this.adresses_remove_this.forEach(adress => {
-      this.downloadService.downloadTransactions(adress)
-        .subscribe(result => {
 
-          console.log('Storing data to db from address: ' + adress);
+      var s = this.downloadService.downloadTransactions(adress);
 
-          result.items.forEach((item: any) => {
-            item.inputs.forEach((input: any) => {
-              
-              storageService.addData(adress, item, input);
-            });
+      s.subscribe(result => {
 
+        console.log('Storing data to db from address: ' + adress);
+
+        result.items.forEach((item: any) => {
+          item.inputs.forEach((input: any) => {
+
+            storageService.addData(adress, item, input);
           });
 
-          this.retrieveData();
         });
+        
+      });
+      downLoads.push(s);
+
     });
-    
+
+    forkJoin(downLoads).subscribe({
+      next: (results) => {
+        
+      },
+      error: (err) => {
+        console.error('Something went wrong:', err);
+      },
+      complete: () => {
+        this.retrieveData();
+      }
+    });
+
   }
 
   title = 'rosen-watcher-pwa';

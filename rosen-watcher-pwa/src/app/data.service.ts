@@ -80,7 +80,6 @@ export class DataService {
       inputs.forEach((input: any) => {
         input.assets.forEach((asset: any) => {
           amount += asset.amount;
-          console.log(input.inputDate);
           rewardsChart.push({ x: input.inputDate, y: amount })
 
         })
