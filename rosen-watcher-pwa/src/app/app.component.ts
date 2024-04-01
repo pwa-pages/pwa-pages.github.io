@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
           result.items.forEach((item: any) => {
             item.inputs.forEach((input: any) => {
               
-              storageService.addData(adress, input);
+              storageService.addData(adress, item, input);
             });
 
           });

@@ -54,14 +54,15 @@ export class StorageService {
     });
   }
 
-  async addData(address: string, newData: any): Promise<void> {
+  async addData(address: string, item: any, input: any): Promise<void> {
     const db = await this.getDB();
-    newData.outputAddress = address;
+    input.outputAddress = address;
+    input.inputDate = new Date(item.timestamp);
 
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.storeName], 'readwrite');
       const objectStore = transaction.objectStore(this.storeName);
-      const request = objectStore.put(newData);
+      const request = objectStore.put(input);
 
       request.onsuccess = () => {
         resolve();

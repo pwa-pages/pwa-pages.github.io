@@ -24,25 +24,26 @@ export class RewardChartComponent implements OnInit {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [
           {
-            label: "Temperature(C) in Lahore",
-            data: [13, 16, 21, 28, 32, 34, 32, 31, 30, 26, 20, 14],
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            label: "Total rewards earned",
+            data: [ { x: new Date(2024, 3, 1), y: 10 },
+              { x: new Date(2024, 3, 2), y: 20 },
+              { x: new Date(2024, 3, 3), y: 30 },
+              { x: new Date(2024, 3, 4), y: 30 },
+              { x: new Date(2024, 3, ), y: 30 },
+              { x: new Date(2024, 3, 4), y: 30 },
+              { x: new Date(2024, 3, 4), y: 30 },
+              { x: new Date(2024, 3, 5), y: 30 }
+            ],
+            borderColor: 'rgb(138, 128, 128)',
+            backgroundColor: 'rgba(138, 128, 128, 0.2)',
             borderWidth: 2,
-            pointBackgroundColor: 'rgb(255, 99, 132)',
-          },
-          {
-            label: "Cloud Coverage(%) in Lahore",
-            data: [26, 29, 31, 24, 10, 3, 14, 16, 4, 5, 14, 23],
-            borderColor: 'rgb(54, 162, 235)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderWidth: 2,
-            pointBackgroundColor: 'rgb(54, 162, 235)',
+            pointBackgroundColor: 'rgb(138, 128, 128)',
           }
         ]
       },
       options: {
-        
+        responsive: true,
+        maintainAspectRatio: false,
         scales: {
           y: {
             beginAtZero: true,
