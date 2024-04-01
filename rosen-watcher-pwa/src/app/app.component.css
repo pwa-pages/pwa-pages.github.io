@@ -18,7 +18,7 @@
     color: #333; /* Adjust the color as needed */
     animation: fadeIn 1s ease-in-out forwards;
     opacity: 0;
-    width: 50vw;
+    width: 10vh;
     justify-content: center; 
     background:rgba(238, 228, 218);
     border-radius: 1vw;
