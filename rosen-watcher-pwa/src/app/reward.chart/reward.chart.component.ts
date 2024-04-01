@@ -42,7 +42,7 @@ export class RewardChartComponent implements OnInit {
         ]
       },
       options: {
-        aspectRatio: 2.5,
+        
         scales: {
           y: {
             beginAtZero: true,

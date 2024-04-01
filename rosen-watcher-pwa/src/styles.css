@@ -41,6 +41,7 @@ body {
     justify-content: center;
     display: flex;
     padding: 7vw;
+    height: 50vh;
     
   }
   .chart-container, .chart-container canvas, app-reward-chart {
