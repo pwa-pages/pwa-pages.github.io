@@ -64,6 +64,9 @@ export class RewardChartComponent implements OnInit {
           },
           x: {
             type: 'time',
+            time: {
+              unit: 'day', // Set the time unit to 'day'
+            },
             grid: {
               color: 'rgba(0, 0, 0, 0.1)',
             }

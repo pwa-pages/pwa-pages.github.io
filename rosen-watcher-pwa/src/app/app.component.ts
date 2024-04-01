@@ -38,18 +38,9 @@ export class AppComponent implements OnInit {
   retrieveData(): void{
     this.dataService.getTotalRewards().then(t => this.data = t);
 
-    this.rewardsChart = [ { x: new Date(2024, 3, 1), y: 10 },
-      { x: new Date(2024, 3, 2), y: 20 },
-      { x: new Date(2024, 3, 3), y: 30 },
-      { x: new Date(2024, 3, 4), y: 30 },
-      { x: new Date(2024, 3, 5), y: 30 },
-      { x: new Date(2024, 3, 6), y: 30 },
-      { x: new Date(2024, 3, 7), y: 30 },
-      { x: new Date(2024, 3, 8), y: 30 },
-      { x: new Date(2024, 4, 15), y: 30 },
-      { x: new Date(2024, 5, 4), y: 30 },
-      { x: new Date(2024, 10, 4), y: 30 },
-    ];
+    this.dataService.getRewardsChart().then(r => this.rewardsChart  = r);
+    
+
   }
 
   ngOnInit(): void {

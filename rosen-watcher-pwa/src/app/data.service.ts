@@ -26,7 +26,7 @@ export class DataService {
         input.assets = input.assets
           .filter((asset: any) => asset.name === 'RSN')
           .map((asset_1: any) => {
-            
+
             return asset_1;
           });
 
@@ -65,15 +65,45 @@ export class DataService {
     }
   }
 
+
+  async getRewardsChart(): Promise<any[]> {
+    var inputsPromise = this.getInputs();
+    var amount = 0;
+    var rewardsChart: any = [
+    ];
+
+    try {
+      const inputs = await inputsPromise;
+
+      inputs.sort((a, b) => a.inputDate - b.inputDate);
+
+      inputs.forEach((input: any) => {
+        input.assets.forEach((asset: any) => {
+          amount += asset.amount;
+          console.log(input.inputDate);
+          rewardsChart.push({ x: input.inputDate, y: amount })
+
+        })
+      });
+
+      return await new Promise<string[]>((resolve, reject) => {
+        resolve(rewardsChart);
+      });
+    } catch (error) {
+      console.error(error);
+      return rewardsChart;
+    }
+  }
+
   async getAddresses(): Promise<string[]> {
     var inputsPromise = this.getInputs();
     var addresses: string[] = [];
 
     try {
       const inputs = await inputsPromise;
-      
-      inputs.forEach( (input: any) => {
-          addresses[input.outputAddress] = "";
+
+      inputs.forEach((input: any) => {
+        addresses[input.outputAddress] = "";
       });
 
       return await new Promise<string[]>((resolve, reject) => {
@@ -83,7 +113,7 @@ export class DataService {
       console.error(error);
       return addresses;
     }
-    
+
   }
 }
 
