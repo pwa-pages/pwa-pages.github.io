@@ -1,2 +1,2 @@
 npm install
-ng build --base-href ./ --deploy-url ./
+ng build --configuration=production --base-href ./ --deploy-url ./
