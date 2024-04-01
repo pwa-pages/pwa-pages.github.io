@@ -42,7 +42,7 @@ export class RewardChartComponent implements OnInit {
       data: {
         datasets: [
           {
-            label: "Total rewards earned",
+            label: "Total rewards earned (ERG)",
             data: [this.chartData
             ],
             borderColor: 'rgb(138, 128, 128)',
@@ -60,6 +60,11 @@ export class RewardChartComponent implements OnInit {
             beginAtZero: true,
             grid: {
               color: 'rgba(0, 0, 0, 0.1)',
+            },
+            ticks: {
+              callback: function(value) {
+                return value as number/1000;
+              }
             }
           },
           x: {
