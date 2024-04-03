@@ -3,28 +3,24 @@ import { DownloadService } from './download.service';
 import { StorageService } from './storage.service';
 import { DataService } from './data.service';
 
-
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  selector: 'app-settings',
+  templateUrl: './app.settings.html',
+  styleUrl: './app.settings.css'
 })
 
-
-export class AppComponent implements OnInit {
-
+export class AppSettings implements OnInit {
+  
   constructor(private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService) {
 
-
+  
   }
-
-  retrieveData(): void {
-  }
-
+  
   ngOnInit(): void {
 
+  
 
   }
 
-  title = 'rosen-watcher-pwa';
+  title = 'settings';
 }

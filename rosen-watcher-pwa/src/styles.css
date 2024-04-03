@@ -4,7 +4,7 @@ body {
 
     background-color: #f7f7f7; /* Background color for the lines */
     background: linear-gradient(135deg, #f7f7f7 25%, #fff 25%, #fff 50%, #f7f7f7 50%, #f7f7f7 75%, #fff 75%, #fff 100%);
-    background-size: 1vw 1vw; 
+    background-size: 10px 10px; 
 }
 
 .amount {
@@ -40,8 +40,10 @@ body {
   .chartcontainer {
     justify-content: center;
     display: flex;
-    padding: 7vw;
-    height: 50vh;
+    padding-left: 7vw;
+    padding-right: 7vw;
+    padding-top: 2vw;
+    height: 60vh;
     
   }
   .chart-container, .chart-container canvas, app-reward-chart {
