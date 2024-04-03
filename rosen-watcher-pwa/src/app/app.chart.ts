@@ -24,6 +24,9 @@ export class AppChart implements OnInit {
   constructor(private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService) {
 
     this.data = "";
+
+
+
     this.adresses_remove_this = [
       '9h9H4FJ7jWLZ4ZvJQ9BccWKewoXdAn4mfkqwmoh9HwqjP6oB63C',
       '9ff1hjyscYM53GjWEJ3QfR65PDC8qp8RwhD8TFiZZhCGhHFhRU6',
@@ -31,6 +34,7 @@ export class AppChart implements OnInit {
       '9hENULphzbxZaSjfMow8doKrru3Scgd1L7tm6dXxHTVDyTEUCzY',
       '9gwDcdAsZ2gAJdmSuFnFgbAG7dbxExDVSdSTnbYvSXvyS4YnqU6'
     ];
+
     this.adresses = this.adresses_remove_this;
     this.rewardsChart = [];
   }
