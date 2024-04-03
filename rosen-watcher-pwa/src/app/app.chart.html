@@ -13,8 +13,7 @@
 </div>
 
 <div class="addressescontainer">
-<h1>Watcher addresses</h1>
 <ul>
-    <li *ngFor="let adress of adresses">{{ adress }}</li>
+    <li *ngFor="let adress of adresses; let i = index">Watcher address {{i+1}}: {{ adress }} </li>
   </ul>
 </div>
