@@ -31,7 +31,7 @@ export class AppChart implements OnInit {
       '9hENULphzbxZaSjfMow8doKrru3Scgd1L7tm6dXxHTVDyTEUCzY',
       '9gwDcdAsZ2gAJdmSuFnFgbAG7dbxExDVSdSTnbYvSXvyS4YnqU6'
     ];
-    this.adresses = [];
+    this.adresses = this.adresses_remove_this;
     this.rewardsChart = [];
   }
 

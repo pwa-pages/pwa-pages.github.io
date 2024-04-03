@@ -11,3 +11,10 @@
 <div class="chartcontainer">
     <app-reward-chart [chartData]="rewardsChart"></app-reward-chart>
 </div>
+
+<div class="addressescontainer">
+<h1>Watcher addresses</h1>
+<ul>
+    <li *ngFor="let adress of adresses">{{ adress }}</li>
+  </ul>
+</div>
