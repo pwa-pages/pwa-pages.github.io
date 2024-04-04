@@ -1,3 +1,4 @@
+
 body {
   padding: 0;
   margin: 0px !important;
@@ -71,7 +72,7 @@ li {
   margin-bottom: 3px;
 
   font-family: 'Courier New', Courier, monospace;
-  font-size: 10px;
+  font-size: 1.3vh;
 }
 
 li:last-child {
@@ -79,9 +80,25 @@ li:last-child {
 }
 
 .addressescontainer {
+  position: absolute;
   margin-left: 7vw;
   padding: 3px;
   font-weight: bold;
   color: rgba(138, 128, 128);
   animation: fadeIn 1s ease-in-out forwards;
+}
+
+.address{
+  float:left;
+  
+}
+
+.addressedit i{
+  padding-bottom:10px;
+  font-size: 3vh;
+}
+
+.addressedit a{
+  text-decoration: none;
+  color: rgba(80, 70, 70);
 }

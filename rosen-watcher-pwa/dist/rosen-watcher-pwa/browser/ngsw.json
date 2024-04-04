@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1712181406458,
+  "timestamp": 1712255847304,
   "index": "./index.html",
   "assetGroups": [
     {
@@ -13,10 +13,10 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-7O5UCOE4.js",
+        "./main-B3SAISJ5.js",
         "./manifest.webmanifest",
         "./polyfills-RT5I6R6G.js",
-        "./styles-4IDTBMJZ.css"
+        "./styles-DXW6KTVD.css"
       ],
       "patterns": []
     },
@@ -28,7 +28,15 @@
         "ignoreVary": true
       },
       "urls": [
-        "./assets/icons/icon-512x512.png"
+        "./assets/icons/icon-512x512.png",
+        "./media/fa-brands-400-LUMNIJ6A.ttf",
+        "./media/fa-brands-400-Q5MHU2AU.woff2",
+        "./media/fa-regular-400-HTG32PIJ.woff2",
+        "./media/fa-regular-400-QFECZVGZ.ttf",
+        "./media/fa-solid-900-BMGMRJW7.woff2",
+        "./media/fa-solid-900-NHJRIGXE.ttf",
+        "./media/fa-v4compatibility-BYQ7LMO7.woff2",
+        "./media/fa-v4compatibility-FQDQ7UU2.ttf"
       ],
       "patterns": []
     }
@@ -37,11 +45,19 @@
   "hashTable": {
     "./assets/icons/icon-512x512.png": "55c0faed12d633c24a09827e63251d81198a853b",
     "./favicon.ico": "5d73de371daf7e3e00ffb5019b4ffde3379a1827",
-    "./index.html": "512dbb8fd7be97d0d32001601472091a1341ad0b",
-    "./main-7O5UCOE4.js": "fff3b398e6a67bcdeed90ddd276710800686b821",
+    "./index.html": "010843af222872de3698514c38f81a03fa5ae6e1",
+    "./main-B3SAISJ5.js": "6b94d7223b6571a24618e33fbfff46744b9a9db8",
     "./manifest.webmanifest": "2a5da26106cbdeeae057037c31435d2701e0e8e4",
+    "./media/fa-brands-400-LUMNIJ6A.ttf": "acbbe78b63ab309cd560dc712a5dd2d5301d14ff",
+    "./media/fa-brands-400-Q5MHU2AU.woff2": "c39dd7c713983702de91b08ae00b194b0bdb9008",
+    "./media/fa-regular-400-HTG32PIJ.woff2": "8c9331bf363872cd84f2d1089b4d72fc21784cbd",
+    "./media/fa-regular-400-QFECZVGZ.ttf": "1be2221004a9cf752ccdc0ef2c7fa2132caedee7",
+    "./media/fa-solid-900-BMGMRJW7.woff2": "73e7eabf7a8ae9be149a85d196c9f3f26622925b",
+    "./media/fa-solid-900-NHJRIGXE.ttf": "cfc895e58274a80da7fd5bc3d629c7c918d70e2e",
+    "./media/fa-v4compatibility-BYQ7LMO7.woff2": "827835b9a92ff50acba8ef5f700d5d33933de7ac",
+    "./media/fa-v4compatibility-FQDQ7UU2.ttf": "27a74685ce8ff178a2199f1dea5671516e7f67ff",
     "./polyfills-RT5I6R6G.js": "fe9f024576f21ff6314cf8f8332cde58b9a12416",
-    "./styles-4IDTBMJZ.css": "038b248d54338e65cf5337efbf1613258707dc29"
+    "./styles-DXW6KTVD.css": "062be892339994b443251950c1b8a4b4782593ce"
   },
   "navigationUrls": [
     {

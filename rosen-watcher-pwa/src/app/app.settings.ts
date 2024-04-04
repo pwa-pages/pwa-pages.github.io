@@ -10,17 +10,24 @@ import { DataService } from './data.service';
 })
 
 export class AppSettings implements OnInit {
-  
+  adresses: string[];
+
+
   constructor(private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService) {
 
+    this.adresses = [
+    
+    ];
   
   }
   
   ngOnInit(): void {
 
-  
+    this.dataService.getAddresses().then(r => this.adresses = r);
 
   }
+
+
 
   title = 'settings';
 }

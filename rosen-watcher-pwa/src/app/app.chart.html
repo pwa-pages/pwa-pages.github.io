@@ -12,8 +12,27 @@
     <app-reward-chart [chartData]="rewardsChart"></app-reward-chart>
 </div>
 
+
 <div class="addressescontainer">
-<ul>
-    <li *ngFor="let adress of adresses; let i = index">Address {{i+1}}: {{ adress }} </li>
-  </ul>
+    <div class="address">
+        Addresses:
+    </div>
+    
+
+
+
+    
+    <br />
+
+    <ul>
+
+
+        <li *ngFor="let adress of adresses; let i = index">{{ adress }} </li>
+    </ul>
+    <div class="addressedit">
+        <a routerLink="settings" routerLinkActive="active">
+    <i class="fas fa-edit"></i>modify
+</a>
+    
+</div>    
 </div>

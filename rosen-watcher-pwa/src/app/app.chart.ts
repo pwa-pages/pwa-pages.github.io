@@ -8,7 +8,7 @@ import { forkJoin, Observable } from 'rxjs';
 @Component({
   selector: 'app-chart',
   templateUrl: './app.chart.html',
-  styleUrl: './app.chart.css'
+    styleUrl: './app.chart.css'
 })
 
 
