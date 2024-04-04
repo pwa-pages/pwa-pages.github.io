@@ -1,5 +1,11 @@
-<div class="addressescontainer">
-    <ul>
-        <li *ngFor="let adress of adresses; let i = index">{{i+1}}: {{ adress }} </li>
-      </ul>
-    </div>
+
+<div class="settings">
+<div class="container">
+  <button (click)="addAdress()">Add Address</button>
+</div>
+
+<div *ngFor="let adress of adresses; let i = index" class="container">
+  <input type="text" [(ngModel)]="adresses[i]" />
+  <button (click)="deleteAdress(adress)">Delete</button>
+</div>
+</div>

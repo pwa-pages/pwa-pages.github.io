@@ -102,7 +102,11 @@ export class DataService {
       const inputs = await inputsPromise;
 
       inputs.forEach((input: any) => {
-        addresses[input.outputAddress] = "";
+
+        if(addresses.indexOf(input.outputAddress) === -1){
+          addresses.push(input.outputAddress);
+        }
+        
       });
 
       return await new Promise<string[]>((resolve, reject) => {

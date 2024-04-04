@@ -12,6 +12,7 @@ import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: 'settings', component: AppSettings },
@@ -33,6 +34,7 @@ const routes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     RouterModule.forRoot(routes),
+    FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'

@@ -42,7 +42,7 @@ export class RewardChartComponent implements OnInit {
       data: {
         datasets: [
           {
-            label: "Total rewards earned (ERG)",
+            label: "Total rewards earned (RSN)",
             data: [this.chartData
             ],
             borderColor: 'rgb(138, 128, 128)',

@@ -21,9 +21,19 @@ export class AppSettings implements OnInit {
   
   }
   
+  addAdress(): void {
+  }
+
+  deleteAdress(adress : string): void {
+  }
+
+
+
   ngOnInit(): void {
 
-    this.dataService.getAddresses().then(r => this.adresses = r);
+    this.dataService.getAddresses().then(
+      r => {this.adresses = r; }
+      );
 
   }
 

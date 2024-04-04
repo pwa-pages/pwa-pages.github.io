@@ -102,3 +102,35 @@ li:last-child {
   text-decoration: none;
   color: rgba(80, 70, 70);
 }
+
+
+/* Style for the container div */
+.container {
+  margin-bottom: 10px;
+}
+
+/* Style for the input and button inside the container div */
+.container input {
+  margin-right: 10px;
+  width: 470px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size:12px;
+  color: #333;
+}
+
+.container button {
+  background-color:  rgba(238, 228, 218);
+  color: #333;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.container button:hover {
+  background-color:rgba(138, 128, 128);
+}
+
+.settings{
+  padding:2vw
+} 
