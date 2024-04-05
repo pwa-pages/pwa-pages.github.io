@@ -28,9 +28,9 @@ export class AppChart implements OnInit {
     this.rewardsChart = [];
   }
 
-  retrieveData(): void {
-    this.dataService.getTotalRewards().then(t => this.data = t);
-    this.dataService.getRewardsChart().then(r => this.rewardsChart = r);
+  async retrieveData(): Promise<void> {
+    await this.dataService.getTotalRewards().then(t => { this.data = t; });
+    await this.dataService.getRewardsChart().then(r => this.rewardsChart = r);
   }
 
   async ngOnInit(): Promise<void> {
@@ -56,49 +56,43 @@ export class AppChart implements OnInit {
 
         await this.storageService.clearDB();
       }
-      else{
+      else {
         this.addresses = await this.dataService.getAddresses();
       }
 
 
       var storageService = this.storageService;
 
-      await this.retrieveData();
-      var downLoads: Observable<any>[] = [];
+      await this.retrieveData().then(() => {
+        var downLoads: Observable<any>[] = [];
 
-      this.addresses.forEach(address => {
+        this.addresses.forEach(address => {
 
-        var s = this.downloadService.downloadTransactions(address);
+          var s = this.downloadService.downloadTransactions(address);
 
-        s.subscribe(result => {
+          s.subscribe(async result => {
 
-          console.log('Storing data to db from address: ' + address);
+            console.log('Storing data to db from address: ' + address);
 
-          result.items.forEach((item: any) => {
-            item.inputs.forEach((input: any) => {
+            result.items.forEach((item: any) => {
+              item.inputs.forEach(async (input: any) => {
 
-              storageService.addData(address, item, input);
+                await storageService.addData(address, item, input);
+
+              });
+
             });
+            await this.retrieveData();
 
           });
+          downLoads.push(s);
 
         });
-        downLoads.push(s);
-
       });
 
-      forkJoin(downLoads).subscribe({
-        next: (results) => {
 
-        },
-        error: (err) => {
-          console.error('Something went wrong:', err);
-        },
-        complete: () => {
-          console.log('Retrieving data from db');
-          this.retrieveData();
-        }
-      });
+
+
     });
 
 

@@ -6,7 +6,7 @@ body {
   background-color: #f7f7f7;
   /* Background color for the lines */
   background: linear-gradient(135deg, #f7f7f7 25%, #fff 25%, #fff 50%, #f7f7f7 50%, #f7f7f7 75%, #fff 75%, #fff 100%);
-  
+  background-size: 10px 10px;
 }
 
 .amount {
@@ -111,9 +111,10 @@ li:last-child {
 
 .container input {
   margin-right: 10px;
-  width: 470px;
+  width: 400px;
   font-family: 'Courier New', Courier, monospace;
   font-size:12px;
+  padding:2px;
   color: #333;
 }
 
