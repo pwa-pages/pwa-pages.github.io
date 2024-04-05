@@ -36,7 +36,11 @@ export class RewardChartComponent implements OnInit {
     }
   }
 
+  
   createChart(): Chart<"line", any[][], unknown> {
+
+    
+
     return new Chart("RewardChart", {
       type: 'line',
       data: {
@@ -62,8 +66,8 @@ export class RewardChartComponent implements OnInit {
               color: 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
-              callback: function(value) {
-                return value as number/1000;
+              callback: function (value) {
+                return value as number / 1000;
               }
             }
           },

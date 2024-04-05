@@ -6,7 +6,7 @@ body {
   background-color: #f7f7f7;
   /* Background color for the lines */
   background: linear-gradient(135deg, #f7f7f7 25%, #fff 25%, #fff 50%, #f7f7f7 50%, #f7f7f7 75%, #fff 75%, #fff 100%);
-  background-size: 10px 10px;
+  
 }
 
 .amount {
@@ -44,7 +44,7 @@ body {
   display: flex;
   padding-left: 7vw;
   padding-right: 7vw;
-  padding-top: 2vw;
+  padding-top: 2vh;
   height: 60vh;
 
 }
@@ -53,14 +53,14 @@ body {
 .chart-container canvas,
 app-reward-chart {
   width: 100% !important;
-  height: 100% !important;
+  height: 100% !important; 
 }
 
 h1 {
   color: #333;
   font-size: 3vh;
   font-weight: bold;
-  font-size: 18px;
+  
 }
 
 ul {
@@ -83,6 +83,7 @@ li:last-child {
   position: absolute;
   margin-left: 7vw;
   padding: 3px;
+  font-size: 3vh;
   font-weight: bold;
   color: rgba(138, 128, 128);
   animation: fadeIn 1s ease-in-out forwards;
@@ -104,12 +105,10 @@ li:last-child {
 }
 
 
-/* Style for the container div */
 .container {
   margin-bottom: 10px;
 }
 
-/* Style for the input and button inside the container div */
 .container input {
   margin-right: 10px;
   width: 470px;

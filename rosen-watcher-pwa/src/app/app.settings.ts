@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DownloadService } from './download.service';
 import { StorageService } from './storage.service';
 import { DataService } from './data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -10,29 +11,38 @@ import { DataService } from './data.service';
 })
 
 export class AppSettings implements OnInit {
-  adresses: string[];
+  addresses: string[];
 
 
-  constructor(private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService) {
+  constructor(private router: Router, private dataService: DataService) {
 
-    this.adresses = [
+    this.addresses = [
     
     ];
   
   }
+
+  trackByFn(index:any, item:any) {
+    return index;  
+  }
   
-  addAdress(): void {
+  addaddress(): void {
+    this.addresses.push('');
   }
 
-  deleteAdress(adress : string): void {
+  deleteaddress(index : number): void {
+    this.addresses.splice(index, 1);
   }
 
+  save() : void{
+    this.router.navigate(['main', { addresses: JSON.stringify(this.addresses) }]);
+  }
 
 
   ngOnInit(): void {
 
     this.dataService.getAddresses().then(
-      r => {this.adresses = r; }
+      r => {this.addresses = r; }
       );
 
   }

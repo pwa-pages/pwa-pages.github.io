@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class StorageService {
-  dbName = 'rosenDatabase2013';
+  dbName = 'rosenDatabase2014';
   storeName = 'inputBoxes';
   dbPromise: Promise<IDBDatabase>;
 
@@ -35,6 +35,25 @@ export class StorageService {
 
   async getDB(): Promise<IDBDatabase> {
     return await this.dbPromise;
+  }
+
+  async clearDB(): Promise<void> {
+    const db = await this.getDB();
+    return new Promise<void>((resolve, reject) => {
+      const transaction = db.transaction([this.storeName], 'readwrite');
+      const objectStore = transaction.objectStore(this.storeName);
+      const request = objectStore.clear()
+
+      request.onsuccess = () => {
+        console.log('IndexedDB cleared successfully.');
+        resolve();
+      };
+
+      request.onerror = (event: any) => {
+        console.error('Error clearing IndexedDB:', (event.target as any).errorCode);
+        resolve();
+      };
+    });
   }
 
   async getData(): Promise<any[]> {
