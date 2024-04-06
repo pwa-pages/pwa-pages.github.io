@@ -37,6 +37,7 @@ const routes: Routes = [
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
+      updateMode: 'prefetch',
       registrationStrategy: 'registerWhenStable:30000'
     }),
     FontAwesomeModule
