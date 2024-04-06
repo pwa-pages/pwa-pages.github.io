@@ -94,6 +94,23 @@ export class DataService {
     }
   }
 
+  async getAddressesForDisplay(): Promise<string[]> {
+    var addresses = this.getAddresses();
+
+    return addresses.then(adresses => { 
+      var result: string[] = [];
+      adresses.forEach((a: string) => {
+
+        result.push(a.substring(0, 6) + '...' + a.substring(a.length-6, a.length));
+
+      });
+
+      return result;
+    
+    });
+
+  }
+
   async getAddresses(): Promise<string[]> {
     var inputsPromise = this.getInputs();
     var addresses: string[] = [];
@@ -103,10 +120,10 @@ export class DataService {
 
       inputs.forEach((input: any) => {
 
-        if(addresses.indexOf(input.outputAddress) === -1){
+        if (addresses.indexOf(input.outputAddress) === -1) {
           addresses.push(input.outputAddress);
         }
-        
+
       });
 
       return await new Promise<string[]>((resolve, reject) => {

@@ -23,16 +23,26 @@
 
 
     <br />
+    
 
-    <ul>
-
-
-        <li *ngFor="let address of addresses; let i = index">{{ address }} </li>
-    </ul>
+    <span *ngFor="let address of addressesForDisplay; let i = index; last as isLast">[{{ address }}]<span *ngIf="!isLast">&nbsp;&nbsp;,&nbsp;&nbsp;</span> </span>
+    <br />
+    <br />
     <div class="addressedit">
         <a routerLink="/settings" routerLinkActive="active">
-            <i class="fas fa-edit"></i>modify
+            <div class="fas fa-edit"></div>
+            
+        
         </a>
 
+    </div>
+
+    <div class="address" id="addressmodify">
+        <a routerLink="/settings" routerLinkActive="active">
+            Modify
+            
+        
+        </a>
+        
     </div>
 </div>
