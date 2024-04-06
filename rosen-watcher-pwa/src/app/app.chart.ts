@@ -22,7 +22,7 @@ export class AppChart implements OnInit {
   addresses: string[];
   addressesForDisplay: string[];
 
-  constructor(private location: Location, private route: ActivatedRoute, private router: Router, private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService) {
+  constructor(private location: Location, private route: ActivatedRoute, private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService) {
 
     this.data = "";
     this.addresses = [];

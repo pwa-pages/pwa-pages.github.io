@@ -34,6 +34,16 @@ export class AppSettings implements OnInit {
     this.addresses.splice(index, 1);
   }
 
+  pasteData(index : number): void {
+    navigator.clipboard.readText().then(pastedText => {
+      
+      this.addresses[index] = pastedText;
+    }).catch(err => {
+      console.error('Failed to read clipboard contents: ', err);
+    });
+  }
+
+
   save() : void{
     this.router.navigate(['main', { addresses: JSON.stringify(this.addresses) }]);
   }

@@ -5,7 +5,10 @@
 
   <div *ngFor="let address of addresses; let i = index; trackBy: trackByFn" class="container">
     <input type="text" [(ngModel)]="addresses[i]" />
+    <button (click)="pasteData(i)"><div class="fas fa-paste"></div></button>&nbsp;
     <button (click)="deleteaddress(i)">Delete</button>
+    
+    
   </div>
   <div class="container">
     <button (click)="save()">Save</button>

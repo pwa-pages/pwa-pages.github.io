@@ -144,3 +144,8 @@ a{
 .settings{
   padding:2vw
 } 
+
+.custom-snackbar {
+  color: white; /* Adjust text color */
+  background-color: red; /* Adjust background color */
+}
