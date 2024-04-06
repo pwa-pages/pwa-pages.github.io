@@ -1,4 +1,3 @@
-// src/app/data.service.ts
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -21,17 +20,17 @@ export class DownloadService {
       catchError((error: HttpErrorResponse) => {
         let errorMessage = '';
         if (error.error instanceof ErrorEvent) {
-          // Client-side error
+          
           errorMessage = `An error occurred: ${error.error.message}`;
         } else {
-          // Server-side error
+          
           errorMessage = `Server returned code: ${error.status}, error message is: ${error.message}`;
         }
-        // You can handle the error here or log it, then re-throw it
+        
         console.error(errorMessage);
         this.snackBar.open('Some download(s) failed, failed addresses not added', 'Close', {
-          duration: 5000, // Adjust as needed
-          panelClass: ['custom-snackbar'] // Add custom CSS class
+          duration: 5000, 
+          panelClass: ['custom-snackbar'] 
         });
 
         return throwError(() => new Error(errorMessage));

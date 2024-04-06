@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 
