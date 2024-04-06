@@ -10,20 +10,12 @@ import { DataService } from './data.service';
   styleUrl: './app.component.css'
 })
 
-
 export class AppComponent implements OnInit {
 
   constructor(private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService) {
-
-
-  }
-
-  retrieveData(): void {
   }
 
   ngOnInit(): void {
-
-
   }
 
   title = 'rosen-watcher-pwa';

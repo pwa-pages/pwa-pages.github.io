@@ -127,6 +127,10 @@ a{
   color: #333;
 }
 
+.addressdisplay{
+  font-family: 'Courier New', Courier, monospace;
+}
+
 .container button {
   background-color:  rgba(238, 228, 218);
   color: #333;

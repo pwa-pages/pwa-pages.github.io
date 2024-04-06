@@ -24,7 +24,6 @@ export class RewardChartComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['chartData'] && !changes['chartData'].firstChange) {
-
       this.updateChart();
     }
   }
@@ -35,12 +34,8 @@ export class RewardChartComponent implements OnInit {
       this.chart.update();
     }
   }
-
   
   createChart(): Chart<"line", any[][], unknown> {
-
-    
-
     return new Chart("RewardChart", {
       type: 'line',
       data: {

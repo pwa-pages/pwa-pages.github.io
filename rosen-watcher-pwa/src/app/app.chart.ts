@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DownloadService } from './download.service';
 import { StorageService } from './storage.service';
 import { DataService } from './data.service';
-import { forkJoin, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -46,10 +46,7 @@ export class AppChart implements OnInit {
         console.log(addressesParam);
 
         this.addresses = JSON.parse(decodeURIComponent(addressesParam));
-
-
         let currentPath = this.location.path();
-
 
         if (currentPath.includes(';')) {
           let parts = currentPath.split(';');
@@ -62,7 +59,6 @@ export class AppChart implements OnInit {
       else {
         this.addresses = await this.dataService.getAddresses();
       }
-
 
       var storageService = this.storageService;
 

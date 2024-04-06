@@ -16,7 +16,7 @@
 <div class="addressescontainer">
     
         Addresses:&nbsp;
-        <span *ngFor="let address of addressesForDisplay; let i = index; last as isLast">[{{ address }}]<span *ngIf="!isLast">,&nbsp;&nbsp;&nbsp;</span> </span>
+        <span class="addressdispl" *ngFor="let address of addressesForDisplay; let i = index; last as isLast">[{{ address }}]<span *ngIf="!isLast">,&nbsp;&nbsp;</span> </span>
     
 
 

@@ -106,9 +106,8 @@ export class DataService {
       });
 
       return result;
-    
-    });
 
+    });
   }
 
   async getAddresses(): Promise<string[]> {
@@ -133,7 +132,5 @@ export class DataService {
       console.error(error);
       return addresses;
     }
-
   }
 }
-

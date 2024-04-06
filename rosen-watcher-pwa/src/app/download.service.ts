@@ -34,10 +34,8 @@ export class DownloadService {
         });
 
         return throwError(() => new Error(errorMessage));
-        
       })
     );
   }
-
 }
 

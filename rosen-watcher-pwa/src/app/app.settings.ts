@@ -17,7 +17,6 @@ export class AppSettings implements OnInit {
     this.addresses = [
 
     ];
-
   }
 
   trackByFn(index: any, item: any) {
@@ -41,7 +40,6 @@ export class AppSettings implements OnInit {
     });
   }
 
-
   save(): void {
     this.router.navigate(['main', { addresses: JSON.stringify(this.addresses) }]);
   }
@@ -50,17 +48,12 @@ export class AppSettings implements OnInit {
     this.router.navigate(['main']);
   }
 
-
-
   ngOnInit(): void {
 
     this.dataService.getAddresses().then(
       r => { this.addresses = r; }
     );
-
   }
-
-
 
   title = 'settings';
 }
