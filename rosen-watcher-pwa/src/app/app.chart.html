@@ -8,19 +8,21 @@
     </div>
 
 </div>
+
+<div class="addressescontainer noAddresses" *ngIf="noAddresses">
+    You don't have any watcher addresses yet, click on modify below to add addresses.
+</div>
+
+
+
 <div class="chartcontainer">
     <app-reward-chart [chartData]="rewardsChart"></app-reward-chart>
 </div>
 
 
 <div class="addressescontainer">
-    
         Addresses:&nbsp;
         <span class="addressdispl" *ngFor="let address of addressesForDisplay; let i = index; last as isLast">[{{ address }}]<span *ngIf="!isLast">,&nbsp;&nbsp;</span> </span>
-    
-
-
-
 
 </div>
 

@@ -13,7 +13,7 @@ export class DataService {
 
   constructor(private storageService: StorageService) { }
 
-  async getInputs(): Promise<any[]> {
+  async getWatcherInputs(): Promise<any[]> {
     var inputsPromise = this.storageService.getData();
 
     try {
@@ -41,8 +41,12 @@ export class DataService {
     }
   }
 
+  async getInputs(): Promise<any[]> {
+    return this.storageService.getData();
+  }
+
   async getTotalRewards(): Promise<string> {
-    var inputsPromise = this.getInputs();
+    var inputsPromise = this.getWatcherInputs();
 
     try {
       const inputs = await inputsPromise;
@@ -67,7 +71,7 @@ export class DataService {
 
 
   async getRewardsChart(): Promise<any[]> {
-    var inputsPromise = this.getInputs();
+    var inputsPromise = this.getWatcherInputs();
     var amount = 0;
     var rewardsChart: any = [
     ];
@@ -111,7 +115,7 @@ export class DataService {
   }
 
   async getAddresses(): Promise<string[]> {
-    var inputsPromise = this.getInputs();
+    var inputsPromise = this.getWatcherInputs();
     var addresses: string[] = [];
 
     try {

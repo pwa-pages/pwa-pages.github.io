@@ -131,6 +131,11 @@ a{
   font-family: 'Courier New', Courier, monospace;
 }
 
+.noAddresses{
+  color:green;
+  font-size: 3vh;
+}
+
 .container button {
   background-color:  rgba(238, 228, 218);
   color: #333;
