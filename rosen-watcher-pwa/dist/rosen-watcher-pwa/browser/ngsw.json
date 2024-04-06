@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1712391928832,
+  "timestamp": 1712395418262,
   "index": "./index.html",
   "assetGroups": [
     {
@@ -45,7 +45,7 @@
   "hashTable": {
     "./assets/icons/icon-512x512.png": "55c0faed12d633c24a09827e63251d81198a853b",
     "./favicon.ico": "5d73de371daf7e3e00ffb5019b4ffde3379a1827",
-    "./index.html": "f34103f16cf6f8e3513ea7eb57b15c53471ae566",
+    "./index.html": "d7b003bdc4ba82dc86887d66a162491a82db011f",
     "./main-EQQXLV2F.js": "de5ce41374165dbdd7289e6e99050fd96a3ef263",
     "./manifest.webmanifest": "2a5da26106cbdeeae057037c31435d2701e0e8e4",
     "./media/fa-brands-400-LUMNIJ6A.ttf": "acbbe78b63ab309cd560dc712a5dd2d5301d14ff",
