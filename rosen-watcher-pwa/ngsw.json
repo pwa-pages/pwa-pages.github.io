@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1712419070940,
+  "timestamp": 1712419181595,
   "appData": {
     "version": "1.0.8"
   },
@@ -46,7 +46,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "./assets/icons/icon-512x512.png": "d48e68f7d523969ec7e4541f54fb329c82390c2f",
+    "./assets/icons/icon-512x512.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./favicon.ico": "3f827768829ef167081886d77582b29f19122dc8",
     "./index.html": "e20c68994721ae476eb0db3b912440c1e9929233",
     "./main-5PGSUFGV.js": "143d2e7bb090019e84d53ed8ceadd390033f74d5",
