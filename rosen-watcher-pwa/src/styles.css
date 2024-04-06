@@ -80,13 +80,15 @@ li:last-child {
 }
 
 .addressescontainer {
-  position: absolute;
+  
   margin-left: 7vw;
   padding: 3px;
-  font-size: 3vh;
+  font-size: 2vh;
   font-weight: bold;
   color: rgba(138, 128, 128);
   animation: fadeIn 1s ease-in-out forwards;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .address{
@@ -96,7 +98,7 @@ li:last-child {
 
 .addressedit div{
   padding-bottom:10px;
-  font-size: 5vh;
+  font-size: 3vh;
   
 }
 #addressmodify{
