@@ -23,8 +23,8 @@ export class AppChart implements OnInit {
   noAddresses: boolean = false;
   showAddToHomeScreen = false;
   addressesForDisplay: string[];
-  readonly initialNDownloads: number = 20;
-  readonly fullDownloadsBatchSize: number = 100;
+  readonly initialNDownloads: number = 50;
+  readonly fullDownloadsBatchSize: number = 200;
 
   constructor(private location: Location, private route: ActivatedRoute, private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService) {
 
@@ -67,14 +67,18 @@ export class AppChart implements OnInit {
   title = 'rosen-watcher-pwa';
 
   private downloadAllForAddress(address: string, offset: number) {
-    var s = this.downloadService.downloadTransactions(address, offset, this.fullDownloadsBatchSize);
+    var s = this.downloadService.downloadTransactions(address, offset, this.fullDownloadsBatchSize+10);
 
     s.subscribe(async (result) => {
 
-      console.log('Processing all download(size = ' + this.fullDownloadsBatchSize + ') for: ' + address);
+      console.log('Processing all download(offset = ' + offset + ', size = ' + this.fullDownloadsBatchSize + ') for: ' + address);
 
-      if(!result.items || result.items.length == 0){
+      if (!result.items || result.items.length == 0) {
         return;
+      }
+
+      if (offset > 10000) {
+        console.log('this gets out of hand');
       }
 
       result.items.forEach((item: any) => {
@@ -86,7 +90,7 @@ export class AppChart implements OnInit {
       this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
 
     });
-    
+
   }
 
   private downloadForAddress(address: string, inputs: any[], storageService: StorageService) {
@@ -98,9 +102,9 @@ export class AppChart implements OnInit {
 
       var itemsz = result.items.length;
       var halfBoxId: string = "";
-      
 
-      if(itemsz > this.initialNDownloads/2){
+
+      if (itemsz > this.initialNDownloads / 2) {
         for (let i = itemsz / 2; i < itemsz; i++) {
           const item = result.items[i];
           for (let j = 0; j < item.inputs.length; j++) {
@@ -109,23 +113,23 @@ export class AppChart implements OnInit {
             }
           }
         }
-        
-
       }
       var boxId = await storageService.getDataByBoxId(halfBoxId);
 
-      if(boxId){
-        console.log('Found existing boxId in db for download for: ' + address + ',no need to download more.');
 
-        result.items.forEach((item: any) => {
-          item.inputs.forEach(async (input: any) => {
-            await storageService.addData(address, item, input);
-          });
+
+      result.items.forEach((item: any) => {
+        item.inputs.forEach(async (input: any) => {
+          await storageService.addData(address, item, input);
         });
+      });
 
-        await this.retrieveData();
+      await this.retrieveData();
+
+      if (boxId) {
+        console.log('Found existing boxId in db for download for: ' + address + ',no need to download more.');
       }
-      else{
+      if (!boxId) {
         console.log('Downloading all tx\'s for : ' + address);
         await this.downloadAllForAddress(address, 0);
       }
