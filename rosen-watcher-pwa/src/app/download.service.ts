@@ -9,8 +9,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class DownloadService {
 
-  readonly initialNDownloads: number = 5;
-  readonly fullDownloadsBatchSize: number = 20;
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 

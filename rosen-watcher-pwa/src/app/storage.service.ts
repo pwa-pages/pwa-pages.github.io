@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class StorageService {
-  dbName = 'rosenDatabase_1.1.4';
+  dbName = 'rosenDatabase_1.1.5';
   storeName = 'inputBoxes';
   dbPromise: Promise<IDBDatabase>;
 
