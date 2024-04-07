@@ -73,10 +73,49 @@ export class StorageService {
     });
   }
 
+  async getDataByBoxId(boxId: string): Promise<any> {
+    const db = await this.getDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([this.storeName], 'readonly');
+      const objectStore = transaction.objectStore(this.storeName);
+      const request = objectStore.get(boxId);
+
+      request.onsuccess = () => {
+        resolve(request.result);
+      };
+
+      request.onerror = (event: any) => {
+        reject(event.target.error);
+      };
+    });
+  }
+
+
+
+  async deleteData(address: string, boxId: any): Promise<void> {
+    const db = await this.getDB();
+    
+
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([this.storeName], 'readwrite');
+      const objectStore = transaction.objectStore(this.storeName);
+      const request = objectStore.delete(boxId);
+
+      request.onsuccess = () => {
+        resolve();
+      };
+
+      request.onerror = (event: any) => {
+        reject(event.target.error);
+      };
+    });
+  }
+
   async addData(address: string, item: any, input: any): Promise<void> {
     const db = await this.getDB();
     input.outputAddress = address;
     input.inputDate = new Date(item.timestamp);
+    
 
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.storeName], 'readwrite');
