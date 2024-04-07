@@ -44,6 +44,7 @@ export class AppChart implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    console.log('app.chart.ti ngOnInit()');
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
       this.showAddToHomeScreen = true;

@@ -17,10 +17,13 @@ export class DataService {
     var inputsPromise = this.storageService.getData();
 
     try {
+      
       const inputs = await inputsPromise;
+      
       var result_1 = inputs.filter((i: any) => i.address === this.rewardsCardanoAddress || i.address === this.rewardsErgoAddress)
         .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
 
+      
       result_1.forEach((input: any) => {
 
         input.assets = input.assets
@@ -31,6 +34,8 @@ export class DataService {
           });
 
       });
+      
+
       return await new Promise<any[]>((resolve, reject) => {
 
         resolve(result_1);
@@ -47,8 +52,9 @@ export class DataService {
 
   async getTotalRewards(): Promise<string> {
     var inputsPromise = this.getWatcherInputs();
-
+    
     try {
+      
       const inputs = await inputsPromise;
       var sum: number = inputs.reduce((accumulator, o) => {
 
@@ -58,8 +64,11 @@ export class DataService {
           assetAmount += asset.amount / Math.pow(10, asset.decimals);
         });
 
+        
+
         return accumulator + assetAmount;
       }, 0);
+      
       return await new Promise<string>((resolve, reject) => {
         resolve(sum.toFixed(3));
       });
@@ -75,7 +84,7 @@ export class DataService {
     var amount = 0;
     var rewardsChart: any = [
     ];
-
+    console.log('start retrieving chart from database');
     try {
       const inputs = await inputsPromise;
 
@@ -88,7 +97,7 @@ export class DataService {
 
         })
       });
-
+      console.log('done retrieving chart from database');
       return await new Promise<string[]>((resolve, reject) => {
         resolve(rewardsChart);
       });
