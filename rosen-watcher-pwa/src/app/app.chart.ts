@@ -105,8 +105,9 @@ export class AppChart implements OnInit {
 
 
       if (itemsz > this.initialNDownloads / 2) {
-        for (let i = itemsz / 2; i < itemsz; i++) {
+        for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
           const item = result.items[i];
+
           for (let j = 0; j < item.inputs.length; j++) {
             if (item.inputs[j].boxId && halfBoxId == "") {
               halfBoxId = item.inputs[j].boxId;
