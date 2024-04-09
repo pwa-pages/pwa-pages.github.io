@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DownloadService } from './download.service';
 import { StorageService } from './storage.service';
 import { DataService } from './data.service';
-import { Observable } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
+
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -21,7 +23,9 @@ export class AppChart implements OnInit {
   readonly rewardsErgoAddress: string = "2Eit2LFRqu2Mo33z3pYTJRHNCPYS33MrU9QgeNcRsF9359pYMahqnLvKsHwwH72C6WDSZRj7G7WC5heVyUEawcSLSx821iJXT4xWf2F5fjVWDUmvtxr3QSv1aLwThLXxeqYCCc34xjxZDPqPyNGYvWLNeBZxATvBeDuQ6pSiiRFknqmvYVsm9eH4Et3eRHCyxDJEoqZsAahwfVSya34dZNHmjaPQkwWo3Coc17pxiEnWuWmG38wSJz1awE6cymzhojnjxDTbbXgjR1yfYU3AU2v9zttnT8Gz3gUzZNSwjiXSPu3G9zkDaFZVKqb5QwTWY3Pp6SFJgBQfx3C3sp4a9d3n9c98pfWFWAGQN5EfkoHosF8BQTDuzXG3NU8gVCNeNPXYA8iWCbvY3XpxQMvQUxqkjDv9VQfUNvAKVHLW43chi2rdBrQ7Teu6NnesLRWUKXpzSxpByWftkCCdBppjZtYmhhCHqpQGkQyTcMRoP2krFKe7xKbfnFkdkhaYH9TTdKuTuKtGb265RXxiqrc34KvkZpaBBQB5UvoCU4iLSDngNTjqkNPnWekDahzNHLd6CtcdC1B19jdGEXWeNADemDtdK4zrMNg7U8iVpyGYhLDnkeLVrcbhoxkHxrFwfrN19XvitDosQqmt9dseR6SWHBCDZJdmJecCiEwd2wBiwN5N5umEy3Dd4Hznv7kDr6eX7KtYxp";
   addresses: string[];
   noAddresses: boolean = false;
+  fullDownload: boolean = false;
   showAddToHomeScreen = false;
+  busyCounter: number = 0;
   addressesForDisplay: string[];
   readonly initialNDownloads: number = 50;
   readonly fullDownloadsBatchSize: number = 200;
@@ -55,10 +59,14 @@ export class AppChart implements OnInit {
 
       var storageService = this.storageService;
 
+
       await this.retrieveData().then((inputs) => {
-        this.addresses.forEach(address => {
-          this.downloadForAddress(address, inputs, storageService);
+        this.fullDownload = true;
+        this.addresses.forEach(async address => {
+          await this.downloadForAddress(address, inputs, storageService);
         });
+        this.fullDownload = false;
+
       });
     });
 
@@ -67,75 +75,91 @@ export class AppChart implements OnInit {
 
   title = 'rosen-watcher-pwa';
 
-  private downloadAllForAddress(address: string, offset: number) {
-    var s = this.downloadService.downloadTransactions(address, offset, this.fullDownloadsBatchSize+10);
+  private async downloadAllForAddress(address: string, offset: number) {
 
-    s.subscribe(async (result) => {
 
-      console.log('Processing all download(offset = ' + offset + ', size = ' + this.fullDownloadsBatchSize + ') for: ' + address);
+    this.busyCounter++;
+    console.log(this.busyCounter);
+    var s = this.downloadService.downloadTransactions(address, offset, this.fullDownloadsBatchSize + 10);
+    var result = await firstValueFrom(s);
 
-      if (!result.items || result.items.length == 0) {
-        return;
-      }
 
-      if (offset > 10000) {
-        console.log('this gets out of hand');
-      }
+    console.log('Processing all download(offset = ' + offset + ', size = ' + this.fullDownloadsBatchSize + ') for: ' + address);
 
-      result.items.forEach((item: any) => {
-        item.inputs.forEach(async (input: any) => {
-          await this.storageService.addData(address, item, input);
-        });
+    if (!result.items || result.items.length == 0) {
+      this.busyCounter--;
+      console.log(this.busyCounter)
+      return;
+    }
+
+    if (offset > 10000) {
+      this.busyCounter--;
+      console.log(this.busyCounter)
+      console.log('this gets out of hand');
+      return;
+    }
+
+    result.items.forEach((item: any) => {
+      item.inputs.forEach(async (input: any) => {
+        await this.storageService.addData(address, item, input);
       });
-      await this.retrieveData();
-      this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
-
     });
+    await this.retrieveData();
+    await this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
+    this.busyCounter--;
+    console.log(this.busyCounter)
 
   }
 
-  private downloadForAddress(address: string, inputs: any[], storageService: StorageService) {
+  private async downloadForAddress(address: string, inputs: any[], storageService: StorageService) {
+    this.busyCounter++;
+    console.log(this.busyCounter);
+
     var s = this.downloadService.downloadTransactions(address, 0, this.initialNDownloads);
+    var result = await firstValueFrom(s.pipe(catchError(e => { this.busyCounter--; throw e; })));
 
-    s.subscribe(async (result) => {
+    console.log('Processing initial download(size = ' + this.initialNDownloads + ') for: ' + address);
 
-      console.log('Processing initial download(size = ' + this.initialNDownloads + ') for: ' + address);
-
-      var itemsz = result.items.length;
-      var halfBoxId: string = "";
+    var itemsz = result.items.length;
+    var halfBoxId: string = "";
 
 
-      if (itemsz > this.initialNDownloads / 2) {
-        for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
-          const item = result.items[i];
+    if (itemsz > this.initialNDownloads / 2) {
+      for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
+        const item = result.items[i];
 
-          for (let j = 0; j < item.inputs.length; j++) {
-            if (item.inputs[j].boxId && halfBoxId == "") {
-              halfBoxId = item.inputs[j].boxId;
-            }
+        for (let j = 0; j < item.inputs.length; j++) {
+          if (item.inputs[j].boxId && halfBoxId == "") {
+            halfBoxId = item.inputs[j].boxId;
           }
         }
       }
-      var boxId = await storageService.getDataByBoxId(halfBoxId);
+    }
+    var boxId = await storageService.getDataByBoxId(halfBoxId);
 
 
 
-      result.items.forEach((item: any) => {
-        item.inputs.forEach(async (input: any) => {
-          await storageService.addData(address, item, input);
-        });
+    result.items.forEach((item: any) => {
+      item.inputs.forEach(async (input: any) => {
+        await storageService.addData(address, item, input);
       });
-
-      await this.retrieveData();
-
-      if (boxId) {
-        console.log('Found existing boxId in db for download for: ' + address + ',no need to download more.');
-      }
-      if (!boxId) {
-        console.log('Downloading all tx\'s for : ' + address);
-        await this.downloadAllForAddress(address, 0);
-      }
     });
+
+    await this.retrieveData();
+
+    if (boxId) {
+      console.log('Found existing boxId in db for download for: ' + address + ',no need to download more.');
+    }
+    if (!boxId) {
+      console.log('Downloading all tx\'s for : ' + address);
+
+      await this.downloadAllForAddress(address, 0);
+
+
+    }
+
+    this.busyCounter--;
+    console.log(this.busyCounter)
   }
 
   private async checkAddressParams(params: any) {

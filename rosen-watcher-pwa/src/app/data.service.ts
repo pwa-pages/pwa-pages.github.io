@@ -64,8 +64,6 @@ export class DataService {
           assetAmount += asset.amount / Math.pow(10, asset.decimals);
         });
 
-        
-
         return accumulator + assetAmount;
       }, 0);
       
@@ -77,7 +75,6 @@ export class DataService {
       return "";
     }
   }
-
 
   async getRewardsChart(): Promise<any[]> {
     var inputsPromise = this.getWatcherInputs();

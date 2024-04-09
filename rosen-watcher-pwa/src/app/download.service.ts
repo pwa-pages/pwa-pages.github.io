@@ -11,16 +11,16 @@ export class DownloadService {
 
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
+  
 
 
   downloadTransactions(address: string, offset: number = 0, limit: number = 500): Observable<any> {
-
+    
     const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
 
     console.log('Downloading from: ' + url);
     return this.http.get(url).pipe(
       map((results: any) => {
-        var lastBoxIdInDownload:string = "";
         
         return results;
       }),
@@ -44,7 +44,7 @@ export class DownloadService {
         duration: 5000,
         panelClass: ['custom-snackbar']
       });
-
+  
       return throwError(() => new Error(errorMessage));
     });
   }
