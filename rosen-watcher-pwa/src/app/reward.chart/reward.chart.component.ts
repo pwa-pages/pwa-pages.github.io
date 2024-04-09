@@ -81,10 +81,11 @@ export class RewardChartComponent implements OnInit {
             ],
             borderColor: 'rgb(138, 128, 128)',
             backgroundColor: 'rgba(138, 128, 128, 0.2)',
-            borderWidth: 2,
+            borderWidth: 4,
             pointBackgroundColor: 'rgb(138, 128, 128)',
             cubicInterpolationMode: 'default',
-            tension: .4
+            tension: .4,
+            pointRadius: 0
           }
         ]
       },
