@@ -59,7 +59,6 @@ export class AppChart implements OnInit {
 
       var storageService = this.storageService;
 
-
       await this.retrieveData().then((inputs) => {
         this.fullDownload = true;
         this.addresses.forEach(async address => {
@@ -69,20 +68,15 @@ export class AppChart implements OnInit {
 
       });
     });
-
-
   }
 
   title = 'rosen-watcher-pwa';
 
   private async downloadAllForAddress(address: string, offset: number) {
-
-
     this.busyCounter++;
     console.log(this.busyCounter);
     var s = this.downloadService.downloadTransactions(address, offset, this.fullDownloadsBatchSize + 10);
     var result = await firstValueFrom(s);
-
 
     console.log('Processing all download(offset = ' + offset + ', size = ' + this.fullDownloadsBatchSize + ') for: ' + address);
 
@@ -107,8 +101,7 @@ export class AppChart implements OnInit {
     await this.retrieveData();
     await this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
     this.busyCounter--;
-    console.log(this.busyCounter)
-
+    console.log(this.busyCounter);
   }
 
   private async downloadForAddress(address: string, inputs: any[], storageService: StorageService) {
@@ -123,7 +116,6 @@ export class AppChart implements OnInit {
     var itemsz = result.items.length;
     var halfBoxId: string = "";
 
-
     if (itemsz > this.initialNDownloads / 2) {
       for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
         const item = result.items[i];
@@ -136,8 +128,6 @@ export class AppChart implements OnInit {
       }
     }
     var boxId = await storageService.getDataByBoxId(halfBoxId);
-
-
 
     result.items.forEach((item: any) => {
       item.inputs.forEach(async (input: any) => {
@@ -154,8 +144,6 @@ export class AppChart implements OnInit {
       console.log('Downloading all tx\'s for : ' + address);
 
       await this.downloadAllForAddress(address, 0);
-
-
     }
 
     this.busyCounter--;

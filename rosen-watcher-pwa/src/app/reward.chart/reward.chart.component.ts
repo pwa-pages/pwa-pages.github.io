@@ -27,10 +27,45 @@ export class RewardChartComponent implements OnInit {
       this.updateChart();
     }
   }
+  reduceChartData(data: any[], targetPoints: number): any[] {
+    let remainingPoints = data.length - targetPoints;
+    if (remainingPoints <= 0) {
+      return data; // No need to simplify if targetPoints is greater than or equal to data length
+    }
 
+    let points = data.slice(); // Create a copy of the original data
+
+    while (remainingPoints > 0) {
+      let minArea = Infinity;
+      let indexToRemove = -1;
+
+      // Iterate through each point to find the one with the smallest area
+      for (let i = 1; i < points.length - 1; i++) {
+        let area = this.calculateTriangleArea(points[i - 1], points[i], points[i + 1]);
+        if (area < minArea) {
+          minArea = area;
+          indexToRemove = i;
+        }
+      }
+
+      if (indexToRemove !== -1) {
+        points.splice(indexToRemove, 1); // Remove the point with the smallest area
+        remainingPoints--;
+      } else {
+        break; // Exit loop if no points can be removed (unlikely)
+      }
+    }
+
+    return points;
+  }
+
+  // Calculate the area of a triangle formed by three points
+  calculateTriangleArea(p1: {x: Date, y: number}, p2: {x: Date, y: number}, p3: {x: Date, y: number}): number {
+    return Math.abs((p1.x.getTime() * (p2.y - p3.y) + p2.x.getTime() * (p3.y - p1.y) + p3.x.getTime() * (p1.y - p2.y)) / 2);
+  }
   updateChart(): void {
     if (this.chart) {
-      this.chart.data.datasets[0].data = this.chartData;
+      this.chart.data.datasets[0].data =  this.reduceChartData(this.chartData, 15);
       this.chart.update();
     }
   }
@@ -48,6 +83,8 @@ export class RewardChartComponent implements OnInit {
             backgroundColor: 'rgba(138, 128, 128, 0.2)',
             borderWidth: 2,
             pointBackgroundColor: 'rgb(138, 128, 128)',
+            cubicInterpolationMode: 'default',
+            tension: .4
           }
         ]
       },
@@ -69,7 +106,7 @@ export class RewardChartComponent implements OnInit {
           x: {
             type: 'time',
             time: {
-              unit: 'day', // Set the time unit to 'day'
+              unit: 'day', 
             },
             grid: {
               color: 'rgba(0, 0, 0, 0.1)',
