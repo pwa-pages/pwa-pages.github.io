@@ -5,7 +5,6 @@ import 'chartjs-adapter-date-fns';
 @Component({
   selector: 'app-reward-chart',
   templateUrl: './reward.chart.component.html',
-  styleUrls: ['./reward.chart.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class RewardChartComponent implements OnInit {

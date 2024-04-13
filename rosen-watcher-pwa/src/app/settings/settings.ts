@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'settings',
-  templateUrl: './settings.html',
-  styleUrl: './settings.css'
+  templateUrl: './settings.html'
 })
 
 export class Settings implements OnInit {

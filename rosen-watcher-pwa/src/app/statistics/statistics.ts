@@ -10,8 +10,7 @@ import { Location } from '@angular/common';
 
 @Component({
   selector: 'statistics',
-  templateUrl: './statistics.html',
-  styleUrl: './statistics.css'
+  templateUrl: './statistics.html'
 })
 
 

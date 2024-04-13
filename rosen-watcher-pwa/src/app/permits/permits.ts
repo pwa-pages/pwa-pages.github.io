@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'permits',
-  templateUrl: './permits.html',
-  styleUrl: './permits.css'
+  templateUrl: './permits.html'
 })
 
 export class Permits implements OnInit {
