@@ -179,10 +179,19 @@ a{
   width: 20vh;
   height: 5vh;
   font-size:3vh;
-  
   display: grid;
 }
 
+.prevPage {
+  position: fixed;
+  bottom: 0vh;
+  left:7vw;
+  justify-content: left;
+  width: 20vh;
+  height: 5vh;
+  font-size:3vh;
+  display: grid;
+}
 
 .loader:before,
 .loader:after {

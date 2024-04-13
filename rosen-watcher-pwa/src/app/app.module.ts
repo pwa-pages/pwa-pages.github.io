@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { Statistics } from './statistics/statistics';
 import { Settings } from './settings/settings';
+import { Permits } from './permits/permits';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { RewardChartComponent } from './reward.chart/reward.chart.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -16,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   { path: 'settings', component: Settings },
+  { path: 'permits', component: Permits },
   { path: '**', component: Statistics }
   
 ];
@@ -24,6 +26,7 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     Settings,
+    Permits,
     Statistics,
     RewardChartComponent
   ],
