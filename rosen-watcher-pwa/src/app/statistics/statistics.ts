@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DownloadService } from './download.service';
-import { StorageService } from './storage.service';
-import { DataService } from './data.service';
+import { DownloadService } from '../service/download.service';
+import { StorageService } from '../service/storage.service';
+import { DataService } from '../service/data.service';
 import { catchError, firstValueFrom } from 'rxjs';
 
 
@@ -9,13 +9,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-chart',
-  templateUrl: './app.chart.html',
-  styleUrl: './app.chart.css'
+  selector: 'statistics',
+  templateUrl: './statistics.html',
+  styleUrl: './statistics.css'
 })
 
 
-export class AppChart implements OnInit {
+export class Statistics implements OnInit {
 
   data: string;
   rewardsChart: any[];

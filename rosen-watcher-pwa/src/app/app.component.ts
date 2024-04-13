@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DownloadService } from './download.service';
-import { StorageService } from './storage.service';
-import { DataService } from './data.service';
+import { DownloadService } from './service/download.service';
+import { StorageService } from './service/storage.service';
+import { DataService } from './service/data.service';
 
 
 @Component({

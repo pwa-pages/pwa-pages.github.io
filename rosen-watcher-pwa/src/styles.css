@@ -171,6 +171,19 @@ a{
   display: grid;
 }
 
+.nextPage {
+  position: fixed;
+  bottom: 0vh;
+  right:7vw;
+  justify-content: right;;
+  width: 20vh;
+  height: 5vh;
+  font-size:3vh;
+  
+  display: grid;
+}
+
+
 .loader:before,
 .loader:after {
   content: "";

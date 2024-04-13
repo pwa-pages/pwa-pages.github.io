@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from './data.service';
+import { DataService } from '../service/data.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './app.settings.html',
-  styleUrl: './app.settings.css'
+  selector: 'settings',
+  templateUrl: './settings.html',
+  styleUrl: './settings.css'
 })
 
-export class AppSettings implements OnInit {
+export class Settings implements OnInit {
   addresses: string[];
 
 
