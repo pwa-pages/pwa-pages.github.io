@@ -1,17 +1,28 @@
-<div class="settings">
-  <div class="container">
-    <button (click)="addaddress()">Add Address</button>
+<div class="watcherscreen settings">
+  <button (click)="addaddress()">Add Address</button><br/><br/><br/>
+  <div class="settingscontainer watchergrid container addressdispl">
+    
+
+   
+    <ng-container  *ngFor="let address of addresses; let i = index; trackBy: trackByFn">
+      <div class="watcheritem first-column">
+        
+          {{ address }}
+        
+      </div>
+      <div class="watcheritem">
+        &nbsp;&nbsp;<button (click)="editaddress(i)">Edit</button>&nbsp;
+      </div>
+      <div class="watcheritem">
+        <button (click)="deleteaddress(i)">Delete</button>
+      </div>
+
+    </ng-container>
   </div>
 
-  <div *ngFor="let address of addresses; let i = index; trackBy: trackByFn" class="container">
-    <input type="text" [(ngModel)]="addresses[i]" />
-    <button (click)="pasteData(i)"><div class="fas fa-paste"></div></button>&nbsp;
-    <button (click)="deleteaddress(i)">Delete</button>
-    
-    
-  </div>
   <div class="container">
     <button (click)="save()">Save</button>&nbsp;
     <button (click)="cancel()">Cancel</button>
   </div>
+
 </div>

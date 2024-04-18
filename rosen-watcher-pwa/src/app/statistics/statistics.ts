@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DownloadService } from '../service/download.service';
 import { StorageService } from '../service/storage.service';
 import { DataService } from '../service/data.service';
+import { FeatureService } from '../service/featureservice';
 import { catchError, firstValueFrom } from 'rxjs';
 
 
@@ -23,13 +24,14 @@ export class Statistics implements OnInit {
   addresses: string[];
   noAddresses: boolean = false;
   fullDownload: boolean = false;
+  showPermitsLink: boolean = false;
   showAddToHomeScreen = false;
   busyCounter: number = 0;
   addressesForDisplay: string[];
   readonly initialNDownloads: number = 50;
   readonly fullDownloadsBatchSize: number = 200;
 
-  constructor(private location: Location, private route: ActivatedRoute, private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService) {
+  constructor(private location: Location, private route: ActivatedRoute, private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService, private featureService: FeatureService) {
 
     this.data = "";
     this.addresses = [];
@@ -37,6 +39,7 @@ export class Statistics implements OnInit {
     this.rewardsChart = [];
 
   }
+
 
   async retrieveData(): Promise<any[]> {
     await this.dataService.getTotalRewards().then(t => { this.data = t; });
@@ -48,6 +51,8 @@ export class Statistics implements OnInit {
 
   async ngOnInit(): Promise<void> {
     console.log('app.chart.ti ngOnInit()');
+    this.showPermitsLink = this.featureService.hasPermitScreen();
+
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
       this.showAddToHomeScreen = true;
@@ -164,7 +169,7 @@ export class Statistics implements OnInit {
         this.location.replaceState(newPath);
       }
 
-      await this.storageService.clearDB();
+      await this.storageService.clearInputsStore();
     }
     else {
       this.addresses = await this.dataService.getAddresses();

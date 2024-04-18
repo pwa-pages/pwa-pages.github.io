@@ -4,12 +4,11 @@ body {
   margin: 0px !important;
 
   background-color: #f7f7f7;
-  /* Background color for the lines */
   background: linear-gradient(135deg, #f7f7f7 25%, #fff 25%, #fff 50%, #f7f7f7 50%, #f7f7f7 75%, #fff 75%, #fff 100%);
   background-size: 10px 10px;
 }
 
-.amount {
+.header {
   font-size: 4vh;
   font-weight: bold;
   color: #333;
@@ -20,8 +19,7 @@ body {
   background: rgba(138, 128, 128);
 }
 
-.amountblock {
-  font-size: 3vh;
+.headerblock {
   text-align: center;
   font-weight: bold;
   color: #333;
@@ -30,10 +28,24 @@ body {
   justify-content: center;
   background: rgba(238, 228, 218);
   border-radius: 1vh;
-
 }
 
-.amountcontainer {
+.headerblockfixed {
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+  animation: fadeIn 1s ease-in-out forwards;
+  width: 300px;
+  justify-content: center;
+  padding:4px;
+  background: rgba(238, 228, 218);
+  border-radius: 1vh;
+}
+
+
+
+
+.headercontainer {
   justify-content: center;
   display: flex;
   padding: 1vh;
@@ -42,8 +54,8 @@ body {
 .chartcontainer {
   justify-content: center;
   display: flex;
-  padding-left: 7vw;
-  padding-right: 7vw;
+  padding-left: 5vw;
+  padding-right: 5vw;
   padding-top: 2vh;
   height: 60vh;
 
@@ -81,7 +93,7 @@ li:last-child {
 
 .addressescontainer, .settingslinkcontainer {
   
-  margin-left: 7vw;
+  margin-left: 5vw;
   padding: 3px;
   font-size: 2vh;
   font-weight: bold;
@@ -91,6 +103,77 @@ li:last-child {
   flex-wrap: wrap;
 }
 
+.permitstitle{
+  font-weight: bold;
+  color: rgba(138, 128, 128);
+  font-size:5vh;
+  padding-top:5vh;
+}
+
+.permitscontainer{
+  
+  font-weight: bold;
+  color: rgba(138, 128, 128);
+  padding-top:2vh;
+  font-size: 16px;
+}
+.watcherscreen{
+  margin-left:5vw;
+  margin-right:5vw;
+}
+
+.permitscontainer .address{
+  font-family: 'Courier New', Courier, monospace;
+
+}
+
+.settingscontainer{
+  grid-template-columns: auto 70px 70px;
+  justify-content: flex-start;
+}
+
+.permitscontainer{
+  grid-template-columns: auto auto auto;
+}
+
+.watchergrid{
+  border: none;
+  border-radius: 5px;
+  display: grid;
+  background-color: transparent;
+  grid-column-gap: 10px;
+}
+
+.watcheritem {
+  background-color: transparent;
+  border: 0px dotted rgba(138, 128, 128);
+  padding-top: 7px;
+  padding-bottom: 7px;
+  text-align: left; 
+}
+
+a{
+  text-decoration: none;
+  color: rgba(138, 128, 128);
+}
+
+.watcheritem.link a{
+  color: rgba(80, 70, 70) !important;
+}
+
+
+.watcheritem.first-column {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.settings{
+  font-size:16px;
+  font-weight: bold;
+  color: rgba(138, 128, 128);
+  font-family: 'Courier New', Courier, monospace;
+}
 
 
 .settingsedit div{
@@ -102,11 +185,20 @@ li:last-child {
 .settingsmodify{
   margin-top:1vh;
 }
- 
-a{
-  text-decoration: none;
-  color: rgba(138, 128, 128);
+
+.settingsdialog {
+  position:fixed;
+  top:0px;
+  left:0px;
+  height:100%;
+  width:100%;
+  background-color: #f7f7f7;
+  background: linear-gradient(135deg, #f7f7f7 25%, #fff 25%, #fff 50%, #f7f7f7 50%, #f7f7f7 75%, #fff 75%, #fff 100%);
+  background-size: 10px 10px;
+  padding-left:5vw;
 }
+
+
 
 .addressedit{
   float: left;
@@ -118,15 +210,22 @@ a{
 
 .container input {
   margin-right: 10px;
-  width: 375px;
+  
   font-family: 'Courier New', Courier, monospace;
   font-size:12px;
   padding:2px;
   color: #333;
 }
+.addresssettingsline{
+  
+}
 
 .addressdisplay{
   font-family: 'Courier New', Courier, monospace;
+}
+
+.addressinput{
+  width:350px;
 }
 
 .noAddresses{
@@ -135,14 +234,19 @@ a{
 }
 
 
-.container button {
+
+
+
+
+.container button, .watcherscreen button {
   background-color:  rgba(238, 228, 218);
   color: #333;
   border: none;
-  padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
   margin-top: 5px;
+  padding: 5px 10px;
+  
 }
 
 .container button:hover {
@@ -150,7 +254,7 @@ a{
 }
 
 .settings{
-  padding:2vw
+  padding-top:20px;
 } 
 
 .custom-snackbar {
@@ -162,7 +266,7 @@ a{
 .loader {
   position: fixed;
   bottom: 3%;
-  left: 45vw;
+  left: 42.8vw;
   
   width: 10vw;
   aspect-ratio: 4;
@@ -172,7 +276,7 @@ a{
 .nextPage {
   position: fixed;
   bottom: 0vh;
-  right:7vw;
+  right:5vw;
   justify-content: right;;
   width: 20vh;
   height: 5vh;
@@ -183,9 +287,9 @@ a{
 .prevPage {
   position: fixed;
   bottom: 0vh;
-  left:7vw;
+  left:5vw;
   justify-content: left;
-  width: 20vh;
+  width: 40vh;
   height: 5vh;
   font-size:3vh;
   display: grid;

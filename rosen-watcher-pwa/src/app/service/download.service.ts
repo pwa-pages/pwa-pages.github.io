@@ -3,6 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { lastValueFrom, firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,19 @@ export class DownloadService {
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
   
+  downloadPermitInfo(watcherUrl: string) : Promise<any> {
+    
+    const url = watcherUrl + '/api/info';
 
+    console.log('Downloading from: ' + url);
+    return  firstValueFrom (this.http.get(url).pipe(
+      map((results: any) => {
+        
+        return results;
+      }),
+      this.handleError()
+    ));
+  }
 
   downloadTransactions(address: string, offset: number = 0, limit: number = 500): Observable<any> {
     

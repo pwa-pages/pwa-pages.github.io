@@ -1,10 +1,10 @@
 
 
 
-<div class="amountcontainer">
-    <div class="amountblock">
+<div class="headercontainer">
+    <div class="headerblock">
         Total rewards:
-        <div class="amount">{{data}} RSN </div>
+        <div class="header">{{data}} RSN </div>
     </div>
 </div>
 
@@ -41,16 +41,14 @@
         <a routerLink="/settings" routerLinkActive="active">
             Modify addresses
         </a>
-    </div>
+    </div> 
 
 </div>
 
 <span class="loader" *ngIf="busyCounter > 0"></span>
 
-<!--
-<div class="nextPage" id="permits">
+<div *ngIf="showPermitsLink" class="nextPage" id="permits">
     <a routerLink="/permits" routerLinkActive="active">
         Permits&nbsp;&nbsp;<span class="fas fa-arrow-right"></span>
     </a>
 </div>
--->

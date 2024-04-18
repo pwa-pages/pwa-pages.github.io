@@ -14,7 +14,7 @@ export class DataService {
   constructor(private storageService: StorageService) { }
 
   async getWatcherInputs(): Promise<any[]> {
-    var inputsPromise = this.storageService.getData();
+    var inputsPromise = this.storageService.getInputs();
 
     try {
       
@@ -47,7 +47,7 @@ export class DataService {
   }
 
   async getInputs(): Promise<any[]> {
-    return this.storageService.getData();
+    return this.storageService.getInputs();
   }
 
   async getTotalRewards(): Promise<string> {
@@ -118,6 +118,42 @@ export class DataService {
       return result;
 
     });
+  }
+
+  async getAddressData(): Promise<any[]> {
+    var addressesPromise = this.storageService.getAddressData();
+    var resolvedAddresses = await this.getAddresses();
+    var result:any[] = [];
+
+    
+
+    try {
+      const addresses = await addressesPromise;
+
+      addresses.forEach((address: any) => {
+
+        if(resolvedAddresses.indexOf(address.address) >= 0){
+          if(address.address.length > 14){
+            address.addressForDisplay =   address.address.substring(0, 6) + ' ... ' + address.address.substring(address.address.length-6, address.address.length);
+          }
+          else{
+            address.addressForDisplay =   address.address;
+          }
+
+          result.push(address);
+        }
+
+        
+
+      });
+
+      return await new Promise<string[]>((resolve, reject) => {
+        resolve(result);
+      });
+    } catch (error) {
+      console.error(error);
+      return addressesPromise;
+    }
   }
 
   async getAddresses(): Promise<string[]> {
