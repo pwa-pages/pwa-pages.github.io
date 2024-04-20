@@ -90,7 +90,7 @@ export class StorageService {
     });
   }
 
-  async getDataByBoxId(boxId: string): Promise<any> {
+  async getDataByBoxId(boxId: string, addressId: string): Promise<any> {
     const db = await this.getDB();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.inputsStoreName], 'readonly');
@@ -98,7 +98,13 @@ export class StorageService {
       const request = objectStore.get(boxId);
 
       request.onsuccess = () => {
-        resolve(request.result);
+        if(!request.result || request.result.outputAddress != addressId){
+          resolve(null);  
+        }
+        else{
+          resolve(request.result);
+        }
+        
       };
 
       request.onerror = (event: any) => {

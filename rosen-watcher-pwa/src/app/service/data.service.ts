@@ -198,7 +198,7 @@ export class DataService {
         }
       }
     }
-    var boxId = await storageService.getDataByBoxId(halfBoxId);
+    var boxId = await storageService.getDataByBoxId(halfBoxId, address);
 
     result.items.forEach((item: any) => {
       item.inputs.forEach(async (input: any) => {
