@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { DownloadService } from '../service/download.service';
+import { Component, OnInit} from '@angular/core';
+import { EventService, EventType } from '../service/event.service';
 import { StorageService } from '../service/storage.service';
 import { DataService } from '../service/data.service';
 import { FeatureService } from '../service/featureservice';
-import { catchError, firstValueFrom } from 'rxjs';
-
-
-import { ActivatedRoute, Router } from '@angular/router';
+import { BaseWatcherComponent } from '../basewatchercomponent';
+import { ActivatedRoute} from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
@@ -15,7 +13,7 @@ import { Location } from '@angular/common';
 })
 
 
-export class Statistics implements OnInit {
+export class Statistics extends BaseWatcherComponent implements OnInit {
 
   data: string;
   rewardsChart: any[];
@@ -26,20 +24,19 @@ export class Statistics implements OnInit {
   fullDownload: boolean = false;
   showPermitsLink: boolean = false;
   showAddToHomeScreen = false;
-  busyCounter: number = 0;
+  
   addressesForDisplay: string[];
   readonly initialNDownloads: number = 50;
   readonly fullDownloadsBatchSize: number = 200;
 
-  constructor(private location: Location, private route: ActivatedRoute, private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService, private featureService: FeatureService) {
+  constructor(private location: Location, private route: ActivatedRoute, private storageService: StorageService, private dataService: DataService, private featureService: FeatureService, eventService: EventService) {
 
+    super(eventService);
     this.data = "";
     this.addresses = [];
     this.addressesForDisplay = [];
     this.rewardsChart = [];
-
   }
-
 
   async retrieveData(): Promise<any[]> {
     await this.dataService.getTotalRewards().then(t => { this.data = t; });
@@ -49,8 +46,10 @@ export class Statistics implements OnInit {
     return result;
   }
 
-  async ngOnInit(): Promise<void> {
-    console.log('app.chart.ti ngOnInit()');
+
+  override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+    
     this.showPermitsLink = this.featureService.hasPermitScreen();
 
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -66,93 +65,25 @@ export class Statistics implements OnInit {
       await this.retrieveData().then((inputs) => {
         this.fullDownload = true;
         this.addresses.forEach(async address => {
-          await this.downloadForAddress(address, inputs, storageService);
+          await this.dataService.downloadForAddress(address, inputs, storageService);
+          await this.retrieveData();
         });
         this.fullDownload = false;
 
       });
     });
-  }
 
+    var me = this;
+    this.subscribeToEvent(EventType.InputsStoredToDb,
+      async function () {
+        await me.retrieveData();
+      }
+    );
+
+  }
+  
   title = 'rosen-watcher-pwa';
 
-  private async downloadAllForAddress(address: string, offset: number) {
-    this.busyCounter++;
-    console.log(this.busyCounter);
-    var s = this.downloadService.downloadTransactions(address, offset, this.fullDownloadsBatchSize + 10);
-    var result = await firstValueFrom(s);
-
-    console.log('Processing all download(offset = ' + offset + ', size = ' + this.fullDownloadsBatchSize + ') for: ' + address);
-
-    if (!result.items || result.items.length == 0) {
-      this.busyCounter--;
-      console.log(this.busyCounter)
-      return;
-    }
-
-    if (offset > 10000) {
-      this.busyCounter--;
-      console.log(this.busyCounter)
-      console.log('this gets out of hand');
-      return;
-    }
-
-    result.items.forEach((item: any) => {
-      item.inputs.forEach(async (input: any) => {
-        await this.storageService.addData(address, item, input);
-      });
-    });
-    await this.retrieveData();
-    await this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
-    this.busyCounter--;
-    console.log(this.busyCounter);
-  }
-
-  private async downloadForAddress(address: string, inputs: any[], storageService: StorageService) {
-    this.busyCounter++;
-    console.log(this.busyCounter);
-
-    var s = this.downloadService.downloadTransactions(address, 0, this.initialNDownloads);
-    var result = await firstValueFrom(s.pipe(catchError(e => { this.busyCounter--; throw e; })));
-
-    console.log('Processing initial download(size = ' + this.initialNDownloads + ') for: ' + address);
-
-    var itemsz = result.items.length;
-    var halfBoxId: string = "";
-
-    if (itemsz > this.initialNDownloads / 2) {
-      for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
-        const item = result.items[i];
-
-        for (let j = 0; j < item.inputs.length; j++) {
-          if (item.inputs[j].boxId && halfBoxId == "") {
-            halfBoxId = item.inputs[j].boxId;
-          }
-        }
-      }
-    }
-    var boxId = await storageService.getDataByBoxId(halfBoxId);
-
-    result.items.forEach((item: any) => {
-      item.inputs.forEach(async (input: any) => {
-        await storageService.addData(address, item, input);
-      });
-    });
-
-    await this.retrieveData();
-
-    if (boxId) {
-      console.log('Found existing boxId in db for download for: ' + address + ',no need to download more.');
-    }
-    if (!boxId) {
-      console.log('Downloading all tx\'s for : ' + address);
-
-      await this.downloadAllForAddress(address, 0);
-    }
-
-    this.busyCounter--;
-    console.log(this.busyCounter)
-  }
 
   private async checkAddressParams(params: any) {
     if (params['addresses']) {
