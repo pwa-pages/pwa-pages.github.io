@@ -52,6 +52,11 @@ body {
   padding: 1vh;
 }
 
+.chartcontainer.performancechart {
+  height: 80vh !important;
+}
+
+
 .chartcontainer {
   justify-content: center;
   display: flex;
@@ -59,12 +64,12 @@ body {
   padding-right: 5vw;
   padding-top: 2vh;
   height: 60vh;
-
 }
+
 
 .chart-container,
 .chart-container canvas,
-app-reward-chart {
+app-reward-chart, app-performance-chart  {
   width: 100% !important;
   height: 100% !important; 
 }
@@ -274,16 +279,19 @@ a{
   display: grid;
 }
 
-.nextPage {
+.navbuttons {
   position: fixed;
   bottom: 0vh;
   right:5vw;
   justify-content: right;;
-  width: 20vh;
+  width: 50vh;
   height: 5vh;
   font-size:3vh;
   display: grid;
+  gap: 2vh;
+  grid-template-columns: auto auto; 
 }
+
 
 .prevPage {
   position: fixed;

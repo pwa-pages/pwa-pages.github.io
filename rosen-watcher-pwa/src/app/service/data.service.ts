@@ -18,8 +18,8 @@ export class DataService {
   constructor(private storageService: StorageService, private downloadService: DownloadService, private eventService: EventService) { }
 
   async getWatcherInputs(): Promise<any[]> {
-    
-    
+
+
 
     var inputsPromise = this.storageService.getInputs();
 
@@ -46,7 +46,7 @@ export class DataService {
       return await new Promise<any[]>((resolve, reject) => {
 
         resolve(result_1);
-    
+
       });
     } catch (error) {
       console.error(error);
@@ -109,6 +109,67 @@ export class DataService {
     } catch (error) {
       console.error(error);
       return rewardsChart;
+    }
+  }
+
+  async getPerformanceChart(): Promise<any[]> {
+    var inputsPromise = this.getWatcherInputs();
+    var performanceChart: any = [
+    ];
+
+
+    console.log('start retrieving chart from database');
+    try {
+      const inputs = await inputsPromise;
+      var addressCharts: any[] = [];
+
+      inputs.sort((a, b) => a.inputDate - b.inputDate);
+
+      inputs.forEach((input: any) => {
+        input.assets.forEach((asset: any) => {
+
+          if (!addressCharts[input.outputAddress]) {
+            addressCharts[input.outputAddress] = [];
+          }
+
+          const currentDate = new Date();
+          const halfYearAgo = new Date(currentDate.getFullYear(), currentDate.getMonth() - 6, currentDate.getDate());
+
+          if (input.inputDate > halfYearAgo) {
+            var dt = new Date(input.inputDate.getFullYear(), input.inputDate.getMonth(), input.inputDate.getDate() - input.inputDate.getDay()).getTime();
+            if (!addressCharts[input.outputAddress][dt]) {
+              addressCharts[input.outputAddress][dt] = 0;
+            }
+
+            addressCharts[input.outputAddress][dt] += asset.amount;
+          }
+        })
+      });
+
+      performanceChart = [];
+
+      for (const key in addressCharts) {
+        if (addressCharts.hasOwnProperty(key)) {
+
+          var chart: any[] = [];
+          for (const ckey in addressCharts[key]) {
+            chart.push({ x: new Date(Number(ckey)), y: addressCharts[key][ckey] });
+          }
+          var addressForDisplay = key.substring(0, 6) + '...' + key.substring(key.length - 6, key.length);
+          performanceChart.push({ address: key, addressForDisplay: addressForDisplay, chart: chart });
+
+        }
+      }
+
+
+
+      console.log('done retrieving chart from database');
+      return await new Promise<string[]>((resolve, reject) => {
+        resolve(performanceChart);
+      });
+    } catch (error) {
+      console.error(error);
+      return performanceChart;
     }
   }
 

@@ -1,0 +1,39 @@
+
+<div class="headercontainer">
+    <div class="headerblock">
+        Performance&nbsp;
+        <div class="header">RSN per week</div>
+    </div>
+</div>
+
+
+
+
+
+<div class="addressescontainer noAddresses" *ngIf="noAddresses">
+    You don't have any watcher addresses yet, click on modify below to add addresses.
+</div>
+
+
+
+<div class="chartcontainer performancechart">
+    <app-performance-chart [chartData]="performanceChart"></app-performance-chart>
+</div>
+
+
+
+<span class="loader" *ngIf="busyCounter > 0"></span>
+
+<div class="navbuttons">
+    <div>
+    <a routerLink="/main" routerLinkActive="active">
+        Total Rewards&nbsp;<span class="fas fa-arrow-down"></span>
+    </a>
+</div>
+<div *ngIf="showPermitsLink" >
+    <a routerLink="/permits" routerLinkActive="active">
+        Permits&nbsp;&nbsp;<span class="fas fa-arrow-right"></span>
+    </a>
+    </div>
+
+</div>

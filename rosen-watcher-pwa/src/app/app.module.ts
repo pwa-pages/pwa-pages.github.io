@@ -7,8 +7,10 @@ import { Statistics } from './statistics/statistics';
 import { Settings } from './settings/settings';
 import { SettingsDialog } from './settings/dialog';
 import { Permits } from './permits/permits';
+import { Performance } from './statistics/performance';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { RewardChartComponent } from './reward.chart/reward.chart.component';
+import { PerformanceChartComponent } from './performance.chart/performance.chart.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
@@ -23,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 const routes: Routes = [
   { path: 'settings', component: Settings },
   { path: 'permits', component: Permits },
+  { path: 'performance', component: Performance },
   { path: '**', component: Statistics }
   
 ];
@@ -34,7 +37,9 @@ const routes: Routes = [
     SettingsDialog,
     Permits,
     Statistics,
-    RewardChartComponent
+    Performance,
+    RewardChartComponent,
+    PerformanceChartComponent
   ],
   imports: [
     BrowserModule,
