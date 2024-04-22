@@ -47,7 +47,7 @@
 
 <span class="loader" *ngIf="busyCounter > 0"></span>
 
-<div class="navbuttons">
+<div class="navbuttons" *ngIf="busyCounter == 0">
     <div>
     <a routerLink="/performance" routerLinkActive="active">
         Performance&nbsp;<span class="fas fa-arrow-up"></span>
