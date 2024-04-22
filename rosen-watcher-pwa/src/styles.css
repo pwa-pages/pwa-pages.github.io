@@ -290,6 +290,7 @@ a{
   display: grid;
   gap: 2vh;
   grid-template-columns: auto auto; 
+  z-index: -10000;
 }
 
 

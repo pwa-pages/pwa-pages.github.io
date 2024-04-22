@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import Chart from 'chart.js/auto';
-import 'chartjs-adapter-date-fns';
 
 @Component({
   selector: 'app-performance-chart',
