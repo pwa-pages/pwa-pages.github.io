@@ -18,7 +18,6 @@ export class PerformanceChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chart = this.createChart();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -89,37 +88,32 @@ export class PerformanceChartComponent implements OnInit {
   }
 
   updateChart(): void {
-    if (this.chart) {
-
-      //this.chart.data.datasets[0].data = this.reduceChartData(this.chartData[0].chart, 50);
-
-      var cnt = this.chartData.length - this.chart.data.datasets.length;
+    if (!this.chart) {
+      var dataSets = [];
+      var cnt = this.chartData.length;
       for (var i = 0; i < cnt; i++) {
-        this.chart.data.datasets.push(
+        dataSets.push(
           this.createDataSet(i)
         );
       }
 
       for (var i = 0; i < this.chartData.length; i++) {
-        this.chart.data.datasets[i].data = this.chartData[i].chart;  
-        this.chart.data.datasets[i].label = 'Address: ' + this.chartData[i].addressForDisplay;
+        dataSets[i].data = this.chartData[i].chart;  
+        dataSets[i].label = 'Address: ' + this.chartData[i].addressForDisplay;
       }
 
-      
-
-      this.chart.update();
-
+      this.createChart(dataSets);
     }
+
+
   }
 
 
-  createChart(): Chart<"bar", any[][], unknown> {
+  createChart(datasets: any[]): Chart<"bar", any[][], unknown> {
     return new Chart("PerformanceChart", {
       type: 'bar',
       data: {
-        datasets: [
-          this.createDataSet(9)
-        ]
+        datasets: datasets
       },
       options: {
         responsive: true,

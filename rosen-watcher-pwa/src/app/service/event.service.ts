@@ -1,5 +1,5 @@
 
-import { Injectable, OnDestroy} from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export enum EventType {
@@ -22,20 +22,20 @@ export class EventService {
 
 
   constructor() {
-    
-  
+
+
   }
   ngOnDestroy(): void {
-    
+
   }
 
-  resetSubscriptions(){
-    this.eventSubscriptions =  {
-        [EventType.StartDownload]: new Subject<any>,
-        [EventType.EndDownload]: new Subject<any>,
-        [EventType.InputsStoredToDb]: new Subject<any>
-      };
-      return this.eventSubscriptions;
+  resetSubscriptions() {
+    this.eventSubscriptions = {
+      [EventType.StartDownload]: new Subject<any>,
+      [EventType.EndDownload]: new Subject<any>,
+      [EventType.InputsStoredToDb]: new Subject<any>
+    };
+    return this.eventSubscriptions;
   }
 
   async sendEvent(eventType: EventType) {
@@ -56,6 +56,6 @@ export class EventService {
       this.resetSubscriptions();
     }
 
-    
+
   }
 }
