@@ -29,11 +29,10 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     this.performanceChart = [];
   }
 
-  async retrieveData(): Promise<any[]> {
+  async retrieveData(): Promise<void>  {
     
     this.performanceChart = await this.dataService.getPerformanceChart();
-    var result = await this.dataService.getInputs();
-    return result;
+
   }
 
 
@@ -47,24 +46,10 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     });
 
     this.route.params.subscribe(async params => {
-
-      var storageService = this.storageService;
-
-      await this.retrieveData().then((inputs) => {
-        this.addresses.forEach(async address => {
-          await this.dataService.downloadForAddress(address, inputs, storageService);
-          await this.retrieveData();
-        });
-
-      });
+      await this.retrieveData();
+     
     });
 
-    var me = this;
-    this.subscribeToEvent(EventType.InputsStoredToDb,
-      async function () {
-        await me.retrieveData();
-      }
-    );
 
   }
 
