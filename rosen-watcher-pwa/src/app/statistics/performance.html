@@ -8,17 +8,11 @@
 
 
 
-
-
-<div class="addressescontainer noAddresses" *ngIf="noAddresses">
-    You don't have any watcher addresses yet, click on modify below to add addresses.
-</div>
-
-
-
 <div class="chartcontainer performancechart">
-    <app-performance-chart [chartData]="performanceChart"></app-performance-chart>
-    
+
+    <div class="chart-container">
+        <canvas  id="PerformanceChart" ></canvas>
+    </div>
 </div>
 
 
