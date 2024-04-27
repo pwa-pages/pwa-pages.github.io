@@ -20,9 +20,9 @@ export class Performance extends BaseWatcherComponent implements OnInit {
   showPermitsLink: boolean = false;
   chart: Chart<"bar", any[][], unknown> | undefined;
 
-  constructor(private dataService: DataService, private featureService: FeatureService, eventService: EventService) {
+  constructor(private dataService: DataService, featureService: FeatureService, eventService: EventService) {
 
-    super(eventService);
+    super(eventService, featureService);
     this.data = "";
     this.addresses = [];
     this.performanceChart = [];

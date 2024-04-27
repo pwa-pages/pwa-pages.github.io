@@ -1,5 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { EventService, EventType } from './service/event.service';
+import { FeatureService } from './service/featureservice';
+
 
 
 @Component({
@@ -10,7 +12,8 @@ import { EventService, EventType } from './service/event.service';
 export class BaseWatcherComponent implements OnInit {
 
   public busyCounter: number = 0;
-  constructor(private eventService: EventService) {
+  private quadrants = "";
+  constructor(private eventService: EventService, public featureService: FeatureService) {
   }
 
   ngOnInit(): void {
@@ -36,7 +39,12 @@ export class BaseWatcherComponent implements OnInit {
     const width = window.innerWidth;
     const height = window.innerHeight;
     const quadrant = this.calculateQuadrant(clientX, clientY, width, height);
-    console.log('Quadrant:', quadrant);
+    this.quadrants = this.quadrants + quadrant;
+    this.quadrants = this.quadrants.slice(-8);
+    if(this.quadrants === "01230123"){
+      this.featureService.activateAllFeatures();
+    }
+    console.log('Quadrants:',  this.quadrants);
   }
 
   calculateQuadrant(x: number, y: number, width: number, height: number): any {

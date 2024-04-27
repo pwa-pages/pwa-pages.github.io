@@ -5,12 +5,20 @@ import { Injectable } from '@angular/core';
 })
 export class FeatureService {
 
+    private permitScreen : boolean = false;
+    private urlSetting : boolean = false;
+
     public hasPermitScreen(): boolean {
-        return false;
+        return this.permitScreen;
     }
 
     public useUrlSetting(): boolean {
-        return false;
+        return this.urlSetting;
+    }
+
+    public activateAllFeatures(){
+        this.permitScreen = true;
+        this.urlSetting = true;
     }
 }
 
