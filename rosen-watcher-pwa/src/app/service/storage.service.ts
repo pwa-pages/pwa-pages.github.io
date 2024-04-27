@@ -8,6 +8,8 @@ export class StorageService {
   inputsStoreName = 'inputBoxes';
   addressDataStoreName = 'addressData';
   dbPromise: Promise<IDBDatabase>;
+  inputsCache: any[] = [];
+   updateCache: boolean = true;
 
   constructor() {
     this.dbPromise = this.initIndexedDB();
@@ -15,6 +17,7 @@ export class StorageService {
 
   async initIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
+      
       const request = window.indexedDB.open(this.dbName, 2);
 
       request.onupgradeneeded = (event: any) => {
@@ -30,6 +33,7 @@ export class StorageService {
 
       request.onsuccess = async (event: any) => {
         const db = event.target.result;
+        
         resolve(db);
       };
 
@@ -42,6 +46,7 @@ export class StorageService {
 
 
   async getDB(): Promise<IDBDatabase> {
+    
     return await this.dbPromise;
   }
 
@@ -52,9 +57,11 @@ export class StorageService {
       const objectStore = transaction.objectStore(this.inputsStoreName);
       const request = objectStore.clear()
 
+      this.updateCache = true;
       request.onsuccess = () => {
         console.log('IndexedDB cleared successfully.');
         resolve();
+        
       };
 
       request.onerror = (event: any) => {
@@ -65,7 +72,16 @@ export class StorageService {
   }
 
   async getInputs(): Promise<any[]> {
-    return await this.getData(this.inputsStoreName);
+    if(this.inputsCache && this.inputsCache.length > 0 && !this.updateCache){
+      return new Promise<any[]>((resolve, reject) => {
+        console.log('Getting inputs from cache');
+        resolve(this.inputsCache);
+      });
+    }
+    this.updateCache = false;
+    console.log('Getting inputs from database');
+    this.inputsCache = await this.getData(this.inputsStoreName);
+    return this.inputsCache;
   }
 
   async getAddressData(): Promise<any[]> {
@@ -73,21 +89,30 @@ export class StorageService {
   }
 
   private async getData(storeName: string): Promise<any[]> {
+    
     const db = await this.getDB();
+    
     return new Promise((resolve, reject) => {
 
+      
       const transaction = db.transaction([storeName], 'readonly');
+      
       const objectStore = transaction.objectStore(storeName);
+
       const request = objectStore.getAll();
 
       request.onsuccess = () => {
         resolve(request.result);
+        
       };
+
+      
 
       request.onerror = (event: any) => {
         reject(event.target.error);
       };
     });
+    
   }
 
   async getDataByBoxId(boxId: string, addressId: string): Promise<any> {
@@ -100,6 +125,7 @@ export class StorageService {
       request.onsuccess = () => {
         if(!request.result || request.result.outputAddress != addressId){
           resolve(null);  
+          
         }
         else{
           resolve(request.result);
@@ -114,37 +140,15 @@ export class StorageService {
   }
 
 
-
-  async deleteData(address: string, boxId: any): Promise<void> {
-    const db = await this.getDB();
-
-
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([this.inputsStoreName], 'readwrite');
-      const objectStore = transaction.objectStore(this.inputsStoreName);
-      const request = objectStore.delete(boxId);
-
-      request.onsuccess = () => {
-        resolve();
-      };
-
-      request.onerror = (event: any) => {
-        reject(event.target.error);
-      };
-    });
-  }
-
   async putAddressData(addressData: any[]): Promise<void> {
     const db = await this.getDB();
-
 
     addressData.forEach(a => {
       const transaction = db.transaction([this.addressDataStoreName], 'readwrite');
       const objectStore = transaction.objectStore(this.addressDataStoreName);
       objectStore.put(a);
+      
     });
-
-
   }
 
   async addData(address: string, item: any, input: any): Promise<void> {
@@ -167,8 +171,9 @@ export class StorageService {
       const transaction = db.transaction([this.inputsStoreName], 'readwrite');
       const objectStore = transaction.objectStore(this.inputsStoreName);
       const request = objectStore.put(dbInput);
-
+      this.updateCache = true;
       request.onsuccess = () => {
+        
         resolve();
       };
 

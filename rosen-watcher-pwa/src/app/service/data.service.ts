@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable} from '@angular/core';
 import { StorageService } from './storage.service';
 import { DownloadService } from './download.service';
 import { EventService, EventType } from './event.service';
@@ -18,15 +18,13 @@ export class DataService {
   constructor(private storageService: StorageService, private downloadService: DownloadService, private eventService: EventService) { }
 
   async getWatcherInputs(): Promise<any[]> {
-
-
-
+    
     var inputsPromise = this.storageService.getInputs();
-
+    
     try {
-
+      
       const inputs = await inputsPromise;
-
+      
       var result_1 = inputs.filter((i: any) => i.address === this.rewardsCardanoAddress || i.address === this.rewardsErgoAddress)
         .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
 
@@ -41,7 +39,7 @@ export class DataService {
           });
 
       });
-
+      
 
       return await new Promise<any[]>((resolve, reject) => {
 
@@ -93,6 +91,7 @@ export class DataService {
     try {
       const inputs = await inputsPromise;
 
+
       inputs.sort((a, b) => a.inputDate - b.inputDate);
 
       inputs.forEach((input: any) => {
@@ -120,9 +119,10 @@ export class DataService {
 
     console.log('start retrieving chart from database');
     try {
+      
       const inputs = await inputsPromise;
       var addressCharts: any[] = [];
-
+      
       inputs.sort((a, b) => a.inputDate - b.inputDate);
 
       inputs.forEach((input: any) => {
@@ -159,6 +159,8 @@ export class DataService {
           performanceChart.push({ address: key, addressForDisplay: addressForDisplay, chart: chart });
 
         }
+
+        
       }
 
 
@@ -225,6 +227,8 @@ export class DataService {
       return;
     }
 
+    
+
     result.items.forEach((item: any) => {
       item.inputs.forEach(async (input: any) => {
         await this.storageService.addData(address, item, input);
@@ -261,6 +265,7 @@ export class DataService {
     }
     var boxId = await storageService.getDataByBoxId(halfBoxId, address);
 
+    console.log('add bunch of data');
     result.items.forEach((item: any) => {
       item.inputs.forEach(async (input: any) => {
         await storageService.addData(address, item, input);

@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DownloadService } from './service/download.service';
-import { StorageService } from './service/storage.service';
-import { DataService } from './service/data.service';
 
 
 @Component({
@@ -12,7 +9,7 @@ import { DataService } from './service/data.service';
 
 export class AppComponent implements OnInit {
 
-  constructor(private downloadService: DownloadService, private storageService: StorageService, private dataService: DataService) {
+  constructor() {
   }
 
   ngOnInit(): void {
