@@ -53,7 +53,7 @@ body {
 }
 
 .chartcontainer.performancechart {
-  height: 80vh !important;
+  height: 75vh !important;
 }
 
 
@@ -190,6 +190,7 @@ a{
 
 .settingsmodify{
   margin-top:1vh;
+  white-space: nowrap;
 }
 
 .settingsdialog {
