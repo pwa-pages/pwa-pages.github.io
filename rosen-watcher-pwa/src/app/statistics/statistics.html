@@ -29,20 +29,32 @@
 </div>
 
 
-<div class="settingslinkcontainer" *ngIf="busyCounter == 0">
-
-    <div class="settingsedit">
+<div class="linkcontainer" *ngIf="busyCounter == 0">
+    <div class="linkicon">
         <a routerLink="/settings" routerLinkActive="active">
             <div class="fas fa-edit"></div>
         </a>
     </div>
-
-    <div class="settingsmodify">
+    &nbsp;
+    <div class="link">
         <a routerLink="/settings" routerLinkActive="active">
             Modify addresses
         </a>
     </div> 
+</div>
 
+<div class="linkcontainer" *ngIf="busyCounter == 0 && showHomeLink()">
+    <div class="linkicon" id = "homelink">
+        <a (click)="installApp()">
+            <div class="fas fa-home"></div>
+        </a>
+    </div>
+    &nbsp;
+    <div class="link">
+        <a (click)="installApp()">
+            Add to home 
+        </a>
+    </div> 
 </div>
 
 <span class="loader" *ngIf="busyCounter > 0"></span>

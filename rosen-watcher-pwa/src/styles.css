@@ -97,7 +97,7 @@ li:last-child {
   margin-bottom: 0;
 }
 
-.addressescontainer, .settingslinkcontainer {
+.addressescontainer, .linkcontainer {
   
   margin-left: 5vw;
   padding: 3px;
@@ -160,6 +160,7 @@ li:last-child {
 
 a{
   text-decoration: none;
+  cursor: pointer;
   color: rgba(138, 128, 128);
 }
 
@@ -181,14 +182,18 @@ a{
   font-family: 'Courier New', Courier, monospace;
 }
 
+#homelink{
+  margin:-2px;
+}
 
-.settingsedit div{
+
+.linkicon div{
   padding-bottom:10px;
   font-size: 3vh;
 }
 
 
-.settingsmodify{
+.link{
   margin-top:1vh;
   white-space: nowrap;
 }

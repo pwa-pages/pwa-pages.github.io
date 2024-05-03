@@ -22,6 +22,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   showPermitsLink: boolean = false;
   addressesForDisplay: string[];
 
+
   constructor(private location: Location, private route: ActivatedRoute, private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService) {
 
     super(eventService, featureService);
@@ -31,6 +32,10 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.rewardsChart = [];
   }
 
+  showHomeLink() : boolean{
+    return (window as any).showHomeLink;
+  }
+
   async retrieveData(): Promise<any[]> {
     this.data = await this.dataService.getTotalRewards();
     this.rewardsChart = await this.dataService.getRewardsChart();
@@ -38,10 +43,30 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay();
     return result;
   }
-
+  installApp(): void {
+    if ((window as any).deferredPrompt) {
+      (window as any).deferredPrompt.prompt();
+      
+      (window as any).deferredPrompt.userChoice.then((choiceResult : any) => {
+        if (choiceResult.outcome === 'accepted') {
+          (window as any).showHomeLink = false;
+        } else {
+        }
+        (window as any).deferredPrompt = null;
+      });
+    }
+  }
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+      (window as any).showHomeLink = true;
+      event.preventDefault();
+      
+      (window as any).deferredPrompt = event;
+      
+    });
     
     this.showPermitsLink = this.featureService.hasPermitScreen();
 
