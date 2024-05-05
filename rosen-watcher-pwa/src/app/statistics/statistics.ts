@@ -1,10 +1,11 @@
 import { Component, OnInit} from '@angular/core';
 import { EventService, EventType } from '../service/event.service';
 import { StorageService } from '../service/storage.service';
+import { SwipeService } from '../service/swipe.service';
 import { DataService } from '../service/data.service';
 import { FeatureService } from '../service/featureservice';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ActivatedRoute} from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
@@ -23,9 +24,9 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   addressesForDisplay: string[];
 
 
-  constructor(private location: Location, private route: ActivatedRoute, private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService) {
+  constructor(private location: Location, private route: ActivatedRoute, private router: Router, private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService) {
 
-    super(eventService, featureService);
+    super(eventService, featureService, swipeService);
     this.data = "";
     this.addresses = [];
     this.addressesForDisplay = [];
@@ -60,6 +61,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
+
     window.addEventListener('beforeinstallprompt', (event) => {
       (window as any).showHomeLink = true;
       event.preventDefault();
@@ -92,6 +94,12 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.subscribeToEvent(EventType.InputsStoredToDb,
       async function () {
         await me.retrieveData();
+      }
+    );
+
+    this.subscribeToEvents([EventType.SwipeLeft/*, EventType.SwipeRight*/] ,
+      async function () {
+        await me.router.navigate(['/performance']);
       }
     );
 

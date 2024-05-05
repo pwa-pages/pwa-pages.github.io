@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { EventService, EventType } from './service/event.service';
 import { FeatureService } from './service/featureservice';
-
+import { SwipeService } from './service/swipe.service';
 
 
 @Component({
@@ -13,10 +13,11 @@ export class BaseWatcherComponent implements OnInit {
 
   public busyCounter: number = 0;
   private quadrants = "";
-  constructor(private eventService: EventService, public featureService: FeatureService) {
+  constructor(private eventService: EventService, public featureService: FeatureService, public swipeService: SwipeService) {
   }
 
   ngOnInit(): void {
+    this.swipeService.swipeDetect();
     var me = this;
     this.subscribeToEvent(EventType.StartDownload,
       function () {
@@ -66,6 +67,14 @@ export class BaseWatcherComponent implements OnInit {
 
   async subscribeToEvent(eventType: EventType, callback: () => void) {
     this.eventService.subscribeToEvent(eventType, callback);
+  }
+
+  async subscribeToEvents(eventTypes: EventType[], callback: () => void) {
+
+    eventTypes.forEach(eventType => {
+      this.eventService.subscribeToEvent(eventType, callback);  
+    });
+    
   }
 
   

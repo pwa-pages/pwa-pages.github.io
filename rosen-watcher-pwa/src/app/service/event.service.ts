@@ -6,6 +6,8 @@ export enum EventType {
   StartDownload = 'BeginDownload',
   EndDownload = 'EndDownload',
   InputsStoredToDb = 'InputsStoredToDb',
+  SwipeLeft = 'SwipeLeft',
+  SwipeRight = 'SwipeRight',
 
 }
 
@@ -33,7 +35,9 @@ export class EventService {
     this.eventSubscriptions = {
       [EventType.StartDownload]: new Subject<any>,
       [EventType.EndDownload]: new Subject<any>,
-      [EventType.InputsStoredToDb]: new Subject<any>
+      [EventType.InputsStoredToDb]: new Subject<any>,
+      [EventType.SwipeLeft]: new Subject<any>,
+      [EventType.SwipeRight]: new Subject<any>
     };
     return this.eventSubscriptions;
   }
