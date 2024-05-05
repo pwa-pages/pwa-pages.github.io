@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { EventService, EventType } from './service/event.service';
 import { FeatureService } from './service/featureservice';
 import { SwipeService } from './service/swipe.service';
-
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,19 +13,21 @@ export class BaseWatcherComponent implements OnInit {
 
   public busyCounter: number = 0;
   private quadrants = "";
-  constructor(private eventService: EventService, public featureService: FeatureService, public swipeService: SwipeService) {
+  
+ 
+  constructor(private eventService: EventService, public featureService:FeatureService, public swipeService: SwipeService, private router: Router ) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.swipeService.swipeDetect();
     var me = this;
-    this.subscribeToEvent(EventType.StartDownload,
+    await this.subscribeToEvent(EventType.StartDownload,
       function () {
         me.busyCounter = 1
       }
     );
     var me = this;
-    this.subscribeToEvent(EventType.EndDownload,
+    await this.subscribeToEvent(EventType.EndDownload,
       function () {
         me.busyCounter = 0
       }
@@ -60,19 +62,26 @@ export class BaseWatcherComponent implements OnInit {
     }
   }
 
+async navigate(route: string){
+  await this.router.navigate([route]);
+}
 
-  ngOnDestroy(): void {
-    this.eventService.unSubscribeAll();
+  async unSubscribeAll(): Promise<void> {
+    await this.eventService.unSubscribeAll();
+  }
+
+  async ngOnDestroy(): Promise<void> {
+    await this.eventService.unSubscribeAll();
   }
 
   async subscribeToEvent(eventType: EventType, callback: () => void) {
-    this.eventService.subscribeToEvent(eventType, callback);
+    await this.eventService.subscribeToEvent(eventType, callback);
   }
 
   async subscribeToEvents(eventTypes: EventType[], callback: () => void) {
 
-    eventTypes.forEach(eventType => {
-      this.eventService.subscribeToEvent(eventType, callback);  
+    eventTypes.forEach(async eventType => {
+      await this.eventService.subscribeToEvent(eventType, callback);  
     });
     
   }

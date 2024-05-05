@@ -338,6 +338,9 @@ a{
   50%,100% {transform: translate(var(--d,0)) rotate(.5turn)}
 }
 
+.swiping .navbuttons , .swiping .loader{
+  display: none;
+}
 
 
 .swipeleft {

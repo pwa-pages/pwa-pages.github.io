@@ -61,7 +61,7 @@
 
 <div class="navbuttons" *ngIf="busyCounter == 0 && !noAddresses">
     <div>
-    <a routerLink="/performance" routerLinkActive="active">
+    <a (click)="swipeLeft()">
         Performance&nbsp;<span class="fas fa-arrow-right"></span>
     </a>
 </div>

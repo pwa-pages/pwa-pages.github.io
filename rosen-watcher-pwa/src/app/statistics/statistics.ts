@@ -5,8 +5,9 @@ import { SwipeService } from '../service/swipe.service';
 import { DataService } from '../service/data.service';
 import { FeatureService } from '../service/featureservice';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { Location } from '@angular/common';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'statistics',
@@ -24,9 +25,9 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   addressesForDisplay: string[];
 
 
-  constructor(private location: Location, private route: ActivatedRoute, private router: Router, private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService) {
+  constructor(private location: Location, private route: ActivatedRoute, private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService, router: Router) {
 
-    super(eventService, featureService, swipeService);
+    super(eventService, featureService, swipeService, router);
     this.data = "";
     this.addresses = [];
     this.addressesForDisplay = [];
@@ -56,6 +57,10 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
         (window as any).deferredPrompt = null;
       });
     }
+  }
+
+  swipeLeft(): void{
+    this.swipeService.swipe('left');
   }
 
   override async ngOnInit(): Promise<void> {
@@ -91,15 +96,16 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     });
 
     var me = this;
-    this.subscribeToEvent(EventType.InputsStoredToDb,
+    await this.subscribeToEvent(EventType.InputsStoredToDb,
       async function () {
         await me.retrieveData();
       }
     );
 
-    this.subscribeToEvents([EventType.SwipeLeft/*, EventType.SwipeRight*/] ,
+    await this.subscribeToEvents([EventType.SwipeLeft/*, EventType.SwipeRight*/] ,
       async function () {
-        await me.router.navigate(['/performance']);
+        await me.navigate('/performance');
+        
       }
     );
 

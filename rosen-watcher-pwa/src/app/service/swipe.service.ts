@@ -11,9 +11,10 @@ export class SwipeService {
 
     constructor(private eventService: EventService) { }
 
-    swipe(swipedir: any, touchsurface: any) {
+    swipe(swipedir: any) {
 
-        
+        var touchsurface = document.body;
+        touchsurface.classList.add("swiping");
         var me = this;
         if (swipedir == 'left') {
             
@@ -156,7 +157,7 @@ export class SwipeService {
             }
 
             if (swipedir) {
-                me.swipe(swipedir, touchsurface);
+                me.swipe(swipedir);
             }
             else {
                 me.resetswipes(touchsurface);
@@ -171,6 +172,7 @@ export class SwipeService {
         el.style.width = 'inherit';
         el.style.height = 'inherit';
         el.classList.remove("swipeleftin");
+        el.classList.remove("swiping");
         el.classList.remove("swiperightin");
         el.classList.remove("swipeupin");
         el.classList.remove("swipedownin");

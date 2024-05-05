@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { FeatureService } from '../service/featureservice';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import Chart from 'chart.js/auto';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'performance',
@@ -22,26 +22,31 @@ export class Performance extends BaseWatcherComponent implements OnInit {
   showPermitsLink: boolean = false;
   chart: Chart<"bar", any[][], unknown> | undefined;
 
-  constructor(private router: Router, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService) {
+  constructor(router: Router, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService) {
 
-    super(eventService, featureService, swipeService);
+    super(eventService, featureService, swipeService, router);
     this.data = "";
     this.addresses = [];
     this.performanceChart = [];
   }
 
-  async retrieveData(): Promise<void>  {
+  async retrieveData(): Promise<void> {
     this.performanceChart = await this.dataService.getPerformanceChart();
+  }
+
+  swipeRight(): void{
+    this.swipeService.swipe('right');
   }
 
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-var me = this;
-    this.subscribeToEvents([/*EventType.SwipeLeft, */EventType.SwipeRight] ,
+    var me = this;
+    await this.subscribeToEvents([/*EventType.SwipeLeft, */EventType.SwipeRight],
       async function () {
-        await me.router.navigate(['/statistics']);
+
+        await me.navigate('/statistics');
       }
     );
     this.showPermitsLink = this.featureService.hasPermitScreen();
@@ -105,9 +110,9 @@ var me = this;
       '#7f7f7f', // Gray
       '#17becf',  // Turquoise
       '#bcbd22' // Yellow-Green
-  ];
+    ];
 
-    var chartColor = chartColors[(i)%10];
+    var chartColor = chartColors[(i) % 10];
     return {
       label: "",
       data: [
@@ -129,7 +134,7 @@ var me = this;
       }
 
       for (var i = 0; i < this.performanceChart.length; i++) {
-        dataSets[i].data = this.performanceChart[i].chart;  
+        dataSets[i].data = this.performanceChart[i].chart;
         dataSets[i].label = 'Address: ' + this.performanceChart[i].addressForDisplay;
       }
 
@@ -153,7 +158,7 @@ var me = this;
           y: {
             beginAtZero: true,
             stacked: true,
-            
+
             grid: {
               color: 'rgba(0, 0, 0, 0.1)',
             },

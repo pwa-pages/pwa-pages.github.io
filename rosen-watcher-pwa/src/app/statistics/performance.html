@@ -9,7 +9,6 @@
 
 
 <div class="chartcontainer performancechart">
-
     <div class="chart-container">
         <canvas  id="PerformanceChart" ></canvas>
     </div>
@@ -21,7 +20,7 @@
 
 <div class="navbuttons">
     <div>
-    <a routerLink="/main" routerLinkActive="active">
+    <a (click)="swipeRight()">
         Total Rewards&nbsp;<span class="fas fa-arrow-left"></span>
     </a>
 </div>
