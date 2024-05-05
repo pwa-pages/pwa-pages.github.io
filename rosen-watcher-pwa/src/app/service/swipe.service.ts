@@ -16,13 +16,14 @@ export class SwipeService {
         
         var me = this;
         if (swipedir == 'left') {
-            this.eventService.sendEvent(EventType.SwipeLeft);
+            
             touchsurface.classList.add("swipeleft");
 
             setTimeout(function () {
 
                 touchsurface.classList.remove("swipeleft");
                 touchsurface.style.left = '100vw';
+                me.eventService.sendEvent(EventType.SwipeLeft);
 
                 setTimeout(function () {
                     touchsurface.classList.add("swipeleftin");
@@ -34,13 +35,14 @@ export class SwipeService {
             }, 250);
         }
         else if (swipedir == 'right') {
-            this.eventService.sendEvent(EventType.SwipeRight);
+            
             touchsurface.classList.add("swiperight");
 
             setTimeout(function () {
 
                 touchsurface.classList.remove("swiperight");
                 touchsurface.style.left = '-100vw';
+                me.eventService.sendEvent(EventType.SwipeRight);
 
                 setTimeout(function () {
                     touchsurface.classList.add("swiperightin");
