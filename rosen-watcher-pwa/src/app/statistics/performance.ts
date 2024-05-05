@@ -24,7 +24,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
 
   constructor(router: Router, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService) {
 
-    super(eventService, featureService, swipeService, router);
+    super(eventService, featureService, swipeService);
     this.data = "";
     this.addresses = [];
     this.performanceChart = [];
@@ -35,7 +35,8 @@ export class Performance extends BaseWatcherComponent implements OnInit {
   }
 
   swipeRight(): void{
-    this.swipeService.swipe('right');
+    var me = this;
+    this.swipeService.swipe('right', '/statistics');
   }
 
 
@@ -43,12 +44,8 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     super.ngOnInit();
 
     var me = this;
-    await this.subscribeToEvents([/*EventType.SwipeLeft, */EventType.SwipeRight],
-      async function () {
-
-        await me.navigate('/statistics');
-      }
-    );
+    this.swipeService.swipeDetect('/statistics');
+    
     this.showPermitsLink = this.featureService.hasPermitScreen();
 
     window.addEventListener('beforeinstallprompt', (event) => {

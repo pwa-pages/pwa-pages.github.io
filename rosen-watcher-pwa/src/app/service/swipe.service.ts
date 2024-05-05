@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { EventService, EventType } from './event.service';
+import { EventService } from './event.service';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -8,23 +9,34 @@ export class SwipeService {
 
     private detectHorizontal: boolean = true;
     private detectVertical: boolean = false;
+    private currentNavigation = 'main';
 
-    constructor(private eventService: EventService) { }
+    constructor(private eventService: EventService, private router: Router) {
 
-    swipe(swipedir: any) {
+        this.registerSwipeDetect();
+    }
 
+    async navigate(route: string) {
+        await this.router.navigate([route]);
+    }
+
+
+    swipe(swipedir: any, route: string) {
+
+        var me = this;
+        this.currentNavigation = route;
         var touchsurface = document.body;
         touchsurface.classList.add("swiping");
         var me = this;
         if (swipedir == 'left') {
-            
+
             touchsurface.classList.add("swipeleft");
 
             setTimeout(function () {
 
                 touchsurface.classList.remove("swipeleft");
                 touchsurface.style.left = '100vw';
-                me.eventService.sendEvent(EventType.SwipeLeft);
+                me.navigate(route);
 
                 setTimeout(function () {
                     touchsurface.classList.add("swipeleftin");
@@ -36,14 +48,14 @@ export class SwipeService {
             }, 250);
         }
         else if (swipedir == 'right') {
-            
+
             touchsurface.classList.add("swiperight");
 
             setTimeout(function () {
 
                 touchsurface.classList.remove("swiperight");
                 touchsurface.style.left = '-100vw';
-                me.eventService.sendEvent(EventType.SwipeRight);
+                me.navigate(route);
 
                 setTimeout(function () {
                     touchsurface.classList.add("swiperightin");
@@ -61,6 +73,7 @@ export class SwipeService {
 
                 touchsurface.classList.remove("swipeup");
                 touchsurface.style.top = '100vh';
+                me.navigate(route);
 
                 setTimeout(function () {
                     touchsurface.classList.add("swipeupin");
@@ -78,6 +91,7 @@ export class SwipeService {
 
                 touchsurface.classList.remove("swipedown");
                 touchsurface.style.top = '-100vh';
+                me.navigate(route);
 
                 setTimeout(function () {
                     touchsurface.classList.add("swipedownin");
@@ -90,7 +104,11 @@ export class SwipeService {
         }
     }
 
-    public swipeDetect() {
+    public swipeDetect(route: string) {
+        this.currentNavigation = route;
+    }
+
+    public registerSwipeDetect() {
 
         var me = this;
         var touchsurface = document.body,
@@ -99,7 +117,7 @@ export class SwipeService {
             startY: number,
             distX: number,
             distY: number,
-            threshold: any = 10, 
+            threshold: any = 10,
             elapsedTime: any,
             startTime: any,
             contentLeft: number,
@@ -120,44 +138,44 @@ export class SwipeService {
             distY = 0;
             startX = touchobj.pageX;
             startY = touchobj.pageY;
-            startTime = new Date().getTime(); 
+            startTime = new Date().getTime();
         }, { passive: false })
 
         touchsurface.addEventListener('touchmove', function (e) {
 
             var touchobj = e.changedTouches[0]
             distX = touchobj.pageX - startX;
-            distY = touchobj.pageY - startY; 
+            distY = touchobj.pageY - startY;
 
             if (Math.abs(distX) > 20 || Math.abs(distY) > 20) {
 
-                if ( me.detectHorizontal &&  Math.abs(distX) > Math.abs(distY)) {
+                if (me.detectHorizontal && Math.abs(distX) > Math.abs(distY)) {
                     touchsurface.style.left = (contentLeft + distX).toString() + 'px';
                     touchsurface.style.top = contentTop.toString() + 'px';
                 }
-                else if(me.detectVertical){
+                else if (me.detectVertical) {
                     touchsurface.style.top = (contentTop + distY).toString() + 'px';
                     touchsurface.style.left = contentLeft.toString() + 'px';
                 }
             }
-            e.preventDefault() 
+            e.preventDefault()
         }, { passive: false })
 
         touchsurface.addEventListener('touchend', function (e) {
             var swipedir = null;
             var touchobj = e.changedTouches[0]
-            distX = touchobj.pageX - startX 
-            distY = touchobj.pageY - startY 
-            elapsedTime = new Date().getTime() - startTime 
-            if (me.detectHorizontal && Math.abs(distX) >= threshold && Math.abs(distX) > Math.abs(distY)) { 
-                swipedir = (distX < 0) ? 'left' : 'right' 
+            distX = touchobj.pageX - startX
+            distY = touchobj.pageY - startY
+            elapsedTime = new Date().getTime() - startTime
+            if (me.detectHorizontal && Math.abs(distX) >= threshold && Math.abs(distX) > Math.abs(distY)) {
+                swipedir = (distX < 0) ? 'left' : 'right'
             }
-            else if (me.detectVertical && Math.abs(distY) >= threshold && Math.abs(distY) > Math.abs(distX)) { 
-                swipedir = (distY < 0) ? 'up' : 'down' 
+            else if (me.detectVertical && Math.abs(distY) >= threshold && Math.abs(distY) > Math.abs(distX)) {
+                swipedir = (distY < 0) ? 'up' : 'down'
             }
 
             if (swipedir) {
-                me.swipe(swipedir);
+                me.swipe(swipedir, me.currentNavigation);
             }
             else {
                 me.resetswipes(touchsurface);

@@ -2,7 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { EventService, EventType } from './service/event.service';
 import { FeatureService } from './service/featureservice';
 import { SwipeService } from './service/swipe.service';
-import { Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -15,11 +15,11 @@ export class BaseWatcherComponent implements OnInit {
   private quadrants = "";
   
  
-  constructor(private eventService: EventService, public featureService:FeatureService, public swipeService: SwipeService, private router: Router ) {
+  constructor(private eventService: EventService, public featureService:FeatureService, public swipeService: SwipeService) {
   }
 
   async ngOnInit(): Promise<void> {
-    this.swipeService.swipeDetect();
+    
     var me = this;
     await this.subscribeToEvent(EventType.StartDownload,
       function () {
@@ -62,9 +62,7 @@ export class BaseWatcherComponent implements OnInit {
     }
   }
 
-async navigate(route: string){
-  await this.router.navigate([route]);
-}
+
 
   async unSubscribeAll(): Promise<void> {
     await this.eventService.unSubscribeAll();

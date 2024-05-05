@@ -1,13 +1,13 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EventService, EventType } from '../service/event.service';
 import { StorageService } from '../service/storage.service';
 import { SwipeService } from '../service/swipe.service';
 import { DataService } from '../service/data.service';
 import { FeatureService } from '../service/featureservice';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'statistics',
@@ -27,14 +27,14 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
 
   constructor(private location: Location, private route: ActivatedRoute, private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService, router: Router) {
 
-    super(eventService, featureService, swipeService, router);
+    super(eventService, featureService, swipeService);
     this.data = "";
     this.addresses = [];
     this.addressesForDisplay = [];
     this.rewardsChart = [];
   }
 
-  showHomeLink() : boolean{
+  showHomeLink(): boolean {
     return (window as any).showHomeLink;
   }
 
@@ -48,8 +48,8 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   installApp(): void {
     if ((window as any).deferredPrompt) {
       (window as any).deferredPrompt.prompt();
-      
-      (window as any).deferredPrompt.userChoice.then((choiceResult : any) => {
+
+      (window as any).deferredPrompt.userChoice.then((choiceResult: any) => {
         if (choiceResult.outcome === 'accepted') {
           (window as any).showHomeLink = false;
         } else {
@@ -59,27 +59,31 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     }
   }
 
-  swipeLeft(): void{
-    this.swipeService.swipe('left');
+  swipeLeft(): void {
+    var me = this;
+    this.swipeService.swipe('left', '/performance');
   }
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
+    var me = this;
+    this.swipeService.swipeDetect('/performance');
+
 
     window.addEventListener('beforeinstallprompt', (event) => {
       (window as any).showHomeLink = true;
       event.preventDefault();
-      
+
       (window as any).deferredPrompt = event;
-      
+
     });
-    
+
     this.showPermitsLink = this.featureService.hasPermitScreen();
 
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
-      });
+    });
 
     this.route.params.subscribe(async params => {
       await this.checkAddressParams(params);
@@ -102,15 +106,9 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       }
     );
 
-    await this.subscribeToEvents([EventType.SwipeLeft/*, EventType.SwipeRight*/] ,
-      async function () {
-        await me.navigate('/performance');
-        
-      }
-    );
 
   }
-  
+
   title = 'rosen-watcher-pwa';
 
 
