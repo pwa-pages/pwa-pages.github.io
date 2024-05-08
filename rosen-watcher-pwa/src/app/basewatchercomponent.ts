@@ -32,10 +32,8 @@ export class BaseWatcherComponent implements OnInit {
         me.busyCounter = 0
       }
     );
-
-
-
   }
+
   @HostListener('document:click', ['$event'])
   handleClick(event: MouseEvent) {
     const { clientX, clientY } = event;

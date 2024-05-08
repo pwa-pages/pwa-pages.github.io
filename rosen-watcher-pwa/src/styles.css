@@ -235,9 +235,6 @@ a{
   padding:2px;
   color: #333;
 }
-.addresssettingsline{
-  
-}
 
 .addressdisplay{
   font-family: 'Courier New', Courier, monospace;
@@ -277,8 +274,8 @@ a{
 } 
 
 .custom-snackbar {
-  color: white; /* Adjust text color */
-  background-color: red; /* Adjust background color */
+  color: white; 
+  background-color: red; 
 }
 
 
@@ -292,11 +289,21 @@ a{
   display: grid;
 }
 
+.navbuttons.right {
+  right:5vw;
+  justify-content: right;
+  
+}
+.navbuttons.left {
+  left:5vw;
+  justify-content: left;
+  
+}
+
 .navbuttons {
   position: fixed;
   bottom: 0vh;
-  right:5vw;
-  justify-content: right;;
+  
   width: 50vh;
   height: 5vh;
   font-size:3vh;
@@ -305,6 +312,7 @@ a{
   grid-template-columns: auto auto; 
   z-index: -10000;
 }
+
 
 
 .prevPage {

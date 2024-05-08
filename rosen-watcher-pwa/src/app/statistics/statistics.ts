@@ -60,7 +60,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   }
 
   swipeLeft(): void {
-    var me = this;
+    
     this.swipeService.swipe('left', '/performance');
   }
 

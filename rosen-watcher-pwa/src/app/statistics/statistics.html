@@ -59,10 +59,10 @@
 
 <span class="loader" *ngIf="busyCounter > 0"></span>
 
-<div class="navbuttons" *ngIf="busyCounter == 0 && !noAddresses">
+<div class="navbuttons right" *ngIf="busyCounter == 0 && !noAddresses">
     <div>
     <a (click)="swipeLeft()">
-        Performance&nbsp;<span class="fas fa-arrow-right"></span>
+        Performance&nbsp;<span class="fas fa-angle-right"></span>
     </a>
 </div>
 
@@ -70,6 +70,6 @@
     <a routerLink="/permits" routerLinkActive="active">
         Permits&nbsp;&nbsp;<span class="fas fa-arrow-up"></span>
     </a>
-    </div>
+</div>
 
 </div>
