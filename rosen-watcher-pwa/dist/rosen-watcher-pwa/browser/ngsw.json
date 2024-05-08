@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1715201829124,
+  "timestamp": 1715202098432,
   "appData": {
     "version": "1.2.9"
   },
@@ -50,7 +50,7 @@
     "./favicon.ico": "3f827768829ef167081886d77582b29f19122dc8",
     "./index.html": "c5e3e8b686e69ca1f692983315560c8c8859a980",
     "./main-BTVCO3K4.js": "73d11692f0c3181d43b990d8f13e4c1ccf6529bf",
-    "./manifest.webmanifest": "2a5da26106cbdeeae057037c31435d2701e0e8e4",
+    "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/fa-brands-400-LUMNIJ6A.ttf": "acbbe78b63ab309cd560dc712a5dd2d5301d14ff",
     "./media/fa-brands-400-Q5MHU2AU.woff2": "c39dd7c713983702de91b08ae00b194b0bdb9008",
     "./media/fa-regular-400-HTG32PIJ.woff2": "8c9331bf363872cd84f2d1089b4d72fc21784cbd",

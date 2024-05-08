@@ -1,6 +1,6 @@
 {
-  "name": "rosen-watcher-pwa",
-  "short_name": "rosen-watcher-pwa",
+  "name": "Rosen watcher",
+  "short_name": "Rosen watcher",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
