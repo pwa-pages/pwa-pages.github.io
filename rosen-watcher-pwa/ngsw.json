@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1715202098432,
+  "timestamp": 1715244696266,
   "appData": {
-    "version": "1.2.9"
+    "version": "1.2.10"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -19,7 +19,7 @@
         "./main-BTVCO3K4.js",
         "./manifest.webmanifest",
         "./polyfills-S3BTP7ME.js",
-        "./styles-3TBOPPBV.css"
+        "./styles-DP7PKG4J.css"
       ],
       "patterns": []
     },
@@ -48,7 +48,7 @@
   "hashTable": {
     "./assets/icons/icon-512x512.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./favicon.ico": "3f827768829ef167081886d77582b29f19122dc8",
-    "./index.html": "c5e3e8b686e69ca1f692983315560c8c8859a980",
+    "./index.html": "e2ede6e7861948908a24b56ed2912f60920c6af2",
     "./main-BTVCO3K4.js": "73d11692f0c3181d43b990d8f13e4c1ccf6529bf",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/fa-brands-400-LUMNIJ6A.ttf": "acbbe78b63ab309cd560dc712a5dd2d5301d14ff",
@@ -60,7 +60,7 @@
     "./media/fa-v4compatibility-BYQ7LMO7.woff2": "827835b9a92ff50acba8ef5f700d5d33933de7ac",
     "./media/fa-v4compatibility-FQDQ7UU2.ttf": "27a74685ce8ff178a2199f1dea5671516e7f67ff",
     "./polyfills-S3BTP7ME.js": "893d641030c187f109c667de1b0a73a03095fa3b",
-    "./styles-3TBOPPBV.css": "1f579c5f3505505179de900b956e5c41295e1363"
+    "./styles-DP7PKG4J.css": "efb7704bac26d5bc9406321a2f37948f073bcfbb"
   },
   "navigationUrls": [
     {
