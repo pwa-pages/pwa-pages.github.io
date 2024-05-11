@@ -34,7 +34,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     this.performanceChart = await this.dataService.getPerformanceChart();
   }
 
-  swipeRight(): void{
+  swipeRight(): void {
     var me = this;
     this.swipeService.swipe('right', '/statistics');
   }
@@ -45,7 +45,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
 
     var me = this;
     this.swipeService.swipeDetect('/statistics');
-    
+
     this.showPermitsLink = this.featureService.hasPermitScreen();
 
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -100,13 +100,14 @@ export class Performance extends BaseWatcherComponent implements OnInit {
       '#1f77b4', // Blue
       '#ff7f0e', // Orange
       '#2ca02c', // Green
+      '#bcbd22', // Yellow-Green
       '#d62728', // Red
-      '#9467bd', // Purple
       '#8c564b', // Brown
       '#e377c2', // Pink
       '#7f7f7f', // Gray
       '#17becf',  // Turquoise
-      '#bcbd22' // Yellow-Green
+      '#9467bd', // Purple
+
     ];
 
     var chartColor = chartColors[(i) % 10];
