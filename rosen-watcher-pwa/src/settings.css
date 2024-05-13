@@ -1,0 +1,63 @@
+.settingscontainer{
+  grid-template-columns: auto 70px 70px;
+  justify-content: flex-start;
+}
+
+
+.settings{
+  font-size:16px;
+  font-weight: bold;
+  color: rgba(138, 128, 128);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.settingsdialog {
+  position:fixed;
+  top:0px;
+  left:0px;
+  height:100%;
+  width:100%;
+  background-color: #f7f7f7;
+  padding-left:5vw;
+}
+
+
+
+.addressedit{
+  float: left;
+}
+
+
+.addressinput{
+  width:350px;
+}
+
+
+.container button:hover {
+  background-color:rgba(138, 128, 128);
+}
+
+.settings{
+  padding-top:20px;
+} 
+
+
+.container button, .watcherscreen button {
+  background-color:  rgba(238, 228, 218);
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+  padding: 5px 10px;
+  
+}
+
+.container input {
+  margin-right: 10px;
+  
+  font-family: 'Courier New', Courier, monospace;
+  font-size:12px;
+  padding:2px;
+  color: #333;
+}

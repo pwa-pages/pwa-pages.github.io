@@ -1,0 +1,22 @@
+.chartcontainer.performancechart {
+  height: 75vh !important;
+}
+
+
+.chartcontainer {
+  justify-content: center;
+  display: flex;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  padding-top: 2vh;
+  height: 60vh;
+}
+
+
+.chart-container,
+.chart-container canvas,
+app-reward-chart,
+app-performance-chart {
+  width: 100% !important;
+  height: 100% !important;
+}

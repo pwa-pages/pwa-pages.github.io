@@ -10,16 +10,13 @@ import { Permits } from './permits/permits';
 import { Performance } from './statistics/performance';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { RewardChartComponent } from './reward.chart/reward.chart.component';
-import { PerformanceChartComponent } from './performance.chart/performance.chart.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 const routes: Routes = [
@@ -38,16 +35,12 @@ const routes: Routes = [
     Permits,
     Statistics,
     Performance,
-    RewardChartComponent,
-    PerformanceChartComponent
+    RewardChartComponent
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     HttpClientModule,
     CommonModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
     MatInputModule,
     MatFormFieldModule, 
     MatDialogModule,

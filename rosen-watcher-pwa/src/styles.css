@@ -1,87 +1,20 @@
-
 body {
   padding: 0;
   margin: 0px !important;
 }
 
 body,
-		html {
-			width: 100vw;
-			height: 100vh;
-			position: fixed;
-		}
-
-.header {
-  font-size: 4vh;
-  font-weight: bold;
-  color: #333;
-  animation: fadeIn 1s ease-in-out forwards;
-
-  border-bottom-right-radius: 1vh;
-  border-bottom-left-radius: 1vh;
-  background: rgba(138, 128, 128);
-}
-
-.headerblock {
-  font-size: 3vh;
-  text-align: center;
-  font-weight: bold;
-  color: #333;
-  animation: fadeIn 1s ease-in-out forwards;
-  width: 60vh;
-  justify-content: center;
-  background: rgba(238, 228, 218);
-  border-radius: 1vh;
-}
-
-.headerblockfixed {
-  text-align: center;
-  font-weight: bold;
-  color: #333;
-  animation: fadeIn 1s ease-in-out forwards;
-  width: 300px;
-  justify-content: center;
-  padding:4px;
-  background: rgba(238, 228, 218);
-  border-radius: 1vh;
-}
-
-
-
-
-.headercontainer {
-  justify-content: center;
-  display: flex;
-  padding: 1vh;
-}
-
-.chartcontainer.performancechart {
-  height: 75vh !important;
-}
-
-
-.chartcontainer {
-  justify-content: center;
-  display: flex;
-  padding-left: 5vw;
-  padding-right: 5vw;
-  padding-top: 2vh;
-  height: 60vh;
-}
-
-
-.chart-container,
-.chart-container canvas,
-app-reward-chart, app-performance-chart  {
-  width: 100% !important;
-  height: 100% !important; 
+html {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
 }
 
 h1 {
   color: #333;
   font-size: 3vh;
   font-weight: bold;
-  
+
 }
 
 ul {
@@ -100,8 +33,9 @@ li:last-child {
   margin-bottom: 0;
 }
 
-.addressescontainer, .linkcontainer {
-  
+.addressescontainer,
+.linkcontainer {
+
   margin-left: 5vw;
   padding: 3px;
   font-size: 2vh;
@@ -112,40 +46,36 @@ li:last-child {
   flex-wrap: wrap;
 }
 
-.permitstitle{
+.permitstitle {
   font-weight: bold;
   color: rgba(138, 128, 128);
-  font-size:5vh;
-  padding-top:5vh;
+  font-size: 5vh;
+  padding-top: 5vh;
 }
 
-.permitscontainer{
-  
+.permitscontainer {
+
   font-weight: bold;
   color: rgba(138, 128, 128);
-  padding-top:2vh;
+  padding-top: 2vh;
   font-size: 16px;
 }
-.watcherscreen{
-  margin-left:5vw;
-  margin-right:5vw;
+
+.watcherscreen {
+  margin-left: 5vw;
+  margin-right: 5vw;
 }
 
-.permitscontainer .address{
+.permitscontainer .address {
   font-family: 'Courier New', Courier, monospace;
 
 }
 
-.settingscontainer{
-  grid-template-columns: auto 70px 70px;
-  justify-content: flex-start;
-}
-
-.permitscontainer{
+.permitscontainer {
   grid-template-columns: auto auto auto;
 }
 
-.watchergrid{
+.watchergrid {
   border: none;
   border-radius: 5px;
   display: grid;
@@ -158,16 +88,16 @@ li:last-child {
   border: 0px dotted rgba(138, 128, 128);
   padding-top: 7px;
   padding-bottom: 7px;
-  text-align: left; 
+  text-align: left;
 }
 
-a{
+a {
   text-decoration: none;
   cursor: pointer;
   color: rgba(138, 128, 128);
 }
 
-.watcheritem.link a{
+.watcheritem.link a {
   color: rgba(80, 70, 70) !important;
 }
 
@@ -178,211 +108,49 @@ a{
   text-overflow: ellipsis;
 }
 
-.settings{
-  font-size:16px;
-  font-weight: bold;
-  color: rgba(138, 128, 128);
-  font-family: 'Courier New', Courier, monospace;
-}
-
-#homelink{
-  margin:-2px;
+#homelink {
+  margin: -2px;
 }
 
 
-.linkicon div{
-  padding-bottom:10px;
+.linkicon div {
+  padding-bottom: 10px;
   font-size: 3vh;
 }
 
 
-.link{
-  margin-top:1vh;
+.link {
+  margin-top: 1vh;
   white-space: nowrap;
-}
-
-.settingsdialog {
-  position:fixed;
-  top:0px;
-  left:0px;
-  height:100%;
-  width:100%;
-  background-color: #f7f7f7;
-  padding-left:5vw;
-}
-
-
-
-.addressedit{
-  float: left;
 }
 
 .container {
   margin-bottom: 20px;
 }
 
-.container input {
-  margin-right: 10px;
-  
-  font-family: 'Courier New', Courier, monospace;
-  font-size:12px;
-  padding:2px;
-  color: #333;
-}
 
-.addressdisplay{
+
+.addressdisplay {
   font-family: 'Courier New', Courier, monospace;
 }
 
-.addressinput{
-  width:350px;
-}
-
-.noAddresses{
-  color:green;
+.noAddresses {
+  color: green;
   font-size: 3vh;
 }
 
 
 
-
-
-
-.container button, .watcherscreen button {
-  background-color:  rgba(238, 228, 218);
-  color: #333;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 5px;
-  padding: 5px 10px;
-  
-}
-
-.container button:hover {
-  background-color:rgba(138, 128, 128);
-}
-
-.settings{
-  padding-top:20px;
-} 
-
 .custom-snackbar {
-  color: white; 
-  background-color: red; 
+  color: white;
+  background-color: red;
 }
 
 
-.loader {
-  position: fixed;
-  bottom: 3%;
-  left: 42.8vw;
-  
-  width: 10vw;
-  aspect-ratio: 4;
-  display: grid;
-}
-
-.navbuttons.right {
-  right:5vw;
-  justify-content: right;
-  
-}
-.navbuttons.left {
-  left:5vw;
-  justify-content: left;
-  
-}
-
-.navbuttons {
-  position: fixed;
-  bottom: 0vh;
-  
-  width: 50vh;
-  height: 5vh;
-  font-size:3vh;
-  display: grid;
-  gap: 2vh;
-  grid-template-columns: auto auto; 
-  z-index: -10000;
-}
-
-
-
-.prevPage {
-  position: fixed;
-  bottom: 0vh;
-  left:5vw;
-  justify-content: left;
-  width: 40vh;
-  height: 5vh;
-  font-size:3vh;
-  display: grid;
-}
-
-.loader:before,
-.loader:after {
-  content: "";
-  grid-area: 1/1;
-  --_g: no-repeat radial-gradient(farthest-side,#8A8080 94%,#0000);
-  background:
-    var(--_g) left,
-    var(--_g) right;
-  background-size: 25% 100%;
-  animation: l34 1s infinite; 
-  transform: translate(var(--d,0)) rotate(0);
-}
-.loader:after {
-  --d: 37.5%;
-  animation-delay: .5s;
-}
 @keyframes l34 {
-  50%,100% {transform: translate(var(--d,0)) rotate(.5turn)}
-}
 
-.swiping .navbuttons , .swiping .loader{
-  display: none;
-}
-
-
-.swipeleft {
-  transform: translate(-110vw, 0vw);
-  transition: transform 0.25s ease-in;
-}
-
-.swipeleftin {
-
-  transform: translate(-100vw, 0vw);
-  transition: transform 0.25s ease-in;
-}
-
-.swipeup {
-  transform: translate(0vh, -110vh);
-  transition: transform 0.25s ease-in;
-}
-
-.swipeupin {
-
-  transform: translate(0vh, -100vh);
-  transition: transform 0.25s ease-in;
-}
-
-.swiperight {
-  transform: translate(110vw, 0vw);
-  transition: transform 0.25s ease-in;
-}
-
-.swiperightin {
-  transform: translate(100vw, 0vw);
-  transition: transform 0.25s ease-in;
-}
-
-.swipedown {
-  transform: translate(0vw, 110vh);
-  transition: transform 0.25s ease-in;
-}
-
-.swipedownin {
-  transform: translate(0vw, 100vh);
-  transition: transform 0.25s ease-in;
+  50%,
+  100% {
+    transform: translate(var(--d, 0)) rotate(.5turn)
+  }
 }
