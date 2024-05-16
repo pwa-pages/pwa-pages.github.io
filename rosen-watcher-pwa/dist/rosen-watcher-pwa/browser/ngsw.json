@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1715630417385,
+  "timestamp": 1715889281297,
   "appData": {
-    "version": "1.2.12"
+    "version": "1.2.13"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-RNMOEEJB.js",
+        "./main-XLP42JG5.js",
         "./manifest.webmanifest",
         "./polyfills-S3BTP7ME.js",
         "./styles-IFGOEBWS.css"
@@ -48,8 +48,8 @@
   "hashTable": {
     "./assets/icons/icon-512x512.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./favicon.ico": "3f827768829ef167081886d77582b29f19122dc8",
-    "./index.html": "53ea88ef506573b5ddc10e9116ed0657c87ebf1f",
-    "./main-RNMOEEJB.js": "ab6be9d69818d1ff4c056a1f90b3ede95be20ac2",
+    "./index.html": "5431aef2da2515ab176310a8a3fc6228403f562b",
+    "./main-XLP42JG5.js": "3bf2376d59cec303ce6c80a2df84c62c7fadb382",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/fa-brands-400-LUMNIJ6A.ttf": "acbbe78b63ab309cd560dc712a5dd2d5301d14ff",
     "./media/fa-brands-400-Q5MHU2AU.woff2": "c39dd7c713983702de91b08ae00b194b0bdb9008",

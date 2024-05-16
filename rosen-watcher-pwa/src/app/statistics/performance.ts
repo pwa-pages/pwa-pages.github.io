@@ -98,10 +98,10 @@ export class Performance extends BaseWatcherComponent implements OnInit {
 
     const chartColors: string[] = [
       '#1f77b4', // Blue
-      '#ff7f0e', // Orange
       '#2ca02c', // Green
       '#bcbd22', // Yellow-Green
       '#d62728', // Red
+      '#ff7f0e', // Orange
       '#8c564b', // Brown
       '#e377c2', // Pink
       '#7f7f7f', // Gray
@@ -115,9 +115,11 @@ export class Performance extends BaseWatcherComponent implements OnInit {
       label: "",
       data: [
       ],
-      borderColor: chartColor,
       backgroundColor: chartColor,
-      pointBackgroundColor: chartColor
+      pointBackgroundColor: chartColor,
+      borderColor: chartColor,
+      borderWidth: 0,
+      borderSkipped: false
     };
   }
 
@@ -156,7 +158,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
           y: {
             beginAtZero: true,
             stacked: true,
-
+            alignToPixels: true,
             grid: {
               color: 'rgba(0, 0, 0, 0.1)',
             },
@@ -169,6 +171,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
           x: {
             type: 'time',
             stacked: true,
+            alignToPixels: true,
             time: {
               unit: 'week',
             },
@@ -196,6 +199,13 @@ export class Performance extends BaseWatcherComponent implements OnInit {
             }
           }
           ,
+        },
+        elements: {
+          bar: {
+            borderWidth: 0,
+            borderRadius: 0,
+            borderSkipped: false
+          }
         }
       }
     });
