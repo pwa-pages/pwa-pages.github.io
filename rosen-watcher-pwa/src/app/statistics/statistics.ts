@@ -67,9 +67,10 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
 
 
   share(): void {
-    
+    const currentUrl = window.location.pathname;
+    const subdirectory = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
     var urlTree = this.router.createUrlTree(['main', { addresses: JSON.stringify(this.addresses) }]);
-    const url = window.location.origin + this.router.serializeUrl(urlTree);
+    const url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
     window.location.href = url;
   }
 
