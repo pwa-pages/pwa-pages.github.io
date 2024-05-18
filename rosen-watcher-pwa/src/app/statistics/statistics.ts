@@ -71,7 +71,14 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     const subdirectory = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
     var urlTree = this.router.createUrlTree(['main', { addresses: JSON.stringify(this.addresses) }]);
     const url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
-    window.location.href = url;
+    
+    navigator.share({
+      title: 'Rosen Watcher',
+      text: 'Rosen Watcher',
+      url: url
+    });
+
+    
   }
 
   override async ngOnInit(): Promise<void> {
