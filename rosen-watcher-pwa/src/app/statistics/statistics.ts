@@ -127,6 +127,12 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       }
     );
 
+    await this.subscribeToEvent(EventType.EndDownload,
+      async function () {
+        await me.retrieveData();
+      }
+    );
+
 
   }
 

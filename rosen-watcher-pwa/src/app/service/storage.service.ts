@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { EventService, EventType } from './event.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class StorageService {
   inputsCache: any[] = [];
   updateCache: boolean = true;
 
-  constructor() {
+  constructor(private eventService: EventService) {
     this.dbPromise = this.initIndexedDB();
   }
 
@@ -194,6 +195,7 @@ export class StorageService {
         });
       });
 
+      this.eventService.sendEvent(EventType.InputsStoredToDb);
 
     });
   }

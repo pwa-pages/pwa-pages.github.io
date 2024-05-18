@@ -203,6 +203,7 @@ export class DataService {
     this.busyCounter--;
     if (this.busyCounter == 0) {
       this.eventService.sendEvent(EventType.EndDownload);
+      
     }
   }
 
@@ -283,7 +284,7 @@ export class DataService {
     console.log('add bunch of data');
     await storageService.addData(address, result.items);
 
-    await this.eventService.sendEvent(EventType.InputsStoredToDb);
+
 
     if (boxId) {
       console.log('Found existing boxId in db for download for: ' + address + ',no need to download more.');
@@ -292,7 +293,7 @@ export class DataService {
       console.log('Downloading all tx\'s for : ' + address);
 
       await this.downloadAllForAddress(address, 0);
-      await this.eventService.sendEvent(EventType.InputsStoredToDb);
+
     }
 
     this.DecreasBusyCounter();
