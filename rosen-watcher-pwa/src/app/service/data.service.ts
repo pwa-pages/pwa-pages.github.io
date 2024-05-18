@@ -1,8 +1,9 @@
-import { Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { DownloadService } from './download.service';
 import { EventService, EventType } from './event.service';
 import { catchError, firstValueFrom } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +16,16 @@ export class DataService {
   readonly fullDownloadsBatchSize: number = 200;
   busyCounter: number = 0;
 
-  constructor(private storageService: StorageService, private downloadService: DownloadService, private eventService: EventService) { }
+  constructor(private storageService: StorageService, private downloadService: DownloadService, private eventService: EventService, private snackBar: MatSnackBar) { }
 
   async getWatcherInputs(): Promise<any[]> {
-    
+
     var inputsPromise = this.storageService.getInputs();
-    
+
     try {
-      
+
       const inputs = await inputsPromise;
-      
+
       var result_1 = inputs.filter((i: any) => i.address === this.rewardsCardanoAddress || i.address === this.rewardsErgoAddress)
         .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
 
@@ -39,7 +40,7 @@ export class DataService {
           });
 
       });
-      
+
 
       return await new Promise<any[]>((resolve, reject) => {
 
@@ -119,10 +120,10 @@ export class DataService {
 
     console.log('start retrieving chart from database');
     try {
-      
+
       const inputs = await inputsPromise;
       var addressCharts: any[] = [];
-      
+
       inputs.sort((a, b) => a.inputDate - b.inputDate);
 
       inputs.forEach((input: any) => {
@@ -160,7 +161,7 @@ export class DataService {
 
         }
 
-        
+
       }
 
 
@@ -210,7 +211,14 @@ export class DataService {
     this.IncreaseBusyCounter();
     console.log(this.busyCounter);
     var s = this.downloadService.downloadTransactions(address, offset, this.fullDownloadsBatchSize + 10);
-    var result = await firstValueFrom(s);
+    
+    var result = await firstValueFrom(s.pipe(catchError(e => {
+      
+      this.DecreasBusyCounter(); throw e;
+
+    })));
+
+
 
     console.log('Processing all download(offset = ' + offset + ', size = ' + this.fullDownloadsBatchSize + ') for: ' + address);
 
@@ -227,7 +235,7 @@ export class DataService {
       return;
     }
 
-    
+
 
     result.items.forEach((item: any) => {
       item.inputs.forEach(async (input: any) => {
@@ -240,12 +248,24 @@ export class DataService {
     console.log(this.busyCounter);
   }
 
-  public async downloadForAddress(address: string, inputs: any[], storageService: StorageService) {
+  public async downloadForAddress(address: string, inputs: any[], storageService: StorageService, hasAddressParams: boolean) {
     this.IncreaseBusyCounter();
     console.log(this.busyCounter);
 
     var s = this.downloadService.downloadTransactions(address, 0, this.initialNDownloads);
-    var result = await firstValueFrom(s.pipe(catchError(e => { this.DecreasBusyCounter(); throw e; })));
+    var result = await firstValueFrom(s.pipe(catchError(e => { 
+
+      if(hasAddressParams){
+        this.snackBar.open('Some download(s) failed, possibly some addresses were not added', 'Close', {
+          duration: 5000,
+          panelClass: ['custom-snackbar']
+        });
+      }
+      
+      
+      this.DecreasBusyCounter(); throw e; 
+    
+    })));
 
     console.log('Processing initial download(size = ' + this.initialNDownloads + ') for: ' + address);
 

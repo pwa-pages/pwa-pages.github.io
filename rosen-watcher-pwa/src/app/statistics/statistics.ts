@@ -23,9 +23,10 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   noAddresses: boolean = false;
   showPermitsLink: boolean = false;
   addressesForDisplay: string[];
+  shareSupport: boolean = false;
 
 
-  constructor(private location: Location, private route: ActivatedRoute, private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService, router: Router) {
+  constructor(private location: Location, private route: ActivatedRoute,   private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService, private router: Router) {
 
     super(eventService, featureService, swipeService);
     this.data = "";
@@ -64,9 +65,19 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.swipeService.swipe('left', '/performance');
   }
 
+
+  share(): void {
+    
+    var urlTree = this.router.createUrlTree(['main', { addresses: JSON.stringify(this.addresses) }]);
+    const url = window.location.origin + this.router.serializeUrl(urlTree);
+    window.location.href = url;
+  }
+
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
+    this.shareSupport = (navigator.share != null && navigator.share != undefined );
+    
     var me = this;
     this.swipeService.swipeDetect('/performance');
 
@@ -86,13 +97,15 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     });
 
     this.route.params.subscribe(async params => {
-      await this.checkAddressParams(params);
+      
+      
+      var hasAddressParams = await this.checkAddressParams(params);
 
       var storageService = this.storageService;
 
       await this.retrieveData().then((inputs) => {
         this.addresses.forEach(async address => {
-          await this.dataService.downloadForAddress(address, inputs, storageService);
+          await this.dataService.downloadForAddress(address, inputs, storageService, hasAddressParams);
           await this.retrieveData();
         });
 
@@ -112,7 +125,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   title = 'rosen-watcher-pwa';
 
 
-  private async checkAddressParams(params: any) {
+  private async checkAddressParams(params: any): Promise<boolean> {
     if (params['addresses']) {
 
       const addressesParam = params['addresses'];
@@ -128,12 +141,14 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       }
 
       await this.storageService.clearInputsStore();
+      return true;
     }
     else {
       this.addresses = await this.dataService.getAddresses();
       if (this.addresses.length == 0) {
         this.noAddresses = true;
       }
+      return false;
     }
   }
 }

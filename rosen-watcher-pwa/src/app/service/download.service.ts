@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { lastValueFrom, firstValueFrom } from 'rxjs';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { lastValueFrom, firstValueFrom } from 'rxjs';
 export class DownloadService {
 
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
+  constructor(private http: HttpClient) { }
   
   downloadPermitInfo(watcherUrl: string) : Promise<any> {
     
@@ -53,11 +53,7 @@ export class DownloadService {
       }
 
       console.error(errorMessage);
-      this.snackBar.open('Some download(s) failed, possibly some addresses were not added', 'Close', {
-        duration: 5000,
-        panelClass: ['custom-snackbar']
-      });
-  
+      
       return throwError(() => new Error(errorMessage));
     });
   }

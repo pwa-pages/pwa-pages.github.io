@@ -57,6 +57,21 @@
     </div> 
 </div>
 
+<div class="linkcontainer" *ngIf="busyCounter == 0 && showPermitsLink">
+    <div class="linkicon" id = "sharelink">
+        <a (click)="installApp()">
+            <div class="fas fa-share-nodes"></div>
+        </a>
+    </div>
+    &nbsp;
+    <div class="link">
+        <a (click)="share()">
+            Share
+        </a>
+    </div> 
+</div>
+
+
 <span class="loader" *ngIf="busyCounter > 0"></span>
 
 <div class="navbuttons right" *ngIf="busyCounter == 0 && !noAddresses">
