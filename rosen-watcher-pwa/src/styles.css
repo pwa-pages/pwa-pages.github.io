@@ -42,8 +42,15 @@ li:last-child {
   font-weight: bold;
   color: rgba(138, 128, 128);
   animation: fadeIn 1s ease-in-out forwards;
-  display: flex;
   flex-wrap: wrap;
+}
+
+.linkcontainer{
+  display: inline-flex;
+}
+
+.addressescontainer{
+  display: flex;
 }
 
 .permitstitle {
@@ -120,7 +127,7 @@ a {
 
 
 .link {
-  margin-top: 1vh;
+  margin-top: .5vh;
   white-space: nowrap;
 }
 

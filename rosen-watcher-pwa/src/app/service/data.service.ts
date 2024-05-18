@@ -284,7 +284,7 @@ export class DataService {
     console.log('add bunch of data');
     await storageService.addData(address, result.items);
 
-
+    
 
     if (boxId) {
       console.log('Found existing boxId in db for download for: ' + address + ',no need to download more.');
@@ -293,7 +293,7 @@ export class DataService {
       console.log('Downloading all tx\'s for : ' + address);
 
       await this.downloadAllForAddress(address, 0);
-
+    
     }
 
     this.DecreasBusyCounter();
