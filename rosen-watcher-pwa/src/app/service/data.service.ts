@@ -235,13 +235,8 @@ export class DataService {
       return;
     }
 
+    await this.storageService.addData(address, result.items);
 
-
-    result.items.forEach((item: any) => {
-      item.inputs.forEach(async (input: any) => {
-        await this.storageService.addData(address, item, input);
-      });
-    });
 
     await this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
     this.DecreasBusyCounter();
@@ -286,11 +281,7 @@ export class DataService {
     var boxId = await storageService.getDataByBoxId(halfBoxId, address);
 
     console.log('add bunch of data');
-    result.items.forEach((item: any) => {
-      item.inputs.forEach(async (input: any) => {
-        await storageService.addData(address, item, input);
-      });
-    });
+    await storageService.addData(address, result.items);
 
     await this.eventService.sendEvent(EventType.InputsStoredToDb);
 

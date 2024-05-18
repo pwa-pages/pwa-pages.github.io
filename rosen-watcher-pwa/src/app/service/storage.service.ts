@@ -9,7 +9,7 @@ export class StorageService {
   addressDataStoreName = 'addressData';
   dbPromise: Promise<IDBDatabase>;
   inputsCache: any[] = [];
-   updateCache: boolean = true;
+  updateCache: boolean = true;
 
   constructor() {
     this.dbPromise = this.initIndexedDB();
@@ -17,7 +17,7 @@ export class StorageService {
 
   async initIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      
+
       const request = window.indexedDB.open(this.dbName, 2);
 
       request.onupgradeneeded = (event: any) => {
@@ -33,7 +33,7 @@ export class StorageService {
 
       request.onsuccess = async (event: any) => {
         const db = event.target.result;
-        
+
         resolve(db);
       };
 
@@ -46,7 +46,7 @@ export class StorageService {
 
 
   async getDB(): Promise<IDBDatabase> {
-    
+
     return await this.dbPromise;
   }
 
@@ -61,7 +61,7 @@ export class StorageService {
       request.onsuccess = () => {
         console.log('IndexedDB cleared successfully.');
         resolve();
-        
+
       };
 
       request.onerror = (event: any) => {
@@ -72,7 +72,7 @@ export class StorageService {
   }
 
   async getInputs(): Promise<any[]> {
-    if(this.inputsCache && this.inputsCache.length > 0 && !this.updateCache){
+    if (this.inputsCache && this.inputsCache.length > 0 && !this.updateCache) {
       return new Promise<any[]>((resolve, reject) => {
         console.log('Getting inputs from cache');
         resolve(this.inputsCache);
@@ -89,30 +89,30 @@ export class StorageService {
   }
 
   private async getData(storeName: string): Promise<any[]> {
-    
+
     const db = await this.getDB();
-    
+
     return new Promise((resolve, reject) => {
 
-      
+
       const transaction = db.transaction([storeName], 'readonly');
-      
+
       const objectStore = transaction.objectStore(storeName);
 
       const request = objectStore.getAll();
 
       request.onsuccess = () => {
         resolve(request.result);
-        
+
       };
 
-      
+
 
       request.onerror = (event: any) => {
         reject(event.target.error);
       };
     });
-    
+
   }
 
   async getDataByBoxId(boxId: string, addressId: string): Promise<any> {
@@ -123,14 +123,14 @@ export class StorageService {
       const request = objectStore.get(boxId);
 
       request.onsuccess = () => {
-        if(!request.result || request.result.outputAddress != addressId){
-          resolve(null);  
-          
+        if (!request.result || request.result.outputAddress != addressId) {
+          resolve(null);
+
         }
-        else{
+        else {
           resolve(request.result);
         }
-        
+
       };
 
       request.onerror = (event: any) => {
@@ -147,39 +147,54 @@ export class StorageService {
       const transaction = db.transaction([this.addressDataStoreName], 'readwrite');
       const objectStore = transaction.objectStore(this.addressDataStoreName);
       objectStore.put(a);
-      
+
     });
   }
 
-  async addData(address: string, item: any, input: any): Promise<void> {
+  async addData(address: string, items: any): Promise<void> {
+
+
+
     const db = await this.getDB();
-    input.outputAddress = address;
-    input.inputDate = new Date(item.timestamp);
-
-
-    var dbInput: any = {
-      outputAddress: input.outputAddress,
-      inputDate: input.inputDate,
-      boxId: input.boxId,
-      assets: input.assets,
-      outputCreatedAt: input.outputCreatedAt,
-      address: input.address
-
-    }
 
     return new Promise((resolve, reject) => {
-      const transaction = db.transaction([this.inputsStoreName], 'readwrite');
-      const objectStore = transaction.objectStore(this.inputsStoreName);
-      const request = objectStore.put(dbInput);
-      this.updateCache = true;
-      request.onsuccess = () => {
-        
-        resolve();
-      };
 
-      request.onerror = (event: any) => {
-        reject(event.target.error);
-      };
+
+
+      items.forEach((item: any) => {
+        item.inputs.forEach(async (input: any) => {
+
+          input.outputAddress = address;
+          input.inputDate = new Date(item.timestamp);
+
+
+          var dbInput: any = {
+            outputAddress: input.outputAddress,
+            inputDate: input.inputDate,
+            boxId: input.boxId,
+            assets: input.assets,
+            outputCreatedAt: input.outputCreatedAt,
+            address: input.address
+
+          }
+
+
+          const transaction = db.transaction([this.inputsStoreName], 'readwrite');
+          const objectStore = transaction.objectStore(this.inputsStoreName);
+          const request = objectStore.put(dbInput);
+          this.updateCache = true;
+          request.onsuccess = () => {
+
+            resolve();
+          };
+
+          request.onerror = (event: any) => {
+            reject(event.target.error);
+          };
+        });
+      });
+
+
     });
   }
 }
