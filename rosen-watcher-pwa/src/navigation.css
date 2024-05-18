@@ -30,7 +30,7 @@
   display: grid;
   gap: 2vh;
   grid-template-columns: auto auto; 
-  z-index: -10000;
+  z-index: 10000;
 }
 
 
