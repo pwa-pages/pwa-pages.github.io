@@ -27,6 +27,13 @@ export class SwipeService {
         this.currentNavigation = route;
         var touchsurface = document.body;
         touchsurface.classList.add("swiping");
+        var body = document.body,
+        html = document.documentElement;
+
+
+        body.style.position = 'fixed';
+        html.style.position = 'fixed';
+
         var me = this;
         if (swipedir == 'left') {
 
@@ -111,7 +118,8 @@ export class SwipeService {
     public registerSwipeDetect() {
 
         var me = this;
-        var touchsurface = document.body,
+        var body = document.body,
+            html = document.documentElement,
             swipedir: any,
             startX: number,
             startY: number,
@@ -123,15 +131,19 @@ export class SwipeService {
             contentLeft: number,
             contentTop: number,
             contentWidth: number,
-            contentHeight: number
+            contentHeight: number;
 
-        touchsurface.addEventListener('touchstart', function (e) {
 
-            contentLeft = touchsurface.offsetLeft;
-            contentTop = touchsurface.offsetTop;
-            contentWidth = touchsurface.offsetWidth;
-            contentHeight = touchsurface.offsetHeight;
-            touchsurface.style.position = 'fixed';
+
+
+        body.addEventListener('touchstart', function (e) {
+
+            body.style.position = 'fixed';
+            html.style.position = 'fixed';
+            contentLeft = body.offsetLeft;
+            contentTop = body.offsetTop;
+            contentWidth = body.offsetWidth;
+            contentHeight = body.offsetHeight;
             var touchobj = e.changedTouches[0];
             swipedir = 'none';
             distX = 0;
@@ -141,7 +153,7 @@ export class SwipeService {
             startTime = new Date().getTime();
         }, { passive: false })
 
-        touchsurface.addEventListener('touchmove', function (e) {
+        body.addEventListener('touchmove', function (e) {
 
             var touchobj = e.changedTouches[0]
             distX = touchobj.pageX - startX;
@@ -150,18 +162,18 @@ export class SwipeService {
             if (Math.abs(distX) > 20 || Math.abs(distY) > 20) {
 
                 if (me.detectHorizontal && Math.abs(distX) > Math.abs(distY)) {
-                    touchsurface.style.left = (contentLeft + distX).toString() + 'px';
-                    touchsurface.style.top = contentTop.toString() + 'px';
+                    body.style.left = (contentLeft + distX).toString() + 'px';
+                    body.style.top = contentTop.toString() + 'px';
                 }
                 else if (me.detectVertical) {
-                    touchsurface.style.top = (contentTop + distY).toString() + 'px';
-                    touchsurface.style.left = contentLeft.toString() + 'px';
+                    body.style.top = (contentTop + distY).toString() + 'px';
+                    body.style.left = contentLeft.toString() + 'px';
                 }
             }
-            e.preventDefault()
+            e.preventDefault();
         }, { passive: false })
 
-        touchsurface.addEventListener('touchend', function (e) {
+        body.addEventListener('touchend', function (e) {
             var swipedir = null;
             var touchobj = e.changedTouches[0]
             distX = touchobj.pageX - startX
@@ -178,7 +190,7 @@ export class SwipeService {
                 me.swipe(swipedir, me.currentNavigation);
             }
             else {
-                me.resetswipes(touchsurface);
+                me.resetswipes(body);
             }
         }, { passive: false })
     }
@@ -198,5 +210,10 @@ export class SwipeService {
         el.classList.remove("swiperight");
         el.classList.remove("swipeup");
         el.classList.remove("swipedown");
+
+        var body = document.body,
+        html = document.documentElement;
+        body.style.position = '';
+        html.style.position = '';
     }
 }
