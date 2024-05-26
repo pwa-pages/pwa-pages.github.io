@@ -5,7 +5,9 @@ import { Subject } from 'rxjs';
 export enum EventType {
   StartDownload = 'BeginDownload',
   EndDownload = 'EndDownload',
-  InputsStoredToDb = 'InputsStoredToDb'
+  InputsStoredToDb = 'InputsStoredToDb',
+  SwipeActivated = 'SwipeActivated',
+  SwipeDeActivated = 'SwipeDeActivated'
 }
 
 
@@ -32,7 +34,9 @@ export class EventService {
     this.eventSubscriptions = {
       [EventType.StartDownload]: new Subject<any>,
       [EventType.EndDownload]: new Subject<any>,
-      [EventType.InputsStoredToDb]: new Subject<any>
+      [EventType.InputsStoredToDb]: new Subject<any>,
+      [EventType.SwipeActivated]: new Subject<any>,
+      [EventType.SwipeDeActivated]: new Subject<any>
     };
     return this.eventSubscriptions;
   }
@@ -47,12 +51,12 @@ export class EventService {
     this.eventSubscriptions[eventType].subscribe(callback);
   }
 
-  async unSubscribeAll() {
+  async unSubscribeAll(events: EventType[]) {
 
-    for (const eventType of Object.values(EventType)) {
-      console.log('Unsubsribing all from ' + eventType);
+    for (const eventType of events) {
+      console.log('Unsubscribing all from ' + eventType);
       this.eventSubscriptions[eventType].unsubscribe();
-      this.resetSubscriptions();
+      this.eventSubscriptions[eventType] = new Subject<any>;
     }
 
 

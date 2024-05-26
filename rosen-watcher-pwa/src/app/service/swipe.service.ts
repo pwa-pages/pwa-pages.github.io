@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventService } from './event.service';
+import { EventService, EventType } from './event.service';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -10,10 +10,29 @@ export class SwipeService {
     private detectHorizontal: boolean = true;
     private detectVertical: boolean = false;
     private currentNavigation = 'main';
+    private swipeActive = false;
+
 
     constructor(private eventService: EventService, private router: Router) {
 
         this.registerSwipeDetect();
+        var me = this;
+
+        eventService.subscribeToEvent(EventType.SwipeActivated,
+            function () {
+                console.log('swipe activated');
+                me.swipeActive = true;
+
+            }
+        );
+
+        eventService.subscribeToEvent(EventType.SwipeDeActivated,
+            function () {
+                console.log('swipe deactivated');
+                me.swipeActive = false;
+
+            }
+        );
     }
 
     async navigate(route: string) {
@@ -28,7 +47,7 @@ export class SwipeService {
         var touchsurface = document.body;
         touchsurface.classList.add("swiping");
         var body = document.body,
-        html = document.documentElement;
+            html = document.documentElement;
 
 
         body.style.position = 'fixed';
@@ -138,6 +157,10 @@ export class SwipeService {
 
         body.addEventListener('touchstart', function (e) {
 
+            if (!me.swipeActive) {
+                return;
+            }
+
             body.style.position = 'fixed';
             html.style.position = 'fixed';
             contentLeft = body.offsetLeft;
@@ -154,6 +177,10 @@ export class SwipeService {
         }, { passive: false })
 
         body.addEventListener('touchmove', function (e) {
+            if (!me.swipeActive) {
+                return;
+            }
+
 
             var touchobj = e.changedTouches[0]
             distX = touchobj.pageX - startX;
@@ -174,6 +201,11 @@ export class SwipeService {
         }, { passive: false })
 
         body.addEventListener('touchend', function (e) {
+
+            if (!me.swipeActive) {
+                return;
+            }
+
             var swipedir = null;
             var touchobj = e.changedTouches[0]
             distX = touchobj.pageX - startX
@@ -212,7 +244,7 @@ export class SwipeService {
         el.classList.remove("swipedown");
 
         var body = document.body,
-        html = document.documentElement;
+            html = document.documentElement;
         body.style.position = '';
         html.style.position = '';
     }

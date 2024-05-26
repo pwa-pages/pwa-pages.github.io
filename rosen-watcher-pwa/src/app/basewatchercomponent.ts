@@ -19,6 +19,7 @@ export class BaseWatcherComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.eventService.sendEvent(EventType.SwipeActivated);
     
     var me = this;
     await this.subscribeToEvent(EventType.StartDownload,
@@ -62,12 +63,10 @@ export class BaseWatcherComponent implements OnInit {
 
 
 
-  async unSubscribeAll(): Promise<void> {
-    await this.eventService.unSubscribeAll();
-  }
-
   async ngOnDestroy(): Promise<void> {
-    await this.eventService.unSubscribeAll();
+
+    this.eventService.sendEvent(EventType.SwipeDeActivated);
+    await this.eventService.unSubscribeAll([EventType.EndDownload, EventType.StartDownload, EventType.InputsStoredToDb]);
   }
 
   async subscribeToEvent(eventType: EventType, callback: () => void) {
