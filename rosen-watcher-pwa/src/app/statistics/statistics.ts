@@ -158,7 +158,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   }
 
   private getScreenLogurl(url: string): string{
-    return url;//.substring(0, 10) + ' ... ' + url.slice(-40);
+    return url.substring(0, 10) + ' ... ' + url.slice(-40);
   }
 
   title = 'rosen-watcher-pwa';
