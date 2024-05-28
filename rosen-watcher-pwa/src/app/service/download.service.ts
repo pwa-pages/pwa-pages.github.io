@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { EventService, EventType } from './event.service';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 
 import { lastValueFrom, firstValueFrom } from 'rxjs';
@@ -11,7 +12,7 @@ import { lastValueFrom, firstValueFrom } from 'rxjs';
 export class DownloadService {
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private eventService: EventService) { }
   
   downloadPermitInfo(watcherUrl: string) : Promise<any> {
     
@@ -32,9 +33,12 @@ export class DownloadService {
     const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
 
     console.log('Downloading from: ' + url);
+
+    this.eventService.sendEventWithData(EventType.StartDownload, url);
     return this.http.get(url).pipe(
       map((results: any) => {
         
+        this.eventService.sendEventWithData(EventType.EndDownload, url);
         return results;
       }),
       this.handleError()

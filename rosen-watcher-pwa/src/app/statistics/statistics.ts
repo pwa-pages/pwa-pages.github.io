@@ -24,7 +24,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   showPermitsLink: boolean = false;
   addressesForDisplay: string[];
   shareSupport: boolean = false;
-
+  loaderLogs: string[] = [];
 
   constructor(private location: Location, private route: ActivatedRoute,   private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService, private router: Router) {
 
@@ -127,13 +127,38 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       }
     );
 
+    await this.subscribeToEvent(EventType.StartDownload,
+      async function (url) {
+        
+        me.loaderLogs.push('Start download  ' + me.getScreenLogurl(url));
+        me.loaderLogs = me.loaderLogs.slice(-5);
+      }
+    );
+
     await this.subscribeToEvent(EventType.EndDownload,
+      async function (url) {
+        
+        me.loaderLogs.push('End download ' + me.getScreenLogurl(url));
+        me.loaderLogs = me.loaderLogs.slice(-5);
+      }
+    );
+
+  
+
+
+
+    await this.subscribeToEvent(EventType.EndFullDownload,
       async function () {
         await me.retrieveData();
+        me.loaderLogs = [];
       }
     );
 
 
+  }
+
+  private getScreenLogurl(url: string): string{
+    return url;//.substring(0, 10) + ' ... ' + url.slice(-40);
   }
 
   title = 'rosen-watcher-pwa';

@@ -160,3 +160,79 @@ a {
     transform: translate(var(--d, 0)) rotate(.5turn)
   }
 }
+
+.loader:before,
+.loader:after {
+  content: "";
+  grid-area: 1/1;
+  --_g: no-repeat radial-gradient(farthest-side,#8A8080 94%,#0000);
+  background:
+    var(--_g) left,
+    var(--_g) right;
+  background-size: 25% 100%;
+  animation: l34 1s infinite; 
+  transform: translate(var(--d,0)) rotate(0);
+}
+.loader:after {
+  --d: 37.5%;
+  animation-delay: .5s;
+}
+
+.loader {
+  
+  bottom: 3%;
+  left: 42.8vw;
+  
+  width: 10vw;
+  aspect-ratio: 4;
+  display: grid;
+}
+
+.loaderlogs{
+  bottom: 3%;
+  width: 100vw;
+  font-size: 2.5vmin;
+  
+  font-weight: bold;
+  color: rgba(178, 168, 168);
+  
+  text-align: center;
+  
+}
+
+.loader, .loaderlogs{
+  position: fixed;
+
+}
+
+.log-entry{
+  white-space: nowrap;
+}
+
+
+.loaderlogs::before,
+.loaderlogs::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 20%; 
+    pointer-events: none; 
+    z-index: 1; 
+}
+
+.loaderlogs::before {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.loaderlogs::after {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+
+.loaderlogs-content {
+    position: relative;
+    z-index: 0;
+}

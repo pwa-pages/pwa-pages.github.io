@@ -194,7 +194,7 @@ export class DataService {
 
   private IncreaseBusyCounter(): void {
     if (this.busyCounter == 0) {
-      this.eventService.sendEvent(EventType.StartDownload);
+      this.eventService.sendEvent(EventType.StartFullDownload);
     }
     this.busyCounter++;
   }
@@ -202,7 +202,7 @@ export class DataService {
   private DecreasBusyCounter(): void {
     this.busyCounter--;
     if (this.busyCounter == 0) {
-      this.eventService.sendEvent(EventType.EndDownload);
+      this.eventService.sendEvent(EventType.EndFullDownload);
       
     }
   }

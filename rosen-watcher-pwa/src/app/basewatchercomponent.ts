@@ -22,13 +22,13 @@ export class BaseWatcherComponent implements OnInit {
     this.eventService.sendEvent(EventType.SwipeActivated);
     
     var me = this;
-    await this.subscribeToEvent(EventType.StartDownload,
+    await this.subscribeToEvent(EventType.StartFullDownload,
       function () {
         me.busyCounter = 1
       }
     );
     var me = this;
-    await this.subscribeToEvent(EventType.EndDownload,
+    await this.subscribeToEvent(EventType.EndFullDownload,
       function () {
         me.busyCounter = 0
       }
@@ -66,10 +66,10 @@ export class BaseWatcherComponent implements OnInit {
   async ngOnDestroy(): Promise<void> {
 
     this.eventService.sendEvent(EventType.SwipeDeActivated);
-    await this.eventService.unSubscribeAll([EventType.EndDownload, EventType.StartDownload, EventType.InputsStoredToDb]);
+    await this.eventService.unSubscribeAll([EventType.EndFullDownload, EventType.StartFullDownload, EventType.InputsStoredToDb]);
   }
 
-  async subscribeToEvent(eventType: EventType, callback: () => void) {
+  async subscribeToEvent(eventType: EventType, callback: (...args: any[]) => void) {
     await this.eventService.subscribeToEvent(eventType, callback);
   }
 

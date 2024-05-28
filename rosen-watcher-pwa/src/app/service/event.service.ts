@@ -3,11 +3,14 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export enum EventType {
-  StartDownload = 'BeginDownload',
-  EndDownload = 'EndDownload',
+  StartFullDownload = 'StartFullDownload',
+  EndFullDownload = 'EndFullDownload',
   InputsStoredToDb = 'InputsStoredToDb',
   SwipeActivated = 'SwipeActivated',
-  SwipeDeActivated = 'SwipeDeActivated'
+  SwipeDeActivated = 'SwipeDeActivated',
+  StartDownload = 'StartDownload',
+  EndDownload = 'EndDownload'
+  
 }
 
 
@@ -32,23 +35,34 @@ export class EventService {
 
   resetSubscriptions() {
     this.eventSubscriptions = {
-      [EventType.StartDownload]: new Subject<any>,
-      [EventType.EndDownload]: new Subject<any>,
+      [EventType.StartFullDownload]: new Subject<any>,
+      [EventType.EndFullDownload]: new Subject<any>,
       [EventType.InputsStoredToDb]: new Subject<any>,
       [EventType.SwipeActivated]: new Subject<any>,
-      [EventType.SwipeDeActivated]: new Subject<any>
+      [EventType.SwipeDeActivated]: new Subject<any>,
+      [EventType.StartDownload]: new Subject<any>,
+      [EventType.EndDownload]: new Subject<any>
+      
     };
     return this.eventSubscriptions;
   }
 
   async sendEvent(eventType: EventType) {
     console.log('Received event: ' + eventType);
-
     this.eventSubscriptions[eventType].next(eventType);
   }
 
-  async subscribeToEvent(eventType: EventType, callback: () => void) {
-    this.eventSubscriptions[eventType].subscribe(callback);
+  async sendEventWithData(eventType: EventType, eventData: any) {
+    console.log('Received event: ' + eventType);
+    this.eventSubscriptions[eventType].next(eventData);
+  }
+
+  async subscribeToEvent(eventType: EventType, callback: (...args: any[]) => void) {
+    this.eventSubscriptions[eventType].subscribe(
+      (...eventData) => {
+        callback(...eventData);
+      }
+    );
   }
 
   async unSubscribeAll(events: EventType[]) {
