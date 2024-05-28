@@ -130,7 +130,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     await this.subscribeToEvent(EventType.StartDownload,
       async function (url) {
         
-        me.loaderLogs.push('Start download  ' + me.getScreenLogurl(url));
+        me.loaderLogs.push('Downloading ' + me.getScreenLogurl(url));
         me.loaderLogs = me.loaderLogs.slice(-5);
       }
     );
@@ -138,7 +138,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     await this.subscribeToEvent(EventType.EndDownload,
       async function (url) {
         
-        me.loaderLogs.push('End download ' + me.getScreenLogurl(url));
+        //me.loaderLogs.push('End download ' + me.getScreenLogurl(url));
         me.loaderLogs = me.loaderLogs.slice(-5);
       }
     );
