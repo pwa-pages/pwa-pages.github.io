@@ -72,7 +72,6 @@
 </div>
 
 
-<span class="loader" *ngIf="busyCounter > 0"></span>
 <div class="loaderlogs" *ngIf="busyCounter > 0">
     <div *ngFor="let log of loaderLogs" @logAnimation class="log-entry">
         {{log}}
