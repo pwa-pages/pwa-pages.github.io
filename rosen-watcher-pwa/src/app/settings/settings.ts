@@ -87,7 +87,7 @@ export class Settings implements OnInit {
 
   save(): void {
     this.storageService.putAddressData(this.addressData);
-    this.router.navigate(['main', { addresses: JSON.stringify(this.addresses) }]);
+    this.router.navigate(['main'], { queryParams: {addresses: JSON.stringify(this.addresses) }});
   }
 
   cancel(): void {

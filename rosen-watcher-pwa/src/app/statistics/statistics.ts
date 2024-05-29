@@ -69,9 +69,13 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   share(): void {
     const currentUrl = window.location.pathname;
     const subdirectory = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-    var urlTree = this.router.createUrlTree(['main', { addresses: JSON.stringify(this.addresses) }]);
-    const url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
+    const urlTree = this.router.createUrlTree(['main'], {
+      queryParams: { addresses: JSON.stringify(this.addresses) }
+    });
+    var  url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
     
+    console.log('share url: ' + url);
+
     navigator.share({
       title: 'Rosen Watcher',
       text: 'Rosen Watcher',
@@ -104,7 +108,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       event.preventDefault();
     });
 
-    this.route.params.subscribe(async params => {
+    this.route.queryParams.subscribe(async params => {
       
       
       var hasAddressParams = await this.checkAddressParams(params);
@@ -173,8 +177,8 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       this.addresses = JSON.parse(decodeURIComponent(addressesParam));
       let currentPath = this.location.path();
 
-      if (currentPath.includes(';')) {
-        let parts = currentPath.split(';');
+      if (currentPath.includes('?')) {
+        let parts = currentPath.split('?');
         let newPath = parts[0];
         this.location.replaceState(newPath);
       }
