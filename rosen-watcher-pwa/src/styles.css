@@ -173,6 +173,7 @@ a {
   animation: l34 1s infinite; 
   transform: translate(var(--d,0)) rotate(0);
 }
+
 .loader:after {
   --d: 37.5%;
   animation-delay: .5s;
@@ -192,7 +193,7 @@ a {
   bottom: 3%;
   width: 100vw;
   font-size: 2.5vmin;
-  
+  font-family: "Courier New", Courier, monospace;
   font-weight: bold;
   color: rgba(178, 168, 168);
   
