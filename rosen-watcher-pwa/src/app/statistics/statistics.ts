@@ -75,7 +75,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     navigator.share({
       title: 'Rosen Watcher',
       text: 'Rosen Watcher',
-      url: encodeURIComponent(url)
+      url: url
     });
 
     
