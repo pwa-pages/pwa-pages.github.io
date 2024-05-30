@@ -136,18 +136,10 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
         
         me.loaderLogs.push('Downloading ' + me.getScreenLogurl(url));
         me.loaderLogs = me.loaderLogs.slice(-5);
-      }
-    );
-
-    await this.subscribeToEvent(EventType.EndDownload,
-      async function (url) {
         
-        //me.loaderLogs.push('End download ' + me.getScreenLogurl(url));
-        me.loaderLogs = me.loaderLogs.slice(-5);
+        
       }
     );
-
-  
 
 
 
