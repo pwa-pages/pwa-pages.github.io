@@ -164,7 +164,8 @@ export class Performance extends BaseWatcherComponent implements OnInit {
             },
             ticks: {
               callback: function (value) {
-                return value as number / 1000;
+                value = value as number;
+                return value.toLocaleString('en-US', { minimumFractionDigits: 2 });
               }
             }
           },
@@ -189,6 +190,12 @@ export class Performance extends BaseWatcherComponent implements OnInit {
             titleFont: {
               size: 16,
               weight: 'bold',
+            },
+            callbacks: {
+              label: function (context) {
+                let value = context.raw as any;
+                return context.dataset.label + ': ' + value.y.toLocaleString('en-US', { minimumFractionDigits: 2 });
+              }
             }
           },
           legend: {

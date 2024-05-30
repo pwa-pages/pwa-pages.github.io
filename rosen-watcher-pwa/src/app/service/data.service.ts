@@ -142,7 +142,7 @@ export class DataService {
               addressCharts[input.outputAddress][dt] = 0;
             }
 
-            addressCharts[input.outputAddress][dt] += asset.amount;
+            addressCharts[input.outputAddress][dt] += asset.amount / Math.pow(10, asset.decimals); 
           }
         })
       });
