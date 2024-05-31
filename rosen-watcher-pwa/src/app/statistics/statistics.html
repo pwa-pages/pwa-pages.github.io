@@ -1,6 +1,4 @@
 
-
-
 <div class="headercontainer">
     <div class="headerblock">
         Total rewards:
@@ -23,6 +21,7 @@
 
 <div class="addressescontainer">
     Addresses:&nbsp;
+    
     <span class="addressdispl" *ngFor="let address of addressesForDisplay; let i = index; last as isLast">[{{ address
         }}]<span *ngIf="!isLast">,&nbsp;&nbsp;</span> </span>
 
@@ -66,6 +65,20 @@
     <div class="link">
         <a (click)="share()">
             Share
+        </a>
+    </div> 
+</div>
+
+<div class="linkcontainer" *ngIf="busyCounter == 0">
+    <div class="linkicon" id = "qrlink">
+        <a (click)="showQR()">
+            <div class="fas fa-qrcode"></div>
+        </a>
+    </div>
+    &nbsp;
+    <div class="link">
+        <a (click)="showQR()">
+            QR
         </a>
     </div> 
 </div>

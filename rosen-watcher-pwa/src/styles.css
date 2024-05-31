@@ -237,3 +237,38 @@ a {
     position: relative;
     z-index: 0;
 }
+
+.qrdialog {
+  position:fixed;
+  top:0px;
+  left:0px;
+  height:100%;
+  width:100%;
+  background-color: rgba(247, 247, 247, 0.7);
+  
+  z-index: 20000;
+  display: flex;
+  justify-content: center;
+}
+
+.qrdialog #close{
+  top: 3vh;
+  right:3vh;
+  position: fixed;
+}
+
+.qrdialog button{
+  bottom: 3vh;
+  
+  position: fixed;
+}
+
+
+.qrdialog #close div{
+  font-size: 5vh;
+}
+
+qrcode{
+  padding-top:20vh;
+}
+

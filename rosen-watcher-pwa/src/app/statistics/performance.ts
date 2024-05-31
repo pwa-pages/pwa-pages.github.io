@@ -5,7 +5,7 @@ import { FeatureService } from '../service/featureservice';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import Chart from 'chart.js/auto';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'performance',

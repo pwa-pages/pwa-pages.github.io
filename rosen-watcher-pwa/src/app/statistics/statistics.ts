@@ -8,6 +8,8 @@ import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { QRDialog } from './qrdialog'
 
 @Component({
   selector: 'statistics',
@@ -26,7 +28,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   shareSupport: boolean = false;
   loaderLogs: string[] = [];
 
-  constructor(private location: Location, private route: ActivatedRoute,   private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService, private router: Router) {
+  constructor(private location: Location, private route: ActivatedRoute,   private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService, private router: Router, private qrDialog: MatDialog) {
 
     super(eventService, featureService, swipeService);
     this.data = "";
@@ -65,14 +67,24 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.swipeService.swipe('left', '/performance');
   }
 
+  showQR(): void{
+    const dialogRef = this.qrDialog.open(QRDialog, {
+      data: { qrData: this.getShareUrl() }
+    });
+  }
 
-  share(): void {
+  getShareUrl(): string{
     const currentUrl = window.location.pathname;
     const subdirectory = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
     const urlTree = this.router.createUrlTree(['main'], {
       queryParams: { addresses: JSON.stringify(this.addresses) }
     });
     var  url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
+    return url;
+  }
+
+  share(): void {
+    var url = this.getShareUrl();
     
     console.log('share url: ' + url);
 

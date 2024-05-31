@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { Statistics } from './statistics/statistics';
 import { Settings } from './settings/settings';
 import { SettingsDialog } from './settings/dialog';
+import { QRDialog } from './statistics/qrdialog';
 import { Permits } from './permits/permits';
 import { Performance } from './statistics/performance';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -17,7 +18,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { QRCodeModule } from 'angularx-qrcode';
 
 
 const routes: Routes = [
@@ -33,6 +34,7 @@ const routes: Routes = [
     AppComponent,
     Settings,
     SettingsDialog,
+    QRDialog,
     Permits,
     Statistics,
     Performance,
@@ -52,7 +54,8 @@ const routes: Routes = [
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    FontAwesomeModule
+    FontAwesomeModule,
+    QRCodeModule
   ],
   exports: [RouterModule],
   providers: [],
