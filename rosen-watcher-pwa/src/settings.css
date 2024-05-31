@@ -33,25 +33,12 @@
 }
 
 
-.container button:hover {
-  background-color:rgba(138, 128, 128);
-}
 
 .settings{
   padding-top:20px;
 } 
 
 
-.container button, .watcherscreen button {
-  background-color:  rgba(238, 228, 218);
-  color: #333;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 5px;
-  padding: 5px 10px;
-  
-}
 
 .container input {
   margin-right: 10px;

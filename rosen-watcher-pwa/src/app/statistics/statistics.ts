@@ -68,7 +68,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   }
 
   showQR(): void{
-    const dialogRef = this.qrDialog.open(QRDialog, {
+    this.qrDialog.open(QRDialog, {
       data: { qrData: this.getShareUrl() }
     });
   }

@@ -272,3 +272,27 @@ qrcode{
   padding-top:20vh;
 }
 
+button {
+  background: linear-gradient(135deg, rgba(238, 228, 218), rgba(218, 208, 198));
+  color: #666;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+  padding: 5px 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease-in-out;
+  font-weight: bold;
+}
+
+button:hover {
+  background: linear-gradient(135deg, rgba(218, 208, 198), rgba(198, 188, 178));
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  background: linear-gradient(135deg, rgba(198, 188, 178), rgba(178, 168, 158));
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(2px);
+}
