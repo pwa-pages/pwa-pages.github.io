@@ -165,7 +165,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
             ticks: {
               callback: function (value) {
                 value = value as number;
-                return value.toLocaleString('en-US', { minimumFractionDigits: 2 });
+                return value.toLocaleString('en-US', { minimumFractionDigits: 0 });
               }
             }
           },
