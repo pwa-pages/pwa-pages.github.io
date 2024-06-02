@@ -13,14 +13,19 @@ export class BaseWatcherComponent implements OnInit {
 
   public busyCounter: number = 0;
   private quadrants = "";
-  
- 
-  constructor(private eventService: EventService, public featureService:FeatureService, public swipeService: SwipeService) {
+
+
+  constructor(private eventService: EventService, public featureService: FeatureService, public swipeService: SwipeService) {
+  }
+
+  resetHeight(): void {
+    document.body.style.height = window.innerHeight + "px";
+    document.documentElement.style.height = window.innerHeight + "px";
   }
 
   async ngOnInit(): Promise<void> {
     this.eventService.sendEvent(EventType.SwipeActivated);
-    
+
     var me = this;
     await this.subscribeToEvent(EventType.StartFullDownload,
       function () {
@@ -33,6 +38,12 @@ export class BaseWatcherComponent implements OnInit {
         me.busyCounter = 0
       }
     );
+
+
+    window.addEventListener("resize", this.resetHeight);
+
+    this.resetHeight();
+
   }
 
   @HostListener('document:click', ['$event'])
@@ -43,10 +54,10 @@ export class BaseWatcherComponent implements OnInit {
     const quadrant = this.calculateQuadrant(clientX, clientY, width, height);
     this.quadrants = this.quadrants + quadrant;
     this.quadrants = this.quadrants.slice(-8);
-    if(this.quadrants === "01230123"){
+    if (this.quadrants === "01230123") {
       this.featureService.activateAllFeatures();
     }
-    console.log('Quadrants:',  this.quadrants);
+    console.log('Quadrants:', this.quadrants);
   }
 
   calculateQuadrant(x: number, y: number, width: number, height: number): any {
@@ -76,10 +87,10 @@ export class BaseWatcherComponent implements OnInit {
   async subscribeToEvents(eventTypes: EventType[], callback: () => void) {
 
     eventTypes.forEach(async eventType => {
-      await this.eventService.subscribeToEvent(eventType, callback);  
+      await this.eventService.subscribeToEvent(eventType, callback);
     });
-    
+
   }
 
-  
+
 }

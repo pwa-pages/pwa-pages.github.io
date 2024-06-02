@@ -1,5 +1,5 @@
 .chartcontainer.performancechart {
-  height: 75vh !important;
+  height: 75% !important;
 }
 
 
@@ -9,7 +9,7 @@
   padding-left: 5vw;
   padding-right: 5vw;
   padding-top: 2vh;
-  height: 60vh;
+  height: 60%;
 }
 
 
