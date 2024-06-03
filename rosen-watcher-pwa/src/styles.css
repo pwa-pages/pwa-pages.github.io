@@ -7,7 +7,6 @@ body,
 html {
   width: 100vw;
   height: 100vh;
-  max-height: fit-content;
 }
 
 h1 {
