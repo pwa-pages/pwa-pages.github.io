@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1717443611571,
+  "timestamp": 1717532105475,
   "appData": {
-    "version": "1.3.16"
+    "version": "1.3.17"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -48,7 +48,7 @@
   "hashTable": {
     "./assets/icons/icon-512x512.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./favicon.ico": "3f827768829ef167081886d77582b29f19122dc8",
-    "./index.html": "00a1a694817d35570c9533b9889c0a9f890e64ab",
+    "./index.html": "ce0b3706cb10e9b05abcab3da5c7df3b42d88710",
     "./main-XC3P7QXC.js": "4806a0573881e10b5df4bad095a379946913cf93",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/fa-brands-400-LUMNIJ6A.ttf": "acbbe78b63ab309cd560dc712a5dd2d5301d14ff",
