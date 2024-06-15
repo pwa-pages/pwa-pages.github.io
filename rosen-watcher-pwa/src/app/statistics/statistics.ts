@@ -21,10 +21,10 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
 
   data: string;
   rewardsChart: any[];
-  addresses: string[];
+  addresses: any[];
   noAddresses: boolean = false;
   showPermitsLink: boolean = false;
-  addressesForDisplay: string[];
+  addressesForDisplay: any[];
   shareSupport: boolean = false;
   loaderLogs: string[] = [];
 
@@ -129,7 +129,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
 
       await this.retrieveData().then((inputs) => {
         this.addresses.forEach(async address => {
-          await this.dataService.downloadForAddress(address, inputs, storageService, hasAddressParams);
+          await this.dataService.downloadForAddress(address.address, inputs, storageService, hasAddressParams);
           await this.retrieveData();
         });
 

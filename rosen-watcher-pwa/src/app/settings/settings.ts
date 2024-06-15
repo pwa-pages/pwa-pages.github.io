@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class Settings implements OnInit {
-  addresses: string[];
+  addresses: any[];
   addressData: any[];
   
 
@@ -35,11 +35,11 @@ export class Settings implements OnInit {
 
   editaddress(index: number): void {
     const dialogRef = this.dialog.open(SettingsDialog, {
-      data: { title: 'Edit Address', address: this.addresses[index], watcherUrl: this.addressData.find(a => a.address == this.addresses[index])?.watcherUrl }
+      data: { title: 'Edit Address', address: this.addresses[index].address, watcherUrl: this.addressData.find(a => a.address == this.addresses[index])?.watcherUrl }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.addresses[index] = result.address;
+        this.addresses[index].address = result.address;
         var editAddress = this.addressData.find(a => a.address == result.address);
         if (editAddress != null) {
           editAddress.watcherUrl = result.watcherUrl;
@@ -60,7 +60,7 @@ export class Settings implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
 
       if (result) {
-        this.addresses.push(result.address);
+        this.addresses.push({address: result.address});
         this.addressData.push({ watcherUrl: result.watcherUrl, address: result.address });
 
       }

@@ -136,9 +136,27 @@ a {
 
 
 
-.addressdisplay {
-  font-family: 'Courier New', Courier, monospace;
+
+
+.mainaddressdispl {
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  padding-left: 3vh;
 }
+
+.mainaddressdispl.Bitcoin {
+  background-image: url('/assets/images/bitcoin.png');
+}
+
+.mainaddressdispl.Cardano {
+  background-image: url('/assets/images/cardano.png');
+}
+
+.mainaddressdispl.Ergo {
+  background-image: url('/assets/images/ergo.png');
+}
+
 
 .noAddresses {
   color: green;
