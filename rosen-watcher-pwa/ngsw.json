@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1718466966348,
+  "timestamp": 1718467169412,
   "appData": {
-    "version": "1.3.19"
+    "version": "1.3.20"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -19,7 +19,7 @@
         "./main-76CIB7Y4.js",
         "./manifest.webmanifest",
         "./polyfills-S3BTP7ME.js",
-        "./styles-RWM43FFO.css"
+        "./styles-DKTEQHJY.css"
       ],
       "patterns": []
     },
@@ -35,6 +35,9 @@
         "./assets/images/bitcoin.png",
         "./assets/images/cardano.png",
         "./assets/images/ergo.png",
+        "./media/bitcoin-33YPZZ6G.png",
+        "./media/cardano-Z5HTN2PX.png",
+        "./media/ergo-JV7XTDXM.png",
         "./media/fa-brands-400-LUMNIJ6A.ttf",
         "./media/fa-brands-400-Q5MHU2AU.woff2",
         "./media/fa-regular-400-HTG32PIJ.woff2",
@@ -54,9 +57,12 @@
     "./assets/images/cardano.png": "5a061f71ea9d5e6d75d7ea8ede158429dc6989e2",
     "./assets/images/ergo.png": "6e15dfbb70fc290a87743165e7f5df5980521b84",
     "./favicon.ico": "3f827768829ef167081886d77582b29f19122dc8",
-    "./index.html": "d580d2f355912e1d6a39acf4bb8eef07cb043353",
+    "./index.html": "b9cdb19be0a5949f31daea4c3042a07a3122b970",
     "./main-76CIB7Y4.js": "2848402883f8c1f9877a636f8020b77df4a82b59",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
+    "./media/bitcoin-33YPZZ6G.png": "ef0951cc1fa0256f00f29c9242f998341e01c599",
+    "./media/cardano-Z5HTN2PX.png": "5a061f71ea9d5e6d75d7ea8ede158429dc6989e2",
+    "./media/ergo-JV7XTDXM.png": "6e15dfbb70fc290a87743165e7f5df5980521b84",
     "./media/fa-brands-400-LUMNIJ6A.ttf": "acbbe78b63ab309cd560dc712a5dd2d5301d14ff",
     "./media/fa-brands-400-Q5MHU2AU.woff2": "c39dd7c713983702de91b08ae00b194b0bdb9008",
     "./media/fa-regular-400-HTG32PIJ.woff2": "8c9331bf363872cd84f2d1089b4d72fc21784cbd",
@@ -66,7 +72,7 @@
     "./media/fa-v4compatibility-BYQ7LMO7.woff2": "827835b9a92ff50acba8ef5f700d5d33933de7ac",
     "./media/fa-v4compatibility-FQDQ7UU2.ttf": "27a74685ce8ff178a2199f1dea5671516e7f67ff",
     "./polyfills-S3BTP7ME.js": "893d641030c187f109c667de1b0a73a03095fa3b",
-    "./styles-RWM43FFO.css": "5f19a247acfad42078367bbce2d6f1c876fc7ae6"
+    "./styles-DKTEQHJY.css": "7322075105beae4dd0c828db45e5805fc9319609"
   },
   "navigationUrls": [
     {

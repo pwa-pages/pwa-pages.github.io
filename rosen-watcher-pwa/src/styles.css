@@ -146,15 +146,15 @@ a {
 }
 
 .mainaddressdispl.Bitcoin {
-  background-image: url('/assets/images/bitcoin.png');
+  background-image: url('./assets/images/bitcoin.png');
 }
 
 .mainaddressdispl.Cardano {
-  background-image: url('/assets/images/cardano.png');
+  background-image: url('./assets/images/cardano.png');
 }
 
 .mainaddressdispl.Ergo {
-  background-image: url('/assets/images/ergo.png');
+  background-image: url('./assets/images/ergo.png');
 }
 
 
