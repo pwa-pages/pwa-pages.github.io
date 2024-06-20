@@ -12,6 +12,9 @@ import { lastValueFrom, firstValueFrom } from 'rxjs';
 export class DownloadService {
 
 
+  readonly startFrom: Date = new Date('2024-01-01');
+  
+
   constructor(private http: HttpClient, private eventService: EventService) { }
   
   downloadPermitInfo(watcherUrl: string) : Promise<any> {
@@ -37,6 +40,17 @@ export class DownloadService {
     this.eventService.sendEventWithData(EventType.StartDownload, url);
     return this.http.get(url).pipe(
       map((results: any) => {
+
+        for (const item of results.items) {
+          const inputDate = new Date(item.timestamp);
+          if (inputDate < this.startFrom) {
+            this.eventService.sendEventWithData(EventType.EndDownload, url);
+            return [];
+          }
+          break; 
+        }
+        
+  
         
         this.eventService.sendEventWithData(EventType.EndDownload, url);
         return results;
