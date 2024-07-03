@@ -141,7 +141,8 @@ a {
 .mainaddressdispl {
   background-size: contain;
   background-repeat: no-repeat;
-  display: inline-block;
+  display: block;
+  height: 2.5vh;
   padding-left: 2.7vh;
 }
 
