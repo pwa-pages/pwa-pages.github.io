@@ -315,7 +315,7 @@ export class DataService {
     if (boxId) {
       console.log('Found existing boxId in db for download for: ' + address + ',no need to download more.');
     }
-    if (!boxId) {
+    if (!boxId && itemsz >= this.initialNDownloads ) {
       console.log('Downloading all tx\'s for : ' + address);
 
       await this.downloadAllForAddress(address, 0);
