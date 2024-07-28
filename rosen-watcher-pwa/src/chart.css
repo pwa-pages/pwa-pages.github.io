@@ -1,5 +1,7 @@
-.chartcontainer.performancechart {
+.performancecontainer {
   height: 75% !important;
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -12,6 +14,9 @@
   height: 60%;
 }
 
+.performancecontainer .chartcontainer{
+  flex:1;
+}
 
 .chart-container,
 .chart-container canvas,
@@ -19,4 +24,19 @@ app-reward-chart,
 app-performance-chart {
   width: 100% !important;
   height: 100% !important;
+}
+
+
+
+.performance-chart-address{
+  display: inline-block;
+  margin-left: .4vh;
+}
+
+.chart-legend{
+  height:2vh;
+  width:4vh;
+  float:left;
+  margin-top:.25vh;
+  
 }

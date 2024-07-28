@@ -135,7 +135,7 @@ export class DataService {
   async getPerformanceChart(): Promise<any[]> {
     var inputsPromise = this.getWatcherInputs();
     var performanceChart: any = [
-    ];
+    ]; 
 
 
     console.log('start retrieving chart from database');
@@ -145,6 +145,8 @@ export class DataService {
       var addressCharts: any[] = [];
 
       inputs.sort((a, b) => a.inputDate - b.inputDate);
+
+      var chainTypes: any[] = [];
 
       inputs.forEach((input: any) => {
         input.assets.forEach((asset: any) => {
@@ -163,6 +165,7 @@ export class DataService {
             }
 
             addressCharts[input.outputAddress][dt] += asset.amount / Math.pow(10, asset.decimals);
+            chainTypes[input.outputAddress] = this.getChainType(input.address);
           }
         })
       });
@@ -177,7 +180,7 @@ export class DataService {
             chart.push({ x: new Date(Number(ckey)), y: addressCharts[key][ckey] });
           }
           var addressForDisplay = key.substring(0, 6) + '...' + key.substring(key.length - 6, key.length);
-          performanceChart.push({ address: key, addressForDisplay: addressForDisplay, chart: chart });
+          performanceChart.push({ address: key, addressForDisplay: addressForDisplay, chart: chart, chainType: chainTypes[key] });
 
         }
 

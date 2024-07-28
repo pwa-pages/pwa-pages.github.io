@@ -20,8 +20,6 @@
 
 <br/>
 <div class="addressescontainer">
-    Addresses:&nbsp;
-    
     <div class="mainaddressdispl {{address.chainType}}" *ngFor="let address of addressesForDisplay; let i = index; last as isLast">- [{{ address.address
         }}]<span *ngIf="!isLast">,&nbsp;&nbsp;</span> </div>
 

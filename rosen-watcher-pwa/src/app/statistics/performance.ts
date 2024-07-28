@@ -14,11 +14,25 @@ import { Router } from '@angular/router';
 
 
 export class Performance extends BaseWatcherComponent implements OnInit {
+  readonly chartColors: string[] = [
+    '#1f77b4', // Blue
+    '#2ca02c', // Green
+    '#bcbd22', // Yellow-Green
+    '#d62728', // Red
+    '#ff7f0e', // Orange
+    '#8c564b', // Brown
+    '#e377c2', // Pink
+    '#7f7f7f', // Gray
+    '#17becf',  // Turquoise
+    '#9467bd', // Purple
 
+  ];
   data: string;
   performanceChart: any[];
   addresses: string[];
   noAddresses: boolean = false;
+  addressesForDisplay: any[];
+
   showPermitsLink: boolean = false;
   chart: Chart<"bar", any[][], unknown> | undefined;
 
@@ -28,10 +42,11 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     this.data = "";
     this.addresses = [];
     this.performanceChart = [];
+    this.addressesForDisplay = [];
   }
 
   async retrieveData(): Promise<void> {
-    this.performanceChart = await this.dataService.getPerformanceChart();
+    this.performanceChart = await this.getPerformanceChart();
   }
 
   swipeRight(): void {
@@ -94,23 +109,21 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     return Math.abs((p1.x.getTime() * (p2.y - p3.y) + p2.x.getTime() * (p3.y - p1.y) + p3.x.getTime() * (p1.y - p2.y)) / 2);
   }
 
+  private async getPerformanceChart(): Promise<any[]> {
+
+    var chart = await this.dataService.getPerformanceChart()
+
+    return chart.map((c, index) => ({
+      ...c,
+      color: this.chartColors[index % this.chartColors.length]
+    }));
+  }
+
   private createDataSet(i: number): any {
 
-    const chartColors: string[] = [
-      '#1f77b4', // Blue
-      '#2ca02c', // Green
-      '#bcbd22', // Yellow-Green
-      '#d62728', // Red
-      '#ff7f0e', // Orange
-      '#8c564b', // Brown
-      '#e377c2', // Pink
-      '#7f7f7f', // Gray
-      '#17becf',  // Turquoise
-      '#9467bd', // Purple
 
-    ];
 
-    var chartColor = chartColors[(i) % 10];
+    var chartColor = this.chartColors[(i) % 10];
     return {
       label: "",
       data: [
@@ -135,7 +148,6 @@ export class Performance extends BaseWatcherComponent implements OnInit {
 
       for (var i = 0; i < this.performanceChart.length; i++) {
         dataSets[i].data = this.performanceChart[i].chart;
-        dataSets[i].label = 'Address: ' + this.performanceChart[i].addressForDisplay;
       }
 
       this.createChart(dataSets);
@@ -182,6 +194,9 @@ export class Performance extends BaseWatcherComponent implements OnInit {
           }
         },
         plugins: {
+          legend: {
+            display: false
+          },
           tooltip: {
             backgroundColor: 'rgba(0, 0, 0, 0.7)',
             bodyFont: {
@@ -195,13 +210,6 @@ export class Performance extends BaseWatcherComponent implements OnInit {
               label: function (context) {
                 let value = context.raw as any;
                 return context.dataset.label + ': ' + value.y.toLocaleString('en-US', { minimumFractionDigits: 2 });
-              }
-            }
-          },
-          legend: {
-            labels: {
-              font: {
-                size: 14,
               }
             }
           }

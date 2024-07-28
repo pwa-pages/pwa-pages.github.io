@@ -1,4 +1,3 @@
-
 <div class="headercontainer">
     <div class="headerblock">
         Performance&nbsp;
@@ -7,27 +6,42 @@
 </div>
 
 
+<div class="performancecontainer">
+    <div class="addressescontainer">
+        <div class=""
+            *ngFor="let address of performanceChart; let i = index; last as isLast">
+            
+            <div class = "chart-legend" [style.background-color]="address.color"></div>
+            <div class = "performance-chart-address mainaddressdispl {{address.chainType}}">
+            - [{{ address.addressForDisplay }}]
+            </div>
+            
+            <span
+                *ngIf="!isLast">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </div>
 
-<div class="chartcontainer performancechart">
-    <div class="chart-container">
-        <canvas  id="PerformanceChart" ></canvas>
+    </div>
+
+
+    <div class="chartcontainer">
+        <div class="chart-container">
+            <canvas id="PerformanceChart"></canvas>
+        </div>
     </div>
 </div>
-
 
 
 <span class="loader" *ngIf="busyCounter > 0"></span>
 
 <div class="navbuttons left">
     <div>
-    <a (click)="swipeRight()">
-        <span class="fas fa-angle-left"></span>&nbsp;Total Rewards
-    </a>
-</div>
-<div *ngIf="showPermitsLink" >
-    <a routerLink="/permits" routerLinkActive="active">
-        Permits&nbsp;&nbsp;<span class="fas fa-arrow-down"></span>
-    </a>
+        <a (click)="swipeRight()">
+            <span class="fas fa-angle-left"></span>&nbsp;Total Rewards
+        </a>
+    </div>
+    <div *ngIf="showPermitsLink">
+        <a routerLink="/permits" routerLinkActive="active">
+            Permits&nbsp;&nbsp;<span class="fas fa-arrow-down"></span>
+        </a>
     </div>
 
 </div>
