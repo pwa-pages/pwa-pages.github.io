@@ -148,14 +148,17 @@ a {
 
 .mainaddressdispl.Bitcoin {
   background-image: url('./assets/images/bitcoin.png');
+  filter: brightness(0.8); 
 }
 
 .mainaddressdispl.Cardano {
   background-image: url('./assets/images/cardano.png');
+  filter: brightness(0.8); 
 }
 
 .mainaddressdispl.Ergo {
   background-image: url('./assets/images/ergo.png');
+  filter: brightness(0.8); 
   
 }
 
