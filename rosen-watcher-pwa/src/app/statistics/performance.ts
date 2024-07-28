@@ -148,6 +148,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
 
       for (var i = 0; i < this.performanceChart.length; i++) {
         dataSets[i].data = this.performanceChart[i].chart;
+        dataSets[i].label = 'Address: ' + this.performanceChart[i].addressForDisplay;
       }
 
       this.createChart(dataSets);
@@ -194,9 +195,6 @@ export class Performance extends BaseWatcherComponent implements OnInit {
           }
         },
         plugins: {
-          legend: {
-            display: false
-          },
           tooltip: {
             backgroundColor: 'rgba(0, 0, 0, 0.7)',
             bodyFont: {
@@ -212,6 +210,9 @@ export class Performance extends BaseWatcherComponent implements OnInit {
                 return context.dataset.label + ': ' + value.y.toLocaleString('en-US', { minimumFractionDigits: 2 });
               }
             }
+          },
+          legend: {
+            display: false
           }
           ,
         },
