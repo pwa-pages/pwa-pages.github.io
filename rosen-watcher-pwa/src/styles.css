@@ -22,8 +22,7 @@ ul {
 }
 
 li {
-  margin-bottom: 3px;
-
+ 
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.3vh;
 }
@@ -36,7 +35,6 @@ li:last-child {
 .linkcontainer {
 
   margin-left: 5vw;
-  padding: 3px;
   font-size: 2vh;
   font-weight: bold;
   color: rgba(138, 128, 128);
@@ -50,6 +48,7 @@ li:last-child {
 
 .addressescontainer{
   display: flex;
+  margin-bottom: 5vh;
 }
 
 .permitstitle {

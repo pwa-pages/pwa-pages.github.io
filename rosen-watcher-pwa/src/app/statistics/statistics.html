@@ -18,13 +18,13 @@
     <app-reward-chart [chartData]="rewardsChart"></app-reward-chart>
 </div>
 
-<br/>
+
 <div class="addressescontainer">
     <div class="mainaddressdispl {{address.chainType}}" *ngFor="let address of addressesForDisplay; let i = index; last as isLast">- [{{ address.address
         }}]<span *ngIf="!isLast">,&nbsp;&nbsp;</span> </div>
 
 </div>
-<br/>
+
 <div class="linkcontainer" *ngIf="busyCounter == 0">
     <div class="linkicon">
         <a routerLink="/settings" routerLinkActive="active">
