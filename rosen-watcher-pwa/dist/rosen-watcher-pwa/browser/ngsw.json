@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1722183444295,
+  "timestamp": 1722183923801,
   "appData": {
-    "version": "1.5.1"
+    "version": "1.5.2"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -19,7 +19,7 @@
         "./main-CBTCQTUG.js",
         "./manifest.webmanifest",
         "./polyfills-S3BTP7ME.js",
-        "./styles-MAMIBTQO.css"
+        "./styles-3QEPNPLS.css"
       ],
       "patterns": []
     },
@@ -40,7 +40,7 @@
         "./assets/images/ergo.svg",
         "./media/bitcoin-R7IFWMJM.png",
         "./media/cardano-LICXQYGO.png",
-        "./media/ergo-NPFQKGWK.png",
+        "./media/ergo-4FSUZRBU.png",
         "./media/fa-brands-400-LUMNIJ6A.ttf",
         "./media/fa-brands-400-Q5MHU2AU.woff2",
         "./media/fa-regular-400-HTG32PIJ.woff2",
@@ -60,15 +60,15 @@
     "./assets/images/bitcoin.svg": "783bc638492c717e86c51d09ce0998e702530d4b",
     "./assets/images/cardano.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
     "./assets/images/cardano.svg": "608fc3ac299b3316df5f5e86ec337986daa84ce4",
-    "./assets/images/ergo.png": "f7df009755455730dd91293e4ff952e6b098e8d2",
+    "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ergo.svg": "8e9efea3a809444500c98fb33e732517ab4726ee",
     "./favicon.ico": "3f827768829ef167081886d77582b29f19122dc8",
-    "./index.html": "a75fc70de74cb86930a61b53a2fde086a90f80dd",
+    "./index.html": "483901a115bfd5275bcf58b893d5e1b43a3a1aa2",
     "./main-CBTCQTUG.js": "a5ad395c0e543506c296a5f8b05a827f870fc827",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
     "./media/cardano-LICXQYGO.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
-    "./media/ergo-NPFQKGWK.png": "f7df009755455730dd91293e4ff952e6b098e8d2",
+    "./media/ergo-4FSUZRBU.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./media/fa-brands-400-LUMNIJ6A.ttf": "acbbe78b63ab309cd560dc712a5dd2d5301d14ff",
     "./media/fa-brands-400-Q5MHU2AU.woff2": "c39dd7c713983702de91b08ae00b194b0bdb9008",
     "./media/fa-regular-400-HTG32PIJ.woff2": "8c9331bf363872cd84f2d1089b4d72fc21784cbd",
@@ -78,7 +78,7 @@
     "./media/fa-v4compatibility-BYQ7LMO7.woff2": "827835b9a92ff50acba8ef5f700d5d33933de7ac",
     "./media/fa-v4compatibility-FQDQ7UU2.ttf": "27a74685ce8ff178a2199f1dea5671516e7f67ff",
     "./polyfills-S3BTP7ME.js": "893d641030c187f109c667de1b0a73a03095fa3b",
-    "./styles-MAMIBTQO.css": "6b4faf065e870e733113f4df1289bac8ad6d392c"
+    "./styles-3QEPNPLS.css": "3b8f3d70491fef24a8f92e099518376b05ef1573"
   },
   "navigationUrls": [
     {
