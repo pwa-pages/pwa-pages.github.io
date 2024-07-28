@@ -49,6 +49,7 @@ li:last-child {
 .addressescontainer{
   display: flex;
   margin-bottom: 5vh;
+  margin-top: 3vh;
 }
 
 .permitstitle {
