@@ -134,92 +134,85 @@ export class DataService {
 
   async getPerformanceChart(): Promise<any[]> {
     var inputsPromise = this.getWatcherInputs();
-    var performanceChart: any = [
-    ]; 
-
+    var performanceChart: any = [];
 
     console.log('start retrieving chart from database');
     try {
+        const inputs = await inputsPromise;
+        var addressCharts: any = {};
 
-      const inputs = await inputsPromise;
-      var addressCharts: any[] = [];
+        inputs.sort((a, b) => a.inputDate - b.inputDate);
 
-      inputs.sort((a, b) => a.inputDate - b.inputDate);
+        var chainTypes: any = {};
 
-      var chainTypes: any[] = [];
+        inputs.forEach((input: any) => {
+            input.assets.forEach((asset: any) => {
+                if (!addressCharts[input.outputAddress]) {
+                    addressCharts[input.outputAddress] = {};
+                }
 
-      inputs.forEach((input: any) => {
-        input.assets.forEach((asset: any) => {
+                const currentDate = new Date();
+                const halfYearAgo = new Date(currentDate.getFullYear(), currentDate.getMonth() - 6, currentDate.getDate());
 
-          if (!addressCharts[input.outputAddress]) {
-            addressCharts[input.outputAddress] = [];
-          }
+                if (input.inputDate > halfYearAgo) {
+                    var dt = new Date(input.inputDate.getFullYear(), input.inputDate.getMonth(), input.inputDate.getDate() - input.inputDate.getDay()).getTime();
+                    if (!addressCharts[input.outputAddress][dt]) {
+                        addressCharts[input.outputAddress][dt] = 0;
+                    }
 
-          const currentDate = new Date();
-          const halfYearAgo = new Date(currentDate.getFullYear(), currentDate.getMonth() - 6, currentDate.getDate());
+                    addressCharts[input.outputAddress][dt] += asset.amount / Math.pow(10, asset.decimals);
+                    chainTypes[input.outputAddress] = this.getChainType(input.address);
+                }
+            });
+        });
 
-          if (input.inputDate > halfYearAgo) {
-            var dt = new Date(input.inputDate.getFullYear(), input.inputDate.getMonth(), input.inputDate.getDate() - input.inputDate.getDay()).getTime();
-            if (!addressCharts[input.outputAddress][dt]) {
-              addressCharts[input.outputAddress][dt] = 0;
+        performanceChart = [];
+
+        for (const key in addressCharts) {
+            if (addressCharts.hasOwnProperty(key)) {
+                var chart: any[] = [];
+                for (const ckey in addressCharts[key]) {
+                    chart.push({ x: new Date(Number(ckey)), y: addressCharts[key][ckey] });
+                }
+                var addressForDisplay = key.substring(0, 6) + '...' + key.substring(key.length - 6, key.length);
+                performanceChart.push({ address: key, addressForDisplay: addressForDisplay, chart: chart, chainType: chainTypes[key] });
             }
-
-            addressCharts[input.outputAddress][dt] += asset.amount / Math.pow(10, asset.decimals);
-            chainTypes[input.outputAddress] = this.getChainType(input.address);
-          }
-        })
-      });
-
-      performanceChart = [];
-
-      for (const key in addressCharts) {
-        if (addressCharts.hasOwnProperty(key)) {
-
-          var chart: any[] = [];
-          for (const ckey in addressCharts[key]) {
-            chart.push({ x: new Date(Number(ckey)), y: addressCharts[key][ckey] });
-          }
-          var addressForDisplay = key.substring(0, 6) + '...' + key.substring(key.length - 6, key.length);
-          performanceChart.push({ address: key, addressForDisplay: addressForDisplay, chart: chart, chainType: chainTypes[key] });
-
         }
 
+        // Sort the performanceChart array by chainType
+        performanceChart.sort((a:any, b:any) => a.chainType.localeCompare(b.chainType));
 
-      }
-
-
-
-      console.log('done retrieving chart from database');
-      return await new Promise<string[]>((resolve, reject) => {
-        resolve(performanceChart);
-      });
+        console.log('done retrieving chart from database');
+        return await new Promise<any[]>((resolve, reject) => {
+            resolve(performanceChart);
+        });
     } catch (error) {
-      console.error(error);
-      return performanceChart;
+        console.error(error);
+        return performanceChart;
     }
-  }
+}
+
+
 
   async getAddressesForDisplay(): Promise<any[]> {
     var addresses = this.getAddresses();
 
-    return addresses.then(adresses => {
+    return addresses.then(addresses => {
       var result: any[] = [];
-      adresses.forEach((a: any) => {
-
+      addresses.forEach((a: any) => {
         result.push({
           address: a.address.substring(0, 6) + '...',
           chainType: a.chainType
-
-        }
-
-        );
-
+        });
       });
 
-      return result;
+      // Sort the result array by chainType
+      result.sort((a, b) => a.chainType.localeCompare(b.chainType));
 
+      return result;
     });
   }
+
 
   private IncreaseBusyCounter(): void {
     if (this.busyCounter == 0) {
@@ -318,7 +311,7 @@ export class DataService {
     if (boxId) {
       console.log('Found existing boxId in db for download for: ' + address + ',no need to download more.');
     }
-    if (!boxId && itemsz >= this.initialNDownloads ) {
+    if (!boxId && itemsz >= this.initialNDownloads) {
       console.log('Downloading all tx\'s for : ' + address);
 
       await this.downloadAllForAddress(address, 0);
@@ -372,11 +365,11 @@ export class DataService {
       inputs.forEach((input: any) => {
 
         if (!addresses.some(address => address.address == input.outputAddress)) {
-          addresses.push({ 
-            
-            address: input.outputAddress ,
+          addresses.push({
+
+            address: input.outputAddress,
             chainType: this.getChainType(input.address)
-          
+
           });
         }
 

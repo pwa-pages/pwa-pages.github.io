@@ -25,8 +25,8 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     '#7f7f7f', // Gray
     '#17becf',  // Turquoise
     '#9467bd', // Purple
-
   ];
+  
   data: string;
   performanceChart: any[];
   addresses: string[];
