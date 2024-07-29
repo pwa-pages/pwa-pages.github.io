@@ -28,6 +28,9 @@ app-performance-chart {
   height: 100% !important;
 }
 
+.performancelegend{
+  width:30vh;
+}
 
 
 .performance-chart-address{
