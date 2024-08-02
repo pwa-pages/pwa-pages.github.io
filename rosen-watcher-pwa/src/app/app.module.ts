@@ -9,6 +9,7 @@ import { SettingsDialog } from './settings/dialog';
 import { QRDialog } from './statistics/qrdialog';
 import { Permits } from './permits/permits';
 import { Performance } from './statistics/performance';
+import { Collateral } from './statistics/collateral';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { RewardChartComponent } from './reward.chart/reward.chart.component';
 import { MatInputModule } from '@angular/material/input';
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'settings', component: Settings },
   { path: 'permits', component: Permits },
   { path: 'performance', component: Performance },
+  { path: 'collateral', component: Collateral },
   { path: '**', component: Statistics }
   
 ];
@@ -38,6 +40,7 @@ const routes: Routes = [
     Permits,
     Statistics,
     Performance,
+    Collateral,
     RewardChartComponent
   ],
   imports: [

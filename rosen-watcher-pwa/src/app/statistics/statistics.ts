@@ -26,9 +26,9 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   showPermitsLink: boolean = false;
   addressesForDisplay: any[];
   shareSupport: boolean = false;
-  loaderLogs: string[] = [];
+  
 
-  constructor(private location: Location, private route: ActivatedRoute,   private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService, private router: Router, private qrDialog: MatDialog) {
+  constructor(private location: Location, private route: ActivatedRoute, private storageService: StorageService, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService, private router: Router, private qrDialog: MatDialog) {
 
     super(eventService, featureService, swipeService);
     this.data = "";
@@ -63,29 +63,29 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   }
 
   swipeLeft(): void {
-    
+
     this.swipeService.swipe('left', '/performance');
   }
 
-  showQR(): void{
+  showQR(): void {
     this.qrDialog.open(QRDialog, {
       data: { qrData: this.getShareUrl() }
     });
   }
 
-  getShareUrl(): string{
+  getShareUrl(): string {
     const currentUrl = window.location.pathname;
     const subdirectory = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
     const urlTree = this.router.createUrlTree(['main'], {
       queryParams: { addresses: JSON.stringify(this.addresses) }
     });
-    var  url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
+    var url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
     return url;
   }
 
   share(): void {
     var url = this.getShareUrl();
-    
+
     console.log('share url: ' + url);
 
     navigator.share({
@@ -94,16 +94,16 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       url: url
     });
 
-    
+
   }
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    this.shareSupport = (navigator.share != null && navigator.share != undefined );
-    
+    this.shareSupport = (navigator.share != null && navigator.share != undefined);
+
     var me = this;
-    this.swipeService.swipeDetect('/performance');
+    this.swipeService.swipeDetect('/performance', '/collateral');
 
 
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -121,8 +121,8 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe(async params => {
-      
-      
+
+
       var hasAddressParams = await this.checkAddressParams(params);
 
       var storageService = this.storageService;
@@ -143,31 +143,16 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       }
     );
 
-    await this.subscribeToEvent(EventType.StartDownload,
-      async function (url) {
-        
-        me.loaderLogs.push('Downloading ' + me.getScreenLogurl(url));
-        me.loaderLogs = me.loaderLogs.slice(-5);
-        
-        
-      }
-    );
-
-
 
     await this.subscribeToEvent(EventType.EndFullDownload,
       async function () {
         await me.retrieveData();
-        me.loaderLogs = [];
       }
     );
 
 
   }
 
-  private getScreenLogurl(url: string): string{
-    return url.substring(0, 10) + ' ... ' + url.slice(-40);
-  }
 
   title = 'rosen-watcher-pwa';
 

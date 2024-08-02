@@ -9,7 +9,8 @@ export class SwipeService {
 
     private detectHorizontal: boolean = true;
     private detectVertical: boolean = false;
-    private currentNavigation = 'main';
+    private currentNavigationLeft = 'main';
+    private currentNavigationRight = 'main';
     private swipeActive = false;
 
 
@@ -43,7 +44,8 @@ export class SwipeService {
     swipe(swipedir: any, route: string) {
 
         var me = this;
-        this.currentNavigation = route;
+        this.currentNavigationLeft = route;
+        this.currentNavigationRight = route;
         var touchsurface = document.body;
         touchsurface.classList.add("swiping");
         var body = document.body,
@@ -130,8 +132,9 @@ export class SwipeService {
         }
     }
 
-    public swipeDetect(route: string) {
-        this.currentNavigation = route;
+    public swipeDetect(routeleft: string, routeRight: string) {
+        this.currentNavigationLeft = routeleft;
+        this.currentNavigationRight = routeRight;
     }
 
     public registerSwipeDetect() {
@@ -219,7 +222,13 @@ export class SwipeService {
             }
 
             if (swipedir) {
-                me.swipe(swipedir, me.currentNavigation);
+                if(swipedir == 'left'){
+                    me.swipe(swipedir, me.currentNavigationLeft);
+                }
+                else if(swipedir == 'right'){
+                    me.swipe(swipedir, me.currentNavigationRight);
+                }
+                
             }
             else {
                 me.resetswipes(body);

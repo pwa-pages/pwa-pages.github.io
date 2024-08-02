@@ -13,7 +13,7 @@ export class BaseWatcherComponent implements OnInit {
 
   public busyCounter: number = 0;
   private quadrants = "";
-
+  loaderLogs: string[] = [];
 
   constructor(private eventService: EventService, public featureService: FeatureService, public swipeService: SwipeService) {
   }
@@ -44,6 +44,26 @@ export class BaseWatcherComponent implements OnInit {
 
     this.resetHeight();
 
+
+
+    await this.subscribeToEvent(EventType.StartDownload,
+      async function (url) {
+
+        me.loaderLogs.push('Downloading ' + me.getScreenLogurl(url));
+        me.loaderLogs = me.loaderLogs.slice(-5);
+
+
+      }
+    );
+
+    await this.subscribeToEvent(EventType.EndFullDownload,
+      async function () {
+        
+        me.loaderLogs = [];
+      }
+    );
+
+
   }
 
   @HostListener('document:click', ['$event'])
@@ -72,6 +92,9 @@ export class BaseWatcherComponent implements OnInit {
     }
   }
 
+  private getScreenLogurl(url: string): string {
+    return url.substring(0, 10) + ' ... ' + url.slice(-40);
+  }
 
 
   async ngOnDestroy(): Promise<void> {

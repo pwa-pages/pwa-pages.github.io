@@ -38,10 +38,12 @@
             <span class="fas fa-angle-left"></span>&nbsp;Total Rewards
         </a>
     </div>
-    <div *ngIf="showPermitsLink">
-        <a routerLink="/permits" routerLinkActive="active">
-            Permits&nbsp;&nbsp;<span class="fas fa-arrow-down"></span>
-        </a>
-    </div>
-
 </div>
+<!--
+<div class="navbuttons right" *ngIf="busyCounter == 0 && !noAddresses">
+    <div>
+    <a (click)="swipeLeft()">
+        Collateral&nbsp;<span class="fas fa-angle-right"></span>
+    </a>
+</div>
+-->
