@@ -155,12 +155,12 @@ a {
 }
 
 .watchersdispl{
-  padding-left: 10vh;
+  padding-left: 5vmax;
   filter: brightness(0.8); 
 }
 
 .watcherscontainer {
-  font-size: 4vh;
+  font-size: 2vmax;
 }
 
 
