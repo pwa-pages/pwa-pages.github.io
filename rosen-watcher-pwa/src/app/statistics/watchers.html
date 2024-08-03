@@ -1,23 +1,29 @@
-
 <div class="headercontainer">
     <div class="headerblock">
         Number of watchers:
         <div class="header">{{ watcherCount }}</div>
-        
+
     </div>
 </div>
 
 
 
 
+<div class="mainwatcherscontainer">
+    <div class="watcherscontainer">
+        <div class="watchersdispl watcherheader">Watchers per chain</div>
+        <div class="Bitcoin watchersdispl"> {{bitcoinWatcherCount}} (Bitcoin)</div>
+        <div class="Cardano watchersdispl"> {{cardanoWatcherCount}} (Cardano)</div>
+        <div class="Ergo watchersdispl"> {{ergoWatcherCount}} (Ergo)</div>
+    </div>
 
-<div class="watcherscontainer">
-    <div class="watchersdispl watcherheader">Watchers per chain</div> 
-    <div class="Bitcoin watchersdispl"> {{bitcoinWatcherCount}} (Bitcoin)</div> 
-    <div class="Cardano watchersdispl"> {{cardanoWatcherCount}} (Cardano)</div>
-    <div class="Ergo watchersdispl"> {{ergoWatcherCount}} (Ergo)</div>
+    <div class="watcherscontainer">
+        <div class="watchersdispl watcherheader">Permits per chain</div>
+        <div class="Bitcoin watchersdispl"> {{bitcoinPermitCount}} (Bitcoin)</div>
+        <div class="Cardano watchersdispl"> {{cardanoPermitCount}} (Cardano)</div>
+        <div class="Ergo watchersdispl"> {{ergoPermitCount}} (Ergo)</div>
+    </div>
 </div>
-
 
 <div class="navbuttons left">
     <div>
@@ -29,7 +35,7 @@
 
 <div class="navbuttons right">
     <div>
-    <a (click)="swipeLeft()">
-        Statistics&nbsp;<span class="fas fa-angle-right"></span>
-    </a>
-</div>
+        <a (click)="swipeLeft()">
+            Total Rewards&nbsp;<span class="fas fa-angle-right"></span>
+        </a>
+    </div>

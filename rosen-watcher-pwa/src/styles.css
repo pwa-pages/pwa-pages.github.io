@@ -84,6 +84,8 @@ li:last-child {
   grid-template-columns: auto auto auto;
 }
 
+
+
 .watchergrid {
   border: none;
   border-radius: 5px;
@@ -139,7 +141,7 @@ a {
 
 
 .watcherheader{
-  margin-bottom:3vh;
+  margin-bottom:1vh;
 }
 
 
@@ -161,7 +163,12 @@ a {
 
 .watcherscontainer {
   font-size: 2vmax;
+  margin-top: 4vh;
+  float:left;
+  margin-right:4vw;
 }
+
+
 
 
 .mainaddressdispl.Bitcoin, .watchersdispl.Bitcoin {

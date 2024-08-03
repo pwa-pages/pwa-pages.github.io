@@ -19,6 +19,9 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
   bitcoinWatcherCount: number;
   cardanoWatcherCount: number;
   ergoWatcherCount: number;
+  bitcoinPermitCount: number;
+  cardanoPermitCount: number;
+  ergoPermitCount: number;
 
 
 
@@ -28,6 +31,9 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
     this.bitcoinWatcherCount = 0;
     this.cardanoWatcherCount = 0;
     this.ergoWatcherCount = 0;
+    this.bitcoinPermitCount = 0;
+    this.cardanoPermitCount = 0;
+    this.ergoPermitCount = 0;
   }
 
   swipeRight(): void {
@@ -47,10 +53,15 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
     this.swipeService.swipeDetect('/statistics', '/performance');
 
     var watcherInfo = await this.watchersDataService.getWatchersInfo();
+    var permitsInfo = await this.watchersDataService.getPermitssInfo();
+    
     this.watcherCount = watcherInfo.tokens.filter((token:any) => token.name !== 'RSN').reduce((sum: any, token:any ) => sum + token.amount, 0);
     this.cardanoWatcherCount = watcherInfo.tokens.find((token:any) => token.name === 'rspv2CardanoAWC').amount;
     this.bitcoinWatcherCount = watcherInfo.tokens.find((token:any) => token.name === 'rspv2BitcoinAWC').amount;
     this.ergoWatcherCount = watcherInfo.tokens.find((token:any) => token.name === 'rspv2ErgoAWC').amount;
+    this.cardanoPermitCount = permitsInfo.cardanoTokenData.amount;
+    this.bitcoinPermitCount = permitsInfo.bitcoinTokenData.amount;
+    this.ergoPermitCount = permitsInfo.ergoTokenData.amount;
 
   }
 

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { DownloadService } from './download.service';
 import { EventService, EventType } from './event.service';
-import { catchError, firstValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
@@ -15,6 +14,9 @@ export class WatchersDataService {
   readonly permitsBitcoinAddress: string = "NY4PEzZ7VfjtnTN697R7my9uAVkCYb6N71J2RSmJCFSdDqVf9aPvFQqKXujYDBtSA8hxYVUgkGgU9SP2Ss7JDUkHkdGLBqZwH4yDcPyVvbVbcre3o7nR59wiFDVtjzCjfZmVvMVJD9HiW4GKqVuZGTQCKns8tDe3sJoDNTL3VmhzRUPZf9JCN4TNji1ruXf5CxqWtDrCfoxE4xfbRWGmtBMdLMoRdL85V7z1fP5KxroWX5YgZQo28nTCU3WjPuY2YrjqYYGNHXvFZ9G8E85kCcseNtRWqViXGFzmwqHWKaYe4AdJzBbMKzJWYszsbiemNvisPtT2Yj3FjAmAErpW3gMeWyH3WtbipaAu9D31ggpLeLkLTGscJ9HB2oExpGWvv6u9mGdkTJMHYUuZJUGrcJPE3m7ZTEFxwkbeR9oD8nHHgW4SB46kHFbxzNoUksGPZQnxf95J3e5PUnhYgg7mrQLNpq6pphgGukFcHDgAN2rgFmUSDVsuzomhP735SMiveXSPzx6PZeP7CmrEHyXN6mFbBJuY17kvzzix1w9eFwryZDuZqnAANkYhF3TLkLyGZfSC4o9iAGynpivuNMUgbKAuj6D116tKoCq9PHELL8eTefmXNLFuhauQuKRjmWQKj9zYSd7qi6Zf49KX25PnWHkC3REc4abYpjtiQFefT2HkWRwneTCkJ8uMvoHs6kJzLg8NVzH8XwEZhTM2tNSDhBKZaURpYiQcHwLDgv5uFiwhasLAdZi2EJywBYX51NKc6m4MEsTiAJC9jkEydWcwyDzSHN18yEr4rvEgMNkUhLHJokgV2v3BNFhUTJqe58e2QXAmx9MytUDqzg3vwexEpMhueC2roYA27P1mmb85HKEz15a8LnuUT8ZjmG8kDbHuPYFyxcATytVuDrFDzqKBt9X36bocip4ZU4RRY8JcWjJvMcrBCjV3EhDVQ4it8bhoZnn79PsXazvDteua1NEYEJniPnNrRaiKTUWrseEUQ2vVjWy134jMxRbeiARhoj7MDxug2kFP8jRGSsxWt3Qqbv2SezT3xZ8jYxTyQ2CiyJ61CvUQwPtmoY3XKjrgrJKwnSzJRs4egKPYZKoSiSy6UdHMKuNDmys8wYo3Gi2EgVdUYRLLWcHh5Z2H91odSbTW2h5e6pZeY4a45TgihE6ZnZBhHGc75zJjukhPgP1wEp8GrreHA7ejvTEmpwNgj571x5JrvRD5TxWaFuZKBonGexovAK2L5v";
   readonly permitsErgoAddress: string = "NY4PEzZ7Vfjvo3AYu7dBh4ziatarsMAVPnwtHZL6BfoKeaots7P629HvVAmDZNdiVNUitWMqVJhgphUregwCXnhVNRddztP93qbtSWCMzVk1UQmCVUpvQyb25nyH1PrpRSjpFewJWeN3bjiVF6bTAm2t11X4d2fKGnAo3PX2BFVeyAUre7T5CZs2uikxZisyrJ1djE4UY1uwpTFkJv3RzZ3JMugNDeicf7qWqtCtNH8E9uG56VD2dMvmsr5YHQbrKgxa5foyA4K8cD59o2ub9ezbhjSgfXbc6VLaXmp5SzdP6n61MaePNexedifBWwAsHFcaaVXf7oUkePp5dDpc5mBbaAuidBAwH4SaxnUNjPw2bHVSXEk3ZJwwBrZRG7CYBCvEN6wFuPyzuhGsJQwdCtvUqxViGhxWrhRYKwixLhScVdGwCFCF9HjuCXt92FkEZKRk1kJuNzMUuc9AUbafbwhi8RC96TVQrtnsajhomptLKFmQXg4nZQao3jwHV8kfZeyF9BX5kiWUnC83Wa7X7seGUcECHRPLAapk7Lr1kUQ6Q62RpBKeGUsfmPcyNhaZ2bmdxMxxHAhdZdKVr78R5ch2BvG7ZtV6wkHB1hcVJGJmU4dskPPR5EFd8gED72eeUnNAsTknW7ePfNMj4DYWGqf2QhPHDZXsyRN2Mczv4tgyRsNA2HR3U9oZikejcuYhha9yNsXEdNn23B8wa5aDZwR6hwZ9hQ74yv29sbfBAfe9XWT2UZAVaeZeazQSSrvAhicEKnwmCAvfwcZNS57SHJ1EfZf1oEt66S6mGFdBzcKPLZzmJmCgMiBmMThqMemT1XS1ovES76LVcpXSkyiEdA17htR5HuPWdDVfWNQAK2jAM8BjKGtvsh93oMFGvMaBVBAvj1QcfTr17LdeeT7h78bKzyF5SQWuyu46xtDbmTZVrR1ZSpnffiD8TbWnae85Bw1VfttScQ8yfa26dsc9pwLrHhYhC4XKEVPWYUxLHZd959tLA2kGNkJBJR8PPThR8PugaUTq1sQpLg4ezPPUjYyWFvhFf6Rcw5rcJAwj99AUwoEhPaUnxT3TxiEJBbD3Zsna33mQD9Zg69Zzr9xiLA7GzhhA998dwkpbbgqFxyASwH6yav5qDbXPZH7GPtt3nTjUfRs87SGYgVGHoGhqaVUAfQKW4TtvFicdpvQws5kg1nZthd7WkWcR7HqLc1R4wBPFynFVGc457vhQwaP78yQsQDHq86";
   readonly watcherUrl = "https://api.ergoplatform.com/api/v1/addresses/ChTbcUHgBNqNMVjzV1dvCb2UDrX9nh6rGGcURCFEYXuH5ykKh7Ea3FvpFhHb9AnxXJkgAZ6WASN7Rdn7VMgkFaqP5Z5RWp84cDTmsZkhYrgAVGN7mjeLs8UxqUvRi2ArZbm35Xqk8Y88Uq2MJzmDVHLHzCYRGym8XPxFM4YEVxqzHSKYYDvaMLgKvoskFXKrvceAqEiyih26hjpekCmefiF1VmrPwwShrYYxgHLFCZdigw5JWKV4DmewuR1FH3oNtGoFok859SXeuRbpQfrTjHhGVfDsbXEo3GYP2imAh1APKyLEsG9LcE5WZnJV8eseQnYA8sACLDKZ8Tbpp9KUE7QZNFpnwGnkYx7eybbrCeFDFjTGpsBzaS6fRKrWj2J4Wy3TTyTU1F8iMCrHBF8inZPw9Kg9YEZuJMdXDFNtuaK15u86mF2s2Z5B1vdL5MtZfWThFLnixKds8ABEmGbe8n75Dym5Wv3pkEXQ6XPpaMjUxHfRJB3EfcoFM5nsZHWSTfbFBcHxSRnEiiU67cgJsBUpQn7FvEvqNLiKM4fL3yyykMtQ6RjAS8rhycszphvQa5qFrDHie4vPuTq8/balance/confirmed";
+  readonly rsnToken = "8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b";
+
+
 
   busyCounter: number = 0;
 
@@ -23,6 +25,36 @@ export class WatchersDataService {
 
   async getWatchersInfo(): Promise<any> {
     var result = this.downloadService.download(this.watcherUrl);
+    return result;
+  }
+
+  async getPermitsInfo(address: string): Promise<any> {
+
+    var permitsUrl = `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/confirmed`;
+    var result = this.downloadService.download(permitsUrl);
+
+    return result;
+  }
+
+  async getPermitssInfo(): Promise<any> {
+
+    var result: any = {};
+    result.cardanoTokenData = (await this.getPermitsInfo(this.permitsCardanoAddress)).tokens;
+    result.cardanoTokenData = result.cardanoTokenData.find((token: any) => token.tokenId === this.rsnToken);
+    result.cardanoTokenData.amount/=3000*Math.pow(10, result.cardanoTokenData.decimals);
+    result.cardanoTokenData.amount=Math.floor(result.cardanoTokenData.amount);
+    
+
+    result.bitcoinTokenData = (await this.getPermitsInfo(this.permitsBitcoinAddress)).tokens;
+    result.bitcoinTokenData = result.bitcoinTokenData.find((token: any) => token.tokenId === this.rsnToken);
+    result.bitcoinTokenData.amount/=3000*Math.pow(10, result.bitcoinTokenData.decimals);
+    result.bitcoinTokenData.amount=Math.floor(result.bitcoinTokenData.amount);
+
+    result.ergoTokenData = (await this.getPermitsInfo(this.permitsErgoAddress)).tokens;
+    result.ergoTokenData = result.ergoTokenData.find((token: any) => token.tokenId === this.rsnToken);
+    result.ergoTokenData.amount/=3000*Math.pow(10, result.ergoTokenData.decimals)
+    result.ergoTokenData.amount=Math.floor(result.ergoTokenData.amount);
+
 
     return result;
   }
