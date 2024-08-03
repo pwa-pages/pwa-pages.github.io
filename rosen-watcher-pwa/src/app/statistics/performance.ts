@@ -54,7 +54,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
   }
 
   swipeLeft(): void {
-    this.swipeService.swipe('left', '/collateral');
+    this.swipeService.swipe('left', '/watchers');
   }
 
 
@@ -62,7 +62,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     super.ngOnInit();
 
     var me = this;
-    this.swipeService.swipeDetect('/collateral', '/statistics');
+    this.swipeService.swipeDetect('/watchers', '/statistics');
 
     this.showPermitsLink = this.featureService.hasPermitScreen();
 

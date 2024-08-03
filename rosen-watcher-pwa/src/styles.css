@@ -32,7 +32,8 @@ li:last-child {
 }
 
 .addressescontainer,
-.linkcontainer {
+.linkcontainer,
+.watcherscontainer {
 
   margin-left: 5vw;
   font-size: 2vh;
@@ -41,6 +42,8 @@ li:last-child {
   animation: fadeIn 1s ease-in-out forwards;
   flex-wrap: wrap;
 }
+
+
 
 .linkcontainer{
   display: inline-flex;
@@ -135,29 +138,43 @@ a {
 }
 
 
+.watcherheader{
+  margin-bottom:3vh;
+}
 
 
-
-.mainaddressdispl {
+.mainaddressdispl, .watchersdispl {
   background-size: contain;
   background-repeat: no-repeat;
   display: block;
-  height: 2.5vh;
-  padding-left: 2.7vh;
- 
 }
 
-.mainaddressdispl.Bitcoin {
+.mainaddressdispl{
+  height: 2.5vh;
+  padding-left: 2.7vh;
+}
+
+.watchersdispl{
+  padding-left: 10vh;
+  filter: brightness(0.8); 
+}
+
+.watcherscontainer {
+  font-size: 4vh;
+}
+
+
+.mainaddressdispl.Bitcoin, .watchersdispl.Bitcoin {
   background-image: url('./assets/images/bitcoin.png');
   filter: brightness(0.8); 
 }
 
-.mainaddressdispl.Cardano {
+.mainaddressdispl.Cardano, .watchersdispl.Cardano  {
   background-image: url('./assets/images/cardano.png');
   filter: brightness(0.8); 
 }
 
-.mainaddressdispl.Ergo {
+.mainaddressdispl.Ergo, .watchersdispl.Ergo  {
   background-image: url('./assets/images/ergo.png');
   filter: brightness(0.8); 
   

@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1722601236463,
+  "timestamp": 1722676591368,
   "appData": {
     "version": "1.5.6"
   },
@@ -16,10 +16,10 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-YBJEG5YZ.js",
+        "./main-HAK7UWOA.js",
         "./manifest.webmanifest",
         "./polyfills-S3BTP7ME.js",
-        "./styles-3QEPNPLS.css"
+        "./styles-SEJVBSS4.css"
       ],
       "patterns": []
     },
@@ -33,11 +33,8 @@
       "urls": [
         "./assets/icons/icon-512x512.png",
         "./assets/images/bitcoin.png",
-        "./assets/images/bitcoin.svg",
         "./assets/images/cardano.png",
-        "./assets/images/cardano.svg",
         "./assets/images/ergo.png",
-        "./assets/images/ergo.svg",
         "./media/bitcoin-R7IFWMJM.png",
         "./media/cardano-LICXQYGO.png",
         "./media/ergo-4FSUZRBU.png",
@@ -57,14 +54,11 @@
   "hashTable": {
     "./assets/icons/icon-512x512.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./assets/images/bitcoin.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
-    "./assets/images/bitcoin.svg": "783bc638492c717e86c51d09ce0998e702530d4b",
     "./assets/images/cardano.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
-    "./assets/images/cardano.svg": "608fc3ac299b3316df5f5e86ec337986daa84ce4",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
-    "./assets/images/ergo.svg": "8e9efea3a809444500c98fb33e732517ab4726ee",
     "./favicon.ico": "3f827768829ef167081886d77582b29f19122dc8",
-    "./index.html": "028de1ae4621161d52f4c978eb1d749859d634e7",
-    "./main-YBJEG5YZ.js": "480a8f772b8560bd91d4e509116d5270707ce5df",
+    "./index.html": "14e7f69b7025f643dcaaf1ccee9d18b1fb9667df",
+    "./main-HAK7UWOA.js": "f6bcd56214fa4d78ff8daf7cf91d1ba42d7784f5",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
     "./media/cardano-LICXQYGO.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
@@ -78,7 +72,7 @@
     "./media/fa-v4compatibility-BYQ7LMO7.woff2": "827835b9a92ff50acba8ef5f700d5d33933de7ac",
     "./media/fa-v4compatibility-FQDQ7UU2.ttf": "27a74685ce8ff178a2199f1dea5671516e7f67ff",
     "./polyfills-S3BTP7ME.js": "893d641030c187f109c667de1b0a73a03095fa3b",
-    "./styles-3QEPNPLS.css": "3b8f3d70491fef24a8f92e099518376b05ef1573"
+    "./styles-SEJVBSS4.css": "5333ace53e40268fdc06c9527ea3a4c22ac619cb"
   },
   "navigationUrls": [
     {

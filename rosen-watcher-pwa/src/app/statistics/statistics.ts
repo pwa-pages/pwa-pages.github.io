@@ -67,6 +67,10 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.swipeService.swipe('left', '/performance');
   }
 
+  swipeRight(): void {
+    this.swipeService.swipe('right', '/watchers');
+  }
+
   showQR(): void {
     this.qrDialog.open(QRDialog, {
       data: { qrData: this.getShareUrl() }
@@ -103,7 +107,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.shareSupport = (navigator.share != null && navigator.share != undefined);
 
     var me = this;
-    this.swipeService.swipeDetect('/performance', '/collateral');
+    this.swipeService.swipeDetect('/performance', '/watchers');
 
 
     window.addEventListener('beforeinstallprompt', (event) => {

@@ -18,9 +18,11 @@ export class DownloadService {
   constructor(private http: HttpClient, private eventService: EventService) { }
   
   downloadPermitInfo(watcherUrl: string) : Promise<any> {
-    
-    const url = watcherUrl + '/api/info';
+    return this.download(watcherUrl + '/api/info');
+  }
 
+  download(url: string) : Promise<any> {
+    
     console.log('Downloading from: ' + url);
     return  firstValueFrom (this.http.get(url).pipe(
       map((results: any) => {

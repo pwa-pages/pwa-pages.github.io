@@ -90,6 +90,15 @@
 
 </div>
 
+
+<div class="navbuttons left">
+    <div>
+        <a (click)="swipeRight()">
+            <span class="fas fa-angle-left"></span>&nbsp;Watchers
+        </a>
+    </div>
+</div>
+
 <div class="navbuttons right" *ngIf="busyCounter == 0 && !noAddresses">
     <div>
     <a (click)="swipeLeft()">
@@ -98,11 +107,5 @@
 </div>
 
 
-
-<div *ngIf="showPermitsLink" >
-    <a routerLink="/permits" routerLinkActive="active">
-        Permits&nbsp;&nbsp;<span class="fas fa-arrow-up"></span>
-    </a>
-</div>
 
 </div>
