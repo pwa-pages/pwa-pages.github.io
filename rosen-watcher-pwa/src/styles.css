@@ -22,7 +22,7 @@ ul {
 }
 
 li {
- 
+
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.3vh;
 }
@@ -32,10 +32,15 @@ li:last-child {
 }
 
 .addressescontainer,
+.linkcontainer {
+  margin-left: 5vw;
+}
+
+.addressescontainer,
 .linkcontainer,
 .watcherscontainer {
 
-  margin-left: 5vw;
+
   font-size: 2vh;
   font-weight: bold;
   color: rgba(138, 128, 128);
@@ -44,12 +49,19 @@ li:last-child {
 }
 
 
+.watcherscontainer {
 
-.linkcontainer{
+  margin-left: 5vw;
+  margin-right: 5vw;
+
+}
+
+
+.linkcontainer {
   display: inline-flex;
 }
 
-.addressescontainer{
+.addressescontainer {
   display: flex;
   margin-bottom: 5vh;
   margin-top: 3vh;
@@ -83,7 +95,6 @@ li:last-child {
 .permitscontainer {
   grid-template-columns: auto auto auto;
 }
-
 
 
 .watchergrid {
@@ -140,51 +151,65 @@ a {
 }
 
 
-.watcherheader{
-  margin-bottom:1vh;
+.watcherheader {
+  margin-bottom: 1vh;
 }
 
 
-.mainaddressdispl, .watchersdispl {
+.mainaddressdispl,
+.watchersdispl {
   background-size: contain;
   background-repeat: no-repeat;
   display: block;
 }
 
-.mainaddressdispl{
+.mainaddressdispl {
   height: 2.5vh;
   padding-left: 2.7vh;
 }
 
-.watchersdispl{
+.watchersdispl {
   padding-left: 5vmax;
-  filter: brightness(0.8); 
+  filter: brightness(0.8);
 }
 
 .watcherscontainer {
   font-size: 2vmax;
   margin-top: 4vh;
-  float:left;
-  margin-right:4vw;
+  float: left;
+
+  border-radius: 3vh;
+  border: 2px dashed rgba(138, 128, 128);
+  ;
+  padding: 5vh;
+}
+
+.watchersmaincontainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
 }
 
 
-
-
-.mainaddressdispl.Bitcoin, .watchersdispl.Bitcoin {
+.mainaddressdispl.Bitcoin,
+.watchersdispl.Bitcoin {
   background-image: url('./assets/images/bitcoin.png');
-  filter: brightness(0.8); 
+  filter: brightness(0.8);
 }
 
-.mainaddressdispl.Cardano, .watchersdispl.Cardano  {
+.mainaddressdispl.Cardano,
+.watchersdispl.Cardano {
   background-image: url('./assets/images/cardano.png');
-  filter: brightness(0.8); 
+  filter: brightness(0.8);
 }
 
-.mainaddressdispl.Ergo, .watchersdispl.Ergo  {
+.mainaddressdispl.Ergo,
+.watchersdispl.Ergo {
   background-image: url('./assets/images/ergo.png');
-  filter: brightness(0.8); 
-  
+  filter: brightness(0.8);
+
 }
 
 
@@ -213,13 +238,13 @@ a {
 .loader:after {
   content: "";
   grid-area: 1/1;
-  --_g: no-repeat radial-gradient(farthest-side,#8A8080 94%,#0000);
+  --_g: no-repeat radial-gradient(farthest-side, #8A8080 94%, #0000);
   background:
     var(--_g) left,
     var(--_g) right;
   background-size: 25% 100%;
-  animation: l34 1s infinite; 
-  transform: translate(var(--d,0)) rotate(0);
+  animation: l34 1s infinite;
+  transform: translate(var(--d, 0)) rotate(0);
 }
 
 .loader:after {
@@ -228,97 +253,99 @@ a {
 }
 
 .loader {
-  
+
   bottom: 3%;
   left: 42.8vw;
-  
+
   width: 10vw;
   aspect-ratio: 4;
   display: grid;
 }
 
-.loaderlogs{
+.loaderlogs {
   bottom: 3%;
   width: 100vw;
   font-size: 2.5vmin;
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
   color: rgba(178, 168, 168);
-  
+
   text-align: center;
-  
+
 }
 
-.loader, .loaderlogs{
+.loader,
+.loaderlogs {
   position: absolute;
 
 }
 
-.log-entry{
+.log-entry {
   white-space: nowrap;
 }
 
 
 .loaderlogs::before,
 .loaderlogs::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 20%; 
-    pointer-events: none; 
-    z-index: 1; 
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 20%;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .loaderlogs::before {
-    top: 0;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  top: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 }
 
 .loaderlogs::after {
-    bottom: 0;
-    background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  bottom: 0;
+  background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 }
 
 
 .loaderlogs-content {
-    position: relative;
-    z-index: 0;
+  position: relative;
+  z-index: 0;
 }
 
 .qrdialog {
-  position:fixed;
-  top:0px;
-  left:0px;
-  height:100%;
-  width:100%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
   background-color: rgba(247, 247, 247, 0.7);
-  
+
   z-index: 20000;
   display: flex;
   justify-content: center;
 }
 
-.qrdialog #close{
+.qrdialog #close {
   top: 3vh;
-  right:3vh;
+  right: 3vh;
   position: fixed;
 }
 
-.qrdialog button{
+.qrdialog button {
   bottom: 3vh;
-  
+
   position: fixed;
 }
 
 
-.qrdialog #close div{
+.qrdialog #close div {
   font-size: 5vh;
 }
 
-qrcode{
-  padding-top:20vh;
+qrcode {
+  padding-top: 20vh;
 }
+
 button {
   background: linear-gradient(135deg, #4a4a4a, #787878);
   color: #fff;
