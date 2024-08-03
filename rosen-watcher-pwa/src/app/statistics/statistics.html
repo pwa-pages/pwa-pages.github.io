@@ -91,7 +91,7 @@
 </div>
 
 
-<div class="navbuttons left">
+<div class="navbuttons left" *ngIf="busyCounter == 0 && !noAddresses">
     <div>
         <a (click)="swipeRight()">
             <span class="fas fa-angle-left"></span>&nbsp;Watchers
