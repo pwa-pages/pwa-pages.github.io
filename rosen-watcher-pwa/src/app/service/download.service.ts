@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { of, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EventService, EventType } from './event.service';
 import { catchError, map, mergeMap } from 'rxjs/operators';
@@ -21,16 +21,29 @@ export class DownloadService {
     return this.download(watcherUrl + '/api/info');
   }
 
-  download(url: string) : Promise<any> {
+  async download(url: string): Promise<any> {
     
-    console.log('Downloading from: ' + url);
-    return  firstValueFrom (this.http.get(url).pipe(
-      map((results: any) => {
-        
-        return results;
-      }),
-      this.handleError()
-    ));
+    console.log('Downloading from:', url);
+    return firstValueFrom(
+      this.http.get(url).pipe(
+        map((results: any) => {
+          localStorage.setItem(url, JSON.stringify(results));
+          return results;
+        }),
+        catchError(error => {
+          console.log('Download failed, attempting to load from cache:', url);
+
+          const cachedData = localStorage.getItem(url);
+          if (cachedData) {
+            console.log('Loaded from cache after failure:', url);
+            return of(JSON.parse(cachedData));
+          } else {
+            console.log('No cache available:', url);
+            return throwError(error);
+          }
+        })
+      )
+    );
   }
 
   downloadTransactions(address: string, offset: number = 0, limit: number = 500): Observable<any> {
