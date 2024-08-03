@@ -12,11 +12,9 @@
 
 .navbuttons {
   position: fixed;
-  bottom: 0vh;
-  
-  width: 50vh;
-  height: 5vh;
-  font-size:3vh;
+  bottom: 1vmin;
+  height: 5vmin;
+  font-size:5vmin;
   display: grid;
   gap: 2vh;
   grid-template-columns: auto auto; 
