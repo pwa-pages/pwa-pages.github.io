@@ -11,7 +11,6 @@ import { Permits } from './permits/permits';
 import { Performance } from './statistics/performance';
 import { Watchers } from './statistics/watchers';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { RewardChartComponent } from './reward.chart/reward.chart.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -40,8 +39,7 @@ const routes: Routes = [
     Permits,
     Statistics,
     Performance,
-    Watchers,
-    RewardChartComponent
+    Watchers
   ],
   imports: [
     BrowserModule,
