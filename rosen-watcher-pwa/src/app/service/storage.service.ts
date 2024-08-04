@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { EventService, EventType } from './event.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StorageService {
   dbName = 'rosenDatabase_1.1.5';
@@ -18,7 +18,6 @@ export class StorageService {
 
   async initIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-
       const request = window.indexedDB.open(this.dbName, 2);
 
       request.onupgradeneeded = (event: any) => {
@@ -28,7 +27,9 @@ export class StorageService {
         }
 
         if (!db.objectStoreNames.contains(this.addressDataStoreName)) {
-          db.createObjectStore(this.addressDataStoreName, { keyPath: 'address' });
+          db.createObjectStore(this.addressDataStoreName, {
+            keyPath: 'address',
+          });
         }
       };
 
@@ -45,9 +46,7 @@ export class StorageService {
     });
   }
 
-
   async getDB(): Promise<IDBDatabase> {
-
     return await this.dbPromise;
   }
 
@@ -56,17 +55,19 @@ export class StorageService {
     return new Promise<void>((resolve, reject) => {
       const transaction = db.transaction([this.inputsStoreName], 'readwrite');
       const objectStore = transaction.objectStore(this.inputsStoreName);
-      const request = objectStore.clear()
+      const request = objectStore.clear();
 
       this.updateCache = true;
       request.onsuccess = () => {
         console.log('IndexedDB cleared successfully.');
         resolve();
-
       };
 
       request.onerror = (event: any) => {
-        console.error('Error clearing IndexedDB:', (event.target as any).errorCode);
+        console.error(
+          'Error clearing IndexedDB:',
+          (event.target as any).errorCode,
+        );
         resolve();
       };
     });
@@ -90,12 +91,9 @@ export class StorageService {
   }
 
   private async getData(storeName: string): Promise<any[]> {
-
     const db = await this.getDB();
 
     return new Promise((resolve, reject) => {
-
-
       const transaction = db.transaction([storeName], 'readonly');
 
       const objectStore = transaction.objectStore(storeName);
@@ -104,16 +102,12 @@ export class StorageService {
 
       request.onsuccess = () => {
         resolve(request.result);
-
       };
-
-
 
       request.onerror = (event: any) => {
         reject(event.target.error);
       };
     });
-
   }
 
   async getDataByBoxId(boxId: string, addressId: string): Promise<any> {
@@ -126,12 +120,9 @@ export class StorageService {
       request.onsuccess = () => {
         if (!request.result || request.result.outputAddress != addressId) {
           resolve(null);
-
-        }
-        else {
+        } else {
           resolve(request.result);
         }
-
       };
 
       request.onerror = (event: any) => {
@@ -140,34 +131,27 @@ export class StorageService {
     });
   }
 
-
   async putAddressData(addressData: any[]): Promise<void> {
     const db = await this.getDB();
 
-    addressData.forEach(a => {
-      const transaction = db.transaction([this.addressDataStoreName], 'readwrite');
+    addressData.forEach((a) => {
+      const transaction = db.transaction(
+        [this.addressDataStoreName],
+        'readwrite',
+      );
       const objectStore = transaction.objectStore(this.addressDataStoreName);
       objectStore.put(a);
-
     });
   }
 
   async addData(address: string, items: any): Promise<void> {
-
-
-
     const db = await this.getDB();
 
     return new Promise((resolve, reject) => {
-
-
-
       items.forEach((item: any) => {
         item.inputs.forEach(async (input: any) => {
-
           input.outputAddress = address;
           input.inputDate = new Date(item.timestamp);
-
 
           var dbInput: any = {
             outputAddress: input.outputAddress,
@@ -175,17 +159,17 @@ export class StorageService {
             boxId: input.boxId,
             assets: input.assets,
             outputCreatedAt: input.outputCreatedAt,
-            address: input.address
+            address: input.address,
+          };
 
-          }
-
-
-          const transaction = db.transaction([this.inputsStoreName], 'readwrite');
+          const transaction = db.transaction(
+            [this.inputsStoreName],
+            'readwrite',
+          );
           const objectStore = transaction.objectStore(this.inputsStoreName);
           const request = objectStore.put(dbInput);
           this.updateCache = true;
           request.onsuccess = () => {
-
             resolve();
           };
 
@@ -196,7 +180,6 @@ export class StorageService {
       });
 
       this.eventService.sendEvent(EventType.InputsStoredToDb);
-
     });
   }
 }

@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
-
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
 })
-
 export class AppComponent implements OnInit {
+  constructor() {}
 
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   title = 'rosen-watcher-pwa';
 }

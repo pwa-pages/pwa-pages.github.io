@@ -9,12 +9,9 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'watchers',
-  templateUrl: './watchers.html'
+  templateUrl: './watchers.html',
 })
-
-
 export class Watchers extends BaseWatcherComponent implements OnInit {
-
   watcherCount: number;
   bitcoinWatcherCount: number;
   cardanoWatcherCount: number;
@@ -23,9 +20,12 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
   cardanoPermitCount: number;
   ergoPermitCount: number;
 
-
-
-  constructor(router: Router, private watchersDataService: WatchersDataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService) {
+  constructor(
+    private watchersDataService: WatchersDataService,
+    featureService: FeatureService,
+    eventService: EventService,
+    swipeService: SwipeService,
+  ) {
     super(eventService, featureService, swipeService);
     this.watcherCount = 0;
     this.bitcoinWatcherCount = 0;
@@ -36,34 +36,28 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
     this.ergoPermitCount = 0;
   }
 
-  swipeRight(): void {
-    var me = this;
-    this.swipeService.swipe('right', '/performance');
-  }
-  
-  swipeLeft(): void {
-
-    this.swipeService.swipe('left', '/statistics');
-  }
-
-
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    this.swipeService.swipeDetect('/statistics', '/performance');
+    this.initSwipe('/statistics', '/performance');
 
     var watcherInfo = await this.watchersDataService.getWatchersInfo();
     var permitsInfo = await this.watchersDataService.getPermitssInfo();
-    
-    this.watcherCount = watcherInfo.tokens.filter((token:any) => token.name !== 'RSN').reduce((sum: any, token:any ) => sum + token.amount, 0);
-    this.cardanoWatcherCount = watcherInfo.tokens.find((token:any) => token.name === 'rspv2CardanoAWC').amount;
-    this.bitcoinWatcherCount = watcherInfo.tokens.find((token:any) => token.name === 'rspv2BitcoinAWC').amount;
-    this.ergoWatcherCount = watcherInfo.tokens.find((token:any) => token.name === 'rspv2ErgoAWC').amount;
+
+    this.watcherCount = watcherInfo.tokens
+      .filter((token: any) => token.name !== 'RSN')
+      .reduce((sum: any, token: any) => sum + token.amount, 0);
+    this.cardanoWatcherCount = watcherInfo.tokens.find(
+      (token: any) => token.name === 'rspv2CardanoAWC',
+    ).amount;
+    this.bitcoinWatcherCount = watcherInfo.tokens.find(
+      (token: any) => token.name === 'rspv2BitcoinAWC',
+    ).amount;
+    this.ergoWatcherCount = watcherInfo.tokens.find(
+      (token: any) => token.name === 'rspv2ErgoAWC',
+    ).amount;
     this.cardanoPermitCount = permitsInfo.cardanoTokenData.amount;
     this.bitcoinPermitCount = permitsInfo.bitcoinTokenData.amount;
     this.ergoPermitCount = permitsInfo.ergoTokenData.amount;
-
   }
-
-
 }

@@ -1,5 +1,4 @@
-
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export enum EventType {
@@ -9,40 +8,29 @@ export enum EventType {
   SwipeActivated = 'SwipeActivated',
   SwipeDeActivated = 'SwipeDeActivated',
   StartDownload = 'StartDownload',
-  EndDownload = 'EndDownload'
-  
+  EndDownload = 'EndDownload',
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class EventService {
-
   eventSubscriptions: {
-    [key in EventType]: Subject<any>
+    [key in EventType]: Subject<any>;
   } = this.resetSubscriptions();
 
-
-  constructor() {
-
-
-  }
-  ngOnDestroy(): void {
-
-  }
+  constructor() {}
+  ngOnDestroy(): void {}
 
   resetSubscriptions() {
     this.eventSubscriptions = {
-      [EventType.StartFullDownload]: new Subject<any>,
-      [EventType.EndFullDownload]: new Subject<any>,
-      [EventType.InputsStoredToDb]: new Subject<any>,
-      [EventType.SwipeActivated]: new Subject<any>,
-      [EventType.SwipeDeActivated]: new Subject<any>,
-      [EventType.StartDownload]: new Subject<any>,
-      [EventType.EndDownload]: new Subject<any>
-      
+      [EventType.StartFullDownload]: new Subject<any>(),
+      [EventType.EndFullDownload]: new Subject<any>(),
+      [EventType.InputsStoredToDb]: new Subject<any>(),
+      [EventType.SwipeActivated]: new Subject<any>(),
+      [EventType.SwipeDeActivated]: new Subject<any>(),
+      [EventType.StartDownload]: new Subject<any>(),
+      [EventType.EndDownload]: new Subject<any>(),
     };
     return this.eventSubscriptions;
   }
@@ -57,22 +45,20 @@ export class EventService {
     this.eventSubscriptions[eventType].next(eventData);
   }
 
-  async subscribeToEvent(eventType: EventType, callback: (...args: any[]) => void) {
-    this.eventSubscriptions[eventType].subscribe(
-      (...eventData) => {
-        callback(...eventData);
-      }
-    );
+  async subscribeToEvent(
+    eventType: EventType,
+    callback: (...args: any[]) => void,
+  ) {
+    this.eventSubscriptions[eventType].subscribe((...eventData) => {
+      callback(...eventData);
+    });
   }
 
   async unSubscribeAll(events: EventType[]) {
-
     for (const eventType of events) {
       console.log('Unsubscribing all from ' + eventType);
       this.eventSubscriptions[eventType].unsubscribe();
-      this.eventSubscriptions[eventType] = new Subject<any>;
+      this.eventSubscriptions[eventType] = new Subject<any>();
     }
-
-
   }
 }

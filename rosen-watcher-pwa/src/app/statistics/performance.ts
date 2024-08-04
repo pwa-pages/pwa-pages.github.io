@@ -1,18 +1,21 @@
-import { Component, OnInit, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  SimpleChanges,
+  ViewEncapsulation,
+} from '@angular/core';
 import { EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { FeatureService } from '../service/featureservice';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import Chart from 'chart.js/auto';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'performance',
-  templateUrl: './performance.html'
+  templateUrl: './performance.html',
 })
-
-
 export class Performance extends BaseWatcherComponent implements OnInit {
   readonly chartColors: string[] = [
     '#1f77b4', // Blue
@@ -23,10 +26,10 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     '#8c564b', // Brown
     '#e377c2', // Pink
     '#7f7f7f', // Gray
-    '#17becf',  // Turquoise
+    '#17becf', // Turquoise
     '#9467bd', // Purple
   ];
-  
+
   data: string;
   performanceChart: any[];
   addresses: string[];
@@ -34,12 +37,16 @@ export class Performance extends BaseWatcherComponent implements OnInit {
   addressesForDisplay: any[];
 
   showPermitsLink: boolean = false;
-  chart: Chart<"bar", any[][], unknown> | undefined;
+  chart: Chart<'bar', any[][], unknown> | undefined;
 
-  constructor(router: Router, private dataService: DataService, featureService: FeatureService, eventService: EventService, swipeService: SwipeService) {
-
+  constructor(
+    private dataService: DataService,
+    featureService: FeatureService,
+    eventService: EventService,
+    swipeService: SwipeService,
+  ) {
     super(eventService, featureService, swipeService);
-    this.data = "";
+    this.data = '';
     this.addresses = [];
     this.performanceChart = [];
     this.addressesForDisplay = [];
@@ -49,21 +56,10 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     this.performanceChart = await this.getPerformanceChart();
   }
 
-  swipeRight(): void {
-    this.swipeService.swipe('right', '/statistics');
-  }
-
-  swipeLeft(): void {
-    this.swipeService.swipe('left', '/watchers');
-  }
-
-
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    var me = this;
-    this.swipeService.swipeDetect('/watchers', '/statistics');
-
+    this.initSwipe('/watchers', '/statistics');
     this.showPermitsLink = this.featureService.hasPermitScreen();
 
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -72,8 +68,6 @@ export class Performance extends BaseWatcherComponent implements OnInit {
 
     await this.retrieveData();
     this.updateChart();
-
-
   }
 
   reduceChartData(data: any[], targetPoints: number): any[] {
@@ -88,9 +82,12 @@ export class Performance extends BaseWatcherComponent implements OnInit {
       let minArea = Infinity;
       let indexToRemove = -1;
 
-
       for (let i = 1; i < points.length - 1; i++) {
-        let area = this.calculateTriangleArea(points[i - 1], points[i], points[i + 1]);
+        let area = this.calculateTriangleArea(
+          points[i - 1],
+          points[i],
+          points[i + 1],
+        );
         if (area < minArea) {
           minArea = area;
           indexToRemove = i;
@@ -108,34 +105,38 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     return points;
   }
 
-  calculateTriangleArea(p1: { x: Date, y: number }, p2: { x: Date, y: number }, p3: { x: Date, y: number }): number {
-    return Math.abs((p1.x.getTime() * (p2.y - p3.y) + p2.x.getTime() * (p3.y - p1.y) + p3.x.getTime() * (p1.y - p2.y)) / 2);
+  calculateTriangleArea(
+    p1: { x: Date; y: number },
+    p2: { x: Date; y: number },
+    p3: { x: Date; y: number },
+  ): number {
+    return Math.abs(
+      (p1.x.getTime() * (p2.y - p3.y) +
+        p2.x.getTime() * (p3.y - p1.y) +
+        p3.x.getTime() * (p1.y - p2.y)) /
+        2,
+    );
   }
 
   private async getPerformanceChart(): Promise<any[]> {
-
-    var chart = await this.dataService.getPerformanceChart()
+    var chart = await this.dataService.getPerformanceChart();
 
     return chart.map((c, index) => ({
       ...c,
-      color: this.chartColors[index % this.chartColors.length]
+      color: this.chartColors[index % this.chartColors.length],
     }));
   }
 
   private createDataSet(i: number): any {
-
-
-
-    var chartColor = this.chartColors[(i) % 10];
+    var chartColor = this.chartColors[i % 10];
     return {
-      label: "",
-      data: [
-      ],
+      label: '',
+      data: [],
       backgroundColor: chartColor,
       pointBackgroundColor: chartColor,
       borderColor: chartColor,
       borderWidth: 0,
-      borderSkipped: false
+      borderSkipped: false,
     };
   }
 
@@ -144,28 +145,24 @@ export class Performance extends BaseWatcherComponent implements OnInit {
       var dataSets = [];
       var cnt = this.performanceChart.length;
       for (var i = 0; i < cnt; i++) {
-        dataSets.push(
-          this.createDataSet(i)
-        );
+        dataSets.push(this.createDataSet(i));
       }
 
       for (var i = 0; i < this.performanceChart.length; i++) {
         dataSets[i].data = this.performanceChart[i].chart;
-        dataSets[i].label = 'Address: ' + this.performanceChart[i].addressForDisplay;
+        dataSets[i].label =
+          'Address: ' + this.performanceChart[i].addressForDisplay;
       }
 
       this.createChart(dataSets);
     }
-
-
   }
 
-
-  createChart(datasets: any[]): Chart<"bar", any[][], unknown> {
-    return new Chart("PerformanceChart", {
+  createChart(datasets: any[]): Chart<'bar', any[][], unknown> {
+    return new Chart('PerformanceChart', {
       type: 'bar',
       data: {
-        datasets: datasets
+        datasets: datasets,
       },
       options: {
         responsive: true,
@@ -181,9 +178,11 @@ export class Performance extends BaseWatcherComponent implements OnInit {
             ticks: {
               callback: function (value) {
                 value = value as number;
-                return value.toLocaleString('en-US', { minimumFractionDigits: 0 });
-              }
-            }
+                return value.toLocaleString('en-US', {
+                  minimumFractionDigits: 0,
+                });
+              },
+            },
           },
           x: {
             type: 'time',
@@ -194,8 +193,8 @@ export class Performance extends BaseWatcherComponent implements OnInit {
             },
             grid: {
               color: 'rgba(0, 0, 0, 0.1)',
-            }
-          }
+            },
+          },
         },
         plugins: {
           tooltip: {
@@ -210,23 +209,26 @@ export class Performance extends BaseWatcherComponent implements OnInit {
             callbacks: {
               label: function (context) {
                 let value = context.raw as any;
-                return context.dataset.label + ': ' + value.y.toLocaleString('en-US', { minimumFractionDigits: 2 });
-              }
-            }
+                return (
+                  context.dataset.label +
+                  ': ' +
+                  value.y.toLocaleString('en-US', { minimumFractionDigits: 2 })
+                );
+              },
+            },
           },
           legend: {
-            display: false
-          }
-          ,
+            display: false,
+          },
         },
         elements: {
           bar: {
             borderWidth: 0,
             borderRadius: 0,
-            borderSkipped: false
-          }
-        }
-      }
+            borderSkipped: false,
+          },
+        },
+      },
     });
   }
   title = 'rosen-watcher-pwa';

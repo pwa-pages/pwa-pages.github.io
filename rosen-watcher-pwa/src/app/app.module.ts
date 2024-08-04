@@ -20,14 +20,12 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QRCodeModule } from 'angularx-qrcode';
 
-
 const routes: Routes = [
   { path: 'settings', component: Settings },
   { path: 'permits', component: Permits },
   { path: 'performance', component: Performance },
   { path: 'watchers', component: Watchers },
-  { path: '**', component: Statistics }
-  
+  { path: '**', component: Statistics },
 ];
 
 @NgModule({
@@ -39,27 +37,27 @@ const routes: Routes = [
     Permits,
     Statistics,
     Performance,
-    Watchers
+    Watchers,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     CommonModule,
     MatInputModule,
-    MatFormFieldModule, 
+    MatFormFieldModule,
     MatDialogModule,
     RouterModule.forRoot(routes),
     FormsModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
     FontAwesomeModule,
-    QRCodeModule
+    QRCodeModule,
   ],
   exports: [RouterModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

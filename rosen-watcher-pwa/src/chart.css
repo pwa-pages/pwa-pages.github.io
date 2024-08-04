@@ -4,7 +4,6 @@
   flex-direction: column;
 }
 
-
 .chartcontainer {
   justify-content: center;
   display: flex;
@@ -14,10 +13,8 @@
   height: 60%;
 }
 
-
-
-.performancecontainer .chartcontainer{
-  flex:1;
+.performancecontainer .chartcontainer {
+  flex: 1;
 }
 
 .chart-container,
@@ -28,20 +25,18 @@ app-performance-chart {
   height: 100% !important;
 }
 
-.performancelegend{
+.performancelegend {
   /*width:30vh;*/
 }
 
-
-.performance-chart-address{
+.performance-chart-address {
   display: inline-block;
-  margin-left: .4vh;
+  margin-left: 0.4vh;
 }
 
-.chart-legend{
-  height:2vh;
-  width:4vh;
-  float:left;
-  margin-top:.25vh;
-  
+.chart-legend {
+  height: 2vh;
+  width: 4vh;
+  float: left;
+  margin-top: 0.25vh;
 }

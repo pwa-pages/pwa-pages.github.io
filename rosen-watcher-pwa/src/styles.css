@@ -13,7 +13,6 @@ h1 {
   color: #333;
   font-size: 3vh;
   font-weight: bold;
-
 }
 
 ul {
@@ -22,7 +21,6 @@ ul {
 }
 
 li {
-
   font-family: 'Courier New', Courier, monospace;
   font-size: 1.3vh;
 }
@@ -39,8 +37,6 @@ li:last-child {
 .addressescontainer,
 .linkcontainer,
 .watcherscontainer {
-
-
   font-size: 2vh;
   font-weight: bold;
   color: rgba(138, 128, 128);
@@ -48,14 +44,10 @@ li:last-child {
   flex-wrap: wrap;
 }
 
-
 .watcherscontainer {
-
   margin-left: 5vw;
   margin-right: 5vw;
-
 }
-
 
 .linkcontainer {
   display: inline-flex;
@@ -75,7 +67,6 @@ li:last-child {
 }
 
 .permitscontainer {
-
   font-weight: bold;
   color: rgba(138, 128, 128);
   padding-top: 2vh;
@@ -89,13 +80,11 @@ li:last-child {
 
 .permitscontainer .address {
   font-family: 'Courier New', Courier, monospace;
-
 }
 
 .permitscontainer {
   grid-template-columns: auto auto auto;
 }
-
 
 .watchergrid {
   border: none;
@@ -123,7 +112,6 @@ a {
   color: rgba(80, 70, 70) !important;
 }
 
-
 .watcheritem.first-column {
   white-space: nowrap;
   overflow: hidden;
@@ -134,15 +122,13 @@ a {
   margin: -2px;
 }
 
-
 .linkicon div {
   padding-bottom: 10px;
   font-size: 3vh;
 }
 
-
 .link {
-  margin-top: .5vh;
+  margin-top: 0.5vh;
   white-space: nowrap;
 }
 
@@ -150,11 +136,9 @@ a {
   margin-bottom: 20px;
 }
 
-
 .watcherheader {
   margin-bottom: 1vh;
 }
-
 
 .mainaddressdispl,
 .watchersdispl {
@@ -180,7 +164,6 @@ a {
 
   border-radius: 3vh;
   border: 2px dashed rgba(138, 128, 128);
-  ;
   padding: 5vh;
 }
 
@@ -191,7 +174,6 @@ a {
   align-items: center;
   flex-direction: row;
 }
-
 
 .mainaddressdispl.Bitcoin,
 .watchersdispl.Bitcoin {
@@ -209,36 +191,30 @@ a {
 .watchersdispl.Ergo {
   background-image: url('./assets/images/ergo.png');
   filter: brightness(0.8);
-
 }
-
 
 .noAddresses {
   color: green;
   font-size: 3vh;
 }
 
-
-
 .custom-snackbar {
   color: white;
   background-color: red;
 }
 
-
 @keyframes l34 {
-
   50%,
   100% {
-    transform: translate(var(--d, 0)) rotate(.5turn)
+    transform: translate(var(--d, 0)) rotate(0.5turn);
   }
 }
 
 .loader:before,
 .loader:after {
-  content: "";
+  content: '';
   grid-area: 1/1;
-  --_g: no-repeat radial-gradient(farthest-side, #8A8080 94%, #0000);
+  --_g: no-repeat radial-gradient(farthest-side, #8a8080 94%, #0000);
   background:
     var(--_g) left,
     var(--_g) right;
@@ -249,11 +225,10 @@ a {
 
 .loader:after {
   --d: 37.5%;
-  animation-delay: .5s;
+  animation-delay: 0.5s;
 }
 
 .loader {
-
   bottom: 3%;
   left: 42.8vw;
 
@@ -266,28 +241,25 @@ a {
   bottom: 3%;
   width: 100vw;
   font-size: 2.5vmin;
-  font-family: "Courier New", Courier, monospace;
+  font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
   color: rgba(178, 168, 168);
 
   text-align: center;
-
 }
 
 .loader,
 .loaderlogs {
   position: absolute;
-
 }
 
 .log-entry {
   white-space: nowrap;
 }
 
-
 .loaderlogs::before,
 .loaderlogs::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   right: 0;
@@ -298,14 +270,21 @@ a {
 
 .loaderlogs::before {
   top: 0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
 }
 
 .loaderlogs::after {
   bottom: 0;
-  background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
 }
-
 
 .loaderlogs-content {
   position: relative;
@@ -336,7 +315,6 @@ a {
 
   position: fixed;
 }
-
 
 .qrdialog #close div {
   font-size: 5vh;

@@ -1,113 +1,95 @@
-
 <div class="headercontainer">
-    <div class="headerblock">
-        Total rewards:
-        <div class="header">{{data}} RSN </div>
-    </div>
+  <div class="headerblock">
+    Total rewards:
+    <div class="header">{{data}} RSN</div>
+  </div>
 </div>
-
-
 
 <div class="addressescontainer noAddresses" *ngIf="noAddresses">
-    You don't have any watcher addresses yet, click on modify below to add addresses.
+  You don't have any watcher addresses yet, click on modify below to add
+  addresses.
 </div>
-
-
 
 <div class="chartcontainer">
-    <div class="chart-container">
-        <canvas id="RewardChart" ></canvas>
-    </div>
+  <div class="chart-container">
+    <canvas id="RewardChart"></canvas>
+  </div>
 </div>
 
-
 <div class="addressescontainer">
-    Addresses: &nbsp;&nbsp;
-    <div class="mainaddressdispl {{address.chainType}}" *ngFor="let address of addressesForDisplay; let i = index; last as isLast">- [{{ address.address
-        }}]<span *ngIf="!isLast">,&nbsp;&nbsp;</span> </div>
-
+  Addresses: &nbsp;&nbsp;
+  <div
+    class="mainaddressdispl {{address.chainType}}"
+    *ngFor="let address of addressesForDisplay; let i = index; last as isLast"
+  >
+    - [{{ address.address }}]<span *ngIf="!isLast">,&nbsp;&nbsp;</span>
+  </div>
 </div>
 
 <div class="linkcontainer" *ngIf="busyCounter == 0">
-    <div class="linkicon">
-        <a routerLink="/settings" routerLinkActive="active">
-            <div class="fas fa-edit"></div>
-        </a>
-    </div>
-    &nbsp;
-    <div class="link">
-        <a routerLink="/settings" routerLinkActive="active">
-            Modify addresses
-        </a>
-    </div> 
+  <div class="linkicon">
+    <a routerLink="/settings" routerLinkActive="active">
+      <div class="fas fa-edit"></div>
+    </a>
+  </div>
+  &nbsp;
+  <div class="link">
+    <a routerLink="/settings" routerLinkActive="active"> Modify addresses </a>
+  </div>
 </div>
 
 <div class="linkcontainer" *ngIf="busyCounter == 0 && showHomeLink()">
-    <div class="linkicon" id = "homelink">
-        <a (click)="installApp()">
-            <div class="fas fa-home"></div>
-        </a>
-    </div>
-    &nbsp;
-    <div class="link">
-        <a (click)="installApp()">
-            Add to home 
-        </a>
-    </div> 
+  <div class="linkicon" id="homelink">
+    <a (click)="installApp()">
+      <div class="fas fa-home"></div>
+    </a>
+  </div>
+  &nbsp;
+  <div class="link">
+    <a (click)="installApp()"> Add to home </a>
+  </div>
 </div>
 
 <div class="linkcontainer" *ngIf="busyCounter == 0 && shareSupport">
-    <div class="linkicon" id = "sharelink">
-        <a (click)="share()">
-            <div class="fas fa-share-nodes"></div>
-        </a>
-    </div>
-    &nbsp;
-    <div class="link">
-        <a (click)="share()">
-            Share
-        </a>
-    </div> 
+  <div class="linkicon" id="sharelink">
+    <a (click)="share()">
+      <div class="fas fa-share-nodes"></div>
+    </a>
+  </div>
+  &nbsp;
+  <div class="link">
+    <a (click)="share()"> Share </a>
+  </div>
 </div>
 
 <div class="linkcontainer" *ngIf="busyCounter == 0">
-    <div class="linkicon" id = "qrlink">
-        <a (click)="showQR()">
-            <div class="fas fa-qrcode"></div>
-        </a>
-    </div>
-    &nbsp;
-    <div class="link">
-        <a (click)="showQR()">
-            QR
-        </a>
-    </div> 
+  <div class="linkicon" id="qrlink">
+    <a (click)="showQR()">
+      <div class="fas fa-qrcode"></div>
+    </a>
+  </div>
+  &nbsp;
+  <div class="link">
+    <a (click)="showQR()"> QR </a>
+  </div>
 </div>
-
 
 <div class="loaderlogs" *ngIf="busyCounter > 0">
-    <div *ngFor="let log of loaderLogs" class="log-entry">
-        {{log}}
-      </div>
-
+  <div *ngFor="let log of loaderLogs" class="log-entry">{{log}}</div>
 </div>
 
-
 <div class="navbuttons left" *ngIf="busyCounter == 0 && !noAddresses">
-    <div>
-        <a (click)="swipeRight()">
-            <span class="fas fa-angle-left"></span>&nbsp;Watchers
-        </a>
-    </div>
+  <div>
+    <a (click)="swipeRight()">
+      <span class="fas fa-angle-left"></span>&nbsp;Watchers
+    </a>
+  </div>
 </div>
 
 <div class="navbuttons right" *ngIf="busyCounter == 0 && !noAddresses">
-    <div>
+  <div>
     <a (click)="swipeLeft()">
-        Performance&nbsp;<span class="fas fa-angle-right"></span>
+      Performance&nbsp;<span class="fas fa-angle-right"></span>
     </a>
-</div>
-
-
-
+  </div>
 </div>

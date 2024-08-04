@@ -4,16 +4,15 @@ import { FeatureService } from '../service/featureservice';
 
 @Component({
   selector: 'dialog',
-  templateUrl: './dialog.html'
+  templateUrl: './dialog.html',
 })
-
 export class SettingsDialog {
-
   useUrlSetting: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<SettingsDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any, private featureService: FeatureService
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private featureService: FeatureService,
   ) {}
 
   onCancelClick(): void {
@@ -21,19 +20,17 @@ export class SettingsDialog {
   }
 
   ngOnInit(): void {
-
     this.useUrlSetting = this.featureService.useUrlSetting();
-
   }
 
-  
-
   pasteData(): void {
-    navigator.clipboard.readText().then(pastedText => {
-
-      this.data.address = pastedText;
-    }).catch(err => {
-      console.error('Failed to read clipboard contents: ', err);
-    });
+    navigator.clipboard
+      .readText()
+      .then((pastedText) => {
+        this.data.address = pastedText;
+      })
+      .catch((err) => {
+        console.error('Failed to read clipboard contents: ', err);
+      });
   }
 }

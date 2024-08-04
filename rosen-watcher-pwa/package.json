@@ -4,9 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm run format && ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "format": "prettier --write 'src/**/*.{ts,css,html}'"
   },
   "private": true,
   "dependencies": {
@@ -37,6 +38,7 @@
     "@angular-devkit/build-angular": "^18.1.3",
     "@angular/cli": "^18.1.3",
     "@angular/compiler-cli": "^18.1.3",
+    "prettier": "^3.3.3",
     "typescript": "~5.4.2"
   }
 }

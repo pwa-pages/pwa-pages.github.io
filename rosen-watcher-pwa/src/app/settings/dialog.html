@@ -1,20 +1,28 @@
-<div class="settingsdialog ">
+<div class="settingsdialog">
+  <div class="settings">
+    <h2>{{data.title}}</h2>
+    <div class="container">
+      <input
+        class="addressinput"
+        type="text"
+        [(ngModel)]="data.address"
+        placeholder="Address"
+      />
+      <button (click)="pasteData()">
+        <div class="fas fa-paste"></div></button
+      >&nbsp; <br /><br />
+      <input
+        *ngIf="useUrlSetting"
+        class="addressinput"
+        type="text"
+        [(ngModel)]="data.watcherUrl"
+        placeholder="Watcher url... e.g. https://...:3030/"
+      />
+    </div>
 
-
-<div class="settings">
-  <h2>{{data.title}}</h2>
-  <div class="container">
-    <input class = "addressinput" type="text" [(ngModel)]="data.address" placeholder="Address">
-    <button (click)="pasteData()">
-      <div class="fas fa-paste"></div>
-    </button>&nbsp;
-    <br/><br/>
-    <input *ngIf = "useUrlSetting" class = "addressinput" type="text" [(ngModel)]="data.watcherUrl" placeholder="Watcher url... e.g. https://...:3030/">
+    <div class="container">
+      <button [mat-dialog-close]="data" cdkFocusInitial>Save</button>&nbsp;
+      <button (click)="onCancelClick()">Cancel</button>
+    </div>
   </div>
-
-  <div class="container">
-    <button [mat-dialog-close]="data" cdkFocusInitial>Save</button>&nbsp;
-    <button (click)="onCancelClick()">Cancel</button>
-  </div>
-</div>
 </div>
