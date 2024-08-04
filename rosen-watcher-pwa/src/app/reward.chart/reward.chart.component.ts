@@ -67,6 +67,10 @@ export class RewardChartComponent implements OnInit {
     if (this.chart) {
       this.chart.data.datasets[0].data =  this.reduceChartData(this.chartData, 15);
      
+
+      this.chart.options.animation = {
+        duration: 1000
+      };
       this.chart.update();
     }
   }
@@ -94,6 +98,9 @@ export class RewardChartComponent implements OnInit {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+          duration: 0 // Disable initial animation
+        },
         scales: {
           y: {
             beginAtZero: true,
