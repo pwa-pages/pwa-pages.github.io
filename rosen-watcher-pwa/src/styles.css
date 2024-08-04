@@ -138,6 +138,7 @@ a {
 
 .watcherheader {
   margin-bottom: 1vh;
+  width: 25vmax;
 }
 
 .mainaddressdispl,
@@ -161,9 +162,8 @@ a {
   font-size: 2vmax;
   margin-top: 4vh;
   float: left;
-
   border-radius: 3vh;
-  border: 2px dashed rgba(138, 128, 128);
+  border: .5vmin dashed rgba(138, 128, 128);
   padding: 5vh;
 }
 
