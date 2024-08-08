@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { of, Observable, throwError } from 'rxjs';
+import { of, Observable, throwError, concat, EMPTY } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EventService, EventType } from './event.service';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map ,delay} from 'rxjs/operators';
 
 import { firstValueFrom } from 'rxjs';
 
@@ -15,7 +15,7 @@ export class DownloadService {
   constructor(
     private http: HttpClient,
     private eventService: EventService,
-  ) {}
+  ) { }
 
   downloadPermitInfo(watcherUrl: string): Promise<any> {
     return this.download(watcherUrl + '/api/info');
@@ -24,26 +24,42 @@ export class DownloadService {
   async download(url: string): Promise<any> {
     console.log('Downloading from:', url);
     return firstValueFrom(
-      this.http.get(url).pipe(
-        map((results: any) => {
-          localStorage.setItem(url, JSON.stringify(results));
-          return results;
-        }),
-        catchError((error) => {
-          console.log('Download failed, attempting to load from cache:', url);
-
-          const cachedData = localStorage.getItem(url);
-          if (cachedData) {
-            console.log('Loaded from cache after failure:', url);
-            return of(JSON.parse(cachedData));
-          } else {
-            console.log('No cache available:', url);
-            return throwError(error);
-          }
-        }),
-      ),
+      this.downloadStream(url)
     );
   }
+
+  downloadStream(url: string): Observable<any> {
+    console.log('Attempting to load from cache:', url);
+  
+    // Check if the data exists in the cache
+    const cachedData = localStorage.getItem(url);
+    let cacheObservable: Observable<any>;
+  
+    if (cachedData) {
+      console.log('Loaded from cache:', url);
+      cacheObservable = of(JSON.parse(cachedData));
+    } else {
+      console.log('No cache available:', url);
+      cacheObservable = EMPTY; // Observable that completes immediately
+    }
+  
+    const downloadObservable = this.http.get(url).pipe(
+
+      map((results: any) => {
+        console.log('Downloaded from server:', url);
+        localStorage.setItem(url, JSON.stringify(results));
+        return results;
+      }),
+      catchError((error) => {
+        console.log('Download failed:', url);
+        return throwError(error);
+      })
+    );
+  
+    // First emit cached data if available, then try to download and emit the new data
+    return concat(/*cacheObservable, */downloadObservable);
+  }
+  
 
   downloadTransactions(
     address: string,

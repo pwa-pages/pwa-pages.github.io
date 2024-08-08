@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { StorageService } from './storage.service';
+import { map } from 'rxjs/operators';
 import { DownloadService } from './download.service';
-import { EventService, EventType } from './event.service';
+import { EventService,} from './event.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -27,50 +29,47 @@ export class WatchersDataService {
     private snackBar: MatSnackBar,
   ) {}
 
-  async getWatchersInfo(): Promise<any> {
-    var result = this.downloadService.download(this.watcherUrl);
+  getWatchersInfo(): Observable<any> {
+    var result = this.downloadService.downloadStream(this.watcherUrl);
     return result;
   }
 
-  async getPermitsInfo(address: string): Promise<any> {
-    var permitsUrl = `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/confirmed`;
-    var result = this.downloadService.download(permitsUrl);
-
-    return result;
+  getPermitsInfo(address: string): Observable<any> {
+    const permitsUrl = `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/confirmed`;
+    return this.downloadService.downloadStream(permitsUrl).pipe(
+      map(data => {
+        if (data.tokens) {
+          const tokenData = data.tokens.find((token: any) => token.tokenId === this.rsnToken);
+          if (tokenData) {
+            tokenData.amount /= 3000 * Math.pow(10, tokenData.decimals);
+            tokenData.amount = Math.floor(tokenData.amount);
+          }
+        }
+        return data;
+      })
+    );
   }
 
-  async getPermitssInfo(): Promise<any> {
-    var result: any = {};
-    result.cardanoTokenData = (
-      await this.getPermitsInfo(this.permitsCardanoAddress)
-    ).tokens;
-    result.cardanoTokenData = result.cardanoTokenData.find(
-      (token: any) => token.tokenId === this.rsnToken,
-    );
-    result.cardanoTokenData.amount /=
-      3000 * Math.pow(10, result.cardanoTokenData.decimals);
-    result.cardanoTokenData.amount = Math.floor(result.cardanoTokenData.amount);
 
-    result.bitcoinTokenData = (
-      await this.getPermitsInfo(this.permitsBitcoinAddress)
-    ).tokens;
-    result.bitcoinTokenData = result.bitcoinTokenData.find(
-      (token: any) => token.tokenId === this.rsnToken,
+  getPermitssInfo(): Observable<any> {
+    return forkJoin({
+      cardanoTokenData: this.getPermitsInfo(this.permitsCardanoAddress),
+      bitcoinTokenData: this.getPermitsInfo(this.permitsBitcoinAddress),
+      ergoTokenData: this.getPermitsInfo(this.permitsErgoAddress)
+    }).pipe(
+      map(result => {
+        return {
+          cardanoTokenData: result.cardanoTokenData.tokens.find(
+            (token: any) => token.tokenId === this.rsnToken
+          ),
+          bitcoinTokenData: result.bitcoinTokenData.tokens.find(
+            (token: any) => token.tokenId === this.rsnToken
+          ),
+          ergoTokenData: result.ergoTokenData.tokens.find(
+            (token: any) => token.tokenId === this.rsnToken
+          )
+        };
+      })
     );
-    result.bitcoinTokenData.amount /=
-      3000 * Math.pow(10, result.bitcoinTokenData.decimals);
-    result.bitcoinTokenData.amount = Math.floor(result.bitcoinTokenData.amount);
-
-    result.ergoTokenData = (
-      await this.getPermitsInfo(this.permitsErgoAddress)
-    ).tokens;
-    result.ergoTokenData = result.ergoTokenData.find(
-      (token: any) => token.tokenId === this.rsnToken,
-    );
-    result.ergoTokenData.amount /=
-      3000 * Math.pow(10, result.ergoTokenData.decimals);
-    result.ergoTokenData.amount = Math.floor(result.ergoTokenData.amount);
-
-    return result;
   }
 }

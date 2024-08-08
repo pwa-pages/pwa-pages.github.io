@@ -1,23 +1,24 @@
 <div class="headercontainer">
   <div class="headerblock">
     Number of watchers:
-    <div class="header">{{ watcherCount }}</div>
+    <div class="header">{{ watcherCount | async }}</div>
   </div>
 </div>
 
 <div class="watchersmaincontainer">
+  
   <div class="watcherscontainer">
     <div class="watchersdispl watcherheader">Watchers per chain</div>
-    <div class="Bitcoin watchersdispl">{{bitcoinWatcherCount}} (Bitcoin)</div>
-    <div class="Cardano watchersdispl">{{cardanoWatcherCount}} (Cardano)</div>
-    <div class="Ergo watchersdispl">{{ergoWatcherCount}} (Ergo)</div>
+    <div class="Bitcoin watchersdispl">{{bitcoinWatcherCount | async}} (Bitcoin)</div>
+    <div class="Cardano watchersdispl">{{cardanoWatcherCount | async}} (Cardano)</div>
+    <div class="Ergo watchersdispl">{{ergoWatcherCount | async}} (Ergo)</div>
   </div>
 
   <div class="watcherscontainer">
     <div class="watchersdispl watcherheader">Permits per chain</div>
-    <div class="Bitcoin watchersdispl">{{bitcoinPermitCount}} (Bitcoin)</div>
-    <div class="Cardano watchersdispl">{{cardanoPermitCount}} (Cardano)</div>
-    <div class="Ergo watchersdispl">{{ergoPermitCount}} (Ergo)</div>
+    <div class="Bitcoin watchersdispl">{{bitcoinPermitCount | async}} (Bitcoin)</div>
+    <div class="Cardano watchersdispl">{{cardanoPermitCount | async}} (Cardano)</div>
+    <div class="Ergo watchersdispl">{{ergoPermitCount | async}} (Ergo)</div>
   </div>
 </div>
 
