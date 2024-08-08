@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { DownloadService } from './download.service';
-import { EventService,} from './event.service';
+import { EventService } from './event.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
@@ -37,39 +37,40 @@ export class WatchersDataService {
   getPermitsInfo(address: string): Observable<any> {
     const permitsUrl = `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/confirmed`;
     return this.downloadService.downloadStream(permitsUrl).pipe(
-      map(data => {
+      map((data) => {
         if (data.tokens) {
-          const tokenData = data.tokens.find((token: any) => token.tokenId === this.rsnToken);
+          const tokenData = data.tokens.find(
+            (token: any) => token.tokenId === this.rsnToken,
+          );
           if (tokenData) {
             tokenData.amount /= 3000 * Math.pow(10, tokenData.decimals);
             tokenData.amount = Math.floor(tokenData.amount);
           }
         }
         return data;
-      })
+      }),
     );
   }
-
 
   getPermitssInfo(): Observable<any> {
     return forkJoin({
       cardanoTokenData: this.getPermitsInfo(this.permitsCardanoAddress),
       bitcoinTokenData: this.getPermitsInfo(this.permitsBitcoinAddress),
-      ergoTokenData: this.getPermitsInfo(this.permitsErgoAddress)
+      ergoTokenData: this.getPermitsInfo(this.permitsErgoAddress),
     }).pipe(
-      map(result => {
+      map((result) => {
         return {
           cardanoTokenData: result.cardanoTokenData.tokens.find(
-            (token: any) => token.tokenId === this.rsnToken
+            (token: any) => token.tokenId === this.rsnToken,
           ),
           bitcoinTokenData: result.bitcoinTokenData.tokens.find(
-            (token: any) => token.tokenId === this.rsnToken
+            (token: any) => token.tokenId === this.rsnToken,
           ),
           ergoTokenData: result.ergoTokenData.tokens.find(
-            (token: any) => token.tokenId === this.rsnToken
-          )
+            (token: any) => token.tokenId === this.rsnToken,
+          ),
         };
-      })
+      }),
     );
   }
 }

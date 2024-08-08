@@ -35,13 +35,10 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
     this.bitcoinPermitCount = EMPTY;
     this.cardanoPermitCount = EMPTY;
     this.ergoPermitCount = EMPTY;
-
   }
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
-
-    
 
     this.initSwipe('/statistics', '/performance');
 
@@ -50,41 +47,49 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
 
     // Assign observables
     this.watcherCount = watcherInfo$.pipe(
-      map(watcherInfo =>
+      map((watcherInfo) =>
         watcherInfo.tokens
           .filter((token: any) => token.name !== 'RSN')
-          .reduce((sum: any, token: any) => sum + token.amount, 0)
-      )
+          .reduce((sum: any, token: any) => sum + token.amount, 0),
+      ),
     );
 
     this.cardanoWatcherCount = watcherInfo$.pipe(
-      map(watcherInfo =>
-        watcherInfo.tokens.find((token: any) => token.name === 'rspv2CardanoAWC').amount
-      )
+      map(
+        (watcherInfo) =>
+          watcherInfo.tokens.find(
+            (token: any) => token.name === 'rspv2CardanoAWC',
+          ).amount,
+      ),
     );
 
     this.bitcoinWatcherCount = watcherInfo$.pipe(
-      map(watcherInfo =>
-        watcherInfo.tokens.find((token: any) => token.name === 'rspv2BitcoinAWC').amount
-      )
+      map(
+        (watcherInfo) =>
+          watcherInfo.tokens.find(
+            (token: any) => token.name === 'rspv2BitcoinAWC',
+          ).amount,
+      ),
     );
 
     this.ergoWatcherCount = watcherInfo$.pipe(
-      map(watcherInfo =>
-        watcherInfo.tokens.find((token: any) => token.name === 'rspv2ErgoAWC').amount
-      )
+      map(
+        (watcherInfo) =>
+          watcherInfo.tokens.find((token: any) => token.name === 'rspv2ErgoAWC')
+            .amount,
+      ),
     );
 
     this.cardanoPermitCount = permitsInfo$.pipe(
-      map(permitsInfo => permitsInfo.cardanoTokenData.amount)
+      map((permitsInfo) => permitsInfo.cardanoTokenData.amount),
     );
 
     this.bitcoinPermitCount = permitsInfo$.pipe(
-      map(permitsInfo => permitsInfo.bitcoinTokenData.amount)
+      map((permitsInfo) => permitsInfo.bitcoinTokenData.amount),
     );
 
     this.ergoPermitCount = permitsInfo$.pipe(
-      map(permitsInfo => permitsInfo.ergoTokenData.amount)
+      map((permitsInfo) => permitsInfo.ergoTokenData.amount),
     );
   }
 }

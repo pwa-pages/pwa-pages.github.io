@@ -162,8 +162,8 @@ a {
   font-size: 2vmax;
   margin-top: 4vh;
   float: left;
-  border-radius: 3vh;
-  border: 0.5vmin dashed rgba(138, 128, 128);
+  border-radius: 3vmax;
+  border: 0.2vmax dashed rgba(138, 128, 128);
   padding: 2vmax;
 }
 
