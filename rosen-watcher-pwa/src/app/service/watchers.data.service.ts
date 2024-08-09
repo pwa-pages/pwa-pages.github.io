@@ -5,6 +5,7 @@ import { EventService } from './event.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { forkJoin } from 'rxjs';
+import { ChainType } from './data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -52,25 +53,38 @@ export class WatchersDataService {
     );
   }
 
-  getPermitssInfo(): Observable<any> {
-    return forkJoin({
-      cardanoTokenData: this.getPermitsInfo(this.permitsCardanoAddress),
-      bitcoinTokenData: this.getPermitsInfo(this.permitsBitcoinAddress),
-      ergoTokenData: this.getPermitsInfo(this.permitsErgoAddress),
-    }).pipe(
-      map((result) => {
-        return {
-          cardanoTokenData: result.cardanoTokenData.tokens.find(
-            (token: any) => token.tokenId === this.rsnToken,
-          ),
-          bitcoinTokenData: result.bitcoinTokenData.tokens.find(
-            (token: any) => token.tokenId === this.rsnToken,
-          ),
-          ergoTokenData: result.ergoTokenData.tokens.find(
-            (token: any) => token.tokenId === this.rsnToken,
-          ),
-        };
-      }),
-    );
+  getPermitssInfo(chainType: ChainType): Observable<any> {
+    switch (chainType) {
+      case ChainType.Cardano:
+        return this.getPermitsInfo(this.permitsCardanoAddress).pipe(
+          map((result) => {
+            return {
+              cardanoTokenData: result.tokens.find(
+                (token: any) => token.tokenId === this.rsnToken,
+              ),
+            };
+          }),
+        );
+      case ChainType.Bitcoin:
+        return this.getPermitsInfo(this.permitsBitcoinAddress).pipe(
+          map((result) => {
+            return {
+              bitcoinTokenData: result.tokens.find(
+                (token: any) => token.tokenId === this.rsnToken,
+              ),
+            };
+          }),
+        );
+      case ChainType.Ergo:
+        return this.getPermitsInfo(this.permitsErgoAddress).pipe(
+          map((result) => {
+            return {
+              ergoTokenData: result.tokens.find(
+                (token: any) => token.tokenId === this.rsnToken,
+              ),
+            };
+          }),
+        );
+    }
   }
 }

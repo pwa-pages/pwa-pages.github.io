@@ -42,6 +42,7 @@ export class DownloadService {
     }
 
     const downloadObservable = this.http.get(url).pipe(
+      delay(5000),
       map((results: any) => {
         console.log('Downloaded from server:', url);
         localStorage.setItem(url, JSON.stringify(results));
@@ -54,7 +55,7 @@ export class DownloadService {
     );
 
     // First emit cached data if available, then try to download and emit the new data
-    return concat(/*cacheObservable, */ downloadObservable);
+    return concat(cacheObservable, downloadObservable);
   }
 
   downloadTransactions(

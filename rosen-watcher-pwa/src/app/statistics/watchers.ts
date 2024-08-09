@@ -7,6 +7,7 @@ import { BaseWatcherComponent } from '../basewatchercomponent';
 import { Router } from '@angular/router';
 import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ChainType } from '../service/data.service';
 
 @Component({
   selector: 'watchers',
@@ -43,7 +44,6 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
     this.initSwipe('/statistics', '/performance');
 
     const watcherInfo$ = this.watchersDataService.getWatchersInfo();
-    const permitsInfo$ = this.watchersDataService.getPermitssInfo();
 
     // Assign observables
     this.watcherCount = watcherInfo$.pipe(
@@ -80,13 +80,20 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
       ),
     );
 
+    var permitsInfo$ = this.watchersDataService.getPermitssInfo(
+      ChainType.Cardano,
+    );
+
     this.cardanoPermitCount = permitsInfo$.pipe(
       map((permitsInfo) => permitsInfo.cardanoTokenData.amount),
     );
 
+    permitsInfo$ = this.watchersDataService.getPermitssInfo(ChainType.Bitcoin);
     this.bitcoinPermitCount = permitsInfo$.pipe(
       map((permitsInfo) => permitsInfo.bitcoinTokenData.amount),
     );
+
+    permitsInfo$ = this.watchersDataService.getPermitssInfo(ChainType.Ergo);
 
     this.ergoPermitCount = permitsInfo$.pipe(
       map((permitsInfo) => permitsInfo.ergoTokenData.amount),
