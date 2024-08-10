@@ -80,23 +80,23 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
       ),
     );
 
-    var permitsInfo$ = this.watchersDataService.getPermitssInfo(
+    var permitsInfo$ = this.watchersDataService.getPermitsInfo(
       ChainType.Cardano,
     );
 
     this.cardanoPermitCount = permitsInfo$.pipe(
-      map((permitsInfo) => permitsInfo.cardanoTokenData.amount),
+      map((permitsInfo) => permitsInfo.tokenData.amount),
     );
 
-    permitsInfo$ = this.watchersDataService.getPermitssInfo(ChainType.Bitcoin);
+    permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Bitcoin);
     this.bitcoinPermitCount = permitsInfo$.pipe(
-      map((permitsInfo) => permitsInfo.bitcoinTokenData.amount),
+      map((permitsInfo) => permitsInfo.tokenData.amount),
     );
 
-    permitsInfo$ = this.watchersDataService.getPermitssInfo(ChainType.Ergo);
+    permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Ergo);
 
     this.ergoPermitCount = permitsInfo$.pipe(
-      map((permitsInfo) => permitsInfo.ergoTokenData.amount),
+      map((permitsInfo) => permitsInfo.tokenData.amount),
     );
   }
 }

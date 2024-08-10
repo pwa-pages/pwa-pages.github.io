@@ -229,13 +229,12 @@ a {
 }
 
 .loader {
-  bottom: 3%;
-  left: 42.8vw;
-
-  width: 10vw;
+  width: 2vw;
   aspect-ratio: 4;
   display: grid;
 }
+
+
 
 .loaderlogs {
   bottom: 3%;
