@@ -42,7 +42,6 @@ export class DownloadService {
     }
 
     const downloadObservable = this.http.get(url).pipe(
-      delay(5000),
       map((results: any) => {
         console.log('Downloaded from server:', url);
         localStorage.setItem(url, JSON.stringify(results));
