@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1723375951660,
+  "timestamp": 1723384175349,
   "appData": {
-    "version": "1.7.0"
+    "version": "1.7.1"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,10 +16,10 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-H33MHTOX.js",
+        "./main-JVJSIKPE.js",
         "./manifest.webmanifest",
         "./polyfills-SCHOHYNV.js",
-        "./styles-XHBVBZNM.css"
+        "./styles-WXPPJGQM.css"
       ],
       "patterns": []
     },
@@ -57,8 +57,8 @@
     "./assets/images/cardano.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./favicon.ico": "3f827768829ef167081886d77582b29f19122dc8",
-    "./index.html": "3d57a9d5afaac6a2746ff980d32747436ddf4f3f",
-    "./main-H33MHTOX.js": "73c3284ede16da932ccdf4766f6154cd68b959b7",
+    "./index.html": "1ba58455671a65d9ce78aea18158cb200f0c83ab",
+    "./main-JVJSIKPE.js": "65fce631d234d6ed77cf169101c1b8ff5005451b",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
     "./media/cardano-LICXQYGO.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
@@ -72,7 +72,7 @@
     "./media/fa-v4compatibility-4Q6RMATN.woff2": "87d0bbc38baa356297521c41ed8ca7d78e8d16e2",
     "./media/fa-v4compatibility-TNIB7AHA.ttf": "bd27e43f3d1e5019faaabc9ec6c5d3d7c5f100ef",
     "./polyfills-SCHOHYNV.js": "d45c76c5960bab3ace7fd6d211b9579456241f8a",
-    "./styles-XHBVBZNM.css": "f378b553c80ec6360f736f62be4018db5a7d49d3"
+    "./styles-WXPPJGQM.css": "4adba4ed1387ed12a0ec38ba3c6411b646aebce5"
   },
   "navigationUrls": [
     {

@@ -8,7 +8,7 @@ import { SwipeService } from './service/swipe.service';
   template: '',
 })
 export class BaseWatcherComponent implements OnInit {
-  public busyCounter: number = 0;
+  public busyCounter: number = 1;
   private quadrants = '';
   loaderLogs: string[] = [];
   private leftAction = '';

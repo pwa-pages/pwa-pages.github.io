@@ -39,7 +39,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     swipeService: SwipeService,
     private router: Router,
     private qrDialog: MatDialog,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {
     super(eventService, featureService, swipeService);
     this.data = '';
@@ -54,14 +54,14 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     return (window as any).showHomeLink;
   }
 
-  selectTab(tab:string): void{
+  selectTab(tab: string): void {
     this.selectedTab = tab;
   }
 
   formatDate(utcDate: string): string {
     // Convert the UTC date string to a JavaScript Date object
     const date = new Date(utcDate);
-  
+
     // Format the date using the browser's locale
     return this.datePipe.transform(date, 'dd MMM yyyy') || '';
   }
@@ -69,12 +69,12 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   async retrieveData(): Promise<any[]> {
     this.data = await this.dataService.getTotalRewards();
 
-
     this.sortedInputs = await this.dataService.getSortedInputs();
-    
-    var newChart = this.sortedInputs.map(s => { return {x: s.inputDate, y: s.accumulatedAmount} });
-    this.sortedInputs.sort((a, b) => b.inputDate - a.inputDate);
 
+    var newChart = this.sortedInputs.map((s) => {
+      return { x: s.inputDate, y: s.accumulatedAmount };
+    });
+    this.sortedInputs.sort((a, b) => b.inputDate - a.inputDate);
 
     if (
       this.rewardsChart.length != 0 &&

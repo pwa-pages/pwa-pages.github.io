@@ -109,10 +109,15 @@ export class DataService {
 
       inputs.sort((a, b) => a.inputDate - b.inputDate);
 
-      inputs.forEach((input: any) => { 
+      inputs.forEach((input: any) => {
         input.assets.forEach((asset: any) => {
           amount += asset.amount;
-          sortedInputs.push({ inputDate: input.inputDate, accumulatedAmount: amount, amount: asset.amount / Math.pow(10, asset.decimals),chainType: this.getChainType(input.address) });
+          sortedInputs.push({
+            inputDate: input.inputDate,
+            accumulatedAmount: amount,
+            amount: asset.amount / Math.pow(10, asset.decimals),
+            chainType: this.getChainType(input.address),
+          });
         });
       });
       console.log('done retrieving chart from database');

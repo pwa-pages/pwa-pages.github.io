@@ -10,9 +10,10 @@
   addresses.
 </div>
 
+
 <div class="stats-container">
   <a class="tab" [class.active]="selectedTab === 'chart'" (click)="selectTab('chart')">Graph</a>
-  <a class="tab" *ngIf="busyCounter == 0"  [class.active]="selectedTab === 'details'" (click)="selectTab('details')">Details</a>
+  <a class="tab" [class.active]="selectedTab === 'details'" (click)="selectTab('details')">Details</a>
 </div>
 
 <div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
@@ -21,35 +22,29 @@
   </div>
 </div>
 
-<div class="detailscontainer" *ngIf="busyCounter == 0" [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}">
+<div class="detailscontainer" [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}">
   <div class="details-container">
-
     <div>
       <div class="statdetaildispl">
-        <div class="inputDate">
-          Date
-        </div>
-        <div class="amount">
-          Reward
-        </div>
+        <div class="inputDate">Date</div>
+        <div class="amount">Reward</div>
       </div>
     </div>
 
-    <div *ngFor="let input of sortedInputs">
-      <div class="statdetaildispl {{input.chainType}}">
-        <div class="inputDate">
-          {{ formatDate(input.inputDate) }}
-        </div>
-        <div class="amount">
-          {{ input.amount }} RSN
+    <ng-container *ngIf="busyCounter == 0">
+      <div *ngFor="let input of sortedInputs">
+        <div class="statdetaildispl {{input.chainType}}">
+          <div class="inputDate">{{ formatDate(input.inputDate) }}</div>
+          <div class="amount">{{ input.amount }} RSN</div>
         </div>
       </div>
-    </div>
+    </ng-container>
+
+    <ng-container *ngIf="busyCounter > 0">
+      Fetching data...
+    </ng-container>
   </div>
 </div>
-
-
-
 
 <div class="addressescontainer">
   Addresses: &nbsp;&nbsp;
