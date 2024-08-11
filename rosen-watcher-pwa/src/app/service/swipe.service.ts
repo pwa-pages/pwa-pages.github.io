@@ -114,6 +114,16 @@ export class SwipeService {
     }
   }
 
+  public hasVerticalScrollableContainerClass(element:any ) {
+    while (element) {
+      if (element.classList && element.classList.contains('verticalscrollablecontainer')) {
+        return true;
+      }
+      element = element.parentElement;
+    }
+    return false;
+  }
+
   public swipeDetect(routeleft: string, routeRight: string) {
     this.currentNavigationLeft = routeleft;
     this.currentNavigationRight = routeRight;
@@ -143,6 +153,9 @@ export class SwipeService {
           return;
         }
 
+
+    
+
         body.style.position = 'fixed';
         html.style.position = 'fixed';
         contentLeft = body.offsetLeft;
@@ -167,11 +180,13 @@ export class SwipeService {
           return;
         }
 
+        var hasVerticalScrollableParent = me.hasVerticalScrollableContainerClass(e.target as HTMLElement);
+        
+        
+
         var touchobj = e.changedTouches[0];
         distX = touchobj.pageX - startX;
         distY = touchobj.pageY - startY;
-
-        
 
         if (Math.abs(distX) > 20 || Math.abs(distY) > 20) {
           if (me.detectHorizontal && Math.abs(distX) > Math.abs(distY)) {
@@ -180,9 +195,15 @@ export class SwipeService {
           } else if (me.detectVertical) {
             body.style.top = (contentTop + distY).toString() + 'px';
             body.style.left = contentLeft.toString() + 'px';
+            
           }
         }
-        e.preventDefault();
+
+        if(!(distY != 0 && hasVerticalScrollableParent)){
+          e.preventDefault();
+        }
+
+        
       },
       { passive: false },
     );
@@ -194,11 +215,13 @@ export class SwipeService {
           return;
         }
 
+      
+
         var swipedir = null;
         var touchobj = e.changedTouches[0];
         distX = touchobj.pageX - startX;
         distY = touchobj.pageY - startY;
-        
+
         elapsedTime = new Date().getTime() - startTime;
         if (
           me.detectHorizontal &&
