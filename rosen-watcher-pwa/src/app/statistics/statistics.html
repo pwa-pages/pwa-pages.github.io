@@ -10,20 +10,35 @@
   addresses.
 </div>
 
-
 <div class="stats-container">
-  <a class="tab" [class.active]="selectedTab === 'chart'" (click)="selectTab('chart')">Graph</a>
-  <a class="tab" [class.active]="selectedTab === 'details'" (click)="selectTab('details')">Details</a>
+  <a
+    class="tab"
+    [class.active]="selectedTab === 'chart'"
+    (click)="selectTab('chart')"
+    >Graph</a
+  >
+  <a
+    class="tab"
+    [class.active]="selectedTab === 'details'"
+    (click)="selectTab('details')"
+    >Details</a
+  >
 </div>
 
-<div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
+<div
+  class="chartcontainer"
+  [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}"
+>
   <div class="chart-container">
     <canvas id="RewardChart"></canvas>
   </div>
 </div>
 
-<div class="detailscontainer" [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}">
-  <div class="details-container">
+<div 
+  class="detailscontainer"
+  [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}"
+>
+  <div #detailsContainer class="details-container">
     <div>
       <div class="statdetaildispl">
         <div class="inputDate">Date</div>
@@ -40,21 +55,21 @@
       </div>
     </ng-container>
 
-    <ng-container *ngIf="busyCounter > 0">
-      Fetching data...
-    </ng-container>
+    <ng-container *ngIf="busyCounter > 0"> Fetching data... </ng-container>
   </div>
 </div>
 
 <div class="addressescontainer">
   Addresses: &nbsp;&nbsp;
-  <div class="mainaddressdispl {{address.chainType}}"
-    *ngFor="let address of addressesForDisplay; let i = index; last as isLast">
+  <div
+    class="mainaddressdispl {{address.chainType}}"
+    *ngFor="let address of addressesForDisplay; let i = index; last as isLast"
+  >
     - [{{ address.address }}]<span *ngIf="!isLast">,&nbsp;&nbsp;</span>
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="busyCounter == 0">
+<div class="linkcontainer" *ngIf="busyCounter == 0 || noAddresses">
   <div class="linkicon">
     <a routerLink="/settings" routerLinkActive="active">
       <div class="fas fa-edit"></div>
@@ -66,7 +81,7 @@
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="busyCounter == 0 && showHomeLink()">
+<div class="linkcontainer" *ngIf="(busyCounter == 0 || noAddresses) && showHomeLink()">
   <div class="linkicon" id="homelink">
     <a (click)="installApp()">
       <div class="fas fa-home"></div>
@@ -78,7 +93,7 @@
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="busyCounter == 0 && shareSupport">
+<div class="linkcontainer" *ngIf="(busyCounter == 0 || noAddresses) && shareSupport">
   <div class="linkicon" id="sharelink">
     <a (click)="share()">
       <div class="fas fa-share-nodes"></div>
@@ -90,7 +105,7 @@
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="busyCounter == 0">
+<div class="linkcontainer" *ngIf="(busyCounter == 0 || noAddresses)">
   <div class="linkicon" id="qrlink">
     <a (click)="showQR()">
       <div class="fas fa-qrcode"></div>

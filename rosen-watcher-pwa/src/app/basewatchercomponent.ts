@@ -15,7 +15,7 @@ export class BaseWatcherComponent implements OnInit {
   private rightAction = '';
 
   constructor(
-    private eventService: EventService,
+    public eventService: EventService,
     public featureService: FeatureService,
     public swipeService: SwipeService,
   ) {}

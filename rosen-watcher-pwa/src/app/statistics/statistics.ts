@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { EventService, EventType } from '../service/event.service';
 import { StorageService } from '../service/storage.service';
 import { SwipeService } from '../service/swipe.service';
@@ -28,6 +28,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   addressesForDisplay: any[];
   shareSupport: boolean = false;
   chart: Chart<'line', any[][], unknown> | undefined;
+  @ViewChild('detailsContainer') detailsContainer!: ElementRef;
 
   constructor(
     private location: Location,
@@ -184,7 +185,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       (p1.x.getTime() * (p2.y - p3.y) +
         p2.x.getTime() * (p3.y - p1.y) +
         p3.x.getTime() * (p1.y - p2.y)) /
-        2,
+      2,
     );
   }
 
@@ -286,6 +287,8 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
     });
+
+ 
 
     this.route.queryParams.subscribe(async (params) => {
       var hasAddressParams = await this.checkAddressParams(params);

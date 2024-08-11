@@ -13,7 +13,7 @@ export class SwipeService {
   private swipeActive = false;
 
   constructor(
-    eventService: EventService,
+    private eventService: EventService,
     private router: Router,
   ) {
     this.registerSwipeDetect();
@@ -171,6 +171,8 @@ export class SwipeService {
         distX = touchobj.pageX - startX;
         distY = touchobj.pageY - startY;
 
+        
+
         if (Math.abs(distX) > 20 || Math.abs(distY) > 20) {
           if (me.detectHorizontal && Math.abs(distX) > Math.abs(distY)) {
             body.style.left = (contentLeft + distX).toString() + 'px';
@@ -196,6 +198,7 @@ export class SwipeService {
         var touchobj = e.changedTouches[0];
         distX = touchobj.pageX - startX;
         distY = touchobj.pageY - startY;
+        
         elapsedTime = new Date().getTime() - startTime;
         if (
           me.detectHorizontal &&

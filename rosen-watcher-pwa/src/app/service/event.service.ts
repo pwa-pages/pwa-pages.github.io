@@ -9,6 +9,7 @@ export enum EventType {
   SwipeDeActivated = 'SwipeDeActivated',
   StartDownload = 'StartDownload',
   EndDownload = 'EndDownload',
+  SwipeVertical = 'SwipeVertical'
 }
 
 @Injectable({
@@ -31,6 +32,8 @@ export class EventService {
       [EventType.SwipeDeActivated]: new Subject<any>(),
       [EventType.StartDownload]: new Subject<any>(),
       [EventType.EndDownload]: new Subject<any>(),
+      [EventType.SwipeVertical]: new Subject<any>(),
+      
     };
     return this.eventSubscriptions;
   }
