@@ -141,6 +141,7 @@ a {
   width: 25vmax;
 }
 
+.statdetaildispl,
 .mainaddressdispl,
 .watchersdispl {
   background-size: contain;
@@ -174,19 +175,21 @@ a {
   align-items: center;
   flex-direction: row;
 }
-
+.statdetaildispl.Bitcoin,
 .mainaddressdispl.Bitcoin,
 .watchersdispl.Bitcoin {
   background-image: url('./assets/images/bitcoin.png');
   filter: brightness(0.8);
 }
 
+.statdetaildispl.Cardano,
 .mainaddressdispl.Cardano,
 .watchersdispl.Cardano {
   background-image: url('./assets/images/cardano.png');
   filter: brightness(0.8);
 }
 
+.statdetaildispl.Ergo,
 .mainaddressdispl.Ergo,
 .watchersdispl.Ergo {
   background-image: url('./assets/images/ergo.png');
@@ -345,3 +348,4 @@ button:active {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transform: translateY(2px);
 }
+

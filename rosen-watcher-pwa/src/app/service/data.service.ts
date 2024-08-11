@@ -99,29 +99,29 @@ export class DataService {
     }
   }
 
-  async getRewardsChart(): Promise<any[]> {
+  async getSortedInputs(): Promise<any[]> {
     var inputsPromise = this.getWatcherInputs();
     var amount = 0;
-    var rewardsChart: any = [];
+    var sortedInputs: any = [];
     console.log('start retrieving chart from database');
     try {
       const inputs = await inputsPromise;
 
       inputs.sort((a, b) => a.inputDate - b.inputDate);
 
-      inputs.forEach((input: any) => {
+      inputs.forEach((input: any) => { 
         input.assets.forEach((asset: any) => {
           amount += asset.amount;
-          rewardsChart.push({ x: input.inputDate, y: amount });
+          sortedInputs.push({ inputDate: input.inputDate, accumulatedAmount: amount, amount: asset.amount / Math.pow(10, asset.decimals),chainType: this.getChainType(input.address) });
         });
       });
       console.log('done retrieving chart from database');
       return await new Promise<string[]>((resolve, reject) => {
-        resolve(rewardsChart);
+        resolve(sortedInputs);
       });
     } catch (error) {
       console.error(error);
-      return rewardsChart;
+      return sortedInputs;
     }
   }
 

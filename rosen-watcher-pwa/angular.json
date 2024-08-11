@@ -30,7 +30,7 @@
               "src/navigation.css",
               "src/header.css",
               "src/settings.css",
-              "src/chart.css",
+              "src/stats.css",
               "src/app/basewatchercomponent.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],

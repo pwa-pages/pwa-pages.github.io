@@ -6,7 +6,7 @@ import { DataService } from '../service/data.service';
 import { FeatureService } from '../service/featureservice';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { QRDialog } from './qrdialog';
@@ -19,7 +19,9 @@ import 'chartjs-adapter-date-fns';
 })
 export class Statistics extends BaseWatcherComponent implements OnInit {
   data: string;
+  selectedTab: string;
   rewardsChart: any[];
+  sortedInputs: any[];
   addresses: any[];
   noAddresses: boolean = false;
   showPermitsLink: boolean = false;
@@ -37,22 +39,42 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     swipeService: SwipeService,
     private router: Router,
     private qrDialog: MatDialog,
+    private datePipe: DatePipe
   ) {
     super(eventService, featureService, swipeService);
     this.data = '';
+    this.selectedTab = 'chart';
     this.addresses = [];
     this.addressesForDisplay = [];
     this.rewardsChart = [];
+    this.sortedInputs = [];
   }
 
   showHomeLink(): boolean {
     return (window as any).showHomeLink;
   }
 
+  selectTab(tab:string): void{
+    this.selectedTab = tab;
+  }
+
+  formatDate(utcDate: string): string {
+    // Convert the UTC date string to a JavaScript Date object
+    const date = new Date(utcDate);
+  
+    // Format the date using the browser's locale
+    return this.datePipe.transform(date, 'dd MMM yyyy') || '';
+  }
+
   async retrieveData(): Promise<any[]> {
     this.data = await this.dataService.getTotalRewards();
 
-    var newChart = await this.dataService.getRewardsChart();
+
+    this.sortedInputs = await this.dataService.getSortedInputs();
+    
+    var newChart = this.sortedInputs.map(s => { return {x: s.inputDate, y: s.accumulatedAmount} });
+    this.sortedInputs.sort((a, b) => b.inputDate - a.inputDate);
+
 
     if (
       this.rewardsChart.length != 0 &&
@@ -64,7 +86,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       };
     }
 
-    this.rewardsChart = await this.dataService.getRewardsChart();
+    this.rewardsChart = newChart;
     var result = await this.dataService.getInputs();
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay();
 

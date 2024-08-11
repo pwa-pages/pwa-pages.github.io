@@ -10,18 +10,51 @@
   addresses.
 </div>
 
-<div class="chartcontainer">
+<div class="stats-container">
+  <a class="tab" [class.active]="selectedTab === 'chart'" (click)="selectTab('chart')">Graph</a>
+  <a class="tab" *ngIf="busyCounter == 0"  [class.active]="selectedTab === 'details'" (click)="selectTab('details')">Details</a>
+</div>
+
+<div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
   <div class="chart-container">
     <canvas id="RewardChart"></canvas>
   </div>
 </div>
 
+<div class="detailscontainer" *ngIf="busyCounter == 0" [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}">
+  <div class="details-container">
+
+    <div>
+      <div class="statdetaildispl">
+        <div class="inputDate">
+          Date
+        </div>
+        <div class="amount">
+          Reward
+        </div>
+      </div>
+    </div>
+
+    <div *ngFor="let input of sortedInputs">
+      <div class="statdetaildispl {{input.chainType}}">
+        <div class="inputDate">
+          {{ formatDate(input.inputDate) }}
+        </div>
+        <div class="amount">
+          {{ input.amount }} RSN
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 <div class="addressescontainer">
   Addresses: &nbsp;&nbsp;
-  <div
-    class="mainaddressdispl {{address.chainType}}"
-    *ngFor="let address of addressesForDisplay; let i = index; last as isLast"
-  >
+  <div class="mainaddressdispl {{address.chainType}}"
+    *ngFor="let address of addressesForDisplay; let i = index; last as isLast">
     - [{{ address.address }}]<span *ngIf="!isLast">,&nbsp;&nbsp;</span>
   </div>
 </div>
