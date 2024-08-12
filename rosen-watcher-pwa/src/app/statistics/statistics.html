@@ -1,3 +1,5 @@
+
+
 <div class="headercontainer">
   <div class="headerblock">
     Total rewards:
@@ -23,6 +25,9 @@
     (click)="selectTab('details')"
     >Details</a
   >
+  <div class = "version">
+    version: 1.7.4
+  </div>
 </div>
 
 <div
@@ -34,7 +39,7 @@
   </div>
 </div>
 
-<div 
+<div
   class="detailscontainer verticalscrollablecontainer"
   [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}"
 >
@@ -81,7 +86,10 @@
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="(busyCounter == 0 || noAddresses) && showHomeLink()">
+<div
+  class="linkcontainer"
+  *ngIf="(busyCounter == 0 || noAddresses) && showHomeLink()"
+>
   <div class="linkicon" id="homelink">
     <a (click)="installApp()">
       <div class="fas fa-home"></div>
@@ -93,7 +101,10 @@
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="(busyCounter == 0 || noAddresses) && shareSupport">
+<div
+  class="linkcontainer"
+  *ngIf="(busyCounter == 0 || noAddresses) && shareSupport"
+>
   <div class="linkicon" id="sharelink">
     <a (click)="share()">
       <div class="fas fa-share-nodes"></div>

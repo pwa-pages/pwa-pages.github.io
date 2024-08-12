@@ -185,7 +185,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       (p1.x.getTime() * (p2.y - p3.y) +
         p2.x.getTime() * (p3.y - p1.y) +
         p3.x.getTime() * (p1.y - p2.y)) /
-      2,
+        2,
     );
   }
 
@@ -287,8 +287,6 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
     });
-
- 
 
     this.route.queryParams.subscribe(async (params) => {
       var hasAddressParams = await this.checkAddressParams(params);
