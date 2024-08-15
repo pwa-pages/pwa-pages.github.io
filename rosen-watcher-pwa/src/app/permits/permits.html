@@ -7,9 +7,7 @@
     <div class="watcheritem">Address</div>
     <div class="watcheritem">Network</div>
     <div class="watcheritem">Available / Total reports</div>
-    <ng-container
-      *ngFor="let address of addresses; let i = index; last as isLast"
-    >
+    <ng-container *ngFor="let address of addresses; let i = index; last as isLast">
       <div class="watcheritem">
         <span class="address">{{address.addressForDisplay}}</span>
         <span *ngIf="!isLast"><br /></span>
@@ -23,7 +21,8 @@
 
   <div class="prevPage">
     <a routerLink="/main" routerLinkActive="active">
-      <span class="fas fa-arrow-left"></span>&nbsp;&nbsp;Statistics
+      <span class="fas fa-arrow-left"></span>
+      &nbsp;&nbsp;Statistics
     </a>
   </div>
 </div>

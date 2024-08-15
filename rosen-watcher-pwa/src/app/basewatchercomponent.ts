@@ -105,10 +105,7 @@ export class BaseWatcherComponent implements OnInit {
     ]);
   }
 
-  async subscribeToEvent(
-    eventType: EventType,
-    callback: (...args: any[]) => void,
-  ) {
+  async subscribeToEvent(eventType: EventType, callback: (...args: any[]) => void) {
     await this.eventService.subscribeToEvent(eventType, callback);
   }
 

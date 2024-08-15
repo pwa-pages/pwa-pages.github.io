@@ -64,10 +64,7 @@ export class StorageService {
       };
 
       request.onerror = (event: any) => {
-        console.error(
-          'Error clearing IndexedDB:',
-          (event.target as any).errorCode,
-        );
+        console.error('Error clearing IndexedDB:', (event.target as any).errorCode);
         resolve();
       };
     });
@@ -135,10 +132,7 @@ export class StorageService {
     const db = await this.getDB();
 
     addressData.forEach((a) => {
-      const transaction = db.transaction(
-        [this.addressDataStoreName],
-        'readwrite',
-      );
+      const transaction = db.transaction([this.addressDataStoreName], 'readwrite');
       const objectStore = transaction.objectStore(this.addressDataStoreName);
       objectStore.put(a);
     });
@@ -162,10 +156,7 @@ export class StorageService {
             address: input.address,
           };
 
-          const transaction = db.transaction(
-            [this.inputsStoreName],
-            'readwrite',
-          );
+          const transaction = db.transaction([this.inputsStoreName], 'readwrite');
           const objectStore = transaction.objectStore(this.inputsStoreName);
           const request = objectStore.put(dbInput);
           this.updateCache = true;

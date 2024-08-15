@@ -33,17 +33,13 @@ export class Settings implements OnInit {
       data: {
         title: 'Edit Address',
         address: this.addresses[index].address,
-        watcherUrl: this.addressData.find(
-          (a) => a.address == this.addresses[index],
-        )?.watcherUrl,
+        watcherUrl: this.addressData.find((a) => a.address == this.addresses[index])?.watcherUrl,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.addresses[index].address = result.address;
-        var editAddress = this.addressData.find(
-          (a) => a.address == result.address,
-        );
+        var editAddress = this.addressData.find((a) => a.address == result.address);
         if (editAddress != null) {
           editAddress.watcherUrl = result.watcherUrl;
         } else {

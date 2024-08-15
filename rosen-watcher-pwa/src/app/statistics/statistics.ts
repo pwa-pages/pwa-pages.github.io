@@ -100,10 +100,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       this.chart = this.createChart();
     }
 
-    this.chart.data.datasets[0].data = this.reduceChartData(
-      this.rewardsChart,
-      15,
-    );
+    this.chart.data.datasets[0].data = this.reduceChartData(this.rewardsChart, 15);
 
     this.chart.update();
   }
@@ -202,11 +199,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       let indexToRemove = -1;
 
       for (let i = 1; i < points.length - 1; i++) {
-        let area = this.calculateTriangleArea(
-          points[i - 1],
-          points[i],
-          points[i + 1],
-        );
+        let area = this.calculateTriangleArea(points[i - 1], points[i], points[i + 1]);
         if (area < minArea) {
           minArea = area;
           indexToRemove = i;
@@ -250,8 +243,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     const urlTree = this.router.createUrlTree(['main'], {
       queryParams: { addresses: JSON.stringify(this.addresses) },
     });
-    var url =
-      window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
+    var url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
     return url;
   }
 

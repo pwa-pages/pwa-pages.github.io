@@ -1,12 +1,15 @@
 <div class="watcherscreen settings">
-  <button (click)="addaddress()">Add Address</button><br /><br /><br />
+  <button (click)="addaddress()">Add Address</button>
+  <br />
+  <br />
+  <br />
   <div class="settingscontainer watchergrid container addressdispl">
-    <ng-container
-      *ngFor="let address of addresses; let i = index; trackBy: trackByFn"
-    >
+    <ng-container *ngFor="let address of addresses; let i = index; trackBy: trackByFn">
       <div class="watcheritem first-column">{{ address.address }}</div>
       <div class="watcheritem">
-        &nbsp;&nbsp;<button (click)="editaddress(i)">Edit</button>&nbsp;
+        &nbsp;&nbsp;
+        <button (click)="editaddress(i)">Edit</button>
+        &nbsp;
       </div>
       <div class="watcheritem">
         <button (click)="deleteaddress(i)">Delete</button>
@@ -15,7 +18,8 @@
   </div>
 
   <div class="container">
-    <button (click)="save()">Save</button>&nbsp;
+    <button (click)="save()">Save</button>
+    &nbsp;
     <button (click)="cancel()">Cancel</button>
   </div>
 </div>

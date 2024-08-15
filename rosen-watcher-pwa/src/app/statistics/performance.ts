@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  SimpleChanges,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { FeatureService } from '../service/featureservice';
@@ -83,11 +77,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
       let indexToRemove = -1;
 
       for (let i = 1; i < points.length - 1; i++) {
-        let area = this.calculateTriangleArea(
-          points[i - 1],
-          points[i],
-          points[i + 1],
-        );
+        let area = this.calculateTriangleArea(points[i - 1], points[i], points[i + 1]);
         if (area < minArea) {
           minArea = area;
           indexToRemove = i;
@@ -150,8 +140,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
 
       for (var i = 0; i < this.performanceChart.length; i++) {
         dataSets[i].data = this.performanceChart[i].chart;
-        dataSets[i].label =
-          'Address: ' + this.performanceChart[i].addressForDisplay;
+        dataSets[i].label = 'Address: ' + this.performanceChart[i].addressForDisplay;
       }
 
       this.createChart(dataSets);

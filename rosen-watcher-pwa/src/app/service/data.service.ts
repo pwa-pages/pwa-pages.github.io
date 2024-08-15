@@ -1,26 +1,16 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { DownloadService } from './download.service';
+import { ChainService } from './chain.service';
 import { EventService, EventType } from './event.service';
 import { catchError, firstValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-export enum ChainType {
-  Bitcoin = 'Bitcoin',
-  Cardano = 'Cardano',
-  Ergo = 'Ergo',
-}
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  readonly rewardsCardanoAddress: string =
-    '2Eit2LFRqu2Mo33z3pYTJRHNCPYS33MrU9QgeNcRsF9359pYMahqnLvKsHwwH72C6WDSZRj7G7WC5heVyUEawcSLSx821iJXT4xWf2F5fjVWDUskGdVdyYY5RBJnp3dfYC7iPoRNeopAFQWFwEbTieow347UhRyqvo2LntFpXzomvGwVTfq9YXS8Z1GGW5mUEioD5xC17Sz72NLbQrskSx7QZAxQTbMGh6vwM9J4q7NzRmQeHmWaHLpUHMU4Jdd5ccKumMvAY8d5C8RxB4iATySLY2N1wY84qNsWNaqkNofbUebf6LgmU9HTKAmU3nDoBfX7mhCjH8kXDhZeYdRsuLVFEYu83TkpwgHAYGmUoemxWAeA2BKMx8CBAy9jxbCyUjdnk9i7sLxuejrwLLh8W4tP81YkESjZ8BV65BhzPdvCaiX8vBSorgFfnvGKVzwfhhsSDwLY1GUwLTMLwTUTjSzEjsMX9hzsEEEmhxLsekabLmK3HZ1jssLrFryNuE59uS51hazJsi3gsT8SBk1J9YV6Dq6xto28nLqrMqK6raqLcAm2iU8hBtqdoSXqWzsrZHpqc2uLGhY52ee4k9TpFBvN1RovYUtY6KS4FncT4UgnbEFkzsnWYKX3CDn16tJs5CyZ97gKcvUonZ5EqTwabzni14CcQsTtKtEAqj1odvSyfJ94NnEjuiVPC3VmZbQvveN3bQ';
-  readonly rewardsBitcoinAddress: string =
-    '2Eit2LFRqu2Mo33z3pYTJRHNCPYS33MrU9QgeNcRsF9359pYMahqnLvKsHwwH72C6WDSZRj7G7WC5heVyUEawcSLSx821iJXT4xWf2F5fjVWDUpyGNdkxhFwQMhPKpx85Uu16put68V837wxDx19LRJ5uqi7xBa7EDFRU79Grzk8HDrfpUF3qct4xrQUvDofDroRQTuKueAbwybAfGDhNqG3jzKQchgjedBkbPAuDuNunehW4ZXUBLRSfqy3xofV76bxT5zpZjZcKud4XaRQvXUAVGunJzAs7RNZD5WZxenhmKzhiyuzWiq5QkWqxFw2h9vQ6Dd5PdYsWP3dPtaDC8WUjGz8tQ1tU9LuhqZ8QThQA5zBfoPFrk2iJ1repUuwZPjWnDRHLfWppqDQJGm2GEWHmYTQAfCJQFChUtSNstSATxw37xXjziKkPQRRVPr3VPapbHtGSoQyygzTHgcjxv3HSzwXkD7DScyA2iGDsd4B4WeXo4a6nM4CYpxa9f9FvabbNByhKsgq3ZoCsbUVXN99Pet93MFdxVmBBEsGYEYvtmMEDZEGb5z3JZDtVSdudFcm3bij82bdFzKSmmxxWZhscmLYpGGq1J5geqTiyTCgsmksAHumPFBmLkz8v843Jc3z5b6dwFgyXuBmQPTq6Nf8t95y1UYe8UYx3qNVfrHSGbToSgvCQyLKVv5ns8T2SZRWWr';
-  readonly rewardsErgoAddress: string =
-    '2Eit2LFRqu2Mo33z3pYTJRHNCPYS33MrU9QgeNcRsF9359pYMahqnLvKsHwwH72C6WDSZRj7G7WC5heVyUEawcSLSx821iJXT4xWf2F5fjVWDUmvtxr3QSv1aLwThLXxeqYCCc34xjxZDPqPyNGYvWLNeBZxATvBeDuQ6pSiiRFknqmvYVsm9eH4Et3eRHCyxDJEoqZsAahwfVSya34dZNHmjaPQkwWo3Coc17pxiEnWuWmG38wSJz1awE6cymzhojnjxDTbbXgjR1yfYU3AU2v9zttnT8Gz3gUzZNSwjiXSPu3G9zkDaFZVKqb5QwTWY3Pp6SFJgBQfx3C3sp4a9d3n9c98pfWFWAGQN5EfkoHosF8BQTDuzXG3NU8gVCNeNPXYA8iWCbvY3XpxQMvQUxqkjDv9VQfUNvAKVHLW43chi2rdBrQ7Teu6NnesLRWUKXpzSxpByWftkCCdBppjZtYmhhCHqpQGkQyTcMRoP2krFKe7xKbfnFkdkhaYH9TTdKuTuKtGb265RXxiqrc34KvkZpaBBQB5UvoCU4iLSDngNTjqkNPnWekDahzNHLd6CtcdC1B19jdGEXWeNADemDtdK4zrMNg7U8iVpyGYhLDnkeLVrcbhoxkHxrFwfrN19XvitDosQqmt9dseR6SWHBCDZJdmJecCiEwd2wBiwN5N5umEy3Dd4Hznv7kDr6eX7KtYxp';
   readonly initialNDownloads: number = 50;
   readonly fullDownloadsBatchSize: number = 200;
   busyCounter: number = 0;
@@ -29,20 +19,9 @@ export class DataService {
     private storageService: StorageService,
     private downloadService: DownloadService,
     private eventService: EventService,
+    private chainService: ChainService,
     private snackBar: MatSnackBar,
   ) {}
-
-  getChainType(address: string) {
-    switch (address) {
-      case this.rewardsCardanoAddress:
-        return ChainType.Cardano;
-      case this.rewardsBitcoinAddress:
-        return ChainType.Bitcoin;
-      case this.rewardsErgoAddress:
-        return ChainType.Ergo;
-    }
-    return null;
-  }
 
   async getWatcherInputs(): Promise<any[]> {
     var inputsPromise = this.storageService.getInputs();
@@ -51,7 +30,7 @@ export class DataService {
       const inputs = await inputsPromise;
 
       var result_1 = inputs
-        .filter((i: any) => this.getChainType(i.address) != null)
+        .filter((i: any) => this.chainService.getChainType(i.address) != null)
         .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
 
       result_1.forEach((input: any) => {
@@ -116,7 +95,7 @@ export class DataService {
             inputDate: input.inputDate,
             accumulatedAmount: amount,
             amount: asset.amount / Math.pow(10, asset.decimals),
-            chainType: this.getChainType(input.address),
+            chainType: this.chainService.getChainType(input.address),
           });
         });
       });
@@ -166,9 +145,8 @@ export class DataService {
               addressCharts[input.outputAddress][dt] = 0;
             }
 
-            addressCharts[input.outputAddress][dt] +=
-              asset.amount / Math.pow(10, asset.decimals);
-            chainTypes[input.outputAddress] = this.getChainType(input.address);
+            addressCharts[input.outputAddress][dt] += asset.amount / Math.pow(10, asset.decimals);
+            chainTypes[input.outputAddress] = this.chainService.getChainType(input.address);
           }
         });
       });
@@ -185,9 +163,7 @@ export class DataService {
             });
           }
           var addressForDisplay =
-            key.substring(0, 6) +
-            '...' +
-            key.substring(key.length - 6, key.length);
+            key.substring(0, 6) + '...' + key.substring(key.length - 6, key.length);
           performanceChart.push({
             address: key,
             addressForDisplay: addressForDisplay,
@@ -198,9 +174,7 @@ export class DataService {
       }
 
       // Sort the performanceChart array by chainType
-      performanceChart.sort((a: any, b: any) =>
-        a.chainType.localeCompare(b.chainType),
-      );
+      performanceChart.sort((a: any, b: any) => a.chainType.localeCompare(b.chainType));
 
       console.log('done retrieving chart from database');
       return await new Promise<any[]>((resolve, reject) => {
@@ -287,10 +261,7 @@ export class DataService {
 
     await this.storageService.addData(address, result.items);
 
-    await this.downloadAllForAddress(
-      address,
-      offset + this.fullDownloadsBatchSize,
-    );
+    await this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
     this.DecreasBusyCounter();
     console.log(this.busyCounter);
   }
@@ -304,11 +275,7 @@ export class DataService {
     this.IncreaseBusyCounter();
     console.log(this.busyCounter);
 
-    var s = this.downloadService.downloadTransactions(
-      address,
-      0,
-      this.initialNDownloads,
-    );
+    var s = this.downloadService.downloadTransactions(address, 0, this.initialNDownloads);
     var result = await firstValueFrom(
       s.pipe(
         catchError((e) => {
@@ -330,10 +297,7 @@ export class DataService {
     );
 
     console.log(
-      'Processing initial download(size = ' +
-        this.initialNDownloads +
-        ') for: ' +
-        address,
+      'Processing initial download(size = ' + this.initialNDownloads + ') for: ' + address,
     );
 
     var itemsz = result.items.length;
@@ -357,9 +321,7 @@ export class DataService {
 
     if (boxId) {
       console.log(
-        'Found existing boxId in db for download for: ' +
-          address +
-          ',no need to download more.',
+        'Found existing boxId in db for download for: ' + address + ',no need to download more.',
       );
     }
     if (!boxId && itemsz >= this.initialNDownloads) {
@@ -386,10 +348,7 @@ export class DataService {
             address.addressForDisplay =
               address.address.substring(0, 6) +
               ' ... ' +
-              address.address.substring(
-                address.address.length - 6,
-                address.address.length,
-              );
+              address.address.substring(address.address.length - 6, address.address.length);
           } else {
             address.addressForDisplay = address.address;
           }
@@ -415,12 +374,10 @@ export class DataService {
       const inputs = await inputsPromise;
 
       inputs.forEach((input: any) => {
-        if (
-          !addresses.some((address) => address.address == input.outputAddress)
-        ) {
+        if (!addresses.some((address) => address.address == input.outputAddress)) {
           addresses.push({
             address: input.outputAddress,
-            chainType: this.getChainType(input.address),
+            chainType: this.chainService.getChainType(input.address),
           });
         }
       });

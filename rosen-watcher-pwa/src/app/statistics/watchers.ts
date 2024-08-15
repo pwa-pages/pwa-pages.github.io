@@ -7,7 +7,7 @@ import { BaseWatcherComponent } from '../basewatchercomponent';
 import { Router } from '@angular/router';
 import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ChainType } from '../service/data.service';
+import { ChainType } from '../service/chain.service';
 
 @Component({
   selector: 'watchers',
@@ -57,46 +57,33 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
     this.cardanoWatcherCount = watcherInfo$.pipe(
       map(
         (watcherInfo) =>
-          watcherInfo.tokens.find(
-            (token: any) => token.name === 'rspv2CardanoAWC',
-          ).amount,
+          watcherInfo.tokens.find((token: any) => token.name === 'rspv2CardanoAWC').amount,
       ),
     );
 
     this.bitcoinWatcherCount = watcherInfo$.pipe(
       map(
         (watcherInfo) =>
-          watcherInfo.tokens.find(
-            (token: any) => token.name === 'rspv2BitcoinAWC',
-          ).amount,
+          watcherInfo.tokens.find((token: any) => token.name === 'rspv2BitcoinAWC').amount,
       ),
     );
 
     this.ergoWatcherCount = watcherInfo$.pipe(
       map(
         (watcherInfo) =>
-          watcherInfo.tokens.find((token: any) => token.name === 'rspv2ErgoAWC')
-            .amount,
+          watcherInfo.tokens.find((token: any) => token.name === 'rspv2ErgoAWC').amount,
       ),
     );
 
-    var permitsInfo$ = this.watchersDataService.getPermitsInfo(
-      ChainType.Cardano,
-    );
+    var permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Cardano);
 
-    this.cardanoPermitCount = permitsInfo$.pipe(
-      map((permitsInfo) => permitsInfo.tokenData.amount),
-    );
+    this.cardanoPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo.tokenData.amount));
 
     permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Bitcoin);
-    this.bitcoinPermitCount = permitsInfo$.pipe(
-      map((permitsInfo) => permitsInfo.tokenData.amount),
-    );
+    this.bitcoinPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo.tokenData.amount));
 
     permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Ergo);
 
-    this.ergoPermitCount = permitsInfo$.pipe(
-      map((permitsInfo) => permitsInfo.tokenData.amount),
-    );
+    this.ergoPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo.tokenData.amount));
   }
 }

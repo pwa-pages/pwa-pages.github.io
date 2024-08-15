@@ -47,10 +47,7 @@ export class EventService {
     this.eventSubscriptions[eventType].next(eventData);
   }
 
-  async subscribeToEvent(
-    eventType: EventType,
-    callback: (...args: any[]) => void,
-  ) {
+  async subscribeToEvent(eventType: EventType, callback: (...args: any[]) => void) {
     this.eventSubscriptions[eventType].subscribe((...eventData) => {
       callback(...eventData);
     });

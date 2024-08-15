@@ -12,9 +12,7 @@
       *ngFor="let address of performanceChart; let i = index; last as isLast"
     >
       <div class="chart-legend" [style.background-color]="address.color"></div>
-      <div
-        class="performance-chart-address mainaddressdispl {{address.chainType}}"
-      >
+      <div class="performance-chart-address mainaddressdispl {{address.chainType}}">
         - [{{ address.addressForDisplay }}]
       </div>
 
@@ -32,7 +30,8 @@
 <div class="navbuttons left">
   <div>
     <a (click)="swipeRight()">
-      <span class="fas fa-angle-left"></span>&nbsp;Total Rewards
+      <span class="fas fa-angle-left"></span>
+      &nbsp;Total Rewards
     </a>
   </div>
 </div>
@@ -40,7 +39,8 @@
 <div class="navbuttons right">
   <div>
     <a (click)="swipeLeft()">
-      Watchers&nbsp;<span class="fas fa-angle-right"></span>
+      Watchers&nbsp;
+      <span class="fas fa-angle-right"></span>
     </a>
   </div>
 </div>
