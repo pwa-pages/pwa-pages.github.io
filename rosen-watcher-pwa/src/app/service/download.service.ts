@@ -64,18 +64,25 @@ export class DownloadService {
 
     this.eventService.sendEventWithData(EventType.StartDownload, url);
     return this.http.get(url).pipe(
-      map((results: any) => {
-        for (const item of results.items) {
+      map((response: any) => {
+
+        var result = {
+          transactions : response.items,
+          total : response.total
+        };
+
+
+        for (const item of response.items) {
           const inputDate = new Date(item.timestamp);
           if (inputDate < this.startFrom) {
             this.eventService.sendEventWithData(EventType.EndDownload, url);
-            return [];
+            return result;
           }
           break;
         }
 
         this.eventService.sendEventWithData(EventType.EndDownload, url);
-        return results;
+        return result;
       }),
       this.handleError(),
     );

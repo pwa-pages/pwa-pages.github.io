@@ -14,7 +14,7 @@
   <a class="tab" [class.active]="selectedTab === 'details'" (click)="selectTab('details')">
     Details
   </a>
-  <div class="version">version: 1.7.6</div>
+  <div class="version">version: 1.7.7</div>
 </div>
 
 <div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
@@ -59,7 +59,7 @@
   </div>
 </div>
 
-<br/>
+<br />
 
 <div class="linkcontainer" *ngIf="busyCounter == 0 || noAddresses">
   <div class="linkicon">

@@ -6,7 +6,6 @@ import { EventService, EventType } from './event.service';
 import { catchError, firstValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -246,7 +245,7 @@ export class DataService {
         address,
     );
 
-    if (!result.items || result.items.length == 0) {
+    if (!result.transactions || result.transactions.length == 0) {
       this.DecreasBusyCounter();
       console.log(this.busyCounter);
       return;
@@ -259,7 +258,7 @@ export class DataService {
       return;
     }
 
-    await this.storageService.addData(address, result.items);
+    await this.storageService.addData(address, result.transactions);
 
     await this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
     this.DecreasBusyCounter();
@@ -300,12 +299,13 @@ export class DataService {
       'Processing initial download(size = ' + this.initialNDownloads + ') for: ' + address,
     );
 
-    var itemsz = result.items.length;
+    
+    var itemsz = result.transactions.length;
     var halfBoxId: string = '';
 
     if (itemsz > this.initialNDownloads / 2) {
       for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
-        const item = result.items[i];
+        const item = result.transactions[i];
 
         for (let j = 0; j < item.inputs.length; j++) {
           if (item.inputs[j].boxId && halfBoxId == '') {
@@ -317,7 +317,7 @@ export class DataService {
     var boxId = await storageService.getDataByBoxId(halfBoxId, address);
 
     console.log('add bunch of data');
-    await storageService.addData(address, result.items);
+    await storageService.addData(address, result.transactions);
 
     if (boxId) {
       console.log(
