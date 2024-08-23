@@ -7,9 +7,7 @@
     <ng-container *ngFor="let address of addresses; let i = index; trackBy: trackByFn">
       <div class="watcheritem first-column">{{ address.address }}</div>
       <div class="watcheritem">
-        
         <button (click)="editaddress(i)">Edit</button>
-        
       </div>
       <div class="watcheritem">
         <button (click)="deleteaddress(i)">Delete</button>

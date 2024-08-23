@@ -299,7 +299,6 @@ export class DataService {
       'Processing initial download(size = ' + this.initialNDownloads + ') for: ' + address,
     );
 
-    
     var itemsz = result.transactions.length;
     var halfBoxId: string = '';
 

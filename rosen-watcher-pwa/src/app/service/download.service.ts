@@ -65,12 +65,10 @@ export class DownloadService {
     this.eventService.sendEventWithData(EventType.StartDownload, url);
     return this.http.get(url).pipe(
       map((response: any) => {
-
         var result = {
-          transactions : response.items,
-          total : response.total
+          transactions: response.items,
+          total: response.total,
         };
-
 
         for (const item of response.items) {
           const inputDate = new Date(item.timestamp);

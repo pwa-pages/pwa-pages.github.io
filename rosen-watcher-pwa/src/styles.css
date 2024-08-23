@@ -5,8 +5,6 @@ body {
 
 body,
 html {
-  width: 100vw;
-  height: 100vh;
 }
 
 h1 {
@@ -196,6 +194,14 @@ a {
   filter: brightness(0.8);
 }
 
+.statdetaildispl.Ethereum,
+.mainaddressdispl.Ethereum,
+.watchersdispl.Ethereum {
+  background-image: url('./assets/images/ethereum.png');
+  filter: brightness(0.8);
+}
+
+
 .noAddresses {
   color: green;
   font-size: 3vh;
@@ -342,7 +348,7 @@ button:active {
 
 .version {
   color: rgba(138, 128, 128);
-  font: 2vh;
+  font-size: 2vh;
   padding: 1vh;
   padding: 1vh 2vh;
   padding-left: 4vh;
