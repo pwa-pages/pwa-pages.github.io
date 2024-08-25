@@ -5,6 +5,7 @@ body {
 
 body,
 html {
+
 }
 
 h1 {
@@ -30,6 +31,7 @@ li:last-child {
 .addressescontainer,
 .linkcontainer {
   margin-left: 5vw;
+  width:95vw;
 }
 
 .addressescontainer,
@@ -172,6 +174,7 @@ a {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  width: 100vw;
 }
 .statdetaildispl.Bitcoin,
 .mainaddressdispl.Bitcoin,
@@ -200,7 +203,6 @@ a {
   background-image: url('./assets/images/ethereum.png');
   filter: brightness(0.8);
 }
-
 
 .noAddresses {
   color: green;
