@@ -5,7 +5,6 @@ body {
 
 body,
 html {
-
 }
 
 h1 {
@@ -31,7 +30,12 @@ li:last-child {
 .addressescontainer,
 .linkcontainer {
   margin-left: 5vw;
-  width:95vw;
+
+}
+
+.addressescontainer
+{
+  width: 95vw;
 }
 
 .addressescontainer,
