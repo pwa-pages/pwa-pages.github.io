@@ -98,7 +98,7 @@ export class DataService {
           });
         });
       });
-      console.log('done retrieving chart from database');
+      console.log('done retrieving chart from database ' + inputs.length + ' inputs');
       return await new Promise<string[]>((resolve, reject) => {
         resolve(sortedInputs);
       });

@@ -59,12 +59,16 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.selectedTab = tab;
   }
 
-  formatDate(utcDate: string): string {
-    // Convert the UTC date string to a JavaScript Date object
+  formatDate(utcDate: any): string {
     const date = new Date(utcDate);
-
-    // Format the date using the browser's locale
-    return this.datePipe.transform(date, 'dd MMM yyyy') || '';
+  
+    const day = date.getUTCDate().toString().padStart(2, '0');
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[date.getUTCMonth()];
+    const year = date.getUTCFullYear();
+  
+    return `${day} ${month} ${year}`;
   }
 
   async retrieveData(): Promise<any[]> {
