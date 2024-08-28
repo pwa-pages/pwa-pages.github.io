@@ -61,13 +61,25 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
 
   formatDate(utcDate: any): string {
     const date = new Date(utcDate);
-  
+
     const day = date.getUTCDate().toString().padStart(2, '0');
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     const month = monthNames[date.getUTCMonth()];
     const year = date.getUTCFullYear();
-  
+
     return `${day} ${month} ${year}`;
   }
 

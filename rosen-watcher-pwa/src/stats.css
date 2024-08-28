@@ -19,12 +19,20 @@
   flex: 1;
 }
 
+
+.chart-container,
+.chart-container canvas,
+app-reward-chart,
+app-performance-chart {
+  width: 100% !important;
+}
+
+
 .chart-container,
 .details-container,
 .chart-container canvas,
 app-reward-chart,
 app-performance-chart {
-  width: 100% !important;
   height: 100% !important;
 }
 
