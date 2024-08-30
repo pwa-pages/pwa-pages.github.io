@@ -280,7 +280,7 @@ export class DataService {
         catchError((e) => {
           if (hasAddressParams) {
             this.snackBar.open(
-              'Some download(s) failed, possibly some addresses were not added',
+              'Some download(s) failed, check your addresses, not all of them might be correct, or service may have issues',
               'Close',
               {
                 duration: 5000,

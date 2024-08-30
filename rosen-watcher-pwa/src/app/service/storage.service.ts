@@ -50,6 +50,26 @@ export class StorageService {
     return await this.dbPromise;
   }
 
+  async clearAddressStore(): Promise<void> {
+    const db = await this.getDB();
+    return new Promise<void>((resolve, reject) => {
+      const transaction = db.transaction([this.addressDataStoreName], 'readwrite');
+      const objectStore = transaction.objectStore(this.addressDataStoreName);
+      const request = objectStore.clear();
+
+      request.onsuccess = () => {
+        console.log('IndexedDB cleared successfully.');
+        resolve();
+      };
+
+      request.onerror = (event: any) => {
+        console.error('Error clearing IndexedDB:', (event.target as any).errorCode);
+        resolve();
+      };
+    });
+  }
+
+
   async clearInputsStore(): Promise<void> {
     const db = await this.getDB();
     return new Promise<void>((resolve, reject) => {
@@ -129,7 +149,10 @@ export class StorageService {
   }
 
   async putAddressData(addressData: any[]): Promise<void> {
+
+    await this.clearAddressStore();
     const db = await this.getDB();
+
 
     addressData.forEach((a) => {
       const transaction = db.transaction([this.addressDataStoreName], 'readwrite');

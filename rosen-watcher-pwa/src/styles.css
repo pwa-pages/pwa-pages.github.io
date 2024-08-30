@@ -214,6 +214,9 @@ a {
 .custom-snackbar {
   color: white;
   background-color: red;
+  top:5vh;
+  left:5vw;
+  position:fixed;
 }
 
 @keyframes l34 {

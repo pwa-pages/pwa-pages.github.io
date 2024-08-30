@@ -10,8 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './settings.html',
 })
 export class Settings implements OnInit {
+  
   addresses: any[];
-  addressData: any[];
 
   constructor(
     private router: Router,
@@ -19,9 +19,9 @@ export class Settings implements OnInit {
     private storageService: StorageService,
     public dialog: MatDialog,
   ) {
-    this.addresses = [];
+    
 
-    this.addressData = [];
+    this.addresses = [];
   }
 
   trackByFn(index: any, item: any) {
@@ -33,17 +33,17 @@ export class Settings implements OnInit {
       data: {
         title: 'Edit Address',
         address: this.addresses[index].address,
-        watcherUrl: this.addressData.find((a) => a.address == this.addresses[index])?.watcherUrl,
+        watcherUrl: this.addresses.find((a) => a.address == this.addresses[index])?.watcherUrl,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.addresses[index].address = result.address;
-        var editAddress = this.addressData.find((a) => a.address == result.address);
+        var editAddress = this.addresses.find((a) => a.address == result.address);
         if (editAddress != null) {
           editAddress.watcherUrl = result.watcherUrl;
         } else {
-          this.addressData.push({
+          this.addresses.push({
             watcherUrl: result.watcherUrl,
             address: result.address,
           });
@@ -59,17 +59,10 @@ export class Settings implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.addresses.push({ address: result.address });
-        this.addressData.push({
-          watcherUrl: result.watcherUrl,
-          address: result.address,
-        });
       }
     });
   }
 
-  getAddresses(): any[] {
-    return this.addresses;
-  }
 
   deleteaddress(index: number): void {
     this.addresses.splice(index, 1);
@@ -87,7 +80,7 @@ export class Settings implements OnInit {
   }
 
   save(): void {
-    this.storageService.putAddressData(this.addressData);
+    this.storageService.putAddressData(this.addresses);
     this.router.navigate(['main'], {
       queryParams: { addresses: JSON.stringify(this.addresses) },
     });
@@ -98,13 +91,34 @@ export class Settings implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getAddresses().then((r) => {
-      this.addresses = r;
-    });
+    this.dataService.getAddresses().then((dataServiceAddresses) => {
 
-    this.storageService.getAddressData().then((r) => {
-      this.addressData = r;
+      // combine addresses from address store,
+      // but also from input data for backwards compatibility reasons
+      
+      return this.storageService.getAddressData().then((storageServiceAddresses) => {
+
+        const addressMap = new Map<string, any>();
+    
+
+        dataServiceAddresses.forEach((address: any) => {
+          addressMap.set(address.address, address);
+        });
+    
+
+        storageServiceAddresses.forEach((address: any) => {
+          if (addressMap.has(address.address)) {
+            const existingAddress = addressMap.get(address.address);
+            addressMap.set(address.address, { ...existingAddress, ...address });
+          } else {
+            addressMap.set(address.address, address);
+          }
+        });
+    
+      this.addresses = Array.from(addressMap.values());
+      });
     });
+    
   }
 
   title = 'settings';
