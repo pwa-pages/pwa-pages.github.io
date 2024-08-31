@@ -10,7 +10,6 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './settings.html',
 })
 export class Settings implements OnInit {
-  
   addresses: any[];
 
   constructor(
@@ -19,8 +18,6 @@ export class Settings implements OnInit {
     private storageService: StorageService,
     public dialog: MatDialog,
   ) {
-    
-
     this.addresses = [];
   }
 
@@ -63,7 +60,6 @@ export class Settings implements OnInit {
     });
   }
 
-
   deleteaddress(index: number): void {
     this.addresses.splice(index, 1);
   }
@@ -92,19 +88,15 @@ export class Settings implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getAddresses().then((dataServiceAddresses) => {
-
       // combine addresses from address store,
       // but also from input data for backwards compatibility reasons
-      
-      return this.storageService.getAddressData().then((storageServiceAddresses) => {
 
+      return this.storageService.getAddressData().then((storageServiceAddresses) => {
         const addressMap = new Map<string, any>();
-    
 
         dataServiceAddresses.forEach((address: any) => {
           addressMap.set(address.address, address);
         });
-    
 
         storageServiceAddresses.forEach((address: any) => {
           if (addressMap.has(address.address)) {
@@ -114,11 +106,10 @@ export class Settings implements OnInit {
             addressMap.set(address.address, address);
           }
         });
-    
-      this.addresses = Array.from(addressMap.values());
+
+        this.addresses = Array.from(addressMap.values());
       });
     });
-    
   }
 
   title = 'settings';

@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
-import { FeatureService } from '../service/featureservice';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import Chart from 'chart.js/auto';
+import { ChainService } from '../service/chain.service';
+import { ChartService } from '../service/chart.service';
 
 @Component({
   selector: 'performance',
@@ -30,16 +31,16 @@ export class Performance extends BaseWatcherComponent implements OnInit {
   noAddresses: boolean = false;
   addressesForDisplay: any[];
 
-  showPermitsLink: boolean = false;
   chart: Chart<'bar', any[][], unknown> | undefined;
 
   constructor(
     private dataService: DataService,
-    featureService: FeatureService,
     eventService: EventService,
+    private chartService: ChartService,
+    private chainService: ChainService,
     swipeService: SwipeService,
   ) {
-    super(eventService, featureService, swipeService);
+    super(eventService, swipeService);
     this.data = '';
     this.addresses = [];
     this.performanceChart = [];
@@ -54,7 +55,6 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     super.ngOnInit();
 
     this.initSwipe('/watchers', '/statistics');
-    this.showPermitsLink = this.featureService.hasPermitScreen();
 
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
@@ -64,54 +64,79 @@ export class Performance extends BaseWatcherComponent implements OnInit {
     this.updateChart();
   }
 
-  reduceChartData(data: any[], targetPoints: number): any[] {
-    let remainingPoints = data.length - targetPoints;
-    if (remainingPoints <= 0) {
-      return data;
-    }
+  private async getPerformanceChart(): Promise<any[]> {
+    var inputsPromise = this.dataService.getWatcherInputs();
+    var performanceChart: any = [];
 
-    let points = data.slice();
+    console.log('start retrieving chart from database');
+    try {
+      const inputs = await inputsPromise;
+      var addressCharts: any = {};
 
-    while (remainingPoints > 0) {
-      let minArea = Infinity;
-      let indexToRemove = -1;
+      inputs.sort((a, b) => a.inputDate - b.inputDate);
 
-      for (let i = 1; i < points.length - 1; i++) {
-        let area = this.calculateTriangleArea(points[i - 1], points[i], points[i + 1]);
-        if (area < minArea) {
-          minArea = area;
-          indexToRemove = i;
+      var chainTypes: any = {};
+
+      inputs.forEach((input: any) => {
+        input.assets.forEach((asset: any) => {
+          if (!addressCharts[input.outputAddress]) {
+            addressCharts[input.outputAddress] = {};
+          }
+
+          const currentDate = new Date();
+          const halfYearAgo = new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth() - 6,
+            currentDate.getDate(),
+          );
+
+          if (input.inputDate > halfYearAgo) {
+            var dt = new Date(
+              input.inputDate.getFullYear(),
+              input.inputDate.getMonth(),
+              input.inputDate.getDate() - input.inputDate.getDay(),
+            ).getTime();
+            if (!addressCharts[input.outputAddress][dt]) {
+              addressCharts[input.outputAddress][dt] = 0;
+            }
+
+            addressCharts[input.outputAddress][dt] += asset.amount / Math.pow(10, asset.decimals);
+            chainTypes[input.outputAddress] = this.chainService.getChainType(input.address);
+          }
+        });
+      });
+
+      performanceChart = [];
+
+      for (const key in addressCharts) {
+        if (addressCharts.hasOwnProperty(key)) {
+          var chart: any[] = [];
+          for (const ckey in addressCharts[key]) {
+            chart.push({
+              x: new Date(Number(ckey)),
+              y: addressCharts[key][ckey],
+            });
+          }
+          var addressForDisplay =
+            key.substring(0, 6) + '...' + key.substring(key.length - 6, key.length);
+          performanceChart.push({
+            address: key,
+            addressForDisplay: addressForDisplay,
+            chart: chart,
+            chainType: chainTypes[key],
+          });
         }
       }
 
-      if (indexToRemove !== -1) {
-        points.splice(indexToRemove, 1);
-        remainingPoints--;
-      } else {
-        break;
-      }
+      performanceChart.sort((a: any, b: any) => a.chainType.localeCompare(b.chainType));
+
+      console.log('done retrieving chart from database');
+
+    } catch (error) {
+
     }
 
-    return points;
-  }
-
-  calculateTriangleArea(
-    p1: { x: Date; y: number },
-    p2: { x: Date; y: number },
-    p3: { x: Date; y: number },
-  ): number {
-    return Math.abs(
-      (p1.x.getTime() * (p2.y - p3.y) +
-        p2.x.getTime() * (p3.y - p1.y) +
-        p3.x.getTime() * (p1.y - p2.y)) /
-        2,
-    );
-  }
-
-  private async getPerformanceChart(): Promise<any[]> {
-    var chart = await this.dataService.getPerformanceChart();
-
-    return chart.map((c, index) => ({
+    return performanceChart.map((c: any, index: any) => ({
       ...c,
       color: this.chartColors[index % this.chartColors.length],
     }));
@@ -142,83 +167,10 @@ export class Performance extends BaseWatcherComponent implements OnInit {
         dataSets[i].data = this.performanceChart[i].chart;
         dataSets[i].label = 'Address: ' + this.performanceChart[i].addressForDisplay;
       }
-
-      this.createChart(dataSets);
+      this.chartService.createPerformanceChart(dataSets);
     }
   }
 
-  createChart(datasets: any[]): Chart<'bar', any[][], unknown> {
-    return new Chart('PerformanceChart', {
-      type: 'bar',
-      data: {
-        datasets: datasets,
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            stacked: true,
-            alignToPixels: true,
-            grid: {
-              color: 'rgba(0, 0, 0, 0.1)',
-            },
-            ticks: {
-              callback: function (value) {
-                value = value as number;
-                return value.toLocaleString('en-US', {
-                  minimumFractionDigits: 0,
-                });
-              },
-            },
-          },
-          x: {
-            type: 'time',
-            stacked: true,
-            alignToPixels: true,
-            time: {
-              unit: 'week',
-            },
-            grid: {
-              color: 'rgba(0, 0, 0, 0.1)',
-            },
-          },
-        },
-        plugins: {
-          tooltip: {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            bodyFont: {
-              size: 14,
-            },
-            titleFont: {
-              size: 16,
-              weight: 'bold',
-            },
-            callbacks: {
-              label: function (context) {
-                let value = context.raw as any;
-                return (
-                  context.dataset.label +
-                  ': ' +
-                  value.y.toLocaleString('en-US', { minimumFractionDigits: 2 })
-                );
-              },
-            },
-          },
-          legend: {
-            display: false,
-          },
-        },
-        elements: {
-          bar: {
-            borderWidth: 0,
-            borderRadius: 0,
-            borderSkipped: false,
-          },
-        },
-      },
-    });
-  }
+
   title = 'rosen-watcher-pwa';
 }

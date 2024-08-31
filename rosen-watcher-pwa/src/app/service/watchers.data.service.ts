@@ -4,7 +4,6 @@ import { DownloadService } from './download.service';
 import { ChainService } from './chain.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { forkJoin } from 'rxjs';
 import { ChainType } from './chain.service';
 
 @Injectable({

@@ -1,6 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { EventService, EventType } from './service/event.service';
-import { FeatureService } from './service/featureservice';
 import { SwipeService } from './service/swipe.service';
 
 @Component({
@@ -16,7 +15,6 @@ export class BaseWatcherComponent implements OnInit {
 
   constructor(
     public eventService: EventService,
-    public featureService: FeatureService,
     public swipeService: SwipeService,
   ) {}
 
@@ -66,31 +64,6 @@ export class BaseWatcherComponent implements OnInit {
     });
   }
 
-  @HostListener('document:click', ['$event'])
-  handleClick(event: MouseEvent) {
-    const { clientX, clientY } = event;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const quadrant = this.calculateQuadrant(clientX, clientY, width, height);
-    this.quadrants = this.quadrants + quadrant;
-    this.quadrants = this.quadrants.slice(-8);
-    if (this.quadrants === '01230123') {
-      this.featureService.activateAllFeatures();
-    }
-    console.log('Quadrants:', this.quadrants);
-  }
-
-  calculateQuadrant(x: number, y: number, width: number, height: number): any {
-    if (x < width / 2 && y < height / 2) {
-      return 0;
-    } else if (x >= width / 2 && y < height / 2) {
-      return 1;
-    } else if (x < width / 2 && y >= height / 2) {
-      return 2;
-    } else {
-      return 3;
-    }
-  }
 
   private getScreenLogurl(url: string): string {
     return url.substring(0, 10) + ' ... ' + url.slice(-40);

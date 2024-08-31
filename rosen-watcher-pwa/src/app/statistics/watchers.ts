@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EventService } from '../service/event.service';
 import { WatchersDataService } from '../service/watchers.data.service';
-import { FeatureService } from '../service/featureservice';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { Router } from '@angular/router';
@@ -24,11 +23,10 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
 
   constructor(
     private watchersDataService: WatchersDataService,
-    featureService: FeatureService,
     eventService: EventService,
     swipeService: SwipeService,
   ) {
-    super(eventService, featureService, swipeService);
+    super(eventService, swipeService);
     this.watcherCount = EMPTY;
     this.bitcoinWatcherCount = EMPTY;
     this.cardanoWatcherCount = EMPTY;

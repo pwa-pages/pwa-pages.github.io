@@ -69,7 +69,6 @@ export class StorageService {
     });
   }
 
-
   async clearInputsStore(): Promise<void> {
     const db = await this.getDB();
     return new Promise<void>((resolve, reject) => {
@@ -149,10 +148,8 @@ export class StorageService {
   }
 
   async putAddressData(addressData: any[]): Promise<void> {
-
     await this.clearAddressStore();
     const db = await this.getDB();
-
 
     addressData.forEach((a) => {
       const transaction = db.transaction([this.addressDataStoreName], 'readwrite');
