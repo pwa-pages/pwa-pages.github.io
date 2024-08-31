@@ -29,14 +29,23 @@ import { DatePipe, CommonModule } from '@angular/common';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(BrowserModule, CommonModule, MatInputModule, MatFormFieldModule, MatDialogModule, FormsModule, ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000',
-    }), FontAwesomeModule, QRCodeModule),
+    importProvidersFrom(
+      BrowserModule,
+      CommonModule,
+      MatInputModule,
+      MatFormFieldModule,
+      MatDialogModule,
+      FormsModule,
+      ServiceWorkerModule.register('ngsw-worker.js', {
+        enabled: !isDevMode(),
+        registrationStrategy: 'registerWhenStable:30000',
+      }),
+      FontAwesomeModule,
+      QRCodeModule,
+    ),
     DatePipe,
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(routes),
     provideAnimations(),
-  ]
-})
-  .catch((err) => console.error(err));
+  ],
+}).catch((err) => console.error(err));

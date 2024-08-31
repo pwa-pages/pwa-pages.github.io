@@ -7,10 +7,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { NgFor } from '@angular/common';
 
 @Component({
-    selector: 'settings',
-    templateUrl: './settings.html',
-    standalone: true,
-    imports: [NgFor],
+  selector: 'settings',
+  templateUrl: './settings.html',
+  standalone: true,
+  imports: [NgFor],
 })
 export class Settings implements OnInit {
   addresses: any[];

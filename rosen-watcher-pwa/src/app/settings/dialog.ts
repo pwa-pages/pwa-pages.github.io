@@ -3,10 +3,10 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogClose } from '@angular/material
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'dialog',
-    templateUrl: './dialog.html',
-    standalone: true,
-    imports: [FormsModule, MatDialogClose],
+  selector: 'dialog',
+  templateUrl: './dialog.html',
+  standalone: true,
+  imports: [FormsModule, MatDialogClose],
 })
 export class SettingsDialog {
   constructor(

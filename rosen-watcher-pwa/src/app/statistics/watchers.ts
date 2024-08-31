@@ -10,10 +10,10 @@ import { ChainType } from '../service/chain.service';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'watchers',
-    templateUrl: './watchers.html',
-    standalone: true,
-    imports: [AsyncPipe],
+  selector: 'watchers',
+  templateUrl: './watchers.html',
+  standalone: true,
+  imports: [AsyncPipe],
 })
 export class Watchers extends BaseWatcherComponent implements OnInit {
   watcherCount: Observable<number>;

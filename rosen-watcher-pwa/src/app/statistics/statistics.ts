@@ -14,16 +14,10 @@ import 'chartjs-adapter-date-fns';
 import { ChartService } from '../service/chart.service';
 
 @Component({
-    selector: 'statistics',
-    templateUrl: './statistics.html',
-    standalone: true,
-    imports: [
-        NgIf,
-        NgStyle,
-        NgFor,
-        RouterLink,
-        RouterLinkActive,
-    ],
+  selector: 'statistics',
+  templateUrl: './statistics.html',
+  standalone: true,
+  imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive],
 })
 export class Statistics extends BaseWatcherComponent implements OnInit {
   data: string;

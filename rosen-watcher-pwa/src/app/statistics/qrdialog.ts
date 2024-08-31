@@ -3,10 +3,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { QRCodeModule } from 'angularx-qrcode';
 
 @Component({
-    selector: 'qrDialog',
-    templateUrl: './qrdialog.html',
-    standalone: true,
-    imports: [QRCodeModule],
+  selector: 'qrDialog',
+  templateUrl: './qrdialog.html',
+  standalone: true,
+  imports: [QRCodeModule],
 })
 export class QRDialog {
   constructor(

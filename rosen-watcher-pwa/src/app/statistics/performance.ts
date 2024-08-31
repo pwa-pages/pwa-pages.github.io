@@ -9,10 +9,10 @@ import { ChartService } from '../service/chart.service';
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-    selector: 'performance',
-    templateUrl: './performance.html',
-    standalone: true,
-    imports: [NgFor, NgIf],
+  selector: 'performance',
+  templateUrl: './performance.html',
+  standalone: true,
+  imports: [NgFor, NgIf],
 })
 export class Performance extends BaseWatcherComponent implements OnInit {
   readonly chartColors: string[] = [
