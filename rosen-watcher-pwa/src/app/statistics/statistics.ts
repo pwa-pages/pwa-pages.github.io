@@ -4,8 +4,8 @@ import { StorageService } from '../service/storage.service';
 import { SwipeService } from '../service/swipe.service';
 import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ActivatedRoute } from '@angular/router';
-import { Location, DatePipe } from '@angular/common';
+import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { Location, DatePipe, NgIf, NgStyle, NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { QRDialog } from './qrdialog';
@@ -14,8 +14,16 @@ import 'chartjs-adapter-date-fns';
 import { ChartService } from '../service/chart.service';
 
 @Component({
-  selector: 'statistics',
-  templateUrl: './statistics.html',
+    selector: 'statistics',
+    templateUrl: './statistics.html',
+    standalone: true,
+    imports: [
+        NgIf,
+        NgStyle,
+        NgFor,
+        RouterLink,
+        RouterLinkActive,
+    ],
 })
 export class Statistics extends BaseWatcherComponent implements OnInit {
   data: string;

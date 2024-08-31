@@ -7,10 +7,13 @@ import { Router } from '@angular/router';
 import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ChainType } from '../service/chain.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'watchers',
-  templateUrl: './watchers.html',
+    selector: 'watchers',
+    templateUrl: './watchers.html',
+    standalone: true,
+    imports: [AsyncPipe],
 })
 export class Watchers extends BaseWatcherComponent implements OnInit {
   watcherCount: Observable<number>;

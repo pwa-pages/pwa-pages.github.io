@@ -1,9 +1,12 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogClose } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'dialog',
-  templateUrl: './dialog.html',
+    selector: 'dialog',
+    templateUrl: './dialog.html',
+    standalone: true,
+    imports: [FormsModule, MatDialogClose],
 })
 export class SettingsDialog {
   constructor(

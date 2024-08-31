@@ -1,7 +1,42 @@
 import '@angular/compiler';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app/app.module'; // Import AppModule
 
-platformBrowserDynamic()
-  .bootstrapModule(AppModule)
+const routes: Routes = [
+  { path: 'settings', component: Settings },
+  { path: 'performance', component: Performance },
+  { path: 'watchers', component: Watchers },
+  { path: '**', component: Statistics },
+];
+
+// Import AppModule
+import { AppComponent } from './app/app.component';
+import { QRCodeModule } from 'angularx-qrcode';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { isDevMode, importProvidersFrom } from '@angular/core';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { Statistics } from './app/statistics/statistics';
+import { Watchers } from './app/statistics/watchers';
+import { Performance } from './app/statistics/performance';
+import { Settings } from './app/settings/settings';
+import { provideRouter, Routes } from '@angular/router';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
+import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { DatePipe, CommonModule } from '@angular/common';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(BrowserModule, CommonModule, MatInputModule, MatFormFieldModule, MatDialogModule, FormsModule, ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }), FontAwesomeModule, QRCodeModule),
+    DatePipe,
+    provideHttpClient(withInterceptorsFromDi()),
+    provideRouter(routes),
+    provideAnimations(),
+  ]
+})
   .catch((err) => console.error(err));

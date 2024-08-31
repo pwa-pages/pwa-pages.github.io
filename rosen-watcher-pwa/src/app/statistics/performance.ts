@@ -6,10 +6,13 @@ import { BaseWatcherComponent } from '../basewatchercomponent';
 import Chart from 'chart.js/auto';
 import { ChainService } from '../service/chain.service';
 import { ChartService } from '../service/chart.service';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'performance',
-  templateUrl: './performance.html',
+    selector: 'performance',
+    templateUrl: './performance.html',
+    standalone: true,
+    imports: [NgFor, NgIf],
 })
 export class Performance extends BaseWatcherComponent implements OnInit {
   readonly chartColors: string[] = [

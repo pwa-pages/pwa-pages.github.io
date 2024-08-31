@@ -4,10 +4,13 @@ import { StorageService } from '../service/storage.service';
 import { Router } from '@angular/router';
 import { SettingsDialog } from './dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'settings',
-  templateUrl: './settings.html',
+    selector: 'settings',
+    templateUrl: './settings.html',
+    standalone: true,
+    imports: [NgFor],
 })
 export class Settings implements OnInit {
   addresses: any[];
