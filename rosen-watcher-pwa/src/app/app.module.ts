@@ -7,7 +7,6 @@ import { Statistics } from './statistics/statistics';
 import { Settings } from './settings/settings';
 import { SettingsDialog } from './settings/dialog';
 import { QRDialog } from './statistics/qrdialog';
-import { Permits } from './permits/permits';
 import { Performance } from './statistics/performance';
 import { Watchers } from './statistics/watchers';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -22,7 +21,6 @@ import { QRCodeModule } from 'angularx-qrcode';
 
 const routes: Routes = [
   { path: 'settings', component: Settings },
-  { path: 'permits', component: Permits },
   { path: 'performance', component: Performance },
   { path: 'watchers', component: Watchers },
   { path: '**', component: Statistics },
@@ -34,7 +32,6 @@ const routes: Routes = [
     Settings,
     SettingsDialog,
     QRDialog,
-    Permits,
     Statistics,
     Performance,
     Watchers,
