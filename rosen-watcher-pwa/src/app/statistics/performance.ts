@@ -131,10 +131,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
       performanceChart.sort((a: any, b: any) => a.chainType.localeCompare(b.chainType));
 
       console.log('done retrieving chart from database');
-
-    } catch (error) {
-
-    }
+    } catch (error) {}
 
     return performanceChart.map((c: any, index: any) => ({
       ...c,
@@ -170,7 +167,6 @@ export class Performance extends BaseWatcherComponent implements OnInit {
       this.chartService.createPerformanceChart(dataSets);
     }
   }
-
 
   title = 'rosen-watcher-pwa';
 }

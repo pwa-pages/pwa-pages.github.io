@@ -117,7 +117,6 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.chart.update();
   }
 
-
   installApp(): void {
     if ((window as any).deferredPrompt) {
       (window as any).deferredPrompt.prompt();
@@ -174,7 +173,6 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
 
       (window as any).deferredPrompt = event;
     });
-
 
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();

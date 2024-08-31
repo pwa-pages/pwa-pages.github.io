@@ -6,7 +6,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './dialog.html',
 })
 export class SettingsDialog {
-
   constructor(
     public dialogRef: MatDialogRef<SettingsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -16,9 +15,7 @@ export class SettingsDialog {
     this.dialogRef.close();
   }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   pasteData(): void {
     navigator.clipboard

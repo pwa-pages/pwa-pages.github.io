@@ -64,7 +64,6 @@ export class BaseWatcherComponent implements OnInit {
     });
   }
 
-
   private getScreenLogurl(url: string): string {
     return url.substring(0, 10) + ' ... ' + url.slice(-40);
   }
