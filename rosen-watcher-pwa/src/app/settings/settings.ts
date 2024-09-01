@@ -24,7 +24,7 @@ export class Settings implements OnInit {
     this.addresses = [];
   }
 
-  trackByFn(index: any, item: any) {
+  trackByFn(index: any) {
     return index;
   }
 

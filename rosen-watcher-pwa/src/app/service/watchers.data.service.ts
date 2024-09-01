@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { DownloadService } from './download.service';
 import { ChainService } from './chain.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { ChainType } from './chain.service';
 
@@ -20,7 +19,6 @@ export class WatchersDataService {
   constructor(
     private downloadService: DownloadService,
     private chainService: ChainService,
-    private snackBar: MatSnackBar,
   ) {}
 
   getWatchersInfo(): Observable<any> {

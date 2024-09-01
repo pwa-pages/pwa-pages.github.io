@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EventService, EventType } from './service/event.service';
 import { SwipeService } from './service/swipe.service';
 
@@ -8,7 +8,6 @@ import { SwipeService } from './service/swipe.service';
 })
 export class BaseWatcherComponent implements OnInit {
   public busyCounter: number = 1;
-  private quadrants = '';
   loaderLogs: string[] = [];
   private leftAction = '';
   private rightAction = '';

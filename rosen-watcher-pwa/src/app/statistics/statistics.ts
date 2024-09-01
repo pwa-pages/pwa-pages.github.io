@@ -5,7 +5,7 @@ import { SwipeService } from '../service/swipe.service';
 import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
-import { Location, DatePipe, NgIf, NgStyle, NgFor } from '@angular/common';
+import { Location, NgIf, NgStyle, NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { QRDialog } from './qrdialog';
@@ -185,11 +185,10 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
 
       var storageService = this.storageService;
 
-      await this.retrieveData().then((inputs) => {
+      await this.retrieveData().then(() => {
         this.addresses.forEach(async (address) => {
           await this.dataService.downloadForAddress(
             address.address,
-            inputs,
             storageService,
             hasAddressParams,
           );

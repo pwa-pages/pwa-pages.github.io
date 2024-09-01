@@ -52,7 +52,7 @@ export class StorageService {
 
   async clearAddressStore(): Promise<void> {
     const db = await this.getDB();
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>((resolve) => {
       const transaction = db.transaction([this.addressDataStoreName], 'readwrite');
       const objectStore = transaction.objectStore(this.addressDataStoreName);
       const request = objectStore.clear();
@@ -71,7 +71,7 @@ export class StorageService {
 
   async clearInputsStore(): Promise<void> {
     const db = await this.getDB();
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>((resolve) => {
       const transaction = db.transaction([this.inputsStoreName], 'readwrite');
       const objectStore = transaction.objectStore(this.inputsStoreName);
       const request = objectStore.clear();
@@ -91,7 +91,7 @@ export class StorageService {
 
   async getInputs(): Promise<any[]> {
     if (this.inputsCache && this.inputsCache.length > 0 && !this.updateCache) {
-      return new Promise<any[]>((resolve, reject) => {
+      return new Promise<any[]>((resolve) => {
         console.log('Getting inputs from cache');
         resolve(this.inputsCache);
       });

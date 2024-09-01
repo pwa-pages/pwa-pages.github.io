@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { of, Observable, throwError, concat, EMPTY } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { EventService, EventType } from './event.service';
-import { catchError, map, delay } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { firstValueFrom } from 'rxjs';
 

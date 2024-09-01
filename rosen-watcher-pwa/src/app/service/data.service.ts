@@ -40,7 +40,7 @@ export class DataService {
           });
       });
 
-      return await new Promise<any[]>((resolve, reject) => {
+      return await new Promise<any[]>((resolve) => {
         resolve(result_1);
       });
     } catch (error) {
@@ -68,7 +68,7 @@ export class DataService {
         return accumulator + assetAmount;
       }, 0);
 
-      return await new Promise<string>((resolve, reject) => {
+      return await new Promise<string>((resolve) => {
         resolve(sum.toFixed(3));
       });
     } catch (error) {
@@ -99,7 +99,7 @@ export class DataService {
         });
       });
       console.log('done retrieving chart from database ' + inputs.length + ' inputs');
-      return await new Promise<string[]>((resolve, reject) => {
+      return await new Promise<string[]>((resolve) => {
         resolve(sortedInputs);
       });
     } catch (error) {
@@ -189,7 +189,6 @@ export class DataService {
 
   public async downloadForAddress(
     address: string,
-    inputs: any[],
     storageService: StorageService,
     hasAddressParams: boolean,
   ) {
@@ -278,7 +277,7 @@ export class DataService {
         }
       });
 
-      return await new Promise<string[]>((resolve, reject) => {
+      return await new Promise<string[]>((resolve) => {
         resolve(result);
       });
     } catch (error) {
@@ -303,7 +302,7 @@ export class DataService {
         }
       });
 
-      return await new Promise<string[]>((resolve, reject) => {
+      return await new Promise<string[]>((resolve) => {
         resolve(addresses);
       });
     } catch (error) {

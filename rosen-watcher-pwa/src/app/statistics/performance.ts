@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { EventService, EventType } from '../service/event.service';
+import { Component, OnInit } from '@angular/core';
+import { EventService } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
