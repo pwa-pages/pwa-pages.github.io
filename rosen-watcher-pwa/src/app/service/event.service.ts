@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export enum EventType {
@@ -15,7 +15,7 @@ export enum EventType {
 @Injectable({
   providedIn: 'root',
 })
-export class EventService {
+export class EventService implements OnDestroy {
   eventSubscriptions: {
     [key in EventType]: Subject<any>;
   } = this.resetSubscriptions();

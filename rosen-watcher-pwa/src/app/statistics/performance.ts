@@ -31,7 +31,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
   data: string;
   performanceChart: any[];
   addresses: string[];
-  noAddresses: boolean = false;
+  noAddresses = false;
   addressesForDisplay: any[];
 
   chart: Chart<'bar', any[][], unknown> | undefined;
@@ -68,17 +68,17 @@ export class Performance extends BaseWatcherComponent implements OnInit {
   }
 
   private async getPerformanceChart(): Promise<any[]> {
-    var inputsPromise = this.dataService.getWatcherInputs();
-    var performanceChart: any = [];
+    const inputsPromise = this.dataService.getWatcherInputs();
+    let performanceChart: any = [];
 
     console.log('start retrieving chart from database');
     try {
       const inputs = await inputsPromise;
-      var addressCharts: any = {};
+      const addressCharts: any = {};
 
       inputs.sort((a, b) => a.inputDate - b.inputDate);
 
-      var chainTypes: any = {};
+      const chainTypes: any = {};
 
       inputs.forEach((input: any) => {
         input.assets.forEach((asset: any) => {
@@ -94,7 +94,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
           );
 
           if (input.inputDate > halfYearAgo) {
-            var dt = new Date(
+            const dt = new Date(
               input.inputDate.getFullYear(),
               input.inputDate.getMonth(),
               input.inputDate.getDate() - input.inputDate.getDay(),
@@ -113,14 +113,14 @@ export class Performance extends BaseWatcherComponent implements OnInit {
 
       for (const key in addressCharts) {
         if (addressCharts.hasOwnProperty(key)) {
-          var chart: any[] = [];
+          const chart: any[] = [];
           for (const ckey in addressCharts[key]) {
             chart.push({
               x: new Date(Number(ckey)),
               y: addressCharts[key][ckey],
             });
           }
-          var addressForDisplay =
+          const addressForDisplay =
             key.substring(0, 6) + '...' + key.substring(key.length - 6, key.length);
           performanceChart.push({
             address: key,
@@ -143,7 +143,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
   }
 
   private createDataSet(i: number): any {
-    var chartColor = this.chartColors[i % 10];
+    const chartColor = this.chartColors[i % 10];
     return {
       label: '',
       data: [],
@@ -157,8 +157,8 @@ export class Performance extends BaseWatcherComponent implements OnInit {
 
   updateChart(): void {
     if (!this.chart) {
-      var dataSets = [];
-      var cnt = this.performanceChart.length;
+      const dataSets = [];
+      const cnt = this.performanceChart.length;
       for (var i = 0; i < cnt; i++) {
         dataSets.push(this.createDataSet(i));
       }

@@ -16,9 +16,9 @@ import { AsyncPipe } from '@angular/common';
 })
 export class Watchers extends BaseWatcherComponent implements OnInit {
   watcherCount: Observable<number>;
-  bitcoinWatcherCount: Observable<number>;
-  cardanoWatcherCount: Observable<number>;
-  ergoWatcherCount: Observable<number>;
+  bitcoinWatcherCount: Observable<number | undefined>;
+  cardanoWatcherCount: Observable<number | undefined>;
+  ergoWatcherCount: Observable<number | undefined>;
   bitcoinPermitCount: Observable<number>;
   cardanoPermitCount: Observable<number>;
   ergoPermitCount: Observable<number>;
@@ -57,25 +57,25 @@ export class Watchers extends BaseWatcherComponent implements OnInit {
     this.cardanoWatcherCount = watcherInfo$.pipe(
       map(
         (watcherInfo) =>
-          watcherInfo.tokens.find((token: any) => token.name === 'rspv2CardanoAWC').amount,
+          watcherInfo.tokens.find((token: any) => token.name === 'rspv2CardanoAWC')?.amount,
       ),
     );
 
     this.bitcoinWatcherCount = watcherInfo$.pipe(
       map(
         (watcherInfo) =>
-          watcherInfo.tokens.find((token: any) => token.name === 'rspv2BitcoinAWC').amount,
+          watcherInfo.tokens.find((token: any) => token.name === 'rspv2BitcoinAWC')?.amount,
       ),
     );
 
     this.ergoWatcherCount = watcherInfo$.pipe(
       map(
         (watcherInfo) =>
-          watcherInfo.tokens.find((token: any) => token.name === 'rspv2ErgoAWC').amount,
+          watcherInfo.tokens.find((token: any) => token.name === 'rspv2ErgoAWC')?.amount,
       ),
     );
 
-    var permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Cardano);
+    let permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Cardano);
 
     this.cardanoPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo.tokenData.amount));
 

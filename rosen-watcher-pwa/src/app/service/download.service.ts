@@ -57,7 +57,7 @@ export class DownloadService {
     return concat(cacheObservable, downloadObservable);
   }
 
-  downloadTransactions(address: string, offset: number = 0, limit: number = 500): Observable<any> {
+  downloadTransactions(address: string, offset = 0, limit = 500): Observable<any> {
     const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
 
     console.log('Downloading from: ' + url);
@@ -65,7 +65,7 @@ export class DownloadService {
     this.eventService.sendEventWithData(EventType.StartDownload, url);
     return this.http.get(url).pipe(
       map((response: any) => {
-        var result = {
+        const result = {
           transactions: response.items,
           total: response.total,
         };

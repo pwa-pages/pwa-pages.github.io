@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class DataService {
   readonly initialNDownloads: number = 50;
   readonly fullDownloadsBatchSize: number = 200;
-  busyCounter: number = 0;
+  busyCounter = 0;
 
   constructor(
     private storageService: StorageService,
@@ -23,12 +23,12 @@ export class DataService {
   ) {}
 
   async getWatcherInputs(): Promise<any[]> {
-    var inputsPromise = this.storageService.getInputs();
+    const inputsPromise = this.storageService.getInputs();
 
     try {
       const inputs = await inputsPromise;
 
-      var result_1 = inputs
+      const result_1 = inputs
         .filter((i: any) => this.chainService.getChainType(i.address) != null)
         .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
 
@@ -54,12 +54,12 @@ export class DataService {
   }
 
   async getTotalRewards(): Promise<string> {
-    var inputsPromise = this.getWatcherInputs();
+    const inputsPromise = this.getWatcherInputs();
 
     try {
       const inputs = await inputsPromise;
-      var sum: number = inputs.reduce((accumulator, o) => {
-        var assetAmount = 0;
+      const sum: number = inputs.reduce((accumulator, o) => {
+        let assetAmount = 0;
 
         o.assets.forEach((asset: any) => {
           assetAmount += asset.amount / Math.pow(10, asset.decimals);
@@ -78,9 +78,9 @@ export class DataService {
   }
 
   async getSortedInputs(): Promise<any[]> {
-    var inputsPromise = this.getWatcherInputs();
-    var amount = 0;
-    var sortedInputs: any = [];
+    const inputsPromise = this.getWatcherInputs();
+    let amount = 0;
+    const sortedInputs: any = [];
     console.log('start retrieving chart from database');
     try {
       const inputs = await inputsPromise;
@@ -109,10 +109,10 @@ export class DataService {
   }
 
   async getAddressesForDisplay(): Promise<any[]> {
-    var addresses = this.getAddresses();
+    const addresses = this.getAddresses();
 
     return addresses.then((addresses) => {
-      var result: any[] = [];
+      const result: any[] = [];
       addresses.forEach((a: any) => {
         result.push({
           address: a.address.substring(0, 6) + '...',
@@ -143,13 +143,13 @@ export class DataService {
   private async downloadAllForAddress(address: string, offset: number) {
     this.IncreaseBusyCounter();
     console.log(this.busyCounter);
-    var s = this.downloadService.downloadTransactions(
+    const s = this.downloadService.downloadTransactions(
       address,
       offset,
       this.fullDownloadsBatchSize + 10,
     );
 
-    var result = await firstValueFrom(
+    const result = await firstValueFrom(
       s.pipe(
         catchError((e) => {
           this.DecreasBusyCounter();
@@ -195,8 +195,8 @@ export class DataService {
     this.IncreaseBusyCounter();
     console.log(this.busyCounter);
 
-    var s = this.downloadService.downloadTransactions(address, 0, this.initialNDownloads);
-    var result = await firstValueFrom(
+    const s = this.downloadService.downloadTransactions(address, 0, this.initialNDownloads);
+    const result = await firstValueFrom(
       s.pipe(
         catchError((e) => {
           if (hasAddressParams) {
@@ -220,8 +220,8 @@ export class DataService {
       'Processing initial download(size = ' + this.initialNDownloads + ') for: ' + address,
     );
 
-    var itemsz = result.transactions.length;
-    var halfBoxId: string = '';
+    const itemsz = result.transactions.length;
+    let halfBoxId = '';
 
     if (itemsz > this.initialNDownloads / 2) {
       for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
@@ -234,7 +234,7 @@ export class DataService {
         }
       }
     }
-    var boxId = await storageService.getDataByBoxId(halfBoxId, address);
+    const boxId = await storageService.getDataByBoxId(halfBoxId, address);
 
     console.log('add bunch of data');
     await storageService.addData(address, result.transactions);
@@ -255,9 +255,9 @@ export class DataService {
   }
 
   async getAddressData(): Promise<any[]> {
-    var addressesPromise = this.storageService.getAddressData();
-    var resolvedAddresses = await this.getAddresses();
-    var result: any[] = [];
+    const addressesPromise = this.storageService.getAddressData();
+    const resolvedAddresses = await this.getAddresses();
+    const result: any[] = [];
 
     try {
       const addresses = await addressesPromise;
@@ -287,8 +287,8 @@ export class DataService {
   }
 
   async getAddresses(): Promise<any[]> {
-    var inputsPromise = this.getWatcherInputs();
-    var addresses: any[] = [];
+    const inputsPromise = this.getWatcherInputs();
+    const addresses: any[] = [];
 
     try {
       const inputs = await inputsPromise;

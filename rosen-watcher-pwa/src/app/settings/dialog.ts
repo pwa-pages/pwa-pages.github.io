@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogClose } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 
@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule, MatDialogClose],
 })
-export class SettingsDialog {
+export class SettingsDialog implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<SettingsDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,

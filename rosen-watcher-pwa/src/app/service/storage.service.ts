@@ -10,7 +10,7 @@ export class StorageService {
   addressDataStoreName = 'addressData';
   dbPromise: Promise<IDBDatabase>;
   inputsCache: any[] = [];
-  updateCache: boolean = true;
+  updateCache = true;
 
   constructor(private eventService: EventService) {
     this.dbPromise = this.initIndexedDB();
@@ -167,7 +167,7 @@ export class StorageService {
           input.outputAddress = address;
           input.inputDate = new Date(item.timestamp);
 
-          var dbInput: any = {
+          const dbInput: any = {
             outputAddress: input.outputAddress,
             inputDate: input.inputDate,
             boxId: input.boxId,

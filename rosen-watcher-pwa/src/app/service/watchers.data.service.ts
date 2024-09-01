@@ -4,6 +4,9 @@ import { DownloadService } from './download.service';
 import { ChainService } from './chain.service';
 import { Observable } from 'rxjs';
 import { ChainType } from './chain.service';
+import { WatcherInfo } from '../models/watcher.info';
+
+
 
 @Injectable({
   providedIn: 'root',
@@ -14,20 +17,21 @@ export class WatchersDataService {
 
   readonly rsnToken = '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';
 
-  busyCounter: number = 0;
+  busyCounter = 0;
 
   constructor(
     private downloadService: DownloadService,
     private chainService: ChainService,
   ) {}
 
-  getWatchersInfo(): Observable<any> {
-    var result = this.downloadService.downloadStream(this.watcherUrl);
+  getWatchersInfo(): Observable<WatcherInfo> {
+    const result = this.downloadService.downloadStream(this.watcherUrl);
+    
     return result;
   }
 
   getPermitsInfo(chainType: ChainType): Observable<any> {
-    var address = this.chainService.permitAddresses[chainType];
+    const address = this.chainService.permitAddresses[chainType];
     const permitsUrl = `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/confirmed`;
     return this.downloadService
       .downloadStream(permitsUrl)

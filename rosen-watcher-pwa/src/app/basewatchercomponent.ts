@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventService, EventType } from './service/event.service';
 import { SwipeService } from './service/swipe.service';
 
@@ -6,8 +6,8 @@ import { SwipeService } from './service/swipe.service';
   selector: 'app-root',
   template: '',
 })
-export class BaseWatcherComponent implements OnInit {
-  public busyCounter: number = 1;
+export class BaseWatcherComponent implements OnInit, OnDestroy {
+  public busyCounter = 1;
   loaderLogs: string[] = [];
   private leftAction = '';
   private rightAction = '';

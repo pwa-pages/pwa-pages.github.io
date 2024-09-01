@@ -55,7 +55,7 @@ export class ChartService {
             },
             callbacks: {
               label: function (context) {
-                let value = context.raw as any;
+                const value = context.raw as any;
                 return (
                   context.dataset.label +
                   ': ' +
@@ -166,14 +166,14 @@ export class ChartService {
       return data;
     }
 
-    let points = data.slice();
+    const points = data.slice();
 
     while (remainingPoints > 0) {
       let minArea = Infinity;
       let indexToRemove = -1;
 
       for (let i = 1; i < points.length - 1; i++) {
-        let area = this.calculateTriangleArea(points[i - 1], points[i], points[i + 1]);
+        const area = this.calculateTriangleArea(points[i - 1], points[i], points[i + 1]);
         if (area < minArea) {
           minArea = area;
           indexToRemove = i;

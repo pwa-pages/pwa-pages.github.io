@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class SwipeService {
-  private detectHorizontal: boolean = true;
-  private detectVertical: boolean = false;
+  private detectHorizontal = true;
+  private detectVertical = false;
   private currentNavigationLeft = 'main';
   private currentNavigationRight = 'main';
   private swipeActive = false;
@@ -17,7 +17,7 @@ export class SwipeService {
     private router: Router,
   ) {
     this.registerSwipeDetect();
-    var me = this;
+    const me = this;
 
     eventService.subscribeToEvent(EventType.SwipeActivated, function () {
       console.log('swipe activated');
@@ -38,9 +38,9 @@ export class SwipeService {
     var me = this;
     this.currentNavigationLeft = route;
     this.currentNavigationRight = route;
-    var touchsurface = document.body;
+    const touchsurface = document.body;
     touchsurface.classList.add('swiping');
-    var body = document.body,
+    const body = document.body,
       html = document.documentElement;
 
     body.style.position = 'fixed';
@@ -130,8 +130,8 @@ export class SwipeService {
   }
 
   public registerSwipeDetect() {
-    var me = this;
-    var body = document.body,
+    const me = this;
+    let body = document.body,
       html = document.documentElement,
       startX: number,
       startY: number,
@@ -152,7 +152,7 @@ export class SwipeService {
         html.style.position = 'fixed';
         contentLeft = body.offsetLeft;
         contentTop = body.offsetTop;
-        var touchobj = e.changedTouches[0];
+        const touchobj = e.changedTouches[0];
         distX = 0;
         distY = 0;
         startX = touchobj.pageX;
@@ -168,11 +168,11 @@ export class SwipeService {
           return;
         }
 
-        var hasVerticalScrollableParent = me.hasVerticalScrollableContainerClass(
+        const hasVerticalScrollableParent = me.hasVerticalScrollableContainerClass(
           e.target as HTMLElement,
         );
 
-        var touchobj = e.changedTouches[0];
+        const touchobj = e.changedTouches[0];
         distX = touchobj.pageX - startX;
         distY = touchobj.pageY - startY;
 
@@ -200,8 +200,8 @@ export class SwipeService {
           return;
         }
 
-        var swipedir = null;
-        var touchobj = e.changedTouches[0];
+        let swipedir = null;
+        const touchobj = e.changedTouches[0];
         distX = touchobj.pageX - startX;
         distY = touchobj.pageY - startY;
 
@@ -249,7 +249,7 @@ export class SwipeService {
     el.classList.remove('swipeup');
     el.classList.remove('swipedown');
 
-    var body = document.body,
+    const body = document.body,
       html = document.documentElement;
     body.style.position = '';
     html.style.position = '';

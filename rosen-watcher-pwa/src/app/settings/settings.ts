@@ -39,7 +39,7 @@ export class Settings implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.addresses[index].address = result.address;
-        var editAddress = this.addresses.find((a) => a.address == result.address);
+        const editAddress = this.addresses.find((a) => a.address == result.address);
         if (editAddress != null) {
           editAddress.watcherUrl = result.watcherUrl;
         } else {

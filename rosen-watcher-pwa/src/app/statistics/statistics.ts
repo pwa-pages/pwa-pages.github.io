@@ -25,9 +25,9 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   rewardsChart: any[];
   sortedInputs: any[];
   addresses: any[];
-  noAddresses: boolean = false;
+  noAddresses = false;
   addressesForDisplay: any[];
-  shareSupport: boolean = false;
+  shareSupport = false;
   chart: Chart<'line', any[][], unknown> | undefined;
   @ViewChild('detailsContainer') detailsContainer!: ElementRef;
 
@@ -88,7 +88,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
 
     this.sortedInputs = await this.dataService.getSortedInputs();
 
-    var newChart = this.sortedInputs.map((s) => {
+    const newChart = this.sortedInputs.map((s) => {
       return { x: s.inputDate, y: s.accumulatedAmount };
     });
     this.sortedInputs.sort((a, b) => b.inputDate - a.inputDate);
@@ -104,7 +104,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     }
 
     this.rewardsChart = newChart;
-    var result = await this.dataService.getInputs();
+    const result = await this.dataService.getInputs();
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay();
 
     this.updateChart();
@@ -145,12 +145,12 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     const urlTree = this.router.createUrlTree(['main'], {
       queryParams: { addresses: JSON.stringify(this.addresses) },
     });
-    var url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
+    const url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
     return url;
   }
 
   share(): void {
-    var url = this.getShareUrl();
+    const url = this.getShareUrl();
 
     console.log('share url: ' + url);
 
@@ -181,9 +181,9 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe(async (params) => {
-      var hasAddressParams = await this.checkAddressParams(params);
+      const hasAddressParams = await this.checkAddressParams(params);
 
-      var storageService = this.storageService;
+      const storageService = this.storageService;
 
       await this.retrieveData().then(() => {
         this.addresses.forEach(async (address) => {
@@ -215,11 +215,11 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       console.log(addressesParam);
 
       this.addresses = JSON.parse(decodeURIComponent(addressesParam));
-      let currentPath = this.location.path();
+      const currentPath = this.location.path();
 
       if (currentPath.includes('?')) {
-        let parts = currentPath.split('?');
-        let newPath = parts[0];
+        const parts = currentPath.split('?');
+        const newPath = parts[0];
         this.location.replaceState(newPath);
       }
 
