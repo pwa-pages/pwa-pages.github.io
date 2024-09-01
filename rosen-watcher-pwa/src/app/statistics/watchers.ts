@@ -3,7 +3,6 @@ import { EventService } from '../service/event.service';
 import { WatchersDataService } from '../service/watchers.data.service';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { Router } from '@angular/router';
 import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ChainType } from '../service/chain.service';
