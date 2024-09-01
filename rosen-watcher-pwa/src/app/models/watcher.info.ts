@@ -1,7 +1,5 @@
-import { Token } from "./token";
+import { Token } from './token';
 
 export class WatcherInfo {
-  constructor(
-    public tokens: Token[]
-  ) {}
+  constructor(public tokens: Token[]) {}
 }

@@ -6,8 +6,6 @@ import { Observable } from 'rxjs';
 import { ChainType } from './chain.service';
 import { WatcherInfo } from '../models/watcher.info';
 
-
-
 @Injectable({
   providedIn: 'root',
 })
@@ -26,7 +24,7 @@ export class WatchersDataService {
 
   getWatchersInfo(): Observable<WatcherInfo> {
     const result = this.downloadService.downloadStream(this.watcherUrl);
-    
+
     return result;
   }
 
