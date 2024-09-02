@@ -3,7 +3,7 @@ import '@angular/compiler';
 const routes: Routes = [
   { path: 'settings', component: Settings },
   { path: 'performance', component: Performance },
-  { path: 'watchers', component: Watchers },
+  { path: 'watchers', component: WatchersComponent },
   { path: '**', component: Statistics },
 ];
 
@@ -16,7 +16,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { Statistics } from './app/statistics/statistics';
-import { Watchers } from './app/statistics/watchers';
+import { WatchersComponent } from './app/statistics/watchers.component';
 import { Performance } from './app/statistics/performance';
 import { Settings } from './app/settings/settings';
 import { provideRouter, Routes } from '@angular/router';

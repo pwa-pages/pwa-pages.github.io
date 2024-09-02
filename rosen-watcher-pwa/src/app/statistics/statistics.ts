@@ -4,7 +4,7 @@ import { StorageService } from '../service/storage.service';
 import { SwipeService } from '../service/swipe.service';
 import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Params, RouterLink, RouterLinkActive } from '@angular/router';
 import { Location, NgIf, NgStyle, NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,13 +12,23 @@ import { QRDialog } from './qrdialog';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import { ChartService } from '../service/chart.service';
+interface WindowWithPrompt extends Window {
+  showHomeLink?: boolean;
+  deferredPrompt?: BeforeInstallPromptEvent;
+}
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+}
 @Component({
   selector: 'statistics',
   templateUrl: './statistics.html',
   standalone: true,
   imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive],
 })
+
+
 export class Statistics extends BaseWatcherComponent implements OnInit {
   data: string;
   selectedTab: string;
@@ -120,15 +130,14 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   }
 
   installApp(): void {
-    if ((window as any).deferredPrompt) {
-      (window as any).deferredPrompt.prompt();
+    if ((window as WindowWithPrompt).deferredPrompt) {
+      (window as WindowWithPrompt).deferredPrompt?.prompt();
 
-      (window as any).deferredPrompt.userChoice.then((choiceResult: any) => {
+      (window as WindowWithPrompt).deferredPrompt?.userChoice.then((choiceResult: { outcome: 'accepted' | 'dismissed'; platform: string }) => {
         if (choiceResult.outcome === 'accepted') {
-          (window as any).showHomeLink = false;
-        } else {
-        }
-        (window as any).deferredPrompt = null;
+          (window as WindowWithPrompt).showHomeLink = false;
+        } 
+        (window as WindowWithPrompt).deferredPrompt = undefined;
       });
     }
   }
@@ -166,18 +175,17 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
 
     this.shareSupport = navigator.share != null && navigator.share != undefined;
 
-    var me = this;
     this.initSwipe('/performance', '/watchers');
 
-    window.addEventListener('beforeinstallprompt', (event) => {
-      (window as any).showHomeLink = true;
-      event.preventDefault();
+    window.addEventListener('beforeinstallprompt', (event: Event) => {
+        (window as WindowWithPrompt).showHomeLink = true;
+        event.preventDefault();
 
-      (window as any).deferredPrompt = event;
+        (window as WindowWithPrompt).deferredPrompt = event as BeforeInstallPromptEvent;
     });
 
-    window.addEventListener('beforeinstallprompt', (event) => {
-      event.preventDefault();
+    window.addEventListener('beforeinstallprompt', (event: Event) => {
+        event.preventDefault();
     });
 
     this.route.queryParams.subscribe(async (params) => {
@@ -197,19 +205,18 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       });
     });
 
-    var me = this;
-    await this.subscribeToEvent(EventType.InputsStoredToDb, async function () {
-      await me.retrieveData();
+    await this.subscribeToEvent(EventType.InputsStoredToDb, async () => {
+        await this.retrieveData();
     });
-
-    await this.subscribeToEvent(EventType.EndFullDownload, async function () {
-      await me.retrieveData();
+    
+    await this.subscribeToEvent(EventType.EndFullDownload, async () => {
+        await this.retrieveData();
     });
-  }
+}
 
   title = 'rosen-watcher-pwa';
 
-  private async checkAddressParams(params: any): Promise<boolean> {
+  private async checkAddressParams(params: Params): Promise<boolean> {
     if (params['addresses']) {
       const addressesParam = params['addresses'];
       console.log(addressesParam);
