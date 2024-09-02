@@ -5,6 +5,7 @@ import { ChainService } from './chain.service';
 import { EventService, EventType } from './event.service';
 import { catchError, firstValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Input } from '../models/input';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class DataService {
     private snackBar: MatSnackBar,
   ) {}
 
-  async getWatcherInputs(): Promise<any[]> {
+  async getWatcherInputs(): Promise<Input[]> {
     const inputsPromise = this.storageService.getInputs();
 
     try {
@@ -49,7 +50,7 @@ export class DataService {
     }
   }
 
-  async getInputs(): Promise<any[]> {
+  async getInputs(): Promise<Input[]> {
     return this.storageService.getInputs();
   }
 
@@ -85,7 +86,7 @@ export class DataService {
     try {
       const inputs = await inputsPromise;
 
-      inputs.sort((a, b) => a.inputDate - b.inputDate);
+      inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
 
       inputs.forEach((input: any) => {
         input.assets.forEach((asset: any) => {

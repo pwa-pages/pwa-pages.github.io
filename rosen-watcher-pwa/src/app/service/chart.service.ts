@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
-import Chart from 'chart.js/auto';
+import Chart, { ChartDataset, TooltipItem } from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
+
+export type LineChart = Chart<'line', {
+  x: Date;
+  y: number;
+}[], unknown>;
+
+
 @Injectable({
   providedIn: 'root',
 })
 export class ChartService {
-  createPerformanceChart(datasets: any[]): Chart<'bar', any[][], unknown> {
-    return new Chart('PerformanceChart', {
+  createPerformanceChart(datasets: ChartDataset<'bar', { x: string | number | Date; y: number; }[]>[]): Chart<'bar', { x: string | number | Date; y: number; }[], unknown> {
+    return new Chart<'bar', { x: string | number | Date; y: number; }[]>('PerformanceChart', {
       type: 'bar',
       data: {
         datasets: datasets,
@@ -23,9 +30,8 @@ export class ChartService {
               color: 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
-              callback: function (value) {
-                value = value as number;
-                return value.toLocaleString('en-US', {
+              callback: function (value: number | string) {
+                return (value as number).toLocaleString('en-US', {
                   minimumFractionDigits: 0,
                 });
               },
@@ -54,8 +60,8 @@ export class ChartService {
               weight: 'bold',
             },
             callbacks: {
-              label: function (context) {
-                const value = context.raw as any;
+              label: function (context: TooltipItem<'bar'>) {
+                const value = context.raw as { y: number };
                 return (
                   context.dataset.label +
                   ': ' +
@@ -79,14 +85,14 @@ export class ChartService {
     });
   }
 
-  createStatisticsChart(rewardsChart: any[]): Chart<'line', any[][], unknown> {
-    return new Chart('RewardChart', {
+  createStatisticsChart(rewardsChart: { x: Date; y: number }[]): LineChart {
+    return new Chart<'line', { x: Date; y: number }[]>('RewardChart', {
       type: 'line',
       data: {
         datasets: [
           {
             label: 'Total rewards earned (RSN)',
-            data: [rewardsChart],
+            data: rewardsChart,
             borderColor: 'rgb(138, 128, 128)',
             backgroundColor: 'rgba(138, 128, 128, 0.2)',
             borderWidth: 4,
@@ -110,7 +116,7 @@ export class ChartService {
               color: 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
-              callback: function (value) {
+              callback: function (value: number | string) {
                 return (value as number) / 1000;
               },
             },
@@ -147,6 +153,7 @@ export class ChartService {
       },
     });
   }
+
   calculateTriangleArea(
     p1: { x: Date; y: number },
     p2: { x: Date; y: number },
@@ -160,7 +167,7 @@ export class ChartService {
     );
   }
 
-  reduceChartData(data: any[], targetPoints: number): any[] {
+  reduceChartData(data: { x: Date; y: number }[], targetPoints: number): { x: Date; y: number }[] {
     let remainingPoints = data.length - targetPoints;
     if (remainingPoints <= 0) {
       return data;

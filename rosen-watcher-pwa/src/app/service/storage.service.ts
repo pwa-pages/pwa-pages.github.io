@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EventService, EventType } from './event.service';
+import { Input } from '../models/input';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ export class StorageService {
   inputsStoreName = 'inputBoxes';
   addressDataStoreName = 'addressData';
   dbPromise: Promise<IDBDatabase>;
-  inputsCache: any[] = [];
+  inputsCache: Input[] = [];
   updateCache = true;
 
   constructor(private eventService: EventService) {
@@ -89,9 +90,9 @@ export class StorageService {
     });
   }
 
-  async getInputs(): Promise<any[]> {
+  async getInputs(): Promise<Input[]> {
     if (this.inputsCache && this.inputsCache.length > 0 && !this.updateCache) {
-      return new Promise<any[]>((resolve) => {
+      return new Promise<Input[]>((resolve) => {
         console.log('Getting inputs from cache');
         resolve(this.inputsCache);
       });

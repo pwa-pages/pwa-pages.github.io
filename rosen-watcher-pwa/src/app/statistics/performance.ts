@@ -76,7 +76,7 @@ export class Performance extends BaseWatcherComponent implements OnInit {
       const inputs = await inputsPromise;
       const addressCharts: any = {};
 
-      inputs.sort((a, b) => a.inputDate - b.inputDate);
+      inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
 
       const chainTypes: any = {};
 

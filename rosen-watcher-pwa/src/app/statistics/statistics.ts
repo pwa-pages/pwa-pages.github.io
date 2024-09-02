@@ -9,9 +9,9 @@ import { Location, NgIf, NgStyle, NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { QRDialog } from './qrdialog';
-import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
-import { ChartService } from '../service/chart.service';
+import { ChartService, LineChart } from '../service/chart.service';
+import { Input } from '../models/input';
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
   deferredPrompt?: BeforeInstallPromptEvent;
@@ -27,8 +27,6 @@ interface BeforeInstallPromptEvent extends Event {
   standalone: true,
   imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive],
 })
-
-
 export class Statistics extends BaseWatcherComponent implements OnInit {
   data: string;
   selectedTab: string;
@@ -38,7 +36,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   noAddresses = false;
   addressesForDisplay: any[];
   shareSupport = false;
-  chart: Chart<'line', any[][], unknown> | undefined;
+  chart: LineChart | undefined;
   @ViewChild('detailsContainer') detailsContainer!: ElementRef;
 
   constructor(
@@ -62,17 +60,16 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   }
 
   showHomeLink(): boolean {
-    return (window as any).showHomeLink;
+    return (window as WindowWithPrompt).showHomeLink == true;
   }
 
   selectTab(tab: string): void {
     this.selectedTab = tab;
   }
 
-  formatDate(utcDate: any): string {
-    const date = new Date(utcDate);
-
-    const day = date.getUTCDate().toString().padStart(2, '0');
+  formatDate(utcDate: Date): string {
+    
+    const day = utcDate.getUTCDate().toString().padStart(2, '0');
     const monthNames = [
       'Jan',
       'Feb',
@@ -87,13 +84,13 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
       'Nov',
       'Dec',
     ];
-    const month = monthNames[date.getUTCMonth()];
-    const year = date.getUTCFullYear();
+    const month = monthNames[utcDate.getUTCMonth()];
+    const year = utcDate.getUTCFullYear();
 
     return `${day} ${month} ${year}`;
   }
 
-  async retrieveData(): Promise<any[]> {
+  async retrieveData(): Promise<Input[]> {
     this.data = await this.dataService.getTotalRewards();
 
     this.sortedInputs = await this.dataService.getSortedInputs();
@@ -101,7 +98,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     const newChart = this.sortedInputs.map((s) => {
       return { x: s.inputDate, y: s.accumulatedAmount };
     });
-    this.sortedInputs.sort((a, b) => b.inputDate - a.inputDate);
+    this.sortedInputs.sort((a, b) => b.inputDate.getTime() - a.inputDate.getTime());
 
     if (
       this.rewardsChart.length != 0 &&
@@ -133,12 +130,14 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     if ((window as WindowWithPrompt).deferredPrompt) {
       (window as WindowWithPrompt).deferredPrompt?.prompt();
 
-      (window as WindowWithPrompt).deferredPrompt?.userChoice.then((choiceResult: { outcome: 'accepted' | 'dismissed'; platform: string }) => {
-        if (choiceResult.outcome === 'accepted') {
-          (window as WindowWithPrompt).showHomeLink = false;
-        } 
-        (window as WindowWithPrompt).deferredPrompt = undefined;
-      });
+      (window as WindowWithPrompt).deferredPrompt?.userChoice.then(
+        (choiceResult: { outcome: 'accepted' | 'dismissed'; platform: string }) => {
+          if (choiceResult.outcome === 'accepted') {
+            (window as WindowWithPrompt).showHomeLink = false;
+          }
+          (window as WindowWithPrompt).deferredPrompt = undefined;
+        },
+      );
     }
   }
 
@@ -178,14 +177,14 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.initSwipe('/performance', '/watchers');
 
     window.addEventListener('beforeinstallprompt', (event: Event) => {
-        (window as WindowWithPrompt).showHomeLink = true;
-        event.preventDefault();
+      (window as WindowWithPrompt).showHomeLink = true;
+      event.preventDefault();
 
-        (window as WindowWithPrompt).deferredPrompt = event as BeforeInstallPromptEvent;
+      (window as WindowWithPrompt).deferredPrompt = event as BeforeInstallPromptEvent;
     });
 
     window.addEventListener('beforeinstallprompt', (event: Event) => {
-        event.preventDefault();
+      event.preventDefault();
     });
 
     this.route.queryParams.subscribe(async (params) => {
@@ -206,13 +205,13 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     });
 
     await this.subscribeToEvent(EventType.InputsStoredToDb, async () => {
-        await this.retrieveData();
+      await this.retrieveData();
     });
-    
+
     await this.subscribeToEvent(EventType.EndFullDownload, async () => {
-        await this.retrieveData();
+      await this.retrieveData();
     });
-}
+  }
 
   title = 'rosen-watcher-pwa';
 
