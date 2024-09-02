@@ -2,7 +2,7 @@ import { ChainType } from '../service/chain.service';
 import { Asset } from './asset';
 
 export class Input {
-  outputAddress?: string;
+  outputAddress: string;
   inputDate: Date;
   boxId?: string;
   assets: Asset[];
@@ -17,7 +17,7 @@ export class Input {
     address: string,
     outputCreatedAt: number,
     assets: Asset[],
-    outputAddress?: string,
+    outputAddress: string,
     boxId?: string,
     accumulatedAmount?: number,
     amount?: number,

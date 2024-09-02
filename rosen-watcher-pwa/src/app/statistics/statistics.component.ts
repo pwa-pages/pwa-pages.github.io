@@ -10,8 +10,9 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { QRDialog } from './qrdialog';
 import 'chartjs-adapter-date-fns';
-import { ChartService, LineChart } from '../service/chart.service';
+import { ChartService, DateNumberPoint, LineChart } from '../service/chart.service';
 import { Input } from '../models/input';
+import { Address } from '../models/address';
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
   deferredPrompt?: BeforeInstallPromptEvent;
@@ -27,14 +28,14 @@ interface BeforeInstallPromptEvent extends Event {
   standalone: true,
   imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive],
 })
-export class Statistics extends BaseWatcherComponent implements OnInit {
+export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
   data: string;
   selectedTab: string;
-  rewardsChart: any[];
-  sortedInputs: any[];
-  addresses: any[];
+  rewardsChart: DateNumberPoint[];
+  sortedInputs: Input[];
+  addresses: Address[];
   noAddresses = false;
-  addressesForDisplay: any[];
+  addressesForDisplay: Address[];
   shareSupport = false;
   chart: LineChart | undefined;
   @ViewChild('detailsContainer') detailsContainer!: ElementRef;
@@ -68,7 +69,6 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
   }
 
   formatDate(utcDate: Date): string {
-    
     const day = utcDate.getUTCDate().toString().padStart(2, '0');
     const monthNames = [
       'Jan',
@@ -96,7 +96,7 @@ export class Statistics extends BaseWatcherComponent implements OnInit {
     this.sortedInputs = await this.dataService.getSortedInputs();
 
     const newChart = this.sortedInputs.map((s) => {
-      return { x: s.inputDate, y: s.accumulatedAmount };
+      return { x: s.inputDate, y: s.accumulatedAmount } as DateNumberPoint;
     });
     this.sortedInputs.sort((a, b) => b.inputDate.getTime() - a.inputDate.getTime());
 

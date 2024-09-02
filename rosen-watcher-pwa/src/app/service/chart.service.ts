@@ -2,18 +2,28 @@ import { Injectable } from '@angular/core';
 import Chart, { ChartDataset, TooltipItem } from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 
-export type LineChart = Chart<'line', {
+export type LineChart = Chart<
+  'line',
+  {
+    x: Date;
+    y: number;
+  }[],
+  unknown
+>;
+
+export interface DateNumberPoint {
   x: Date;
   y: number;
-}[], unknown>;
-
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChartService {
-  createPerformanceChart(datasets: ChartDataset<'bar', { x: string | number | Date; y: number; }[]>[]): Chart<'bar', { x: string | number | Date; y: number; }[], unknown> {
-    return new Chart<'bar', { x: string | number | Date; y: number; }[]>('PerformanceChart', {
+  createPerformanceChart(
+    datasets: ChartDataset<'bar', { x: string | number | Date; y: number }[]>[],
+  ): Chart<'bar', { x: string | number | Date; y: number }[], unknown> {
+    return new Chart<'bar', { x: string | number | Date; y: number }[]>('PerformanceChart', {
       type: 'bar',
       data: {
         datasets: datasets,
@@ -85,8 +95,8 @@ export class ChartService {
     });
   }
 
-  createStatisticsChart(rewardsChart: { x: Date; y: number }[]): LineChart {
-    return new Chart<'line', { x: Date; y: number }[]>('RewardChart', {
+  createStatisticsChart(rewardsChart: DateNumberPoint[]): LineChart {
+    return new Chart<'line', DateNumberPoint[]>('RewardChart', {
       type: 'line',
       data: {
         datasets: [
@@ -155,9 +165,9 @@ export class ChartService {
   }
 
   calculateTriangleArea(
-    p1: { x: Date; y: number },
-    p2: { x: Date; y: number },
-    p3: { x: Date; y: number },
+    p1: DateNumberPoint,
+    p2: DateNumberPoint,
+    p3: DateNumberPoint,
   ): number {
     return Math.abs(
       (p1.x.getTime() * (p2.y - p3.y) +
@@ -167,7 +177,7 @@ export class ChartService {
     );
   }
 
-  reduceChartData(data: { x: Date; y: number }[], targetPoints: number): { x: Date; y: number }[] {
+  reduceChartData(data: DateNumberPoint[], targetPoints: number): DateNumberPoint[] {
     let remainingPoints = data.length - targetPoints;
     if (remainingPoints <= 0) {
       return data;

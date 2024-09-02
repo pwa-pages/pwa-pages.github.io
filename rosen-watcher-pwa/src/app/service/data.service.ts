@@ -6,6 +6,7 @@ import { EventService, EventType } from './event.service';
 import { catchError, firstValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Input } from '../models/input';
+import { Address } from '../models/address';
 
 @Injectable({
   providedIn: 'root',
@@ -287,14 +288,14 @@ export class DataService {
     }
   }
 
-  async getAddresses(): Promise<any[]> {
+  async getAddresses(): Promise<Address[]> {
     const inputsPromise = this.getWatcherInputs();
-    const addresses: any[] = [];
+    const addresses: Address[] = [];
 
     try {
       const inputs = await inputsPromise;
 
-      inputs.forEach((input: any) => {
+      inputs.forEach((input: Input) => {
         if (!addresses.some((address) => address.address == input.outputAddress)) {
           addresses.push({
             address: input.outputAddress,
@@ -303,7 +304,7 @@ export class DataService {
         }
       });
 
-      return await new Promise<string[]>((resolve) => {
+      return await new Promise<Address[]>((resolve) => {
         resolve(addresses);
       });
     } catch (error) {
