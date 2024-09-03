@@ -8,7 +8,7 @@ import { ActivatedRoute, Params, RouterLink, RouterLinkActive } from '@angular/r
 import { Location, NgIf, NgStyle, NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { QRDialog } from './qrdialog';
+import { QRDialogComponent } from './qrdialog.component';
 import 'chartjs-adapter-date-fns';
 import { ChartService, DateNumberPoint, LineChart } from '../service/chart.service';
 import { Input } from '../models/input';
@@ -23,7 +23,7 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
 }
 @Component({
-  selector: 'statistics',
+  selector: 'app-statistics',
   templateUrl: './statistics.html',
   standalone: true,
   imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive],
@@ -142,7 +142,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   showQR(): void {
-    this.qrDialog.open(QRDialog, {
+    this.qrDialog.open(QRDialogComponent, {
       data: { qrData: this.getShareUrl() },
     });
   }

@@ -10,11 +10,11 @@
 </div>
 
 <div class="stats-container">
-  <a class="tab" [class.active]="selectedTab === 'chart'" (click)="selectTab('chart')">Graph</a>
-  <a class="tab" [class.active]="selectedTab === 'details'" (click)="selectTab('details')">
+  <a tabindex="0" class="tab" [class.active]="selectedTab === 'chart'" (click)="selectTab('chart')" (keypress)="selectTab('chart')">Graph</a>
+  <a tabindex="0" class="tab" [class.active]="selectedTab === 'details'" (click)="selectTab('details')" (keypress)="selectTab('details')">
     Details
   </a>
-  <div class="version">version: 1.9.3</div>
+  <div class="version">version: 1.9.4</div>
 </div>
 
 <div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <ng-container *ngIf="busyCounter == 0">
+    <ng-container *ngIf="busyCounter === 0">
       <div *ngFor="let input of sortedInputs">
         <div class="statdetaildispl {{input.chainType}}">
           <div class="inputDate">{{ formatDate(input.inputDate) }}</div>
@@ -61,51 +61,51 @@
 
 <br />
 
-<div class="linkcontainer" *ngIf="busyCounter == 0 || noAddresses">
+<div class="linkcontainer" *ngIf="busyCounter === 0 || noAddresses">
   <div class="linkicon">
-    <a routerLink="/settings" routerLinkActive="active">
+    <a tabindex="0" routerLink="/settings" routerLinkActive="active">
       <div class="fas fa-edit"></div>
     </a>
   </div>
   &nbsp;
   <div class="link">
-    <a routerLink="/settings" routerLinkActive="active">Modify addresses</a>
+    <a tabindex="0" routerLink="/settings" routerLinkActive="active">Modify addresses</a>
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="(busyCounter == 0 || noAddresses) && showHomeLink()">
+<div class="linkcontainer" *ngIf="(busyCounter === 0 || noAddresses) && showHomeLink()">
   <div class="linkicon" id="homelink">
-    <a (click)="installApp()">
+    <a tabindex="0" (click)="installApp()" (keypress)="installApp()">
       <div class="fas fa-home"></div>
     </a>
   </div>
   &nbsp;
   <div class="link">
-    <a (click)="installApp()">Add to home</a>
+    <a tabindex="0" (click)="installApp()" (keypress)="installApp()">Add to home</a>
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="(busyCounter == 0 || noAddresses) && shareSupport">
+<div class="linkcontainer" *ngIf="(busyCounter === 0 || noAddresses) && shareSupport">
   <div class="linkicon" id="sharelink">
-    <a (click)="share()">
+    <a tabindex="0" (click)="share()" (keypress)="share()">
       <div class="fas fa-share-nodes"></div>
     </a>
   </div>
   &nbsp;
   <div class="link">
-    <a (click)="share()">Share</a>
+    <a tabindex="0" (click)="share()" (keypress)="share()">Share</a>
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="(busyCounter == 0 || noAddresses)">
+<div class="linkcontainer" *ngIf="(busyCounter === 0 || noAddresses)">
   <div class="linkicon" id="qrlink">
-    <a (click)="showQR()">
+    <a tabindex="0" (click)="showQR()" (keypress)="showQR()">
       <div class="fas fa-qrcode"></div>
     </a>
   </div>
   &nbsp;
   <div class="link">
-    <a (click)="showQR()">QR</a>
+    <a tabindex="0" (click)="showQR()" (keypress)="showQR()">QR</a>
   </div>
 </div>
 
@@ -113,18 +113,18 @@
   <div *ngFor="let log of loaderLogs" class="log-entry">{{log}}</div>
 </div>
 
-<div class="navbuttons left" *ngIf="busyCounter == 0 && !noAddresses">
+<div class="navbuttons left" *ngIf="busyCounter === 0 && !noAddresses">
   <div>
-    <a (click)="swipeRight()">
+    <a tabindex="0" (click)="swipeRight()"(keypress)="swipeRight()">
       <span class="fas fa-angle-left"></span>
       &nbsp;Watchers
     </a>
   </div>
 </div>
 
-<div class="navbuttons right" *ngIf="busyCounter == 0 && !noAddresses">
+<div class="navbuttons right" *ngIf="busyCounter === 0 && !noAddresses">
   <div>
-    <a (click)="swipeLeft()">
+    <a tabindex="0" (click)="swipeLeft()" (keypress)="swipeLeft()">
       Performance&nbsp;
       <span class="fas fa-angle-right"></span>
     </a>
