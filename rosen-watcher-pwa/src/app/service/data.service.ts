@@ -36,7 +36,7 @@ export class DataService {
 
       result_1.forEach((input: any) => {
         input.assets = input.assets
-          .filter((asset: any) => asset.name === 'RSN')
+          .filter((asset: any) => asset.name === 'RSN' || asset.name === 'eRSN')
           .map((asset_1: any) => {
             return asset_1;
           });

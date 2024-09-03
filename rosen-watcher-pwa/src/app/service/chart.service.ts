@@ -164,11 +164,7 @@ export class ChartService {
     });
   }
 
-  calculateTriangleArea(
-    p1: DateNumberPoint,
-    p2: DateNumberPoint,
-    p3: DateNumberPoint,
-  ): number {
+  calculateTriangleArea(p1: DateNumberPoint, p2: DateNumberPoint, p3: DateNumberPoint): number {
     return Math.abs(
       (p1.x.getTime() * (p2.y - p3.y) +
         p2.x.getTime() * (p3.y - p1.y) +
