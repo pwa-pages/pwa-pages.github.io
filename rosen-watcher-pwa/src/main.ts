@@ -2,7 +2,7 @@ import '@angular/compiler';
 
 const routes: Routes = [
   { path: 'settings', component: Settings },
-  { path: 'performance', component: Performance },
+  { path: 'performance', component: PerformanceComponent },
   { path: 'watchers', component: WatchersComponent },
   { path: '**', component: StatisticsComponent },
 ];
@@ -17,7 +17,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { StatisticsComponent } from './app/statistics/statistics.component';
 import { WatchersComponent } from './app/statistics/watchers.component';
-import { Performance } from './app/statistics/performance';
+import { PerformanceComponent } from './app/statistics/performance.component';
 import { Settings } from './app/settings/settings';
 import { provideRouter, Routes } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';

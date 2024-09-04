@@ -10,11 +10,25 @@
 </div>
 
 <div class="stats-container">
-  <a tabindex="0" class="tab" [class.active]="selectedTab === 'chart'" (click)="selectTab('chart')" (keypress)="selectTab('chart')">Graph</a>
-  <a tabindex="0" class="tab" [class.active]="selectedTab === 'details'" (click)="selectTab('details')" (keypress)="selectTab('details')">
+  <a
+    tabindex="0"
+    class="tab"
+    [class.active]="selectedTab === 'chart'"
+    (click)="selectTab('chart')"
+    (keypress)="selectTab('chart')"
+  >
+    Graph
+  </a>
+  <a
+    tabindex="0"
+    class="tab"
+    [class.active]="selectedTab === 'details'"
+    (click)="selectTab('details')"
+    (keypress)="selectTab('details')"
+  >
     Details
   </a>
-  <div class="version">version: 1.9.4</div>
+  <div class="version">version: 1.9.5</div>
 </div>
 
 <div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
@@ -115,7 +129,7 @@
 
 <div class="navbuttons left" *ngIf="busyCounter === 0 && !noAddresses">
   <div>
-    <a tabindex="0" (click)="swipeRight()"(keypress)="swipeRight()">
+    <a tabindex="0" (click)="swipeRight()" (keypress)="swipeRight()">
       <span class="fas fa-angle-left"></span>
       &nbsp;Watchers
     </a>

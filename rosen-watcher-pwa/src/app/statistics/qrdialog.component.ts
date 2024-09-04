@@ -9,7 +9,7 @@ interface QRDialogData {
 }
 
 @Component({
-  selector: 'app-qr-dialog', 
+  selector: 'app-qr-dialog',
   templateUrl: './qrdialog.html',
   standalone: true,
   imports: [QRCodeModule],
@@ -17,7 +17,7 @@ interface QRDialogData {
 export class QRDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<QRDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: QRDialogData, 
+    @Inject(MAT_DIALOG_DATA) public data: QRDialogData,
   ) {}
 
   onCancelClick(): void {
