@@ -1,24 +1,33 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogClose } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 
+interface DialogData {
+  title: string;
+  content: string;
+  address: string;
+}
+
+
 @Component({
-  selector: 'dialog',
+  selector: 'app-dialog',
   templateUrl: './dialog.html',
   standalone: true,
   imports: [FormsModule, MatDialogClose],
 })
-export class SettingsDialog implements OnInit {
+
+
+export class SettingsDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<SettingsDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
+    public dialogRef: MatDialogRef<SettingsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+  ) { }
 
   onCancelClick(): void {
     this.dialogRef.close();
   }
 
-  ngOnInit(): void {}
+
 
   pasteData(): void {
     navigator.clipboard

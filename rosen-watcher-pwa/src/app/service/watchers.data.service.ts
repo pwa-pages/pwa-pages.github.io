@@ -5,6 +5,7 @@ import { ChainService } from './chain.service';
 import { Observable } from 'rxjs';
 import { ChainType } from './chain.service';
 import { WatcherInfo } from '../models/watcher.info';
+import { Token } from '../models/token';
 
 @Injectable({
   providedIn: 'root',
@@ -28,15 +29,15 @@ export class WatchersDataService {
     return result;
   }
 
-  getPermitsInfo(chainType: ChainType): Observable<any> {
+  getPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
     const address = this.chainService.permitAddresses[chainType];
     const permitsUrl = `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/confirmed`;
     return this.downloadService
       .downloadStream(permitsUrl)
       .pipe(
-        map((data) => {
+        map((data :{ tokens: Token[] }) => {
           if (data.tokens) {
-            const tokenData = data.tokens.find((token: any) => token.tokenId === this.rsnToken);
+            const tokenData = data.tokens.find((token: Token) => token.tokenId === this.rsnToken);
             if (tokenData) {
               tokenData.amount /= 3000 * Math.pow(10, tokenData.decimals);
               tokenData.amount = Math.floor(tokenData.amount);
@@ -47,9 +48,7 @@ export class WatchersDataService {
       )
       .pipe(
         map((result) => {
-          return {
-            tokenData: result.tokens.find((token: any) => token.tokenId === this.rsnToken),
-          };
+          return result.tokens.find((token: Token) => token.tokenId === this.rsnToken);
         }),
       );
   }

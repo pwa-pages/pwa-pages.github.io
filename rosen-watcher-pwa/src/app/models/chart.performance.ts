@@ -12,7 +12,7 @@ export class ChartPerformance {
     address: string,
     addressForDisplay: string,
     chart: ChartPoint[],
-    color: string, 
+    color: string,
     chainType: ChainType | null,
   ) {
     this.address = address;

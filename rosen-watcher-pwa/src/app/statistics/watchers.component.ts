@@ -20,9 +20,9 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   bitcoinWatcherCount: Observable<number | undefined>;
   cardanoWatcherCount: Observable<number | undefined>;
   ergoWatcherCount: Observable<number | undefined>;
-  bitcoinPermitCount: Observable<number>;
-  cardanoPermitCount: Observable<number>;
-  ergoPermitCount: Observable<number>;
+  bitcoinPermitCount: Observable<number | undefined>;
+  cardanoPermitCount: Observable<number | undefined>;
+  ergoPermitCount: Observable<number | undefined>;
 
   constructor(
     private watchersDataService: WatchersDataService,
@@ -78,13 +78,13 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
     let permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Cardano);
 
-    this.cardanoPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo.tokenData.amount));
+    this.cardanoPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo?.amount));
 
     permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Bitcoin);
-    this.bitcoinPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo.tokenData.amount));
+    this.bitcoinPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo?.amount));
 
     permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Ergo);
 
-    this.ergoPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo.tokenData.amount));
+    this.ergoPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo?.amount));
   }
 }

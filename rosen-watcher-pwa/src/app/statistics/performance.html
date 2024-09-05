@@ -29,7 +29,7 @@
 
 <div class="navbuttons left">
   <div>
-    <a (click)="swipeRight()">
+    <a tabindex = "" (click)="swipeRight()" (keypress)="swipeRight()">
       <span class="fas fa-angle-left"></span>
       &nbsp;Total Rewards
     </a>
@@ -38,7 +38,7 @@
 
 <div class="navbuttons right">
   <div>
-    <a (click)="swipeLeft()">
+    <a tabindex = "0" (click)="swipeLeft()" (keypress)="swipeLeft()">
       Watchers&nbsp;
       <span class="fas fa-angle-right"></span>
     </a>

@@ -13,7 +13,7 @@ import { Input } from '../models/input';
 import { Asset } from '../models/asset';
 
 @Component({
-  selector: 'performance',
+  selector: 'app-performance',
   templateUrl: './performance.html',
   standalone: true,
   imports: [NgFor, NgIf],
@@ -36,8 +36,6 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   performanceChart: ChartPerformance[];
   addresses: string[];
   noAddresses = false;
-
-
 
   constructor(
     private dataService: DataService,
@@ -77,7 +75,6 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
     const inputs = await inputsPromise;
     const addressCharts: Record<string, Record<number, number>> = {};
-
 
     inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
 
@@ -130,7 +127,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
           addressForDisplay: addressForDisplay,
           chart: chart,
           chainType: chainTypes[key],
-          color: ""
+          color: '',
         });
       }
     }
@@ -163,18 +160,17 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   }
 
   updateChart(): void {
-      const dataSets = [];
-      const cnt = this.performanceChart.length;
-      for (let i = 0; i < cnt; i++) {
-        dataSets.push(this.createDataSet(i));
-      }
+    const dataSets = [];
+    const cnt = this.performanceChart.length;
+    for (let i = 0; i < cnt; i++) {
+      dataSets.push(this.createDataSet(i));
+    }
 
-      for (let i = 0; i < this.performanceChart.length; i++) {
-        dataSets[i].data = this.performanceChart[i].chart;
-        dataSets[i].label = 'Address: ' + this.performanceChart[i].addressForDisplay;
-      }
-      this.chartService.createPerformanceChart(dataSets);
-
+    for (let i = 0; i < this.performanceChart.length; i++) {
+      dataSets[i].data = this.performanceChart[i].chart;
+      dataSets[i].label = 'Address: ' + this.performanceChart[i].addressForDisplay;
+    }
+    this.chartService.createPerformanceChart(dataSets);
   }
 
   title = 'rosen-watcher-pwa';

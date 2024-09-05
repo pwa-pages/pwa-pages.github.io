@@ -1,7 +1,7 @@
 import '@angular/compiler';
 
 const routes: Routes = [
-  { path: 'settings', component: Settings },
+  { path: 'settings', component: SettingsComponent },
   { path: 'performance', component: PerformanceComponent },
   { path: 'watchers', component: WatchersComponent },
   { path: '**', component: StatisticsComponent },
@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { StatisticsComponent } from './app/statistics/statistics.component';
 import { WatchersComponent } from './app/statistics/watchers.component';
 import { PerformanceComponent } from './app/statistics/performance.component';
-import { Settings } from './app/settings/settings';
+import { SettingsComponent } from './app/settings//settings.component';
 import { provideRouter, Routes } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';

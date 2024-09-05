@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../service/data.service';
 import { StorageService } from '../service/storage.service';
 import { Router } from '@angular/router';
-import { SettingsDialog } from './dialog';
+import { SettingsDialogComponent } from './settings.dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { NgFor } from '@angular/common';
+import { Address } from '../models/address';
 
 @Component({
-  selector: 'settings',
+  selector: 'app-settings',
   templateUrl: './settings.html',
   standalone: true,
   imports: [NgFor],
 })
-export class Settings implements OnInit {
-  addresses: any[];
+export class SettingsComponent implements OnInit {
+  addresses: Address[];
 
   constructor(
     private router: Router,
@@ -24,41 +25,38 @@ export class Settings implements OnInit {
     this.addresses = [];
   }
 
-  trackByFn(index: any) {
+  trackByFn(index: number) {
     return index;
   }
 
   editaddress(index: number): void {
-    const dialogRef = this.dialog.open(SettingsDialog, {
+    const dialogRef = this.dialog.open(SettingsDialogComponent, {
       data: {
         title: 'Edit Address',
-        address: this.addresses[index].address,
-        watcherUrl: this.addresses.find((a) => a.address == this.addresses[index])?.watcherUrl,
+        address: this.addresses[index].address
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.addresses[index].address = result.address;
         const editAddress = this.addresses.find((a) => a.address == result.address);
-        if (editAddress != null) {
-          editAddress.watcherUrl = result.watcherUrl;
-        } else {
+        if (editAddress == null) {
           this.addresses.push({
-            watcherUrl: result.watcherUrl,
+            
             address: result.address,
-          });
-        }
+          } as Address);
+        } 
       }
     });
   }
 
   addaddress(): void {
-    const dialogRef = this.dialog.open(SettingsDialog, {
+    const dialogRef = this.dialog.open(SettingsDialogComponent, {
       data: { title: 'Add Address', address: '', watcherUrl: '' },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.addresses.push({ address: result.address });
+        this.addresses.push({ address: result.address } as Address);
       }
     });
   }
@@ -71,7 +69,7 @@ export class Settings implements OnInit {
     navigator.clipboard
       .readText()
       .then((pastedText) => {
-        this.addresses[index] = pastedText;
+        this.addresses[index].address = pastedText;
       })
       .catch((err) => {
         console.error('Failed to read clipboard contents: ', err);
@@ -95,13 +93,13 @@ export class Settings implements OnInit {
       // but also from input data for backwards compatibility reasons
 
       return this.storageService.getAddressData().then((storageServiceAddresses) => {
-        const addressMap = new Map<string, any>();
+        const addressMap = new Map<string, Address>();
 
-        dataServiceAddresses.forEach((address: any) => {
+        dataServiceAddresses.forEach((address: Address) => {
           addressMap.set(address.address, address);
         });
 
-        storageServiceAddresses.forEach((address: any) => {
+        storageServiceAddresses.forEach((address: Address) => {
           if (addressMap.has(address.address)) {
             const existingAddress = addressMap.get(address.address);
             addressMap.set(address.address, { ...existingAddress, ...address });

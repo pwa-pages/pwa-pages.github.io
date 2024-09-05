@@ -114,7 +114,7 @@ export class SwipeService {
     }
   }
 
-  public hasVerticalScrollableContainerClass(element: any) {
+  public hasVerticalScrollableContainerClass(element: HTMLElement | null) {
     while (element) {
       if (element.classList && element.classList.contains('verticalscrollablecontainer')) {
         return true;
@@ -130,21 +130,22 @@ export class SwipeService {
   }
 
   public registerSwipeDetect() {
-    const me = this;
-    let body = document.body,
-      html = document.documentElement,
+    
+    const threshold = 10, body = document.body,
+      html = document.documentElement;
+    let
       startX: number,
       startY: number,
       distX: number,
       distY: number,
-      threshold: any = 10,
+
       contentLeft: number,
       contentTop: number;
 
     body.addEventListener(
       'touchstart',
-      function (e) {
-        if (!me.swipeActive) {
+      (e) => {
+        if (!this.swipeActive) {
           return;
         }
 
@@ -163,12 +164,12 @@ export class SwipeService {
 
     body.addEventListener(
       'touchmove',
-      function (e) {
-        if (!me.swipeActive) {
+      e =>  {
+        if (!this.swipeActive) {
           return;
         }
 
-        const hasVerticalScrollableParent = me.hasVerticalScrollableContainerClass(
+        const hasVerticalScrollableParent = this.hasVerticalScrollableContainerClass(
           e.target as HTMLElement,
         );
 
@@ -177,10 +178,10 @@ export class SwipeService {
         distY = touchobj.pageY - startY;
 
         if (Math.abs(distX) > 20 || Math.abs(distY) > 20) {
-          if (me.detectHorizontal && Math.abs(distX) > Math.abs(distY)) {
+          if (this.detectHorizontal && Math.abs(distX) > Math.abs(distY)) {
             body.style.left = (contentLeft + distX).toString() + 'px';
             body.style.top = contentTop.toString() + 'px';
-          } else if (me.detectVertical) {
+          } else if (this.detectVertical) {
             body.style.top = (contentTop + distY).toString() + 'px';
             body.style.left = contentLeft.toString() + 'px';
           }
@@ -195,8 +196,8 @@ export class SwipeService {
 
     body.addEventListener(
       'touchend',
-      function (e) {
-        if (!me.swipeActive) {
+      e => {
+        if (!this.swipeActive) {
           return;
         }
 
@@ -206,13 +207,13 @@ export class SwipeService {
         distY = touchobj.pageY - startY;
 
         if (
-          me.detectHorizontal &&
+          this.detectHorizontal &&
           Math.abs(distX) >= threshold &&
           Math.abs(distX) > Math.abs(distY)
         ) {
           swipedir = distX < 0 ? 'left' : 'right';
         } else if (
-          me.detectVertical &&
+          this.detectVertical &&
           Math.abs(distY) >= threshold &&
           Math.abs(distY) > Math.abs(distX)
         ) {
@@ -221,19 +222,19 @@ export class SwipeService {
 
         if (swipedir) {
           if (swipedir == 'left') {
-            me.swipe(swipedir, me.currentNavigationLeft);
+            this.swipe(swipedir, this.currentNavigationLeft);
           } else if (swipedir == 'right') {
-            me.swipe(swipedir, me.currentNavigationRight);
+            this.swipe(swipedir, this.currentNavigationRight);
           }
         } else {
-          me.resetswipes(body);
+          this.resetswipes(body);
         }
       },
       { passive: false },
     );
   }
 
-  private resetswipes(el: any) {
+  private resetswipes(el: HTMLElement) {
     el.style.position = 'inherit';
     el.style.left = 'inherit';
     el.style.top = 'inherit';
