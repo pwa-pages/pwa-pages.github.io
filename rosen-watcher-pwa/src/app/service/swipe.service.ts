@@ -17,16 +17,16 @@ export class SwipeService {
     private router: Router,
   ) {
     this.registerSwipeDetect();
-    const me = this;
 
-    eventService.subscribeToEvent(EventType.SwipeActivated, function () {
+
+    eventService.subscribeToEvent(EventType.SwipeActivated,  () => {
       console.log('swipe activated');
-      me.swipeActive = true;
+      this.swipeActive = true;
     });
 
-    eventService.subscribeToEvent(EventType.SwipeDeActivated, function () {
+    eventService.subscribeToEvent(EventType.SwipeDeActivated,  () =>  {
       console.log('swipe deactivated');
-      me.swipeActive = false;
+      this.swipeActive = false;
     });
   }
 
@@ -34,8 +34,8 @@ export class SwipeService {
     await this.router.navigate([route]);
   }
 
-  swipe(swipedir: any, route: string) {
-    var me = this;
+  swipe(swipedir: string, route: string) {
+    
     this.currentNavigationLeft = route;
     this.currentNavigationRight = route;
     const touchsurface = document.body;
@@ -46,69 +46,69 @@ export class SwipeService {
     body.style.position = 'fixed';
     html.style.position = 'fixed';
 
-    var me = this;
+    
     if (swipedir == 'left') {
       touchsurface.classList.add('swipeleft');
 
-      setTimeout(function () {
+      setTimeout( () => {
         touchsurface.classList.remove('swipeleft');
         touchsurface.style.left = '100vw';
-        me.navigate(route);
+        this.navigate(route);
 
-        setTimeout(function () {
+        setTimeout(() => {
           touchsurface.classList.add('swipeleftin');
         }, 25);
 
-        setTimeout(function () {
-          me.resetswipes(touchsurface);
+        setTimeout(() => {
+          this.resetswipes(touchsurface);
         }, 250);
       }, 250);
     } else if (swipedir == 'right') {
       touchsurface.classList.add('swiperight');
 
-      setTimeout(function () {
+      setTimeout(() => {
         touchsurface.classList.remove('swiperight');
         touchsurface.style.left = '-100vw';
-        me.navigate(route);
+        this.navigate(route);
 
         setTimeout(function () {
           touchsurface.classList.add('swiperightin');
         }, 25);
 
-        setTimeout(function () {
-          me.resetswipes(touchsurface);
+        setTimeout(() => {
+          this.resetswipes(touchsurface);
         }, 250);
       }, 250);
     } else if (swipedir == 'up') {
       touchsurface.classList.add('swipeup');
 
-      setTimeout(function () {
+      setTimeout(() => {
         touchsurface.classList.remove('swipeup');
         touchsurface.style.top = '100vh';
-        me.navigate(route);
+        this.navigate(route);
 
         setTimeout(function () {
           touchsurface.classList.add('swipeupin');
         }, 25);
 
-        setTimeout(function () {
-          me.resetswipes(touchsurface);
+        setTimeout(() => {
+          this.resetswipes(touchsurface);
         }, 250);
       }, 250);
     } else if (swipedir == 'down') {
       touchsurface.classList.add('swipedown');
 
-      setTimeout(function () {
+      setTimeout(() => {
         touchsurface.classList.remove('swipedown');
         touchsurface.style.top = '-100vh';
-        me.navigate(route);
+        this.navigate(route);
 
         setTimeout(function () {
           touchsurface.classList.add('swipedownin');
         }, 25);
 
-        setTimeout(function () {
-          me.resetswipes(touchsurface);
+        setTimeout(() => {
+          this.resetswipes(touchsurface);
         }, 250);
       }, 250);
     }
@@ -130,15 +130,13 @@ export class SwipeService {
   }
 
   public registerSwipeDetect() {
-    
-    const threshold = 10, body = document.body,
+    const threshold = 10,
+      body = document.body,
       html = document.documentElement;
-    let
-      startX: number,
+    let startX: number,
       startY: number,
       distX: number,
       distY: number,
-
       contentLeft: number,
       contentTop: number;
 
@@ -164,7 +162,7 @@ export class SwipeService {
 
     body.addEventListener(
       'touchmove',
-      e =>  {
+      (e) => {
         if (!this.swipeActive) {
           return;
         }
@@ -196,7 +194,7 @@ export class SwipeService {
 
     body.addEventListener(
       'touchend',
-      e => {
+      (e) => {
         if (!this.swipeActive) {
           return;
         }

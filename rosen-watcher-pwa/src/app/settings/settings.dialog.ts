@@ -8,26 +8,21 @@ interface DialogData {
   address: string;
 }
 
-
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.html',
   standalone: true,
   imports: [FormsModule, MatDialogClose],
 })
-
-
 export class SettingsDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<SettingsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) { }
+  ) {}
 
   onCancelClick(): void {
     this.dialogRef.close();
   }
-
-
 
   pasteData(): void {
     navigator.clipboard

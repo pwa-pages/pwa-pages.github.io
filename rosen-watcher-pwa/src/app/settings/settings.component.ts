@@ -33,7 +33,7 @@ export class SettingsComponent implements OnInit {
     const dialogRef = this.dialog.open(SettingsDialogComponent, {
       data: {
         title: 'Edit Address',
-        address: this.addresses[index].address
+        address: this.addresses[index].address,
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -42,10 +42,9 @@ export class SettingsComponent implements OnInit {
         const editAddress = this.addresses.find((a) => a.address == result.address);
         if (editAddress == null) {
           this.addresses.push({
-            
             address: result.address,
           } as Address);
-        } 
+        }
       }
     });
   }

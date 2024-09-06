@@ -35,7 +35,7 @@ export class WatchersDataService {
     return this.downloadService
       .downloadStream(permitsUrl)
       .pipe(
-        map((data :{ tokens: Token[] }) => {
+        map((data: { tokens: Token[] }) => {
           if (data.tokens) {
             const tokenData = data.tokens.find((token: Token) => token.tokenId === this.rsnToken);
             if (tokenData) {

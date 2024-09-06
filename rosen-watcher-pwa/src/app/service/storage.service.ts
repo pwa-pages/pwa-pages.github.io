@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { EventService, EventType } from './event.service';
 import { Input } from '../models/input';
+import { Transaction } from '../models/transaction';
+import { Address } from '../models/address';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +23,8 @@ export class StorageService {
     return new Promise((resolve, reject) => {
       const request = window.indexedDB.open(this.dbName, 2);
 
-      request.onupgradeneeded = (event: any) => {
-        const db = event.target.result;
+      request.onupgradeneeded = (event: Event) => {
+        const db = (event.target as IDBOpenDBRequest).result;
         if (!db.objectStoreNames.contains(this.inputsStoreName)) {
           db.createObjectStore(this.inputsStoreName, { keyPath: 'boxId' });
         }
@@ -34,15 +36,15 @@ export class StorageService {
         }
       };
 
-      request.onsuccess = async (event: any) => {
-        const db = event.target.result;
+      request.onsuccess = async (event: Event) => {
+        const db = (event.target as IDBOpenDBRequest).result;
 
         resolve(db);
       };
 
-      request.onerror = (event: any) => {
-        console.error('Error opening IndexedDB:', event.target.error);
-        reject(event.target.error);
+      request.onerror = (event: Event) => {
+        console.error('Error opening IndexedDB:', event.target);
+        reject(event.target);
       };
     });
   }
@@ -63,8 +65,8 @@ export class StorageService {
         resolve();
       };
 
-      request.onerror = (event: any) => {
-        console.error('Error clearing IndexedDB:', (event.target as any).errorCode);
+      request.onerror = (event: Event) => {
+        console.error('Error clearing IndexedDB:', event.target);
         resolve();
       };
     });
@@ -83,8 +85,8 @@ export class StorageService {
         resolve();
       };
 
-      request.onerror = (event: any) => {
-        console.error('Error clearing IndexedDB:', (event.target as any).errorCode);
+      request.onerror = (event: Event) => {
+        console.error('Error clearing IndexedDB:', (event.target));
         resolve();
       };
     });
@@ -99,15 +101,15 @@ export class StorageService {
     }
     this.updateCache = false;
     console.log('Getting inputs from database');
-    this.inputsCache = await this.getData(this.inputsStoreName);
+    this.inputsCache = await this.getData<Input>(this.inputsStoreName);
     return this.inputsCache;
   }
 
-  async getAddressData(): Promise<any[]> {
-    return await this.getData(this.addressDataStoreName);
+  async getAddressData(): Promise<Address[]> {
+    return await this.getData<Address>(this.addressDataStoreName);
   }
 
-  private async getData(storeName: string): Promise<any[]> {
+  private async getData<T>(storeName: string): Promise<T[]> {
     const db = await this.getDB();
 
     return new Promise((resolve, reject) => {
@@ -121,34 +123,34 @@ export class StorageService {
         resolve(request.result);
       };
 
-      request.onerror = (event: any) => {
-        reject(event.target.error);
+      request.onerror = (event: Event) => {
+        reject(event.target);
       };
     });
   }
 
-  async getDataByBoxId(boxId: string, addressId: string): Promise<any> {
+  async getDataByBoxId(boxId: string, addressId: string): Promise<Input | null> {
     const db = await this.getDB();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.inputsStoreName], 'readonly');
       const objectStore = transaction.objectStore(this.inputsStoreName);
-      const request = objectStore.get(boxId);
+      const request = objectStore.get(boxId) as IDBRequest;
 
       request.onsuccess = () => {
         if (!request.result || request.result.outputAddress != addressId) {
           resolve(null);
         } else {
-          resolve(request.result);
+          resolve(request.result as Input);
         }
       };
 
-      request.onerror = (event: any) => {
-        reject(event.target.error);
+      request.onerror = (event: Event) => {
+        reject(event.target);
       };
     });
   }
 
-  async putAddressData(addressData: any[]): Promise<void> {
+  async putAddressData(addressData: Address[]): Promise<void> {
     await this.clearAddressStore();
     const db = await this.getDB();
 
@@ -159,16 +161,16 @@ export class StorageService {
     });
   }
 
-  async addData(address: string, items: any): Promise<void> {
+  async addData(address: string, transactions: Transaction[]): Promise<void> {
     const db = await this.getDB();
 
     return new Promise((resolve, reject) => {
-      items.forEach((item: any) => {
-        item.inputs.forEach(async (input: any) => {
+      transactions.forEach((item: Transaction) => {
+        item.inputs.forEach(async (input: Input) => {
           input.outputAddress = address;
           input.inputDate = new Date(item.timestamp);
 
-          const dbInput: any = {
+          const dbInput: Input = {
             outputAddress: input.outputAddress,
             inputDate: input.inputDate,
             boxId: input.boxId,
@@ -185,8 +187,8 @@ export class StorageService {
             resolve();
           };
 
-          request.onerror = (event: any) => {
-            reject(event.target.error);
+          request.onerror = (event: Event) => {
+            reject(event.target);
           };
         });
       });
