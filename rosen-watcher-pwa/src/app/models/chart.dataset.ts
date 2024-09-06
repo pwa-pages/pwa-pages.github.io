@@ -1,6 +1,8 @@
+import { ChartPoint } from './chart.point';
+
 export class ChartDataSet {
   label: string;
-  data: any[];
+  data: ChartPoint[];
   backgroundColor: string;
   pointBackgroundColor: string;
   borderColor: string;

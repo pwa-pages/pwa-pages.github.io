@@ -4,7 +4,7 @@ import { Asset } from './asset';
 export class Input {
   outputAddress: string;
   inputDate: Date;
-  boxId?: string;
+  boxId: string;
   assets: Asset[];
   outputCreatedAt: number;
   address: string;
@@ -18,7 +18,7 @@ export class Input {
     outputCreatedAt: number,
     assets: Asset[],
     outputAddress: string,
-    boxId?: string,
+    boxId: string,
     accumulatedAmount?: number,
     amount?: number,
     chainType?: ChainType | null,

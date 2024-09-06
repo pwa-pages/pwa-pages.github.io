@@ -7,6 +7,7 @@ import { catchError, firstValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Input } from '../models/input';
 import { Address } from '../models/address';
+import { Asset } from '../models/asset';
 
 @Injectable({
   providedIn: 'root',
@@ -31,18 +32,18 @@ export class DataService {
       const inputs = await inputsPromise;
 
       const result_1 = inputs
-        .filter((i: any) => this.chainService.getChainType(i.address) != null)
+        .filter((i: Input) => this.chainService.getChainType(i.address) != null)
         .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
 
-      result_1.forEach((input: any) => {
+      result_1.forEach((input: Input) => {
         input.assets = input.assets
-          .filter((asset: any) => asset.name === 'RSN' || asset.name === 'eRSN')
-          .map((asset_1: any) => {
+          .filter((asset: Asset) => asset.name === 'RSN' || asset.name === 'eRSN')
+          .map((asset_1: Asset) => {
             return asset_1;
           });
       });
 
-      return await new Promise<any[]>((resolve) => {
+      return await new Promise<Input[]>((resolve) => {
         resolve(result_1);
       });
     } catch (error) {
@@ -63,7 +64,7 @@ export class DataService {
       const sum: number = inputs.reduce((accumulator, o) => {
         let assetAmount = 0;
 
-        o.assets.forEach((asset: any) => {
+        o.assets.forEach((asset: Asset) => {
           assetAmount += asset.amount / Math.pow(10, asset.decimals);
         });
 
@@ -79,29 +80,36 @@ export class DataService {
     }
   }
 
-  async getSortedInputs(): Promise<any[]> {
+  async getSortedInputs(): Promise<Input[]> {
     const inputsPromise = this.getWatcherInputs();
     let amount = 0;
-    const sortedInputs: any = [];
+    const sortedInputs: Input[] = [];
     console.log('start retrieving chart from database');
     try {
       const inputs = await inputsPromise;
 
       inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
 
-      inputs.forEach((input: any) => {
-        input.assets.forEach((asset: any) => {
+      inputs.forEach((input: Input) => {
+        input.assets.forEach((asset: Asset) => {
           amount += asset.amount;
-          sortedInputs.push({
-            inputDate: input.inputDate,
-            accumulatedAmount: amount,
-            amount: asset.amount / Math.pow(10, asset.decimals),
-            chainType: this.chainService.getChainType(input.address),
-          });
+          sortedInputs.push(
+            new Input(
+              input.inputDate,
+              input.address,
+              input.outputCreatedAt,
+              input.assets,
+              input.outputAddress,
+              input.boxId,
+              amount,
+              asset.amount / Math.pow(10, asset.decimals),
+              this.chainService.getChainType(input.address),
+            ),
+          );
         });
       });
       console.log('done retrieving chart from database ' + inputs.length + ' inputs');
-      return await new Promise<string[]>((resolve) => {
+      return await new Promise<Input[]>((resolve) => {
         resolve(sortedInputs);
       });
     } catch (error) {
@@ -110,19 +118,23 @@ export class DataService {
     }
   }
 
-  async getAddressesForDisplay(): Promise<any[]> {
+  async getAddressesForDisplay(): Promise<Address[]> {
     const addresses = this.getAddresses();
 
     return addresses.then((addresses) => {
-      const result: any[] = [];
-      addresses.forEach((a: any) => {
+      const result: Address[] = [];
+      addresses.forEach((a: Address) => {
         result.push({
           address: a.address.substring(0, 6) + '...',
           chainType: a.chainType,
         });
       });
 
-      result.sort((a, b) => a.chainType.localeCompare(b.chainType));
+      result.sort((a, b) =>
+        (a.chainType != null ? a.chainType : '').localeCompare(
+          b.chainType != null ? b.chainType : '',
+        ),
+      );
 
       return result;
     });
@@ -229,9 +241,9 @@ export class DataService {
       for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
         const item = result.transactions[i];
 
-        for (let j = 0; j < item.inputs.length; j++) {
-          if (item.inputs[j].boxId && halfBoxId == '') {
-            halfBoxId = item.inputs[j].boxId;
+        for (const input of item.inputs) {
+          if (input.boxId && halfBoxId === '') {
+            halfBoxId = input.boxId;
           }
         }
       }
@@ -254,38 +266,6 @@ export class DataService {
 
     this.DecreasBusyCounter();
     console.log(this.busyCounter);
-  }
-
-  async getAddressData(): Promise<any[]> {
-    const addressesPromise = this.storageService.getAddressData();
-    const resolvedAddresses = await this.getAddresses();
-    const result: any[] = [];
-
-    try {
-      const addresses = await addressesPromise;
-
-      addresses.forEach((address: any) => {
-        if (resolvedAddresses.indexOf(address.address) >= 0) {
-          if (address.address.length > 14) {
-            address.addressForDisplay =
-              address.address.substring(0, 6) +
-              ' ... ' +
-              address.address.substring(address.address.length - 6, address.address.length);
-          } else {
-            address.addressForDisplay = address.address;
-          }
-
-          result.push(address);
-        }
-      });
-
-      return await new Promise<string[]>((resolve) => {
-        resolve(result);
-      });
-    } catch (error) {
-      console.error(error);
-      return addressesPromise;
-    }
   }
 
   async getAddresses(): Promise<Address[]> {

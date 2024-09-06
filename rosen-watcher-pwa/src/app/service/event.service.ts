@@ -1,4 +1,4 @@
-import { Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export enum EventType {
@@ -19,8 +19,6 @@ export class EventService<T> {
   eventSubscriptions: {
     [key in EventType]: Subject<T>;
   } = this.resetSubscriptions();
-
-  
 
   resetSubscriptions() {
     this.eventSubscriptions = {

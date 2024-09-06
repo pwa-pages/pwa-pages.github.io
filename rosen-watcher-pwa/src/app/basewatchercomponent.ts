@@ -13,7 +13,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
   private rightAction = '';
 
   constructor(
-    public eventService: EventService<void>,
+    public eventService: EventService<string>,
     public swipeService: SwipeService,
   ) {}
 
@@ -40,26 +40,25 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     this.eventService.sendEvent(EventType.SwipeActivated);
 
-    var me = this;
-    await this.subscribeToEvent(EventType.StartFullDownload, function () {
-      me.busyCounter = 1;
+    await this.subscribeToEvent(EventType.StartFullDownload, () => {
+      this.busyCounter = 1;
     });
-    var me = this;
-    await this.subscribeToEvent(EventType.EndFullDownload, function () {
-      me.busyCounter = 0;
+
+    await this.subscribeToEvent(EventType.EndFullDownload, () => {
+      this.busyCounter = 0;
     });
 
     window.addEventListener('resize', this.resetHeight);
 
     this.resetHeight();
 
-    await this.subscribeToEvent(EventType.StartDownload, async function (url) {
-      me.loaderLogs.push('Downloading ' + me.getScreenLogurl(url));
-      me.loaderLogs = me.loaderLogs.slice(-5);
+    await this.subscribeToEvent(EventType.StartDownload, (url) => {
+      this.loaderLogs.push('Downloading ' + this.getScreenLogurl(url));
+      this.loaderLogs = this.loaderLogs.slice(-5);
     });
 
-    await this.subscribeToEvent(EventType.EndFullDownload, async function () {
-      me.loaderLogs = [];
+    await this.subscribeToEvent(EventType.EndFullDownload, () => {
+      this.loaderLogs = [];
     });
   }
 
@@ -76,7 +75,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  async subscribeToEvent(eventType: EventType, callback: (...args: any[]) => void) {
+  async subscribeToEvent(eventType: EventType, callback: (...args: string[]) => void) {
     await this.eventService.subscribeToEvent(eventType, callback);
   }
 

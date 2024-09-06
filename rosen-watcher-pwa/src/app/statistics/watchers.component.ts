@@ -26,7 +26,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
   constructor(
     private watchersDataService: WatchersDataService,
-    eventService: EventService<void>,
+    eventService: EventService<string>,
     swipeService: SwipeService,
   ) {
     super(eventService, swipeService);

@@ -24,7 +24,7 @@ export class WatchersDataService {
   ) {}
 
   getWatchersInfo(): Observable<WatcherInfo> {
-    const result = this.downloadService.downloadStream(this.watcherUrl);
+    const result = this.downloadService.downloadStream<WatcherInfo>(this.watcherUrl);
 
     return result;
   }
@@ -33,7 +33,7 @@ export class WatchersDataService {
     const address = this.chainService.permitAddresses[chainType];
     const permitsUrl = `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/confirmed`;
     return this.downloadService
-      .downloadStream(permitsUrl)
+      .downloadStream<WatcherInfo>(permitsUrl)
       .pipe(
         map((data: { tokens: Token[] }) => {
           if (data.tokens) {
