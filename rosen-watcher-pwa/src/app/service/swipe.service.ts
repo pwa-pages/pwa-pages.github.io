@@ -13,18 +13,17 @@ export class SwipeService {
   private swipeActive = false;
 
   constructor(
-    eventService: EventService,
+    eventService: EventService<void>,
     private router: Router,
   ) {
     this.registerSwipeDetect();
 
-
-    eventService.subscribeToEvent(EventType.SwipeActivated,  () => {
+    eventService.subscribeToEvent(EventType.SwipeActivated, () => {
       console.log('swipe activated');
       this.swipeActive = true;
     });
 
-    eventService.subscribeToEvent(EventType.SwipeDeActivated,  () =>  {
+    eventService.subscribeToEvent(EventType.SwipeDeActivated, () => {
       console.log('swipe deactivated');
       this.swipeActive = false;
     });
@@ -35,7 +34,6 @@ export class SwipeService {
   }
 
   swipe(swipedir: string, route: string) {
-    
     this.currentNavigationLeft = route;
     this.currentNavigationRight = route;
     const touchsurface = document.body;
@@ -46,11 +44,10 @@ export class SwipeService {
     body.style.position = 'fixed';
     html.style.position = 'fixed';
 
-    
     if (swipedir == 'left') {
       touchsurface.classList.add('swipeleft');
 
-      setTimeout( () => {
+      setTimeout(() => {
         touchsurface.classList.remove('swipeleft');
         touchsurface.style.left = '100vw';
         this.navigate(route);

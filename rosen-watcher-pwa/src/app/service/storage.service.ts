@@ -15,7 +15,7 @@ export class StorageService {
   inputsCache: Input[] = [];
   updateCache = true;
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService<string>) {
     this.dbPromise = this.initIndexedDB();
   }
 
@@ -86,7 +86,7 @@ export class StorageService {
       };
 
       request.onerror = (event: Event) => {
-        console.error('Error clearing IndexedDB:', (event.target));
+        console.error('Error clearing IndexedDB:', event.target);
         resolve();
       };
     });

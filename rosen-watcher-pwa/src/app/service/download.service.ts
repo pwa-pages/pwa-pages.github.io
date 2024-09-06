@@ -14,7 +14,7 @@ export class DownloadService {
 
   constructor(
     private http: HttpClient,
-    private eventService: EventService,
+    private eventService: EventService<string>,
   ) {}
 
   downloadPermitInfo(watcherUrl: string): Promise<any> {

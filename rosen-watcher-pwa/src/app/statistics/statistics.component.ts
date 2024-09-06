@@ -46,7 +46,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private storageService: StorageService,
     private dataService: DataService,
     private chartService: ChartService,
-    eventService: EventService,
+    eventService: EventService<void>,
     swipeService: SwipeService,
     private router: Router,
     private qrDialog: MatDialog,

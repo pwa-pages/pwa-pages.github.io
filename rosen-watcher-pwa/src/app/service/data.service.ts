@@ -19,7 +19,7 @@ export class DataService {
   constructor(
     private storageService: StorageService,
     private downloadService: DownloadService,
-    private eventService: EventService,
+    private eventService: EventService<string>,
     private chainService: ChainService,
     private snackBar: MatSnackBar,
   ) {}

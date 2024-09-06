@@ -1,11 +1,8 @@
-import { Input } from "./input";
+import { Input } from './input';
 
-
-  export class Transaction {
-    constructor(
-        public timestamp: number  ,
-        public inputs: Input[]
-    ) {}
-  }
-  
-  
+export class Transaction {
+  constructor(
+    public timestamp: number,
+    public inputs: Input[],
+  ) {}
+}

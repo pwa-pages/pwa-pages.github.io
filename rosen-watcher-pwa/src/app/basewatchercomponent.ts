@@ -13,7 +13,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
   private rightAction = '';
 
   constructor(
-    public eventService: EventService,
+    public eventService: EventService<void>,
     public swipeService: SwipeService,
   ) {}
 
