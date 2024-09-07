@@ -22,12 +22,13 @@
       "resources": {
         "files": [
           "/assets/**",
-          "/media/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
+          "/media/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)",
+          "/rosen-worker.js"
         ]
       }
     }
   ],
   "appData": {
-    "version": "2.0.0"
+    "version": "2.0.1"
   }
 }

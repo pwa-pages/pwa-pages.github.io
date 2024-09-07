@@ -11,7 +11,7 @@ const routes: Routes = [
 import { AppComponent } from './app/app.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { isDevMode, importProvidersFrom } from '@angular/core';
+import { importProvidersFrom } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -37,7 +37,6 @@ bootstrapApplication(AppComponent, {
       MatDialogModule,
       FormsModule,
       ServiceWorkerModule.register('ngsw-worker.js', {
-        enabled: !isDevMode(),
         registrationStrategy: 'registerWhenStable:30000',
       }),
       FontAwesomeModule,
@@ -48,4 +47,4 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideAnimations(),
   ],
-}).catch((err) => console.error(err));
+});
