@@ -21,13 +21,16 @@ export class StorageService {
 
   async initIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const request = window.indexedDB.open(this.dbName, 2);
+      const request = window.indexedDB.open(this.dbName, 15);
 
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
-        if (!db.objectStoreNames.contains(this.inputsStoreName)) {
-          db.createObjectStore(this.inputsStoreName, { keyPath: 'boxId' });
-        }
+
+        db.deleteObjectStore(this.inputsStoreName);
+
+
+        db.createObjectStore(this.inputsStoreName, { keyPath: ['boxId' , 'outputAddress']});
+
 
         if (!db.objectStoreNames.contains(this.addressDataStoreName)) {
           db.createObjectStore(this.addressDataStoreName, {
@@ -130,13 +133,22 @@ export class StorageService {
   }
 
   async getDataByBoxId(boxId: string, addressId: string): Promise<Input | null> {
+
+    if(boxId == 'f464d3cf1c30096f2177f670c0ea6986d0faa5bc3eac6c6bdb0d36b320b1f280'){
+      console.log(boxId);
+    }
     const db = await this.getDB();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.inputsStoreName], 'readonly');
       const objectStore = transaction.objectStore(this.inputsStoreName);
-      const request = objectStore.get(boxId) as IDBRequest;
+      const request = objectStore.get([boxId, addressId]) as IDBRequest;
 
       request.onsuccess = () => {
+
+        if(boxId == 'f464d3cf1c30096f2177f670c0ea6986d0faa5bc3eac6c6bdb0d36b320b1f280'){
+          console.log(boxId);
+        }
+
         if (!request.result || request.result.outputAddress != addressId) {
           resolve(null);
         } else {

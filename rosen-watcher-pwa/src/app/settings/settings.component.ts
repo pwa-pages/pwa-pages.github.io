@@ -87,7 +87,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getAddresses().then((dataServiceAddresses) => {
+    this.dataService.getAddressesFromInputs().then((dataServiceAddresses) => {
       // combine addresses from address store,
       // but also from input data for backwards compatibility reasons
 
