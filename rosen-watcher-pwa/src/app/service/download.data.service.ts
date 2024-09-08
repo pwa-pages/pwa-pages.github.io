@@ -182,7 +182,7 @@ export class DownloadDataService {
     }
   }
 
-  public async downloadForAddresses(hasAddressParams: boolean, addressesFromParams: Address[] ) {
+  public async downloadForAddresses(hasAddressParams: boolean, addressesFromParams: Address[]) {
     try {
       const addresses = hasAddressParams ? addressesFromParams : await this.getAddressData();
 
