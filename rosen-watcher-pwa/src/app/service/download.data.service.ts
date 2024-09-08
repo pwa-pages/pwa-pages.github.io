@@ -20,17 +20,15 @@ export class DownloadDataService {
   readonly fullDownloadsBatchSize: number = 200;
   readonly startFrom: Date = new Date('2024-01-01');
   dbName = 'rosenDatabase_1.1.5';
-  
+
   dbPromise: Promise<IDBDatabase>;
   busyCounter = 0;
 
   constructor(
-
     private eventService: EventService<string>,
     private snackBar: MatSnackBar,
   ) {
     this.dbPromise = this.initIndexedDB();
-
   }
 
   async initIndexedDB(): Promise<IDBDatabase> {
@@ -103,7 +101,7 @@ export class DownloadDataService {
       };
     });
   }
-  
+
   private async downloadTransactions(
     address: string,
     offset = 0,
@@ -153,16 +151,15 @@ export class DownloadDataService {
           address,
       );
 
-      if (!result.transactions || result.transactions.length === 0) {
-        console.log(this.busyCounter);
-        return;
-      }
+      if (!result.transactions || result.transactions.length === 0 || offset > 100000) {
 
-      if (offset > 100000) {
+        localStorage.setItem("fullDownloadAddress_" + address, "true");
+
         console.log(this.busyCounter);
-        console.log('this gets out of hand');
         return;
       }
+      
+      
 
       await this.addData(address, result.transactions);
       await this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
@@ -178,12 +175,10 @@ export class DownloadDataService {
     try {
       const addresses = await this.getAddressData();
 
-      // Create parallel download promises for each address
       const downloadPromises = addresses.map(async (address) => {
         await this.downloadForAddress(address.address, hasAddressParams);
       });
 
-      // Wait for all downloads to complete
       await Promise.all(downloadPromises);
     } catch (e) {
       console.error('Error downloading for addresses:', e);
@@ -194,6 +189,9 @@ export class DownloadDataService {
     const db = await this.getDB();
 
     return new Promise((resolve, reject) => {
+      const transaction = db.transaction([this.inputsStoreName], 'readwrite');
+          const objectStore = transaction.objectStore(this.inputsStoreName);
+          
       transactions.forEach((item: Transaction) => {
         item.inputs.forEach(async (input: Input) => {
           input.outputAddress = address;
@@ -208,8 +206,6 @@ export class DownloadDataService {
             address: input.address,
           };
 
-          const transaction = db.transaction([this.inputsStoreName], 'readwrite');
-          const objectStore = transaction.objectStore(this.inputsStoreName);
           const request = objectStore.put(dbInput);
 
           request.onsuccess = () => {
@@ -226,11 +222,7 @@ export class DownloadDataService {
     });
   }
 
-
   async getDataByBoxId(boxId: string, addressId: string): Promise<Input | null> {
-    if (boxId == 'f464d3cf1c30096f2177f670c0ea6986d0faa5bc3eac6c6bdb0d36b320b1f280') {
-      console.log(boxId);
-    }
     const db = await this.getDB();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.inputsStoreName], 'readonly');
@@ -238,9 +230,6 @@ export class DownloadDataService {
       const request = objectStore.get([boxId, addressId]) as IDBRequest;
 
       request.onsuccess = () => {
-        if (boxId == 'f464d3cf1c30096f2177f670c0ea6986d0faa5bc3eac6c6bdb0d36b320b1f280') {
-          console.log(boxId);
-        }
 
         if (!request.result || request.result.outputAddress != addressId) {
           resolve(null);
@@ -254,7 +243,7 @@ export class DownloadDataService {
       };
     });
   }
-  
+
   public async downloadForAddress(address: string, hasAddressParams: boolean) {
     this.IncreaseBusyCounter();
     console.log(this.busyCounter);
@@ -285,11 +274,12 @@ export class DownloadDataService {
       console.log('add bunch of data');
       await this.addData(address, result.transactions);
 
-      if (boxId) {
+      if (boxId && localStorage.getItem("fullDownloadAddress_" + address) == "true") {
         console.log(
           'Found existing boxId in db for download for: ' + address + ',no need to download more.',
         );
       } else if (itemsz >= this.initialNDownloads) {
+        localStorage.setItem("fullDownloadAddress_" + address, "false");
         console.log("Downloading all tx's for : " + address);
         await this.downloadAllForAddress(address, 0);
       }

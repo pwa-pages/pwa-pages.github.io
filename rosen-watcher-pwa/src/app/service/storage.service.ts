@@ -116,7 +116,6 @@ export class StorageService {
     });
   }
 
-
   async putAddressData(addressData: Address[]): Promise<void> {
     await this.clearAddressStore();
     const db = await this.getDB();
