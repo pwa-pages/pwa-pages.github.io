@@ -1,10 +1,9 @@
-
 import { Injectable } from '@angular/core';
-import { StorageService } from './storage.service';
 import { EventService, EventType } from './event.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Transaction } from '../models/transaction';
 import { Input } from '../models/input';
+import { Address } from '../models/address';
 
 interface TransactionResponse {
   items: Transaction[];
@@ -16,16 +15,44 @@ interface TransactionResponse {
 })
 export class DownloadDataService {
   inputsStoreName = 'inputBoxes';
+  addressDataStoreName = 'addressData';
   readonly initialNDownloads: number = 50;
   readonly fullDownloadsBatchSize: number = 200;
   readonly startFrom: Date = new Date('2024-01-01');
+  dbName = 'rosenDatabase_1.1.5';
+  
+  dbPromise: Promise<IDBDatabase>;
   busyCounter = 0;
 
   constructor(
-    private storageService: StorageService,
+
     private eventService: EventService<string>,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+  ) {
+    this.dbPromise = this.initIndexedDB();
+
+  }
+
+  async initIndexedDB(): Promise<IDBDatabase> {
+    return new Promise((resolve, reject) => {
+      const request = window.indexedDB.open(this.dbName);
+
+      request.onsuccess = async (event: Event) => {
+        const db = (event.target as IDBOpenDBRequest).result;
+
+        resolve(db);
+      };
+
+      request.onerror = (event: Event) => {
+        console.error('Error opening IndexedDB:', event.target);
+        reject(event.target);
+      };
+    });
+  }
+
+  async getDB(): Promise<IDBDatabase> {
+    return await this.dbPromise;
+  }
 
   private IncreaseBusyCounter(): void {
     if (this.busyCounter === 0) {
@@ -53,11 +80,34 @@ export class DownloadDataService {
       throw error;
     }
   }
+  async getAddressData(): Promise<Address[]> {
+    return await this.getData<Address>(this.addressDataStoreName);
+  }
 
+  private async getData<T>(storeName: string): Promise<T[]> {
+    const db = await this.getDB();
+
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([storeName], 'readonly');
+
+      const objectStore = transaction.objectStore(storeName);
+
+      const request = objectStore.getAll();
+
+      request.onsuccess = () => {
+        resolve(request.result);
+      };
+
+      request.onerror = (event: Event) => {
+        reject(event.target);
+      };
+    });
+  }
+  
   private async downloadTransactions(
     address: string,
     offset = 0,
-    limit = 500
+    limit = 500,
   ): Promise<{ transactions: Transaction[]; total: number }> {
     const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
 
@@ -88,25 +138,27 @@ export class DownloadDataService {
     console.log(this.busyCounter);
 
     try {
-      const result = await this.downloadTransactions(address, offset, this.fullDownloadsBatchSize + 10);
+      const result = await this.downloadTransactions(
+        address,
+        offset,
+        this.fullDownloadsBatchSize + 10,
+      );
 
       console.log(
         'Processing all download(offset = ' +
-        offset +
-        ', size = ' +
-        this.fullDownloadsBatchSize +
-        ') for: ' +
-        address,
+          offset +
+          ', size = ' +
+          this.fullDownloadsBatchSize +
+          ') for: ' +
+          address,
       );
 
       if (!result.transactions || result.transactions.length === 0) {
-        
         console.log(this.busyCounter);
         return;
       }
 
       if (offset > 100000) {
-
         console.log(this.busyCounter);
         console.log('this gets out of hand');
         return;
@@ -124,7 +176,7 @@ export class DownloadDataService {
 
   public async downloadForAddresses(hasAddressParams: boolean) {
     try {
-      const addresses = await this.storageService.getAddressData();
+      const addresses = await this.getAddressData();
 
       // Create parallel download promises for each address
       const downloadPromises = addresses.map(async (address) => {
@@ -139,7 +191,7 @@ export class DownloadDataService {
   }
 
   async addData(address: string, transactions: Transaction[]): Promise<void> {
-    const db = await this.storageService.getDB();
+    const db = await this.getDB();
 
     return new Promise((resolve, reject) => {
       transactions.forEach((item: Transaction) => {
@@ -159,7 +211,7 @@ export class DownloadDataService {
           const transaction = db.transaction([this.inputsStoreName], 'readwrite');
           const objectStore = transaction.objectStore(this.inputsStoreName);
           const request = objectStore.put(dbInput);
-    
+
           request.onsuccess = () => {
             resolve();
           };
@@ -171,6 +223,35 @@ export class DownloadDataService {
       });
 
       this.eventService.sendEvent(EventType.InputsStoredToDb);
+    });
+  }
+
+
+  async getDataByBoxId(boxId: string, addressId: string): Promise<Input | null> {
+    if (boxId == 'f464d3cf1c30096f2177f670c0ea6986d0faa5bc3eac6c6bdb0d36b320b1f280') {
+      console.log(boxId);
+    }
+    const db = await this.getDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([this.inputsStoreName], 'readonly');
+      const objectStore = transaction.objectStore(this.inputsStoreName);
+      const request = objectStore.get([boxId, addressId]) as IDBRequest;
+
+      request.onsuccess = () => {
+        if (boxId == 'f464d3cf1c30096f2177f670c0ea6986d0faa5bc3eac6c6bdb0d36b320b1f280') {
+          console.log(boxId);
+        }
+
+        if (!request.result || request.result.outputAddress != addressId) {
+          resolve(null);
+        } else {
+          resolve(request.result as Input);
+        }
+      };
+
+      request.onerror = (event: Event) => {
+        reject(event.target);
+      };
     });
   }
   
@@ -199,7 +280,7 @@ export class DownloadDataService {
           }
         }
       }
-      const boxId = await this.storageService.getDataByBoxId(halfBoxId, address);
+      const boxId = await this.getDataByBoxId(halfBoxId, address);
 
       console.log('add bunch of data');
       await this.addData(address, result.transactions);

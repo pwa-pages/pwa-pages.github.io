@@ -10,7 +10,7 @@ export class StorageService {
   inputsStoreName = 'inputBoxes';
   addressDataStoreName = 'addressData';
   dbPromise: Promise<IDBDatabase>;
-  
+
   constructor() {
     this.dbPromise = this.initIndexedDB();
   }
@@ -90,7 +90,6 @@ export class StorageService {
   async getInputs(): Promise<Input[]> {
     console.log('Getting inputs from database');
     return await this.getData<Input>(this.inputsStoreName);
-    
   }
 
   async getAddressData(): Promise<Address[]> {
@@ -117,33 +116,6 @@ export class StorageService {
     });
   }
 
-  async getDataByBoxId(boxId: string, addressId: string): Promise<Input | null> {
-    if (boxId == 'f464d3cf1c30096f2177f670c0ea6986d0faa5bc3eac6c6bdb0d36b320b1f280') {
-      console.log(boxId);
-    }
-    const db = await this.getDB();
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([this.inputsStoreName], 'readonly');
-      const objectStore = transaction.objectStore(this.inputsStoreName);
-      const request = objectStore.get([boxId, addressId]) as IDBRequest;
-
-      request.onsuccess = () => {
-        if (boxId == 'f464d3cf1c30096f2177f670c0ea6986d0faa5bc3eac6c6bdb0d36b320b1f280') {
-          console.log(boxId);
-        }
-
-        if (!request.result || request.result.outputAddress != addressId) {
-          resolve(null);
-        } else {
-          resolve(request.result as Input);
-        }
-      };
-
-      request.onerror = (event: Event) => {
-        reject(event.target);
-      };
-    });
-  }
 
   async putAddressData(addressData: Address[]): Promise<void> {
     await this.clearAddressStore();
@@ -155,6 +127,4 @@ export class StorageService {
       objectStore.put(a);
     });
   }
-
-  
 }

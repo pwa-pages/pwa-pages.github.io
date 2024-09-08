@@ -116,7 +116,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay();
 
     this.updateChart();
-    
   }
 
   updateChart(): void {
