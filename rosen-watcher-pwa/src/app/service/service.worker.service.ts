@@ -5,7 +5,7 @@ import { EventService } from './event.service';
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {
   type: string;
-  payload?: any;
+  payload?: object;
 }
 
 export function initializeServiceWorkerService(serviceWorkerService: ServiceWorkerService) {
@@ -18,10 +18,10 @@ export function initializeServiceWorkerService(serviceWorkerService: ServiceWork
   providedIn: 'root',
 })
 export class ServiceWorkerService {
-  constructor(private swPush: SwPush, /*private swUpdate: SwUpdate, */private eventService: EventService<string>) {
-
-  }
-
+  constructor(
+    private swPush: SwPush,
+    /*private swUpdate: SwUpdate, */ private eventService: EventService<string>,
+  ) {}
 
   public async initialize() {
     this.eventService.subscribeToAllEvents((eventType) => {
@@ -38,7 +38,6 @@ export class ServiceWorkerService {
   }
 
   listenForPushNotifications() {
-    
     this.swPush.messages.subscribe((msg) => {
       console.log('Received push notification message', msg);
     });

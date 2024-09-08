@@ -56,7 +56,6 @@ export class EventService<T> {
     });
   }
 
-
   async unSubscribeAll(events: EventType[]) {
     for (const eventType of events) {
       console.log('Unsubscribing all from ' + eventType);

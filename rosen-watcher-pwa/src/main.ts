@@ -27,7 +27,10 @@ import { MatInputModule } from '@angular/material/input';
 import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { DatePipe, CommonModule } from '@angular/common';
-import { initializeServiceWorkerService, ServiceWorkerService } from './app/service/service.worker.service';
+import {
+  initializeServiceWorkerService,
+  ServiceWorkerService,
+} from './app/service/service.worker.service';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -53,6 +56,6 @@ bootstrapApplication(AppComponent, {
       useFactory: initializeServiceWorkerService,
       deps: [ServiceWorkerService],
       multi: true,
-    }
+    },
   ],
 });

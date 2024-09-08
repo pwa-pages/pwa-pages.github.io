@@ -118,8 +118,6 @@ export class DataService {
     }
   }
 
-
-
   private IncreaseBusyCounter(): void {
     if (this.busyCounter == 0) {
       this.eventService.sendEvent(EventType.StartFullDownload);
