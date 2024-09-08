@@ -40,7 +40,7 @@ export class DownloadDataService {
         if (db.objectStoreNames.contains(this.inputsStoreName)) {
           db.deleteObjectStore(this.inputsStoreName);
         }
-        
+
         db.createObjectStore(this.inputsStoreName, { keyPath: ['boxId', 'outputAddress'] });
 
         if (!db.objectStoreNames.contains(this.addressDataStoreName)) {
@@ -182,9 +182,9 @@ export class DownloadDataService {
     }
   }
 
-  public async downloadForAddresses(hasAddressParams: boolean) {
+  public async downloadForAddresses(hasAddressParams: boolean, addressesFromParams: Address[] ) {
     try {
-      const addresses = await this.getAddressData();
+      const addresses = hasAddressParams ? addressesFromParams : await this.getAddressData();
 
       const downloadPromises = addresses.map(async (address) => {
         await this.downloadForAddress(address.address, hasAddressParams);

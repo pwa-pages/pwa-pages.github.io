@@ -191,7 +191,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       const hasAddressParams = await this.checkAddressParams(params);
 
       await this.retrieveData().then(async () => {
-        await this.downloadDataService.downloadForAddresses(hasAddressParams);
+        await this.downloadDataService.downloadForAddresses(hasAddressParams, this.addresses);
       });
     });
 
