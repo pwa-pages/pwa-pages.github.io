@@ -192,16 +192,8 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.route.queryParams.subscribe(async (params) => {
       const hasAddressParams = await this.checkAddressParams(params);
 
-      const storageService = this.storageService;
-
-      await this.retrieveData().then(() => {
-        this.addresses.forEach(async (address) => {
-          await this.downloadDataService.downloadForAddress(
-            address.address,
-            storageService,
-            hasAddressParams,
-          );
-        });
+      await this.retrieveData().then(async () => {
+        await this.downloadDataService.downloadForAddresses(hasAddressParams);
       });
     });
 
