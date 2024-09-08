@@ -4,6 +4,7 @@ import { StorageService } from './storage.service';
 import { EventService, EventType } from './event.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Transaction } from '../models/transaction';
+import { Input } from '../models/input';
 
 interface TransactionResponse {
   items: Transaction[];
@@ -14,6 +15,7 @@ interface TransactionResponse {
   providedIn: 'root',
 })
 export class DownloadDataService {
+  inputsStoreName = 'inputBoxes';
   readonly initialNDownloads: number = 50;
   readonly fullDownloadsBatchSize: number = 200;
   readonly startFrom: Date = new Date('2024-01-01');
@@ -110,7 +112,7 @@ export class DownloadDataService {
         return;
       }
 
-      await this.storageService.addData(address, result.transactions);
+      await this.addData(address, result.transactions);
       await this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
     } catch (e) {
       console.error(e);
@@ -136,6 +138,42 @@ export class DownloadDataService {
     }
   }
 
+  async addData(address: string, transactions: Transaction[]): Promise<void> {
+    const db = await this.storageService.getDB();
+
+    return new Promise((resolve, reject) => {
+      transactions.forEach((item: Transaction) => {
+        item.inputs.forEach(async (input: Input) => {
+          input.outputAddress = address;
+          input.inputDate = new Date(item.timestamp);
+
+          const dbInput: Input = {
+            outputAddress: input.outputAddress,
+            inputDate: input.inputDate,
+            boxId: input.boxId,
+            assets: input.assets,
+            outputCreatedAt: input.outputCreatedAt,
+            address: input.address,
+          };
+
+          const transaction = db.transaction([this.inputsStoreName], 'readwrite');
+          const objectStore = transaction.objectStore(this.inputsStoreName);
+          const request = objectStore.put(dbInput);
+    
+          request.onsuccess = () => {
+            resolve();
+          };
+
+          request.onerror = (event: Event) => {
+            reject(event.target);
+          };
+        });
+      });
+
+      this.eventService.sendEvent(EventType.InputsStoredToDb);
+    });
+  }
+  
   public async downloadForAddress(address: string, hasAddressParams: boolean) {
     this.IncreaseBusyCounter();
     console.log(this.busyCounter);
@@ -164,7 +202,7 @@ export class DownloadDataService {
       const boxId = await this.storageService.getDataByBoxId(halfBoxId, address);
 
       console.log('add bunch of data');
-      await this.storageService.addData(address, result.transactions);
+      await this.addData(address, result.transactions);
 
       if (boxId) {
         console.log(

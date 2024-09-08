@@ -92,7 +92,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     return `${day} ${month} ${year}`;
   }
 
-  async retrieveData(): Promise<Input[]> {
+  async retrieveData(): Promise<void> {
     this.data = await this.dataService.getTotalRewards();
 
     this.sortedInputs = await this.dataService.getSortedInputs();
@@ -113,11 +113,10 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     }
 
     this.rewardsChart = newChart;
-    const result = await this.dataService.getInputs();
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay();
 
     this.updateChart();
-    return result;
+    
   }
 
   updateChart(): void {

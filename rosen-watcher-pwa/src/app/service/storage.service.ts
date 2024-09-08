@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventService, EventType } from './event.service';
 import { Input } from '../models/input';
-import { Transaction } from '../models/transaction';
 import { Address } from '../models/address';
 
 @Injectable({
@@ -12,10 +10,8 @@ export class StorageService {
   inputsStoreName = 'inputBoxes';
   addressDataStoreName = 'addressData';
   dbPromise: Promise<IDBDatabase>;
-  inputsCache: Input[] = [];
-  updateCache = true;
-
-  constructor(private eventService: EventService<string>) {
+  
+  constructor() {
     this.dbPromise = this.initIndexedDB();
   }
 
@@ -27,7 +23,6 @@ export class StorageService {
         const db = (event.target as IDBOpenDBRequest).result;
 
         db.deleteObjectStore(this.inputsStoreName);
-
         db.createObjectStore(this.inputsStoreName, { keyPath: ['boxId', 'outputAddress'] });
 
         if (!db.objectStoreNames.contains(this.addressDataStoreName)) {
@@ -80,7 +75,6 @@ export class StorageService {
       const objectStore = transaction.objectStore(this.inputsStoreName);
       const request = objectStore.clear();
 
-      this.updateCache = true;
       request.onsuccess = () => {
         console.log('IndexedDB cleared successfully.');
         resolve();
@@ -94,16 +88,9 @@ export class StorageService {
   }
 
   async getInputs(): Promise<Input[]> {
-    if (this.inputsCache && this.inputsCache.length > 0 && !this.updateCache) {
-      return new Promise<Input[]>((resolve) => {
-        console.log('Getting inputs from cache');
-        resolve(this.inputsCache);
-      });
-    }
-    this.updateCache = false;
     console.log('Getting inputs from database');
-    this.inputsCache = await this.getData<Input>(this.inputsStoreName);
-    return this.inputsCache;
+    return await this.getData<Input>(this.inputsStoreName);
+    
   }
 
   async getAddressData(): Promise<Address[]> {
@@ -169,39 +156,5 @@ export class StorageService {
     });
   }
 
-  async addData(address: string, transactions: Transaction[]): Promise<void> {
-    const db = await this.getDB();
-
-    return new Promise((resolve, reject) => {
-      transactions.forEach((item: Transaction) => {
-        item.inputs.forEach(async (input: Input) => {
-          input.outputAddress = address;
-          input.inputDate = new Date(item.timestamp);
-
-          const dbInput: Input = {
-            outputAddress: input.outputAddress,
-            inputDate: input.inputDate,
-            boxId: input.boxId,
-            assets: input.assets,
-            outputCreatedAt: input.outputCreatedAt,
-            address: input.address,
-          };
-
-          const transaction = db.transaction([this.inputsStoreName], 'readwrite');
-          const objectStore = transaction.objectStore(this.inputsStoreName);
-          const request = objectStore.put(dbInput);
-          this.updateCache = true;
-          request.onsuccess = () => {
-            resolve();
-          };
-
-          request.onerror = (event: Event) => {
-            reject(event.target);
-          };
-        });
-      });
-
-      this.eventService.sendEvent(EventType.InputsStoredToDb);
-    });
-  }
+  
 }
