@@ -8,6 +8,7 @@ const routes: Routes = [
 ];
 
 // Import AppModule
+import { APP_INITIALIZER } from '@angular/core';
 import { AppComponent } from './app/app.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -26,6 +27,7 @@ import { MatInputModule } from '@angular/material/input';
 import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { DatePipe, CommonModule } from '@angular/common';
+import { initializeServiceWorkerService, ServiceWorkerService } from './app/service/service.worker.service';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -46,5 +48,11 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(routes),
     provideAnimations(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeServiceWorkerService,
+      deps: [ServiceWorkerService],
+      multi: true,
+    }
   ],
 });

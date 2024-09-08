@@ -1,6 +1,9 @@
 self.addEventListener('message', (event) => {
+
+  console.log('Rosen service worker received event of type ' + event.data.type);
+
     if (event.data && event.data.type === 'START_TASK') {
-      console.log('Custom SW Extension: START_TASK message received.');
+      
   
       
       setTimeout(() => {

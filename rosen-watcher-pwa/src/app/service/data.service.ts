@@ -23,7 +23,7 @@ export class DataService {
     private eventService: EventService<string>,
     private chainService: ChainService,
     private snackBar: MatSnackBar,
-  ) { }
+  ) {}
 
   async getWatcherInputs(): Promise<Input[]> {
     const inputsPromise = this.storageService.getInputs();
@@ -118,27 +118,7 @@ export class DataService {
     }
   }
 
-  async getAddressesForDisplay(): Promise<Address[]> {
-    const addresses = this.getAddressesFromInputs();
 
-    return addresses.then((addresses) => {
-      const result: Address[] = [];
-      addresses.forEach((a: Address) => {
-        result.push({
-          address: a.address.substring(0, 6) + '...',
-          chainType: a.chainType,
-        });
-      });
-
-      result.sort((a, b) =>
-        (a.chainType != null ? a.chainType : '').localeCompare(
-          b.chainType != null ? b.chainType : '',
-        ),
-      );
-
-      return result;
-    });
-  }
 
   private IncreaseBusyCounter(): void {
     if (this.busyCounter == 0) {
@@ -174,11 +154,11 @@ export class DataService {
 
     console.log(
       'Processing all download(offset = ' +
-      offset +
-      ', size = ' +
-      this.fullDownloadsBatchSize +
-      ') for: ' +
-      address,
+        offset +
+        ', size = ' +
+        this.fullDownloadsBatchSize +
+        ') for: ' +
+        address,
     );
 
     if (!result.transactions || result.transactions.length == 0) {
@@ -268,13 +248,31 @@ export class DataService {
     console.log(this.busyCounter);
   }
 
-
   async getAddresses(): Promise<Address[]> {
-
     return await this.storageService.getAddressData();
   }
 
+  async getAddressesForDisplay(): Promise<Address[]> {
+    const addresses = this.getAddressesFromInputs();
 
+    return addresses.then((addresses) => {
+      const result: Address[] = [];
+      addresses.forEach((a: Address) => {
+        result.push({
+          address: a.address.substring(0, 6) + '...',
+          chainType: a.chainType,
+        });
+      });
+
+      result.sort((a, b) =>
+        (a.chainType != null ? a.chainType : '').localeCompare(
+          b.chainType != null ? b.chainType : '',
+        ),
+      );
+
+      return result;
+    });
+  }
 
   async getAddressesFromInputs(): Promise<Address[]> {
     const inputsPromise = this.getWatcherInputs();
@@ -293,7 +291,6 @@ export class DataService {
       });
 
       return await new Promise<Address[]>((resolve) => {
-
         resolve(addresses);
       });
     } catch (error) {

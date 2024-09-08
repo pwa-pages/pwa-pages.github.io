@@ -232,7 +232,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       await this.storageService.clearInputsStore();
       if (this.addresses.length == 0) {
         this.noAddresses = true;
-      } 
+      }
       return true;
     } else {
       this.addresses = await this.dataService.getAddresses();

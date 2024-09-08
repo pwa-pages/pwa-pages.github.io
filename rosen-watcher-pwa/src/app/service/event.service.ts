@@ -50,6 +50,13 @@ export class EventService<T> {
     });
   }
 
+  async subscribeToAllEvents(callback: (eventType: EventType, ...args: T[]) => void) {
+    Object.values(EventType).forEach((eventType) => {
+      this.subscribeToEvent(eventType, (...args: T[]) => callback(eventType, ...args));
+    });
+  }
+
+
   async unSubscribeAll(events: EventType[]) {
     for (const eventType of events) {
       console.log('Unsubscribing all from ' + eventType);
