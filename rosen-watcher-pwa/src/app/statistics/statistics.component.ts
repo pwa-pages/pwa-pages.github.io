@@ -13,6 +13,7 @@ import 'chartjs-adapter-date-fns';
 import { ChartService, DateNumberPoint, LineChart } from '../service/chart.service';
 import { Input } from '../models/input';
 import { Address } from '../models/address';
+import { DownloadDataService } from '../service/download.data.service';
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
   deferredPrompt?: BeforeInstallPromptEvent;
@@ -45,6 +46,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private route: ActivatedRoute,
     private storageService: StorageService,
     private dataService: DataService,
+    private downloadDataService: DownloadDataService,
     private chartService: ChartService,
     eventService: EventService<string>,
     swipeService: SwipeService,
@@ -194,12 +196,11 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
       await this.retrieveData().then(() => {
         this.addresses.forEach(async (address) => {
-          await this.dataService.downloadForAddress(
+          await this.downloadDataService.downloadForAddress(
             address.address,
             storageService,
             hasAddressParams,
           );
-          await this.retrieveData();
         });
       });
     });
