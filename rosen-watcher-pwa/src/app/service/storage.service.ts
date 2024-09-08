@@ -22,7 +22,9 @@ export class StorageService {
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
 
-        db.deleteObjectStore(this.inputsStoreName);
+        if (db.objectStoreNames.contains(this.inputsStoreName)) {
+          db.deleteObjectStore(this.inputsStoreName);
+        }
         db.createObjectStore(this.inputsStoreName, { keyPath: ['boxId', 'outputAddress'] });
 
         if (!db.objectStoreNames.contains(this.addressDataStoreName)) {

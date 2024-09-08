@@ -37,7 +37,10 @@ export class DownloadDataService {
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
 
-        db.deleteObjectStore(this.inputsStoreName);
+        if (db.objectStoreNames.contains(this.inputsStoreName)) {
+          db.deleteObjectStore(this.inputsStoreName);
+        }
+        
         db.createObjectStore(this.inputsStoreName, { keyPath: ['boxId', 'outputAddress'] });
 
         if (!db.objectStoreNames.contains(this.addressDataStoreName)) {
@@ -155,11 +158,11 @@ export class DownloadDataService {
 
       console.log(
         'Processing all download(offset = ' +
-        offset +
-        ', size = ' +
-        this.fullDownloadsBatchSize +
-        ') for: ' +
-        address,
+          offset +
+          ', size = ' +
+          this.fullDownloadsBatchSize +
+          ') for: ' +
+          address,
       );
 
       if (!result.transactions || result.transactions.length === 0 || offset > 100000) {
