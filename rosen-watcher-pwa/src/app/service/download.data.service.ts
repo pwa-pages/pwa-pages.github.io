@@ -30,10 +30,22 @@ export class DownloadDataService {
   ) {
     this.dbPromise = this.initIndexedDB();
   }
-
   async initIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const request = window.indexedDB.open(this.dbName);
+      const request = window.indexedDB.open(this.dbName, 15);
+
+      request.onupgradeneeded = (event: Event) => {
+        const db = (event.target as IDBOpenDBRequest).result;
+
+        db.deleteObjectStore(this.inputsStoreName);
+        db.createObjectStore(this.inputsStoreName, { keyPath: ['boxId', 'outputAddress'] });
+
+        if (!db.objectStoreNames.contains(this.addressDataStoreName)) {
+          db.createObjectStore(this.addressDataStoreName, {
+            keyPath: 'address',
+          });
+        }
+      };
 
       request.onsuccess = async (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
@@ -47,7 +59,6 @@ export class DownloadDataService {
       };
     });
   }
-
   async getDB(): Promise<IDBDatabase> {
     return await this.dbPromise;
   }
@@ -144,22 +155,19 @@ export class DownloadDataService {
 
       console.log(
         'Processing all download(offset = ' +
-          offset +
-          ', size = ' +
-          this.fullDownloadsBatchSize +
-          ') for: ' +
-          address,
+        offset +
+        ', size = ' +
+        this.fullDownloadsBatchSize +
+        ') for: ' +
+        address,
       );
 
       if (!result.transactions || result.transactions.length === 0 || offset > 100000) {
-
-        localStorage.setItem("fullDownloadAddress_" + address, "true");
+        localStorage.setItem('fullDownloadAddress_' + address, 'true');
 
         console.log(this.busyCounter);
         return;
       }
-      
-      
 
       await this.addData(address, result.transactions);
       await this.downloadAllForAddress(address, offset + this.fullDownloadsBatchSize);
@@ -190,8 +198,8 @@ export class DownloadDataService {
 
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.inputsStoreName], 'readwrite');
-          const objectStore = transaction.objectStore(this.inputsStoreName);
-          
+      const objectStore = transaction.objectStore(this.inputsStoreName);
+
       transactions.forEach((item: Transaction) => {
         item.inputs.forEach(async (input: Input) => {
           input.outputAddress = address;
@@ -230,7 +238,6 @@ export class DownloadDataService {
       const request = objectStore.get([boxId, addressId]) as IDBRequest;
 
       request.onsuccess = () => {
-
         if (!request.result || request.result.outputAddress != addressId) {
           resolve(null);
         } else {
@@ -274,12 +281,12 @@ export class DownloadDataService {
       console.log('add bunch of data');
       await this.addData(address, result.transactions);
 
-      if (boxId && localStorage.getItem("fullDownloadAddress_" + address) == "true") {
+      if (boxId && localStorage.getItem('fullDownloadAddress_' + address) == 'true') {
         console.log(
           'Found existing boxId in db for download for: ' + address + ',no need to download more.',
         );
       } else if (itemsz >= this.initialNDownloads) {
-        localStorage.setItem("fullDownloadAddress_" + address, "false");
+        localStorage.setItem('fullDownloadAddress_' + address, 'false');
         console.log("Downloading all tx's for : " + address);
         await this.downloadAllForAddress(address, 0);
       }
