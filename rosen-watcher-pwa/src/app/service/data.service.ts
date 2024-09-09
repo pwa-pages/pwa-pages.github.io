@@ -49,11 +49,8 @@ export class DataService {
     return this.storageService.getInputs();
   }
 
-  async getTotalRewards(inputs : Input[] ): Promise<string> {
-    
-
+  async getTotalRewards(inputs: Input[]): Promise<string> {
     try {
-    
       const sum: number = inputs.reduce((accumulator, o) => {
         let assetAmount = 0;
 
@@ -137,13 +134,10 @@ export class DataService {
     });
   }
 
-  async getAddressesFromInputs(inputs : Input[]): Promise<Address[]> {
-    
+  async getAddressesFromInputs(inputs: Input[]): Promise<Address[]> {
     const addresses: Address[] = [];
 
     try {
-
-
       inputs.forEach((input: Input) => {
         if (!addresses.some((address) => address.address == input.outputAddress)) {
           addresses.push({

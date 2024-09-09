@@ -182,9 +182,9 @@ export class DownloadDataService {
     }
   }
 
-  public async downloadForAddresses(hasAddressParams: boolean, addressesFromParams: Address[]) {
+  public async downloadForAddresses(hasAddressParams: boolean) {
     try {
-      const addresses = hasAddressParams ? addressesFromParams : await this.getAddressData();
+      const addresses = await this.getAddressData();
 
       const downloadPromises = addresses.map(async (address) => {
         await this.downloadForAddress(address.address, hasAddressParams);
@@ -233,7 +233,7 @@ export class DownloadDataService {
           });
 
           putRequests.push(putPromise);
-        }); 
+        });
       });
 
       Promise.all(putRequests)

@@ -11,12 +11,9 @@ export class StorageService {
   addressDataStoreName = 'addressData';
   dbPromise: Promise<IDBDatabase>;
   inputsCache: Input[] = [];
-  
 
   constructor() {
     this.dbPromise = this.initIndexedDB();
-
-    
   }
 
   async initIndexedDB(): Promise<IDBDatabase> {

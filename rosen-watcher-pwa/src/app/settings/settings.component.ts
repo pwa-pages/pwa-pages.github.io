@@ -75,8 +75,8 @@ export class SettingsComponent implements OnInit {
       });
   }
 
-  save(): void {
-    this.storageService.putAddressData(this.addresses);
+  async save(): Promise<void> {
+    await this.storageService.putAddressData(this.addresses);
     this.router.navigate(['main'], {
       queryParams: { addresses: JSON.stringify(this.addresses) },
     });
@@ -87,7 +87,7 @@ export class SettingsComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    var inputs = await this.dataService.getInputs();
+    const inputs = await this.dataService.getInputs();
 
     this.dataService.getAddressesFromInputs(inputs).then((dataServiceAddresses) => {
       // combine addresses from address store,

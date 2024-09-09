@@ -39,6 +39,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   addressesForDisplay: Address[];
   shareSupport = false;
   chart: LineChart | undefined;
+  
   @ViewChild('detailsContainer') detailsContainer!: ElementRef;
 
   constructor(
@@ -51,7 +52,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     eventService: EventService<string>,
     swipeService: SwipeService,
     private router: Router,
-    private qrDialog: MatDialog,
+    private qrDialog: MatDialog
   ) {
     super(eventService, swipeService);
     this.data = '';
@@ -93,8 +94,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   async retrieveData(): Promise<void> {
-    
-
     this.sortedInputs = await this.dataService.getSortedInputs();
 
     const newChart = this.sortedInputs.map((s) => {
@@ -116,8 +115,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.updateChart();
     this.data = await this.dataService.getTotalRewards(this.sortedInputs);
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay(this.sortedInputs);
-
-    
   }
 
   updateChart(): void {
@@ -174,11 +171,12 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
+
     this.route.queryParams.subscribe(async (params) => {
       const hasAddressParams = await this.checkAddressParams(params);
 
       await this.retrieveData().then(async () => {
-        await this.downloadDataService.downloadForAddresses(hasAddressParams, this.addresses);
+        await this.downloadDataService.downloadForAddresses(hasAddressParams);
       });
     });
 
@@ -197,8 +195,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       event.preventDefault();
     });
 
-
-
     await this.subscribeToEvent(EventType.InputsStoredToDb, async () => {
       await this.retrieveData();
     });
@@ -206,6 +202,8 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     await this.subscribeToEvent(EventType.EndFullDownload, async () => {
       await this.retrieveData();
     });
+
+    
   }
 
   title = 'rosen-watcher-pwa';
@@ -224,6 +222,8 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
         this.location.replaceState(newPath);
       }
 
+      await this.storageService.putAddressData(this.addresses);
+      
       await this.storageService.clearInputsStore();
       if (this.addresses.length == 0) {
         this.noAddresses = true;
