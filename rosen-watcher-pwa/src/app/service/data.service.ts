@@ -49,11 +49,11 @@ export class DataService {
     return this.storageService.getInputs();
   }
 
-  async getTotalRewards(): Promise<string> {
-    const inputsPromise = this.getWatcherInputs();
+  async getTotalRewards(inputs : Input[] ): Promise<string> {
+    
 
     try {
-      const inputs = await inputsPromise;
+    
       const sum: number = inputs.reduce((accumulator, o) => {
         let assetAmount = 0;
 
@@ -115,8 +115,8 @@ export class DataService {
     return await this.storageService.getAddressData();
   }
 
-  async getAddressesForDisplay(): Promise<Address[]> {
-    const addresses = this.getAddressesFromInputs();
+  async getAddressesForDisplay(inputs: Input[]): Promise<Address[]> {
+    const addresses = this.getAddressesFromInputs(inputs);
 
     return addresses.then((addresses) => {
       const result: Address[] = [];
@@ -137,12 +137,12 @@ export class DataService {
     });
   }
 
-  async getAddressesFromInputs(): Promise<Address[]> {
-    const inputsPromise = this.getWatcherInputs();
+  async getAddressesFromInputs(inputs : Input[]): Promise<Address[]> {
+    
     const addresses: Address[] = [];
 
     try {
-      const inputs = await inputsPromise;
+
 
       inputs.forEach((input: Input) => {
         if (!addresses.some((address) => address.address == input.outputAddress)) {

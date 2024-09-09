@@ -86,8 +86,10 @@ export class SettingsComponent implements OnInit {
     this.router.navigate(['main']);
   }
 
-  ngOnInit(): void {
-    this.dataService.getAddressesFromInputs().then((dataServiceAddresses) => {
+  async ngOnInit(): Promise<void> {
+    var inputs = await this.dataService.getInputs();
+
+    this.dataService.getAddressesFromInputs(inputs).then((dataServiceAddresses) => {
       // combine addresses from address store,
       // but also from input data for backwards compatibility reasons
 

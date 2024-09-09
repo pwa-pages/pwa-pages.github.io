@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Input } from '../models/input';
 import { Address } from '../models/address';
-import { EventService, EventType } from './event.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,16 +11,12 @@ export class StorageService {
   addressDataStoreName = 'addressData';
   dbPromise: Promise<IDBDatabase>;
   inputsCache: Input[] = [];
-  updateCache = true;
+  
 
-  constructor(eventService: EventService<void>) {
+  constructor() {
     this.dbPromise = this.initIndexedDB();
 
     
-    eventService.subscribeToEvent(EventType.InputsStoredToDb, () => {
-      
-      this.updateCache = true;
-    });
   }
 
   async initIndexedDB(): Promise<IDBDatabase> {
@@ -86,7 +81,6 @@ export class StorageService {
       const objectStore = transaction.objectStore(this.inputsStoreName);
       const request = objectStore.clear();
 
-      this.updateCache = true;
       request.onsuccess = () => {
         console.log('IndexedDB cleared successfully.');
         resolve();
@@ -100,22 +94,9 @@ export class StorageService {
   }
 
   async getInputs(): Promise<Input[]> {
-
-    if (this.inputsCache && this.inputsCache.length > 0 && !this.updateCache) {
-      return new Promise<Input[]>((resolve) => {
-        console.log('Getting inputs from cache');
-        resolve(this.inputsCache);
-      });
-    }
-    this.updateCache = true;
     console.log('Getting inputs from database');
     this.inputsCache = await this.getData<Input>(this.inputsStoreName);
     return this.inputsCache;
-/*
-
-    console.log('Getting inputs from database');
-    return await this.getData<Input>(this.inputsStoreName);
-    */
   }
 
   async getAddressData(): Promise<Address[]> {
@@ -141,8 +122,6 @@ export class StorageService {
       };
     });
   }
-
-  
 
   async putAddressData(addressData: Address[]): Promise<void> {
     await this.clearAddressStore();

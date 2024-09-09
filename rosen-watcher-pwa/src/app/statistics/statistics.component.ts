@@ -93,7 +93,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   async retrieveData(): Promise<void> {
-    this.data = await this.dataService.getTotalRewards();
+    
 
     this.sortedInputs = await this.dataService.getSortedInputs();
 
@@ -113,9 +113,11 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     }
 
     this.rewardsChart = newChart;
-    this.addressesForDisplay = await this.dataService.getAddressesForDisplay();
-
     this.updateChart();
+    this.data = await this.dataService.getTotalRewards(this.sortedInputs);
+    this.addressesForDisplay = await this.dataService.getAddressesForDisplay(this.sortedInputs);
+
+    
   }
 
   updateChart(): void {
@@ -172,6 +174,14 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
+    this.route.queryParams.subscribe(async (params) => {
+      const hasAddressParams = await this.checkAddressParams(params);
+
+      await this.retrieveData().then(async () => {
+        await this.downloadDataService.downloadForAddresses(hasAddressParams, this.addresses);
+      });
+    });
+
     this.shareSupport = navigator.share != null && navigator.share != undefined;
 
     this.initSwipe('/performance', '/watchers');
@@ -187,13 +197,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       event.preventDefault();
     });
 
-    this.route.queryParams.subscribe(async (params) => {
-      const hasAddressParams = await this.checkAddressParams(params);
 
-      await this.retrieveData().then(async () => {
-        await this.downloadDataService.downloadForAddresses(hasAddressParams, this.addresses);
-      });
-    });
 
     await this.subscribeToEvent(EventType.InputsStoredToDb, async () => {
       await this.retrieveData();
