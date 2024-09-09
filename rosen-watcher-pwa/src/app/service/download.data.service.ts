@@ -198,16 +198,19 @@ export class DownloadDataService {
 
   async addData(address: string, transactions: Transaction[]): Promise<void> {
     const db = await this.getDB();
-
+  
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.inputsStoreName], 'readwrite');
       const objectStore = transaction.objectStore(this.inputsStoreName);
-
+  
+      // Create an array to store promises
+      const putRequests: Promise<void>[] = [];
+  
       transactions.forEach((item: Transaction) => {
-        item.inputs.forEach(async (input: Input) => {
+        item.inputs.forEach((input: Input) => {
           input.outputAddress = address;
           input.inputDate = new Date(item.timestamp);
-
+  
           const dbInput: Input = {
             outputAddress: input.outputAddress,
             inputDate: input.inputDate,
@@ -216,22 +219,34 @@ export class DownloadDataService {
             outputCreatedAt: input.outputCreatedAt,
             address: input.address,
           };
-
-          const request = objectStore.put(dbInput);
-
-          request.onsuccess = () => {
-            resolve();
-          };
-
-          request.onerror = (event: Event) => {
-            reject(event.target);
-          };
+  
+          
+          const putPromise = new Promise<void>((putResolve, putReject) => {
+            const request = objectStore.put(dbInput);
+            
+            request.onsuccess = () => {
+              putResolve();
+            };
+  
+            request.onerror = (event: Event) => {
+              putReject(event);
+            };
+          });
+  
+          
+          putRequests.push(putPromise);
         });
       });
-
-      this.eventService.sendEvent(EventType.InputsStoredToDb);
+      
+      Promise.all(putRequests)
+        .then(() => {
+          this.eventService.sendEvent(EventType.InputsStoredToDb);
+          resolve(); 
+        })
+        .catch(reject);  
     });
   }
+  
 
   async getDataByBoxId(boxId: string, addressId: string): Promise<Input | null> {
     const db = await this.getDB();
