@@ -10,7 +10,7 @@ export enum EventType {
   StartDownload = 'StartDownload',
   EndDownload = 'EndDownload',
   SwipeVertical = 'SwipeVertical',
-  StatisticsScreenLoaded = 'StatisticsScreenLoaded'
+  StatisticsScreenLoaded = 'StatisticsScreenLoaded',
 }
 
 @Injectable({
@@ -31,7 +31,7 @@ export class EventService<T> {
       [EventType.StartDownload]: new Subject<T>(),
       [EventType.EndDownload]: new Subject<T>(),
       [EventType.SwipeVertical]: new Subject<T>(),
-      [EventType.StatisticsScreenLoaded]: new Subject<T>()
+      [EventType.StatisticsScreenLoaded]: new Subject<T>(),
     };
     return this.eventSubscriptions;
   }

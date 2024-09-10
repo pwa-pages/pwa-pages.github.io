@@ -17,10 +17,8 @@ export function initializeServiceWorkerService(serviceWorkerService: ServiceWork
   providedIn: 'root',
 })
 export class ServiceWorkerService {
-  constructor(
-    private eventService: EventService<string>
-  ) {
-    this.listenForServiceWorkerMessages(); 
+  constructor(private eventService: EventService<string>) {
+    this.listenForServiceWorkerMessages();
   }
 
   public async initialize() {
@@ -28,7 +26,6 @@ export class ServiceWorkerService {
       this.sendMessageToServiceWorker({ type: eventType } as ServiceWorkerMessage);
     });
   }
-
 
   sendMessageToServiceWorker(message: ServiceWorkerMessage) {
     if (navigator.serviceWorker && navigator.serviceWorker.controller) {
@@ -38,12 +35,11 @@ export class ServiceWorkerService {
     }
   }
 
-
   listenForServiceWorkerMessages() {
     if (navigator.serviceWorker) {
       navigator.serviceWorker.addEventListener('message', (event) => {
         const message = event.data as ServiceWorkerMessage;
-        
+
         this.handleServiceWorkerMessage(message);
       });
     } else {
@@ -51,11 +47,9 @@ export class ServiceWorkerService {
     }
   }
 
-
   handleServiceWorkerMessage(message: ServiceWorkerMessage) {
-
     console.log('Handling message from service worker:', message);
-    
+
     if ((Object.values(EventType) as string[]).includes(message.type)) {
       this.eventService.sendEvent(message.type as EventType);
     }

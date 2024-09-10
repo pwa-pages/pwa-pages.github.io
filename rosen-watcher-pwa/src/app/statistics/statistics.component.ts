@@ -170,7 +170,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
-
+    this.updateChart();
     this.route.queryParams.subscribe(async (params) => {
       const hasAddressParams = await this.checkAddressParams(params);
 
