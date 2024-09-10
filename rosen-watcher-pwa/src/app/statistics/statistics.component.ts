@@ -39,7 +39,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   addressesForDisplay: Address[];
   shareSupport = false;
   chart: LineChart | undefined;
-  
+
   @ViewChild('detailsContainer') detailsContainer!: ElementRef;
 
   constructor(
@@ -52,7 +52,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     eventService: EventService<string>,
     swipeService: SwipeService,
     private router: Router,
-    private qrDialog: MatDialog
+    private qrDialog: MatDialog,
   ) {
     super(eventService, swipeService);
     this.data = '';
@@ -171,11 +171,12 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-
     this.route.queryParams.subscribe(async (params) => {
       const hasAddressParams = await this.checkAddressParams(params);
 
-      await this.retrieveData().then(async () => {
+      await this.retrieveData().then(async () => { 
+        this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
+        
         await this.downloadDataService.downloadForAddresses(hasAddressParams);
       });
     });
@@ -202,8 +203,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     await this.subscribeToEvent(EventType.EndFullDownload, async () => {
       await this.retrieveData();
     });
-
-    
   }
 
   title = 'rosen-watcher-pwa';
@@ -223,7 +222,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       }
 
       await this.storageService.putAddressData(this.addresses);
-      
+
       await this.storageService.clearInputsStore();
       if (this.addresses.length == 0) {
         this.noAddresses = true;

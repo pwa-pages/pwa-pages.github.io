@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SwPush } from '@angular/service-worker';
-import { EventService } from './event.service';
+import { EventService, EventType } from './event.service';
 
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {
@@ -19,15 +18,17 @@ export function initializeServiceWorkerService(serviceWorkerService: ServiceWork
 })
 export class ServiceWorkerService {
   constructor(
-    private swPush: SwPush,
-    /*private swUpdate: SwUpdate, */ private eventService: EventService<string>,
-  ) {}
+    private eventService: EventService<string>
+  ) {
+    this.listenForServiceWorkerMessages(); 
+  }
 
   public async initialize() {
     this.eventService.subscribeToAllEvents((eventType) => {
       this.sendMessageToServiceWorker({ type: eventType } as ServiceWorkerMessage);
     });
   }
+
 
   sendMessageToServiceWorker(message: ServiceWorkerMessage) {
     if (navigator.serviceWorker && navigator.serviceWorker.controller) {
@@ -37,9 +38,26 @@ export class ServiceWorkerService {
     }
   }
 
-  listenForPushNotifications() {
-    this.swPush.messages.subscribe((msg) => {
-      console.log('Received push notification message', msg);
-    });
+
+  listenForServiceWorkerMessages() {
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        const message = event.data as ServiceWorkerMessage;
+        
+        this.handleServiceWorkerMessage(message);
+      });
+    } else {
+      console.error('Service worker is not supported in this browser.');
+    }
+  }
+
+
+  handleServiceWorkerMessage(message: ServiceWorkerMessage) {
+
+    console.log('Handling message from service worker:', message);
+    
+    if ((Object.values(EventType) as string[]).includes(message.type)) {
+      this.eventService.sendEvent(message.type as EventType);
+    }
   }
 }

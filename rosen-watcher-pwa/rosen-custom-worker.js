@@ -2,18 +2,21 @@ self.addEventListener('message', (event) => {
 
   console.log('Rosen service worker received event of type ' + event.data.type);
 
-    if (event.data && event.data.type === 'START_TASK') {
-      
-  
-      
+    if (event.data && event.data.type === 'StatisticsScreenLoaded') {
+      console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
+
+
       setTimeout(() => {
-        console.log('Custom SW Extension: Task completed.');
+        console.log('Rosen simulation task completed.');
   
-      
+      /*
         event.source.postMessage({
-          type: 'TASK_COMPLETE',
+          type: 'EndDownload',
           message: 'Background task completed from custom extension!',
         });
-      }, 5000); 
+*/
+
+      }, 10000); 
+      
     }
   });

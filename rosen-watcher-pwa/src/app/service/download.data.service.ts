@@ -266,7 +266,7 @@ export class DownloadDataService {
     });
   }
 
-  public async downloadForAddress(address: string, hasAddressParams: boolean) {
+  private async downloadForAddress(address: string, hasAddressParams: boolean) {
     this.IncreaseBusyCounter();
     console.log(this.busyCounter);
 
