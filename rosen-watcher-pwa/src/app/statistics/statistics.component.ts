@@ -13,7 +13,7 @@ import 'chartjs-adapter-date-fns';
 import { ChartService, DateNumberPoint, LineChart } from '../service/chart.service';
 import { Input } from '../models/input';
 import { Address } from '../models/address';
-import { DownloadDataService } from '../service/download.data.service';
+//import { DownloadDataService } from '../service/download.data.service';
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
   deferredPrompt?: BeforeInstallPromptEvent;
@@ -34,6 +34,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   selectedTab: string;
   rewardsChart: DateNumberPoint[];
   sortedInputs: Input[];
+  detailInputs: Input[];
   addresses: Address[];
   noAddresses = false;
   addressesForDisplay: Address[];
@@ -47,7 +48,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private route: ActivatedRoute,
     private storageService: StorageService,
     private dataService: DataService,
-    private downloadDataService: DownloadDataService,
+    //private downloadDataService: DownloadDataService,
     private chartService: ChartService,
     eventService: EventService<string>,
     swipeService: SwipeService,
@@ -61,6 +62,8 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.addressesForDisplay = [];
     this.rewardsChart = [];
     this.sortedInputs = [];
+    this.detailInputs = [];
+    
   }
 
   showHomeLink(): boolean {
@@ -100,6 +103,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       return { x: s.inputDate, y: s.accumulatedAmount } as DateNumberPoint;
     });
     this.sortedInputs.sort((a, b) => b.inputDate.getTime() - a.inputDate.getTime());
+
+    this.detailInputs = this.sortedInputs.slice(0, 100);
+
 
     if (
       this.rewardsChart.length != 0 &&
@@ -172,12 +178,12 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     super.ngOnInit();
     this.updateChart();
     this.route.queryParams.subscribe(async (params) => {
-      const hasAddressParams = await this.checkAddressParams(params);
+      await this.checkAddressParams(params);
 
-      await this.retrieveData().then(async () => { 
+      await this.retrieveData().then(async () => {
         this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
-        
-        await this.downloadDataService.downloadForAddresses(hasAddressParams);
+
+        //await this.downloadDataService.downloadForAddresses();
       });
     });
 

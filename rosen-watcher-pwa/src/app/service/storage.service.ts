@@ -8,6 +8,7 @@ import { Address } from '../models/address';
 export class StorageService {
   dbName = 'rosenDatabase_1.1.5';
   inputsStoreName = 'inputBoxes';
+  downloadStatusStoreName = 'downloadStatusStore';
   addressDataStoreName = 'addressData';
   dbPromise: Promise<IDBDatabase>;
   inputsCache: Input[] = [];
@@ -18,10 +19,13 @@ export class StorageService {
 
   async initIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const request = window.indexedDB.open(this.dbName, 15);
+      const request = window.indexedDB.open(this.dbName, 18);
 
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
+
+
+        
 
         if (db.objectStoreNames.contains(this.inputsStoreName)) {
           db.deleteObjectStore(this.inputsStoreName);
@@ -30,6 +34,12 @@ export class StorageService {
 
         if (!db.objectStoreNames.contains(this.addressDataStoreName)) {
           db.createObjectStore(this.addressDataStoreName, {
+            keyPath: 'address',
+          });
+        }
+
+        if (!db.objectStoreNames.contains(this.downloadStatusStoreName)) {
+          db.createObjectStore(this.downloadStatusStoreName, {
             keyPath: 'address',
           });
         }

@@ -51,20 +51,8 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     window.addEventListener('resize', this.resetHeight);
 
     this.resetHeight();
-
-    await this.subscribeToEvent(EventType.StartDownload, (url) => {
-      this.loaderLogs.push('Downloading ' + this.getScreenLogurl(url));
-      this.loaderLogs = this.loaderLogs.slice(-5);
-    });
-
-    await this.subscribeToEvent(EventType.EndFullDownload, () => {
-      this.loaderLogs = [];
-    });
   }
 
-  private getScreenLogurl(url: string): string {
-    return url.substring(0, 10) + ' ... ' + url.slice(-40);
-  }
 
   async ngOnDestroy(): Promise<void> {
     this.eventService.sendEvent(EventType.SwipeDeActivated);

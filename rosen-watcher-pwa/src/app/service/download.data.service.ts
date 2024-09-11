@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { EventService, EventType } from './event.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Transaction } from '../models/transaction';
 import { Input } from '../models/input';
 import { Address } from '../models/address';
@@ -25,14 +24,13 @@ export class DownloadDataService {
   busyCounter = 0;
 
   constructor(
-    private eventService: EventService<string>,
-    private snackBar: MatSnackBar,
+    private eventService: EventService<string>
   ) {
     this.dbPromise = this.initIndexedDB();
   }
-  async initIndexedDB(): Promise<IDBDatabase> {
+  private async initIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const request = window.indexedDB.open(this.dbName, 15);
+      const request = window.indexedDB.open(this.dbName, 18);
 
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
@@ -62,7 +60,7 @@ export class DownloadDataService {
       };
     });
   }
-  async getDB(): Promise<IDBDatabase> {
+  private async getDB(): Promise<IDBDatabase> {
     return await this.dbPromise;
   }
 
@@ -92,7 +90,7 @@ export class DownloadDataService {
       throw error;
     }
   }
-  async getAddressData(): Promise<Address[]> {
+  private async getAddressData(): Promise<Address[]> {
     return await this.getData<Address>(this.addressDataStoreName);
   }
 
@@ -182,12 +180,12 @@ export class DownloadDataService {
     }
   }
 
-  public async downloadForAddresses(hasAddressParams: boolean) {
+  public async downloadForAddresses() {
     try {
       const addresses = await this.getAddressData();
 
       const downloadPromises = addresses.map(async (address) => {
-        await this.downloadForAddress(address.address, hasAddressParams);
+        await this.downloadForAddress(address.address);
       });
 
       await Promise.all(downloadPromises);
@@ -196,7 +194,7 @@ export class DownloadDataService {
     }
   }
 
-  async addData(address: string, transactions: Transaction[]): Promise<void> {
+  private async addData(address: string, transactions: Transaction[]): Promise<void> {
     const db = await this.getDB();
 
     return new Promise((resolve, reject) => {
@@ -245,7 +243,7 @@ export class DownloadDataService {
     });
   }
 
-  async getDataByBoxId(boxId: string, addressId: string): Promise<Input | null> {
+  private async getDataByBoxId(boxId: string, addressId: string): Promise<Input | null> {
     const db = await this.getDB();
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([this.inputsStoreName], 'readonly');
@@ -266,7 +264,7 @@ export class DownloadDataService {
     });
   }
 
-  private async downloadForAddress(address: string, hasAddressParams: boolean) {
+  private async downloadForAddress(address: string) {
     this.IncreaseBusyCounter();
     console.log(this.busyCounter);
 
@@ -306,16 +304,7 @@ export class DownloadDataService {
         await this.downloadAllForAddress(address, 0);
       }
     } catch (e) {
-      if (hasAddressParams) {
-        this.snackBar.open(
-          'Some download(s) failed, check your addresses, not all of them might be correct, or service may have issues',
-          'Close',
-          {
-            duration: 5000,
-            panelClass: ['custom-snackbar'],
-          },
-        );
-      }
+      
       console.error(e);
     } finally {
       this.DecreasBusyCounter();
