@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EventService } from '../service/event.service';
+import { EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
@@ -11,6 +11,7 @@ import { ChartPoint } from '../models/chart.point';
 import { ChartPerformance } from '../models/chart.performance';
 import { Input } from '../models/input';
 import { Asset } from '../models/asset';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-performance',
@@ -33,7 +34,8 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   ];
 
   data: string;
-  performanceChart: ChartPerformance[];
+  performanceCharts: ChartPerformance[];
+  performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;
   addresses: string[];
   noAddresses = false;
 
@@ -47,11 +49,11 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     super(eventService, swipeService);
     this.data = '';
     this.addresses = [];
-    this.performanceChart = [];
+    this.performanceCharts = [];
   }
 
   async retrieveData(): Promise<void> {
-    this.performanceChart = await this.getPerformanceChart();
+    this.performanceCharts = await this.getPerformanceChart();
   }
 
   override async ngOnInit(): Promise<void> {
@@ -65,6 +67,16 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
     await this.retrieveData();
     this.updateChart();
+
+    await this.subscribeToEvent(EventType.InputsStoredToDb, async () => {
+      await this.retrieveData();
+      this.updateChart();
+    });
+
+    await this.subscribeToEvent(EventType.EndFullDownload, async () => {
+      await this.retrieveData();
+      this.updateChart();
+    });
   }
 
   private async getPerformanceChart(): Promise<ChartPerformance[]> {
@@ -161,16 +173,37 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
   updateChart(): void {
     const dataSets = [];
-    const cnt = this.performanceChart.length;
+    const cnt = this.performanceCharts.length;
     for (let i = 0; i < cnt; i++) {
       dataSets.push(this.createDataSet(i));
     }
 
-    for (let i = 0; i < this.performanceChart.length; i++) {
-      dataSets[i].data = this.performanceChart[i].chart;
-      dataSets[i].label = 'Address: ' + this.performanceChart[i].addressForDisplay;
+    for (let i = 0; i < this.performanceCharts.length; i++) {
+      dataSets[i].data = this.performanceCharts[i].chart;
+      dataSets[i].label = 'Address: ' + this.performanceCharts[i].addressForDisplay;
     }
-    this.chartService.createPerformanceChart(dataSets);
+
+    if(!this.performanceChart){
+      this.performanceChart = this.chartService.createPerformanceChart(dataSets);
+    }
+    else{
+      
+
+      if(this.performanceCharts.length != this.performanceChart.data.datasets.length){
+        this.performanceChart.data.datasets = dataSets;
+      }
+      else{
+        for (let i = 0; i < this.performanceCharts.length; i++) {
+          this.performanceChart.data.datasets[i].data = dataSets[i].data;
+        }
+      }
+
+      
+
+      this.performanceChart.update();
+    }
+     
+    
   }
 
   title = 'rosen-watcher-pwa';

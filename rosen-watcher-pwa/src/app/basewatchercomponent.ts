@@ -53,7 +53,6 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     this.resetHeight();
   }
 
-
   async ngOnDestroy(): Promise<void> {
     this.eventService.sendEvent(EventType.SwipeDeActivated);
     await this.eventService.unSubscribeAll([

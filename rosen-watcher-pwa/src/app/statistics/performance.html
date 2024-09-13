@@ -9,7 +9,7 @@
   <div class="addressescontainer">
     <div
       class="performancelegend"
-      *ngFor="let address of performanceChart; let i = index; last as isLast"
+      *ngFor="let address of performanceCharts; let i = index; last as isLast"
     >
       <div class="chart-legend" [style.background-color]="address.color"></div>
       <div class="performance-chart-address mainaddressdispl {{address.chainType}}">

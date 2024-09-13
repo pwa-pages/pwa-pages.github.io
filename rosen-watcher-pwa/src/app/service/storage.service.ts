@@ -24,9 +24,6 @@ export class StorageService {
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
 
-
-        
-
         if (db.objectStoreNames.contains(this.inputsStoreName)) {
           db.deleteObjectStore(this.inputsStoreName);
         }

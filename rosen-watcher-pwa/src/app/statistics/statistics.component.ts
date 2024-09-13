@@ -13,7 +13,7 @@ import 'chartjs-adapter-date-fns';
 import { ChartService, DateNumberPoint, LineChart } from '../service/chart.service';
 import { Input } from '../models/input';
 import { Address } from '../models/address';
-//import { DownloadDataService } from '../service/download.data.service';
+
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
   deferredPrompt?: BeforeInstallPromptEvent;
@@ -63,7 +63,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.rewardsChart = [];
     this.sortedInputs = [];
     this.detailInputs = [];
-    
   }
 
   showHomeLink(): boolean {
@@ -105,7 +104,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.sortedInputs.sort((a, b) => b.inputDate.getTime() - a.inputDate.getTime());
 
     this.detailInputs = this.sortedInputs.slice(0, 100);
-
 
     if (
       this.rewardsChart.length != 0 &&
