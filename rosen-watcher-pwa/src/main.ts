@@ -41,7 +41,7 @@ bootstrapApplication(AppComponent, {
       MatFormFieldModule,
       MatDialogModule,
       FormsModule,
-      ServiceWorkerModule.register('./rosen-ngsw-worker.js', {
+      ServiceWorkerModule.register('./service/rosen-ngsw-worker.js', {
         registrationStrategy: 'registerWhenStable:30000',
       }),
       FontAwesomeModule,

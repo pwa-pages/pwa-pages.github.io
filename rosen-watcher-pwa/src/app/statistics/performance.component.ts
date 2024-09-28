@@ -183,27 +183,19 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
       dataSets[i].label = 'Address: ' + this.performanceCharts[i].addressForDisplay;
     }
 
-    if(!this.performanceChart){
+    if (!this.performanceChart) {
       this.performanceChart = this.chartService.createPerformanceChart(dataSets);
-    }
-    else{
-      
-
-      if(this.performanceCharts.length != this.performanceChart.data.datasets.length){
+    } else {
+      if (this.performanceCharts.length != this.performanceChart.data.datasets.length) {
         this.performanceChart.data.datasets = dataSets;
-      }
-      else{
+      } else {
         for (let i = 0; i < this.performanceCharts.length; i++) {
           this.performanceChart.data.datasets[i].data = dataSets[i].data;
         }
       }
 
-      
-
       this.performanceChart.update();
     }
-     
-    
   }
 
   title = 'rosen-watcher-pwa';

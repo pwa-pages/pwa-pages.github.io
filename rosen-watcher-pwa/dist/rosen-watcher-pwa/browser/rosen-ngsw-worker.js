@@ -1,3 +1,3 @@
 
-importScripts('./rosen-custom-worker.js');
+importScripts('./service/rosen-custom-worker.js');
 importScripts('./ngsw-worker.js');
