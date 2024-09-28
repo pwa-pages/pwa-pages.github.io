@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings.dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { NgFor } from '@angular/common';
-import { Address } from '../models/address';
+import { Address } from '../../models/address';
 
 @Component({
   selector: 'app-settings',

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { ChainService } from './chain.service';
-import { Input } from '../models/input';
-import { Address } from '../models/address';
-import { Asset } from '../models/asset';
+import { Input } from '../../models/input';
+import { Address } from '../../models/address';
+import { Asset } from '../../models/asset';
 
 @Injectable({
   providedIn: 'root',

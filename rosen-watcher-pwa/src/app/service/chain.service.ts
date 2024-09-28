@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-
-export enum ChainType {
-  Bitcoin = 'Bitcoin',
-  Cardano = 'Cardano',
-  Ergo = 'Ergo',
-}
+import { ChainType } from '../../models/chaintype';
 
 @Injectable({
   providedIn: 'root',

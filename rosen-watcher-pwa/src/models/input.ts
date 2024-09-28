@@ -1,4 +1,4 @@
-import { ChainType } from '../service/chain.service';
+import { ChainType } from './chaintype';
 import { Asset } from './asset';
 
 export class Input {

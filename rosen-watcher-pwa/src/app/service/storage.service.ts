@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Input } from '../models/input';
-import { Address } from '../models/address';
+import { Input } from '../../models/input';
+import { Address } from '../../models/address';
 
 @Injectable({
   providedIn: 'root',

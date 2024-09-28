@@ -1,0 +1,1 @@
+{"version":3,"file":"address.js","sourceRoot":"","sources":["../../../src/models/address.ts"],"names":[],"mappings":"AAEA,MAAM,OAAO,OAAO;IAIlB,YAAY,OAAe,EAAE,SAAoB;QAC/C,IAAI,CAAC,OAAO,GAAG,OAAO,CAAC;QACvB,IAAI,CAAC,SAAS,GAAG,SAAS,CAAC;IAC7B,CAAC;CACF"}
