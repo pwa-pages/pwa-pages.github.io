@@ -1,7 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Input = void 0;
-class Input {
+export class Input {
+    outputAddress;
+    inputDate;
+    boxId;
+    assets;
+    outputCreatedAt;
+    address;
+    accumulatedAmount;
+    amount;
+    chainType;
     constructor(inputDate, address, outputCreatedAt, assets, outputAddress, boxId, accumulatedAmount, amount, chainType) {
         this.outputAddress = outputAddress;
         this.inputDate = inputDate;
@@ -14,5 +20,3 @@ class Input {
         this.chainType = chainType;
     }
 }
-exports.Input = Input;
-//# sourceMappingURL=input.js.map

@@ -1,9 +1,9 @@
 /// <reference lib="webworker" />
 declare let self: ServiceWorkerGlobalScope;
 
-import type { Transaction } from '../models/transaction';
-import type { Address } from '../models/address';
-import type { Input } from '../models/input';
+import type { Transaction } from './models/transaction';
+import type { Address } from './models/address';
+import type { Input } from './models/input';
 
 // Define store names and database details
 const inputsStoreName = 'inputBoxes';

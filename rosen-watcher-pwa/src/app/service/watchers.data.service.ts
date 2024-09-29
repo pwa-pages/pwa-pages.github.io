@@ -3,9 +3,9 @@ import { map } from 'rxjs/operators';
 import { DownloadService } from './download.service';
 import { ChainService } from './chain.service';
 import { Observable } from 'rxjs';
-import { ChainType } from '../../models/chaintype';
-import { WatcherInfo } from '../../models/watcher.info';
-import { Token } from '../../models/token';
+import { ChainType } from '../../service/ts/models/chaintype';
+import { WatcherInfo } from '../../service/ts/models/watcher.info';
+import { Token } from '../../service/ts/models/token';
 
 @Injectable({
   providedIn: 'root',

@@ -5,9 +5,9 @@ import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ChainType } from '../../models/chaintype';
+import { ChainType } from '../../service/ts/models/chaintype';
 import { AsyncPipe } from '@angular/common';
-import { Token } from '../../models/token';
+import { Token } from '../../service/ts/models/token';
 
 @Component({
   selector: 'app-watchers',

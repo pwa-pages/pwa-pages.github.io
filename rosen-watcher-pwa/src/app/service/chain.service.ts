@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChainType } from '../../models/chaintype';
+import { ChainType } from '../../service/ts/models/chaintype';
 
 @Injectable({
   providedIn: 'root',

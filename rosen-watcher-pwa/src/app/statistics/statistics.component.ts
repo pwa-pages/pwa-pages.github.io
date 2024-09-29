@@ -11,8 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { QRDialogComponent } from './qrdialog.component';
 import 'chartjs-adapter-date-fns';
 import { ChartService, DateNumberPoint, LineChart } from '../service/chart.service';
-import { Input } from '../../models/input';
-import { Address } from '../../models/address';
+import { Input } from '../../service/ts/models/input';
+import { Address } from '../../service/ts/models/address';
 
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;

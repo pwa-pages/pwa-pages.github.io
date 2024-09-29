@@ -1,7 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Asset = void 0;
-class Asset {
+export class Asset {
+    tokenId;
+    index;
+    amount;
+    name;
+    decimals;
+    type;
     constructor(tokenId, index, amount, name, decimals, type) {
         this.tokenId = tokenId;
         this.index = index;
@@ -11,5 +14,3 @@ class Asset {
         this.type = type;
     }
 }
-exports.Asset = Asset;
-//# sourceMappingURL=asset.js.map

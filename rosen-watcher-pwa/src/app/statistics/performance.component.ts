@@ -4,14 +4,14 @@ import { DataService } from '../service/data.service';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainService } from '../service/chain.service';
-import { ChainType } from '../../models/chaintype';
+import { ChainType } from '../../service/ts/models/chaintype';
 import { ChartService } from '../service/chart.service';
 import { NgFor, NgIf } from '@angular/common';
-import { ChartDataSet } from '../../models/chart.dataset';
-import { ChartPoint } from '../../models/chart.point';
-import { ChartPerformance } from '../../models/chart.performance';
-import { Input } from '../../models/input';
-import { Asset } from '../../models/asset';
+import { ChartDataSet } from '../../service/ts/models/chart.dataset';
+import { ChartPoint } from '../../service/ts/models/chart.point';
+import { ChartPerformance } from '../../service/ts/models/chart.performance';
+import { Input } from '../../service/ts/models/input';
+import { Asset } from '../../service/ts/models/asset';
 import { Chart } from 'chart.js';
 
 @Component({

@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference lib="webworker" />
 // Define store names and database details
 const inputsStoreName = 'inputBoxes';
@@ -250,4 +248,4 @@ async function downloadForAddresses(db) {
         console.error('Error downloading for addresses:', e);
     }
 }
-//# sourceMappingURL=box.download.service.js.map
+export {};

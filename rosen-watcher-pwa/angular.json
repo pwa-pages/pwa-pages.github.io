@@ -25,7 +25,8 @@
               "src/assets",
               "src/manifest.webmanifest",
               "src/rosen-ngsw-worker.js",
-              "src/rosen-custom-worker.js"
+              "src/rosen-custom-worker.js",
+              "src/service/js/box.download.service.js"
             ],
             "styles": [
               "src/styles.css",
