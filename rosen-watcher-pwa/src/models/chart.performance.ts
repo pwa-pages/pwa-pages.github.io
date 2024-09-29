@@ -1,5 +1,5 @@
-import { ChainType } from './chaintype';
-import { ChartPoint } from './chart.point';
+import type { ChainType } from './chaintype';
+import type { ChartPoint } from './chart.point';
 
 export class ChartPerformance {
   address: string;

@@ -1,5 +1,5 @@
-import { ChainType } from './chaintype';
-import { Asset } from './asset';
+import type { ChainType } from './chaintype';
+import type { Asset } from './asset';
 
 export class Input {
   outputAddress: string;

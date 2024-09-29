@@ -9,7 +9,7 @@
     "test": "ng test",
     "format": "prettier --write 'src/**/*.{ts,css,html}'",
     "lint": "ng lint --fix",
-    "compile-ts": "tsc -p tsconfig.app.json"
+    "compile-ts": "tsc -p tsconfig.service.json"
   },
   "private": true,
   "dependencies": {

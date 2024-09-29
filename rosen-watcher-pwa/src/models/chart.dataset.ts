@@ -1,4 +1,4 @@
-import { ChartPoint } from './chart.point';
+import type { ChartPoint } from './chart.point';
 
 export class ChartDataSet {
   label: string;
