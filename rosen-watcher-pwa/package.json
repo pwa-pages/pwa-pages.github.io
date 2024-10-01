@@ -4,12 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "npm run compile-ts && npm run format && ng build && ng lint --fix",
+    "build": "npm run format && ng build && ng lint --fix",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "format": "prettier --write 'src/**/*.{ts,css,html}'",
-    "lint": "ng lint --fix",
-    "compile-ts": "tsc -p tsconfig.service.json"
+    "lint": "ng lint --fix"
   },
   "private": true,
   "dependencies": {

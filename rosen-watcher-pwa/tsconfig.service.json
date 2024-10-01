@@ -2,11 +2,12 @@
   "compilerOptions": {
     "outDir": "./src/service/js",
     "types": [],
-    "importsNotUsedAsValues": "remove",
+    "verbatimModuleSyntax": false,
     "esModuleInterop": false,
+    "noEmitHelpers": true,
     "rootDir": "./src/service/ts",
     "target": "ESNext",
-    "module": "ESNext", // Changed from "CommonJS" to "ESNext"
+    "module": "None", // Changed from "CommonJS" to "ESNext"
     "skipLibCheck": true,
     "lib": [
       "ESNext",
