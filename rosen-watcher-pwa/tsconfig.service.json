@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "outDir": "./src/service/js",
+    "outDir": "./src/serviceworker/js",
     "types": [],
     "verbatimModuleSyntax": false,
     "esModuleInterop": false,
     "noEmitHelpers": true,
-    "rootDir": "./src/service/ts",
+    "rootDir": "./src/serviceworker/ts",
     "target": "ESNext",
-    "module": "None", // Changed from "CommonJS" to "ESNext"
+    "module": "None", 
     "skipLibCheck": true,
     "lib": [
       "ESNext",
@@ -16,7 +16,7 @@
     ]
   },
   "include": [
-    "src/service/ts/*.ts"
+    "src/serviceworker/ts/*.ts"
   ],
   "exclude": [
     "node_modules",
