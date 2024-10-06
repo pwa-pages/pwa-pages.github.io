@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any
 // chainService.ts
 
 // Define the ChainType enum if it's not already available
@@ -43,6 +44,6 @@ function getChainType(address: string): ChainType | null {
       return null;
   }
 }
-if(window){
+if (window) {
   (window as any).getChainType = getChainType;
 }

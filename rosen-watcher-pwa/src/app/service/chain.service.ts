@@ -5,8 +5,6 @@ import '../../serviceworker/ts/chain.service';
   providedIn: 'root',
 })
 export class ChainService {
-
-
   getChainType(address: string) {
     return getChainType(address);
   }
