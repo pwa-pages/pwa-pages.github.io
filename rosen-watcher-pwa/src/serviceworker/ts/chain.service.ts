@@ -47,4 +47,5 @@ function getChainType(address: string): ChainType | null {
 
 if (typeof window !== 'undefined') {
   (window as any).getChainType = getChainType;
+  (window as any).permitAddresses = permitAddresses;
 }

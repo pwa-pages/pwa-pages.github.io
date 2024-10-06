@@ -14,7 +14,6 @@ self.addEventListener('message', async (event) => {
     console.log(`Rosen service worker received event of type ${data.type}`);
     if (data && data.type === 'StatisticsScreenLoaded') {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
-        console.log(getChainType('aaaa'));
         try {
             const db = await initIndexedDB();
             await downloadForAddresses(db);
@@ -24,6 +23,63 @@ self.addEventListener('message', async (event) => {
         }
     }
 });
+async function getWatcherInputs(db) {
+    const inputsPromise = getData(inputsStoreName, db);
+    try {
+        const inputs = await inputsPromise;
+        const result_1 = inputs
+            .filter((i) => getChainType(i.address) != null)
+            .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
+        result_1.forEach((input) => {
+            input.assets = input.assets
+                .filter((asset) => asset.name === 'RSN' || asset.name === 'eRSN')
+                .map((asset_1) => {
+                return asset_1;
+            });
+        });
+        return await new Promise((resolve) => {
+            resolve(result_1);
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return [];
+    }
+}
+async function getSortedInputs(db) {
+    const inputsPromise = await getWatcherInputs(db);
+    let amount = 0;
+    const sortedInputs = [];
+    console.log('start retrieving chart from database');
+    try {
+        const inputs = await inputsPromise;
+        inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
+        inputs.forEach((input) => {
+            input.assets.forEach((asset) => {
+                amount += asset.amount;
+                sortedInputs.push({
+                    inputDate: input.inputDate,
+                    address: input.address,
+                    outputCreatedAt: input.outputCreatedAt,
+                    assets: input.assets,
+                    outputAddress: input.outputAddress,
+                    boxId: input.boxId,
+                    accumulatedAmount: amount,
+                    amount: asset.amount / Math.pow(10, asset.decimals),
+                    chainType: getChainType(input.address),
+                });
+            });
+        });
+        console.log('done retrieving chart from database ' + inputs.length + ' inputs');
+        return await new Promise((resolve) => {
+            resolve(sortedInputs);
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return sortedInputs;
+    }
+}
 // IndexedDB Initialization
 async function initIndexedDB() {
     return new Promise((resolve, reject) => {

@@ -11,15 +11,20 @@ interface Asset {
   id: string;
   name: string;
   quantity: number;
+  amount: number;
+  decimals: number;
 }
 
 interface Input {
   boxId: string;
   outputAddress: string;
-  inputDate?: Date;
-  assets?: Asset[]; // Replace with actual Asset structure
-  outputCreatedAt?: Date;
-  address?: string;
+  inputDate: Date;
+  assets: Asset[]; // Replace with actual Asset structure
+  outputCreatedAt: number;
+  address: string;
+  amount?: number;
+  accumulatedAmount?: number;
+  chainType?: ChainType | null;
 }
 
 interface TransactionItem {
@@ -74,15 +79,79 @@ self.addEventListener('message', async (event: MessageEvent) => {
       'Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain',
     );
 
-    console.log(getChainType('aaaa'));
     try {
       const db: IDBDatabase = await initIndexedDB();
+      const aaaa = getSortedInputs(db);
+      console.log(aaaa);
       await downloadForAddresses(db);
     } catch (error) {
       console.error('Error initializing IndexedDB or downloading addresses:', error);
     }
   }
 });
+
+async function getWatcherInputs(db: IDBDatabase): Promise<Input[]> {
+  const inputsPromise = getData<Input>(inputsStoreName, db);
+
+  try {
+    const inputs = await inputsPromise;
+
+    const result_1 = inputs
+      .filter((i: Input) => getChainType(i.address) != null)
+      .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
+
+    result_1.forEach((input: Input) => {
+      input.assets = input.assets
+        .filter((asset: Asset) => asset.name === 'RSN' || asset.name === 'eRSN')
+        .map((asset_1: Asset) => {
+          return asset_1;
+        });
+    });
+
+    return await new Promise<Input[]>((resolve) => {
+      resolve(result_1);
+    });
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+async function getSortedInputs(db: IDBDatabase): Promise<Input[]> {
+  const inputsPromise = await getWatcherInputs(db);
+  let amount = 0;
+  const sortedInputs: Input[] = [];
+  console.log('start retrieving chart from database');
+  try {
+    const inputs = await inputsPromise;
+
+    inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
+
+    inputs.forEach((input: Input) => {
+      input.assets.forEach((asset: Asset) => {
+        amount += asset.amount;
+        sortedInputs.push({
+          inputDate: input.inputDate,
+          address: input.address,
+          outputCreatedAt: input.outputCreatedAt,
+          assets: input.assets,
+          outputAddress: input.outputAddress,
+          boxId: input.boxId,
+          accumulatedAmount: amount,
+          amount: asset.amount / Math.pow(10, asset.decimals),
+          chainType: getChainType(input.address),
+        });
+      });
+    });
+    console.log('done retrieving chart from database ' + inputs.length + ' inputs');
+    return await new Promise<Input[]>((resolve) => {
+      resolve(sortedInputs);
+    });
+  } catch (error) {
+    console.error(error);
+    return sortedInputs;
+  }
+}
 
 // IndexedDB Initialization
 async function initIndexedDB(): Promise<IDBDatabase> {
