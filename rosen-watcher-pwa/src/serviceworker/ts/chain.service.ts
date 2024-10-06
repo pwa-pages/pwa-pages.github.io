@@ -43,3 +43,6 @@ function getChainType(address: string): ChainType | null {
       return null;
   }
 }
+if(window){
+  (window as any).getChainType = getChainType;
+}

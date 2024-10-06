@@ -32,3 +32,6 @@ function getChainType(address) {
             return null;
     }
 }
+if (window) {
+    window.getChainType = getChainType;
+}
