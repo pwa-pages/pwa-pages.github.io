@@ -33,6 +33,6 @@ function getChainType(address) {
             return null;
     }
 }
-if (window) {
+if (typeof window !== 'undefined') {
     window.getChainType = getChainType;
 }

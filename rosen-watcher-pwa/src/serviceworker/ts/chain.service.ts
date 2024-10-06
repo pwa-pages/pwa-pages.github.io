@@ -44,6 +44,7 @@ function getChainType(address: string): ChainType | null {
       return null;
   }
 }
-if (window) {
+
+if (typeof window !== 'undefined') {
   (window as any).getChainType = getChainType;
 }
