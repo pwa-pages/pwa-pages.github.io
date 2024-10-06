@@ -74,6 +74,7 @@ self.addEventListener('message', async (event: MessageEvent) => {
       'Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain',
     );
 
+    console.log(getChainType('aaaa'));
     try {
       const db: IDBDatabase = await initIndexedDB();
       await downloadForAddresses(db);

@@ -18,7 +18,32 @@ export class DataService {
     private chainService: ChainService,
   ) {}
 
-  async getWatcherInputs(): Promise<Input[]> {
+  async getInputs(): Promise<Input[]> {
+    return this.storageService.getInputs();
+  }
+
+  async getTotalRewards(inputs: Input[]): Promise<string> {
+    try {
+      const sum: number = inputs.reduce((accumulator, o) => {
+        let assetAmount = 0;
+
+        o.assets.forEach((asset: Asset) => {
+          assetAmount += asset.amount / Math.pow(10, asset.decimals);
+        });
+
+        return accumulator + assetAmount;
+      }, 0);
+
+      return await new Promise<string>((resolve) => {
+        resolve(sum.toFixed(3));
+      });
+    } catch (error) {
+      console.error(error);
+      return '';
+    }
+  }
+
+  private async getWatcherInputs(): Promise<Input[]> {
     const inputsPromise = this.storageService.getInputs();
 
     try {
@@ -42,31 +67,6 @@ export class DataService {
     } catch (error) {
       console.error(error);
       return [];
-    }
-  }
-
-  async getInputs(): Promise<Input[]> {
-    return this.storageService.getInputs();
-  }
-
-  async getTotalRewards(inputs: Input[]): Promise<string> {
-    try {
-      const sum: number = inputs.reduce((accumulator, o) => {
-        let assetAmount = 0;
-
-        o.assets.forEach((asset: Asset) => {
-          assetAmount += asset.amount / Math.pow(10, asset.decimals);
-        });
-
-        return accumulator + assetAmount;
-      }, 0);
-
-      return await new Promise<string>((resolve) => {
-        resolve(sum.toFixed(3));
-      });
-    } catch (error) {
-      console.error(error);
-      return '';
     }
   }
 

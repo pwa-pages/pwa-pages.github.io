@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { DownloadService } from './download.service';
-import { ChainService } from './chain.service';
 import { Observable } from 'rxjs';
 import { ChainType } from '../../service/ts/models/chaintype';
 import { WatcherInfo } from '../../service/ts/models/watcher.info';
 import { Token } from '../../service/ts/models/token';
+import '../../serviceworker/ts/chain.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,10 +18,7 @@ export class WatchersDataService {
 
   busyCounter = 0;
 
-  constructor(
-    private downloadService: DownloadService,
-    private chainService: ChainService,
-  ) {}
+  constructor(private downloadService: DownloadService) {}
 
   getWatchersInfo(): Observable<WatcherInfo> {
     const result = this.downloadService.downloadStream<WatcherInfo>(this.watcherUrl);
@@ -30,7 +27,7 @@ export class WatchersDataService {
   }
 
   getPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
-    const address = this.chainService.permitAddresses[chainType];
+    const address = permitAddresses[chainType];
     const permitsUrl = `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/confirmed`;
     return this.downloadService
       .downloadStream<WatcherInfo>(permitsUrl)

@@ -14,6 +14,7 @@ self.addEventListener('message', async (event) => {
     console.log(`Rosen service worker received event of type ${data.type}`);
     if (data && data.type === 'StatisticsScreenLoaded') {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
+        console.log(getChainType('aaaa'));
         try {
             const db = await initIndexedDB();
             await downloadForAddresses(db);

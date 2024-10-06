@@ -5,7 +5,7 @@
     "verbatimModuleSyntax": false,
     "esModuleInterop": false,
     "noEmitHelpers": true,
-    "rootDir": "./src/serviceworker/ts",
+    "rootDir": "./src/serviceworker/ts/",
     "target": "ESNext",
     "module": "None", 
     "skipLibCheck": true,

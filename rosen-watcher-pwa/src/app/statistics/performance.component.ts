@@ -81,7 +81,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   }
 
   private async getPerformanceChart(): Promise<ChartPerformance[]> {
-    const inputsPromise = this.dataService.getWatcherInputs();
+    const inputsPromise = this.dataService.getSortedInputs();
     let performanceChart: ChartPerformance[] = [];
 
     console.log('start retrieving chart from database');
