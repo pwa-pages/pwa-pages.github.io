@@ -69,7 +69,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     await this.retrieveData();
     this.updateChart();
 
-    await this.subscribeToEvent(EventType.InputsStoredToDb, async () => {
+    await this.subscribeToEvent(EventType.RefreshInputs, async () => {
       await this.retrieveData();
       this.updateChart();
     });
@@ -81,12 +81,11 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   }
 
   private async getPerformanceChart(): Promise<ChartPerformance[]> {
-    const inputsPromise = this.dataService.getSortedInputs();
     let performanceChart: ChartPerformance[] = [];
 
     console.log('start retrieving chart from database');
 
-    const inputs = await inputsPromise;
+    const inputs = this.dataService.getSortedInputs();
     const addressCharts: Record<string, Record<number, number>> = {};
 
     inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());

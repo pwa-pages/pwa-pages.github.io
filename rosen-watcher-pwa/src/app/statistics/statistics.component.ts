@@ -96,7 +96,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   async retrieveData(): Promise<void> {
-    this.sortedInputs = await this.dataService.getSortedInputs();
+    this.sortedInputs = this.dataService.getSortedInputs();
 
     const newChart = this.sortedInputs.map((s) => {
       return { x: s.inputDate, y: s.accumulatedAmount } as DateNumberPoint;
@@ -178,11 +178,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.route.queryParams.subscribe(async (params) => {
       await this.checkAddressParams(params);
 
-      await this.retrieveData().then(async () => {
-        this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
-
-        //await this.downloadDataService.downloadForAddresses();
-      });
+      this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
     });
 
     this.shareSupport = navigator.share != null && navigator.share != undefined;
@@ -200,9 +196,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       event.preventDefault();
     });
 
-    await this.subscribeToEvent<Input[]>(EventType.InputsStoredToDb, async (inputs: Input[]) => {
-      
-      console.log(inputs);
+    await this.subscribeToEvent<Input[]>(EventType.RefreshInputs, async () => {
       await this.retrieveData();
     });
 

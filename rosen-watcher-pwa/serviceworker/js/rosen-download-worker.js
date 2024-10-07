@@ -16,6 +16,8 @@ self.addEventListener('message', async (event) => {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
         try {
             const db = await initIndexedDB();
+            const inputs = await getSortedInputs(db);
+            sendMessageToClients({ type: 'InputsChanged', data: inputs });
             await downloadForAddresses(db);
         }
         catch (error) {
@@ -169,7 +171,7 @@ async function addData(address, transactions, db) {
         Promise.all(putPromises)
             .then(async () => {
             const inputs = await getSortedInputs(db);
-            sendMessageToClients({ type: 'InputsStoredToDb', data: inputs });
+            sendMessageToClients({ type: 'InputsChanged', data: inputs });
             resolve();
         })
             .catch(reject);

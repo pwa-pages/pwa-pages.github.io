@@ -58,12 +58,14 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     await this.eventService.unSubscribeAll([
       EventType.EndFullDownload,
       EventType.StartFullDownload,
-      EventType.InputsStoredToDb,
+      EventType.RefreshInputs,
     ]);
   }
 
   async subscribeToEvent<T>(eventType: EventType, callback: (...args: T[]) => void) {
-    var eventCallBack:  (...args: EventData[]) => void = callback as (...args: EventData[]) => void;
+    const eventCallBack: (...args: EventData[]) => void = callback as (
+      ...args: EventData[]
+    ) => void;
     await this.eventService.subscribeToEvent(eventType, eventCallBack);
   }
 

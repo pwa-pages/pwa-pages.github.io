@@ -4,6 +4,13 @@ import { ChainService } from './chain.service';
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { Asset } from '../../service/ts/models/asset';
+import { EventService, EventType } from './event.service';
+
+export function initializeDataService(dataService: DataService) {
+  return (): Promise<void> => {
+    return dataService.initialize();
+  };
+}
 
 @Injectable({
   providedIn: 'root',
@@ -11,12 +18,21 @@ import { Asset } from '../../service/ts/models/asset';
 export class DataService {
   readonly initialNDownloads: number = 50;
   readonly fullDownloadsBatchSize: number = 200;
+  private rsnInputs: Input[] = [];
   busyCounter = 0;
 
   constructor(
     private storageService: StorageService,
     private chainService: ChainService,
+    private eventService: EventService,
   ) {}
+
+  public async initialize() {
+    this.eventService.subscribeToEvent(EventType.InputsChanged, async (i: Input[]) => {
+      this.rsnInputs = i;
+      this.eventService.sendEvent(EventType.RefreshInputs);
+    });
+  }
 
   async getInputs(): Promise<Input[]> {
     return this.storageService.getInputs();
@@ -43,69 +59,8 @@ export class DataService {
     }
   }
 
-  private async getWatcherInputs(): Promise<Input[]> {
-    const inputsPromise = this.storageService.getInputs();
-
-    try {
-      const inputs = await inputsPromise;
-
-      const result_1 = inputs
-        .filter((i: Input) => this.chainService.getChainType(i.address) != null)
-        .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
-
-      result_1.forEach((input: Input) => {
-        input.assets = input.assets
-          .filter((asset: Asset) => asset.name === 'RSN' || asset.name === 'eRSN')
-          .map((asset_1: Asset) => {
-            return asset_1;
-          });
-      });
-
-      return await new Promise<Input[]>((resolve) => {
-        resolve(result_1);
-      });
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  }
-
-  async getSortedInputs(): Promise<Input[]> {
-    const inputsPromise = this.getWatcherInputs();
-    let amount = 0;
-    const sortedInputs: Input[] = [];
-    console.log('start retrieving chart from database');
-    try {
-      const inputs = await inputsPromise;
-
-      inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
-
-      inputs.forEach((input: Input) => {
-        input.assets.forEach((asset: Asset) => {
-          amount += asset.amount;
-          sortedInputs.push(
-            new Input(
-              input.inputDate,
-              input.address,
-              input.outputCreatedAt,
-              input.assets,
-              input.outputAddress,
-              input.boxId,
-              amount,
-              asset.amount / Math.pow(10, asset.decimals),
-              this.chainService.getChainType(input.address),
-            ),
-          );
-        });
-      });
-      console.log('done retrieving chart from database ' + inputs.length + ' inputs');
-      return await new Promise<Input[]>((resolve) => {
-        resolve(sortedInputs);
-      });
-    } catch (error) {
-      console.error(error);
-      return sortedInputs;
-    }
+  getSortedInputs(): Input[] {
+    return this.rsnInputs;
   }
 
   async getAddresses(): Promise<Address[]> {

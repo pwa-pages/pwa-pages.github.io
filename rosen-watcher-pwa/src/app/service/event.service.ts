@@ -5,7 +5,8 @@ import { Input } from '../../service/ts/models/input';
 export enum EventType {
   StartFullDownload = 'StartFullDownload',
   EndFullDownload = 'EndFullDownload',
-  InputsStoredToDb = 'InputsStoredToDb',
+  RefreshInputs = 'RefreshInputs',
+  InputsChanged = 'InputsChanged',
   SwipeActivated = 'SwipeActivated',
   SwipeDeActivated = 'SwipeDeActivated',
   StartDownload = 'StartDownload',
@@ -28,7 +29,8 @@ export class EventService {
     this.eventSubscriptions = {
       [EventType.StartFullDownload]: new Subject<EventData>(),
       [EventType.EndFullDownload]: new Subject<EventData>(),
-      [EventType.InputsStoredToDb]: new Subject<EventData>(),
+      [EventType.RefreshInputs]: new Subject<EventData>(),
+      [EventType.InputsChanged]: new Subject<EventData>(),
       [EventType.SwipeActivated]: new Subject<EventData>(),
       [EventType.SwipeDeActivated]: new Subject<EventData>(),
       [EventType.StartDownload]: new Subject<EventData>(),
@@ -49,7 +51,14 @@ export class EventService {
     this.eventSubscriptions[eventType].next(eventData);
   }
 
-  async subscribeToEvent(eventType: EventType, callback: (...args: EventData[]) => void) {
+  async subscribeToEvent<T>(eventType: EventType, callback: (...args: T[]) => void) {
+    const eventCallBack: (...args: EventData[]) => void = callback as (
+      ...args: EventData[]
+    ) => void;
+    await this.subscribe(eventType, eventCallBack);
+  }
+
+  private async subscribe(eventType: EventType, callback: (...args: EventData[]) => void) {
     this.eventSubscriptions[eventType].subscribe((...eventData) => {
       callback(...eventData);
     });

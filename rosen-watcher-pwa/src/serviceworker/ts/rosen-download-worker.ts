@@ -81,6 +81,10 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
     try {
       const db: IDBDatabase = await initIndexedDB();
+
+      const inputs = await getSortedInputs(db);
+      sendMessageToClients({ type: 'InputsChanged', data: inputs });
+
       await downloadForAddresses(db);
     } catch (error) {
       console.error('Error initializing IndexedDB or downloading addresses:', error);
@@ -259,7 +263,7 @@ async function addData(
     Promise.all(putPromises)
       .then(async () => {
         const inputs = await getSortedInputs(db);
-        sendMessageToClients({ type: 'InputsStoredToDb', data: inputs });
+        sendMessageToClients({ type: 'InputsChanged', data: inputs });
         resolve();
       })
       .catch(reject);

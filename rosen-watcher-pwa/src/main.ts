@@ -31,6 +31,7 @@ import {
   initializeServiceWorkerService,
   ServiceWorkerService,
 } from './app/service/service.worker.service';
+import { initializeDataService, DataService } from './app/service/data.service';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -56,6 +57,12 @@ bootstrapApplication(AppComponent, {
       provide: APP_INITIALIZER,
       useFactory: initializeServiceWorkerService,
       deps: [ServiceWorkerService],
+      multi: true,
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeDataService,
+      deps: [DataService],
       multi: true,
     },
   ],
