@@ -42,7 +42,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
   constructor(
     private dataService: DataService,
-    eventService: EventService<string>,
+    eventService: EventService,
     private chartService: ChartService,
     private chainService: ChainService,
     swipeService: SwipeService,

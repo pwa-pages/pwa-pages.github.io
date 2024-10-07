@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // chainService.ts
 // Define the ChainType enum if it's not already available
@@ -35,4 +34,5 @@ function getChainType(address) {
 }
 if (typeof window !== 'undefined') {
     window.getChainType = getChainType;
+    window.permitAddresses = permitAddresses;
 }

@@ -167,8 +167,9 @@ async function addData(address, transactions, db) {
             });
         }));
         Promise.all(putPromises)
-            .then(() => {
-            sendMessageToClients({ type: 'InputsStoredToDb' });
+            .then(async () => {
+            const inputs = await getSortedInputs(db);
+            sendMessageToClients({ type: 'InputsStoredToDb', data: inputs });
             resolve();
         })
             .catch(reject);

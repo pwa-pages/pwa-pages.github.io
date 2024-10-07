@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { EventService, EventType } from './service/event.service';
+import { EventData, EventService, EventType } from './service/event.service';
 import { SwipeService } from './service/swipe.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
   private rightAction = '';
 
   constructor(
-    public eventService: EventService<string>,
+    public eventService: EventService,
     public swipeService: SwipeService,
   ) {}
 
@@ -62,8 +62,9 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  async subscribeToEvent(eventType: EventType, callback: (...args: string[]) => void) {
-    await this.eventService.subscribeToEvent(eventType, callback);
+  async subscribeToEvent<T>(eventType: EventType, callback: (...args: T[]) => void) {
+    var eventCallBack:  (...args: EventData[]) => void = callback as (...args: EventData[]) => void;
+    await this.eventService.subscribeToEvent(eventType, eventCallBack);
   }
 
   async subscribeToEvents(eventTypes: EventType[], callback: () => void) {

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Input } from '../../service/ts/models/input';
 
 export enum EventType {
   StartFullDownload = 'StartFullDownload',
@@ -13,48 +14,50 @@ export enum EventType {
   StatisticsScreenLoaded = 'StatisticsScreenLoaded',
 }
 
+export type EventData = string | Input;
+
 @Injectable({
   providedIn: 'root',
 })
-export class EventService<T> {
+export class EventService {
   eventSubscriptions: {
-    [key in EventType]: Subject<T>;
+    [key in EventType]: Subject<EventData>;
   } = this.resetSubscriptions();
 
   resetSubscriptions() {
     this.eventSubscriptions = {
-      [EventType.StartFullDownload]: new Subject<T>(),
-      [EventType.EndFullDownload]: new Subject<T>(),
-      [EventType.InputsStoredToDb]: new Subject<T>(),
-      [EventType.SwipeActivated]: new Subject<T>(),
-      [EventType.SwipeDeActivated]: new Subject<T>(),
-      [EventType.StartDownload]: new Subject<T>(),
-      [EventType.EndDownload]: new Subject<T>(),
-      [EventType.SwipeVertical]: new Subject<T>(),
-      [EventType.StatisticsScreenLoaded]: new Subject<T>(),
+      [EventType.StartFullDownload]: new Subject<EventData>(),
+      [EventType.EndFullDownload]: new Subject<EventData>(),
+      [EventType.InputsStoredToDb]: new Subject<EventData>(),
+      [EventType.SwipeActivated]: new Subject<EventData>(),
+      [EventType.SwipeDeActivated]: new Subject<EventData>(),
+      [EventType.StartDownload]: new Subject<EventData>(),
+      [EventType.EndDownload]: new Subject<EventData>(),
+      [EventType.SwipeVertical]: new Subject<EventData>(),
+      [EventType.StatisticsScreenLoaded]: new Subject<EventData>(),
     };
     return this.eventSubscriptions;
   }
 
   async sendEvent(eventType: EventType) {
     console.log('Received event: ' + eventType);
-    this.eventSubscriptions[eventType].next({} as T);
+    this.eventSubscriptions[eventType].next({} as EventData);
   }
 
-  async sendEventWithData(eventType: EventType, eventData: T) {
-    console.log('Received event: ' + eventType);
+  async sendEventWithData(eventType: EventType, eventData: EventData) {
+    console.log('ReceiveTd event: ' + eventType);
     this.eventSubscriptions[eventType].next(eventData);
   }
 
-  async subscribeToEvent(eventType: EventType, callback: (...args: T[]) => void) {
+  async subscribeToEvent(eventType: EventType, callback: (...args: EventData[]) => void) {
     this.eventSubscriptions[eventType].subscribe((...eventData) => {
       callback(...eventData);
     });
   }
 
-  async subscribeToAllEvents(callback: (eventType: EventType, ...args: T[]) => void) {
+  async subscribeToAllEvents(callback: (eventType: EventType, ...args: EventData[]) => void) {
     Object.values(EventType).forEach((eventType) => {
-      this.subscribeToEvent(eventType, (...args: T[]) => callback(eventType, ...args));
+      this.subscribeToEvent(eventType, (...args: EventData[]) => callback(eventType, ...args));
     });
   }
 
@@ -62,7 +65,7 @@ export class EventService<T> {
     for (const eventType of events) {
       console.log('Unsubscribing all from ' + eventType);
       this.eventSubscriptions[eventType].unsubscribe();
-      this.eventSubscriptions[eventType] = new Subject<T>();
+      this.eventSubscriptions[eventType] = new Subject<EventData>();
     }
   }
 }

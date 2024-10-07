@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { EventService, EventType } from './event.service';
+import { EventData, EventService, EventType } from './event.service';
 
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {
   type: string;
+  data?: object;
   payload?: object;
 }
 
@@ -17,7 +18,7 @@ export function initializeServiceWorkerService(serviceWorkerService: ServiceWork
   providedIn: 'root',
 })
 export class ServiceWorkerService {
-  constructor(private eventService: EventService<string>) {
+  constructor(private eventService: EventService) {
     this.listenForServiceWorkerMessages();
   }
 
@@ -51,7 +52,11 @@ export class ServiceWorkerService {
     console.log('Handling message from service worker:', message);
 
     if ((Object.values(EventType) as string[]).includes(message.type)) {
-      this.eventService.sendEvent(message.type as EventType);
+      if (message.data) {
+        this.eventService.sendEventWithData(message.type as EventType, message.data as EventData);
+      } else {
+        this.eventService.sendEvent(message.type as EventType);
+      }
     }
   }
 }

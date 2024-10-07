@@ -81,8 +81,6 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
     try {
       const db: IDBDatabase = await initIndexedDB();
-      const aaaa = getSortedInputs(db);
-      console.log(aaaa);
       await downloadForAddresses(db);
     } catch (error) {
       console.error('Error initializing IndexedDB or downloading addresses:', error);
@@ -189,7 +187,7 @@ async function initIndexedDB(): Promise<IDBDatabase> {
 }
 
 // Send messages to clients (active pages)
-async function sendMessageToClients(message: { type: string }): Promise<void> {
+async function sendMessageToClients<T>(message: { type: string; data?: T }): Promise<void> {
   const clientsList = await (self as unknown as ServiceWorkerGlobalScope).clients.matchAll({
     type: 'window',
     includeUncontrolled: true,
@@ -259,8 +257,9 @@ async function addData(
     );
 
     Promise.all(putPromises)
-      .then(() => {
-        sendMessageToClients({ type: 'InputsStoredToDb' });
+      .then(async () => {
+        const inputs = await getSortedInputs(db);
+        sendMessageToClients({ type: 'InputsStoredToDb', data: inputs });
         resolve();
       })
       .catch(reject);

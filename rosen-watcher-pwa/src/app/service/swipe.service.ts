@@ -13,7 +13,7 @@ export class SwipeService {
   private swipeActive = false;
 
   constructor(
-    eventService: EventService<void>,
+    eventService: EventService,
     private router: Router,
   ) {
     this.registerSwipeDetect();

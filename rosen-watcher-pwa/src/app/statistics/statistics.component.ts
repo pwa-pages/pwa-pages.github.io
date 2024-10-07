@@ -50,7 +50,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private dataService: DataService,
     //private downloadDataService: DownloadDataService,
     private chartService: ChartService,
-    eventService: EventService<string>,
+    eventService: EventService,
     swipeService: SwipeService,
     private router: Router,
     private qrDialog: MatDialog,
@@ -200,7 +200,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       event.preventDefault();
     });
 
-    await this.subscribeToEvent(EventType.InputsStoredToDb, async () => {
+    await this.subscribeToEvent<Input[]>(EventType.InputsStoredToDb, async (inputs: Input[]) => {
+      
+      console.log(inputs);
       await this.retrieveData();
     });
 
