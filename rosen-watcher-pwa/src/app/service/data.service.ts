@@ -16,8 +16,6 @@ export function initializeDataService(dataService: DataService) {
   providedIn: 'root',
 })
 export class DataService {
-  readonly initialNDownloads: number = 50;
-  readonly fullDownloadsBatchSize: number = 200;
   private rsnInputs: Input[] = [];
   busyCounter = 0;
 

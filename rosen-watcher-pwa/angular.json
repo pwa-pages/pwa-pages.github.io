@@ -27,7 +27,8 @@
               "src/rosen-ngsw-worker.js",
               "src/serviceworker/js/rosen-download-worker.js",
               "src/serviceworker/js/rosen-db-worker.js",
-              "src/serviceworker/js/chain.service.js"
+              "src/serviceworker/js/chain.service.js",
+              "src/serviceworker/js/constants.js"
             ],
             "styles": [
               "src/styles.css",

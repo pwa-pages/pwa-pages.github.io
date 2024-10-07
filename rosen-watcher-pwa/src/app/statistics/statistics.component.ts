@@ -199,10 +199,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     await this.subscribeToEvent<Input[]>(EventType.RefreshInputs, async () => {
       await this.retrieveData();
     });
-
-    await this.subscribeToEvent(EventType.EndFullDownload, async () => {
-      await this.retrieveData();
-    });
   }
 
   title = 'rosen-watcher-pwa';

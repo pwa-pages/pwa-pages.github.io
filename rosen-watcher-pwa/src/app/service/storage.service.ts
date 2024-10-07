@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
+import '../../serviceworker/ts/constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StorageService {
-  dbName = 'rosenDatabase_1.1.5';
-  inputsStoreName = 'inputBoxes';
-  downloadStatusStoreName = 'downloadStatusStore';
-  addressDataStoreName = 'addressData';
   dbPromise: Promise<IDBDatabase>;
   inputsCache: Input[] = [];
 
@@ -19,25 +16,25 @@ export class StorageService {
 
   async initIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const request = window.indexedDB.open(this.dbName, 18);
+      const request = window.indexedDB.open(rs_DbName, rs_DbVersion);
 
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
 
-        if (db.objectStoreNames.contains(this.inputsStoreName)) {
-          db.deleteObjectStore(this.inputsStoreName);
+        if (db.objectStoreNames.contains(rs_InputsStoreName)) {
+          db.deleteObjectStore(rs_InputsStoreName);
         }
-        db.createObjectStore(this.inputsStoreName, { keyPath: ['boxId', 'outputAddress'] });
+        db.createObjectStore(rs_InputsStoreName, { keyPath: rs_Input_Key });
 
-        if (!db.objectStoreNames.contains(this.addressDataStoreName)) {
-          db.createObjectStore(this.addressDataStoreName, {
-            keyPath: 'address',
+        if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
+          db.createObjectStore(rs_AddressDataStoreName, {
+            keyPath: rs_Address_Key,
           });
         }
 
-        if (!db.objectStoreNames.contains(this.downloadStatusStoreName)) {
-          db.createObjectStore(this.downloadStatusStoreName, {
-            keyPath: 'address',
+        if (!db.objectStoreNames.contains(rs_DownloadStatusStoreName)) {
+          db.createObjectStore(rs_DownloadStatusStoreName, {
+            keyPath: rs_Address_Key,
           });
         }
       };
@@ -62,8 +59,8 @@ export class StorageService {
   async clearAddressStore(): Promise<void> {
     const db = await this.getDB();
     return new Promise<void>((resolve) => {
-      const transaction = db.transaction([this.addressDataStoreName], 'readwrite');
-      const objectStore = transaction.objectStore(this.addressDataStoreName);
+      const transaction = db.transaction([rs_AddressDataStoreName], 'readwrite');
+      const objectStore = transaction.objectStore(rs_AddressDataStoreName);
       const request = objectStore.clear();
 
       request.onsuccess = () => {
@@ -81,8 +78,8 @@ export class StorageService {
   async clearInputsStore(): Promise<void> {
     const db = await this.getDB();
     return new Promise<void>((resolve) => {
-      const transaction = db.transaction([this.inputsStoreName], 'readwrite');
-      const objectStore = transaction.objectStore(this.inputsStoreName);
+      const transaction = db.transaction([rs_InputsStoreName], 'readwrite');
+      const objectStore = transaction.objectStore(rs_InputsStoreName);
       const request = objectStore.clear();
 
       request.onsuccess = () => {
@@ -99,12 +96,12 @@ export class StorageService {
 
   async getInputs(): Promise<Input[]> {
     console.log('Getting inputs from database');
-    this.inputsCache = await this.getData<Input>(this.inputsStoreName);
+    this.inputsCache = await this.getData<Input>(rs_InputsStoreName);
     return this.inputsCache;
   }
 
   async getAddressData(): Promise<Address[]> {
-    return await this.getData<Address>(this.addressDataStoreName);
+    return await this.getData<Address>(rs_AddressDataStoreName);
   }
 
   private async getData<T>(storeName: string): Promise<T[]> {
@@ -132,8 +129,8 @@ export class StorageService {
     const db = await this.getDB();
 
     addressData.forEach((a) => {
-      const transaction = db.transaction([this.addressDataStoreName], 'readwrite');
-      const objectStore = transaction.objectStore(this.addressDataStoreName);
+      const transaction = db.transaction([rs_AddressDataStoreName], 'readwrite');
+      const objectStore = transaction.objectStore(rs_AddressDataStoreName);
       objectStore.put(a);
     });
   }

@@ -9,8 +9,6 @@ export enum EventType {
   InputsChanged = 'InputsChanged',
   SwipeActivated = 'SwipeActivated',
   SwipeDeActivated = 'SwipeDeActivated',
-  StartDownload = 'StartDownload',
-  EndDownload = 'EndDownload',
   SwipeVertical = 'SwipeVertical',
   StatisticsScreenLoaded = 'StatisticsScreenLoaded',
 }
@@ -33,8 +31,6 @@ export class EventService {
       [EventType.InputsChanged]: new Subject<EventData>(),
       [EventType.SwipeActivated]: new Subject<EventData>(),
       [EventType.SwipeDeActivated]: new Subject<EventData>(),
-      [EventType.StartDownload]: new Subject<EventData>(),
-      [EventType.EndDownload]: new Subject<EventData>(),
       [EventType.SwipeVertical]: new Subject<EventData>(),
       [EventType.StatisticsScreenLoaded]: new Subject<EventData>(),
     };

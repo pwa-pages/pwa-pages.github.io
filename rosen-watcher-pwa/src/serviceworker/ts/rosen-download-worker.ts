@@ -57,15 +57,6 @@ interface DownloadStatus {
   status: string;
 }
 
-// Constants
-const inputsStoreName = 'inputBoxes';
-const addressDataStoreName = 'addressData';
-const downloadStatusStoreName = 'downloadStatusStore'; // New store for download status flags
-const initialNDownloads = 50;
-const fullDownloadsBatchSize = 200;
-const startFrom: Date = new Date('2024-01-01');
-const dbName = 'rosenDatabase_1.1.5';
-
 let busyCounter = 0;
 
 // Service Worker Event Listener
@@ -93,7 +84,7 @@ self.addEventListener('message', async (event: MessageEvent) => {
 });
 
 async function getWatcherInputs(db: IDBDatabase): Promise<Input[]> {
-  const inputsPromise = getData<Input>(inputsStoreName, db);
+  const inputsPromise = getData<Input>(rs_InputsStoreName, db);
 
   try {
     const inputs = await inputsPromise;
@@ -158,23 +149,23 @@ async function getSortedInputs(db: IDBDatabase): Promise<Input[]> {
 // IndexedDB Initialization
 async function initIndexedDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const request: IDBOpenDBRequest = indexedDB.open(dbName, 18);
+    const request: IDBOpenDBRequest = indexedDB.open(rs_DbName, rs_DbVersion);
 
     request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
       const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
 
-      if (db.objectStoreNames.contains(inputsStoreName)) {
-        db.deleteObjectStore(inputsStoreName);
+      if (db.objectStoreNames.contains(rs_InputsStoreName)) {
+        db.deleteObjectStore(rs_InputsStoreName);
       }
-      db.createObjectStore(inputsStoreName, { keyPath: ['boxId', 'outputAddress'] });
+      db.createObjectStore(rs_InputsStoreName, { keyPath: rs_Input_Key });
 
-      if (!db.objectStoreNames.contains(addressDataStoreName)) {
-        db.createObjectStore(addressDataStoreName, { keyPath: 'address' });
+      if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
+        db.createObjectStore(rs_AddressDataStoreName, { keyPath: rs_Address_Key });
       }
 
       // Create the new store for download status
-      if (!db.objectStoreNames.contains(downloadStatusStoreName)) {
-        db.createObjectStore(downloadStatusStoreName, { keyPath: 'address' });
+      if (!db.objectStoreNames.contains(rs_DownloadStatusStoreName)) {
+        db.createObjectStore(rs_DownloadStatusStoreName, { keyPath: rs_Address_Key });
       }
     };
 
@@ -235,8 +226,8 @@ async function addData(
   db: IDBDatabase,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
-    const transaction: IDBTransaction = db.transaction([inputsStoreName], 'readwrite');
-    const objectStore: IDBObjectStore = transaction.objectStore(inputsStoreName);
+    const transaction: IDBTransaction = db.transaction([rs_InputsStoreName], 'readwrite');
+    const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
 
     const putPromises: Promise<void>[] = transactions.flatMap((item: TransactionItem) =>
       item.inputs.map((input: Input) => {
@@ -290,7 +281,7 @@ async function downloadTransactions(
 
   for (const item of response.items) {
     const inputDate: Date = new Date(item.timestamp);
-    if (inputDate < startFrom) {
+    if (inputDate < rs_StartFrom) {
       sendMessageToClients({ type: 'EndDownload' });
       return result;
     }
@@ -315,8 +306,8 @@ async function getData<T>(storeName: string, db: IDBDatabase): Promise<T[]> {
 // Get Download Status for Address from IndexedDB
 async function getDownloadStatus(address: string, db: IDBDatabase): Promise<string> {
   return new Promise((resolve, reject) => {
-    const transaction: IDBTransaction = db.transaction([downloadStatusStoreName], 'readonly');
-    const objectStore: IDBObjectStore = transaction.objectStore(downloadStatusStoreName);
+    const transaction: IDBTransaction = db.transaction([rs_DownloadStatusStoreName], 'readonly');
+    const objectStore: IDBObjectStore = transaction.objectStore(rs_DownloadStatusStoreName);
     const request: IDBRequest = objectStore.get(address);
 
     request.onsuccess = () => resolve((request.result as DownloadStatus)?.status || 'false');
@@ -327,8 +318,8 @@ async function getDownloadStatus(address: string, db: IDBDatabase): Promise<stri
 // Set Download Status for Address in IndexedDB
 async function setDownloadStatus(address: string, status: string, db: IDBDatabase): Promise<void> {
   return new Promise((resolve, reject) => {
-    const transaction: IDBTransaction = db.transaction([downloadStatusStoreName], 'readwrite');
-    const objectStore: IDBObjectStore = transaction.objectStore(downloadStatusStoreName);
+    const transaction: IDBTransaction = db.transaction([rs_DownloadStatusStoreName], 'readwrite');
+    const objectStore: IDBObjectStore = transaction.objectStore(rs_DownloadStatusStoreName);
     const request: IDBRequest = objectStore.put({ address, status });
 
     request.onsuccess = () => resolve();
@@ -345,14 +336,14 @@ async function downloadForAddress(address: string, db: IDBDatabase): Promise<voi
     const result: FetchTransactionsResponse = await downloadTransactions(
       address,
       0,
-      initialNDownloads,
+      rs_InitialNDownloads,
     );
-    console.log(`Processing initial download(size = ${initialNDownloads}) for: ${address}`);
+    console.log(`Processing initial download(size = ${rs_InitialNDownloads}) for: ${address}`);
 
     const itemsz: number = result.transactions.length;
     let halfBoxId = '';
 
-    if (itemsz > initialNDownloads / 2) {
+    if (itemsz > rs_InitialNDownloads / 2) {
       for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
         const item: TransactionItem = result.transactions[i];
         for (const input of item.inputs) {
@@ -370,7 +361,7 @@ async function downloadForAddress(address: string, db: IDBDatabase): Promise<voi
     const downloadStatus: string = await getDownloadStatus(address, db);
     if (boxData && downloadStatus === 'true') {
       console.log(`Found existing boxId in db for ${address}, no need to download more.`);
-    } else if (itemsz >= initialNDownloads) {
+    } else if (itemsz >= rs_InitialNDownloads) {
       await setDownloadStatus(address, 'false', db);
       console.log(`Downloading all tx's for : ${address}`);
       await downloadAllForAddress(address, 0, db);
@@ -390,8 +381,8 @@ async function getDataByBoxId(
   db: IDBDatabase,
 ): Promise<DbInput | null> {
   return new Promise((resolve, reject) => {
-    const transaction: IDBTransaction = db.transaction([inputsStoreName], 'readonly');
-    const objectStore: IDBObjectStore = transaction.objectStore(inputsStoreName);
+    const transaction: IDBTransaction = db.transaction([rs_InputsStoreName], 'readonly');
+    const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
     const request: IDBRequest = objectStore.get([boxId, addressId]);
 
     request.onsuccess = () => {
@@ -420,10 +411,10 @@ async function downloadAllForAddress(
     const result: FetchTransactionsResponse = await downloadTransactions(
       address,
       offset,
-      fullDownloadsBatchSize + 10,
+      rs_FullDownloadsBatchSize + 10,
     );
     console.log(
-      `Processing full download(offset = ${offset}, size = ${fullDownloadsBatchSize}) for: ${address}`,
+      `Processing full download(offset = ${offset}, size = ${rs_FullDownloadsBatchSize}) for: ${address}`,
     );
 
     if (!result.transactions || result.transactions.length === 0 || offset > 100000) {
@@ -433,7 +424,7 @@ async function downloadAllForAddress(
     }
 
     await addData(address, result.transactions, db);
-    await downloadAllForAddress(address, offset + fullDownloadsBatchSize, db);
+    await downloadAllForAddress(address, offset + rs_FullDownloadsBatchSize, db);
   } catch (e) {
     console.error(e);
   } finally {
@@ -445,7 +436,7 @@ async function downloadAllForAddress(
 // Download for All Addresses
 async function downloadForAddresses(db: IDBDatabase): Promise<void> {
   try {
-    const addresses: AddressData[] = await getData<AddressData>(addressDataStoreName, db); // Fetch all addresses from the IndexedDB
+    const addresses: AddressData[] = await getData<AddressData>(rs_AddressDataStoreName, db); // Fetch all addresses from the IndexedDB
 
     const downloadPromises: Promise<void>[] = addresses.map(async (addressObj: AddressData) => {
       await downloadForAddress(addressObj.address, db); // Initiate download for each address

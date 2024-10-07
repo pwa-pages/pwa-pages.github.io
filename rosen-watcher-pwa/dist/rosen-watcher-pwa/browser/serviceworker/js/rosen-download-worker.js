@@ -1,12 +1,4 @@
 // No triple-slash directives or 'declare const self'
-// Constants
-const inputsStoreName = 'inputBoxes';
-const addressDataStoreName = 'addressData';
-const downloadStatusStoreName = 'downloadStatusStore'; // New store for download status flags
-const initialNDownloads = 50;
-const fullDownloadsBatchSize = 200;
-const startFrom = new Date('2024-01-01');
-const dbName = 'rosenDatabase_1.1.5';
 let busyCounter = 0;
 // Service Worker Event Listener
 self.addEventListener('message', async (event) => {
@@ -26,7 +18,7 @@ self.addEventListener('message', async (event) => {
     }
 });
 async function getWatcherInputs(db) {
-    const inputsPromise = getData(inputsStoreName, db);
+    const inputsPromise = getData(rs_InputsStoreName, db);
     try {
         const inputs = await inputsPromise;
         const result_1 = inputs
@@ -85,19 +77,19 @@ async function getSortedInputs(db) {
 // IndexedDB Initialization
 async function initIndexedDB() {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open(dbName, 18);
+        const request = indexedDB.open(rs_DbName, rs_DbVersion);
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
-            if (db.objectStoreNames.contains(inputsStoreName)) {
-                db.deleteObjectStore(inputsStoreName);
+            if (db.objectStoreNames.contains(rs_InputsStoreName)) {
+                db.deleteObjectStore(rs_InputsStoreName);
             }
-            db.createObjectStore(inputsStoreName, { keyPath: ['boxId', 'outputAddress'] });
-            if (!db.objectStoreNames.contains(addressDataStoreName)) {
-                db.createObjectStore(addressDataStoreName, { keyPath: 'address' });
+            db.createObjectStore(rs_InputsStoreName, { keyPath: rs_Input_Key });
+            if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
+                db.createObjectStore(rs_AddressDataStoreName, { keyPath: rs_Address_Key });
             }
             // Create the new store for download status
-            if (!db.objectStoreNames.contains(downloadStatusStoreName)) {
-                db.createObjectStore(downloadStatusStoreName, { keyPath: 'address' });
+            if (!db.objectStoreNames.contains(rs_DownloadStatusStoreName)) {
+                db.createObjectStore(rs_DownloadStatusStoreName, { keyPath: rs_Address_Key });
             }
         };
         request.onsuccess = (event) => {
@@ -149,8 +141,8 @@ async function fetchTransactions(url) {
 // Add Data to IndexedDB
 async function addData(address, transactions, db) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction([inputsStoreName], 'readwrite');
-        const objectStore = transaction.objectStore(inputsStoreName);
+        const transaction = db.transaction([rs_InputsStoreName], 'readwrite');
+        const objectStore = transaction.objectStore(rs_InputsStoreName);
         const putPromises = transactions.flatMap((item) => item.inputs.map((input) => {
             input.outputAddress = address;
             input.inputDate = new Date(item.timestamp);
@@ -190,7 +182,7 @@ async function downloadTransactions(address, offset = 0, limit = 500) {
     };
     for (const item of response.items) {
         const inputDate = new Date(item.timestamp);
-        if (inputDate < startFrom) {
+        if (inputDate < rs_StartFrom) {
             sendMessageToClients({ type: 'EndDownload' });
             return result;
         }
@@ -211,8 +203,8 @@ async function getData(storeName, db) {
 // Get Download Status for Address from IndexedDB
 async function getDownloadStatus(address, db) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction([downloadStatusStoreName], 'readonly');
-        const objectStore = transaction.objectStore(downloadStatusStoreName);
+        const transaction = db.transaction([rs_DownloadStatusStoreName], 'readonly');
+        const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
         const request = objectStore.get(address);
         request.onsuccess = () => resolve(request.result?.status || 'false');
         request.onerror = (event) => reject(event.target.error);
@@ -221,8 +213,8 @@ async function getDownloadStatus(address, db) {
 // Set Download Status for Address in IndexedDB
 async function setDownloadStatus(address, status, db) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction([downloadStatusStoreName], 'readwrite');
-        const objectStore = transaction.objectStore(downloadStatusStoreName);
+        const transaction = db.transaction([rs_DownloadStatusStoreName], 'readwrite');
+        const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
         const request = objectStore.put({ address, status });
         request.onsuccess = () => resolve();
         request.onerror = (event) => reject(event.target.error);
@@ -233,11 +225,11 @@ async function downloadForAddress(address, db) {
     increaseBusyCounter();
     console.log(busyCounter);
     try {
-        const result = await downloadTransactions(address, 0, initialNDownloads);
-        console.log(`Processing initial download(size = ${initialNDownloads}) for: ${address}`);
+        const result = await downloadTransactions(address, 0, rs_InitialNDownloads);
+        console.log(`Processing initial download(size = ${rs_InitialNDownloads}) for: ${address}`);
         const itemsz = result.transactions.length;
         let halfBoxId = '';
-        if (itemsz > initialNDownloads / 2) {
+        if (itemsz > rs_InitialNDownloads / 2) {
             for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
                 const item = result.transactions[i];
                 for (const input of item.inputs) {
@@ -254,7 +246,7 @@ async function downloadForAddress(address, db) {
         if (boxData && downloadStatus === 'true') {
             console.log(`Found existing boxId in db for ${address}, no need to download more.`);
         }
-        else if (itemsz >= initialNDownloads) {
+        else if (itemsz >= rs_InitialNDownloads) {
             await setDownloadStatus(address, 'false', db);
             console.log(`Downloading all tx's for : ${address}`);
             await downloadAllForAddress(address, 0, db);
@@ -271,8 +263,8 @@ async function downloadForAddress(address, db) {
 // Get Data by BoxId from IndexedDB
 async function getDataByBoxId(boxId, addressId, db) {
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction([inputsStoreName], 'readonly');
-        const objectStore = transaction.objectStore(inputsStoreName);
+        const transaction = db.transaction([rs_InputsStoreName], 'readonly');
+        const objectStore = transaction.objectStore(rs_InputsStoreName);
         const request = objectStore.get([boxId, addressId]);
         request.onsuccess = () => {
             const result = request.result;
@@ -291,15 +283,15 @@ async function downloadAllForAddress(address, offset, db) {
     increaseBusyCounter();
     console.log(busyCounter);
     try {
-        const result = await downloadTransactions(address, offset, fullDownloadsBatchSize + 10);
-        console.log(`Processing full download(offset = ${offset}, size = ${fullDownloadsBatchSize}) for: ${address}`);
+        const result = await downloadTransactions(address, offset, rs_FullDownloadsBatchSize + 10);
+        console.log(`Processing full download(offset = ${offset}, size = ${rs_FullDownloadsBatchSize}) for: ${address}`);
         if (!result.transactions || result.transactions.length === 0 || offset > 100000) {
             await setDownloadStatus(address, 'true', db);
             console.log(busyCounter);
             return;
         }
         await addData(address, result.transactions, db);
-        await downloadAllForAddress(address, offset + fullDownloadsBatchSize, db);
+        await downloadAllForAddress(address, offset + rs_FullDownloadsBatchSize, db);
     }
     catch (e) {
         console.error(e);
@@ -312,7 +304,7 @@ async function downloadAllForAddress(address, offset, db) {
 // Download for All Addresses
 async function downloadForAddresses(db) {
     try {
-        const addresses = await getData(addressDataStoreName, db); // Fetch all addresses from the IndexedDB
+        const addresses = await getData(rs_AddressDataStoreName, db); // Fetch all addresses from the IndexedDB
         const downloadPromises = addresses.map(async (addressObj) => {
             await downloadForAddress(addressObj.address, db); // Initiate download for each address
         });

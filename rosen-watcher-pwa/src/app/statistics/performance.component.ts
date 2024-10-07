@@ -73,11 +73,6 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
       await this.retrieveData();
       this.updateChart();
     });
-
-    await this.subscribeToEvent(EventType.EndFullDownload, async () => {
-      await this.retrieveData();
-      this.updateChart();
-    });
   }
 
   private async getPerformanceChart(): Promise<ChartPerformance[]> {
