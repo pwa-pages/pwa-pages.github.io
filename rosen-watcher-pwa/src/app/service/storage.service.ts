@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
-import '../../serviceworker/ts/constants';
+import '../../shared/ts/constants';
 
 @Injectable({
   providedIn: 'root',

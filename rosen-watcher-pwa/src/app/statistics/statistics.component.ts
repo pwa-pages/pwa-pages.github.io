@@ -48,7 +48,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private route: ActivatedRoute,
     private storageService: StorageService,
     private dataService: DataService,
-    //private downloadDataService: DownloadDataService,
     private chartService: ChartService,
     eventService: EventService,
     swipeService: SwipeService,

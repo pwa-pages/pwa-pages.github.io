@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "./src/serviceworker/js",
+    "outDir": "./src/shared/js",
     "types": [],
     "verbatimModuleSyntax": false,
     "esModuleInterop": false,
     "noEmitHelpers": true,
-    "rootDir": "./src/serviceworker/ts/",
+    "rootDir": "./src/shared/ts/",
     "target": "ESNext",
     "module": "None", 
     "skipLibCheck": true,
@@ -16,7 +16,7 @@
     ]
   },
   "include": [
-    "src/serviceworker/ts/*.ts"
+    "src/shared/ts/*.ts"
   ],
   "exclude": [
     "node_modules",

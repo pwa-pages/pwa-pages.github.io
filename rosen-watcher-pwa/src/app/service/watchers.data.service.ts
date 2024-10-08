@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { ChainType } from '../../service/ts/models/chaintype';
 import { WatcherInfo } from '../../service/ts/models/watcher.info';
 import { Token } from '../../service/ts/models/token';
-import '../../serviceworker/ts/chain.service';
+import '../../shared/ts/chain.service';
 
 @Injectable({
   providedIn: 'root',
