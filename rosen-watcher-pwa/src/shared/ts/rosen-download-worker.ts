@@ -20,7 +20,6 @@ interface Input {
   outputAddress: string;
   inputDate: Date;
   assets: Asset[]; // Replace with actual Asset structure
-  outputCreatedAt: number;
   address: string;
   amount?: number;
   accumulatedAmount?: number;
@@ -44,7 +43,6 @@ interface DbInput {
   inputDate: Date;
   boxId: string;
   assets: Asset[]; // Replace with actual Asset structure
-  outputCreatedAt: Date;
   address?: string;
 }
 
@@ -89,9 +87,7 @@ async function getWatcherInputs(db: IDBDatabase): Promise<Input[]> {
   try {
     const inputs = await inputsPromise;
 
-    const result_1 = inputs
-      .filter((i: Input) => getChainType(i.address) != null)
-      .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
+    const result_1 = inputs.filter((i: Input) => getChainType(i.address) != null);
 
     result_1.forEach((input: Input) => {
       input.assets = input.assets
@@ -126,7 +122,6 @@ async function getSortedInputs(db: IDBDatabase): Promise<Input[]> {
         sortedInputs.push({
           inputDate: input.inputDate,
           address: input.address,
-          outputCreatedAt: input.outputCreatedAt,
           assets: input.assets,
           outputAddress: input.outputAddress,
           boxId: input.boxId,
@@ -239,7 +234,6 @@ async function addData(
           inputDate: input.inputDate,
           boxId: input.boxId,
           assets: input.assets || [],
-          outputCreatedAt: input.outputCreatedAt ? new Date(item.outputCreatedAt) : new Date(),
           address: input.address,
         };
 

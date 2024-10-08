@@ -22,8 +22,7 @@ async function getWatcherInputs(db) {
     try {
         const inputs = await inputsPromise;
         const result_1 = inputs
-            .filter((i) => getChainType(i.address) != null)
-            .sort((a, b) => b.outputCreatedAt - a.outputCreatedAt);
+            .filter((i) => getChainType(i.address) != null);
         result_1.forEach((input) => {
             input.assets = input.assets
                 .filter((asset) => asset.name === 'RSN' || asset.name === 'eRSN')
@@ -54,7 +53,6 @@ async function getSortedInputs(db) {
                 sortedInputs.push({
                     inputDate: input.inputDate,
                     address: input.address,
-                    outputCreatedAt: input.outputCreatedAt,
                     assets: input.assets,
                     outputAddress: input.outputAddress,
                     boxId: input.boxId,
@@ -151,7 +149,6 @@ async function addData(address, transactions, db) {
                 inputDate: input.inputDate,
                 boxId: input.boxId,
                 assets: input.assets || [],
-                outputCreatedAt: input.outputCreatedAt ? new Date(item.outputCreatedAt) : new Date(),
                 address: input.address,
             };
             return new Promise((putResolve, putReject) => {
