@@ -20,9 +20,11 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   bitcoinWatcherCount: Observable<number | undefined>;
   cardanoWatcherCount: Observable<number | undefined>;
   ergoWatcherCount: Observable<number | undefined>;
+  ethereumWatcherCount: Observable<number | undefined>;
   bitcoinPermitCount: Observable<number | undefined>;
   cardanoPermitCount: Observable<number | undefined>;
   ergoPermitCount: Observable<number | undefined>;
+  ethereumPermitCount: Observable<number | undefined>;
 
   constructor(
     private watchersDataService: WatchersDataService,
@@ -33,10 +35,12 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.watcherCount = EMPTY;
     this.bitcoinWatcherCount = EMPTY;
     this.cardanoWatcherCount = EMPTY;
+    this.ethereumWatcherCount = EMPTY;
     this.ergoWatcherCount = EMPTY;
     this.bitcoinPermitCount = EMPTY;
     this.cardanoPermitCount = EMPTY;
     this.ergoPermitCount = EMPTY;
+    this.ethereumPermitCount = EMPTY;
   }
 
   override async ngOnInit(): Promise<void> {
@@ -76,6 +80,14 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
       ),
     );
 
+    this.ethereumWatcherCount = watcherInfo$.pipe(
+      map(
+        (watcherInfo) =>
+          watcherInfo.tokens.find((token: Token) => token.name === 'rspv2EthereumAWC')?.amount,
+      ),
+    );
+
+
     let permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Cardano);
 
     this.cardanoPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo?.amount));
@@ -86,5 +98,9 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Ergo);
 
     this.ergoPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo?.amount));
+
+    permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Ethereum);
+
+    this.ethereumPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo?.amount));
   }
 }

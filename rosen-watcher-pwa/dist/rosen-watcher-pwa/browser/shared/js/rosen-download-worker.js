@@ -21,8 +21,7 @@ async function getWatcherInputs(db) {
     const inputsPromise = getData(rs_InputsStoreName, db);
     try {
         const inputs = await inputsPromise;
-        const result_1 = inputs
-            .filter((i) => getChainType(i.address) != null);
+        const result_1 = inputs.filter((i) => getChainType(i.address) != null);
         result_1.forEach((input) => {
             input.assets = input.assets
                 .filter((asset) => asset.name === 'RSN' || asset.name === 'eRSN')
