@@ -87,7 +87,6 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
       ),
     );
 
-
     let permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Cardano);
 
     this.cardanoPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo?.amount));
