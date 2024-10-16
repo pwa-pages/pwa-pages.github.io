@@ -69,6 +69,8 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     await this.retrieveData();
     this.updateChart();
 
+    this.eventService.sendEvent(EventType.PerformanceScreenLoaded);
+
     await this.subscribeToEvent(EventType.RefreshInputs, async () => {
       await this.retrieveData();
       this.updateChart();

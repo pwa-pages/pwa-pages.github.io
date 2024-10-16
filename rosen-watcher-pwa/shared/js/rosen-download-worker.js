@@ -16,6 +16,17 @@ self.addEventListener('message', async (event) => {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
     }
+    else if (data && data.type === 'PerformanceScreenLoaded') {
+        console.log('Rosen service worker received PerformanceScreenLoaded');
+        try {
+            const db = await initIndexedDB();
+            const inputs = await getSortedInputs(db);
+            sendMessageToClients({ type: 'InputsChanged', data: inputs });
+        }
+        catch (error) {
+            console.error('Error initializing IndexedDB or downloading addresses:', error);
+        }
+    }
 });
 async function getWatcherInputs(db) {
     const inputsPromise = getData(rs_InputsStoreName, db);
