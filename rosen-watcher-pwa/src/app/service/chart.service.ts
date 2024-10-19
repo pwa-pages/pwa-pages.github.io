@@ -16,6 +16,14 @@ export interface DateNumberPoint {
   y: number;
 }
 
+export enum Period {
+  Day = 'Day',
+  Week = 'Week',
+  Month = 'Month',
+  Year = 'year',
+  All = 'All',
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -96,6 +104,23 @@ export class ChartService {
   }
 
   createStatisticsChart(rewardsChart: DateNumberPoint[]): LineChart {
+    /*let filteredChart: DateNumberPoint[];
+    const date = new Date();
+
+    switch (period) {
+      case Period.Week:
+        date.setDate(date.getDate() - 7);
+        break;
+      case Period.Month:
+        date.setMonth(date.getDate() - 1);
+        break;
+      case Period.Year:
+        date.setFullYear(date.getFullYear() - 1);
+    }
+
+    filteredChart = rewardsChart.filter((r) => r.x >= date);
+    */
+
     return new Chart<'line', DateNumberPoint[]>('RewardChart', {
       type: 'line',
       data: {

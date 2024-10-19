@@ -10,10 +10,11 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { QRDialogComponent } from './qrdialog.component';
 import 'chartjs-adapter-date-fns';
-import { ChartService, DateNumberPoint, LineChart } from '../service/chart.service';
+import { ChartService, DateNumberPoint, LineChart, Period } from '../service/chart.service';
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { ServiceWorkerService } from '../service/service.worker.service';
+import { FormsModule } from '@angular/forms';
 
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
@@ -28,7 +29,7 @@ interface BeforeInstallPromptEvent extends Event {
   selector: 'app-statistics',
   templateUrl: './statistics.html',
   standalone: true,
-  imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive],
+  imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive, FormsModule],
 })
 export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
   data: string;
@@ -39,6 +40,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   addresses: Address[];
   version: string | null;
   noAddresses = false;
+  selectedPeriod: Period;
   addressesForDisplay: Address[];
   shareSupport = false;
   chart: LineChart | undefined;
@@ -66,6 +68,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.sortedInputs = [];
     this.detailInputs = [];
     this.version = '';
+    this.selectedPeriod = Period.All;
   }
 
   showHomeLink(): boolean {
@@ -151,6 +154,13 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.qrDialog.open(QRDialogComponent, {
       data: { qrData: this.getShareUrl() },
     });
+  }
+
+  onPeriodChange(): void {
+    if (this.chart) {
+      this.chart.data.datasets[0].data = this.chartService.reduceChartData(this.rewardsChart, 15);
+      this.chart.update();
+    }
   }
 
   getShareUrl(): string {

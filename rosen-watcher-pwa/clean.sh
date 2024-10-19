@@ -1,3 +1,4 @@
+rm -rf shared
 sudo rm -rf main-*.js
 sudo rm -rf poly-*.js
 sudo rm -rf *worker*.js

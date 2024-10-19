@@ -38,7 +38,6 @@ const permitAddresses: { [key in ChainType]: string } = {
  * @returns The corresponding ChainType or null if not found.
  */
 function getChainType(address: string): ChainType | null {
-  console.log('getChainType ' + address);
   switch (address) {
     case rewardsCardanoAddress:
       return ChainType.Cardano;

@@ -365,6 +365,14 @@ button:active {
   display: inline-block;
 }
 
+.period,
+.period select {
+  color: rgba(138, 128, 128);
+  font-size: 2vh;
+
+  display: inline-block;
+}
+
 .version-container {
   margin-top: -1.5vh;
   position: absolute;
