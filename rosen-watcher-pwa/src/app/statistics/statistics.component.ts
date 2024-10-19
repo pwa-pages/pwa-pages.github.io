@@ -13,6 +13,7 @@ import 'chartjs-adapter-date-fns';
 import { ChartService, DateNumberPoint, LineChart } from '../service/chart.service';
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
+import { ServiceWorkerService } from '../service/service.worker.service';
 
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
@@ -36,6 +37,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   sortedInputs: Input[];
   detailInputs: Input[];
   addresses: Address[];
+  version: string | null;
   noAddresses = false;
   addressesForDisplay: Address[];
   shareSupport = false;
@@ -51,6 +53,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private chartService: ChartService,
     eventService: EventService,
     swipeService: SwipeService,
+    private serviceWorkerService: ServiceWorkerService,
     private router: Router,
     private qrDialog: MatDialog,
   ) {
@@ -62,6 +65,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.rewardsChart = [];
     this.sortedInputs = [];
     this.detailInputs = [];
+    this.version = "";
   }
 
   showHomeLink(): boolean {
@@ -149,6 +153,8 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     });
   }
 
+
+
   getShareUrl(): string {
     const currentUrl = window.location.pathname;
     const subdirectory = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
@@ -197,6 +203,11 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     await this.subscribeToEvent<Input[]>(EventType.RefreshInputs, async () => {
       await this.retrieveData();
+    });
+
+    this.version = this.serviceWorkerService.getVersion();
+    await this.subscribeToEvent<string>(EventType.VersionUpdated, async (v) => {
+      this.version = v;
     });
   }
 

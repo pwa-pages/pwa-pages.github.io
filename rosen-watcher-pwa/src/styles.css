@@ -356,10 +356,18 @@ button:active {
 .version {
   color: rgba(138, 128, 128);
   font-size: 2vh;
-  padding: 1vh;
-  padding: 1vh 2vh;
-  padding-left: 4vh;
+  
+  font-size: 1.3vh;
+  padding-top: 0;
+ 
   text-decoration: none;
   height: 2vh;
   display: inline-block;
+}
+
+.version-container {
+  margin-top: -1.5vh;
+  position: absolute;
+  text-align: right;
+  width: 89vw;
 }
