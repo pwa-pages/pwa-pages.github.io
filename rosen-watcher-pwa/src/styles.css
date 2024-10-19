@@ -356,10 +356,10 @@ button:active {
 .version {
   color: rgba(138, 128, 128);
   font-size: 2vh;
-  
+
   font-size: 1.3vh;
   padding-top: 0;
- 
+
   text-decoration: none;
   height: 2vh;
   display: inline-block;

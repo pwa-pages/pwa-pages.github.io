@@ -65,7 +65,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.rewardsChart = [];
     this.sortedInputs = [];
     this.detailInputs = [];
-    this.version = "";
+    this.version = '';
   }
 
   showHomeLink(): boolean {
@@ -152,8 +152,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       data: { qrData: this.getShareUrl() },
     });
   }
-
-
 
   getShareUrl(): string {
     const currentUrl = window.location.pathname;
