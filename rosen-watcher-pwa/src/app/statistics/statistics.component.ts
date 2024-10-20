@@ -101,17 +101,17 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     return `${day} ${month} ${year}`;
   }
 
-  private reduceData(inputs : Input[], period: Period): Input[]{
+  private reduceData(inputs: Input[], period: Period): Input[] {
     const date = new Date();
 
     switch (period) {
       case Period.Day:
         date.setDate(date.getDate() - 1);
         break;
-        case Period.Week:
-          date.setDate(date.getDate() - 7);
-          break;
-        case Period.Month:
+      case Period.Week:
+        date.setDate(date.getDate() - 7);
+        break;
+      case Period.Month:
         date.setMonth(date.getMonth() - 1);
         break;
       case Period.Year:
@@ -161,7 +161,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.chart.data.datasets[0].data = this.chartService.reduceChartData(this.rewardsChart, 15);
     this.chart.update();
   }
-  
 
   installApp(): void {
     if ((window as WindowWithPrompt).deferredPrompt) {

@@ -30,7 +30,7 @@
     Details
   </a>
 
-  <div class ="period">
+  <div class="period">
     <label for="periodSelect">Period:</label>
     <select id="periodSelect" [(ngModel)]="selectedPeriod" (change)="onPeriodChange()">
       <option value="Day">Last day</option>
@@ -39,9 +39,7 @@
       <option value="Year">Last year</option>
       <option value="All">All</option>
     </select>
-  
   </div>
-
 </div>
 
 <div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">

@@ -185,38 +185,44 @@ export class ChartService {
 
     const firstPoint = data[0]?.y;
     data = data.map(r => { return { x: r.x, y: r.y - firstPoint } });
-  
-    let remainingPoints = data.length - targetPoints;
-    if (remainingPoints <= 0) {
-      return data;
-    }
-  
-    const points = data.slice();
-  
-    // Step 1: Dynamically calculate the threshold based on the range of x values (which are Dates)
-    const timeValues = points.map(p => p.x.getTime()); // Convert Date to time in milliseconds
+
+    var points = data.slice();
+
+
+    const timeValues = points.map(p => p.x.getTime());
     const minTime = Math.min(...timeValues);
     const maxTime = Math.max(...timeValues);
     const timeRange = maxTime - minTime;
-  
-    const idealSpacing = timeRange / points.length; // Ideal spacing based on time range and number of points
-    const threshold = idealSpacing * 0.1; // Set threshold to 10% of the ideal spacing (adjustable)
-  
-    // Step 2: Spread out points with close x (Date) values
+
+    const idealSpacing = timeRange / points.length;
+    const threshold = idealSpacing * 0.01;
+
+
+    const newPoints: DateNumberPoint[] = [];
+
+    newPoints[0] = points[0];
+
+
     for (let i = 1; i < points.length; i++) {
       const timeDiff = points[i].x.getTime() - points[i - 1].x.getTime();
-      if (timeDiff < threshold) {
-        // If two x (Date) points are too close, spread them out by adjusting the current point's x value
-        const newTime = points[i - 1].x.getTime() + threshold; // New time value
-        points[i].x = new Date(newTime); // Set new Date based on adjusted time
+      if (timeDiff >= threshold) {
+        newPoints.push(points[i]);
       }
     }
-  
-    // Step 3: Reduce the points while keeping the closest points
+
+    points = newPoints;
+
+    let remainingPoints = points.length - targetPoints;
+    if (remainingPoints <= 0) {
+      return points;
+    }
+
+
+
     while (remainingPoints > 0) {
       let minArea = Infinity;
       let indexToRemove = -1;
-  
+
       for (let i = 1; i < points.length - 1; i++) {
         const area = this.calculateTriangleArea(points[i - 1], points[i], points[i + 1]);
         if (area < minArea) {
@@ -224,7 +230,7 @@ export class ChartService {
           indexToRemove = i;
         }
       }
-  
+
       if (indexToRemove !== -1) {
         points.splice(indexToRemove, 1);
         remainingPoints--;
@@ -232,8 +238,7 @@ export class ChartService {
         break;
       }
     }
-  
+
     return points;
   }
-  
 }
