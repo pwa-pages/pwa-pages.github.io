@@ -40,7 +40,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   addresses: Address[];
   version: string | null;
   noAddresses = false;
-  selectedPeriod: Period;
+  selectedPeriod: Period | null;
   addressesForDisplay: Address[];
   shareSupport = false;
   chart: LineChart | undefined;
@@ -68,7 +68,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.sortedInputs = [];
     this.detailInputs = [];
     this.version = '';
-    this.selectedPeriod = Period.All;
+    this.selectedPeriod = null;
   }
 
   showHomeLink(): boolean {
@@ -101,8 +101,35 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     return `${day} ${month} ${year}`;
   }
 
+  private reduceData(inputs : Input[], period: Period): Input[]{
+    const date = new Date();
+
+    switch (period) {
+      case Period.Day:
+        date.setDate(date.getDate() - 1);
+        break;
+        case Period.Week:
+          date.setDate(date.getDate() - 7);
+          break;
+        case Period.Month:
+        date.setMonth(date.getMonth() - 1);
+        break;
+      case Period.Year:
+        date.setFullYear(date.getFullYear() - 1);
+        break;
+      default:
+        date.setFullYear(date.getFullYear() - 100);
+    }
+
+    inputs = inputs.filter((r) => r.inputDate >= date);
+
+    return inputs;
+  }
+
   async retrieveData(): Promise<void> {
-    this.sortedInputs = this.dataService.getSortedInputs();
+    this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
+    this.selectedPeriod = this.selectedPeriod == null ? Period.All : this.selectedPeriod;
+    this.sortedInputs = this.reduceData(this.dataService.getSortedInputs(), this.selectedPeriod);
 
     const newChart = this.sortedInputs.map((s) => {
       return { x: s.inputDate, y: s.accumulatedAmount } as DateNumberPoint;
@@ -134,6 +161,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.chart.data.datasets[0].data = this.chartService.reduceChartData(this.rewardsChart, 15);
     this.chart.update();
   }
+  
 
   installApp(): void {
     if ((window as WindowWithPrompt).deferredPrompt) {
@@ -157,10 +185,8 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   onPeriodChange(): void {
-    if (this.chart) {
-      this.chart.data.datasets[0].data = this.chartService.reduceChartData(this.rewardsChart, 15);
-      this.chart.update();
-    }
+    localStorage.setItem('statisticsPeriod', this.selectedPeriod as string);
+    this.retrieveData();
   }
 
   getShareUrl(): string {

@@ -1072,3 +1072,27 @@ SLF4J(I): Actual provider is of type [scribe.slf4j.ScribeServiceProvider@3a7100d
 2024.10.19 10:57:54 WARN  Flyway upgrade recommended: H2 2.3.230 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
 2024.10.19 10:57:54 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
 2024.10.19 10:57:54 WARN  Build server is not auto-connectable.
+2024.10.19 22:20:52 INFO  Shutting down server
+2024.10.19 22:20:52 INFO  shutting down Metals
+2024.10.19 22:20:52 INFO  Exiting server
+2024.10.19 22:50:27 INFO  Started: Metals version 1.3.5 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+SLF4J(W): Class path contains multiple SLF4J providers.
+SLF4J(W): Found provider [scribe.slf4j.ScribeServiceProvider@d1539b3]
+SLF4J(W): Found provider [ch.qos.logback.classic.spi.LogbackServiceProvider@725acdb6]
+SLF4J(W): See https://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J(I): Actual provider is of type [scribe.slf4j.ScribeServiceProvider@d1539b3]
+2024.10.19 22:50:28 WARN  Flyway upgrade recommended: H2 2.3.230 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2024.10.19 22:50:28 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2024.10.19 22:50:28 WARN  Build server is not auto-connectable.
+2024.10.19 23:18:15 INFO  Shutting down server
+2024.10.19 23:18:15 INFO  shutting down Metals
+2024.10.19 23:18:15 INFO  Exiting server
+2024.10.20 09:01:25 INFO  Started: Metals version 1.3.5 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+SLF4J(W): Class path contains multiple SLF4J providers.
+SLF4J(W): Found provider [scribe.slf4j.ScribeServiceProvider@776fb89d]
+SLF4J(W): Found provider [ch.qos.logback.classic.spi.LogbackServiceProvider@157b9bed]
+SLF4J(W): See https://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J(I): Actual provider is of type [scribe.slf4j.ScribeServiceProvider@776fb89d]
+2024.10.20 09:01:26 WARN  Flyway upgrade recommended: H2 2.3.230 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2024.10.20 09:01:26 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2024.10.20 09:01:26 WARN  Build server is not auto-connectable.

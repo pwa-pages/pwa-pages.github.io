@@ -104,22 +104,6 @@ export class ChartService {
   }
 
   createStatisticsChart(rewardsChart: DateNumberPoint[]): LineChart {
-    /*let filteredChart: DateNumberPoint[];
-    const date = new Date();
-
-    switch (period) {
-      case Period.Week:
-        date.setDate(date.getDate() - 7);
-        break;
-      case Period.Month:
-        date.setMonth(date.getDate() - 1);
-        break;
-      case Period.Year:
-        date.setFullYear(date.getFullYear() - 1);
-    }
-
-    filteredChart = rewardsChart.filter((r) => r.x >= date);
-    */
 
     return new Chart<'line', DateNumberPoint[]>('RewardChart', {
       type: 'line',
@@ -193,22 +177,46 @@ export class ChartService {
       (p1.x.getTime() * (p2.y - p3.y) +
         p2.x.getTime() * (p3.y - p1.y) +
         p3.x.getTime() * (p1.y - p2.y)) /
-        2,
+      2,
     );
   }
 
   reduceChartData(data: DateNumberPoint[], targetPoints: number): DateNumberPoint[] {
+
+    const firstPoint = data[0]?.y;
+    data = data.map(r => { return { x: r.x, y: r.y - firstPoint } });
+  
     let remainingPoints = data.length - targetPoints;
     if (remainingPoints <= 0) {
       return data;
     }
-
+  
     const points = data.slice();
-
+  
+    // Step 1: Dynamically calculate the threshold based on the range of x values (which are Dates)
+    const timeValues = points.map(p => p.x.getTime()); // Convert Date to time in milliseconds
+    const minTime = Math.min(...timeValues);
+    const maxTime = Math.max(...timeValues);
+    const timeRange = maxTime - minTime;
+  
+    const idealSpacing = timeRange / points.length; // Ideal spacing based on time range and number of points
+    const threshold = idealSpacing * 0.1; // Set threshold to 10% of the ideal spacing (adjustable)
+  
+    // Step 2: Spread out points with close x (Date) values
+    for (let i = 1; i < points.length; i++) {
+      const timeDiff = points[i].x.getTime() - points[i - 1].x.getTime();
+      if (timeDiff < threshold) {
+        // If two x (Date) points are too close, spread them out by adjusting the current point's x value
+        const newTime = points[i - 1].x.getTime() + threshold; // New time value
+        points[i].x = new Date(newTime); // Set new Date based on adjusted time
+      }
+    }
+  
+    // Step 3: Reduce the points while keeping the closest points
     while (remainingPoints > 0) {
       let minArea = Infinity;
       let indexToRemove = -1;
-
+  
       for (let i = 1; i < points.length - 1; i++) {
         const area = this.calculateTriangleArea(points[i - 1], points[i], points[i + 1]);
         if (area < minArea) {
@@ -216,7 +224,7 @@ export class ChartService {
           indexToRemove = i;
         }
       }
-
+  
       if (indexToRemove !== -1) {
         points.splice(indexToRemove, 1);
         remainingPoints--;
@@ -224,7 +232,8 @@ export class ChartService {
         break;
       }
     }
-
+  
     return points;
   }
+  
 }
