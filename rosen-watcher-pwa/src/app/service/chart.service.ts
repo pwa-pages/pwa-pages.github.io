@@ -204,11 +204,9 @@ export class ChartService {
       const timeDiff = points[i].x.getTime() - points[i - 1].x.getTime();
       if (timeDiff >= threshold) {
         newPoints.push(points[i]);
+      } else if (i == points.length - 1) {
+        newPoints[newPoints.length - 1] = points[i];
       }
-      else if(i == points.length-1){
-        newPoints[newPoints.length-1] = points[i];
-      }
-      
     }
 
     points = newPoints;

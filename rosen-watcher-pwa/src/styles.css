@@ -369,8 +369,11 @@ button:active {
 .period select {
   color: rgba(138, 128, 128);
   font-size: 2vh;
-
   display: inline-block;
+}
+
+.period select{
+  margin-left:.7vh;
 }
 
 .version-container {
