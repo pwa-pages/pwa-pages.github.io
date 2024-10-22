@@ -194,7 +194,7 @@ export class ChartService {
     const timeRange = maxTime - minTime;
 
     const idealSpacing = timeRange / points.length;
-    const threshold = idealSpacing * 0.02;
+    const threshold = idealSpacing * 0.03;
 
     const newPoints: DateNumberPoint[] = [];
 
@@ -204,9 +204,11 @@ export class ChartService {
       const timeDiff = points[i].x.getTime() - points[i - 1].x.getTime();
       if (timeDiff >= threshold) {
         newPoints.push(points[i]);
-      } else if (i == points.length - 1) {
-        newPoints[newPoints.length - 1] = points[i];
       }
+      else if(i == points.length-1){
+        newPoints[newPoints.length-1] = points[i];
+      }
+      
     }
 
     points = newPoints;

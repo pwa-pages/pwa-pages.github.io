@@ -372,8 +372,8 @@ button:active {
   display: inline-block;
 }
 
-.period select{
-  margin-left:.7vh;
+.period select {
+  margin-left: 0.7vh;
 }
 
 .version-container {
