@@ -8,12 +8,13 @@ import { map } from 'rxjs/operators';
 import { ChainType } from '../../service/ts/models/chaintype';
 import { AsyncPipe } from '@angular/common';
 import { Token } from '../../service/ts/models/token';
+import { CommonModule } from '@angular/common'; // Import CommonModule
 
 @Component({
   selector: 'app-watchers',
   templateUrl: './watchers.html',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, CommonModule]
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   watcherCount: Observable<number>;
@@ -25,6 +26,15 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   cardanoPermitCount: Observable<number | undefined>;
   ergoPermitCount: Observable<number | undefined>;
   ethereumPermitCount: Observable<number | undefined>;
+
+  bitcoinLockedRSN: Observable<number | undefined>;
+  bitcoinLockedERG: Observable<number | undefined>;
+  cardanoLockedRSN: Observable<number | undefined>;
+  cardanoLockedERG: Observable<number | undefined>;
+  ergoLockedRSN: Observable<number | undefined>;
+  ergoLockedERG: Observable<number | undefined>;
+  ethereumLockedRSN: Observable<number | undefined>;
+  ethereumLockedERG: Observable<number | undefined>;
 
   constructor(
     private watchersDataService: WatchersDataService,
@@ -41,6 +51,15 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.cardanoPermitCount = EMPTY;
     this.ergoPermitCount = EMPTY;
     this.ethereumPermitCount = EMPTY;
+
+    this.bitcoinLockedRSN = EMPTY;
+    this.bitcoinLockedERG = EMPTY;
+    this.cardanoLockedRSN = EMPTY;
+    this.cardanoLockedERG = EMPTY;
+    this.ergoLockedRSN = EMPTY;
+    this.ergoLockedERG = EMPTY;
+    this.ethereumLockedRSN = EMPTY;
+    this.ethereumLockedERG = EMPTY;
   }
 
   override async ngOnInit(): Promise<void> {
@@ -101,5 +120,17 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Ethereum);
 
     this.ethereumPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo?.amount));
+    
+
+    
+
+    this.bitcoinLockedRSN = this.bitcoinWatcherCount.pipe(map((w) => (w ?? 0) * 30000));
+    this.bitcoinLockedERG = this.bitcoinWatcherCount.pipe(map((w) => (w ?? 0) * 800));
+    this.cardanoLockedRSN = this.cardanoWatcherCount.pipe(map((w) => (w ?? 0) * 30000));
+    this.cardanoLockedERG = this.cardanoWatcherCount.pipe(map((w) => (w ?? 0) * 800));
+    this.ergoLockedRSN = this.ergoWatcherCount.pipe(map((w) => (w ?? 0) * 30000));
+    this.ergoLockedERG = this.ergoWatcherCount.pipe(map((w) => (w ?? 0) * 800));
+    this.ethereumLockedRSN = this.ethereumWatcherCount.pipe(map((w) => (w ?? 0) * 30000));
+    this.ethereumLockedERG = this.ethereumWatcherCount.pipe(map((w) => (w ?? 0) * 800));
   }
 }

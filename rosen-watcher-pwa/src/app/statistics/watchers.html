@@ -7,19 +7,36 @@
 
 <div class="watchersmaincontainer">
   <div class="watcherscontainer">
-    <div class="watchersdispl watcherheader">Watchers per chain</div>
-    <div class="Bitcoin watchersdispl">{{bitcoinWatcherCount | async}} (Bitcoin)</div>
-    <div class="Ethereum watchersdispl">{{ethereumWatcherCount | async}} (Ethereum)</div>
-    <div class="Cardano watchersdispl">{{cardanoWatcherCount | async}} (Cardano)</div>
-    <div class="Ergo watchersdispl">{{ergoWatcherCount | async}} (Ergo)</div>
-  </div>
+    <div class="watchersdispl watcherheader">Chain</div>
+    <div class="watcherheader">Watchers</div>
+    <div class="watcherheader">Permits</div>
+    <div class="watcherheader">Locked RSN</div>
+    <div class="watcherheader">Locked ERG</div>
 
-  <div class="watcherscontainer">
-    <div class="watchersdispl watcherheader">Permits per chain</div>
-    <div class="Bitcoin watchersdispl">{{bitcoinPermitCount | async}} (Bitcoin)</div>
-    <div class="Ethereum watchersdispl">{{ethereumPermitCount | async}} (Ethereum)</div>
-    <div class="Cardano watchersdispl">{{cardanoPermitCount | async}} (Cardano)</div>
-    <div class="Ergo watchersdispl">{{ergoPermitCount | async}} (Ergo)</div>
+    <div class="Bitcoin watchersdispl">Bitcoin</div>
+    <div>{{bitcoinWatcherCount | async}}</div>
+    <div>{{bitcoinPermitCount | async}}</div>
+    <div>{{bitcoinLockedRSN | async | number: '1.0-0'}}</div>
+    <div>{{bitcoinLockedERG | async | number: '1.0-0'}}</div>
+
+    <div class="Ethereum watchersdispl">Ethereum</div>
+    <div>{{ethereumWatcherCount | async}}</div>
+    <div>{{ethereumPermitCount | async}}</div>
+    <div>{{ethereumLockedRSN | async | number: '1.0-0'}}</div>
+    <div>{{ethereumLockedERG | async | number: '1.0-0'}}</div>
+
+    <div class="Cardano watchersdispl">Cardano</div>
+    <div>{{cardanoWatcherCount | async}}</div>
+    <div>{{cardanoPermitCount | async}}</div>
+    <div>{{cardanoLockedRSN | async | number: '1.0-0'}}</div>
+    <div>{{cardanoLockedERG | async | number: '1.0-0'}}</div>
+
+    <div class="Ergo watchersdispl">Ergo</div>
+    <div>{{ergoWatcherCount | async}}</div>
+    <div>{{ergoPermitCount | async}}</div>
+    <div>{{ergoLockedRSN | async | number: '1.0-0'}}</div>
+    <div>{{ergoLockedERG | async | number: '1.0-0'}}</div>
+
   </div>
 </div>
 
