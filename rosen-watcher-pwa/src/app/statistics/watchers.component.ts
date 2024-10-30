@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common'; // Import CommonModule
   selector: 'app-watchers',
   templateUrl: './watchers.html',
   standalone: true,
-  imports: [AsyncPipe, CommonModule]
+  imports: [AsyncPipe, CommonModule],
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   watcherCount: Observable<number>;
@@ -35,6 +35,11 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   ergoLockedERG: Observable<number | undefined>;
   ethereumLockedRSN: Observable<number | undefined>;
   ethereumLockedERG: Observable<number | undefined>;
+
+  totalWatcherCount: Observable<number | undefined>;
+  totalPermitCount: Observable<number | undefined>;
+  totalLockedRSN: Observable<number | undefined>;
+  totalLockedERG: Observable<number | undefined>;
 
   constructor(
     private watchersDataService: WatchersDataService,
@@ -60,6 +65,12 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.ergoLockedERG = EMPTY;
     this.ethereumLockedRSN = EMPTY;
     this.ethereumLockedERG = EMPTY;
+
+    this.totalWatcherCount = EMPTY;
+    this.totalPermitCount = EMPTY;
+    this.totalLockedRSN = EMPTY;
+    this.totalLockedERG = EMPTY;
+    
   }
 
   override async ngOnInit(): Promise<void> {
@@ -120,16 +131,60 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     permitsInfo$ = this.watchersDataService.getPermitsInfo(ChainType.Ethereum);
 
     this.ethereumPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo?.amount));
-    
 
-
-    this.bitcoinLockedRSN = combineLatest([this.bitcoinPermitCount, this.bitcoinWatcherCount]).pipe(map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000));    
+    this.bitcoinLockedRSN = combineLatest([this.bitcoinPermitCount, this.bitcoinWatcherCount]).pipe(
+      map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000),
+    );
     this.bitcoinLockedERG = this.bitcoinWatcherCount.pipe(map((w) => (w ?? 0) * 800));
-    this.cardanoLockedRSN = combineLatest([this.cardanoPermitCount, this.cardanoWatcherCount]).pipe(map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000));    
+    this.cardanoLockedRSN = combineLatest([this.cardanoPermitCount, this.cardanoWatcherCount]).pipe(
+      map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000),
+    );
     this.cardanoLockedERG = this.cardanoWatcherCount.pipe(map((w) => (w ?? 0) * 800));
-    this.ergoLockedRSN = combineLatest([this.ergoPermitCount, this.ergoWatcherCount]).pipe(map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000));    
+    this.ergoLockedRSN = combineLatest([this.ergoPermitCount, this.ergoWatcherCount]).pipe(
+      map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000),
+    );
     this.ergoLockedERG = this.ergoWatcherCount.pipe(map((w) => (w ?? 0) * 800));
-    this.ethereumLockedRSN = combineLatest([this.ethereumPermitCount, this.ethereumWatcherCount]).pipe(map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000));    
+    this.ethereumLockedRSN = combineLatest([
+      this.ethereumPermitCount,
+      this.ethereumWatcherCount,
+    ]).pipe(map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000));
     this.ethereumLockedERG = this.ethereumWatcherCount.pipe(map((w) => (w ?? 0) * 800));
+
+
+    this.totalWatcherCount = combineLatest([
+      this.ethereumWatcherCount,
+      this.bitcoinWatcherCount,
+      this.cardanoWatcherCount,
+      this.ergoWatcherCount
+    ]).pipe(
+      map(([eth, btc, ada, erg]) => (eth ?? 0) + (btc ?? 0) + (ada ?? 0) + (erg ?? 0))
+    );
+
+    this.totalPermitCount = combineLatest([
+      this.ethereumPermitCount,
+      this.bitcoinPermitCount,
+      this.cardanoPermitCount,
+      this.ergoPermitCount
+    ]).pipe(
+      map(([eth, btc, ada, erg]) => (eth ?? 0) + (btc ?? 0) + (ada ?? 0) + (erg ?? 0))
+    );
+
+    this.totalLockedRSN = combineLatest([
+      this.ethereumLockedRSN,
+      this.bitcoinLockedRSN,
+      this.cardanoLockedRSN,
+      this.ergoLockedRSN
+    ]).pipe(
+      map(([eth, btc, ada, erg]) => (eth ?? 0) + (btc ?? 0) + (ada ?? 0) + (erg ?? 0))
+    );
+
+    this.totalLockedERG = combineLatest([
+      this.ethereumLockedERG,
+      this.bitcoinLockedERG,
+      this.cardanoLockedERG,
+      this.ergoLockedERG
+    ]).pipe(
+      map(([eth, btc, ada, erg]) => (eth ?? 0) + (btc ?? 0) + (ada ?? 0) + (erg ?? 0))
+    );
   }
 }

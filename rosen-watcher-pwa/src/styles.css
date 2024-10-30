@@ -39,7 +39,7 @@ li:last-child {
 .addressescontainer,
 .linkcontainer,
 .watcherscontainer {
-  font-size: 2vh;
+  font-size: 1.8vh;
   font-weight: bold;
   color: rgba(138, 128, 128);
   animation: fadeIn 1s ease-in-out forwards;
@@ -170,7 +170,7 @@ a {
 }
 
 .watcherscontainer {
-  font-size: 2vmax;
+  font-size: 1.8vmax;
   margin-top: 4vh;
   float: left;
   border-radius: 3vmax;
