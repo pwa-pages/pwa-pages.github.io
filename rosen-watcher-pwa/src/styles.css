@@ -51,7 +51,7 @@ li:last-child {
   margin-right: 5vw;
 }
 
-.watcherscontainer div{
+.watcherscontainer div {
   color: rgb(138, 128, 128) !important;
   filter: brightness(0.8);
 }
@@ -145,7 +145,6 @@ a {
 
 .watcherheader {
   margin-bottom: 1vh;
-
 }
 
 .statdetaildispl,
@@ -161,11 +160,11 @@ a {
   padding-left: 2.7vh;
 }
 
-.watcherscontainer div{
-  padding-left:1.1vw;
+.watcherscontainer div {
+  padding-left: 1.1vw;
 }
 
-.watcherscontainer  .watchersdispl {
+.watcherscontainer .watchersdispl {
   padding-left: 5vw;
   filter: brightness(0.8);
 }
@@ -179,11 +178,8 @@ a {
   padding: 2vmax;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* Two equal columns */
-  gap: .1vw; /* Optional: spacing between grid items */
-
+  gap: 0.1vw; /* Optional: spacing between grid items */
 }
-
-
 
 .watchersmaincontainer {
   display: flex;

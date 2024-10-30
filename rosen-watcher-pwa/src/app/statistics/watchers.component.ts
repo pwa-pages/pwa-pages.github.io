@@ -3,7 +3,7 @@ import { EventService } from '../service/event.service';
 import { WatchersDataService } from '../service/watchers.data.service';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { Observable, EMPTY } from 'rxjs';
+import { Observable, EMPTY, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ChainType } from '../../service/ts/models/chaintype';
 import { AsyncPipe } from '@angular/common';
@@ -122,15 +122,14 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.ethereumPermitCount = permitsInfo$.pipe(map((permitsInfo) => permitsInfo?.amount));
     
 
-    
 
-    this.bitcoinLockedRSN = this.bitcoinWatcherCount.pipe(map((w) => (w ?? 0) * 30000));
+    this.bitcoinLockedRSN = combineLatest([this.bitcoinPermitCount, this.bitcoinWatcherCount]).pipe(map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000));    
     this.bitcoinLockedERG = this.bitcoinWatcherCount.pipe(map((w) => (w ?? 0) * 800));
-    this.cardanoLockedRSN = this.cardanoWatcherCount.pipe(map((w) => (w ?? 0) * 30000));
+    this.cardanoLockedRSN = combineLatest([this.cardanoPermitCount, this.cardanoWatcherCount]).pipe(map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000));    
     this.cardanoLockedERG = this.cardanoWatcherCount.pipe(map((w) => (w ?? 0) * 800));
-    this.ergoLockedRSN = this.ergoWatcherCount.pipe(map((w) => (w ?? 0) * 30000));
+    this.ergoLockedRSN = combineLatest([this.ergoPermitCount, this.ergoWatcherCount]).pipe(map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000));    
     this.ergoLockedERG = this.ergoWatcherCount.pipe(map((w) => (w ?? 0) * 800));
-    this.ethereumLockedRSN = this.ethereumWatcherCount.pipe(map((w) => (w ?? 0) * 30000));
+    this.ethereumLockedRSN = combineLatest([this.ethereumPermitCount, this.ethereumWatcherCount]).pipe(map(([p, w]) => (p ?? 0) * 3000 + (w ?? 0) * 30000));    
     this.ethereumLockedERG = this.ethereumWatcherCount.pipe(map((w) => (w ?? 0) * 800));
   }
 }
