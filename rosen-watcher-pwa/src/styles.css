@@ -177,8 +177,8 @@ a {
   border: 0.2vmax dashed rgba(138, 128, 128);
   padding: 2vmax;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* Two equal columns */
-  gap: 0.1vw; /* Optional: spacing between grid items */
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 0.1vw; 
 }
 
 .watchersmaincontainer {

@@ -14,28 +14,29 @@
     <div class="watcherheader">Locked ERG</div>
 
     <div class="Bitcoin watchersdispl">Bitcoin</div>
-    <div>{{bitcoinWatcherCount | async}}</div>
-    <div>{{bitcoinPermitCount | async}}</div>
-    <div>{{bitcoinLockedRSN | async | number: '1.0-0'}}</div>
-    <div>{{bitcoinLockedERG | async | number: '1.0-0'}}</div>
+    <div>{{chainWatcherCount['Bitcoin'] | async}}</div>
+    <div>{{chainPermitCount['Bitcoin'] | async}}</div>
+    <div>{{chainLockedRSN['Bitcoin'] | async | number: '1.0-0'}}</div>
+    <div>{{chainLockedERG['Bitcoin'] | async | number: '1.0-0'}}</div>
 
     <div class="Ethereum watchersdispl">Ethereum</div>
-    <div>{{ethereumWatcherCount | async}}</div>
-    <div>{{ethereumPermitCount | async}}</div>
-    <div>{{ethereumLockedRSN | async | number: '1.0-0'}}</div>
-    <div>{{ethereumLockedERG | async | number: '1.0-0'}}</div>
+    <div>{{chainWatcherCount['Ethereum'] | async}}</div>
+    <div>{{chainPermitCount['Ethereum'] | async}}</div>
+    <div>{{chainLockedRSN['Ethereum'] | async | number: '1.0-0'}}</div>
+    <div>{{chainLockedERG['Ethereum'] | async | number: '1.0-0'}}</div>
 
     <div class="Cardano watchersdispl">Cardano</div>
-    <div>{{cardanoWatcherCount | async}}</div>
-    <div>{{cardanoPermitCount | async}}</div>
-    <div>{{cardanoLockedRSN | async | number: '1.0-0'}}</div>
-    <div>{{cardanoLockedERG | async | number: '1.0-0'}}</div>
+    <div>{{chainWatcherCount['Cardano'] | async}}</div>
+    <div>{{chainPermitCount['Cardano'] | async}}</div>
+    <div>{{chainLockedRSN['Cardano'] | async | number: '1.0-0'}}</div>
+    <div>{{chainLockedERG['Cardano'] | async | number: '1.0-0'}}</div>
 
     <div class="Ergo watchersdispl">Ergo</div>
-    <div>{{ergoWatcherCount | async}}</div>
-    <div>{{ergoPermitCount | async}}</div>
-    <div>{{ergoLockedRSN | async | number: '1.0-0'}}</div>
-    <div>{{ergoLockedERG | async | number: '1.0-0'}}</div>
+    <div>{{chainWatcherCount['Ergo'] | async}}</div>
+    <div>{{chainPermitCount['Ergo'] | async}}</div>
+    <div>{{chainLockedRSN['Ergo'] | async | number: '1.0-0'}}</div>
+    <div>{{chainLockedERG['Ergo'] | async | number: '1.0-0'}}</div>
+
 
     <div class="watchersdispl"></div>
     <div>&nbsp;</div>
@@ -48,6 +49,7 @@
     <div>{{totalPermitCount | async}}</div>
     <div>{{totalLockedRSN | async | number: '1.0-0'}}</div>
     <div>{{totalLockedERG | async | number: '1.0-0'}}</div>
+    
   </div>
 </div>
 
