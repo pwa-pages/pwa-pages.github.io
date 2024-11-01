@@ -38,16 +38,33 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     swipeService: SwipeService,
   ) {
     super(eventService, swipeService);
-
   }
 
   setLockedAmounts(chainType: ChainType): void {
-    this.chainLockedRSN[chainType] = (this.chainPermitCount[chainType] ?? 0) * 3000 + (this.chainWatcherCount[chainType] ?? 0) * 30000;
+    this.chainLockedRSN[chainType] =
+      (this.chainPermitCount[chainType] ?? 0) * 3000 +
+      (this.chainWatcherCount[chainType] ?? 0) * 30000;
     this.chainLockedERG[chainType] = (this.chainWatcherCount[chainType] ?? 0) * 800;
-    this.totalWatcherCount = Object.values(this.chainWatcherCount).reduce((accumulator: number | undefined, currentValue: number | undefined) => (accumulator ?? 0) + (currentValue ?? 0), 0)
-    this.totalPermitCount = Object.values(this.chainPermitCount).reduce((accumulator: number | undefined, currentValue: number | undefined) => (accumulator ?? 0) + (currentValue ?? 0), 0)
-    this.totalLockedRSN = Object.values(this.chainLockedRSN).reduce((accumulator: number | undefined, currentValue: number | undefined) => (accumulator ?? 0) + (currentValue ?? 0), 0)
-    this.totalLockedERG = Object.values(this.chainLockedERG).reduce((accumulator: number | undefined, currentValue: number | undefined) => (accumulator ?? 0) + (currentValue ?? 0), 0)
+    this.totalWatcherCount = Object.values(this.chainWatcherCount).reduce(
+      (accumulator: number | undefined, currentValue: number | undefined) =>
+        (accumulator ?? 0) + (currentValue ?? 0),
+      0,
+    );
+    this.totalPermitCount = Object.values(this.chainPermitCount).reduce(
+      (accumulator: number | undefined, currentValue: number | undefined) =>
+        (accumulator ?? 0) + (currentValue ?? 0),
+      0,
+    );
+    this.totalLockedRSN = Object.values(this.chainLockedRSN).reduce(
+      (accumulator: number | undefined, currentValue: number | undefined) =>
+        (accumulator ?? 0) + (currentValue ?? 0),
+      0,
+    );
+    this.totalLockedERG = Object.values(this.chainLockedERG).reduce(
+      (accumulator: number | undefined, currentValue: number | undefined) =>
+        (accumulator ?? 0) + (currentValue ?? 0),
+      0,
+    );
   }
 
   override async ngOnInit(): Promise<void> {
@@ -56,18 +73,25 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     const watcherInfo$ = this.watchersDataService.getWatchersInfo();
 
     Object.values(ChainType).forEach((c) => {
-      watcherInfo$.pipe(
-        map(
-          (watcherInfo) =>
-            watcherInfo.tokens.find((token: Token) => token.name === 'rspv2' + c + 'AWC')?.amount,
-        ),
-      ).subscribe((amount) => { this.chainWatcherCount[c] = amount; this.setLockedAmounts(c); });
+      watcherInfo$
+        .pipe(
+          map(
+            (watcherInfo) =>
+              watcherInfo.tokens.find((token: Token) => token.name === 'rspv2' + c + 'AWC')?.amount,
+          ),
+        )
+        .subscribe((amount) => {
+          this.chainWatcherCount[c] = amount;
+          this.setLockedAmounts(c);
+        });
 
       this.watchersDataService
         .getPermitsInfo(c)
         .pipe(map((permitsInfo) => permitsInfo?.amount))
-        .subscribe((amount) => { this.chainPermitCount[c] = amount; this.setLockedAmounts(c); });
+        .subscribe((amount) => {
+          this.chainPermitCount[c] = amount;
+          this.setLockedAmounts(c);
+        });
     });
-
   }
 }

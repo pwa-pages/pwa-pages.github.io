@@ -144,11 +144,11 @@ a {
 }
 
 .watcherheader {
-  border-bottom: .2vmax solid rgba(138, 128, 128);
-  
+  border-bottom: 0.2vmax solid rgba(138, 128, 128);
 }
 
-.first, .watchersdispl {
+.first,
+.watchersdispl {
   border-left: 0 !important;
 }
 
@@ -167,12 +167,12 @@ a {
 
 .watcherscontainer div {
   padding-left: 1.1vw;
-  border-left: .2vmax solid rgba(138, 128, 128);
+  padding-right: 1.1vw;
+  border-left: 0.2vmax solid rgba(138, 128, 128);
 }
 
 .watcherscontainer .watchersdispl {
   filter: brightness(0.8);
-  
 }
 
 .watcherscontainer {
@@ -180,7 +180,7 @@ a {
   margin-top: 4vh;
   float: left;
   border-radius: 3vmax;
-  
+
   padding: 2vmax;
   display: grid;
   grid-template-columns: 3vmax 1fr 1fr 1fr 1fr 1fr;

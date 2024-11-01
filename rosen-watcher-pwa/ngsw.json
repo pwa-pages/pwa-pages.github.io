@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1730493384196,
+  "timestamp": 1730493854770,
   "appData": {
-    "version": "3.10.3"
+    "version": "3.10.4"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -20,7 +20,7 @@
         "./manifest.webmanifest",
         "./polyfills-SCHOHYNV.js",
         "./rosen-ngsw-worker.js",
-        "./styles-BUYZAMPB.css"
+        "./styles-477ZVEKS.css"
       ],
       "patterns": []
     },
@@ -61,7 +61,7 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./favicon.ico": "3f827768829ef167081886d77582b29f19122dc8",
-    "./index.html": "85f173af8c6fc95749b1f26577ce449f76fb4991",
+    "./index.html": "18d08653c021486193e7781c7ade9e6c70c61036",
     "./main-CC5IVBV6.js": "e9274966f31803a538584b154bb6d234f07281f2",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -78,7 +78,7 @@
     "./media/fa-v4compatibility-TNIB7AHA.ttf": "bd27e43f3d1e5019faaabc9ec6c5d3d7c5f100ef",
     "./polyfills-SCHOHYNV.js": "d45c76c5960bab3ace7fd6d211b9579456241f8a",
     "./rosen-ngsw-worker.js": "6e809f6a84db783550a34149846b084d990cfa01",
-    "./styles-BUYZAMPB.css": "8fc2075ed74754b5af42460d6a0a82084dabc129"
+    "./styles-477ZVEKS.css": "dffda6a247315352e763c9cacdffda971c16887a"
   },
   "navigationUrls": [
     {
