@@ -180,8 +180,6 @@ a {
   margin-top: 4vh;
   float: left;
   border-radius: 3vmax;
-
-  padding: 2vmax;
   display: grid;
   grid-template-columns: 3vmax 1fr 1fr 1fr 1fr 1fr;
 }

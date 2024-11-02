@@ -180,13 +180,17 @@ export class ChartService {
     );
   }
 
-  reduceChartData(data: DateNumberPoint[], targetPoints: number, adaptExtremes : boolean): DateNumberPoint[] {
+  reduceChartData(
+    data: DateNumberPoint[],
+    targetPoints: number,
+    adaptExtremes: boolean,
+  ): DateNumberPoint[] {
     const firstPoint = data[0]?.y;
     data = data.map((r) => {
       return { x: r.x, y: r.y - firstPoint };
     });
 
-    if(data.length == 0){
+    if (data.length == 0) {
       return [];
     }
     let points = data.slice();
@@ -213,7 +217,7 @@ export class ChartService {
       }
     }
 
-    if(!adaptExtremes){
+    if (!adaptExtremes) {
       return points;
     }
 
