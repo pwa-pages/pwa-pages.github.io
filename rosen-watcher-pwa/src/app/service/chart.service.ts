@@ -176,7 +176,7 @@ export class ChartService {
       (p1.x.getTime() * (p2.y - p3.y) +
         p2.x.getTime() * (p3.y - p1.y) +
         p3.x.getTime() * (p1.y - p2.y)) /
-      2,
+        2,
     );
   }
 
@@ -186,9 +186,7 @@ export class ChartService {
       return { x: r.x, y: r.y - firstPoint };
     });
 
-    let points = data.slice();
-
-
+    var points = data.slice();
 
     let remainingPoints = points.length - targetPoints;
     if (remainingPoints <= 0) {
@@ -214,6 +212,59 @@ export class ChartService {
         break;
       }
     }
+
+
+
+
+    const timeValuesX = points.map((p) => p.x.getTime());
+    const minTimeX = Math.min(...timeValuesX);
+    const maxTimeX = Math.max(...timeValuesX);
+    const timeRangeX = maxTimeX - minTimeX;
+
+    const idealSpacingX = timeRangeX;
+    const thresholdX = idealSpacingX * 0.03;
+
+    var newPoints: DateNumberPoint[] = [];
+
+
+    newPoints[0] = points[0];
+
+    for (let i = 1; i < points.length; i++) {
+      const timeDiff = points[i].x.getTime() - points[i - 1].x.getTime();
+      if (timeDiff >= thresholdX) {
+        newPoints.push(points[i]);
+      } else if (i == points.length - 1) {
+        newPoints[newPoints.length - 1] = points[i];
+      }
+    }
+
+    points = newPoints;
+
+    newPoints = [];
+    newPoints[0] = points[0];
+
+
+
+    const valuesY = points.map((p) => p.y);
+    const minY = Math.min(...valuesY);
+    const maxY = Math.max(...valuesY);
+    const rangeY = maxY - minY;
+
+    const idealSpacingY = rangeY;
+    const thresholdY = idealSpacingY * 0.03;
+
+
+    for (let i = 1; i < points.length; i++) {
+      const diff = points[i].y - points[i - 1].y;
+      if (diff >= thresholdY) {
+        newPoints.push(points[i]);
+      } else if (i == points.length - 1) {
+        newPoints[newPoints.length - 1] = points[i];
+      }
+    }
+
+    points = newPoints;
+
 
     return points;
   }
