@@ -180,18 +180,18 @@ export class ChartService {
     );
   }
 
-  reduceChartData(data: DateNumberPoint[], targetPoints: number): DateNumberPoint[] {
+  reduceChartData(data: DateNumberPoint[], targetPoints: number, adaptExtremes : boolean): DateNumberPoint[] {
     const firstPoint = data[0]?.y;
     data = data.map((r) => {
       return { x: r.x, y: r.y - firstPoint };
     });
 
+    if(data.length == 0){
+      return [];
+    }
     let points = data.slice();
 
     let remainingPoints = points.length - targetPoints;
-    if (remainingPoints <= 0) {
-      return points;
-    }
 
     while (remainingPoints > 0) {
       let minArea = Infinity;
@@ -211,6 +211,10 @@ export class ChartService {
       } else {
         break;
       }
+    }
+
+    if(!adaptExtremes){
+      return points;
     }
 
     const timeValuesX = points.map((p) => p.x.getTime());
