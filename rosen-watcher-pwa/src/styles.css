@@ -144,7 +144,7 @@ a {
 }
 
 .watcherheader {
-  border-bottom: 0.2vmax solid rgba(138, 128, 128);
+  border-bottom: 0.1vmax solid rgba(138, 128, 128);
 }
 
 .first,
@@ -168,7 +168,7 @@ a {
 .watcherscontainer div {
   padding-left: 1.1vw;
   padding-right: 1.1vw;
-  border-left: 0.2vmax solid rgba(138, 128, 128);
+  border-left: 0.1vmax solid rgba(138, 128, 128);
 }
 
 .watcherscontainer .watchersdispl {

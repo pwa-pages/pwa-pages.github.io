@@ -176,7 +176,7 @@ export class ChartService {
       (p1.x.getTime() * (p2.y - p3.y) +
         p2.x.getTime() * (p3.y - p1.y) +
         p3.x.getTime() * (p1.y - p2.y)) /
-        2,
+      2,
     );
   }
 
@@ -188,28 +188,7 @@ export class ChartService {
 
     let points = data.slice();
 
-    const timeValues = points.map((p) => p.x.getTime());
-    const minTime = Math.min(...timeValues);
-    const maxTime = Math.max(...timeValues);
-    const timeRange = maxTime - minTime;
 
-    const idealSpacing = timeRange / points.length;
-    const threshold = idealSpacing * 0.03;
-
-    const newPoints: DateNumberPoint[] = [];
-
-    newPoints[0] = points[0];
-
-    for (let i = 1; i < points.length; i++) {
-      const timeDiff = points[i].x.getTime() - points[i - 1].x.getTime();
-      if (timeDiff >= threshold) {
-        newPoints.push(points[i]);
-      } else if (i == points.length - 1) {
-        newPoints[newPoints.length - 1] = points[i];
-      }
-    }
-
-    points = newPoints;
 
     let remainingPoints = points.length - targetPoints;
     if (remainingPoints <= 0) {
