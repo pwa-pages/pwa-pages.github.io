@@ -28,6 +28,19 @@ export enum Period {
   providedIn: 'root',
 })
 export class ChartService {
+
+  readonly chartColors: string[] = [
+    '#1f77b4', // Blue
+    '#2ca02c', // Green
+    '#bcbd22', // Yellow-Green
+    '#d62728', // Red
+    '#ff7f0e', // Orange
+    '#8c564b', // Brown
+    '#e377c2', // Pink
+    '#7f7f7f', // Gray
+    '#17becf', // Turquoise
+    '#9467bd', // Purple
+  ];
   createPerformanceChart(
     datasets: ChartDataset<'bar', { x: string | number | Date; y: number }[]>[],
   ): Chart<'bar', { x: string | number | Date; y: number }[], unknown> {
@@ -103,23 +116,34 @@ export class ChartService {
     });
   }
 
-  createStatisticsChart(rewardsChart: DateNumberPoint[]): LineChart {
+
+
+  createStatisticsChart(rewardsChart: DateNumberPoint[], nDataSets: number): LineChart {
+
+    var dataSets: ChartDataset<"line", DateNumberPoint[]>[] = [];
+    for(var i=0; i<nDataSets; i++){
+
+      var chartColor = 'rgba(138, 128, 128)';
+      if(i > 0){
+        chartColor = this.chartColors[i-1];
+      }
+
+      dataSets.push({
+        label: 'Total rewards earned (RSN)',
+        data: rewardsChart,
+        borderColor: chartColor,
+        borderWidth: 4,
+        pointBackgroundColor: chartColor,
+        cubicInterpolationMode: 'default',
+        tension: 0.2,
+        pointRadius: 0,
+      });
+    }
+
     return new Chart<'line', DateNumberPoint[]>('RewardChart', {
       type: 'line',
       data: {
-        datasets: [
-          {
-            label: 'Total rewards earned (RSN)',
-            data: rewardsChart,
-            borderColor: 'rgb(138, 128, 128)',
-            backgroundColor: 'rgba(138, 128, 128, 0.2)',
-            borderWidth: 4,
-            pointBackgroundColor: 'rgb(138, 128, 128)',
-            cubicInterpolationMode: 'default',
-            tension: 0.4,
-            pointRadius: 0,
-          },
-        ],
+        datasets: dataSets,
       },
       options: {
         responsive: true,
@@ -226,42 +250,36 @@ export class ChartService {
     const maxTimeX = Math.max(...timeValuesX);
     const timeRangeX = maxTimeX - minTimeX;
 
-    const idealSpacingX = timeRangeX;
-    const thresholdX = idealSpacingX * 0.03;
 
     let newPoints: DateNumberPoint[] = [];
 
     newPoints[0] = points[0];
-
-    for (let i = 1; i < points.length; i++) {
-      const timeDiff = points[i].x.getTime() - points[i - 1].x.getTime();
-      if (timeDiff >= thresholdX) {
-        newPoints.push(points[i]);
-      } else if (i == points.length - 1) {
-        newPoints[newPoints.length - 1] = points[i];
-      }
-    }
-
-    points = newPoints;
-
-    newPoints = [];
-    newPoints[0] = points[0];
-
     const valuesY = points.map((p) => p.y);
     const minY = Math.min(...valuesY);
     const maxY = Math.max(...valuesY);
     const rangeY = maxY - minY;
 
-    const idealSpacingY = rangeY;
-    const thresholdY = idealSpacingY * 0.03;
+
+    var currentPoint = 0;
 
     for (let i = 1; i < points.length; i++) {
       const diff = points[i].y - points[i - 1].y;
-      if (diff >= thresholdY) {
+
+      const timeDiff = points[i].x.getTime() - points[currentPoint].x.getTime();
+
+      var dx = timeDiff / timeRangeX;
+      var dy = diff / rangeY;
+
+      var steepSlope = dx < 0.1 * dy || dy < 0.1 * dx;
+      
+
+      if (!steepSlope) {
         newPoints.push(points[i]);
+        currentPoint = i;
       } else if (i == points.length - 1) {
         newPoints[newPoints.length - 1] = points[i];
       }
+
     }
 
     points = newPoints;

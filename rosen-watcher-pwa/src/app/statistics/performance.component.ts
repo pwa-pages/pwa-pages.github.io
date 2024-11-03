@@ -21,18 +21,7 @@ import { Chart } from 'chart.js';
   imports: [NgFor, NgIf],
 })
 export class PerformanceComponent extends BaseWatcherComponent implements OnInit {
-  readonly chartColors: string[] = [
-    '#1f77b4', // Blue
-    '#2ca02c', // Green
-    '#bcbd22', // Yellow-Green
-    '#d62728', // Red
-    '#ff7f0e', // Orange
-    '#8c564b', // Brown
-    '#e377c2', // Pink
-    '#7f7f7f', // Gray
-    '#17becf', // Turquoise
-    '#9467bd', // Purple
-  ];
+  
 
   data: string;
   performanceCharts: ChartPerformance[];
@@ -151,12 +140,12 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
     return performanceChart.map((c: ChartPerformance, index: number) => ({
       ...c,
-      color: this.chartColors[index % this.chartColors.length],
+      color: this.chartService.chartColors[index % this.chartService.chartColors.length],
     }));
   }
 
   private createDataSet(i: number): ChartDataSet {
-    const chartColor = this.chartColors[i % 10];
+    const chartColor = this.chartService.chartColors[i % 10];
     return {
       label: '',
       data: [],
