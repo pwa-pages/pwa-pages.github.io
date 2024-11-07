@@ -325,7 +325,8 @@ async function setDownloadStatus(address: string, status: string, db: IDBDatabas
   return new Promise((resolve, reject) => {
     const transaction: IDBTransaction = db.transaction([rs_DownloadStatusStoreName], 'readwrite');
     const objectStore: IDBObjectStore = transaction.objectStore(rs_DownloadStatusStoreName);
-    const request: IDBRequest = objectStore.put({ address, status });
+    const Address = address;
+    const request: IDBRequest = objectStore.put({ Address, address, status });
 
     request.onsuccess = () => resolve();
     request.onerror = (event: Event) => reject((event.target as IDBRequest).error);

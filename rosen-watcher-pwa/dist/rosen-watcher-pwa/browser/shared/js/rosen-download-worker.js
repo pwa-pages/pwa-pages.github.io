@@ -225,7 +225,8 @@ async function setDownloadStatus(address, status, db) {
     return new Promise((resolve, reject) => {
         const transaction = db.transaction([rs_DownloadStatusStoreName], 'readwrite');
         const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
-        const request = objectStore.put({ address, status });
+        var Address = address;
+        const request = objectStore.put({ Address, address, status });
         request.onsuccess = () => resolve();
         request.onerror = (event) => reject(event.target.error);
     });

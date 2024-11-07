@@ -73,6 +73,7 @@ export class DataService {
       addresses.forEach((a: Address) => {
         result.push({
           address: a.address.substring(0, 6) + '...',
+          Address: a.address.substring(0, 6) + '...',
           chainType: a.chainType,
         });
       });
@@ -95,6 +96,7 @@ export class DataService {
         if (!addresses.some((address) => address.address == input.outputAddress)) {
           addresses.push({
             address: input.outputAddress,
+            Address: input.outputAddress,
             chainType: this.chainService.getChainType(input.address),
           });
         }

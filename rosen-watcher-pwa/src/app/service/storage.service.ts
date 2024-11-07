@@ -31,6 +31,14 @@ export class StorageService {
             keyPath: rs_Address_Key,
           });
         }
+        /*
+        const transaction = db.transaction([rs_AddressDataStoreName], 'readwrite');
+        const objectStore = transaction.objectStore(rs_AddressDataStoreName);
+        if (objectStore.keyPath !== rs_Address_Key) {
+          db.deleteObjectStore(rs_AddressDataStoreName);
+          db.createObjectStore(rs_AddressDataStoreName, { keyPath: rs_Address_Key });
+        }
+          */
 
         if (!db.objectStoreNames.contains(rs_DownloadStatusStoreName)) {
           db.createObjectStore(rs_DownloadStatusStoreName, {
@@ -131,6 +139,7 @@ export class StorageService {
     addressData.forEach((a) => {
       const transaction = db.transaction([rs_AddressDataStoreName], 'readwrite');
       const objectStore = transaction.objectStore(rs_AddressDataStoreName);
+      a.Address = a.address;
       objectStore.put(a);
     });
   }
