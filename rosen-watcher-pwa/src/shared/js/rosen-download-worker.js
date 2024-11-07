@@ -8,9 +8,11 @@ self.addEventListener('message', async (event) => {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
         try {
             const db = await initIndexedDB();
-            const inputs = await getSortedInputs(db);
+            const dataService = new DataService(db);
+            const downloadService = new DownloadService(dataService);
+            const inputs = await dataService.getSortedInputs();
             sendMessageToClients({ type: 'InputsChanged', data: inputs });
-            await downloadForAddresses(db);
+            await downloadService.downloadForAddresses();
         }
         catch (error) {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
@@ -20,7 +22,8 @@ self.addEventListener('message', async (event) => {
         console.log('Rosen service worker received PerformanceScreenLoaded');
         try {
             const db = await initIndexedDB();
-            const inputs = await getSortedInputs(db);
+            const dataService = new DataService(db);
+            const inputs = await dataService.getSortedInputs();
             sendMessageToClients({ type: 'InputsChanged', data: inputs });
         }
         catch (error) {
@@ -227,7 +230,7 @@ async function setDownloadStatus(address, status, db) {
         request.onerror = (event) => reject(event.target.error);
     });
 }
-// Download for Address
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function downloadForAddress(address, db) {
     increaseBusyCounter();
     console.log(busyCounter);
@@ -306,18 +309,5 @@ async function downloadAllForAddress(address, offset, db) {
     finally {
         decreaseBusyCounter();
         console.log(busyCounter);
-    }
-}
-// Download for All Addresses
-async function downloadForAddresses(db) {
-    try {
-        const addresses = await getData(rs_AddressDataStoreName, db); // Fetch all addresses from the IndexedDB
-        const downloadPromises = addresses.map(async (addressObj) => {
-            await downloadForAddress(addressObj.address, db); // Initiate download for each address
-        });
-        await Promise.all(downloadPromises); // Wait for all download operations to complete
-    }
-    catch (e) {
-        console.error('Error downloading for addresses:', e);
     }
 }

@@ -46,10 +46,6 @@ interface DbInput {
   address?: string;
 }
 
-interface AddressData {
-  address: string;
-}
-
 interface DownloadStatus {
   address: string;
   status: string;
@@ -71,10 +67,13 @@ self.addEventListener('message', async (event: MessageEvent) => {
     try {
       const db: IDBDatabase = await initIndexedDB();
 
-      const inputs = await getSortedInputs(db);
+      const dataService = new DataService(db);
+      const downloadService = new DownloadService(dataService);
+
+      const inputs = await dataService.getSortedInputs();
       sendMessageToClients({ type: 'InputsChanged', data: inputs });
 
-      await downloadForAddresses(db);
+      await downloadService.downloadForAddresses();
     } catch (error) {
       console.error('Error initializing IndexedDB or downloading addresses:', error);
     }
@@ -83,8 +82,9 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
     try {
       const db: IDBDatabase = await initIndexedDB();
+      const dataService = new DataService(db);
 
-      const inputs = await getSortedInputs(db);
+      const inputs = await dataService.getSortedInputs();
       sendMessageToClients({ type: 'InputsChanged', data: inputs });
     } catch (error) {
       console.error('Error initializing IndexedDB or downloading addresses:', error);
@@ -332,7 +332,7 @@ async function setDownloadStatus(address: string, status: string, db: IDBDatabas
   });
 }
 
-// Download for Address
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function downloadForAddress(address: string, db: IDBDatabase): Promise<void> {
   increaseBusyCounter();
   console.log(busyCounter);
@@ -435,20 +435,5 @@ async function downloadAllForAddress(
   } finally {
     decreaseBusyCounter();
     console.log(busyCounter);
-  }
-}
-
-// Download for All Addresses
-async function downloadForAddresses(db: IDBDatabase): Promise<void> {
-  try {
-    const addresses: AddressData[] = await getData<AddressData>(rs_AddressDataStoreName, db); // Fetch all addresses from the IndexedDB
-
-    const downloadPromises: Promise<void>[] = addresses.map(async (addressObj: AddressData) => {
-      await downloadForAddress(addressObj.address, db); // Initiate download for each address
-    });
-
-    await Promise.all(downloadPromises); // Wait for all download operations to complete
-  } catch (e) {
-    console.error('Error downloading for addresses:', e);
   }
 }

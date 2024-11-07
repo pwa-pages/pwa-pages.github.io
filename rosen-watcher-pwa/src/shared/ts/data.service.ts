@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class DownloadService {
-  constructor(private db: IDBDatabase) {}
+class DataService {
+  constructor(public db: IDBDatabase) {}
 
   async getSortedInputs(): Promise<Input[]> {
     const inputsPromise = await getWatcherInputs(this.db);
