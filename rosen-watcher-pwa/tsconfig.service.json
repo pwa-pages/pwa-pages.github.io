@@ -7,7 +7,7 @@
     "noEmitHelpers": true,
     "rootDir": "./src/shared/ts/",
     "target": "ESNext",
-    "module": "None", 
+    "module": "ESNext", 
     "skipLibCheck": true,
     "lib": [
       "ESNext",

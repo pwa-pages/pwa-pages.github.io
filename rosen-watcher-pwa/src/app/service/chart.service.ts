@@ -137,7 +137,6 @@ export class ChartService {
         tension: tensions[i],
         pointRadius: 0,
       });
-      
     }
 
     return new Chart<'line', DateNumberPoint[]>('RewardChart', {

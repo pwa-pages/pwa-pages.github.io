@@ -70,8 +70,9 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
     try {
       const db: IDBDatabase = await initIndexedDB();
+      const downloadService = new DownloadService(db);
 
-      const inputs = await getSortedInputs(db);
+      const inputs = await downloadService.getSortedInputs();
       sendMessageToClients({ type: 'InputsChanged', data: inputs });
 
       await downloadForAddresses(db);

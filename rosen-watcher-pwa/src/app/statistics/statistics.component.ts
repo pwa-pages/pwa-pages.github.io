@@ -164,7 +164,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       20,
       true,
     );
-    
+
     /*
     this.chart.data.datasets[1].data = this.chartService.reduceChartData(
       this.rewardsChart,
@@ -172,7 +172,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       true,
     );
     */
-
 
     this.chart.update();
   }
