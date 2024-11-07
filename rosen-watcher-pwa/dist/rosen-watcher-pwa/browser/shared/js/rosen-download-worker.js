@@ -8,8 +8,7 @@ self.addEventListener('message', async (event) => {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
         try {
             const db = await initIndexedDB();
-            const downloadService = new DownloadService(db);
-            const inputs = await downloadService.getSortedInputs();
+            const inputs = await getSortedInputs(db);
             sendMessageToClients({ type: 'InputsChanged', data: inputs });
             await downloadForAddresses(db);
         }
