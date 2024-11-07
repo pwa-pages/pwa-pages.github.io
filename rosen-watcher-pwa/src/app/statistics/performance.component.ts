@@ -21,8 +21,6 @@ import { Chart } from 'chart.js';
   imports: [NgFor, NgIf],
 })
 export class PerformanceComponent extends BaseWatcherComponent implements OnInit {
-  
-
   data: string;
   performanceCharts: ChartPerformance[];
   performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;

@@ -156,23 +156,24 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
   updateChart(): void {
     if (!this.chart) {
-      this.chart = this.chartService.createStatisticsChart(this.rewardsChart, 1);
+      this.chart = this.chartService.createStatisticsChart(this.rewardsChart, 1, [0.4]);
     }
-
 
     this.chart.data.datasets[0].data = this.chartService.reduceChartData(
       this.rewardsChart,
       20,
       true,
     );
-/*
+    
+    /*
     this.chart.data.datasets[1].data = this.chartService.reduceChartData(
       this.rewardsChart,
       20,
-      false,
+      true,
     );
+    */
 
-*/
+
     this.chart.update();
   }
 

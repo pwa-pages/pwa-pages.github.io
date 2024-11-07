@@ -28,7 +28,6 @@ export enum Period {
   providedIn: 'root',
 })
 export class ChartService {
-
   readonly chartColors: string[] = [
     '#1f77b4', // Blue
     '#2ca02c', // Green
@@ -116,16 +115,16 @@ export class ChartService {
     });
   }
 
-
-
-  createStatisticsChart(rewardsChart: DateNumberPoint[], nDataSets: number): LineChart {
-
-    var dataSets: ChartDataset<"line", DateNumberPoint[]>[] = [];
-    for(var i=0; i<nDataSets; i++){
-
-      var chartColor = 'rgba(138, 128, 128)';
-      if(i > 0){
-        chartColor = this.chartColors[i-1];
+  createStatisticsChart(
+    rewardsChart: DateNumberPoint[],
+    nDataSets: number,
+    tensions: number[],
+  ): LineChart {
+    const dataSets: ChartDataset<'line', DateNumberPoint[]>[] = [];
+    for (let i = 0; i < nDataSets; i++) {
+      let chartColor = 'rgba(138, 128, 128)';
+      if (i > 0) {
+        chartColor = this.chartColors[i - 1];
       }
 
       dataSets.push({
@@ -135,9 +134,10 @@ export class ChartService {
         borderWidth: 4,
         pointBackgroundColor: chartColor,
         cubicInterpolationMode: 'default',
-        tension: 0.2,
+        tension: tensions[i],
         pointRadius: 0,
       });
+      
     }
 
     return new Chart<'line', DateNumberPoint[]>('RewardChart', {
@@ -250,8 +250,7 @@ export class ChartService {
     const maxTimeX = Math.max(...timeValuesX);
     const timeRangeX = maxTimeX - minTimeX;
 
-
-    let newPoints: DateNumberPoint[] = [];
+    const newPoints: DateNumberPoint[] = [];
 
     newPoints[0] = points[0];
     const valuesY = points.map((p) => p.y);
@@ -259,19 +258,17 @@ export class ChartService {
     const maxY = Math.max(...valuesY);
     const rangeY = maxY - minY;
 
-
-    var currentPoint = 0;
+    let currentPoint = 0;
 
     for (let i = 1; i < points.length; i++) {
       const diff = points[i].y - points[i - 1].y;
 
       const timeDiff = points[i].x.getTime() - points[currentPoint].x.getTime();
 
-      var dx = timeDiff / timeRangeX;
-      var dy = diff / rangeY;
+      const dx = timeDiff / timeRangeX;
+      const dy = diff / rangeY;
 
-      var steepSlope = dx < 0.1 * dy || dy < 0.1 * dx;
-      
+      const steepSlope = dx < 0.1 * dy || dy < 0.1 * dx;
 
       if (!steepSlope) {
         newPoints.push(points[i]);
@@ -279,7 +276,6 @@ export class ChartService {
       } else if (i == points.length - 1) {
         newPoints[newPoints.length - 1] = points[i];
       }
-
     }
 
     points = newPoints;
