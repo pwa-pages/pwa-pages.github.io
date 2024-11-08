@@ -3,15 +3,11 @@ import { EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ChainService } from '../service/chain.service';
-import { ChainType } from '../../service/ts/models/chaintype';
 import { ChartService } from '../service/chart.service';
 import { NgFor, NgIf } from '@angular/common';
 import { ChartDataSet } from '../../service/ts/models/chart.dataset';
 import { ChartPoint } from '../../service/ts/models/chart.point';
 import { ChartPerformance } from '../../service/ts/models/chart.performance';
-import { Input } from '../../service/ts/models/input';
-import { Asset } from '../../service/ts/models/asset';
 import { Chart } from 'chart.js';
 
 @Component({
@@ -31,7 +27,6 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     private dataService: DataService,
     eventService: EventService,
     private chartService: ChartService,
-    private chainService: ChainService,
     swipeService: SwipeService,
   ) {
     super(eventService, swipeService);
@@ -69,44 +64,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
     console.log('start retrieving chart from database');
 
-    const inputs = this.dataService.getSortedInputs();
-
-    const addressCharts: Record<
-      string,
-      { chainType: ChainType | null; charts: Record<number, number> }
-    > = {};
-
-    inputs.forEach((input: Input) => {
-      input.assets.forEach((asset: Asset) => {
-        if (!addressCharts[input.outputAddress]) {
-          addressCharts[input.outputAddress] = { charts: {}, chainType: null };
-        }
-
-        const currentDate = new Date();
-        const halfYearAgo = new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth() - 6,
-          currentDate.getDate(),
-        );
-
-        if (input.inputDate > halfYearAgo) {
-          const dt = new Date(
-            input.inputDate.getFullYear(),
-            input.inputDate.getMonth(),
-            input.inputDate.getDate() - input.inputDate.getDay(),
-          ).getTime();
-          if (!addressCharts[input.outputAddress].charts[dt]) {
-            addressCharts[input.outputAddress].charts[dt] = 0;
-          }
-
-          addressCharts[input.outputAddress].charts[dt] +=
-            asset.amount / Math.pow(10, asset.decimals);
-          addressCharts[input.outputAddress].chainType = this.chainService.getChainType(
-            input.address,
-          );
-        }
-      });
-    });
+    const addressCharts = this.dataService.getAddressCharts();
 
     performanceChart = [];
 

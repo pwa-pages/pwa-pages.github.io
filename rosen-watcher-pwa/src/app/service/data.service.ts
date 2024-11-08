@@ -17,6 +17,10 @@ export function initializeDataService(dataService: DataService) {
 })
 export class DataService {
   private rsnInputs: Input[] = [];
+  private addressCharts: Record<
+    string,
+    { chainType: ChainType | null; charts: Record<number, number> }
+  > = {};
   busyCounter = 0;
 
   constructor(
@@ -30,6 +34,16 @@ export class DataService {
       this.rsnInputs = i;
       this.eventService.sendEvent(EventType.RefreshInputs);
     });
+
+    this.eventService.subscribeToEvent(
+      EventType.AddressChartLoaded,
+      async (
+        a: Record<string, { chainType: ChainType | null; charts: Record<number, number> }>,
+      ) => {
+        this.addressCharts = a;
+        this.eventService.sendEvent(EventType.RefreshInputs);
+      },
+    );
   }
 
   async getInputs(): Promise<Input[]> {
@@ -59,6 +73,13 @@ export class DataService {
 
   getSortedInputs(): Input[] {
     return this.rsnInputs;
+  }
+
+  getAddressCharts(): Record<
+    string,
+    { chainType: ChainType | null; charts: Record<number, number> }
+  > {
+    return this.addressCharts;
   }
 
   async getAddresses(): Promise<Address[]> {

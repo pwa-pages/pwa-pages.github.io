@@ -1,3 +1,4 @@
+importScripts('./shared/js/chart.service.js');
 importScripts('./shared/js/data.service.js');
 importScripts('./shared/js/download.service.js');
 importScripts('./shared/js/constants.js');
