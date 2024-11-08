@@ -71,16 +71,15 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
     const inputs = this.dataService.getSortedInputs();
 
-    
-    const addressCharts: Record<string,  { chainType: ChainType | null; charts: Record<number, number> }> = {};
-    
+    const addressCharts: Record<
+      string,
+      { chainType: ChainType | null; charts: Record<number, number> }
+    > = {};
 
     inputs.forEach((input: Input) => {
       input.assets.forEach((asset: Asset) => {
         if (!addressCharts[input.outputAddress]) {
-          addressCharts[input.outputAddress] = {charts : {},
-        chainType: null};
-          
+          addressCharts[input.outputAddress] = { charts: {}, chainType: null };
         }
 
         const currentDate = new Date();
@@ -100,8 +99,11 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
             addressCharts[input.outputAddress].charts[dt] = 0;
           }
 
-          addressCharts[input.outputAddress].charts[dt] += asset.amount / Math.pow(10, asset.decimals);
-          addressCharts[input.outputAddress].chainType = this.chainService.getChainType(input.address);
+          addressCharts[input.outputAddress].charts[dt] +=
+            asset.amount / Math.pow(10, asset.decimals);
+          addressCharts[input.outputAddress].chainType = this.chainService.getChainType(
+            input.address,
+          );
         }
       });
     });
