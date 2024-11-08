@@ -70,16 +70,17 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     console.log('start retrieving chart from database');
 
     const inputs = this.dataService.getSortedInputs();
-    const addressCharts: Record<string, Record<number, number>> = {};
 
-    inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
-
-    const chainTypes: Record<string, ChainType | null> = {};
+    
+    const addressCharts: Record<string,  { chainType: ChainType | null; charts: Record<number, number> }> = {};
+    
 
     inputs.forEach((input: Input) => {
       input.assets.forEach((asset: Asset) => {
         if (!addressCharts[input.outputAddress]) {
-          addressCharts[input.outputAddress] = {};
+          addressCharts[input.outputAddress] = {charts : {},
+        chainType: null};
+          
         }
 
         const currentDate = new Date();
@@ -95,12 +96,12 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
             input.inputDate.getMonth(),
             input.inputDate.getDate() - input.inputDate.getDay(),
           ).getTime();
-          if (!addressCharts[input.outputAddress][dt]) {
-            addressCharts[input.outputAddress][dt] = 0;
+          if (!addressCharts[input.outputAddress].charts[dt]) {
+            addressCharts[input.outputAddress].charts[dt] = 0;
           }
 
-          addressCharts[input.outputAddress][dt] += asset.amount / Math.pow(10, asset.decimals);
-          chainTypes[input.outputAddress] = this.chainService.getChainType(input.address);
+          addressCharts[input.outputAddress].charts[dt] += asset.amount / Math.pow(10, asset.decimals);
+          addressCharts[input.outputAddress].chainType = this.chainService.getChainType(input.address);
         }
       });
     });
@@ -110,10 +111,10 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     for (const key in addressCharts) {
       if (Object.prototype.hasOwnProperty.call(addressCharts, key)) {
         const chart: ChartPoint[] = [];
-        for (const ckey in addressCharts[key]) {
+        for (const ckey in addressCharts[key].charts) {
           chart.push({
             x: new Date(Number(ckey)),
-            y: addressCharts[key][ckey],
+            y: addressCharts[key].charts[ckey],
           });
         }
         const addressForDisplay =
@@ -122,7 +123,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
           address: key,
           addressForDisplay: addressForDisplay,
           chart: chart,
-          chainType: chainTypes[key],
+          chainType: addressCharts[key].chainType,
           color: '',
         });
       }
