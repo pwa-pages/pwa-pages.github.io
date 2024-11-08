@@ -1,8 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DataService {
     db;
-    constructor(db) {
+    chartService;
+    constructor(db, chartService) {
         this.db = db;
+        this.chartService = chartService;
     }
     async getWatcherInputs(db) {
         const inputsPromise = this.getData(rs_InputsStoreName, db);
@@ -50,6 +52,10 @@ class DataService {
                 .then(async () => {
                 const inputs = await this.getSortedInputs();
                 sendMessageToClients({ type: 'InputsChanged', data: inputs });
+                sendMessageToClients({
+                    type: 'AddressChartChanged',
+                    data: await this.chartService.getAddressCharts(inputs),
+                });
                 resolve();
             })
                 .catch(reject);

@@ -19,7 +19,7 @@ self.addEventListener('message', async (event: MessageEvent) => {
     try {
       const db: IDBDatabase = await initIndexedDB();
 
-      const dataService = new DataService(db);
+      const dataService = new DataService(db, new ChartService());
       const downloadService = new DownloadService(dataService);
 
       const inputs = await dataService.getSortedInputs();
@@ -34,11 +34,13 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
     try {
       const db: IDBDatabase = await initIndexedDB();
-      const dataService = new DataService(db);
-      const chartService = new ChartService(dataService);
-      const addressCharts = await chartService.getAddressCharts();
+      const chartService = new ChartService();
+      const dataService = new DataService(db, chartService);
+      const addressCharts = await chartService.getAddressCharts(
+        await dataService.getSortedInputs(),
+      );
 
-      sendMessageToClients({ type: 'AddressChartLoaded', data: addressCharts });
+      sendMessageToClients({ type: 'AddressChartChanged', data: addressCharts });
     } catch (error) {
       console.error('Error initializing IndexedDB or downloading addresses:', error);
     }

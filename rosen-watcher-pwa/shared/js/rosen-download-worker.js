@@ -7,7 +7,7 @@ self.addEventListener('message', async (event) => {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
         try {
             const db = await initIndexedDB();
-            const dataService = new DataService(db);
+            const dataService = new DataService(db, new ChartService());
             const downloadService = new DownloadService(dataService);
             const inputs = await dataService.getSortedInputs();
             sendMessageToClients({ type: 'InputsChanged', data: inputs });
@@ -21,10 +21,10 @@ self.addEventListener('message', async (event) => {
         console.log('Rosen service worker received PerformanceScreenLoaded');
         try {
             const db = await initIndexedDB();
-            const dataService = new DataService(db);
-            const chartService = new ChartService(dataService);
-            const addressCharts = await chartService.getAddressCharts();
-            sendMessageToClients({ type: 'AddressChartLoaded', data: addressCharts });
+            const chartService = new ChartService();
+            const dataService = new DataService(db, chartService);
+            const addressCharts = await chartService.getAddressCharts(await dataService.getSortedInputs());
+            sendMessageToClients({ type: 'AddressChartChanged', data: addressCharts });
         }
         catch (error) {
             console.error('Error initializing IndexedDB or downloading addresses:', error);

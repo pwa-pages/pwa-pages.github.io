@@ -34,7 +34,10 @@ interface Input {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DataService {
-  constructor(public db: IDBDatabase) {}
+  constructor(
+    public db: IDBDatabase,
+    private chartService: ChartService,
+  ) {}
 
   async getWatcherInputs(db: IDBDatabase): Promise<Input[]> {
     const inputsPromise = this.getData<Input>(rs_InputsStoreName, db);
@@ -92,6 +95,10 @@ class DataService {
         .then(async () => {
           const inputs = await this.getSortedInputs();
           sendMessageToClients({ type: 'InputsChanged', data: inputs });
+          sendMessageToClients({
+            type: 'AddressChartChanged',
+            data: await this.chartService.getAddressCharts(inputs),
+          });
           resolve();
         })
         .catch(reject);

@@ -1,12 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ChartService {
-    dataService;
-    constructor(dataService) {
-        this.dataService = dataService;
-    }
-    async getAddressCharts() {
+    async getAddressCharts(inputs) {
         const addressCharts = {};
-        const inputs = await this.dataService.getSortedInputs();
         inputs.forEach((input) => {
             input.assets.forEach((asset) => {
                 if (!addressCharts[input.outputAddress]) {

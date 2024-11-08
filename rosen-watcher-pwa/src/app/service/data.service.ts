@@ -36,7 +36,7 @@ export class DataService {
     });
 
     this.eventService.subscribeToEvent(
-      EventType.AddressChartLoaded,
+      EventType.AddressChartChanged,
       async (
         a: Record<string, { chainType: ChainType | null; charts: Record<number, number> }>,
       ) => {
