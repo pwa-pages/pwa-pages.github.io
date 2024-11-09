@@ -3,7 +3,6 @@ import { StorageService } from './storage.service';
 import { ChainService } from './chain.service';
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
-import { Asset } from '../../service/ts/models/asset';
 import { EventService, EventType } from './event.service';
 
 export function initializeDataService(dataService: DataService) {
@@ -48,27 +47,6 @@ export class DataService {
 
   async getInputs(): Promise<Input[]> {
     return this.storageService.getInputs();
-  }
-
-  async getTotalRewards(inputs: Input[]): Promise<string> {
-    try {
-      const sum: number = inputs.reduce((accumulator, o) => {
-        let assetAmount = 0;
-
-        o.assets.forEach((asset: Asset) => {
-          assetAmount += asset.amount / Math.pow(10, asset.decimals);
-        });
-
-        return accumulator + assetAmount;
-      }, 0);
-
-      return await new Promise<string>((resolve) => {
-        resolve(sum.toFixed(3));
-      });
-    } catch (error) {
-      console.error(error);
-      return '';
-    }
   }
 
   getSortedInputs(): Input[] {

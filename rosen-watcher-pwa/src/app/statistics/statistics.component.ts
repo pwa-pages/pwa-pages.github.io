@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { EventService, EventType } from '../service/event.service';
+import { EventData, EventService, EventType } from '../service/event.service';
 import { StorageService } from '../service/storage.service';
 import { SwipeService } from '../service/swipe.service';
 import { DataService } from '../service/data.service';
@@ -32,7 +32,7 @@ interface BeforeInstallPromptEvent extends Event {
   imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive, FormsModule],
 })
 export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
-  data: string;
+  totalRewards: string;
   selectedTab: string;
   rewardsChart: DateNumberPoint[];
   sortedInputs: Input[];
@@ -60,7 +60,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private qrDialog: MatDialog,
   ) {
     super(eventService, swipeService);
-    this.data = '';
+    this.totalRewards = '';
     this.selectedTab = 'chart';
     this.addresses = [];
     this.addressesForDisplay = [];
@@ -131,8 +131,8 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.selectedPeriod = this.selectedPeriod == null ? Period.All : this.selectedPeriod;
     this.sortedInputs = this.reduceData(this.dataService.getSortedInputs(), this.selectedPeriod);
 
-    const newChart = this.sortedInputs.map((s) => {
-      return { x: s.inputDate, y: s.accumulatedAmount } as DateNumberPoint;
+    const amounts = this.sortedInputs.map((s) => {
+      return { x: s.inputDate, y: s.amount } as DateNumberPoint;
     });
     this.sortedInputs.sort((a, b) => b.inputDate.getTime() - a.inputDate.getTime());
 
@@ -140,7 +140,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     if (
       this.rewardsChart.length != 0 &&
-      newChart.length != this.rewardsChart.length &&
+      amounts.length != this.rewardsChart.length &&
       this.chart
     ) {
       this.chart.options.animation = {
@@ -148,9 +148,22 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       };
     }
 
-    this.rewardsChart = newChart;
+    let accumulatedAmount = 0;
+    this.rewardsChart = amounts.map((s) => {
+      accumulatedAmount += s.y;
+      return { x: s.x, y: accumulatedAmount } as DateNumberPoint;
+    });
+
+    
     this.updateChart();
-    this.data = await this.dataService.getTotalRewards(this.sortedInputs);
+
+    if(this.rewardsChart.length > 0){
+      this.totalRewards = this.rewardsChart[this.rewardsChart.length-1].y.toFixed(3).toString();
+    }
+    
+
+    
+
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay(this.sortedInputs);
   }
 
@@ -230,7 +243,10 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.route.queryParams.subscribe(async (params) => {
       await this.checkAddressParams(params);
 
-      this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
+      this.eventService.sendEventWithData(
+        EventType.StatisticsScreenLoaded,
+        this.selectedPeriod as EventData,
+      );
     });
 
     this.shareSupport = navigator.share != null && navigator.share != undefined;
