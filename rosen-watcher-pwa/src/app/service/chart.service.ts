@@ -157,7 +157,7 @@ export class ChartService {
             },
             ticks: {
               callback: function (value: number | string) {
-                return (value as number);
+                return value as number;
               },
             },
           },

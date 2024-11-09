@@ -138,11 +138,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     this.detailInputs = this.sortedInputs.slice(0, 100);
 
-    if (
-      this.rewardsChart.length != 0 &&
-      amounts.length != this.rewardsChart.length &&
-      this.chart
-    ) {
+    if (this.rewardsChart.length != 0 && amounts.length != this.rewardsChart.length && this.chart) {
       this.chart.options.animation = {
         duration: 1000,
       };
@@ -154,15 +150,11 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       return { x: s.x, y: accumulatedAmount } as DateNumberPoint;
     });
 
-    
     this.updateChart();
 
-    if(this.rewardsChart.length > 0){
-      this.totalRewards = this.rewardsChart[this.rewardsChart.length-1].y.toFixed(3).toString();
+    if (this.rewardsChart.length > 0) {
+      this.totalRewards = this.rewardsChart[this.rewardsChart.length - 1].y.toFixed(3).toString();
     }
-    
-
-    
 
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay(this.sortedInputs);
   }
@@ -239,6 +231,8 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
+
+    this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
     this.updateChart();
     this.route.queryParams.subscribe(async (params) => {
       await this.checkAddressParams(params);
