@@ -6,32 +6,16 @@ interface MessageEventData {
   data: string;
 }
 
-let dataService: DataService;
-let downloadService: DownloadService;
-let chartService: ChartService;
-
-async function initializeServices(): Promise<void> {
-  if (!chartService) {
-    chartService = new ChartService();
-  }
-
-  if (!dataService) {
-    const db: IDBDatabase = await initIndexedDB();
-    dataService = new DataService(db, chartService);
-  }
-
-  if (!downloadService) {
-    downloadService = new DownloadService(dataService);
-  }
-}
-
 // Service Worker Event Listener
 self.addEventListener('message', async (event: MessageEvent) => {
   const data: MessageEventData = event.data;
 
   console.log(`Rosen service worker received event of type ${data.type}`);
 
-  initializeServices();
+  const db: IDBDatabase = await initIndexedDB();
+  const chartService: ChartService = new ChartService();
+  const dataService: DataService = new DataService(db, chartService);
+  const downloadService: DownloadService = new DownloadService(dataService);
 
   if (data && data.type === 'StatisticsScreenLoaded') {
     console.log(

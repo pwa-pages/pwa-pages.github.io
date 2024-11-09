@@ -1,24 +1,12 @@
 // No triple-slash directives or 'declare const self'
-var dataService;
-var downloadService;
-var chartService;
-async function initializeServices() {
-    if (!chartService) {
-        chartService = new ChartService();
-    }
-    if (!dataService) {
-        const db = await initIndexedDB();
-        dataService = new DataService(db, chartService);
-    }
-    if (!downloadService) {
-        downloadService = new DownloadService(dataService);
-    }
-}
 // Service Worker Event Listener
 self.addEventListener('message', async (event) => {
     const data = event.data;
     console.log(`Rosen service worker received event of type ${data.type}`);
-    initializeServices();
+    const db = await initIndexedDB();
+    const chartService = new ChartService();
+    const dataService = new DataService(db, chartService);
+    const downloadService = new DownloadService(dataService);
     if (data && data.type === 'StatisticsScreenLoaded') {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
         try {
