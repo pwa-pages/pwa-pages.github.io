@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { QRDialogComponent } from './qrdialog.component';
 import 'chartjs-adapter-date-fns';
-import { ChartService, DateNumberPoint, LineChart, Period } from '../service/chart.service';
+import { ChartService, LineChart } from '../service/chart.service';
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { ServiceWorkerService } from '../service/service.worker.service';
@@ -129,6 +129,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   async retrieveData(): Promise<void> {
     this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
     this.selectedPeriod = this.selectedPeriod == null ? Period.All : this.selectedPeriod;
+
     this.sortedInputs = this.reduceData(this.dataService.getSortedInputs(), this.selectedPeriod);
 
     const amounts = this.sortedInputs.map((s) => {

@@ -9,6 +9,15 @@ const rs_FullDownloadsBatchSize = 200;
 const rs_StartFrom = new Date('2024-01-01');
 const rs_Input_Key = ['boxId', 'outputAddress'];
 const rs_Address_Key = 'address';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+var Period;
+(function (Period) {
+    Period["Day"] = "Day";
+    Period["Week"] = "Week";
+    Period["Month"] = "Month";
+    Period["Year"] = "year";
+    Period["All"] = "All";
+})(Period || (Period = {}));
 if (typeof window !== 'undefined') {
     window.rs_DbName = rs_DbName;
     window.rs_DbVersion = rs_DbVersion;
@@ -20,4 +29,5 @@ if (typeof window !== 'undefined') {
     window.rs_StartFrom = rs_StartFrom;
     window.rs_Input_Key = rs_Input_Key;
     window.rs_Address_Key = rs_Address_Key;
+    window.Period = Period;
 }

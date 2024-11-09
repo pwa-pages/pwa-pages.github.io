@@ -11,19 +11,6 @@ export type LineChart = Chart<
   unknown
 >;
 
-export interface DateNumberPoint {
-  x: Date;
-  y: number;
-}
-
-export enum Period {
-  Day = 'Day',
-  Week = 'Week',
-  Month = 'Month',
-  Year = 'year',
-  All = 'All',
-}
-
 @Injectable({
   providedIn: 'root',
 })

@@ -24,11 +24,15 @@ export class ServiceWorkerService {
 
   public async initialize() {
     this.eventService.subscribeToAllEvents((eventType, eventData) => {
-
-      if(eventType == EventType.PerformanceScreenLoaded || eventType == EventType.StatisticsScreenLoaded){
-        this.sendMessageToServiceWorker({ type: eventType, data: eventData } as ServiceWorkerMessage);
+      if (
+        eventType == EventType.PerformanceScreenLoaded ||
+        eventType == EventType.StatisticsScreenLoaded
+      ) {
+        this.sendMessageToServiceWorker({
+          type: eventType,
+          data: eventData,
+        } as ServiceWorkerMessage);
       }
-      
     });
   }
 
