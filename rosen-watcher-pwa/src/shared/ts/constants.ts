@@ -16,7 +16,6 @@ interface DateNumberPoint {
   y: number;
 }
 
- 
 enum Period {
   Day = 'Day',
   Week = 'Week',

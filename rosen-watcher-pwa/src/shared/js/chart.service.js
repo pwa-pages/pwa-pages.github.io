@@ -22,4 +22,32 @@ class ChartService {
         });
         return addressCharts;
     }
+    async getAmountsByDate(inputs, period) {
+        const reducedInputs = this.reduceData(inputs, period);
+        const amounts = reducedInputs.map((s) => {
+            return { x: s.inputDate, y: s.amount };
+        });
+        return amounts;
+    }
+    reduceData(inputs, period) {
+        const date = new Date();
+        switch (period) {
+            case Period.Day:
+                date.setDate(date.getDate() - 1);
+                break;
+            case Period.Week:
+                date.setDate(date.getDate() - 7);
+                break;
+            case Period.Month:
+                date.setMonth(date.getMonth() - 1);
+                break;
+            case Period.Year:
+                date.setFullYear(date.getFullYear() - 1);
+                break;
+            default:
+                date.setFullYear(date.getFullYear() - 100);
+        }
+        inputs = inputs.filter((r) => r.inputDate >= date);
+        return inputs;
+    }
 }

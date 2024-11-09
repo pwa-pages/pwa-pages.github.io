@@ -9,7 +9,6 @@ const rs_FullDownloadsBatchSize = 200;
 const rs_StartFrom = new Date('2024-01-01');
 const rs_Input_Key = ['boxId', 'outputAddress'];
 const rs_Address_Key = 'address';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 var Period;
 (function (Period) {
     Period["Day"] = "Day";

@@ -135,6 +135,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     const amounts = this.sortedInputs.map((s) => {
       return { x: s.inputDate, y: s.amount } as DateNumberPoint;
     });
+
     this.sortedInputs.sort((a, b) => b.inputDate.getTime() - a.inputDate.getTime());
 
     this.detailInputs = this.sortedInputs.slice(0, 100);

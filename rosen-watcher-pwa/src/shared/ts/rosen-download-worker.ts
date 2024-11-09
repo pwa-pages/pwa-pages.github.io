@@ -3,6 +3,26 @@
 // Define interfaces for the data structures used
 interface MessageEventData {
   type: string;
+  data: string;
+}
+
+let dataService: DataService;
+let downloadService: DownloadService;
+let chartService: ChartService;
+
+async function initializeServices(): Promise<void> {
+  if (!chartService) {
+    chartService = new ChartService();
+  }
+
+  if (!dataService) {
+    const db: IDBDatabase = await initIndexedDB();
+    dataService = new DataService(db, chartService);
+  }
+
+  if (!downloadService) {
+    downloadService = new DownloadService(dataService);
+  }
 }
 
 // Service Worker Event Listener
@@ -11,18 +31,17 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
   console.log(`Rosen service worker received event of type ${data.type}`);
 
+  initializeServices();
+
   if (data && data.type === 'StatisticsScreenLoaded') {
     console.log(
       'Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain',
     );
 
     try {
-      const db: IDBDatabase = await initIndexedDB();
-
-      const dataService = new DataService(db, new ChartService());
-      const downloadService = new DownloadService(dataService);
-
       const inputs = await dataService.getSortedInputs();
+      const amountsByDate = chartService.getAmountsByDate(inputs, data.data as Period);
+      console.log(amountsByDate);
       sendMessageToClients({ type: 'InputsChanged', data: inputs });
 
       await downloadService.downloadForAddresses();
@@ -33,9 +52,6 @@ self.addEventListener('message', async (event: MessageEvent) => {
     console.log('Rosen service worker received PerformanceScreenLoaded');
 
     try {
-      const db: IDBDatabase = await initIndexedDB();
-      const chartService = new ChartService();
-      const dataService = new DataService(db, chartService);
       const addressCharts = await chartService.getAddressCharts(
         await dataService.getSortedInputs(),
       );
