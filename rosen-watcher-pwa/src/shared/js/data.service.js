@@ -35,6 +35,10 @@ class DataService {
             const putPromises = transactions.flatMap((item) => item.inputs.map((input) => {
                 input.outputAddress = address;
                 input.inputDate = new Date(item.timestamp);
+                input.assets = input.assets.filter((a) => a.name == 'eRSN' || a.name == 'RSN');
+                input.assets.forEach(a => {
+                    a.tokenId = null;
+                });
                 const dbInput = {
                     outputAddress: input.outputAddress,
                     inputDate: input.inputDate,
@@ -43,9 +47,14 @@ class DataService {
                     address: input.address,
                 };
                 return new Promise((putResolve, putReject) => {
-                    const request = objectStore.put(dbInput);
-                    request.onsuccess = () => putResolve();
-                    request.onerror = (event) => putReject(event.target.error);
+                    if (dbInput.assets.length > 0) {
+                        const request = objectStore.put(dbInput);
+                        request.onsuccess = () => putResolve();
+                        request.onerror = (event) => putReject(event.target.error);
+                    }
+                    else {
+                        putResolve();
+                    }
                 });
             }));
             Promise.all(putPromises)

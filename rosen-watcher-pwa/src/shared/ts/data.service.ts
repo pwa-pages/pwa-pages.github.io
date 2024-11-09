@@ -11,6 +11,7 @@ interface Asset {
   quantity: number;
   amount: number;
   decimals: number;
+  tokenId: string | null;
 }
 
 interface DbInput {
@@ -75,6 +76,11 @@ class DataService {
           input.outputAddress = address;
           input.inputDate = new Date(item.timestamp);
 
+          input.assets = input.assets.filter((a) => a.name == 'eRSN' || a.name == 'RSN');
+          input.assets.forEach((a) => {
+            a.tokenId = null;
+          });
+
           const dbInput: DbInput = {
             outputAddress: input.outputAddress,
             inputDate: input.inputDate,
@@ -84,9 +90,13 @@ class DataService {
           };
 
           return new Promise<void>((putResolve, putReject) => {
-            const request: IDBRequest = objectStore.put(dbInput);
-            request.onsuccess = () => putResolve();
-            request.onerror = (event: Event) => putReject((event.target as IDBRequest).error);
+            if (dbInput.assets.length > 0) {
+              const request: IDBRequest = objectStore.put(dbInput);
+              request.onsuccess = () => putResolve();
+              request.onerror = (event: Event) => putReject((event.target as IDBRequest).error);
+            } else {
+              putResolve();
+            }
           });
         }),
       );
