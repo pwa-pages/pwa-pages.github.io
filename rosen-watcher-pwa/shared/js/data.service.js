@@ -36,7 +36,7 @@ class DataService {
                 input.outputAddress = address;
                 input.inputDate = new Date(item.timestamp);
                 input.assets = input.assets.filter((a) => a.name == 'eRSN' || a.name == 'RSN');
-                input.assets.forEach(a => {
+                input.assets.forEach((a) => {
                     a.tokenId = null;
                 });
                 const dbInput = {

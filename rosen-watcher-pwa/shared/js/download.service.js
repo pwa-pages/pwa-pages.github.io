@@ -99,7 +99,7 @@ class DownloadService {
                 for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
                     const item = result.transactions[i];
                     for (const input of item.inputs) {
-                        if (input.boxId && halfBoxId === '') {
+                        if (input.boxId && halfBoxId === '' && (input.assets.find(a => a.name == 'eRSN') || input.assets.find(a => a.name == 'RSN'))) {
                             halfBoxId = input.boxId;
                         }
                     }
