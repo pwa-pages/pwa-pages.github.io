@@ -10,7 +10,7 @@ class DataService {
         const inputsPromise = this.getData(rs_InputsStoreName, db);
         try {
             const inputs = await inputsPromise;
-            const result_1 = inputs.filter((i) => getChainType(i.address) != null);
+            const result_1 = inputs.filter((i) => i.chainType != null || getChainType(i.address) != null);
             result_1.forEach((input) => {
                 input.assets = input.assets
                     .filter((asset) => asset.name === 'RSN' || asset.name === 'eRSN')
@@ -44,7 +44,7 @@ class DataService {
                     inputDate: input.inputDate,
                     boxId: input.boxId,
                     assets: input.assets || [],
-                    address: input.address,
+                    chainType: getChainType(input.address),
                 };
                 return new Promise((putResolve, putReject) => {
                     if (dbInput.assets.length > 0) {

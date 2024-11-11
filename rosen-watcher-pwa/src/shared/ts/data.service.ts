@@ -47,7 +47,9 @@ class DataService {
     try {
       const inputs = await inputsPromise;
 
-      const result_1 = inputs.filter((i: Input) => getChainType(i.address) != null);
+      const result_1 = inputs.filter(
+        (i: Input) => i.chainType != null || getChainType(i.address) != null,
+      );
 
       result_1.forEach((input: Input) => {
         input.assets = input.assets
@@ -87,7 +89,7 @@ class DataService {
             inputDate: input.inputDate,
             boxId: input.boxId,
             assets: input.assets || [],
-            chainType: input.chainType as ChainType
+            chainType: getChainType(input.address) as ChainType,
           };
 
           return new Promise<void>((putResolve, putReject) => {
