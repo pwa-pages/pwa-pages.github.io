@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
-import { ChainService } from './chain.service';
+
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { EventService, EventType } from './event.service';
@@ -24,7 +24,7 @@ export class DataService {
 
   constructor(
     private storageService: StorageService,
-    private chainService: ChainService,
+
     private eventService: EventService,
   ) {}
 
@@ -96,7 +96,7 @@ export class DataService {
           addresses.push({
             address: input.outputAddress,
             Address: input.outputAddress,
-            chainType: this.chainService.getChainType(input.address),
+            chainType: input.chainType ?? null,
           });
         }
       });

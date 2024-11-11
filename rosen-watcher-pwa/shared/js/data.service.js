@@ -138,7 +138,7 @@ class DataService {
                         boxId: input.boxId,
                         accumulatedAmount: amount,
                         amount: asset.amount / Math.pow(10, asset.decimals),
-                        chainType: getChainType(input.address),
+                        chainType: input.chainType ?? getChainType(input.address),
                     });
                 });
             });

@@ -20,6 +20,7 @@ interface DbInput {
   boxId: string;
   assets: Asset[]; // Replace with actual Asset structure
   address?: string;
+  chainType?: string;
 }
 
 interface Input {
@@ -86,7 +87,7 @@ class DataService {
             inputDate: input.inputDate,
             boxId: input.boxId,
             assets: input.assets || [],
-            address: input.address,
+            chainType: input.chainType as ChainType
           };
 
           return new Promise<void>((putResolve, putReject) => {
@@ -193,7 +194,7 @@ class DataService {
             boxId: input.boxId,
             accumulatedAmount: amount,
             amount: asset.amount / Math.pow(10, asset.decimals),
-            chainType: getChainType(input.address),
+            chainType: input.chainType ?? getChainType(input.address),
           });
         });
       });
