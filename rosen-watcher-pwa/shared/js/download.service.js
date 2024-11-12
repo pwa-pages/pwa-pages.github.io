@@ -103,7 +103,7 @@ class DownloadService {
                             halfBoxId === '' &&
                             (input.assets.find((a) => a.name == 'eRSN') ||
                                 input.assets.find((a) => a.name == 'RSN'))) {
-                            halfBoxId = input.boxId.slice(0, 12);
+                            halfBoxId = input.boxId;
                         }
                     }
                 }

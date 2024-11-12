@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 23;
+const rs_DbVersion = 22;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_DownloadStatusStoreName = 'downloadStatusStore';
 const rs_AddressDataStoreName = 'addressData';
