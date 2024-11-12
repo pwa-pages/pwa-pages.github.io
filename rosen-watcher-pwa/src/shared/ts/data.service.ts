@@ -87,7 +87,7 @@ class DataService {
           const dbInput: DbInput = {
             outputAddress: input.outputAddress,
             inputDate: input.inputDate,
-            boxId: input.boxId,
+            boxId: input.boxId.slice(0, 12),
             assets: input.assets || [],
             chainType: getChainType(input.address) as ChainType,
           };
