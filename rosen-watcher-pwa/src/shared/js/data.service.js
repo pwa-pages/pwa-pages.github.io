@@ -106,7 +106,10 @@ class DataService {
         return new Promise((resolve, reject) => {
             const transaction = db.transaction([rs_InputsStoreName], 'readonly');
             const objectStore = transaction.objectStore(rs_InputsStoreName);
-            const request = objectStore.get([boxId, addressId]) /* ?? objectStore.get([boxId.slice(0, 12), addressId])*/;
+            const request = objectStore.get([
+                boxId,
+                addressId,
+            ]); /* ?? objectStore.get([boxId.slice(0, 12), addressId])*/
             request.onsuccess = () => {
                 const result = request.result;
                 if (!result || result.outputAddress !== addressId) {
