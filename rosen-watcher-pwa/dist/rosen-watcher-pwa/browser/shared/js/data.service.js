@@ -42,7 +42,7 @@ class DataService {
                 const dbInput = {
                     outputAddress: input.outputAddress,
                     inputDate: input.inputDate,
-                    boxId: input.boxId,
+                    boxId: input.boxId.slice(0, 12),
                     assets: input.assets || [],
                     chainType: getChainType(input.address),
                 };
@@ -106,7 +106,7 @@ class DataService {
         return new Promise((resolve, reject) => {
             const transaction = db.transaction([rs_InputsStoreName], 'readonly');
             const objectStore = transaction.objectStore(rs_InputsStoreName);
-            const request = objectStore.get([boxId, addressId]);
+            const request = objectStore.get([boxId, addressId]) ?? objectStore.get([boxId.slice(0, 12), addressId]);
             request.onsuccess = () => {
                 const result = request.result;
                 if (!result || result.outputAddress !== addressId) {
