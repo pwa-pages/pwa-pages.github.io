@@ -50,25 +50,7 @@ self.addEventListener('message', async (event: MessageEvent) => {
 // IndexedDB Initialization
 async function initIndexedDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const request: IDBOpenDBRequest = indexedDB.open(rs_DbName, rs_DbVersion);
-
-    request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
-      const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
-
-      if (db.objectStoreNames.contains(rs_InputsStoreName)) {
-        db.deleteObjectStore(rs_InputsStoreName);
-      }
-      db.createObjectStore(rs_InputsStoreName, { keyPath: rs_Input_Key });
-
-      if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
-        db.createObjectStore(rs_AddressDataStoreName, { keyPath: rs_Address_Key });
-      }
-
-      // Create the new store for download status
-      if (!db.objectStoreNames.contains(rs_DownloadStatusStoreName)) {
-        db.createObjectStore(rs_DownloadStatusStoreName, { keyPath: rs_Address_Key });
-      }
-    };
+    const request: IDBOpenDBRequest = indexedDB.open(rs_DbName);
 
     request.onsuccess = (event: Event) => {
       const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;

@@ -34,21 +34,7 @@ self.addEventListener('message', async (event) => {
 // IndexedDB Initialization
 async function initIndexedDB() {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open(rs_DbName, rs_DbVersion);
-        request.onupgradeneeded = (event) => {
-            const db = event.target.result;
-            if (db.objectStoreNames.contains(rs_InputsStoreName)) {
-                db.deleteObjectStore(rs_InputsStoreName);
-            }
-            db.createObjectStore(rs_InputsStoreName, { keyPath: rs_Input_Key });
-            if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
-                db.createObjectStore(rs_AddressDataStoreName, { keyPath: rs_Address_Key });
-            }
-            // Create the new store for download status
-            if (!db.objectStoreNames.contains(rs_DownloadStatusStoreName)) {
-                db.createObjectStore(rs_DownloadStatusStoreName, { keyPath: rs_Address_Key });
-            }
-        };
+        const request = indexedDB.open(rs_DbName);
         request.onsuccess = (event) => {
             const db = event.target.result;
             resolve(db);
