@@ -27,36 +27,45 @@ class DataService {
             return [];
         }
     }
-    // Add Data to IndexedDB
     async addData(address, transactions, db) {
         return new Promise((resolve, reject) => {
+            // Create a temporary array to hold DbInput items before bulk insertion
+            const tempData = [];
+            // Populate tempData with processed inputs
+            transactions.forEach((item) => {
+                item.inputs.forEach((input) => {
+                    input.outputAddress = address;
+                    input.inputDate = new Date(item.timestamp);
+                    // Filter and modify assets based on the specified conditions
+                    input.assets = input.assets.filter((a) => a.name === 'eRSN' || a.name === 'RSN');
+                    input.assets.forEach((a) => {
+                        a.tokenId = null;
+                    });
+                    // Create a DbInput item and add it to the temporary array if it meets the criteria
+                    const dbInput = {
+                        outputAddress: input.outputAddress,
+                        inputDate: input.inputDate,
+                        boxId: input.boxId,
+                        assets: input.assets || [],
+                        chainType: getChainType(input.address),
+                    };
+                    if (dbInput.assets.length > 0) {
+                        tempData.push(dbInput);
+                    }
+                });
+            });
+            // Start a new transaction to add all items in tempData to the database
             const transaction = db.transaction([rs_InputsStoreName], 'readwrite');
             const objectStore = transaction.objectStore(rs_InputsStoreName);
-            const putPromises = transactions.flatMap((item) => item.inputs.map((input) => {
-                input.outputAddress = address;
-                input.inputDate = new Date(item.timestamp);
-                input.assets = input.assets.filter((a) => a.name == 'eRSN' || a.name == 'RSN');
-                input.assets.forEach((a) => {
-                    a.tokenId = null;
-                });
-                const dbInput = {
-                    outputAddress: input.outputAddress,
-                    inputDate: input.inputDate,
-                    boxId: input.boxId /*.slice(0, 12)*/,
-                    assets: input.assets || [],
-                    chainType: getChainType(input.address),
-                };
+            // Convert each DbInput item in tempData into a database put request
+            const putPromises = tempData.map((dbInput) => {
                 return new Promise((putResolve, putReject) => {
-                    if (dbInput.assets.length > 0) {
-                        const request = objectStore.put(dbInput);
-                        request.onsuccess = () => putResolve();
-                        request.onerror = (event) => putReject(event.target.error);
-                    }
-                    else {
-                        putResolve();
-                    }
+                    const request = objectStore.put(dbInput);
+                    request.onsuccess = () => putResolve();
+                    request.onerror = (event) => putReject(event.target.error);
                 });
-            }));
+            });
+            // Resolve all put operations and then update clients
             Promise.all(putPromises)
                 .then(async () => {
                 const inputs = await this.getSortedInputs();

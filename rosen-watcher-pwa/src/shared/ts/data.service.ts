@@ -68,42 +68,52 @@ class DataService {
     }
   }
 
-  // Add Data to IndexedDB
   async addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void> {
     return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = db.transaction([rs_InputsStoreName], 'readwrite');
-      const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
+      // Create a temporary array to hold DbInput items before bulk insertion
+      const tempData: DbInput[] = [];
 
-      const putPromises: Promise<void>[] = transactions.flatMap((item: TransactionItem) =>
-        item.inputs.map((input: Input) => {
+      // Populate tempData with processed inputs
+      transactions.forEach((item: TransactionItem) => {
+        item.inputs.forEach((input: Input) => {
           input.outputAddress = address;
           input.inputDate = new Date(item.timestamp);
 
-          input.assets = input.assets.filter((a) => a.name == 'eRSN' || a.name == 'RSN');
+          // Filter and modify assets based on the specified conditions
+          input.assets = input.assets.filter((a) => a.name === 'eRSN' || a.name === 'RSN');
           input.assets.forEach((a) => {
             a.tokenId = null;
           });
 
+          // Create a DbInput item and add it to the temporary array if it meets the criteria
           const dbInput: DbInput = {
             outputAddress: input.outputAddress,
             inputDate: input.inputDate,
-            boxId: input.boxId /*.slice(0, 12)*/,
+            boxId: input.boxId,
             assets: input.assets || [],
             chainType: getChainType(input.address) as ChainType,
           };
 
-          return new Promise<void>((putResolve, putReject) => {
-            if (dbInput.assets.length > 0) {
-              const request: IDBRequest = objectStore.put(dbInput);
-              request.onsuccess = () => putResolve();
-              request.onerror = (event: Event) => putReject((event.target as IDBRequest).error);
-            } else {
-              putResolve();
-            }
-          });
-        }),
-      );
+          if (dbInput.assets.length > 0) {
+            tempData.push(dbInput);
+          }
+        });
+      });
 
+      // Start a new transaction to add all items in tempData to the database
+      const transaction: IDBTransaction = db.transaction([rs_InputsStoreName], 'readwrite');
+      const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
+
+      // Convert each DbInput item in tempData into a database put request
+      const putPromises = tempData.map((dbInput: DbInput) => {
+        return new Promise<void>((putResolve, putReject) => {
+          const request: IDBRequest = objectStore.put(dbInput);
+          request.onsuccess = () => putResolve();
+          request.onerror = (event: Event) => putReject((event.target as IDBRequest).error);
+        });
+      });
+
+      // Resolve all put operations and then update clients
       Promise.all(putPromises)
         .then(async () => {
           const inputs = await this.getSortedInputs();
