@@ -10,16 +10,17 @@ class DataService {
         const inputsPromise = this.getData(rs_InputsStoreName, db);
         try {
             const inputs = await inputsPromise;
-            const result_1 = inputs.filter((i) => i.chainType != null || getChainType(i.address) != null);
-            result_1.forEach((input) => {
+            const filteredInputs = inputs.filter((i) => i.chainType != null || getChainType(i.address) != null);
+            filteredInputs.forEach((input) => {
                 input.assets = input.assets
                     .filter((asset) => asset.name === 'RSN' || asset.name === 'eRSN')
                     .map((asset_1) => {
                     return asset_1;
                 });
             });
+            filteredInputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
             return await new Promise((resolve) => {
-                resolve(result_1);
+                resolve(filteredInputs);
             });
         }
         catch (error) {
@@ -27,6 +28,19 @@ class DataService {
             return [];
         }
     }
+    /*
+    convertDbInputDateForCompression(dt: Date){
+      const currentDate = new Date();
+      const twoMonthsAgo = new Date();
+      twoMonthsAgo.setMonth(currentDate.getMonth() - 2);
+  
+      if(dt < twoMonthsAgo){
+        var day = dt.getDate() - dt.getDay();
+        dt.setDate(day);
+      }
+      return dt;
+    }
+      */
     async addData(address, transactions, db) {
         return new Promise((resolve, reject) => {
             // Create a temporary array to hold DbInput items before bulk insertion
@@ -36,12 +50,13 @@ class DataService {
                 item.inputs.forEach((input) => {
                     input.outputAddress = address;
                     input.inputDate = new Date(item.timestamp);
-                    // Filter and modify assets based on the specified conditions
                     input.assets = input.assets.filter((a) => a.name === 'eRSN' || a.name === 'RSN');
                     input.assets.forEach((a) => {
                         a.tokenId = null;
                     });
-                    // Create a DbInput item and add it to the temporary array if it meets the criteria
+                    if (input.assets.length > 1) {
+                        console.log(input.assets.length);
+                    }
                     const dbInput = {
                         outputAddress: input.outputAddress,
                         inputDate: input.inputDate,
@@ -54,10 +69,8 @@ class DataService {
                     }
                 });
             });
-            // Start a new transaction to add all items in tempData to the database
             const transaction = db.transaction([rs_InputsStoreName], 'readwrite');
             const objectStore = transaction.objectStore(rs_InputsStoreName);
-            // Convert each DbInput item in tempData into a database put request
             const putPromises = tempData.map((dbInput) => {
                 return new Promise((putResolve, putReject) => {
                     const request = objectStore.put(dbInput);
@@ -65,7 +78,6 @@ class DataService {
                     request.onerror = (event) => putReject(event.target.error);
                 });
             });
-            // Resolve all put operations and then update clients
             Promise.all(putPromises)
                 .then(async () => {
                 const inputs = await this.getSortedInputs();
@@ -138,13 +150,12 @@ class DataService {
         console.log('start retrieving chart from database');
         try {
             const inputs = await inputsPromise;
-            inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
             inputs.forEach((input) => {
                 input.assets.forEach((asset) => {
                     amount += asset.amount;
                     sortedInputs.push({
                         inputDate: input.inputDate,
-                        address: input.address,
+                        address: input.address ?? '',
                         assets: input.assets,
                         outputAddress: input.outputAddress,
                         boxId: input.boxId,

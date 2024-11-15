@@ -34,7 +34,7 @@ class ChartService {
           addressCharts[input.outputAddress].charts[dt] +=
             asset.amount / Math.pow(10, asset.decimals);
           addressCharts[input.outputAddress].chainType =
-            input.chainType ?? getChainType(input.address);
+            (input.chainType as ChainType) ?? getChainType(input.address);
         }
       });
     });

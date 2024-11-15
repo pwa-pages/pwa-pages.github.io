@@ -41,32 +41,46 @@ class DataService {
     private chartService: ChartService,
   ) {}
 
-  async getWatcherInputs(db: IDBDatabase): Promise<Input[]> {
-    const inputsPromise = this.getData<Input>(rs_InputsStoreName, db);
+  async getWatcherInputs(db: IDBDatabase): Promise<DbInput[]> {
+    const inputsPromise = this.getData<DbInput>(rs_InputsStoreName, db);
 
     try {
       const inputs = await inputsPromise;
 
-      const result_1 = inputs.filter(
-        (i: Input) => i.chainType != null || getChainType(i.address) != null,
+      const filteredInputs = inputs.filter(
+        (i: DbInput) => i.chainType != null || getChainType(i.address) != null,
       );
 
-      result_1.forEach((input: Input) => {
+      filteredInputs.forEach((input: DbInput) => {
         input.assets = input.assets
           .filter((asset: Asset) => asset.name === 'RSN' || asset.name === 'eRSN')
           .map((asset_1: Asset) => {
             return asset_1;
           });
       });
+      filteredInputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
 
-      return await new Promise<Input[]>((resolve) => {
-        resolve(result_1);
+      return await new Promise<DbInput[]>((resolve) => {
+        resolve(filteredInputs);
       });
     } catch (error) {
       console.error(error);
       return [];
     }
   }
+  /*
+  convertDbInputDateForCompression(dt: Date){
+    const currentDate = new Date();
+    const twoMonthsAgo = new Date();
+    twoMonthsAgo.setMonth(currentDate.getMonth() - 2);
+
+    if(dt < twoMonthsAgo){
+      var day = dt.getDate() - dt.getDay();
+      dt.setDate(day);
+    }
+    return dt;
+  }
+    */
 
   async addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -79,13 +93,11 @@ class DataService {
           input.outputAddress = address;
           input.inputDate = new Date(item.timestamp);
 
-          // Filter and modify assets based on the specified conditions
           input.assets = input.assets.filter((a) => a.name === 'eRSN' || a.name === 'RSN');
           input.assets.forEach((a) => {
             a.tokenId = null;
           });
 
-          // Create a DbInput item and add it to the temporary array if it meets the criteria
           const dbInput: DbInput = {
             outputAddress: input.outputAddress,
             inputDate: input.inputDate,
@@ -100,11 +112,9 @@ class DataService {
         });
       });
 
-      // Start a new transaction to add all items in tempData to the database
       const transaction: IDBTransaction = db.transaction([rs_InputsStoreName], 'readwrite');
       const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
 
-      // Convert each DbInput item in tempData into a database put request
       const putPromises = tempData.map((dbInput: DbInput) => {
         return new Promise<void>((putResolve, putReject) => {
           const request: IDBRequest = objectStore.put(dbInput);
@@ -113,7 +123,6 @@ class DataService {
         });
       });
 
-      // Resolve all put operations and then update clients
       Promise.all(putPromises)
         .then(async () => {
           const inputs = await this.getSortedInputs();
@@ -196,20 +205,18 @@ class DataService {
     try {
       const inputs = await inputsPromise;
 
-      inputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
-
-      inputs.forEach((input: Input) => {
+      inputs.forEach((input: DbInput) => {
         input.assets.forEach((asset: Asset) => {
           amount += asset.amount;
           sortedInputs.push({
             inputDate: input.inputDate,
-            address: input.address,
+            address: input.address ?? '',
             assets: input.assets,
             outputAddress: input.outputAddress,
             boxId: input.boxId,
             accumulatedAmount: amount,
             amount: asset.amount / Math.pow(10, asset.decimals),
-            chainType: input.chainType ?? getChainType(input.address),
+            chainType: (input.chainType as ChainType) ?? getChainType(input.address),
           });
         });
       });
@@ -222,4 +229,35 @@ class DataService {
       return sortedInputs;
     }
   }
+  /*
+  async compressInputs(): Promise<void> {
+    const dbInputs = await this.getWatcherInputs(this.db);
+    let amount = 0;
+    const sortedInputs: Input[] = [];
+    console.log('start retrieving chart from database');
+    try {
+      const inputs = await dbInputs;
+
+      inputs.forEach((input: DbInput) => {
+        input.assets.forEach((asset: Asset) => {
+          
+          sortedInputs.push({
+            inputDate: input.inputDate,
+            address: input.address ?? '',
+            assets: input.assets,
+            outputAddress: input.outputAddress,
+            boxId: input.boxId,
+            accumulatedAmount: amount,
+            amount: asset.amount / Math.pow(10, asset.decimals),
+            chainType: (input.chainType as ChainType) ?? getChainType(input.address),
+          });
+        });
+      });
+      
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
+    */
 }

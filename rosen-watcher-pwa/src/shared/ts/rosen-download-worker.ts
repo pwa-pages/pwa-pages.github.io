@@ -24,8 +24,6 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
     try {
       const inputs = await dataService.getSortedInputs();
-      const amountsByDate = chartService.getAmountsByDate(inputs, data.data as Period);
-      console.log(amountsByDate);
       sendMessageToClients({ type: 'InputsChanged', data: inputs });
 
       await downloadService.downloadForAddresses();

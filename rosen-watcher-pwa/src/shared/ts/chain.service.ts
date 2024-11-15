@@ -37,7 +37,7 @@ const permitAddresses: { [key in ChainType]: string } = {
  * @param address The address to evaluate.
  * @returns The corresponding ChainType or null if not found.
  */
-function getChainType(address: string): ChainType | null {
+function getChainType(address?: string): ChainType | null | undefined {
   switch (address) {
     case rewardsCardanoAddress:
       return ChainType.Cardano;
