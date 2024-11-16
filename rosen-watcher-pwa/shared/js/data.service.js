@@ -29,18 +29,43 @@ class DataService {
         }
     }
     /*
-    convertDbInputDateForCompression(dt: Date){
-      const currentDate = new Date();
-      const twoMonthsAgo = new Date();
-      twoMonthsAgo.setMonth(currentDate.getMonth() - 2);
-  
-      if(dt < twoMonthsAgo){
-        var day = dt.getDate() - dt.getDay();
-        dt.setDate(day);
+      async compressInputs(db: IDBDatabase) : Promise<void>{
+    
+        var existingInputs = await this.getWatcherInputs(db);
+        var compressedInputs: Map<Date, DbInput> = new Map();
+        
+    
+    
+        existingInputs.forEach((input: DbInput) => {
+    
+          input.inputDate = this.convertDbInputDateForCompression(input.inputDate);
+    
+          var existingInput = compressedInputs.get(input.inputDate);
+          if(existingInput){
+            if(!existingInput.ass)
+          }
+          else{
+            compressedInputs.set(input.inputDate, input);
+          }
+    
+        });
+    
       }
-      return dt;
-    }
-      */
+      
+      convertDbInputDateForCompression(dt: Date){
+        const currentDate = new Date();
+        const twoMonthsAgo = new Date();
+        twoMonthsAgo.setMonth(currentDate.getMonth() - 2);
+    
+        if(dt < twoMonthsAgo){
+          var day = dt.getDate() - dt.getDay();
+          dt.setDate(day);
+        }
+        dt.setHours(0, 0, 0, 0);
+        return dt;
+      }
+      
+    */
     async addData(address, transactions, db) {
         return new Promise((resolve, reject) => {
             // Create a temporary array to hold DbInput items before bulk insertion
@@ -54,9 +79,6 @@ class DataService {
                     input.assets.forEach((a) => {
                         a.tokenId = null;
                     });
-                    if (input.assets.length > 1) {
-                        console.log(input.assets.length);
-                    }
                     const dbInput = {
                         outputAddress: input.outputAddress,
                         inputDate: input.inputDate,
@@ -64,7 +86,7 @@ class DataService {
                         assets: input.assets || [],
                         chainType: getChainType(input.address),
                     };
-                    if (dbInput.assets.length > 0) {
+                    if (dbInput.chainType && dbInput.assets.length > 0) {
                         tempData.push(dbInput);
                     }
                 });

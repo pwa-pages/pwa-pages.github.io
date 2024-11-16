@@ -69,6 +69,29 @@ class DataService {
     }
   }
   /*
+  async compressInputs(db: IDBDatabase) : Promise<void>{
+
+    var existingInputs = await this.getWatcherInputs(db);
+    var compressedInputs: Map<Date, DbInput> = new Map();
+    
+
+
+    existingInputs.forEach((input: DbInput) => {
+
+      input.inputDate = this.convertDbInputDateForCompression(input.inputDate);
+
+      var existingInput = compressedInputs.get(input.inputDate);
+      if(existingInput){
+        if(!existingInput.ass)
+      }
+      else{
+        compressedInputs.set(input.inputDate, input);
+      }
+
+    });
+
+  }
+  
   convertDbInputDateForCompression(dt: Date){
     const currentDate = new Date();
     const twoMonthsAgo = new Date();
@@ -78,10 +101,11 @@ class DataService {
       var day = dt.getDate() - dt.getDay();
       dt.setDate(day);
     }
+    dt.setHours(0, 0, 0, 0); 
     return dt;
   }
-    */
-
+  
+*/
   async addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void> {
     return new Promise((resolve, reject) => {
       // Create a temporary array to hold DbInput items before bulk insertion
@@ -106,7 +130,7 @@ class DataService {
             chainType: getChainType(input.address) as ChainType,
           };
 
-          if (dbInput.assets.length > 0) {
+          if (dbInput.chainType && dbInput.assets.length > 0) {
             tempData.push(dbInput);
           }
         });
