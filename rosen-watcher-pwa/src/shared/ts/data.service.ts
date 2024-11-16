@@ -69,43 +69,64 @@ class DataService {
     }
   }
   /*
-  async compressInputs(db: IDBDatabase) : Promise<void>{
+  async compressInputs(): Promise<void> {
+    const existingInputs = await this.getWatcherInputs(this.db);
+    const compressedInputs = new Map<Date, DbInput>();
 
-    var existingInputs = await this.getWatcherInputs(db);
-    var compressedInputs: Map<Date, DbInput> = new Map();
-    
-
+    const transaction: IDBTransaction = this.db.transaction([rs_InputsStoreName], 'readwrite');
+    const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
+    objectStore.clear();
 
     existingInputs.forEach((input: DbInput) => {
+      const currentDate = new Date();
+      const twoMonthsAgo = new Date();
+      twoMonthsAgo.setMonth(currentDate.getMonth() - 2);
 
-      input.inputDate = this.convertDbInputDateForCompression(input.inputDate);
+      if (input.inputDate >= twoMonthsAgo) {
+        objectStore.put(input);
+      } else {
+        input.inputDate = this.convertDbInputDateForCompression(input.inputDate);
 
-      var existingInput = compressedInputs.get(input.inputDate);
-      if(existingInput){
-        if(!existingInput.ass)
+        let existingInput = compressedInputs.get(input.inputDate);
+
+        if (!existingInput) {
+          existingInput = input;
+        }
+
+        if (!existingInput.assets) {
+          existingInput.assets = [];
+        }
+
+        input.assets.forEach((a) => {
+          if (existingInput.assets.length == 0) {
+            existingInput.assets.push(a);
+          } else {
+            existingInput.assets[0].amount += a.amount;
+          }
+        });
+
+        compressedInputs.set(input.inputDate, existingInput);
       }
-      else{
-        compressedInputs.set(input.inputDate, input);
-      }
-
     });
 
+    compressedInputs.forEach((dbInput: DbInput) => {
+      objectStore.put(dbInput);
+    });
   }
-  
-  convertDbInputDateForCompression(dt: Date){
+
+  convertDbInputDateForCompression(dt: Date) {
     const currentDate = new Date();
     const twoMonthsAgo = new Date();
     twoMonthsAgo.setMonth(currentDate.getMonth() - 2);
 
-    if(dt < twoMonthsAgo){
-      var day = dt.getDate() - dt.getDay();
+    if (dt < twoMonthsAgo) {
+      const day = dt.getDate() - dt.getDay();
       dt.setDate(day);
     }
-    dt.setHours(0, 0, 0, 0); 
+    dt.setHours(0, 0, 0, 0);
     return dt;
-  }
-  
-*/
+  }*/
+
   async addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void> {
     return new Promise((resolve, reject) => {
       // Create a temporary array to hold DbInput items before bulk insertion
@@ -253,35 +274,4 @@ class DataService {
       return sortedInputs;
     }
   }
-  /*
-  async compressInputs(): Promise<void> {
-    const dbInputs = await this.getWatcherInputs(this.db);
-    let amount = 0;
-    const sortedInputs: Input[] = [];
-    console.log('start retrieving chart from database');
-    try {
-      const inputs = await dbInputs;
-
-      inputs.forEach((input: DbInput) => {
-        input.assets.forEach((asset: Asset) => {
-          
-          sortedInputs.push({
-            inputDate: input.inputDate,
-            address: input.address ?? '',
-            assets: input.assets,
-            outputAddress: input.outputAddress,
-            boxId: input.boxId,
-            accumulatedAmount: amount,
-            amount: asset.amount / Math.pow(10, asset.decimals),
-            chainType: (input.chainType as ChainType) ?? getChainType(input.address),
-          });
-        });
-      });
-      
-      
-    } catch (error) {
-      console.error(error);
-    }
-  }
-    */
 }

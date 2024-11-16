@@ -147,7 +147,8 @@ class DownloadService {
               input.boxId &&
               halfBoxId === '' &&
               (input.assets.find((a) => a.name == 'eRSN') ||
-                input.assets.find((a) => a.name == 'RSN'))
+                input.assets.find((a) => a.name == 'RSN')) &&
+              getChainType(input.address)
             ) {
               halfBoxId = input.boxId;
             }

@@ -13,6 +13,7 @@ self.addEventListener('message', async (event) => {
             const inputs = await dataService.getSortedInputs();
             sendMessageToClients({ type: 'InputsChanged', data: inputs });
             await downloadService.downloadForAddresses();
+            //await dataService.compressInputs();
         }
         catch (error) {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
