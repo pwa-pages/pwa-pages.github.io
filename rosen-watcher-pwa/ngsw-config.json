@@ -11,7 +11,8 @@
           "/index.html",
           "/manifest.webmanifest",
           "/*.css",
-          "/*.js"
+          "/*.js",
+         "/shared/js/**/*.js"
         ]
       }
     },
@@ -28,6 +29,6 @@
     }
   ],
   "appData": {
-    "version": "3.15.0"
+    "version": "3.15.1"
   }
 }

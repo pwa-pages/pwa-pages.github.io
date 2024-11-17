@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1731840308733,
+  "timestamp": 1731841081131,
   "appData": {
-    "version": "3.15.0"
+    "version": "3.15.1"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -20,6 +20,13 @@
         "./manifest.webmanifest",
         "./polyfills-SCHOHYNV.js",
         "./rosen-ngsw-worker.js",
+        "./shared/js/chain.service.js",
+        "./shared/js/chart.service.js",
+        "./shared/js/constants.js",
+        "./shared/js/data.service.js",
+        "./shared/js/download.service.js",
+        "./shared/js/rosen-db-worker.js",
+        "./shared/js/rosen-download-worker.js",
         "./styles-LHPANX7M.css"
       ],
       "patterns": []
@@ -84,6 +91,13 @@
     "./media/fa-v4compatibility-TNIB7AHA.ttf": "bd27e43f3d1e5019faaabc9ec6c5d3d7c5f100ef",
     "./polyfills-SCHOHYNV.js": "d45c76c5960bab3ace7fd6d211b9579456241f8a",
     "./rosen-ngsw-worker.js": "b508de39023a01bcfcc5297602fb1f7d63addc6b",
+    "./shared/js/chain.service.js": "ee25ace7db2c43d90f2ee0fd79b0fe4d7b8d5d6a",
+    "./shared/js/chart.service.js": "8888f5e72a7f7a65824b912cc4bda1673110920f",
+    "./shared/js/constants.js": "f82bc2f9459e467711f00270ce94ce3871d93356",
+    "./shared/js/data.service.js": "59856278ff8ff08786823d247397d5d164333614",
+    "./shared/js/download.service.js": "c25ed8ae03e8b65daf3d1d8f4a91d0ffd9f919ef",
+    "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
+    "./shared/js/rosen-download-worker.js": "3373e5a8349f6655941bf7f8de95dac8140d8c31",
     "./styles-LHPANX7M.css": "505f60a81019d0a59f976cec0cf58cca6c07cecd"
   },
   "navigationUrls": [
