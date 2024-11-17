@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1731787576691,
+  "timestamp": 1731809571978,
   "appData": {
     "version": "3.14.4"
   },
@@ -33,6 +33,7 @@
       },
       "urls": [
         "./assets/icons/icon-512x512.png",
+        "./assets/icons/icon-512x512_bk.png",
         "./assets/images/binance.png",
         "./assets/images/bitcoin.png",
         "./assets/images/cardano.png",
@@ -57,7 +58,8 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "./assets/icons/icon-512x512.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
+    "./assets/icons/icon-512x512.png": "f331ba92e06a93f8cde5b082a5a31b86132ab54e",
+    "./assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./assets/images/binance.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./assets/images/bitcoin.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
     "./assets/images/cardano.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
