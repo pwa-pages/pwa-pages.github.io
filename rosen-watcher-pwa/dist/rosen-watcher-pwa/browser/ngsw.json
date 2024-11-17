@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1731810390852,
+  "timestamp": 1731810594845,
   "appData": {
-    "version": "3.14.6"
+    "version": "3.14.7"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -58,7 +58,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "./assets/icons/icon-512x512.png": "f331ba92e06a93f8cde5b082a5a31b86132ab54e",
+    "./assets/icons/icon-512x512.png": "3fb8199eacb3e1857d8631559f00ed45ac7ae72e",
     "./assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./assets/images/binance.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./assets/images/bitcoin.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
