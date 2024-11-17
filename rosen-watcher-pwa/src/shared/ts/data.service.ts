@@ -68,44 +68,60 @@ class DataService {
       return [];
     }
   }
-  
+
+  /*
   async compressInputs(): Promise<void> {
     const existingInputs = await this.getWatcherInputs(this.db);
-    const compressedInputs = new Map<Date, DbInput>();
+    const compressedInputs = new Map<number, DbInput>();
 
     const transaction: IDBTransaction = this.db.transaction([rs_InputsStoreName], 'readwrite');
     const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
     objectStore.clear();
 
-    existingInputs.forEach((input: DbInput) => {
+    existingInputs.forEach((existingInput: DbInput) => {
       const currentDate = new Date();
       const twoMonthsAgo = new Date();
       twoMonthsAgo.setMonth(currentDate.getMonth() - 2);
 
+      const input = {
+        outputAddress: existingInput.outputAddress,
+        inputDate: existingInput.inputDate,
+        boxId: existingInput.boxId,
+        address: existingInput.address,
+        chainType: existingInput.chainType,
+      } as DbInput;
+
       if (input.inputDate >= twoMonthsAgo) {
+        input.assets = existingInput.assets;
         objectStore.put(input);
       } else {
         input.inputDate = this.convertDbInputDateForCompression(input.inputDate);
 
-        let existingInput = compressedInputs.get(input.inputDate);
+        let compressedInput = compressedInputs.get(input.inputDate.getDate());
 
-        if (!existingInput) {
-          existingInput = input;
+        if (!compressedInput) {
+          compressedInput = input;
         }
 
-        if (!existingInput.assets) {
-          existingInput.assets = [];
+        if (!compressedInput.assets) {
+          compressedInput.assets = [];
         }
 
-        input.assets.forEach((a) => {
-          if (existingInput.assets.length == 0) {
-            existingInput.assets.push(a);
+        existingInput.assets.forEach((a) => {
+          if (compressedInput.assets.length == 0) {
+            compressedInput.assets.push({
+              amount: a.amount,
+              decimals: a.decimals,
+              tokenId: a.tokenId,
+              quantity: a.quantity,
+              name: a.name,
+            } as Asset);
           } else {
-            existingInput.assets[0].amount += a.amount;
+            compressedInput.assets[0].amount += a.amount;
           }
         });
 
-        compressedInputs.set(input.inputDate, existingInput);
+        compressedInputs.set(input.inputDate.getDate(), compressedInput);
       }
     });
 
@@ -125,7 +141,7 @@ class DataService {
     }
     dt.setHours(0, 0, 0, 0);
     return dt;
-  }
+  }*/
 
   async addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void> {
     return new Promise((resolve, reject) => {
