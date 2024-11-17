@@ -8,7 +8,7 @@ class DataService {
     }
     async getWatcherInputs(db) {
         const inputsPromise = this.getData(rs_InputsStoreName, db);
-        console.log('Retrieving watcher inputs from DataService');
+        console.log('Retrieving watcher inputs...');
         try {
             const inputs = await inputsPromise;
             const filteredInputs = inputs.filter((i) => i.chainType != null || getChainType(i.address) != null);
