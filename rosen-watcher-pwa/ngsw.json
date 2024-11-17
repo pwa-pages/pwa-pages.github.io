@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1731853550755,
+  "timestamp": 1731875441018,
   "appData": {
-    "version": "3.15.6"
+    "version": "3.15.8"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -39,6 +39,7 @@
         "ignoreVary": true
       },
       "urls": [
+        "./assets/icons/Designer (2).png",
         "./assets/icons/icon-512x512.png",
         "./assets/icons/icon-512x512_bk.png",
         "./assets/images/binance.png",
@@ -65,6 +66,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
+    "./assets/icons/Designer (2).png": "fb7a87312b912bfa0e4c6bb7271bdc67d6e9eafe",
     "./assets/icons/icon-512x512.png": "bc9f886184d64802571f0d7878d64e7b15f9f1ea",
     "./assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./assets/images/binance.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
@@ -94,7 +96,7 @@
     "./shared/js/chain.service.js": "ee25ace7db2c43d90f2ee0fd79b0fe4d7b8d5d6a",
     "./shared/js/chart.service.js": "8888f5e72a7f7a65824b912cc4bda1673110920f",
     "./shared/js/constants.js": "f82bc2f9459e467711f00270ce94ce3871d93356",
-    "./shared/js/data.service.js": "650d3d22613565c1dc3f79cd094e7bce7ce45d41",
+    "./shared/js/data.service.js": "4ff335e35106262cd746cab7fe5374d327e888ca",
     "./shared/js/download.service.js": "c25ed8ae03e8b65daf3d1d8f4a91d0ffd9f919ef",
     "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
     "./shared/js/rosen-download-worker.js": "3373e5a8349f6655941bf7f8de95dac8140d8c31",

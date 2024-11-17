@@ -30,78 +30,85 @@ class DataService {
         }
     }
     /*
-    async compressInputs(): Promise<void> {
-      const existingInputs = await this.getWatcherInputs(this.db);
-      const compressedInputs = new Map<number, DbInput>();
-  
-      const transaction: IDBTransaction = this.db.transaction([rs_InputsStoreName], 'readwrite');
-      const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
-      objectStore.clear();
-  
-      existingInputs.forEach((existingInput: DbInput) => {
+      async compressInputs(): Promise<void> {
+        const existingInputs = await this.getWatcherInputs(this.db);
+        const transaction: IDBTransaction = this.db.transaction([rs_InputsStoreName], 'readwrite');
+        const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
+        objectStore.clear();
+    
+        Object.values(ChainType).forEach((c) => {
+          this.compressChainInputs(
+            existingInputs.filter((e) => e.chainType == c || e.chainType == getChainType(e.address)),
+            objectStore,
+          );
+        });
+      }
+    
+      private compressChainInputs(existingInputs: DbInput[], objectStore: IDBObjectStore) {
+        const compressedInputs = new Map<number, DbInput>();
+    
+        existingInputs.forEach((existingInput: DbInput) => {
+          const currentDate = new Date();
+          const twoMonthsAgo = new Date();
+          twoMonthsAgo.setMonth(currentDate.getMonth() - 2);
+    
+          const input = {
+            outputAddress: existingInput.outputAddress,
+            inputDate: existingInput.inputDate,
+            boxId: existingInput.boxId,
+            address: existingInput.address,
+            chainType: existingInput.chainType ?? getChainType(existingInput.address),
+          } as DbInput;
+    
+          if (input.inputDate >= twoMonthsAgo) {
+            input.assets = existingInput.assets;
+            objectStore.put(input);
+          } else {
+            input.inputDate = this.convertDbInputDateForCompression(input.inputDate);
+    
+            let compressedInput = compressedInputs.get(input.inputDate.getTime());
+    
+            if (!compressedInput) {
+              compressedInput = input;
+            }
+    
+            if (!compressedInput.assets) {
+              compressedInput.assets = [];
+            }
+    
+            existingInput.assets.forEach((a) => {
+              if (compressedInput.assets.length == 0) {
+                compressedInput.assets.push({
+                  amount: a.amount,
+                  decimals: a.decimals,
+                  tokenId: a.tokenId,
+                  quantity: a.quantity,
+                  name: a.name,
+                } as Asset);
+              } else {
+                compressedInput.assets[0].amount += a.amount;
+              }
+            });
+    
+            compressedInputs.set(input.inputDate.getTime(), compressedInput);
+          }
+        });
+    
+        compressedInputs.forEach((dbInput: DbInput) => {
+          objectStore.put(dbInput);
+        });
+      }*/
+    convertDbInputDateForCompression(dt) {
         const currentDate = new Date();
         const twoMonthsAgo = new Date();
         twoMonthsAgo.setMonth(currentDate.getMonth() - 2);
-  
-        const input = {
-          outputAddress: existingInput.outputAddress,
-          inputDate: existingInput.inputDate,
-          boxId: existingInput.boxId,
-          address: existingInput.address,
-          chainType: existingInput.chainType,
-        } as DbInput;
-  
-        if (input.inputDate >= twoMonthsAgo) {
-          input.assets = existingInput.assets;
-          objectStore.put(input);
-        } else {
-          input.inputDate = this.convertDbInputDateForCompression(input.inputDate);
-  
-          let compressedInput = compressedInputs.get(input.inputDate.getDate());
-  
-          if (!compressedInput) {
-            compressedInput = input;
-          }
-  
-          if (!compressedInput.assets) {
-            compressedInput.assets = [];
-          }
-  
-          existingInput.assets.forEach((a) => {
-            if (compressedInput.assets.length == 0) {
-              compressedInput.assets.push({
-                amount: a.amount,
-                decimals: a.decimals,
-                tokenId: a.tokenId,
-                quantity: a.quantity,
-                name: a.name,
-              } as Asset);
-            } else {
-              compressedInput.assets[0].amount += a.amount;
-            }
-          });
-  
-          compressedInputs.set(input.inputDate.getDate(), compressedInput);
+        if (dt < twoMonthsAgo) {
+            const day = dt.getDate() - dt.getDay();
+            dt.setDate(day);
         }
-      });
-  
-      compressedInputs.forEach((dbInput: DbInput) => {
-        objectStore.put(dbInput);
-      });
+        dt.setHours(0, 0, 0, 0);
+        return dt;
     }
-  
-    convertDbInputDateForCompression(dt: Date) {
-      const currentDate = new Date();
-      const twoMonthsAgo = new Date();
-      twoMonthsAgo.setMonth(currentDate.getMonth() - 2);
-  
-      if (dt < twoMonthsAgo) {
-        const day = dt.getDate() - dt.getDay();
-        dt.setDate(day);
-      }
-      dt.setHours(0, 0, 0, 0);
-      return dt;
-    }*/
     async addData(address, transactions, db) {
         return new Promise((resolve, reject) => {
             // Create a temporary array to hold DbInput items before bulk insertion

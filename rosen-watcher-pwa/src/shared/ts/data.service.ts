@@ -70,15 +70,23 @@ class DataService {
       return [];
     }
   }
-
   /*
   async compressInputs(): Promise<void> {
     const existingInputs = await this.getWatcherInputs(this.db);
-    const compressedInputs = new Map<number, DbInput>();
-
     const transaction: IDBTransaction = this.db.transaction([rs_InputsStoreName], 'readwrite');
     const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
     objectStore.clear();
+
+    Object.values(ChainType).forEach((c) => {
+      this.compressChainInputs(
+        existingInputs.filter((e) => e.chainType == c || e.chainType == getChainType(e.address)),
+        objectStore,
+      );
+    });
+  }
+
+  private compressChainInputs(existingInputs: DbInput[], objectStore: IDBObjectStore) {
+    const compressedInputs = new Map<number, DbInput>();
 
     existingInputs.forEach((existingInput: DbInput) => {
       const currentDate = new Date();
@@ -90,7 +98,7 @@ class DataService {
         inputDate: existingInput.inputDate,
         boxId: existingInput.boxId,
         address: existingInput.address,
-        chainType: existingInput.chainType,
+        chainType: existingInput.chainType ?? getChainType(existingInput.address),
       } as DbInput;
 
       if (input.inputDate >= twoMonthsAgo) {
@@ -99,7 +107,7 @@ class DataService {
       } else {
         input.inputDate = this.convertDbInputDateForCompression(input.inputDate);
 
-        let compressedInput = compressedInputs.get(input.inputDate.getDate());
+        let compressedInput = compressedInputs.get(input.inputDate.getTime());
 
         if (!compressedInput) {
           compressedInput = input;
@@ -123,14 +131,14 @@ class DataService {
           }
         });
 
-        compressedInputs.set(input.inputDate.getDate(), compressedInput);
+        compressedInputs.set(input.inputDate.getTime(), compressedInput);
       }
     });
 
     compressedInputs.forEach((dbInput: DbInput) => {
       objectStore.put(dbInput);
     });
-  }
+  }*/
 
   convertDbInputDateForCompression(dt: Date) {
     const currentDate = new Date();
@@ -143,7 +151,7 @@ class DataService {
     }
     dt.setHours(0, 0, 0, 0);
     return dt;
-  }*/
+  }
 
   async addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void> {
     return new Promise((resolve, reject) => {
