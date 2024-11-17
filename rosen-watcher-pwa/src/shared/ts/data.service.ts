@@ -44,7 +44,7 @@ class DataService {
   async getWatcherInputs(db: IDBDatabase): Promise<DbInput[]> {
     const inputsPromise = this.getData<DbInput>(rs_InputsStoreName, db);
 
-    console.log('Retrieving watcher inputs');
+    console.log('Retrieving watcher inputs from DataService');
 
     try {
       const inputs = await inputsPromise;
