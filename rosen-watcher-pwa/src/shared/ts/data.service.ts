@@ -68,7 +68,7 @@ class DataService {
       return [];
     }
   }
-  /*
+  
   async compressInputs(): Promise<void> {
     const existingInputs = await this.getWatcherInputs(this.db);
     const compressedInputs = new Map<Date, DbInput>();
@@ -125,7 +125,7 @@ class DataService {
     }
     dt.setHours(0, 0, 0, 0);
     return dt;
-  }*/
+  }
 
   async addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void> {
     return new Promise((resolve, reject) => {

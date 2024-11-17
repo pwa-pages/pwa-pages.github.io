@@ -27,7 +27,7 @@ self.addEventListener('message', async (event: MessageEvent) => {
       sendMessageToClients({ type: 'InputsChanged', data: inputs });
 
       await downloadService.downloadForAddresses();
-      //await dataService.compressInputs();
+      await dataService.compressInputs();
     } catch (error) {
       console.error('Error initializing IndexedDB or downloading addresses:', error);
     }
