@@ -70,16 +70,18 @@ class DataService {
       return [];
     }
   }
-  /*
+/*
   async compressInputs(): Promise<void> {
     const existingInputs = await this.getWatcherInputs(this.db);
     const transaction: IDBTransaction = this.db.transaction([rs_InputsStoreName], 'readwrite');
     const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
     objectStore.clear();
 
-    Object.values(ChainType).forEach((c) => {
+    const addresses = Array.from(new Set(existingInputs.map((e) => e.outputAddress)));
+
+    addresses.forEach((a) => {
       this.compressChainInputs(
-        existingInputs.filter((e) => e.chainType == c || e.chainType == getChainType(e.address)),
+        existingInputs.filter((e) => e.outputAddress == a),
         objectStore,
       );
     });
@@ -138,8 +140,8 @@ class DataService {
     compressedInputs.forEach((dbInput: DbInput) => {
       objectStore.put(dbInput);
     });
-  }*/
-
+  }
+*/
   convertDbInputDateForCompression(dt: Date) {
     const currentDate = new Date();
     const twoMonthsAgo = new Date();

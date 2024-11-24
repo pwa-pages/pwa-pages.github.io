@@ -115,6 +115,7 @@ class DownloadService {
       }
 
       await this.dataService.addData(address, result.transactions, db);
+      //await this.dataService.compressInputs();
       await this.downloadAllForAddress(address, offset + rs_FullDownloadsBatchSize, db);
     } catch (e) {
       console.error(e);
