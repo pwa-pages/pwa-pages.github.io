@@ -70,7 +70,7 @@ class DataService {
       return [];
     }
   }
-/*
+  /*
   async compressInputs(): Promise<void> {
     const existingInputs = await this.getWatcherInputs(this.db);
     const transaction: IDBTransaction = this.db.transaction([rs_InputsStoreName], 'readwrite');
