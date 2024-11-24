@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1732418842468,
+  "timestamp": 1732419185285,
   "appData": {
-    "version": "3.16.1"
+    "version": "3.16.2"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -66,7 +66,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "./assets/icons/icon-512x512.png": "fb7a87312b912bfa0e4c6bb7271bdc67d6e9eafe",
+    "./assets/icons/icon-512x512.png": "70bcb04083de346145fa5a506812f23b0ed80772",
     "./assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./assets/icons/icon-512x512_bk2.png": "bc9f886184d64802571f0d7878d64e7b15f9f1ea",
     "./assets/images/binance.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
