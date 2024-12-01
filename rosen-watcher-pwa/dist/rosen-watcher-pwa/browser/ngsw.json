@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1732803694443,
+  "timestamp": 1733037633498,
   "appData": {
-    "version": "3.16.3"
+    "version": "3.16.4"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -99,7 +99,7 @@
     "./shared/js/data.service.js": "3921e39b455be9770bcf6859d73306323f567b7f",
     "./shared/js/download.service.js": "d1bafc3017201f003599e41943da7e7a1db71ea2",
     "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
-    "./shared/js/rosen-download-worker.js": "3373e5a8349f6655941bf7f8de95dac8140d8c31",
+    "./shared/js/rosen-download-worker.js": "0a45804b79ac8d619a6d4a3aa2604fffafbd44b0",
     "./styles-LHPANX7M.css": "505f60a81019d0a59f976cec0cf58cca6c07cecd"
   },
   "navigationUrls": [

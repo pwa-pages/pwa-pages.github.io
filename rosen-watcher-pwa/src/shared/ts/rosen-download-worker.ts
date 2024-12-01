@@ -12,36 +12,38 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
   console.log(`Rosen service worker received event of type ${data.type}`);
 
-  const db: IDBDatabase = await initIndexedDB();
-  const chartService: ChartService = new ChartService();
-  const dataService: DataService = new DataService(db, chartService);
-  const downloadService: DownloadService = new DownloadService(dataService);
+  if (data.type === 'StatisticsScreenLoaded' || data.type === 'PerformanceScreenLoaded') {
+    const db: IDBDatabase = await initIndexedDB();
+    const chartService: ChartService = new ChartService();
+    const dataService: DataService = new DataService(db, chartService);
+    const downloadService: DownloadService = new DownloadService(dataService);
 
-  if (data && data.type === 'StatisticsScreenLoaded') {
-    console.log(
-      'Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain',
-    );
-
-    try {
-      const inputs = await dataService.getSortedInputs();
-      sendMessageToClients({ type: 'InputsChanged', data: inputs });
-
-      await downloadService.downloadForAddresses();
-      //await dataService.compressInputs();
-    } catch (error) {
-      console.error('Error initializing IndexedDB or downloading addresses:', error);
-    }
-  } else if (data && data.type === 'PerformanceScreenLoaded') {
-    console.log('Rosen service worker received PerformanceScreenLoaded');
-
-    try {
-      const addressCharts = await chartService.getAddressCharts(
-        await dataService.getSortedInputs(),
+    if (data && data.type === 'StatisticsScreenLoaded') {
+      console.log(
+        'Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain',
       );
 
-      sendMessageToClients({ type: 'AddressChartChanged', data: addressCharts });
-    } catch (error) {
-      console.error('Error initializing IndexedDB or downloading addresses:', error);
+      try {
+        const inputs = await dataService.getSortedInputs();
+        sendMessageToClients({ type: 'InputsChanged', data: inputs });
+
+        await downloadService.downloadForAddresses();
+        //await dataService.compressInputs();
+      } catch (error) {
+        console.error('Error initializing IndexedDB or downloading addresses:', error);
+      }
+    } else if (data && data.type === 'PerformanceScreenLoaded') {
+      console.log('Rosen service worker received PerformanceScreenLoaded');
+
+      try {
+        const addressCharts = await chartService.getAddressCharts(
+          await dataService.getSortedInputs(),
+        );
+
+        sendMessageToClients({ type: 'AddressChartChanged', data: addressCharts });
+      } catch (error) {
+        console.error('Error initializing IndexedDB or downloading addresses:', error);
+      }
     }
   }
 });
