@@ -9,13 +9,20 @@ import '../../shared/ts/constants';
 export class StorageService {
   dbPromise: Promise<IDBDatabase>;
   inputsCache: Input[] = [];
+  profile: string | null = null;
 
   constructor() {
     this.dbPromise = this.initIndexedDB();
   }
 
+  public getProfile(): string | null {
+    return this.profile;
+  }
+
   async initIndexedDB(profile: string | null = null): Promise<IDBDatabase> {
     let dbName = rs_DbName;
+
+    this.profile = profile;
 
     if (profile) {
       dbName = dbName + '_' + profile;

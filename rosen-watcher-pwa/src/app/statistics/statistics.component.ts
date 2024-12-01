@@ -244,7 +244,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
       this.eventService.sendEventWithData(
         EventType.StatisticsScreenLoaded,
-        this.profile as EventData,
+        this.storageService.getProfile() as EventData,
       );
     });
 

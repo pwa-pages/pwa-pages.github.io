@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EventService, EventType } from '../service/event.service';
+import { EventData, EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
@@ -9,6 +9,7 @@ import { ChartDataSet } from '../../service/ts/models/chart.dataset';
 import { ChartPoint } from '../../service/ts/models/chart.point';
 import { ChartPerformance } from '../../service/ts/models/chart.performance';
 import { Chart } from 'chart.js';
+import { StorageService } from '../service/storage.service';
 
 @Component({
   selector: 'app-performance',
@@ -24,6 +25,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   noAddresses = false;
 
   constructor(
+    private storageService: StorageService,
     private dataService: DataService,
     eventService: EventService,
     private chartService: ChartService,
@@ -51,7 +53,10 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     await this.retrieveData();
     this.updateChart();
 
-    this.eventService.sendEvent(EventType.PerformanceScreenLoaded);
+    this.eventService.sendEventWithData(
+      EventType.PerformanceScreenLoaded,
+      this.storageService.getProfile() as EventData,
+    );
 
     await this.subscribeToEvent(EventType.RefreshInputs, async () => {
       await this.retrieveData();

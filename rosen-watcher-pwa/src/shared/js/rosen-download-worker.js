@@ -4,7 +4,8 @@ self.addEventListener('message', async (event) => {
     const data = event.data;
     console.log(`Rosen service worker received event of type ${data.type}`);
     if (data.type === 'StatisticsScreenLoaded' || data.type === 'PerformanceScreenLoaded') {
-        const db = await initIndexedDB();
+        const profile = data.data;
+        const db = await initIndexedDB(profile);
         const chartService = new ChartService();
         const dataService = new DataService(db, chartService);
         const downloadService = new DownloadService(dataService);
@@ -33,8 +34,9 @@ self.addEventListener('message', async (event) => {
     }
 });
 // IndexedDB Initialization
-async function initIndexedDB() {
+async function initIndexedDB(profile) {
     return new Promise((resolve, reject) => {
+        console.log('Loading service worker db with profile: ' + profile);
         const request = indexedDB.open(rs_DbName);
         request.onsuccess = (event) => {
             const db = event.target.result;
