@@ -54,7 +54,14 @@ self.addEventListener('message', async (event: MessageEvent) => {
 async function initIndexedDB(profile: string): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     console.log('Loading service worker db with profile: ' + profile);
-    const request: IDBOpenDBRequest = indexedDB.open(rs_DbName);
+
+    let dbName = rs_DbName;
+
+    if (profile) {
+      dbName = dbName + '_' + profile;
+    }
+
+    const request: IDBOpenDBRequest = indexedDB.open(dbName);
 
     request.onsuccess = (event: Event) => {
       const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;

@@ -7,19 +7,19 @@ import '../../shared/ts/constants';
   providedIn: 'root',
 })
 export class StorageService {
-  dbPromise: Promise<IDBDatabase>;
+  dbPromise!: Promise<IDBDatabase>;
   inputsCache: Input[] = [];
   profile: string | null = null;
 
   constructor() {
-    this.dbPromise = this.initIndexedDB();
+    this.initIndexedDB();
   }
 
   public getProfile(): string | null {
     return this.profile;
   }
 
-  async initIndexedDB(profile: string | null = null): Promise<IDBDatabase> {
+  async initIndexedDB(profile: string | null = null): Promise<void> {
     let dbName = rs_DbName;
 
     this.profile = profile;
@@ -28,7 +28,7 @@ export class StorageService {
       dbName = dbName + '_' + profile;
     }
 
-    return new Promise((resolve, reject) => {
+    this.dbPromise = new Promise((resolve, reject) => {
       const request = window.indexedDB.open(dbName, rs_DbVersion);
 
       request.onupgradeneeded = (event: Event) => {

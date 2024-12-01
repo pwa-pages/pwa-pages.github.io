@@ -37,7 +37,11 @@ self.addEventListener('message', async (event) => {
 async function initIndexedDB(profile) {
     return new Promise((resolve, reject) => {
         console.log('Loading service worker db with profile: ' + profile);
-        const request = indexedDB.open(rs_DbName);
+        let dbName = rs_DbName;
+        if (profile) {
+            dbName = dbName + '_' + profile;
+        }
+        const request = indexedDB.open(dbName);
         request.onsuccess = (event) => {
             const db = event.target.result;
             resolve(db);
