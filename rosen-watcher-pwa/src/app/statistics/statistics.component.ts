@@ -39,6 +39,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   detailInputs: Input[];
   addresses: Address[];
   version: string | null;
+  profile: string | null = null;
   noAddresses = false;
   selectedPeriod: Period | null;
   addressesForDisplay: Address[];
@@ -236,12 +237,14 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
     this.updateChart();
+
     this.route.queryParams.subscribe(async (params) => {
       await this.checkAddressParams(params);
+      await this.checkProfileParams(params);
 
       this.eventService.sendEventWithData(
         EventType.StatisticsScreenLoaded,
-        this.selectedPeriod as EventData,
+        this.profile as EventData,
       );
     });
 
@@ -271,6 +274,16 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   title = 'rosen-watcher-pwa';
+
+  private async checkProfileParams(params: Params): Promise<void> {
+    if (params['profile']) {
+      const profileParam = params['profile'];
+      this.profile = profileParam;
+      console.log(profileParam);
+
+      this.storageService.initIndexedDB(profileParam);
+    }
+  }
 
   private async checkAddressParams(params: Params): Promise<boolean> {
     if (params['addresses']) {

@@ -14,9 +14,15 @@ export class StorageService {
     this.dbPromise = this.initIndexedDB();
   }
 
-  async initIndexedDB(): Promise<IDBDatabase> {
+  async initIndexedDB(profile: string | null = null): Promise<IDBDatabase> {
+    let dbName = rs_DbName;
+
+    if (profile) {
+      dbName = dbName + '_' + profile;
+    }
+
     return new Promise((resolve, reject) => {
-      const request = window.indexedDB.open(rs_DbName, rs_DbVersion);
+      const request = window.indexedDB.open(dbName, rs_DbVersion);
 
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
@@ -31,14 +37,6 @@ export class StorageService {
             keyPath: rs_Address_Key,
           });
         }
-        /*
-        const transaction = db.transaction([rs_AddressDataStoreName], 'readwrite');
-        const objectStore = transaction.objectStore(rs_AddressDataStoreName);
-        if (objectStore.keyPath !== rs_Address_Key) {
-          db.deleteObjectStore(rs_AddressDataStoreName);
-          db.createObjectStore(rs_AddressDataStoreName, { keyPath: rs_Address_Key });
-        }
-          */
 
         if (!db.objectStoreNames.contains(rs_DownloadStatusStoreName)) {
           db.createObjectStore(rs_DownloadStatusStoreName, {
