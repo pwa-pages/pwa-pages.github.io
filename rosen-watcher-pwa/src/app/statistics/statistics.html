@@ -74,7 +74,8 @@
   </div>
 </div>
 
-<div class="addressescontainer">
+
+<div class="addressescontainer" *ngIf = "!isProfileActive()">
   Addresses: &nbsp;&nbsp;
   <div
     class="mainaddressdispl {{address.chainType}}"
@@ -87,7 +88,12 @@
 
 <br />
 
-<div class="linkcontainer">
+<div class="profilemessage" *ngIf = "isProfileActive()">
+  Showing example addresses, <a tabindex="0" href="statistics" routerLinkActive="active">click here</a> or refresh the page to return to saved addresses
+</div>
+
+
+<div class="linkcontainer" *ngIf = "!isProfileActive()">
   <div class="linkicon">
     <a tabindex="0" routerLink="/settings" routerLinkActive="active">
       <div class="fas fa-edit"></div>
@@ -99,7 +105,7 @@
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="showHomeLink()">
+<div class="linkcontainer" *ngIf="showHomeLink() && !isProfileActive()">
   <div class="linkicon" id="homelink">
     <a tabindex="0" (click)="installApp()" (keypress)="installApp()">
       <div class="fas fa-home"></div>
@@ -111,7 +117,7 @@
   </div>
 </div>
 
-<div class="linkcontainer" *ngIf="shareSupport">
+<div class="linkcontainer" *ngIf="shareSupport && !isProfileActive()">
   <div class="linkicon" id="sharelink">
     <a tabindex="0" (click)="share()" (keypress)="share()">
       <div class="fas fa-share-nodes"></div>
@@ -123,7 +129,7 @@
   </div>
 </div>
 
-<div class="linkcontainer">
+<div class="linkcontainer" *ngIf = "!isProfileActive()">
   <div class="linkicon" id="qrlink">
     <a tabindex="0" (click)="showQR()" (keypress)="showQR()">
       <div class="fas fa-qrcode"></div>

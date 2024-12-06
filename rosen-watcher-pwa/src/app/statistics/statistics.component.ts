@@ -220,6 +220,10 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     return url;
   }
 
+  isProfileActive(): boolean {
+    return this.storageService.getProfile() != null && this.storageService.getProfile() != undefined;
+  }
+
   share(): void {
     const url = this.getShareUrl();
 
@@ -239,8 +243,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.updateChart();
 
     this.route.queryParams.subscribe(async (params) => {
-      await this.checkAddressParams(params);
       await this.checkProfileParams(params);
+      await this.checkAddressParams(params);
+      
 
       this.eventService.sendEventWithData(
         EventType.StatisticsScreenLoaded,

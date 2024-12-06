@@ -28,16 +28,27 @@ li:last-child {
 }
 
 .addressescontainer,
-.linkcontainer {
+.linkcontainer,
+.profilemessage {
   margin-left: 5vw;
+}
+
+.profilemessage a{
+  color: rgba(119, 17, 17, 1) !important;
 }
 
 .addressescontainer {
   width: 95vw;
 }
 
+.profilemessage{
+  color: rgba(119, 17, 17, 0.836) !important;
+  font-size: 3vh  !important;
+}
+
 .addressescontainer,
 .linkcontainer,
+.profilemessage,
 .watcherscontainer {
   font-size: 1.8vh;
   font-weight: bold;
