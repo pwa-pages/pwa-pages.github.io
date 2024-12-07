@@ -6,7 +6,7 @@
 # Every time a permit is released, the retry of this script
 # will unlock this permit until no permits are left 
 # and the complete watcher is unlocked
-# after that simpy stop the script
+# after that simply stop the script
 
   # Ask the user for the API key
   read -p "Please enter your API key: " API_KEY
