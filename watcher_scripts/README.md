@@ -1,10 +1,8 @@
-# Unlock Watcher Script
+# Watcher Scripts
 
-This repository contains the `unlock_watcher.sh` script. You can download it by clicking the link below:
+This repository contains watcher scripts for (ubuntu) linux
 
-## Download the `unlock_watcher.sh` Script
+[unlock_watcher.sh](./unlock_watcher.sh)
+Place file in watcher dir and run to unlock the watcher.
 
-[Download unlock_watcher.sh](./unlock_watcher.sh)
-
-Simply click the link above to download the script from the current folder.
 
