@@ -33,7 +33,7 @@ li:last-child {
   margin-left: 5vw;
 }
 
-.profilemessage a{
+.profilemessage a {
   color: rgba(119, 17, 17, 1) !important;
 }
 
@@ -41,9 +41,9 @@ li:last-child {
   width: 95vw;
 }
 
-.profilemessage{
+.profilemessage {
   color: rgba(119, 17, 17, 0.836) !important;
-  font-size: 3vh  !important;
+  font-size: 3vh !important;
 }
 
 .addressescontainer,

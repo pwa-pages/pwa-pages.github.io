@@ -221,7 +221,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   isProfileActive(): boolean {
-    return this.storageService.getProfile() != null && this.storageService.getProfile() != undefined;
+    return (
+      this.storageService.getProfile() != null && this.storageService.getProfile() != undefined
+    );
   }
 
   share(): void {
@@ -245,7 +247,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.route.queryParams.subscribe(async (params) => {
       await this.checkProfileParams(params);
       await this.checkAddressParams(params);
-      
 
       this.eventService.sendEventWithData(
         EventType.StatisticsScreenLoaded,
