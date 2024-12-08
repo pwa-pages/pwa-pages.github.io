@@ -92,7 +92,7 @@ while true; do
     exit 1
   fi
 
-  echo "Permit released. Retrying to release remaining permits..."
+  echo "Waiting 10 sec. before trying to unlock more permits."
   sleep 10
 done
 
