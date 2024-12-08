@@ -299,11 +299,10 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       console.log(addressesParam);
 
       this.addresses = [];
-      
-      if(addressesParam != null){
+
+      if (addressesParam != null) {
         this.addresses = JSON.parse(decodeURIComponent(addressesParam));
       }
-      
 
       const individualAddresses = Object.keys(params)
         .filter((key) => key.startsWith('address') && !key.startsWith('addresses'))
