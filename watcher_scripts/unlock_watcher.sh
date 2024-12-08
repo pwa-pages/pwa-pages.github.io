@@ -1,68 +1,98 @@
 #!/bin/bash
 
-# Script to unlock watcher
-# Adapt if needed
-# Script checks active permits and tries to unlock them
-# Every time a permit is released, the retry of this script
-# will unlock this permit until no permits are left 
-# and the complete watcher is unlocked
-# after that simply stop the script
+# Script to unlock watcher permits
+# This script checks for active permits and attempts to release them iteratively
+# until no permits remain, unlocking the watcher.
 
-  # Ask the user for the API key
-  read -p "Please enter your API key: " API_KEY
+# script uses http://localhost:$PORT/api/info as url, this should probably work
+# if not change this part to match you watcher address (service container)
 
+# Define the path to the .env file
+ENV_FILE=".env"
+
+# Ensure the .env file exists in the current directory
+if [ ! -f "$ENV_FILE" ]; then
+  echo "Error: The $ENV_FILE file is not found in the current directory."
+  exit 1
+fi
+
+# Extract the WATCHER_PORT value from the .env file
+PORT=$(grep "^WATCHER_PORT=" "$ENV_FILE" | cut -d '=' -f 2)
+
+# Validate the WATCHER_PORT value
+if [ -z "$PORT" ]; then
+  echo "Error: WATCHER_PORT is not set in $ENV_FILE."
+  exit 1
+fi
+
+# Obtain the API key from the first argument or prompt the user
+API_KEY="$1"
+if [ -z "$API_KEY" ]; then
+  read -sp "Enter API Key: " API_KEY
+  echo
+fi
+
+# Validate the provided API key
+if [ -z "$API_KEY" ]; then
+  echo "Error: API Key is required to proceed."
+  exit 1
+fi
+
+# Main loop to release permits
 while true; do
-
-  # Define the .env file path
-  ENV_FILE=".env"
-
-  # Check if .env file exists in the current directory
-  if [ ! -f "$ENV_FILE" ]; then
-    echo "Error: $ENV_FILE file not found in the current directory."
-    exit 1
-  fi
-
-  # Extract the WATCHER_PORT value from the .env file
-  PORT=$(grep "^WATCHER_PORT=" "$ENV_FILE" | cut -d '=' -f 2)
-
-  # Check if WATCHER_PORT is set
-  if [ -z "$PORT" ]; then
-    echo "Error: WATCHER_PORT is not set in $ENV_FILE."
-    exit 1
-  fi
-
-
-
-  # Fetch the JSON data from the API
+  # Fetch permit information from the API
   api_url="http://localhost:$PORT/api/info"
   response=$(curl -s "$api_url")
 
-  # Extract the active permit count using jq
-  active_permit_count=$(echo "$response" | jq '.permitCount.active')
+  # Validate API response
+  if [ -z "$response" ]; then
+    echo "Error: Failed to fetch permit information from $api_url."
+    exit 1
+  fi
 
-  # Output the active permit count
+  # Parse the active permit count using jq
+  active_permit_count=$(echo "$response" | jq '.permitCount.active' 2>/dev/null)
+
+  # Check if parsing was successful
+  if [ -z "$active_permit_count" ] || ! [[ "$active_permit_count" =~ ^[0-9]+$ ]]; then
+    echo "Error: Unable to retrieve valid active permit count from the API response."
+    exit 1
+  fi
+
   echo "Active Permit Count: $active_permit_count"
 
-  # Define other constants
+  # Construct the API request to release permits
   URL="http://localhost:$PORT/api/permit/return"
   CONTENT_TYPE="application/json"
   DATA="{\"count\":\"$active_permit_count\"}"
 
-  # Make the curl request
-  RESPONSE=$(curl -X POST "$URL" \
+  # Make the POST request
+  RESPONSE=$(curl -s -X POST "$URL" \
     -H "Content-Type: $CONTENT_TYPE" \
     -H "Api-Key: $API_KEY" \
     -d "$DATA" \
     --write-out "\nHTTP_CODE:%{http_code}")
 
-  # Extract HTTP code and response body separately
+  # Extract the HTTP status code and response body
   HTTP_CODE=$(echo "$RESPONSE" | sed -n 's/.*HTTP_CODE:\([0-9]*\)/\1/p')
   BODY=$(echo "$RESPONSE" | sed 's/HTTP_CODE:[0-9]*//')
 
-  # Output the body and HTTP return code
   echo "Response Body: $BODY"
-  echo "HTTP Return Code: $HTTP_CODE"
+  echo "HTTP Status Code: $HTTP_CODE"
 
+  # Check for "No permit found" in the response body
+  if echo "$BODY" | grep -q "No permit found"; then
+    echo "No permits left to unlock. Watcher successfully unlocked."
+    exit 0
+  fi
+
+  # Handle unexpected HTTP status codes
+  if [ "$HTTP_CODE" -ne 200 ] && [ "$HTTP_CODE" -ne 400 ]; then
+    echo "Error: Unexpected HTTP Status Code $HTTP_CODE. Exiting with failure."
+    exit 1
+  fi
+
+  echo "Permit released. Retrying to release remaining permits..."
   sleep 10
 done
 
