@@ -15,6 +15,7 @@ import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
+import { ChainService } from '../service/chain.service';
 
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
@@ -52,6 +53,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private location: Location,
     private route: ActivatedRoute,
     private storageService: StorageService,
+    private chainService: ChainService,
     private dataService: DataService,
     private chartService: ChartService,
     eventService: EventService,
@@ -292,11 +294,19 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   private async checkAddressParams(params: Params): Promise<boolean> {
-    if (params['addresses']) {
+    if (params['addresses'] || Object.keys(params).some((key) => key.startsWith('address'))) {
       const addressesParam = params['addresses'];
       console.log(addressesParam);
 
       this.addresses = JSON.parse(decodeURIComponent(addressesParam));
+
+      const individualAddresses = Object.keys(params)
+        .filter((key) => key.startsWith('address') && !key.startsWith('addresses'))
+        .map((key) => new Address(params[key], this.chainService.getChainType(params[key])))
+        .filter((addr) => addr !== undefined && addr !== null);
+
+      individualAddresses.forEach((i) => this.addresses.push(i));
+
       const currentPath = this.location.path();
 
       if (currentPath.includes('?')) {
