@@ -19,10 +19,10 @@ class DownloadService {
         }
     }
     // Download Transactions
-    async downloadTransactions(address, offset = 0, limit = 500) {
+    async downloadTransactions(address, offset = 0, limit = 500, profile) {
         const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
         console.log(`Downloading from: ${url}`);
-        sendMessageToClients({ type: 'StartDownload' });
+        sendMessageToClients({ type: 'StartDownload', profile: profile });
         const response = await this.fetchTransactions(url);
         const result = {
             transactions: response.items,
@@ -32,18 +32,18 @@ class DownloadService {
         for (const item of response.items) {
             const inputDate = new Date(item.timestamp);
             if (inputDate < rs_StartFrom) {
-                sendMessageToClients({ type: 'EndDownload' });
+                sendMessageToClients({ type: 'EndDownload', profile: profile });
                 return result;
             }
         }
-        sendMessageToClients({ type: 'EndDownload' });
+        sendMessageToClients({ type: 'EndDownload', profile: profile });
         return result;
     }
-    async downloadForAddresses() {
+    async downloadForAddresses(profile) {
         try {
             const addresses = await this.dataService.getData(rs_AddressDataStoreName, this.dataService.db);
             const downloadPromises = addresses.map(async (addressObj) => {
-                await this.downloadForAddress(addressObj.address, this.dataService.db);
+                await this.downloadForAddress(addressObj.address, this.dataService.db, profile);
             });
             await Promise.all(downloadPromises);
         }
@@ -52,47 +52,47 @@ class DownloadService {
         }
     }
     // Busy Counter
-    increaseBusyCounter() {
+    increaseBusyCounter(profile) {
         if (this.busyCounter === 0) {
-            sendMessageToClients({ type: 'StartFullDownload' });
+            sendMessageToClients({ type: 'StartFullDownload', profile: profile });
         }
         this.busyCounter++;
     }
-    decreaseBusyCounter() {
+    decreaseBusyCounter(profile) {
         this.busyCounter--;
         if (this.busyCounter === 0) {
-            sendMessageToClients({ type: 'EndFullDownload' });
+            sendMessageToClients({ type: 'EndFullDownload', profile: profile });
         }
     }
     // Download All for Address (recursive)
-    async downloadAllForAddress(address, offset, db) {
-        this.increaseBusyCounter();
+    async downloadAllForAddress(address, offset, db, profile) {
+        this.increaseBusyCounter(profile);
         console.log(this.busyCounter);
         try {
-            const result = await this.downloadTransactions(address, offset, rs_FullDownloadsBatchSize + 10);
+            const result = await this.downloadTransactions(address, offset, rs_FullDownloadsBatchSize + 10, profile);
             console.log(`Processing full download(offset = ${offset}, size = ${rs_FullDownloadsBatchSize}) for: ${address}`);
             if (!result.transactions || result.transactions.length === 0 || offset > 100000) {
                 await this.dataService.setDownloadStatus(address, 'true', db);
                 console.log(this.busyCounter);
                 return;
             }
-            await this.dataService.addData(address, result.transactions, db);
+            await this.dataService.addData(address, result.transactions, db, profile);
             //await this.dataService.compressInputs();
-            await this.downloadAllForAddress(address, offset + rs_FullDownloadsBatchSize, db);
+            await this.downloadAllForAddress(address, offset + rs_FullDownloadsBatchSize, db, profile);
         }
         catch (e) {
             console.error(e);
         }
         finally {
-            this.decreaseBusyCounter();
+            this.decreaseBusyCounter(profile);
             console.log(this.busyCounter);
         }
     }
-    async downloadForAddress(address, db) {
-        this.increaseBusyCounter();
+    async downloadForAddress(address, db, profile) {
+        this.increaseBusyCounter(profile);
         console.log(this.busyCounter);
         try {
-            const result = await this.downloadTransactions(address, 0, rs_InitialNDownloads);
+            const result = await this.downloadTransactions(address, 0, rs_InitialNDownloads, profile);
             console.log(`Processing initial download(size = ${rs_InitialNDownloads}) for: ${address}`);
             const itemsz = result.transactions.length;
             let halfBoxId = '';
@@ -112,7 +112,7 @@ class DownloadService {
             }
             const boxData = await this.dataService.getDataByBoxId(halfBoxId, address, db);
             console.log('Add bunch of data');
-            await this.dataService.addData(address, result.transactions, db);
+            await this.dataService.addData(address, result.transactions, db, profile);
             const downloadStatus = await this.dataService.getDownloadStatus(address, db);
             if (boxData && downloadStatus === 'true') {
                 console.log(`Found existing boxId in db for ${address}, no need to download more.`);
@@ -120,14 +120,14 @@ class DownloadService {
             else if (itemsz >= rs_InitialNDownloads) {
                 await this.dataService.setDownloadStatus(address, 'false', db);
                 console.log(`Downloading all tx's for : ${address}`);
-                await this.downloadAllForAddress(address, 0, db);
+                await this.downloadAllForAddress(address, 0, db, profile);
             }
         }
         catch (e) {
             console.error(e);
         }
         finally {
-            this.decreaseBusyCounter();
+            this.decreaseBusyCounter(profile);
             console.log(this.busyCounter);
         }
     }

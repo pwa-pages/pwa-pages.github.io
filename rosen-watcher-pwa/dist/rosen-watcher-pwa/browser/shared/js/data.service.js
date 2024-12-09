@@ -112,7 +112,7 @@ class DataService {
         dt.setHours(0, 0, 0, 0);
         return dt;
     }
-    async addData(address, transactions, db) {
+    async addData(address, transactions, db, profile) {
         return new Promise((resolve, reject) => {
             // Create a temporary array to hold DbInput items before bulk insertion
             const tempData = [];
@@ -149,10 +149,11 @@ class DataService {
             Promise.all(putPromises)
                 .then(async () => {
                 const inputs = await this.getSortedInputs();
-                sendMessageToClients({ type: 'InputsChanged', data: inputs });
+                sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
                 sendMessageToClients({
                     type: 'AddressChartChanged',
                     data: await this.chartService.getAddressCharts(inputs),
+                    profile: profile
                 });
                 resolve();
             })

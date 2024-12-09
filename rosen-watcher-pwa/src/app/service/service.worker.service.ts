@@ -5,6 +5,7 @@ import { EventData, EventService, EventType } from './event.service';
 interface ServiceWorkerMessage {
   type: string;
   data?: object;
+  profile: string | undefined | null;
   payload?: object;
 }
 
@@ -59,7 +60,7 @@ export class ServiceWorkerService {
         const v = event?.data?.version?.appData?.version;
 
         if (v) {
-          this.eventService.sendEventWithData(EventType.VersionUpdated, v);
+          this.eventService.sendEventWithData(EventType.VersionUpdated, v, null);
           localStorage.setItem('rosenWatcherServiceVersion', v);
         }
       });
@@ -73,7 +74,11 @@ export class ServiceWorkerService {
 
     if ((Object.values(EventType) as string[]).includes(message.type)) {
       if (message.data) {
-        this.eventService.sendEventWithData(message.type as EventType, message.data as EventData);
+        this.eventService.sendEventWithData(
+          message.type as EventType,
+          message.data as EventData,
+          message.profile,
+        );
       } else {
         this.eventService.sendEvent(message.type as EventType);
       }

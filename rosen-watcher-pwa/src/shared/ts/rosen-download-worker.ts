@@ -13,7 +13,7 @@ self.addEventListener('message', async (event: MessageEvent) => {
   console.log(`Rosen service worker received event of type ${data.type}`);
 
   if (data.type === 'StatisticsScreenLoaded' || data.type === 'PerformanceScreenLoaded') {
-    const profile = data.data;
+    const profile = data.data as string | undefined;
 
     const db: IDBDatabase = await initIndexedDB(profile);
     const chartService: ChartService = new ChartService();
@@ -27,9 +27,9 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
       try {
         const inputs = await dataService.getSortedInputs();
-        sendMessageToClients({ type: 'InputsChanged', data: inputs });
+        sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
 
-        await downloadService.downloadForAddresses();
+        await downloadService.downloadForAddresses(profile);
         //await dataService.compressInputs();
       } catch (error) {
         console.error('Error initializing IndexedDB or downloading addresses:', error);
@@ -42,7 +42,11 @@ self.addEventListener('message', async (event: MessageEvent) => {
           await dataService.getSortedInputs(),
         );
 
-        sendMessageToClients({ type: 'AddressChartChanged', data: addressCharts });
+        sendMessageToClients({
+          type: 'AddressChartChanged',
+          data: addressCharts,
+          profile: profile,
+        });
       } catch (error) {
         console.error('Error initializing IndexedDB or downloading addresses:', error);
       }
@@ -51,7 +55,7 @@ self.addEventListener('message', async (event: MessageEvent) => {
 });
 
 // IndexedDB Initialization
-async function initIndexedDB(profile: string): Promise<IDBDatabase> {
+async function initIndexedDB(profile: string | undefined): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     console.log('Loading service worker db with profile: ' + profile);
 
@@ -76,7 +80,11 @@ async function initIndexedDB(profile: string): Promise<IDBDatabase> {
 }
 
 // Send messages to clients (active pages)
-async function sendMessageToClients<T>(message: { type: string; data?: T }): Promise<void> {
+async function sendMessageToClients<T>(message: {
+  type: string;
+  data?: T;
+  profile: string | undefined;
+}): Promise<void> {
   const clientsList = await (self as unknown as ServiceWorkerGlobalScope).clients.matchAll({
     type: 'window',
     includeUncontrolled: true,

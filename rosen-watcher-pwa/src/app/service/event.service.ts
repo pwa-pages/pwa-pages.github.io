@@ -48,8 +48,13 @@ export class EventService {
     this.eventSubscriptions[eventType].next({} as EventData);
   }
 
-  async sendEventWithData(eventType: EventType, eventData: EventData) {
-    console.log('ReceiveTd event: ' + eventType);
+  async sendEventWithData(
+    eventType: EventType,
+    eventData: EventData,
+    profile?: string | undefined | null,
+  ) {
+    console.log('ReceiveTd event: ' + eventType + ' for profile ' + profile);
+
     this.eventSubscriptions[eventType].next(eventData);
   }
 
