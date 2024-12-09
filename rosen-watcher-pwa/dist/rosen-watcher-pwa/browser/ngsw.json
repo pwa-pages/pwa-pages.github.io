@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1733737072089,
+  "timestamp": 1733751089273,
   "appData": {
-    "version": "3.17.2"
+    "version": "3.17.3"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-YF633L5A.js",
+        "./main-ZK2D2QUB.js",
         "./manifest.webmanifest",
         "./polyfills-SCHOHYNV.js",
         "./rosen-ngsw-worker.js",
@@ -27,7 +27,7 @@
         "./shared/js/download.service.js",
         "./shared/js/rosen-db-worker.js",
         "./shared/js/rosen-download-worker.js",
-        "./styles-BRJMCW26.css"
+        "./styles-I35UTCZ2.css"
       ],
       "patterns": []
     },
@@ -76,8 +76,8 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "f12488414b3ca569a79d54dcadcc64e58fe9e2bb",
-    "./main-YF633L5A.js": "916456092f811c20822e1447d9824b5c92cd2282",
+    "./index.html": "99d889ccff1f55fbed0aa6189a387e7fd2bc531e",
+    "./main-ZK2D2QUB.js": "1f0b9dc80540314b87c620acec944585bb219540",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
     "./media/cardano-LICXQYGO.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
@@ -96,11 +96,11 @@
     "./shared/js/chain.service.js": "ee25ace7db2c43d90f2ee0fd79b0fe4d7b8d5d6a",
     "./shared/js/chart.service.js": "8888f5e72a7f7a65824b912cc4bda1673110920f",
     "./shared/js/constants.js": "231e119357bb8aad612f925dbddfb96f381778bc",
-    "./shared/js/data.service.js": "7d4dfa0cd29f9aebce685dd7d1489f02f231e3c7",
+    "./shared/js/data.service.js": "708e1f5b1e797cbccc6e630715288a9d8b881331",
     "./shared/js/download.service.js": "8a82877fd1fea730c0526e48e8c8dace5eef1f91",
     "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
-    "./shared/js/rosen-download-worker.js": "3dcdedfff9f89d323bd6196917554ed59b8e566b",
-    "./styles-BRJMCW26.css": "dd9236ab1c39c5c9be83a0f144afe096e22546da"
+    "./shared/js/rosen-download-worker.js": "c7e24fcd6e76bcd92d356878b530e6294f678729",
+    "./styles-I35UTCZ2.css": "c7fadf2c2947c611cf78c083853cb200fed87bd7"
   },
   "navigationUrls": [
     {

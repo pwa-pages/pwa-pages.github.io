@@ -153,7 +153,7 @@ class DataService {
                 sendMessageToClients({
                     type: 'AddressChartChanged',
                     data: await this.chartService.getAddressCharts(inputs),
-                    profile: profile
+                    profile: profile,
                 });
                 resolve();
             })

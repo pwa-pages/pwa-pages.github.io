@@ -1,46 +1,48 @@
-<div class="headercontainer">
-  <div class="headerblock">
-    Performance&nbsp;
-    <div class="header">RSN per week</div>
+<div class="screen-div">
+  <div class="headercontainer">
+    <div class="headerblock">
+      Performance&nbsp;
+      <div class="header">RSN per week</div>
+    </div>
   </div>
-</div>
 
-<div class="performancecontainer">
-  <div class="addressescontainer">
-    <div
-      class="performancelegend"
-      *ngFor="let address of performanceCharts; let i = index; last as isLast"
-    >
-      <div class="chart-legend" [style.background-color]="address.color"></div>
-      <div class="performance-chart-address mainaddressdispl {{address.chainType}}">
-        - [{{ address.addressForDisplay }}]
+  <div class="performancecontainer">
+    <div class="addressescontainer">
+      <div
+        class="performancelegend"
+        *ngFor="let address of performanceCharts; let i = index; last as isLast"
+      >
+        <div class="chart-legend" [style.background-color]="address.color"></div>
+        <div class="performance-chart-address mainaddressdispl {{address.chainType}}">
+          - [{{ address.addressForDisplay }}]
+        </div>
+
+        <span *ngIf="!isLast">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
       </div>
+    </div>
 
-      <span *ngIf="!isLast">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <div class="chartcontainer">
+      <div class="chart-container">
+        <canvas id="PerformanceChart"></canvas>
+      </div>
     </div>
   </div>
 
-  <div class="chartcontainer">
-    <div class="chart-container">
-      <canvas id="PerformanceChart"></canvas>
+  <div class="navbuttons left">
+    <div>
+      <a tabindex="" (click)="swipeRight()" (keypress)="swipeRight()">
+        <span class="fas fa-angle-left"></span>
+        &nbsp;Total Rewards
+      </a>
     </div>
   </div>
-</div>
 
-<div class="navbuttons left">
-  <div>
-    <a tabindex="" (click)="swipeRight()" (keypress)="swipeRight()">
-      <span class="fas fa-angle-left"></span>
-      &nbsp;Total Rewards
-    </a>
-  </div>
-</div>
-
-<div class="navbuttons right">
-  <div>
-    <a tabindex="0" (click)="swipeLeft()" (keypress)="swipeLeft()">
-      Watchers&nbsp;
-      <span class="fas fa-angle-right"></span>
-    </a>
+  <div class="navbuttons right">
+    <div>
+      <a tabindex="0" (click)="swipeLeft()" (keypress)="swipeLeft()">
+        Watchers&nbsp;
+        <span class="fas fa-angle-right"></span>
+      </a>
+    </div>
   </div>
 </div>
