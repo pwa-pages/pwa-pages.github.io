@@ -19,7 +19,7 @@ export function initializeServiceWorkerService(serviceWorkerService: ServiceWork
   providedIn: 'root',
 })
 export class ServiceWorkerService {
-  //private currentProfile: string | null | undefined = null;
+  private currentProfile: string | null | undefined = null;
 
   constructor(private eventService: EventService) {
     this.listenForServiceWorkerMessages();
@@ -46,7 +46,7 @@ export class ServiceWorkerService {
 
   sendMessageToServiceWorker(message: ServiceWorkerMessage) {
     if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-      //this.currentProfile = message.data as string | null | undefined;
+      this.currentProfile = message.data as string | null | undefined;
       navigator.serviceWorker.controller.postMessage(message);
     } else {
       console.error('No active service worker found to send message');
@@ -82,12 +82,13 @@ export class ServiceWorkerService {
   handleServiceWorkerMessage(message: ServiceWorkerMessage) {
     console.log('Handling message from service worker:', message);
 
-    /*
-    if (message.profile !== this.currentProfile) {
-      return;
-    }*/
+    var process = (!message.profile && !this.currentProfile)
 
-    if ((Object.values(EventType) as string[]).includes(message.type)) {
+    if(message.profile || this.currentProfile){
+      process = process || message.profile == this.currentProfile;
+    }
+    
+    if (process && (Object.values(EventType) as string[]).includes(message.type)) {
       if (message.data) {
         this.eventService.sendEventWithData(
           message.type as EventType,
