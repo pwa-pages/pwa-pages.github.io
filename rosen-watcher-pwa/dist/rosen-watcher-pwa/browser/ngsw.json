@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1733751089273,
+  "timestamp": 1733822814050,
   "appData": {
-    "version": "3.17.3"
+    "version": "3.17.4"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-ZK2D2QUB.js",
+        "./main-J3TF4PWO.js",
         "./manifest.webmanifest",
         "./polyfills-SCHOHYNV.js",
         "./rosen-ngsw-worker.js",
@@ -76,8 +76,8 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "99d889ccff1f55fbed0aa6189a387e7fd2bc531e",
-    "./main-ZK2D2QUB.js": "1f0b9dc80540314b87c620acec944585bb219540",
+    "./index.html": "e54659fdd643ec612d3b410570f386a99ec96df6",
+    "./main-J3TF4PWO.js": "9f5dc64c2baa391375a1274aaace62a477130e29",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
     "./media/cardano-LICXQYGO.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
