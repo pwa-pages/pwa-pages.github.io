@@ -82,12 +82,12 @@ export class ServiceWorkerService {
   handleServiceWorkerMessage(message: ServiceWorkerMessage) {
     console.log('Handling message from service worker:', message);
 
-    var process = (!message.profile && !this.currentProfile)
+    let process = !message.profile && !this.currentProfile;
 
-    if(message.profile || this.currentProfile){
+    if (message.profile || this.currentProfile) {
       process = process || message.profile == this.currentProfile;
     }
-    
+
     if (process && (Object.values(EventType) as string[]).includes(message.type)) {
       if (message.data) {
         this.eventService.sendEventWithData(

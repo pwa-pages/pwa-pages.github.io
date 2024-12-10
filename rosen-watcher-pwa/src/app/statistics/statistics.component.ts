@@ -222,12 +222,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     return url;
   }
 
-  isProfileActive(): boolean {
-    return (
-      this.storageService.getProfile() != null && this.storageService.getProfile() != undefined
-    );
-  }
-
   share(): void {
     const url = this.getShareUrl();
 
