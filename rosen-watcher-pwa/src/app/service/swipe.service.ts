@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EventService, EventType } from './event.service';
 import { Router } from '@angular/router';
+import { NavigationService } from './navigation.service';
 
 @Injectable({
   providedIn: 'root',
@@ -8,12 +9,11 @@ import { Router } from '@angular/router';
 export class SwipeService {
   private detectHorizontal = true;
   private detectVertical = false;
-  private currentNavigationLeft = 'main';
-  private currentNavigationRight = 'main';
   private swipeActive = false;
 
   constructor(
     eventService: EventService,
+    private navigationService: NavigationService,
     private router: Router,
   ) {
     this.registerSwipeDetect();
@@ -34,8 +34,6 @@ export class SwipeService {
   }
 
   swipe(swipedir: string, route: string) {
-    this.currentNavigationLeft = route;
-    this.currentNavigationRight = route;
     const touchsurface = document.body;
     touchsurface.classList.add('swiping');
     const body = document.body,
@@ -121,11 +119,7 @@ export class SwipeService {
     return false;
   }
 
-  public swipeDetect(routeleft: string, routeRight: string) {
-    this.currentNavigationLeft = routeleft;
-    this.currentNavigationRight = routeRight;
-  }
-
+  
   public registerSwipeDetect() {
     const threshold = 10,
       body = document.body,
@@ -217,9 +211,9 @@ export class SwipeService {
 
         if (swipedir) {
           if (swipedir == 'left') {
-            this.swipe(swipedir, this.currentNavigationLeft);
+            this.swipe(swipedir, this.navigationService.navigateRight().route);
           } else if (swipedir == 'right') {
-            this.swipe(swipedir, this.currentNavigationRight);
+            this.swipe(swipedir, this.navigationService.navigateLeft().route);
           }
         } else {
           this.resetswipes(body);

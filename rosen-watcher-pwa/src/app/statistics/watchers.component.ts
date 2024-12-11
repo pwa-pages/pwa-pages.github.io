@@ -71,7 +71,6 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
-    this.initSwipe();
     const watcherInfo$ = this.watchersDataService.getWatchersInfo();
 
     Object.values(ChainType).forEach((c) => {

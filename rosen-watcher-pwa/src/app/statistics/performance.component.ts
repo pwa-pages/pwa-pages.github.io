@@ -46,8 +46,6 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    this.initSwipe();
-
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
     });

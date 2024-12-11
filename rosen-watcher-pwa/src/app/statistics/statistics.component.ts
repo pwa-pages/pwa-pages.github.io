@@ -254,8 +254,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     this.shareSupport = navigator.share != null && navigator.share != undefined;
 
-    this.initSwipe();
-
     window.addEventListener('beforeinstallprompt', (event: Event) => {
       (window as WindowWithPrompt).showHomeLink = true;
       event.preventDefault();

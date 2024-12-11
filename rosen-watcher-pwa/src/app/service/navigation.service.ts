@@ -4,7 +4,6 @@ import '../../shared/ts/constants';
 @Injectable({
   providedIn: 'root',
 })
-
 export class NavigationService {
   currentNavigationIndex = 0;
   navigationItems: NavigationItem[] = [];

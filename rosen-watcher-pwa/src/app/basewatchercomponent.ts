@@ -22,13 +22,6 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     document.documentElement.style.height = window.innerHeight + 'px';
   }
 
-  initSwipe() {
-    this.swipeService.swipeDetect(
-      this.navigationService.getLeftItem().route,
-      this.navigationService.getRightItem().route,
-    );
-  }
-
   swipeRight(): void {
     this.swipeService.swipe('right', this.navigationService.navigateLeft().route);
   }
