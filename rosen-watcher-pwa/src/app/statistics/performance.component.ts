@@ -10,6 +10,7 @@ import { ChartPoint } from '../../service/ts/models/chart.point';
 import { ChartPerformance } from '../../service/ts/models/chart.performance';
 import { Chart } from 'chart.js';
 import { StorageService } from '../service/storage.service';
+import { NavigationService } from '../service/navigation.service';
 
 @Component({
   selector: 'app-performance',
@@ -30,8 +31,9 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     eventService: EventService,
     private chartService: ChartService,
     swipeService: SwipeService,
+    navigationService: NavigationService,
   ) {
-    super(eventService, swipeService);
+    super(eventService, swipeService, navigationService);
     this.data = '';
     this.addresses = [];
     this.performanceCharts = [];
@@ -44,7 +46,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    this.initSwipe('/watchers', '/statistics');
+    this.initSwipe();
 
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();

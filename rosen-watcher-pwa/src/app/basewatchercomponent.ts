@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventData, EventService, EventType } from './service/event.service';
 import { SwipeService } from './service/swipe.service';
+import { NavigationService } from './service/navigation.service';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +10,11 @@ import { SwipeService } from './service/swipe.service';
 export class BaseWatcherComponent implements OnInit, OnDestroy {
   public busyCounter = 1;
   loaderLogs: string[] = [];
-  private leftAction = '';
-  private rightAction = '';
 
   constructor(
     public eventService: EventService,
     public swipeService: SwipeService,
+    public navigationService: NavigationService,
   ) {}
 
   resetHeight(): void {
@@ -22,19 +22,19 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     document.documentElement.style.height = window.innerHeight + 'px';
   }
 
-  initSwipe(left: string, right: string) {
-    this.leftAction = left;
-    this.rightAction = right;
-
-    this.swipeService.swipeDetect(left, right);
+  initSwipe() {
+    this.swipeService.swipeDetect(
+      this.navigationService.getLeftItem().route,
+      this.navigationService.getRightItem().route,
+    );
   }
 
   swipeRight(): void {
-    this.swipeService.swipe('right', this.rightAction);
+    this.swipeService.swipe('right', this.navigationService.navigateLeft().route);
   }
 
   swipeLeft(): void {
-    this.swipeService.swipe('left', this.leftAction);
+    this.swipeService.swipe('left', this.navigationService.navigateRight().route);
   }
 
   async ngOnInit(): Promise<void> {

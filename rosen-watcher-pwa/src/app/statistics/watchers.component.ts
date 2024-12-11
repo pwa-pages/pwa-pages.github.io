@@ -8,6 +8,7 @@ import { ChainType } from '../../service/ts/models/chaintype';
 import { AsyncPipe } from '@angular/common';
 import { Token } from '../../service/ts/models/token';
 import { CommonModule } from '@angular/common'; // Import CommonModule
+import { NavigationService } from '../service/navigation.service';
 
 function createChainNumber(): { [key in ChainType]: number | undefined } {
   return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as {
@@ -36,8 +37,9 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     private watchersDataService: WatchersDataService,
     eventService: EventService,
     swipeService: SwipeService,
+    navigationService: NavigationService,
   ) {
-    super(eventService, swipeService);
+    super(eventService, swipeService, navigationService);
   }
 
   setLockedAmounts(chainType: ChainType): void {
@@ -69,7 +71,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
-    this.initSwipe('/statistics', '/performance');
+    this.initSwipe();
     const watcherInfo$ = this.watchersDataService.getWatchersInfo();
 
     Object.values(ChainType).forEach((c) => {

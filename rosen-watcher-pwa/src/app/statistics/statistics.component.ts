@@ -16,6 +16,7 @@ import { Address } from '../../service/ts/models/address';
 import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
 import { ChainService } from '../service/chain.service';
+import { NavigationService } from '../service/navigation.service';
 
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
@@ -61,8 +62,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private serviceWorkerService: ServiceWorkerService,
     private router: Router,
     private qrDialog: MatDialog,
+    navigationService: NavigationService,
   ) {
-    super(eventService, swipeService);
+    super(eventService, swipeService, navigationService);
     this.totalRewards = '';
     this.selectedTab = 'chart';
     this.addresses = [];
@@ -252,7 +254,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     this.shareSupport = navigator.share != null && navigator.share != undefined;
 
-    this.initSwipe('/performance', '/watchers');
+    this.initSwipe();
 
     window.addEventListener('beforeinstallprompt', (event: Event) => {
       (window as WindowWithPrompt).showHomeLink = true;
