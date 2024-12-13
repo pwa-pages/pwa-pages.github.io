@@ -5,50 +5,62 @@
 
 .fa-bars {
   font-size: 3.5vh;
-  color: rgba(138, 128, 128);
+  color: white;
   transition: color 0.3s ease;
 }
 
 .fa-bars:hover {
-  color: rgba(38, 28, 28);
+  color: lightgrey;
 }
 
-.fa-eye, .fa-chart-bar, .fa-btc {
+.fa-eye,
+.fa-chart-bar,
+.fa-btc {
   font-size: 3.5vh;
-  color: rgba(138, 128, 128);
+  color: white;
   transition: color 0.3s ease;
 }
 
-.fa-eye:hover, .fa-chart-bar:hover, .fa-btc:hover {
-  color: rgba(38, 28, 28);
+.fa-eye:hover,
+.fa-chart-bar:hover,
+.fa-btc:hover {
+  color: lightgrey;
+}
+
+.navbar a{
+  color: white;
 }
 
 .navbar {
   position: fixed;
   bottom: 1vmin;
-  height: 7vh;
+  height: 6.5vh;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   font-size: 1.8vh;
   gap: 2vh;
   grid-template-columns: auto auto;
   z-index: 10000;
-  margin-left: 5vw;
-  margin-right: 5vw;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  padding-top: .5vh;
   display: flex;
   justify-content: space-between;
-  width: 90vw;
+  width: 100vw;
   box-sizing: border-box;
+  background-color: rgba(138, 128, 128);
 }
 
 .nav-icon {
   display: flex;
-  flex-direction: column; 
-  align-items: center;   
-  text-align: center;    
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .nav-icon a {
-  text-decoration: none; 
-  color: inherit;        
+  text-decoration: none;
+  color: inherit;
 }
 
 .icon-text .fa-eye {
