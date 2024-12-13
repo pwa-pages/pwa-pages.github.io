@@ -27,14 +27,14 @@
   color: lightgrey;
 }
 
-.navbar a{
+.navbar a {
   color: white;
 }
 
 .navbar {
   position: fixed;
-  bottom: 1vmin;
-  height: 6.5vh;
+  bottom: 3vmin;
+  height: 7vh;
   border-top: 1px solid black;
   border-bottom: 1px solid black;
   font-size: 1.8vh;
@@ -43,7 +43,8 @@
   z-index: 10000;
   padding-left: 5vw;
   padding-right: 5vw;
-  padding-top: .5vh;
+  padding-top: 0.5vh;
+  
   display: flex;
   justify-content: space-between;
   width: 100vw;
@@ -68,6 +69,7 @@
 
 .navbuttons {
   flex: 0 0 auto;
+  margin-bottom:11.5vh;
 }
 
 @media (orientation: portrait) {
