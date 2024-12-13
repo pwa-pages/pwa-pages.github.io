@@ -22,13 +22,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     document.documentElement.style.height = window.innerHeight + 'px';
   }
 
-  swipeRight(): void {
-    this.swipeService.swipe('right', this.navigationService.navigateLeft().route);
-  }
 
-  swipeLeft(): void {
-    this.swipeService.swipe('left', this.navigationService.navigateRight().route);
-  }
 
   async ngOnInit(): Promise<void> {
     this.eventService.sendEvent(EventType.SwipeActivated);

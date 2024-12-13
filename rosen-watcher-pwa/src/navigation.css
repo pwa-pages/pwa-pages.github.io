@@ -1,17 +1,13 @@
-
-
 .navbuttons.menu {
   right: 5vw;
   justify-content: right;
 }
 
-
 .fa-bars {
   font-size: 3.5vh;
   color: rgba(138, 128, 128);
-  transition: color 0.3s ease; 
+  transition: color 0.3s ease;
 }
-
 
 .fa-bars:hover {
   color: rgba(38, 28, 28);
@@ -20,7 +16,7 @@
 .fa-eye {
   font-size: 3.5vh;
   color: rgba(138, 128, 128);
-  transition: color 0.3s ease; 
+  transition: color 0.3s ease;
 }
 
 .fa-eye:hover {
@@ -38,14 +34,13 @@
   margin-left: 5vw;
   margin-right: 5vw;
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   width: 90vw;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 .navbuttons {
-  flex: 0 0 auto; 
-
+  flex: 0 0 auto;
 }
 
 @media (orientation: portrait) {

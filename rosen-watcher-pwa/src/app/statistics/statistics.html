@@ -5,11 +5,6 @@
       <div class="header">{{totalRewards}} RSN</div>
     </div>
   </div>
-  <!--
-<div class="addressescontainer noAddresses" *ngIf="noAddresses">
-  You don't have any watcher addresses(with rewards) yet, click on modify below to add addresses.
-</div>
--->
 
   <div class="stats-container">
     <a
@@ -136,28 +131,8 @@
     </div>
   </div>
 
-  
+  <app-navigation/>
 
-  <div class = "navbar">
-    <div class="navbuttons">
-      <div>
-        <a tabindex="0" (click)="swipeRight()" (keypress)="swipeRight()">
-          <span class="fas fa-angle-left"></span>
-          &nbsp;Watchers
-        </a>
-      </div>
-    </div>
-  
-    <div class="navbuttons">
-      <div>
-        <a tabindex="0" (click)="swipeLeft()" (keypress)="swipeLeft()">
-          Performance&nbsp;
-          <span class="fas fa-angle-right"></span>
-        </a>
-      </div>
-    </div>
-  </div>
 
-  
 
 </div>

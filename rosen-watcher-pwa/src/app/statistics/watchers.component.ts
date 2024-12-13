@@ -9,6 +9,7 @@ import { AsyncPipe } from '@angular/common';
 import { Token } from '../../service/ts/models/token';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { NavigationService } from '../service/navigation.service';
+import { NavigationComponent } from './navigation.component';
 
 function createChainNumber(): { [key in ChainType]: number | undefined } {
   return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as {
@@ -20,7 +21,7 @@ function createChainNumber(): { [key in ChainType]: number | undefined } {
   selector: 'app-watchers',
   templateUrl: './watchers.html',
   standalone: true,
-  imports: [AsyncPipe, CommonModule],
+  imports: [AsyncPipe, CommonModule, NavigationComponent],
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   chainWatcherCount = createChainNumber();

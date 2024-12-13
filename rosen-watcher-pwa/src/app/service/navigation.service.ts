@@ -5,7 +5,7 @@ import '../../shared/ts/constants';
   providedIn: 'root',
 })
 export class NavigationService {
-  currentNavigationIndex = 0;
+  public currentNavigationIndex = 0;
   navigationItems: NavigationItem[] = [];
 
   constructor() {
@@ -18,6 +18,11 @@ export class NavigationService {
     return this.navigationItems[this.currentNavigationIndex];
   }
 
+  public getNavigationItems(): NavigationItem[] {
+    return this.navigationItems;
+  }
+
+
   public getLeftItem(): NavigationItem {
     return this.navigationItems[
       (this.currentNavigationIndex - 1 + this.navigationItems.length) % this.navigationItems.length
@@ -26,6 +31,12 @@ export class NavigationService {
 
   public getRightItem(): NavigationItem {
     return this.navigationItems[(this.currentNavigationIndex + 1) % this.navigationItems.length];
+  }
+
+  public navigateTo(to: number): NavigationItem {
+    
+    this.currentNavigationIndex = to;
+    return this.getCurrentNavigationItem();
   }
 
   public navigateRight(): NavigationItem {

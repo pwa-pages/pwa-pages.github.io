@@ -17,6 +17,7 @@ import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
 import { ChainService } from '../service/chain.service';
 import { NavigationService } from '../service/navigation.service';
+import { NavigationComponent } from './navigation.component';
 
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
@@ -31,7 +32,7 @@ interface BeforeInstallPromptEvent extends Event {
   selector: 'app-statistics',
   templateUrl: './statistics.html',
   standalone: true,
-  imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive, FormsModule],
+  imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive, FormsModule, NavigationComponent],
 })
 export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
   totalRewards: string;
