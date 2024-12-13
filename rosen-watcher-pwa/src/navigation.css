@@ -1,21 +1,51 @@
-.navbuttons.right {
+
+
+.navbuttons.menu {
   right: 5vw;
   justify-content: right;
 }
-.navbuttons.left {
-  left: 5vw;
-  justify-content: left;
+
+
+.fa-bars {
+  font-size: 3.5vh;
+  color: rgba(138, 128, 128);
+  transition: color 0.3s ease; 
 }
 
-.navbuttons {
+
+.fa-bars:hover {
+  color: rgba(38, 28, 28);
+}
+
+.fa-eye {
+  font-size: 3.5vh;
+  color: rgba(138, 128, 128);
+  transition: color 0.3s ease; 
+}
+
+.fa-eye:hover {
+  color: rgba(38, 28, 28);
+}
+
+.navbar {
   position: fixed;
   bottom: 1vmin;
   height: 3.5vh;
   font-size: 3.5vh;
-  display: grid;
   gap: 2vh;
   grid-template-columns: auto auto;
   z-index: 10000;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  display: flex;
+  justify-content: space-between; 
+  width: 90vw;
+  box-sizing: border-box; 
+}
+
+.navbuttons {
+  flex: 0 0 auto; 
+
 }
 
 @media (orientation: portrait) {

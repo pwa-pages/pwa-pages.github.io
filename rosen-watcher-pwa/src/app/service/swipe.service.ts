@@ -119,7 +119,6 @@ export class SwipeService {
     return false;
   }
 
-  
   public registerSwipeDetect() {
     const threshold = 10,
       body = document.body,
