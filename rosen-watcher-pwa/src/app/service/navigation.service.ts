@@ -22,7 +22,6 @@ export class NavigationService {
     return this.navigationItems;
   }
 
-
   public getLeftItem(): NavigationItem {
     return this.navigationItems[
       (this.currentNavigationIndex - 1 + this.navigationItems.length) % this.navigationItems.length
@@ -34,7 +33,6 @@ export class NavigationService {
   }
 
   public navigateTo(to: number): NavigationItem {
-    
     this.currentNavigationIndex = to;
     return this.getCurrentNavigationItem();
   }

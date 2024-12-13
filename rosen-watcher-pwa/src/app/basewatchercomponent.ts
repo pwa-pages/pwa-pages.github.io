@@ -22,8 +22,6 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     document.documentElement.style.height = window.innerHeight + 'px';
   }
 
-
-
   async ngOnInit(): Promise<void> {
     this.eventService.sendEvent(EventType.SwipeActivated);
 

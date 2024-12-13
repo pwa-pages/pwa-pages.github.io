@@ -13,21 +13,21 @@
   color: rgba(38, 28, 28);
 }
 
-.fa-eye {
+.fa-eye, .fa-chart-bar, .fa-btc {
   font-size: 3.5vh;
   color: rgba(138, 128, 128);
   transition: color 0.3s ease;
 }
 
-.fa-eye:hover {
+.fa-eye:hover, .fa-chart-bar:hover, .fa-btc:hover {
   color: rgba(38, 28, 28);
 }
 
 .navbar {
   position: fixed;
   bottom: 1vmin;
-  height: 3.5vh;
-  font-size: 3.5vh;
+  height: 7vh;
+  font-size: 1.8vh;
   gap: 2vh;
   grid-template-columns: auto auto;
   z-index: 10000;
@@ -37,6 +37,21 @@
   justify-content: space-between;
   width: 90vw;
   box-sizing: border-box;
+}
+
+.nav-icon {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;   
+  text-align: center;    
+}
+
+.nav-icon a {
+  text-decoration: none; 
+  color: inherit;        
+}
+
+.icon-text .fa-eye {
 }
 
 .navbuttons {
