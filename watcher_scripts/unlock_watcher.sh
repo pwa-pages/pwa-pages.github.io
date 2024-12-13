@@ -66,8 +66,10 @@ while true; do
   fi
 
   echo "Parsing response."
+  echo " response = $response"
   # Parse the active permit count using jq
   active_permit_count=$(echo "$response" | jq '.permitCount.active' 2>/dev/null)
+  total_permit_count=$(echo "$response" | jq '.permitCount.total' 2>/dev/null)
 
   # Check if parsing was successful
   if [ -z "$active_permit_count" ] || ! [[ "$active_permit_count" =~ ^[0-9]+$ ]]; then
@@ -78,7 +80,7 @@ while true; do
     exit 1
   fi
 
-  if [ "$active_permit_count" -eq 0 ]; then
+  if [ "$active_permit_count" -eq 0 ] && [ "$total_permit_count" -ne 0 ]; then
     echo "Active permits seems 0. Waiting 10 seconds before checking again."
     sleep 10
     continue
