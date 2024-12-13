@@ -43,6 +43,21 @@ while true; do
   # Fetch permit information from the API
   api_url="http://localhost:$PORT/api/info"
   response=$(curl -s "$api_url")
+  if [ $? -ne 0 ]; then
+    echo "Error: curl command failed."
+    
+    
+    echo "Do you want to continue deploying? (yes/no)"
+    read user_input
+
+    # Check if user input is "yes"
+    if [[ "$user_input" == "yes" ]]; then
+
+      exit 0
+    fi
+    
+    exit 1
+  fi
 
   # Validate API response
   if [ -z "$response" ]; then
@@ -50,13 +65,23 @@ while true; do
     exit 1
   fi
 
+  echo "Parsing response."
   # Parse the active permit count using jq
   active_permit_count=$(echo "$response" | jq '.permitCount.active' 2>/dev/null)
 
   # Check if parsing was successful
   if [ -z "$active_permit_count" ] || ! [[ "$active_permit_count" =~ ^[0-9]+$ ]]; then
     echo "Error: Unable to retrieve valid active permit count from the API response."
+    echo "Actual response was: "
+    echo "$response"
+    
     exit 1
+  fi
+
+  if [ "$active_permit_count" -eq 0 ]; then
+    echo "Active permits seems 0. Waiting 10 seconds before checking again."
+    sleep 10
+    continue
   fi
 
   echo "Active Permit Count: $active_permit_count"
@@ -92,7 +117,7 @@ while true; do
     exit 1
   fi
 
-  echo "Waiting 10 sec. before trying to unlock more permits."
+  echo "Waiting 10 sec. before trying to unlock more permits or waiting until watcher is completely unlocked."
   sleep 10
 done
 
