@@ -55,6 +55,11 @@ export class ServiceWorkerService {
 
   listenForServiceWorkerMessages() {
     if (navigator.serviceWorker) {
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        console.log('New service worker has taken control. Reloading the page.');
+        //window.location.reload();
+      });
+
       navigator.serviceWorker.addEventListener('message', (event) => {
         const message = event.data as ServiceWorkerMessage;
 
