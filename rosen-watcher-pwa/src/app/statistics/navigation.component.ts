@@ -18,7 +18,7 @@ export class NavigationComponent {
     private navigationService: NavigationService,
     private swipeService: SwipeService,
   ) {}
-  
+
   swipeRight(): void {
     this.swipeService.swipe('right', this.navigationService.navigateLeft().route);
   }

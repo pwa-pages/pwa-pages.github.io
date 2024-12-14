@@ -33,21 +33,20 @@ export class SwipeService {
     await this.router.navigate([route]);
   }
 
-  getTouchSurface() : HTMLElement{
-    return document.body;//.querySelector('.screen-div') as HTMLElement;
+  getTouchSurface(): HTMLElement {
+    return document.body; //.querySelector('.screen-div') as HTMLElement;
   }
 
-  getSpeed(): number{
+  getSpeed(): number {
     return 1;
   }
 
   swipe(swipedir: string, route: string) {
     const touchsurface = this.getTouchSurface();
     touchsurface.classList.add('swiping');
-    const
-      html = document.documentElement;
+    const html = document.documentElement;
 
-      touchsurface.style.position = 'fixed';
+    touchsurface.style.position = 'fixed';
     html.style.position = 'fixed';
 
     if (swipedir == 'left') {
@@ -131,10 +130,10 @@ export class SwipeService {
     const threshold = 10,
       touchsurface = this.getTouchSurface(),
       html = document.documentElement;
-      
-      if(!touchsurface){
-        return;
-      }
+
+    if (!touchsurface) {
+      return;
+    }
     let startX: number,
       startY: number,
       distX: number,
@@ -142,7 +141,7 @@ export class SwipeService {
       contentLeft: number,
       contentTop: number;
 
-      touchsurface.addEventListener(
+    touchsurface.addEventListener(
       'touchstart',
       (e) => {
         if (!this.swipeActive) {
@@ -252,7 +251,7 @@ export class SwipeService {
 
     const touchsurface = this.getTouchSurface(),
       html = document.documentElement;
-      touchsurface.style.position = '';
+    touchsurface.style.position = '';
     html.style.position = '';
   }
 }
