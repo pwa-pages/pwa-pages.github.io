@@ -34,7 +34,7 @@ export class SwipeService {
   }
 
   getTouchSurface(): HTMLElement {
-    return document.body; //.querySelector('.screen-div') as HTMLElement;
+    return document.body.querySelector('.screen-div') as HTMLElement;
   }
 
   getSpeed(): number {
@@ -237,8 +237,6 @@ export class SwipeService {
     el.style.position = 'inherit';
     el.style.left = 'inherit';
     el.style.top = 'inherit';
-    el.style.width = 'inherit';
-    el.style.height = 'inherit';
     el.classList.remove('swipeleftin');
     el.classList.remove('swiping');
     el.classList.remove('swiperightin');
