@@ -1,31 +1,28 @@
+<div class="headercontainer">
+  <div class="headerblock">
+    Performance&nbsp;
+    <div class="header">RSN per week</div>
+  </div>
+</div>
 
-  <div class="headercontainer">
-    <div class="headerblock">
-      Performance&nbsp;
-      <div class="header">RSN per week</div>
+<div class="performancecontainer">
+  <div class="addressescontainer">
+    <div
+      class="performancelegend"
+      *ngFor="let address of performanceCharts; let i = index; last as isLast"
+    >
+      <div class="chart-legend" [style.background-color]="address.color"></div>
+      <div class="performance-chart-address mainaddressdispl {{address.chainType}}">
+        - [{{ address.addressForDisplay }}]
+      </div>
+
+      <span *ngIf="!isLast">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
     </div>
   </div>
 
-  <div class="performancecontainer">
-    <div class="addressescontainer">
-      <div
-        class="performancelegend"
-        *ngFor="let address of performanceCharts; let i = index; last as isLast"
-      >
-        <div class="chart-legend" [style.background-color]="address.color"></div>
-        <div class="performance-chart-address mainaddressdispl {{address.chainType}}">
-          - [{{ address.addressForDisplay }}]
-        </div>
-
-        <span *ngIf="!isLast">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-      </div>
-    </div>
-
-    <div class="chartcontainer">
-      <div class="chart-container">
-        <canvas id="PerformanceChart"></canvas>
-      </div>
+  <div class="chartcontainer">
+    <div class="chart-container">
+      <canvas id="PerformanceChart"></canvas>
     </div>
   </div>
-
-
+</div>

@@ -75,6 +75,9 @@
   margin-bottom: 11.5vh;
 }
 
+.navbuttons.active div{
+  color: #222222;
+}
 .prevPage {
   position: fixed;
   bottom: 0vh;

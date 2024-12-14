@@ -1,134 +1,131 @@
-
-  <div class="headercontainer">
-    <div class="headerblock">
-      Total rewards:
-      <div class="header">{{totalRewards}} RSN</div>
-    </div>
+<div class="headercontainer">
+  <div class="headerblock">
+    Total rewards:
+    <div class="header">{{totalRewards}} RSN</div>
   </div>
+</div>
 
-  <div class="stats-container">
-    <a
-      tabindex="0"
-      class="tab"
-      [class.active]="selectedTab === 'chart'"
-      (click)="selectTab('chart')"
-      (keypress)="selectTab('chart')"
-    >
-      Graph
-    </a>
-    <a
-      tabindex="0"
-      class="tab"
-      [class.active]="selectedTab === 'details'"
-      (click)="selectTab('details')"
-      (keypress)="selectTab('details')"
-    >
-      Details
-    </a>
-
-    <div class="period">
-      <label for="periodSelect">Period:</label>
-      <select id="periodSelect" [(ngModel)]="selectedPeriod" (change)="onPeriodChange()">
-        <option value="Day">Last day</option>
-        <option value="Week">Last week</option>
-        <option value="Month">Last month</option>
-        <option value="Year">Last year</option>
-        <option value="All">All</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
-    <div class="version-container" style="position: absolute">
-      <div class="version">version: {{version}}</div>
-    </div>
-    <div class="chart-container">
-      <canvas id="RewardChart"></canvas>
-    </div>
-  </div>
-
-  <div
-    class="detailscontainer verticalscrollablecontainer"
-    [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}"
+<div class="stats-container">
+  <a
+    tabindex="0"
+    class="tab"
+    [class.active]="selectedTab === 'chart'"
+    (click)="selectTab('chart')"
+    (keypress)="selectTab('chart')"
   >
-    <div #detailsContainer class="details-container">
-      <div>
-        <div class="statdetaildispl">
-          <div class="inputDate">Date</div>
-          <div class="amount">Reward</div>
+    Graph
+  </a>
+  <a
+    tabindex="0"
+    class="tab"
+    [class.active]="selectedTab === 'details'"
+    (click)="selectTab('details')"
+    (keypress)="selectTab('details')"
+  >
+    Details
+  </a>
+
+  <div class="period">
+    <label for="periodSelect">Period:</label>
+    <select id="periodSelect" [(ngModel)]="selectedPeriod" (change)="onPeriodChange()">
+      <option value="Day">Last day</option>
+      <option value="Week">Last week</option>
+      <option value="Month">Last month</option>
+      <option value="Year">Last year</option>
+      <option value="All">All</option>
+    </select>
+  </div>
+</div>
+
+<div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
+  <div class="version-container" style="position: absolute">
+    <div class="version">version: {{version}}</div>
+  </div>
+  <div class="chart-container">
+    <canvas id="RewardChart"></canvas>
+  </div>
+</div>
+
+<div
+  class="detailscontainer verticalscrollablecontainer"
+  [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}"
+>
+  <div #detailsContainer class="details-container">
+    <div>
+      <div class="statdetaildispl">
+        <div class="inputDate">Date</div>
+        <div class="amount">Reward</div>
+      </div>
+    </div>
+
+    <ng-container>
+      <div *ngFor="let input of detailInputs">
+        <div class="statdetaildispl {{input.chainType}}">
+          <div class="inputDate">{{ formatDate(input.inputDate) }}</div>
+          <div class="amount">{{ input.amount }} RSN</div>
         </div>
       </div>
-
-      <ng-container>
-        <div *ngFor="let input of detailInputs">
-          <div class="statdetaildispl {{input.chainType}}">
-            <div class="inputDate">{{ formatDate(input.inputDate) }}</div>
-            <div class="amount">{{ input.amount }} RSN</div>
-          </div>
-        </div>
-      </ng-container>
-    </div>
+    </ng-container>
   </div>
+</div>
 
-  <div class="addressescontainer">
-    Addresses: &nbsp;&nbsp;
-    <div
-      class="mainaddressdispl {{address.chainType}}"
-      *ngFor="let address of addressesForDisplay; let i = index; last as isLast"
-    >
-      - [{{ address.address }}]
-      <span *ngIf="!isLast">,&nbsp;&nbsp;</span>
-    </div>
+<div class="addressescontainer">
+  Addresses: &nbsp;&nbsp;
+  <div
+    class="mainaddressdispl {{address.chainType}}"
+    *ngFor="let address of addressesForDisplay; let i = index; last as isLast"
+  >
+    - [{{ address.address }}]
+    <span *ngIf="!isLast">,&nbsp;&nbsp;</span>
   </div>
+</div>
 
-  <br />
+<br />
 
-  <div class="linkcontainer">
-    <div class="linkicon">
-      <a tabindex="0" routerLink="/settings" routerLinkActive="active">
-        <div class="fas fa-edit"></div>
-      </a>
-    </div>
-    &nbsp;
-    <div class="link">
-      <a tabindex="0" routerLink="/settings" routerLinkActive="active">Modify addresses</a>
-    </div>
+<div class="linkcontainer">
+  <div class="linkicon">
+    <a tabindex="0" routerLink="/settings" routerLinkActive="active">
+      <div class="fas fa-edit"></div>
+    </a>
   </div>
-
-  <div class="linkcontainer" *ngIf="showHomeLink()">
-    <div class="linkicon" id="homelink">
-      <a tabindex="0" (click)="installApp()" (keypress)="installApp()">
-        <div class="fas fa-home"></div>
-      </a>
-    </div>
-    &nbsp;
-    <div class="link">
-      <a tabindex="0" (click)="installApp()" (keypress)="installApp()">Add to home</a>
-    </div>
+  &nbsp;
+  <div class="link">
+    <a tabindex="0" routerLink="/settings" routerLinkActive="active">Modify addresses</a>
   </div>
+</div>
 
-  <div class="linkcontainer" *ngIf="shareSupport">
-    <div class="linkicon" id="sharelink">
-      <a tabindex="0" (click)="share()" (keypress)="share()">
-        <div class="fas fa-share-nodes"></div>
-      </a>
-    </div>
-    &nbsp;
-    <div class="link">
-      <a tabindex="0" (click)="share()" (keypress)="share()">Share</a>
-    </div>
+<div class="linkcontainer" *ngIf="showHomeLink()">
+  <div class="linkicon" id="homelink">
+    <a tabindex="0" (click)="installApp()" (keypress)="installApp()">
+      <div class="fas fa-home"></div>
+    </a>
   </div>
-
-  <div class="linkcontainer">
-    <div class="linkicon" id="qrlink">
-      <a tabindex="0" (click)="showQR()" (keypress)="showQR()">
-        <div class="fas fa-qrcode"></div>
-      </a>
-    </div>
-    &nbsp;
-    <div class="link">
-      <a tabindex="0" (click)="showQR()" (keypress)="showQR()">QR</a>
-    </div>
+  &nbsp;
+  <div class="link">
+    <a tabindex="0" (click)="installApp()" (keypress)="installApp()">Add to home</a>
   </div>
+</div>
 
+<div class="linkcontainer" *ngIf="shareSupport">
+  <div class="linkicon" id="sharelink">
+    <a tabindex="0" (click)="share()" (keypress)="share()">
+      <div class="fas fa-share-nodes"></div>
+    </a>
+  </div>
+  &nbsp;
+  <div class="link">
+    <a tabindex="0" (click)="share()" (keypress)="share()">Share</a>
+  </div>
+</div>
 
+<div class="linkcontainer">
+  <div class="linkicon" id="qrlink">
+    <a tabindex="0" (click)="showQR()" (keypress)="showQR()">
+      <div class="fas fa-qrcode"></div>
+    </a>
+  </div>
+  &nbsp;
+  <div class="link">
+    <a tabindex="0" (click)="showQR()" (keypress)="showQR()">QR</a>
+  </div>
+</div>
