@@ -33,13 +33,21 @@ export class SwipeService {
     await this.router.navigate([route]);
   }
 
+  getTouchSurface() : HTMLElement{
+    return document.body;//.querySelector('.screen-div') as HTMLElement;
+  }
+
+  getSpeed(): number{
+    return 1;
+  }
+
   swipe(swipedir: string, route: string) {
-    const touchsurface = document.body;
+    const touchsurface = this.getTouchSurface();
     touchsurface.classList.add('swiping');
-    const body = document.body,
+    const
       html = document.documentElement;
 
-    body.style.position = 'fixed';
+      touchsurface.style.position = 'fixed';
     html.style.position = 'fixed';
 
     if (swipedir == 'left') {
@@ -52,12 +60,12 @@ export class SwipeService {
 
         setTimeout(() => {
           touchsurface.classList.add('swipeleftin');
-        }, 25);
+        }, 25 * this.getSpeed());
 
         setTimeout(() => {
           this.resetswipes(touchsurface);
-        }, 250);
-      }, 250);
+        }, 250 * this.getSpeed());
+      }, 250 * this.getSpeed());
     } else if (swipedir == 'right') {
       touchsurface.classList.add('swiperight');
 
@@ -68,12 +76,12 @@ export class SwipeService {
 
         setTimeout(function () {
           touchsurface.classList.add('swiperightin');
-        }, 25);
+        }, 25 * this.getSpeed());
 
         setTimeout(() => {
           this.resetswipes(touchsurface);
-        }, 250);
-      }, 250);
+        }, 250 * this.getSpeed());
+      }, 250 * this.getSpeed());
     } else if (swipedir == 'up') {
       touchsurface.classList.add('swipeup');
 
@@ -84,12 +92,12 @@ export class SwipeService {
 
         setTimeout(function () {
           touchsurface.classList.add('swipeupin');
-        }, 25);
+        }, 25 * this.getSpeed());
 
         setTimeout(() => {
           this.resetswipes(touchsurface);
-        }, 250);
-      }, 250);
+        }, 250 * this.getSpeed());
+      }, 250 * this.getSpeed());
     } else if (swipedir == 'down') {
       touchsurface.classList.add('swipedown');
 
@@ -100,12 +108,12 @@ export class SwipeService {
 
         setTimeout(function () {
           touchsurface.classList.add('swipedownin');
-        }, 25);
+        }, 25 * this.getSpeed());
 
         setTimeout(() => {
           this.resetswipes(touchsurface);
-        }, 250);
-      }, 250);
+        }, 250 * this.getSpeed());
+      }, 250 * this.getSpeed());
     }
   }
 
@@ -121,8 +129,12 @@ export class SwipeService {
 
   public registerSwipeDetect() {
     const threshold = 10,
-      body = document.body,
+      touchsurface = this.getTouchSurface(),
       html = document.documentElement;
+      
+      if(!touchsurface){
+        return;
+      }
     let startX: number,
       startY: number,
       distX: number,
@@ -130,17 +142,17 @@ export class SwipeService {
       contentLeft: number,
       contentTop: number;
 
-    body.addEventListener(
+      touchsurface.addEventListener(
       'touchstart',
       (e) => {
         if (!this.swipeActive) {
           return;
         }
 
-        body.style.position = 'fixed';
+        touchsurface.style.position = 'fixed';
         html.style.position = 'fixed';
-        contentLeft = body.offsetLeft;
-        contentTop = body.offsetTop;
+        contentLeft = touchsurface.offsetLeft;
+        contentTop = touchsurface.offsetTop;
         const touchobj = e.changedTouches[0];
         distX = 0;
         distY = 0;
@@ -150,7 +162,7 @@ export class SwipeService {
       { passive: false },
     );
 
-    body.addEventListener(
+    touchsurface.addEventListener(
       'touchmove',
       (e) => {
         if (!this.swipeActive) {
@@ -167,11 +179,11 @@ export class SwipeService {
 
         if (Math.abs(distX) > 20 || Math.abs(distY) > 20) {
           if (this.detectHorizontal && Math.abs(distX) > Math.abs(distY)) {
-            body.style.left = (contentLeft + distX).toString() + 'px';
-            body.style.top = contentTop.toString() + 'px';
+            touchsurface.style.left = (contentLeft + distX).toString() + 'px';
+            touchsurface.style.top = contentTop.toString() + 'px';
           } else if (this.detectVertical) {
-            body.style.top = (contentTop + distY).toString() + 'px';
-            body.style.left = contentLeft.toString() + 'px';
+            touchsurface.style.top = (contentTop + distY).toString() + 'px';
+            touchsurface.style.left = contentLeft.toString() + 'px';
           }
         }
 
@@ -182,7 +194,7 @@ export class SwipeService {
       { passive: false },
     );
 
-    body.addEventListener(
+    touchsurface.addEventListener(
       'touchend',
       (e) => {
         if (!this.swipeActive) {
@@ -215,7 +227,7 @@ export class SwipeService {
             this.swipe(swipedir, this.navigationService.navigateLeft().route);
           }
         } else {
-          this.resetswipes(body);
+          this.resetswipes(touchsurface);
         }
       },
       { passive: false },
@@ -238,9 +250,9 @@ export class SwipeService {
     el.classList.remove('swipeup');
     el.classList.remove('swipedown');
 
-    const body = document.body,
+    const touchsurface = this.getTouchSurface(),
       html = document.documentElement;
-    body.style.position = '';
+      touchsurface.style.position = '';
     html.style.position = '';
   }
 }

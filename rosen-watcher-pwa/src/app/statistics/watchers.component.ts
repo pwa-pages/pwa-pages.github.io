@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EventService } from '../service/event.service';
 import { WatchersDataService } from '../service/watchers.data.service';
-import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { map } from 'rxjs/operators';
 import { ChainType } from '../../service/ts/models/chaintype';
@@ -37,10 +36,9 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   constructor(
     private watchersDataService: WatchersDataService,
     eventService: EventService,
-    swipeService: SwipeService,
     navigationService: NavigationService,
   ) {
-    super(eventService, swipeService, navigationService);
+    super(eventService, navigationService);
   }
 
   setLockedAmounts(chainType: ChainType): void {

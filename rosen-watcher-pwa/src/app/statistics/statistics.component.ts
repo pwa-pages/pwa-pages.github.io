@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { EventData, EventService, EventType } from '../service/event.service';
 import { StorageService } from '../service/storage.service';
-import { SwipeService } from '../service/swipe.service';
 import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ActivatedRoute, Params, RouterLink, RouterLinkActive } from '@angular/router';
@@ -59,13 +58,12 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private dataService: DataService,
     private chartService: ChartService,
     eventService: EventService,
-    swipeService: SwipeService,
     private serviceWorkerService: ServiceWorkerService,
     private router: Router,
     private qrDialog: MatDialog,
     navigationService: NavigationService,
   ) {
-    super(eventService, swipeService, navigationService);
+    super(eventService, navigationService);
     this.totalRewards = '';
     this.selectedTab = 'chart';
     this.addresses = [];

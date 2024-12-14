@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EventData, EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
-import { SwipeService } from '../service/swipe.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChartService } from '../service/chart.service';
 import { NgFor, NgIf } from '@angular/common';
@@ -31,10 +30,9 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     private dataService: DataService,
     eventService: EventService,
     private chartService: ChartService,
-    swipeService: SwipeService,
     navigationService: NavigationService,
   ) {
-    super(eventService, swipeService, navigationService);
+    super(eventService, navigationService);
     this.data = '';
     this.addresses = [];
     this.performanceCharts = [];

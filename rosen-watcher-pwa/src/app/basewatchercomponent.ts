@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventData, EventService, EventType } from './service/event.service';
-import { SwipeService } from './service/swipe.service';
 import { NavigationService } from './service/navigation.service';
 
 @Component({
@@ -13,7 +12,6 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
 
   constructor(
     public eventService: EventService,
-    public swipeService: SwipeService,
     public navigationService: NavigationService,
   ) {}
 
