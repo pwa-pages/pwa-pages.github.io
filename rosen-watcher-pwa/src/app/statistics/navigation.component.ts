@@ -39,17 +39,16 @@ export class NavigationComponent {
     }
   }
 
-  isStatisticsActive(): boolean{
-return this.navigationService.currentNavigationIndex == 0;
+  isStatisticsActive(): boolean {
+    return this.navigationService.currentNavigationIndex == 0;
   }
 
-  isPerformanceActive(): boolean{
+  isPerformanceActive(): boolean {
     return this.navigationService.currentNavigationIndex == 1;
-      }
-      isWatchersActive(): boolean{
-        return this.navigationService.currentNavigationIndex == 2;
-          }
-        
+  }
+  isWatchersActive(): boolean {
+    return this.navigationService.currentNavigationIndex == 2;
+  }
 
   navRewards(): void {
     this.navigate(0);

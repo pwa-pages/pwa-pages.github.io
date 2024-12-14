@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1734189137921,
+  "timestamp": 1734195792158,
   "appData": {
-    "version": "3.18.7"
+    "version": "3.18.8"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -27,7 +27,7 @@
         "./shared/js/download.service.js",
         "./shared/js/rosen-db-worker.js",
         "./shared/js/rosen-download-worker.js",
-        "./styles-AFWIZS7A.css"
+        "./styles-J6WRDJJB.css"
       ],
       "patterns": []
     },
@@ -76,7 +76,7 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "b1544ff3d2d70f0b776420d9e9b771cd4559c5a1",
+    "./index.html": "b46646381e0b58f9862efc9198a6087649c76064",
     "./main-ROMMS4US.js": "ae936f94eeb31fdbb4a9617b5db27414d713dd76",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -100,7 +100,7 @@
     "./shared/js/download.service.js": "8a82877fd1fea730c0526e48e8c8dace5eef1f91",
     "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
     "./shared/js/rosen-download-worker.js": "c7e24fcd6e76bcd92d356878b530e6294f678729",
-    "./styles-AFWIZS7A.css": "b42307a1f7b8cd720f4ac46539c7b8be7e7df71d"
+    "./styles-J6WRDJJB.css": "ed1e7ab2752bc0b06d9f012503d8a4392002f28b"
   },
   "navigationUrls": [
     {
