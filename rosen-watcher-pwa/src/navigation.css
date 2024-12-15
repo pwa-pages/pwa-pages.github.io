@@ -5,30 +5,27 @@
 
 .fa-bars {
   font-size: 3.5vh;
-  
+
   transition: color 0.3s ease;
 }
 
 .fa-bars:hover {
-  
 }
 
 .fa-eye,
 .fa-chart-bar,
 .fa-btc {
   font-size: 3.5vh;
-  
+
   transition: color 0.3s ease;
 }
 
 .fa-eye:hover,
 .fa-chart-bar:hover,
 .fa-btc:hover {
-  
 }
 
 .navbar a {
-  
 }
 
 .navbar {
@@ -41,7 +38,7 @@
   border-top: 1px solid black;
   border-bottom: 1px solid black;
   font-size: 1.8vh;
-  
+
   grid-template-columns: auto auto;
   z-index: 10000;
 
@@ -49,13 +46,12 @@
   justify-content: space-between;
   width: 100vw;
   box-sizing: border-box;
-
 }
 
 .navbar > div {
-  flex: 1; 
+  flex: 1;
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
   text-align: center;
 }
@@ -65,7 +61,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-top: .8vh;
+  padding-top: 0.8vh;
 }
 
 .nav-icon a {
@@ -80,24 +76,28 @@
   flex: 0 0 auto;
 }
 
-.navbuttons, .navbuttons a  {
+.navbuttons,
+.navbuttons a {
   color: white;
   background-color: rgba(138, 128, 128);
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
 }
 
-.navbuttons.active, .navbuttons.active a {
+.navbuttons.active,
+.navbuttons.active a {
   background-color: white;
   color: rgba(138, 128, 128);
 }
 
-.navbuttons.active:hover, .navbuttons.active a:hover {
+.navbuttons.active:hover,
+.navbuttons.active a:hover {
   background-color: white;
   color: rgba(138, 128, 128);
 }
 
-.navbuttons:hover, .navbuttons a:hover  {
+.navbuttons:hover,
+.navbuttons a:hover {
   color: white;
   background-color: rgba(138, 128, 128, 0.5);
 }

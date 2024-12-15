@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import '../../shared/ts/constants';
+import { filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -8,10 +10,26 @@ export class NavigationService {
   public currentNavigationIndex = 0;
   navigationItems: NavigationItem[] = [];
 
-  constructor() {
+  constructor(private router: Router) {
     this.navigationItems.push({ route: '/statistics' });
     this.navigationItems.push({ route: '/performance' });
     this.navigationItems.push({ route: '/watchers' });
+
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd), // Type guard for NavigationEnd
+      )
+      .subscribe((event) => {
+        const url = event.urlAfterRedirects;
+        this.updateCurrentNavigationIndex(url);
+      });
+  }
+
+  private updateCurrentNavigationIndex(url: string): void {
+    const index = this.navigationItems.findIndex((item) => item.route === url);
+    if (index !== -1) {
+      this.currentNavigationIndex = index;
+    }
   }
 
   public getCurrentNavigationItem(): NavigationItem {
