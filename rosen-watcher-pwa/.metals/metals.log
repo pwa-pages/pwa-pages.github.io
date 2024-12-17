@@ -1741,3 +1741,31 @@ Caused by: java.util.concurrent.RejectedExecutionException: Task Future(<not com
 2024.12.14 20:05:50 WARN  Flyway upgrade recommended: H2 2.3.232 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.224.
 2024.12.14 20:05:50 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
 2024.12.14 20:05:51 WARN  Build server is not auto-connectable.
+2024.12.15 12:46:31 INFO  Shutting down server
+2024.12.15 12:46:31 INFO  shutting down Metals
+2024.12.15 12:46:31 INFO  Exiting server
+2024.12.15 14:49:57 INFO  Started: Metals version 1.4.1 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+2024.12.15 14:49:58 WARN  Flyway upgrade recommended: H2 2.3.232 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.224.
+2024.12.15 14:49:58 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2024.12.15 14:49:59 WARN  Build server is not auto-connectable.
+2024.12.15 16:54:09 INFO  Shutting down server
+2024.12.15 16:54:09 INFO  shutting down Metals
+2024.12.15 16:54:09 INFO  Exiting server
+2024.12.15 18:03:01 INFO  Started: Metals version 1.4.1 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+2024.12.15 18:03:03 WARN  Flyway upgrade recommended: H2 2.3.232 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.224.
+2024.12.15 18:03:03 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2024.12.15 18:03:03 WARN  Build server is not auto-connectable.
+2024.12.15 19:17:08 INFO  Shutting down server
+2024.12.15 19:17:08 INFO  shutting down Metals
+2024.12.15 19:17:08 INFO  Exiting server
+2024.12.16 12:01:43 INFO  Started: Metals version 1.4.1 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+2024.12.16 12:01:44 WARN  Flyway upgrade recommended: H2 2.3.232 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.224.
+2024.12.16 12:01:44 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2024.12.16 12:01:44 WARN  Build server is not auto-connectable.
+2024.12.16 13:02:40 INFO  Shutting down server
+2024.12.16 13:02:40 INFO  shutting down Metals
+2024.12.16 13:02:40 INFO  Exiting server
+2024.12.17 16:28:09 INFO  Started: Metals version 1.4.1 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+2024.12.17 16:28:10 WARN  Flyway upgrade recommended: H2 2.3.232 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.224.
+2024.12.17 16:28:10 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2024.12.17 16:28:10 WARN  Build server is not auto-connectable.
