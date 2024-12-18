@@ -26,6 +26,7 @@ export class NavigationService {
   }
 
   private updateCurrentNavigationIndex(url: string): void {
+    
     const index = this.navigationItems.findIndex((item) => item.route === url);
     if (index !== -1) {
       this.currentNavigationIndex = index;

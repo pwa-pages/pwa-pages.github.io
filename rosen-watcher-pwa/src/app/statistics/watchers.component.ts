@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EventService } from '../service/event.service';
+import { EventService, EventType } from '../service/event.service';
 import { WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { map } from 'rxjs/operators';
@@ -93,5 +93,10 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
           this.setLockedAmounts(c);
         });
     });
+
+    this.eventService.sendEvent(
+      EventType.WatchersScreenLoaded
+    );
+
   }
 }

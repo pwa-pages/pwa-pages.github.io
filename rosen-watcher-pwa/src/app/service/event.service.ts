@@ -11,9 +11,11 @@ export enum EventType {
   SwipeDeActivated = 'SwipeDeActivated',
   SwipeVertical = 'SwipeVertical',
   StatisticsScreenLoaded = 'StatisticsScreenLoaded',
+  WatchersScreenLoaded = 'WatchersScreenLoaded',
+  SettingsScreenLoaded = 'SettingsScreenLoaded',
   PerformanceScreenLoaded = 'PerformanceScreenLoaded',
   AddressChartChanged = 'AddressChartChanged',
-  VersionUpdated = 'VersionUpdated',
+  VersionUpdated = 'VersionUpdated'
 }
 
 export type EventData = string | Input;
@@ -39,6 +41,9 @@ export class EventService {
       [EventType.PerformanceScreenLoaded]: new Subject<EventData>(),
       [EventType.AddressChartChanged]: new Subject<EventData>(),
       [EventType.VersionUpdated]: new Subject<EventData>(),
+      [EventType.WatchersScreenLoaded]: new Subject<EventData>(),
+      [EventType.SettingsScreenLoaded]: new Subject<EventData>()
+      
     };
     return this.eventSubscriptions;
   }

@@ -6,6 +6,7 @@ import { SettingsDialogComponent } from './settings.dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { NgFor } from '@angular/common';
 import { Address } from '../../service/ts/models/address';
+import { EventService, EventType } from '../service/event.service';
 
 @Component({
   selector: 'app-settings',
@@ -20,6 +21,7 @@ export class SettingsComponent implements OnInit {
     private router: Router,
     private dataService: DataService,
     private storageService: StorageService,
+    private eventService: EventService,
     public dialog: MatDialog,
   ) {
     this.addresses = [];
@@ -112,6 +114,11 @@ export class SettingsComponent implements OnInit {
         this.addresses = Array.from(addressMap.values());
       });
     });
+
+    this.eventService.sendEvent(
+      EventType.SettingsScreenLoaded
+    );
+
   }
 
   title = 'settings';

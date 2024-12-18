@@ -1,4 +1,6 @@
-<div class="navbar">
+
+
+<div class="navbar" *ngIf="isVisible()">
   <div [ngClass]="{ 'navbuttons': true, 'active': isStatisticsActive() }">
     <a tabindex="0" (click)="navRewards()" (keypress)="navRewards()">
       <div class="nav-icon">
