@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { QRCodeModule } from 'angularx-qrcode';
+import { QRCodeComponent } from 'angularx-qrcode';
 
 interface QRDialogData {
   title: string;
@@ -12,7 +12,7 @@ interface QRDialogData {
   selector: 'app-qr-dialog',
   templateUrl: './qrdialog.html',
   standalone: true,
-  imports: [QRCodeModule],
+  imports: [QRCodeComponent],
 })
 export class QRDialogComponent {
   constructor(

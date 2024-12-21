@@ -10,13 +10,12 @@ import { ChartPerformance } from '../../service/ts/models/chart.performance';
 import { Chart } from 'chart.js';
 import { StorageService } from '../service/storage.service';
 import { NavigationService } from '../service/navigation.service';
-import { NavigationComponent } from './navigation.component';
 
 @Component({
   selector: 'app-performance',
   templateUrl: './performance.html',
   standalone: true,
-  imports: [NgFor, NgIf, NavigationComponent],
+  imports: [NgFor, NgIf],
 })
 export class PerformanceComponent extends BaseWatcherComponent implements OnInit {
   data: string;

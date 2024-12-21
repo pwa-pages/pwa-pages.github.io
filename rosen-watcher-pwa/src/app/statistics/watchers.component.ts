@@ -4,23 +4,22 @@ import { WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { map } from 'rxjs/operators';
 import { ChainType } from '../../service/ts/models/chaintype';
-import { AsyncPipe } from '@angular/common';
 import { Token } from '../../service/ts/models/token';
-import { CommonModule } from '@angular/common'; // Import CommonModule
+import { CommonModule } from '@angular/common';
 import { NavigationService } from '../service/navigation.service';
-import { NavigationComponent } from './navigation.component';
 
-function createChainNumber(): { [key in ChainType]: number | undefined } {
-  return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as {
-    [key in ChainType]: number | undefined;
-  };
+function createChainNumber(): Record<ChainType, number | undefined> {
+  return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as Record<
+    ChainType,
+    number | undefined
+  >;
 }
 
 @Component({
   selector: 'app-watchers',
   templateUrl: './watchers.html',
   standalone: true,
-  imports: [AsyncPipe, CommonModule, NavigationComponent],
+  imports: [CommonModule],
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   chainWatcherCount = createChainNumber();
@@ -94,9 +93,6 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
         });
     });
 
-    this.eventService.sendEvent(
-      EventType.WatchersScreenLoaded
-    );
-
+    this.eventService.sendEvent(EventType.WatchersScreenLoaded);
   }
 }

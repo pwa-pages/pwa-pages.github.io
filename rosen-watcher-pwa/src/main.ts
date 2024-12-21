@@ -10,7 +10,6 @@ const routes: Routes = [
 // Import AppModule
 import { APP_INITIALIZER } from '@angular/core';
 import { AppComponent } from './app/app.component';
-import { QRCodeModule } from 'angularx-qrcode';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { importProvidersFrom } from '@angular/core';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -47,7 +46,6 @@ bootstrapApplication(AppComponent, {
         registrationStrategy: 'registerWhenStable:30000',
       }),
       FontAwesomeModule,
-      QRCodeModule,
     ),
     DatePipe,
     provideHttpClient(withInterceptorsFromDi()),

@@ -115,10 +115,7 @@ export class SettingsComponent implements OnInit {
       });
     });
 
-    this.eventService.sendEvent(
-      EventType.SettingsScreenLoaded
-    );
-
+    this.eventService.sendEvent(EventType.SettingsScreenLoaded);
   }
 
   title = 'settings';

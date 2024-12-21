@@ -15,7 +15,7 @@ export enum EventType {
   SettingsScreenLoaded = 'SettingsScreenLoaded',
   PerformanceScreenLoaded = 'PerformanceScreenLoaded',
   AddressChartChanged = 'AddressChartChanged',
-  VersionUpdated = 'VersionUpdated'
+  VersionUpdated = 'VersionUpdated',
 }
 
 export type EventData = string | Input;
@@ -24,9 +24,7 @@ export type EventData = string | Input;
   providedIn: 'root',
 })
 export class EventService {
-  eventSubscriptions: {
-    [key in EventType]: Subject<EventData>;
-  } = this.resetSubscriptions();
+  eventSubscriptions: Record<EventType, Subject<EventData>> = this.resetSubscriptions();
 
   resetSubscriptions() {
     this.eventSubscriptions = {
@@ -42,8 +40,7 @@ export class EventService {
       [EventType.AddressChartChanged]: new Subject<EventData>(),
       [EventType.VersionUpdated]: new Subject<EventData>(),
       [EventType.WatchersScreenLoaded]: new Subject<EventData>(),
-      [EventType.SettingsScreenLoaded]: new Subject<EventData>()
-      
+      [EventType.SettingsScreenLoaded]: new Subject<EventData>(),
     };
     return this.eventSubscriptions;
   }

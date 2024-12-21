@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1734535509805,
+  "timestamp": 1734771376801,
   "appData": {
-    "version": "3.19.3"
+    "version": "3.19.4"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,9 +16,9 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-EHS35WD4.js",
+        "./main-HKD2YTLY.js",
         "./manifest.webmanifest",
-        "./polyfills-SCHOHYNV.js",
+        "./polyfills-FFHMD2TL.js",
         "./rosen-ngsw-worker.js",
         "./shared/js/chain.service.js",
         "./shared/js/chart.service.js",
@@ -27,7 +27,7 @@
         "./shared/js/download.service.js",
         "./shared/js/rosen-db-worker.js",
         "./shared/js/rosen-download-worker.js",
-        "./styles-DVFOHCOB.css"
+        "./styles-D2ZX4RVU.css"
       ],
       "patterns": []
     },
@@ -52,14 +52,14 @@
         "./media/cardano-LICXQYGO.png",
         "./media/ergo-4FSUZRBU.png",
         "./media/ethereum-RCUEGTAU.png",
-        "./media/fa-brands-400-CNBICIQT.ttf",
-        "./media/fa-brands-400-MDS4TU4L.woff2",
-        "./media/fa-regular-400-2FI4ICQD.ttf",
-        "./media/fa-regular-400-N56QV3DR.woff2",
-        "./media/fa-solid-900-XVWCCN5V.ttf",
-        "./media/fa-solid-900-Z3HFQTXF.woff2",
-        "./media/fa-v4compatibility-4Q6RMATN.woff2",
-        "./media/fa-v4compatibility-TNIB7AHA.ttf"
+        "./media/fa-brands-400-Q3XCMWHQ.woff2",
+        "./media/fa-brands-400-R2XQZCET.ttf",
+        "./media/fa-regular-400-QSNYFYRT.woff2",
+        "./media/fa-regular-400-XUOPSR7E.ttf",
+        "./media/fa-solid-900-5ZUYHGA7.woff2",
+        "./media/fa-solid-900-PJNKLK6W.ttf",
+        "./media/fa-v4compatibility-LFEHZI6Y.woff2",
+        "./media/fa-v4compatibility-YY67RJWG.ttf"
       ],
       "patterns": []
     }
@@ -76,22 +76,22 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "4bb3d6565141c46c40e736ba1a3e0911f743833c",
-    "./main-EHS35WD4.js": "f5c6db98f983ec6bde1798f37d6d19f24c8a4857",
+    "./index.html": "01e65ff2b640df2e2f360e3bf2f9173d72e79c91",
+    "./main-HKD2YTLY.js": "6da6f92db62c89049e0bf7235bad7cea53828152",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
     "./media/cardano-LICXQYGO.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
     "./media/ergo-4FSUZRBU.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./media/ethereum-RCUEGTAU.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
-    "./media/fa-brands-400-CNBICIQT.ttf": "7ce89c71d5a51ac65b159c71422783dd86529c66",
-    "./media/fa-brands-400-MDS4TU4L.woff2": "e948290773216dc1b50c2121314a8cf918c22b54",
-    "./media/fa-regular-400-2FI4ICQD.ttf": "775e2ecfc18d22b177274453d4c014ca6be63208",
-    "./media/fa-regular-400-N56QV3DR.woff2": "46e272db3db1072791628679bc469112c8e41017",
-    "./media/fa-solid-900-XVWCCN5V.ttf": "2b8e11389d98122399667cf64941eb58497dc128",
-    "./media/fa-solid-900-Z3HFQTXF.woff2": "69335cd6a6ac82253ea5545899cccde35af39131",
-    "./media/fa-v4compatibility-4Q6RMATN.woff2": "87d0bbc38baa356297521c41ed8ca7d78e8d16e2",
-    "./media/fa-v4compatibility-TNIB7AHA.ttf": "bd27e43f3d1e5019faaabc9ec6c5d3d7c5f100ef",
-    "./polyfills-SCHOHYNV.js": "d45c76c5960bab3ace7fd6d211b9579456241f8a",
+    "./media/fa-brands-400-Q3XCMWHQ.woff2": "31c30351084e2670bbe5c47bd342e11540a68717",
+    "./media/fa-brands-400-R2XQZCET.ttf": "da6f537cd597b76d264970f1c95e4beebc82fde9",
+    "./media/fa-regular-400-QSNYFYRT.woff2": "e9b6f5b842be227e2423733feb961dd6cb804066",
+    "./media/fa-regular-400-XUOPSR7E.ttf": "6e7f0651059eea9783ea8b28892b2c979c2f7f30",
+    "./media/fa-solid-900-5ZUYHGA7.woff2": "7cd8afd6501962fda35d66f0e4c3b8815ac471d8",
+    "./media/fa-solid-900-PJNKLK6W.ttf": "780a8ff16ebb681f85d5d30fac94ebe845a12b5e",
+    "./media/fa-v4compatibility-LFEHZI6Y.woff2": "4fd82f39237a3e52cb4e311d1961bbb47353a147",
+    "./media/fa-v4compatibility-YY67RJWG.ttf": "ad415f99aab4d9bf17e523f484a377f839ca8c3c",
+    "./polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
     "./rosen-ngsw-worker.js": "3dd565a1bea791bf6b48ebe984b74067e174ad86",
     "./shared/js/chain.service.js": "ee25ace7db2c43d90f2ee0fd79b0fe4d7b8d5d6a",
     "./shared/js/chart.service.js": "8888f5e72a7f7a65824b912cc4bda1673110920f",
@@ -100,7 +100,7 @@
     "./shared/js/download.service.js": "8a82877fd1fea730c0526e48e8c8dace5eef1f91",
     "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
     "./shared/js/rosen-download-worker.js": "c7e24fcd6e76bcd92d356878b530e6294f678729",
-    "./styles-DVFOHCOB.css": "01a2bdf55935ae26a556e3478a5b3de3ef72413a"
+    "./styles-D2ZX4RVU.css": "8d893ad589a08c2ead514a6956900d63c258eebf"
   },
   "navigationUrls": [
     {

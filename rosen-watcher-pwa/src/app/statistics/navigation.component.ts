@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { NgIf, NgStyle, NgFor, CommonModule } from '@angular/common';
+import { NgIf, CommonModule } from '@angular/common';
 import 'chartjs-adapter-date-fns';
 import { FormsModule } from '@angular/forms';
 import { NavigationItem, NavigationService } from '../service/navigation.service';
@@ -11,22 +10,29 @@ import { EventService, EventType } from '../service/event.service';
   selector: 'app-navigation',
   templateUrl: './navigation.html',
   standalone: true,
-  imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive, FormsModule, CommonModule],
+  imports: [NgIf, FormsModule, CommonModule],
 })
-
-export class NavigationComponent implements OnInit{
-  private visible: boolean = true;
+export class NavigationComponent implements OnInit {
+  private visible = true;
   constructor(
     private navigationService: NavigationService,
     private swipeService: SwipeService,
-    private eventService: EventService
+    private eventService: EventService,
   ) {}
 
   async ngOnInit(): Promise<void> {
-    await this.eventService.subscribeToEvent(EventType.StatisticsScreenLoaded, () => {this.visible = true});
-    await this.eventService.subscribeToEvent(EventType.WatchersScreenLoaded, () => {this.visible = true});
-    await this.eventService.subscribeToEvent(EventType.PerformanceScreenLoaded, () => {this.visible = true});
-    await this.eventService.subscribeToEvent(EventType.SettingsScreenLoaded, () => {this.visible = false});
+    await this.eventService.subscribeToEvent(EventType.StatisticsScreenLoaded, () => {
+      this.visible = true;
+    });
+    await this.eventService.subscribeToEvent(EventType.WatchersScreenLoaded, () => {
+      this.visible = true;
+    });
+    await this.eventService.subscribeToEvent(EventType.PerformanceScreenLoaded, () => {
+      this.visible = true;
+    });
+    await this.eventService.subscribeToEvent(EventType.SettingsScreenLoaded, () => {
+      this.visible = false;
+    });
   }
 
   isVisible(): boolean {
