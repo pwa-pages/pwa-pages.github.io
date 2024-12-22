@@ -15,10 +15,12 @@ self.addEventListener('message', async (event: MessageEvent) => {
   if (data.type === 'StatisticsScreenLoaded' || data.type === 'PerformanceScreenLoaded') {
     const profile = data.data as string | undefined;
 
-    const db: IDBDatabase = await initIndexedDB(profile);
-    const chartService: ChartService = new ChartService();
-    const dataService: DataService = new DataService(db, chartService);
-    const downloadService: DownloadService = new DownloadService(dataService);
+    let {
+      dataService,
+      downloadService,
+      chartService,
+    }: { dataService: DataService; downloadService: DownloadService; chartService: ChartService } =
+      await initServices(profile);
 
     if (data && data.type === 'StatisticsScreenLoaded') {
       console.log(
@@ -30,7 +32,9 @@ self.addEventListener('message', async (event: MessageEvent) => {
         sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
 
         await downloadService.downloadForAddresses(profile);
+        //({ dataService, downloadService, chartService } = await initServices(profile));
         //await dataService.compressInputs();
+        ({ dataService, downloadService, chartService } = await initServices(profile));
       } catch (error) {
         console.error('Error initializing IndexedDB or downloading addresses:', error);
       }
@@ -53,6 +57,14 @@ self.addEventListener('message', async (event: MessageEvent) => {
     }
   }
 });
+
+async function initServices(profile: string | undefined) {
+  const db: IDBDatabase = await initIndexedDB(profile);
+  const chartService: ChartService = new ChartService();
+  const dataService: DataService = new DataService(db, chartService);
+  const downloadService: DownloadService = new DownloadService(dataService);
+  return { dataService, downloadService, chartService };
+}
 
 // IndexedDB Initialization
 async function initIndexedDB(profile: string | undefined): Promise<IDBDatabase> {

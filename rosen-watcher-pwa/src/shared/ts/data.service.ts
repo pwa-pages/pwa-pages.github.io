@@ -90,6 +90,21 @@ class DataService {
   private compressChainInputs(existingInputs: DbInput[], objectStore: IDBObjectStore) {
     const compressedInputs = new Map<number, DbInput>();
 
+    let notCompressabeInputs = [];
+
+    if (existingInputs.length > rs_InitialNDownloads) {
+      notCompressabeInputs = existingInputs.slice(
+        existingInputs.length - rs_InitialNDownloads,
+        existingInputs.length,
+      );
+      existingInputs = existingInputs.slice(0, existingInputs.length - rs_InitialNDownloads);
+    } else {
+      existingInputs.forEach((dbInput: DbInput) => {
+        objectStore.put(dbInput);
+      });
+      return;
+    }
+
     existingInputs.forEach((existingInput: DbInput) => {
       const currentDate = new Date();
       const twoMonthsAgo = new Date();
@@ -140,8 +155,13 @@ class DataService {
     compressedInputs.forEach((dbInput: DbInput) => {
       objectStore.put(dbInput);
     });
+
+    notCompressabeInputs.forEach((dbInput: DbInput) => {
+      objectStore.put(dbInput);
+    });
   }
-*/
+    */
+
   convertDbInputDateForCompression(dt: Date) {
     const currentDate = new Date();
     const twoMonthsAgo = new Date();
