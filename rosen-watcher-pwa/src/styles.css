@@ -12,6 +12,7 @@ html {
   height: 100%;
   top: 0;
   left: 0;
+  position: relative;
 }
 
 h1 {
@@ -412,4 +413,8 @@ button:active {
   position: absolute;
   text-align: right;
   width: 89vw;
+}
+
+.main-content{
+  padding-top:10vh;
 }

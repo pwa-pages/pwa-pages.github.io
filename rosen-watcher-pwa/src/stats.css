@@ -10,9 +10,14 @@
   display: flex;
   padding-left: 5vw;
   padding-right: 5vw;
-  padding-top: 2vh;
+  
   height: 55%;
   width: 90vw;
+}
+
+app-statistics .chartcontainer,
+app-statistics .detailscontainer{
+  padding-top: 16vh;
 }
 
 .performancecontainer .chartcontainer {
@@ -80,6 +85,8 @@ app-performance-chart {
   border-bottom: 0.2vh solid #ccc;
   margin-left: 5vw;
   margin-right: 5.7vw;
+  position: fixed;
+  width: 90%;
 }
 
 .tab {

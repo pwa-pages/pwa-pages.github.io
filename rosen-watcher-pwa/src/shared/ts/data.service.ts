@@ -160,8 +160,7 @@ class DataService {
       objectStore.put(dbInput);
     });
   }
-    */
-
+*/
   convertDbInputDateForCompression(dt: Date) {
     const currentDate = new Date();
     const twoMonthsAgo = new Date();

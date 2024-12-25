@@ -32,9 +32,9 @@ self.addEventListener('message', async (event: MessageEvent) => {
         sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
 
         await downloadService.downloadForAddresses(profile);
-        //({ dataService, downloadService, chartService } = await initServices(profile));
-        //await dataService.compressInputs();
         ({ dataService, downloadService, chartService } = await initServices(profile));
+        //await dataService.compressInputs();
+        //({ dataService, downloadService, chartService } = await initServices(profile));
       } catch (error) {
         console.error('Error initializing IndexedDB or downloading addresses:', error);
       }

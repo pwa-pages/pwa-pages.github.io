@@ -1808,3 +1808,22 @@ Caused by: java.util.concurrent.RejectedExecutionException: Task Future(<not com
 2024.12.22 10:25:39 INFO  Started: Metals version 1.4.2 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
 2024.12.22 10:25:41 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
 2024.12.22 10:25:41 WARN  Build server is not auto-connectable.
+2024.12.22 13:10:34 INFO  Shutting down server
+2024.12.22 13:10:34 INFO  shutting down Metals
+2024.12.22 13:10:34 INFO  Exiting server
+2024.12.22 18:58:15 INFO  Started: Metals version 1.4.2 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+2024.12.22 18:58:15 INFO  time: initialize in 0.17s
+2024.12.22 18:58:19 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2024.12.22 18:58:20 WARN  Build server is not auto-connectable.
+2024.12.23 16:28:58 INFO  Shutting down server
+2024.12.23 16:28:58 INFO  shutting down Metals
+2024.12.23 16:28:58 INFO  Exiting server
+2024.12.25 12:41:13 INFO  Started: Metals version 1.4.2 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+2024.12.25 12:41:14 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2024.12.25 12:41:15 WARN  Build server is not auto-connectable.
+2024.12.25 13:33:03 INFO  Shutting down server
+2024.12.25 13:33:03 INFO  shutting down Metals
+2024.12.25 13:33:03 INFO  Exiting server
+2024.12.25 13:59:35 INFO  Started: Metals version 1.4.2 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+2024.12.25 13:59:37 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2024.12.25 13:59:37 WARN  Build server is not auto-connectable.
