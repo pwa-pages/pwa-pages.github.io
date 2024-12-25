@@ -1827,3 +1827,9 @@ Caused by: java.util.concurrent.RejectedExecutionException: Task Future(<not com
 2024.12.25 13:59:35 INFO  Started: Metals version 1.4.2 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
 2024.12.25 13:59:37 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
 2024.12.25 13:59:37 WARN  Build server is not auto-connectable.
+2024.12.25 21:26:30 INFO  Shutting down server
+2024.12.25 21:26:30 INFO  shutting down Metals
+2024.12.25 21:26:30 INFO  Exiting server
+2024.12.25 22:27:54 INFO  Started: Metals version 1.4.2 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+2024.12.25 22:27:56 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2024.12.25 22:27:57 WARN  Build server is not auto-connectable.

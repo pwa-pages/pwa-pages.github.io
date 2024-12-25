@@ -40,7 +40,7 @@
   padding-left: 1vw;
   padding-right: 1vw;
   margin-bottom: 1vh;
-  position:fixed;
+  position: fixed;
   width: 100%;
+  z-index: 200;
 }
-

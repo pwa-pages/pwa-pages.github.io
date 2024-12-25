@@ -13,8 +13,6 @@
     (click)="selectTab('chart')"
     (keypress)="selectTab('chart')"
   >
-
-
     Graph
   </a>
   <a
@@ -38,8 +36,6 @@
     </select>
   </div>
 </div>
-
-
 
 <div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
   <div class="version-container" style="position: absolute">
@@ -73,6 +69,8 @@
   </div>
 </div>
 
+
+<div class = "statistics-footer">
 <div class="addressescontainer">
   Addresses: &nbsp;&nbsp;
   <div
@@ -132,4 +130,6 @@
   <div class="link">
     <a tabindex="0" (click)="showQR()" (keypress)="showQR()">QR</a>
   </div>
+</div>
+
 </div>

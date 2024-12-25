@@ -11,12 +11,15 @@
   padding-left: 5vw;
   padding-right: 5vw;
   
-  height: 55%;
-  width: 90vw;
 }
 
+.chartcontainer {
+  height: 60%;
+}
+
+
 app-statistics .chartcontainer,
-app-statistics .detailscontainer{
+app-statistics .detailscontainer {
   padding-top: 16vh;
 }
 
@@ -55,8 +58,6 @@ app-performance-chart {
 }
 
 .details-container {
-  overflow: scroll;
-
   color: rgba(138, 128, 128);
   display: flex;
   flex-direction: column;
@@ -84,9 +85,11 @@ app-performance-chart {
 .stats-container {
   border-bottom: 0.2vh solid #ccc;
   margin-left: 5vw;
-  margin-right: 5.7vw;
+  margin-right: 5vw;
   position: fixed;
-  width: 90%;
+  width: 90vw;
+  background: white;
+  z-index: 100;
 }
 
 .tab {
@@ -119,4 +122,11 @@ a.tab {
   border: 0.1vh solid #ccc;
   border-radius: 0 0.5vh 0.5vh 0.5vh;
   border-top: none;
+}
+
+.statistics-footer {
+  position: fixed;
+    bottom: 10vh;
+    background: white;
+    bottom: 7vh;
 }
