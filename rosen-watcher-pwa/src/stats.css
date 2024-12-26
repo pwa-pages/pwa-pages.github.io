@@ -10,13 +10,11 @@
   display: flex;
   padding-left: 5vw;
   padding-right: 5vw;
-  
 }
 
 .chartcontainer {
   height: 60%;
 }
-
 
 app-statistics .chartcontainer,
 app-statistics .detailscontainer {
@@ -126,7 +124,7 @@ a.tab {
 
 .statistics-footer {
   position: fixed;
-    bottom: 10vh;
-    background: white;
-    bottom: 7vh;
+  bottom: 10vh;
+  background: white;
+  bottom: 7vh;
 }

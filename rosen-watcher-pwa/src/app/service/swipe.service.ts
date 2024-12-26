@@ -44,10 +44,10 @@ export class SwipeService {
   swipe(swipedir: string, route: string) {
     const touchsurface = this.getTouchSurface();
     touchsurface.classList.add('swiping');
-    const html = document.documentElement;
+    
 
     touchsurface.style.position = 'fixed';
-    html.style.position = 'fixed';
+    
 
     if (swipedir == 'left') {
       touchsurface.classList.add('swipeleft');
@@ -128,8 +128,7 @@ export class SwipeService {
 
   public registerSwipeDetect() {
     const threshold = 10,
-      touchsurface = this.getTouchSurface(),
-      html = document.documentElement;
+      touchsurface = this.getTouchSurface();
 
     if (!touchsurface) {
       return;
@@ -149,7 +148,7 @@ export class SwipeService {
         }
 
         touchsurface.style.position = 'fixed';
-        html.style.position = 'fixed';
+        
         contentLeft = touchsurface.offsetLeft;
         contentTop = touchsurface.offsetTop;
         const touchobj = e.changedTouches[0];
@@ -247,9 +246,9 @@ export class SwipeService {
     el.classList.remove('swipeup');
     el.classList.remove('swipedown');
 
-    const touchsurface = this.getTouchSurface(),
-      html = document.documentElement;
+    const touchsurface = this.getTouchSurface();
+    
     touchsurface.style.position = '';
-    html.style.position = '';
+    
   }
 }

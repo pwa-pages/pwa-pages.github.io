@@ -69,67 +69,65 @@
   </div>
 </div>
 
+<div class="statistics-footer">
+  <div class="addressescontainer">
+    Addresses: &nbsp;&nbsp;
+    <div
+      class="mainaddressdispl {{address.chainType}}"
+      *ngFor="let address of addressesForDisplay; let i = index; last as isLast"
+    >
+      - [{{ address.address }}]
+      <span *ngIf="!isLast">,&nbsp;&nbsp;</span>
+    </div>
+  </div>
 
-<div class = "statistics-footer">
-<div class="addressescontainer">
-  Addresses: &nbsp;&nbsp;
-  <div
-    class="mainaddressdispl {{address.chainType}}"
-    *ngFor="let address of addressesForDisplay; let i = index; last as isLast"
-  >
-    - [{{ address.address }}]
-    <span *ngIf="!isLast">,&nbsp;&nbsp;</span>
-  </div>
-</div>
+  <br />
 
-<br />
+  <div class="linkcontainer">
+    <div class="linkicon">
+      <a tabindex="0" routerLink="/settings" routerLinkActive="active">
+        <div class="fas fa-edit"></div>
+      </a>
+    </div>
+    &nbsp;
+    <div class="link">
+      <a tabindex="0" routerLink="/settings" routerLinkActive="active">Modify addresses</a>
+    </div>
+  </div>
 
-<div class="linkcontainer">
-  <div class="linkicon">
-    <a tabindex="0" routerLink="/settings" routerLinkActive="active">
-      <div class="fas fa-edit"></div>
-    </a>
+  <div class="linkcontainer" *ngIf="showHomeLink()">
+    <div class="linkicon" id="homelink">
+      <a tabindex="0" (click)="installApp()" (keypress)="installApp()">
+        <div class="fas fa-home"></div>
+      </a>
+    </div>
+    &nbsp;
+    <div class="link">
+      <a tabindex="0" (click)="installApp()" (keypress)="installApp()">Add to home</a>
+    </div>
   </div>
-  &nbsp;
-  <div class="link">
-    <a tabindex="0" routerLink="/settings" routerLinkActive="active">Modify addresses</a>
-  </div>
-</div>
 
-<div class="linkcontainer" *ngIf="showHomeLink()">
-  <div class="linkicon" id="homelink">
-    <a tabindex="0" (click)="installApp()" (keypress)="installApp()">
-      <div class="fas fa-home"></div>
-    </a>
+  <div class="linkcontainer" *ngIf="shareSupport">
+    <div class="linkicon" id="sharelink">
+      <a tabindex="0" (click)="share()" (keypress)="share()">
+        <div class="fas fa-share-nodes"></div>
+      </a>
+    </div>
+    &nbsp;
+    <div class="link">
+      <a tabindex="0" (click)="share()" (keypress)="share()">Share</a>
+    </div>
   </div>
-  &nbsp;
-  <div class="link">
-    <a tabindex="0" (click)="installApp()" (keypress)="installApp()">Add to home</a>
-  </div>
-</div>
 
-<div class="linkcontainer" *ngIf="shareSupport">
-  <div class="linkicon" id="sharelink">
-    <a tabindex="0" (click)="share()" (keypress)="share()">
-      <div class="fas fa-share-nodes"></div>
-    </a>
+  <div class="linkcontainer">
+    <div class="linkicon" id="qrlink">
+      <a tabindex="0" (click)="showQR()" (keypress)="showQR()">
+        <div class="fas fa-qrcode"></div>
+      </a>
+    </div>
+    &nbsp;
+    <div class="link">
+      <a tabindex="0" (click)="showQR()" (keypress)="showQR()">QR</a>
+    </div>
   </div>
-  &nbsp;
-  <div class="link">
-    <a tabindex="0" (click)="share()" (keypress)="share()">Share</a>
-  </div>
-</div>
-
-<div class="linkcontainer">
-  <div class="linkicon" id="qrlink">
-    <a tabindex="0" (click)="showQR()" (keypress)="showQR()">
-      <div class="fas fa-qrcode"></div>
-    </a>
-  </div>
-  &nbsp;
-  <div class="link">
-    <a tabindex="0" (click)="showQR()" (keypress)="showQR()">QR</a>
-  </div>
-</div>
-
 </div>
