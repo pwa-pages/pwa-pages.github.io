@@ -61,6 +61,7 @@ app-performance-chart {
   flex-direction: column;
   background-color: #eeeeee;
   padding: 1vh;
+  padding-bottom: 26vh;
 }
 
 .statdetaildispl {
@@ -131,4 +132,5 @@ a.tab {
   bottom: 10vh;
   background: white;
   bottom: 7vh;
+  width: 95vw;
 }

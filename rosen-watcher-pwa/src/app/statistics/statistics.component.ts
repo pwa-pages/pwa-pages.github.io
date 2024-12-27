@@ -108,7 +108,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     const hours = utcDate.getUTCHours().toString().padStart(2, '0');
     const minutes = utcDate.getUTCMinutes().toString().padStart(2, '0');
     const seconds = utcDate.getUTCSeconds().toString().padStart(2, '0');
-  
+
     return `${hours}:${minutes}:${seconds}`;
   }
 
