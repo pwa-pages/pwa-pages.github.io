@@ -13,7 +13,7 @@
 }
 
 .chartcontainer {
-  height: 60%;
+  height: 60vh;
 }
 
 app-statistics .chartcontainer,
