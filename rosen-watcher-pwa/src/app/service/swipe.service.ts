@@ -45,8 +45,6 @@ export class SwipeService {
     const touchsurface = this.getTouchSurface();
     touchsurface.classList.add('swiping');
 
-    
-
     if (swipedir == 'left') {
       touchsurface.classList.add('swipeleft');
 
@@ -79,7 +77,7 @@ export class SwipeService {
           this.resetswipes(touchsurface);
         }, 250 * this.getSpeed());
       }, 250 * this.getSpeed());
-    } 
+    }
   }
 
   public hasVerticalScrollableContainerClass(element: HTMLElement | null) {
@@ -99,10 +97,7 @@ export class SwipeService {
     if (!touchsurface) {
       return;
     }
-    let startX: number,
-      startY: number,
-      distX: number,
-      distY: number;
+    let startX: number, startY: number, distX: number, distY: number;
 
     touchsurface.addEventListener(
       'touchstart',
@@ -110,7 +105,6 @@ export class SwipeService {
         if (!this.swipeActive) {
           return;
         }
-
 
         const touchobj = e.changedTouches[0];
         distX = 0;
@@ -138,7 +132,7 @@ export class SwipeService {
         if (Math.abs(distX) > 20 || Math.abs(distY) > 20) {
           if (this.detectHorizontal && Math.abs(distX) > Math.abs(distY)) {
             touchsurface.style.transform = `translateX(${distX}px)`;
-          } 
+          }
         }
 
         if (!(distY != 0 && hasVerticalScrollableParent)) {
@@ -190,10 +184,9 @@ export class SwipeService {
   }
 
   private resetswipes(el: HTMLElement) {
-    
     el.style.left = 'inherit';
     el.style.removeProperty('transform');
-   
+
     el.classList.remove('swipeleftin');
     el.classList.remove('swiping');
     el.classList.remove('swiperightin');
@@ -203,8 +196,5 @@ export class SwipeService {
     el.classList.remove('swiperight');
     el.classList.remove('swipeup');
     el.classList.remove('swipedown');
-
-    
-    
   }
 }

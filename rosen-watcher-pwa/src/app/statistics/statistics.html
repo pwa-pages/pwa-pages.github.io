@@ -54,6 +54,7 @@
     <div>
       <div class="statdetaildispl">
         <div class="inputDate">Date</div>
+        <div class="inputTime">Time</div>
         <div class="amount">Reward</div>
       </div>
     </div>
@@ -62,6 +63,7 @@
       <div *ngFor="let input of detailInputs">
         <div class="statdetaildispl {{input.chainType}}">
           <div class="inputDate">{{ formatDate(input.inputDate) }}</div>
+          <div class="inputTime">{{ formatTime(input.inputDate) }}</div>
           <div class="amount">{{ input.amount }} RSN</div>
         </div>
       </div>

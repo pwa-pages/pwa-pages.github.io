@@ -104,6 +104,14 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     return `${day} ${month} ${year}`;
   }
 
+  formatTime(utcDate: Date): string {
+    const hours = utcDate.getUTCHours().toString().padStart(2, '0');
+    const minutes = utcDate.getUTCMinutes().toString().padStart(2, '0');
+    const seconds = utcDate.getUTCSeconds().toString().padStart(2, '0');
+  
+    return `${hours}:${minutes}:${seconds}`;
+  }
+
   private reduceData(inputs: Input[], period: Period): Input[] {
     const date = new Date();
 
