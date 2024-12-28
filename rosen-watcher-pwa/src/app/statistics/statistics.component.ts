@@ -147,8 +147,17 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       return { x: s.inputDate, y: s.amount } as DateNumberPoint;
     });
 
-    this.sortedInputs.sort((a, b) => b.inputDate.getTime() - a.inputDate.getTime());
+    
+    this.sortedInputs.sort((a, b) => {
+      const aTime = Math.round(a.inputDate.getTime() / 1000) * 1000;
+      const bTime = Math.round(b.inputDate.getTime() / 1000) * 1000;
 
+      if (aTime !== bTime) {
+        return bTime - aTime;
+      }
+
+      return (b.amount ?? 0) - (a.amount ?? 0);
+    });
     this.detailInputs = this.sortedInputs.slice(0, 100);
 
     if (this.rewardsChart.length != 0 && amounts.length != this.rewardsChart.length && this.chart) {
