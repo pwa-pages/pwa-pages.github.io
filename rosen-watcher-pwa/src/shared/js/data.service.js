@@ -253,14 +253,6 @@ class DataService {
                     });
                 });
             });
-            sortedInputs.sort((a, b) => {
-                const aTime = Math.round(a.inputDate.getTime() / 1000) * 1000;
-                const bTime = Math.round(b.inputDate.getTime() / 1000) * 1000;
-                if (aTime !== bTime) {
-                    return aTime - bTime;
-                }
-                return a.amount ?? 0 - (b.amount ?? 0);
-            });
             console.log('done retrieving chart from database ' + inputs.length + ' inputs');
             return await new Promise((resolve) => {
                 resolve(sortedInputs);

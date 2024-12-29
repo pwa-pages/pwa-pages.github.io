@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { EventService, EventType } from '../service/event.service';
 import { WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
+import { DataService } from '../service/data.service';
 import { map } from 'rxjs/operators';
 import { ChainType } from '../../service/ts/models/chaintype';
 import { Token } from '../../service/ts/models/token';
-import { CommonModule } from '@angular/common';
+import { Location, CommonModule } from '@angular/common';
+import { StorageService } from '../service/storage.service';
 import { NavigationService } from '../service/navigation.service';
+import { ChainService } from '../service/chain.service';
 
 function createChainNumber(): Record<ChainType, number | undefined> {
   return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as Record<
@@ -36,8 +39,12 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     private watchersDataService: WatchersDataService,
     eventService: EventService,
     navigationService: NavigationService,
+    chainService: ChainService,
+    storageService: StorageService,
+    dataService: DataService,
+    location: Location,
   ) {
-    super(eventService, navigationService);
+    super(eventService, navigationService, chainService, storageService, dataService, location);
   }
 
   setLockedAmounts(chainType: ChainType): void {

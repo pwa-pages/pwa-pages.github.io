@@ -3,7 +3,7 @@ import { EventData, EventService, EventType } from '../service/event.service';
 import { StorageService } from '../service/storage.service';
 import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ActivatedRoute, Params, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { Location, NgIf, NgStyle, NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -38,10 +38,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   rewardsChart: DateNumberPoint[];
   sortedInputs: Input[];
   detailInputs: Input[];
-  addresses: Address[];
+
   version: string | null;
-  profile: string | null = null;
-  noAddresses = false;
+
   selectedPeriod: Period | null;
   addressesForDisplay: Address[];
   shareSupport = false;
@@ -50,11 +49,11 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   @ViewChild('detailsContainer') detailsContainer!: ElementRef;
 
   constructor(
-    private location: Location,
+    location: Location,
     private route: ActivatedRoute,
-    private storageService: StorageService,
-    private chainService: ChainService,
-    private dataService: DataService,
+    chainService: ChainService,
+    dataService: DataService,
+    storageService: StorageService,
     private chartService: ChartService,
     eventService: EventService,
     private serviceWorkerService: ServiceWorkerService,
@@ -62,10 +61,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     private qrDialog: MatDialog,
     navigationService: NavigationService,
   ) {
-    super(eventService, navigationService);
+    super(eventService, navigationService, chainService, storageService, dataService, location);
     this.totalRewards = '';
     this.selectedTab = 'chart';
-    this.addresses = [];
     this.addressesForDisplay = [];
     this.rewardsChart = [];
     this.sortedInputs = [];
@@ -147,7 +145,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       return { x: s.inputDate, y: s.amount } as DateNumberPoint;
     });
 
-    
     this.sortedInputs.sort((a, b) => {
       const aTime = Math.round(a.inputDate.getTime() / 1000) * 1000;
       const bTime = Math.round(b.inputDate.getTime() / 1000) * 1000;
@@ -291,56 +288,4 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   title = 'rosen-watcher-pwa';
-
-  private async checkProfileParams(params: Params): Promise<void> {
-    if (params['profile']) {
-      const profileParam = params['profile'];
-      this.profile = profileParam;
-      console.log(profileParam);
-
-      this.storageService.initIndexedDB(profileParam);
-    }
-  }
-
-  private async checkAddressParams(params: Params): Promise<boolean> {
-    if (params['addresses'] || Object.keys(params).some((key) => key.startsWith('address'))) {
-      const addressesParam = params['addresses'];
-      console.log(addressesParam);
-
-      this.addresses = [];
-
-      if (addressesParam != null) {
-        this.addresses = JSON.parse(decodeURIComponent(addressesParam));
-      }
-
-      const individualAddresses = Object.keys(params)
-        .filter((key) => key.startsWith('address') && !key.startsWith('addresses'))
-        .map((key) => new Address(params[key], this.chainService.getChainType(params[key])))
-        .filter((addr) => addr !== undefined && addr !== null);
-
-      individualAddresses.forEach((i) => this.addresses.push(i));
-
-      const currentPath = this.location.path();
-
-      if (currentPath.includes('?')) {
-        const parts = currentPath.split('?');
-        const newPath = parts[0];
-        this.location.replaceState(newPath);
-      }
-
-      await this.storageService.putAddressData(this.addresses);
-
-      await this.storageService.clearInputsStore();
-      if (this.addresses.length == 0) {
-        this.noAddresses = true;
-      }
-      return true;
-    } else {
-      this.addresses = await this.dataService.getAddresses();
-      if (this.addresses.length == 0) {
-        this.noAddresses = true;
-      }
-      return false;
-    }
-  }
 }

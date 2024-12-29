@@ -3,13 +3,14 @@ import { EventData, EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChartService } from '../service/chart.service';
-import { NgFor, NgIf } from '@angular/common';
+import { Location, NgFor, NgIf } from '@angular/common';
 import { ChartDataSet } from '../../service/ts/models/chart.dataset';
 import { ChartPoint } from '../../service/ts/models/chart.point';
 import { ChartPerformance } from '../../service/ts/models/chart.performance';
 import { Chart } from 'chart.js';
 import { StorageService } from '../service/storage.service';
 import { NavigationService } from '../service/navigation.service';
+import { ChainService } from '../service/chain.service';
 
 @Component({
   selector: 'app-performance',
@@ -21,17 +22,17 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   data: string;
   performanceCharts: ChartPerformance[];
   performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;
-  addresses: string[];
-  noAddresses = false;
 
   constructor(
-    private storageService: StorageService,
-    private dataService: DataService,
+    location: Location,
+    storageService: StorageService,
+    dataService: DataService,
+    chainService: ChainService,
     eventService: EventService,
     private chartService: ChartService,
     navigationService: NavigationService,
   ) {
-    super(eventService, navigationService);
+    super(eventService, navigationService, chainService, storageService, dataService, location);
     this.data = '';
     this.addresses = [];
     this.performanceCharts = [];
