@@ -11,6 +11,7 @@ export enum EventType {
   SwipeDeActivated = 'SwipeDeActivated',
   SwipeVertical = 'SwipeVertical',
   StatisticsScreenLoaded = 'StatisticsScreenLoaded',
+  RequestInputsDownload = 'RequestInputsDownload',
   WatchersScreenLoaded = 'WatchersScreenLoaded',
   SettingsScreenLoaded = 'SettingsScreenLoaded',
   PerformanceScreenLoaded = 'PerformanceScreenLoaded',
@@ -37,6 +38,7 @@ export class EventService {
       [EventType.SwipeVertical]: new Subject<EventData>(),
       [EventType.StatisticsScreenLoaded]: new Subject<EventData>(),
       [EventType.PerformanceScreenLoaded]: new Subject<EventData>(),
+      [EventType.RequestInputsDownload]: new Subject<EventData>(),
       [EventType.AddressChartChanged]: new Subject<EventData>(),
       [EventType.VersionUpdated]: new Subject<EventData>(),
       [EventType.WatchersScreenLoaded]: new Subject<EventData>(),
@@ -55,7 +57,7 @@ export class EventService {
     eventData: EventData,
     profile?: string | undefined | null,
   ) {
-    console.log('ReceiveTd event: ' + eventType + ' for profile ' + profile);
+    console.log('Received event: ' + eventType + ' for profile ' + profile);
 
     this.eventSubscriptions[eventType].next(eventData);
   }

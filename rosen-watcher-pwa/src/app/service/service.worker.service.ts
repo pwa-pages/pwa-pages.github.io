@@ -29,7 +29,8 @@ export class ServiceWorkerService {
     this.eventService.subscribeToAllEvents((eventType, eventData) => {
       if (
         eventType == EventType.PerformanceScreenLoaded ||
-        eventType == EventType.StatisticsScreenLoaded
+        eventType == EventType.StatisticsScreenLoaded ||
+        eventType == EventType.RequestInputsDownload
       ) {
         this.sendMessageToServiceWorker({
           type: eventType,

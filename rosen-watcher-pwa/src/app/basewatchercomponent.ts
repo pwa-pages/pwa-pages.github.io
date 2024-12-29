@@ -100,6 +100,12 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
       if (this.addresses.length == 0) {
         this.noAddresses = true;
       }
+
+      this.eventService.sendEventWithData(
+        EventType.RequestInputsDownload,
+        this.storageService.getProfile() as EventData,
+      );
+
       return true;
     } else {
       this.addresses = await this.dataService.getAddresses();

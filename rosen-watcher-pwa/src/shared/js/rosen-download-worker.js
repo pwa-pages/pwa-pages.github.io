@@ -3,18 +3,28 @@
 self.addEventListener('message', async (event) => {
     const data = event.data;
     console.log(`Rosen service worker received event of type ${data.type}`);
-    if (data.type === 'StatisticsScreenLoaded' || data.type === 'PerformanceScreenLoaded') {
+    if (data.type === 'StatisticsScreenLoaded' ||
+        data.type === 'PerformanceScreenLoaded' ||
+        data.type === 'RequestInputsDownload') {
         const profile = data.data;
         let { dataService, downloadService, chartService, } = await initServices(profile);
-        if (data && data.type === 'StatisticsScreenLoaded') {
-            console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
+        if (data && data.type === 'RequestInputsDownload') {
+            console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain');
             try {
-                const inputs = await dataService.getSortedInputs();
-                sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
                 await downloadService.downloadForAddresses(profile);
                 ({ dataService, downloadService, chartService } = await initServices(profile));
                 //await dataService.compressInputs();
                 //({ dataService, downloadService, chartService } = await initServices(profile));
+            }
+            catch (error) {
+                console.error('Error initializing IndexedDB or downloading addresses:', error);
+            }
+        }
+        else if (data && data.type === 'StatisticsScreenLoaded') {
+            console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
+            try {
+                const inputs = await dataService.getSortedInputs();
+                sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
             }
             catch (error) {
                 console.error('Error initializing IndexedDB or downloading addresses:', error);
