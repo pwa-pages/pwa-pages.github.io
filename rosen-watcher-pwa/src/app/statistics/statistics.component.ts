@@ -256,9 +256,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     this.route.queryParams.subscribe(async (params) => {
       await this.checkProfileParams(params);
-      var hasAddressParams = await this.checkAddressParams(params);
+      const hasAddressParams = await this.checkAddressParams(params);
 
-      if(!hasAddressParams){
+      if (!hasAddressParams) {
         this.eventService.sendEventWithData(
           EventType.RequestInputsDownload,
           this.storageService.getProfile() as EventData,
