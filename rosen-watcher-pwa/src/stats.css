@@ -129,8 +129,8 @@ a.tab {
 
 .statistics-footer {
   position: fixed;
-  bottom: 10vh;
   background: white;
-  bottom: 11vh;
+  bottom: 7vh;
+  padding-bottom: 4vh;
   width: 95vw;
 }
