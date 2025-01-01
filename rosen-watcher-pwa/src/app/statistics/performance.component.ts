@@ -11,6 +11,7 @@ import { Chart } from 'chart.js';
 import { StorageService } from '../service/storage.service';
 import { NavigationService } from '../service/navigation.service';
 import { ChainService } from '../service/chain.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-performance',
@@ -25,6 +26,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
   constructor(
     location: Location,
+    private route: ActivatedRoute,
     storageService: StorageService,
     dataService: DataService,
     chainService: ChainService,
@@ -51,6 +53,18 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
     await this.retrieveData();
     this.updateChart();
+
+    this.route.queryParams.subscribe(async (params) => {
+      await this.checkProfileParams(params);
+      const hasAddressParams = await this.checkAddressParams(params);
+
+      if (hasAddressParams) {
+        this.eventService.sendEventWithData(
+          EventType.RequestInputsDownload,
+          this.storageService.getProfile() as EventData,
+        );
+      }
+    });
 
     this.eventService.sendEventWithData(
       EventType.PerformanceScreenLoaded,

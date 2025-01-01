@@ -7,21 +7,19 @@ self.addEventListener('message', async (event) => {
         data.type === 'PerformanceScreenLoaded' ||
         data.type === 'RequestInputsDownload') {
         const profile = data.data;
-        let { dataService, downloadService, chartService, } = await initServices(profile);
-        /*if (data && data.type === 'RequestInputsDownload') {
-          console.log(
-            'Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain',
-          );
-    
-          try {
-            await downloadService.downloadForAddresses(profile);
-            ({ dataService, downloadService, chartService } = await initServices(profile));
-            //await dataService.compressInputs();
-            //({ dataService, downloadService, chartService } = await initServices(profile));
-          } catch (error) {
-            console.error('Error initializing IndexedDB or downloading addresses:', error);
-          }
-        } else */ if (data && data.type === 'StatisticsScreenLoaded') {
+        const { dataService, downloadService, chartService, } = await initServices(profile);
+        if (data && data.type === 'RequestInputsDownload') {
+            console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain');
+            try {
+                await downloadService.downloadForAddresses(profile);
+                //await dataService.compressInputs();
+                //({ dataService, downloadService, chartService } = await initServices(profile));
+            }
+            catch (error) {
+                console.error('Error initializing IndexedDB or downloading addresses:', error);
+            }
+        }
+        else if (data && data.type === 'StatisticsScreenLoaded') {
             console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
             try {
                 const inputs = await dataService.getSortedInputs();

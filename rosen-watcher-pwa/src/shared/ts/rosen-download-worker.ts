@@ -26,20 +26,20 @@ self.addEventListener('message', async (event: MessageEvent) => {
     }: { dataService: DataService; downloadService: DownloadService; chartService: ChartService } =
       await initServices(profile);
 
-    /*if (data && data.type === 'RequestInputsDownload') {
+    if (data && data.type === 'RequestInputsDownload') {
       console.log(
         'Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain',
       );
 
       try {
         await downloadService.downloadForAddresses(profile);
-        ({ dataService, downloadService, chartService } = await initServices(profile));
+
         //await dataService.compressInputs();
         //({ dataService, downloadService, chartService } = await initServices(profile));
       } catch (error) {
         console.error('Error initializing IndexedDB or downloading addresses:', error);
       }
-    } else */ if (data && data.type === 'StatisticsScreenLoaded') {
+    } else if (data && data.type === 'StatisticsScreenLoaded') {
       console.log(
         'Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain',
       );
