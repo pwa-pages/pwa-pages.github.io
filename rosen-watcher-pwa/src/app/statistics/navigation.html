@@ -1,3 +1,7 @@
+<div class="progress-bar" *ngIf="downloading">
+  <div class="progress-bar-value"></div>
+</div>
+
 <div class="navbar" *ngIf="isVisible()">
   <div [ngClass]="{ 'navbuttons': true, 'active': isStatisticsActive() }">
     <a tabindex="0" (click)="navRewards()" (keypress)="navRewards()">

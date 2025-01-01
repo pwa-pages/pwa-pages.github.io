@@ -36,14 +36,6 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     this.eventService.sendEvent(EventType.SwipeActivated);
 
-    await this.subscribeToEvent(EventType.StartFullDownload, () => {
-      this.busyCounter = 1;
-    });
-
-    await this.subscribeToEvent(EventType.EndFullDownload, () => {
-      this.busyCounter = 0;
-    });
-
     window.addEventListener('resize', this.resetHeight);
 
     this.resetHeight();
@@ -52,8 +44,6 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
   async ngOnDestroy(): Promise<void> {
     this.eventService.sendEvent(EventType.SwipeDeActivated);
     await this.eventService.unSubscribeAll([
-      EventType.EndFullDownload,
-      EventType.StartFullDownload,
       EventType.RefreshInputs,
     ]);
   }

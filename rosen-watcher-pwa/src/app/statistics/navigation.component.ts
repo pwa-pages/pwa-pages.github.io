@@ -14,6 +14,7 @@ import { EventService, EventType } from '../service/event.service';
 })
 export class NavigationComponent implements OnInit {
   private visible = true;
+  public downloading = false;
   constructor(
     private navigationService: NavigationService,
     private swipeService: SwipeService,
@@ -32,6 +33,14 @@ export class NavigationComponent implements OnInit {
     });
     await this.eventService.subscribeToEvent(EventType.SettingsScreenLoaded, () => {
       this.visible = false;
+    });
+
+    await this.eventService.subscribeToEvent(EventType.StartFullDownload, () => {
+      this.downloading = true;
+    });
+
+    await this.eventService.subscribeToEvent(EventType.EndFullDownload, () => {
+      this.downloading = false;
     });
   }
 
