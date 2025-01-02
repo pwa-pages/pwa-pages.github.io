@@ -43,9 +43,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
 
   async ngOnDestroy(): Promise<void> {
     this.eventService.sendEvent(EventType.SwipeDeActivated);
-    await this.eventService.unSubscribeAll([
-      EventType.RefreshInputs,
-    ]);
+    await this.eventService.unSubscribeAll([EventType.RefreshInputs]);
   }
 
   public async checkProfileParams(params: Params): Promise<void> {
