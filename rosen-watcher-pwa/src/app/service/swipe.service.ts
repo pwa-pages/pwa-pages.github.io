@@ -131,7 +131,8 @@ export class SwipeService {
 
         if (Math.abs(distX) > 20 || Math.abs(distY) > 20) {
           if (this.detectHorizontal && Math.abs(distX) > Math.abs(distY)) {
-            touchsurface.style.transform = `translateX(${distX}px)`;
+            const position = document.documentElement.scrollTop || document.body.scrollTop || 0;
+            touchsurface.style.transform = `translateX(${distX}px) translateY(${position}px)`;
           }
         }
 
@@ -150,6 +151,7 @@ export class SwipeService {
         }
 
         touchsurface.style.removeProperty('transform');
+
         let swipedir = null;
         const touchobj = e.changedTouches[0];
         distX = touchobj.pageX - startX;

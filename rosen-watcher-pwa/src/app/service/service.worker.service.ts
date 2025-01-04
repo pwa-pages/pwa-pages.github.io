@@ -47,16 +47,18 @@ export class ServiceWorkerService {
 
   sendMessageToServiceWorker(message: ServiceWorkerMessage) {
     if (navigator.serviceWorker) {
-      navigator.serviceWorker.ready.then((registration) => {
-        if (registration.active) {
-          this.currentProfile = message.data as string | null | undefined;
-          registration.active.postMessage(message);
-        } else {
-          console.error('Service worker is not active yet');
-        }
-      }).catch((error) => {
-        console.error('Error waiting for service worker to become ready:', error);
-      });
+      navigator.serviceWorker.ready
+        .then((registration) => {
+          if (registration.active) {
+            this.currentProfile = message.data as string | null | undefined;
+            registration.active.postMessage(message);
+          } else {
+            console.error('Service worker is not active yet');
+          }
+        })
+        .catch((error) => {
+          console.error('Error waiting for service worker to become ready:', error);
+        });
     } else {
       console.error('No service worker found');
     }
