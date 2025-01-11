@@ -5,7 +5,6 @@ class DownloadService {
     constructor(dataService) {
         this.dataService = dataService;
     }
-    // Fetch Transactions
     async fetchTransactions(url) {
         try {
             const response = await fetch(url);
@@ -18,7 +17,6 @@ class DownloadService {
             throw error;
         }
     }
-    // Download Transactions
     async downloadTransactions(address, offset = 0, limit = 500, profile) {
         const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
         console.log(`Downloading from: ${url}`);
@@ -96,14 +94,13 @@ class DownloadService {
             console.log(`Processing initial download(size = ${rs_InitialNDownloads}) for: ${address}`);
             const itemsz = result.transactions.length;
             let halfBoxId = '';
-            if (itemsz > rs_InitialNDownloads / 2) {
-                for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
+            if (itemsz > rs_InitialNDownloads / 4) {
+                for (let i = Math.floor(itemsz / 4); i < itemsz - Math.floor(itemsz / 4); i++) {
                     const item = result.transactions[i];
                     for (const input of item.inputs) {
                         if (input.boxId &&
                             halfBoxId === '' &&
-                            (input.assets.find((a) => a.name == 'eRSN') ||
-                                input.assets.find((a) => a.name == 'RSN')) &&
+                            (await this.dataService.getDataByBoxId(input.boxId, address, db)) &&
                             getChainType(input.address)) {
                             halfBoxId = input.boxId;
                         }

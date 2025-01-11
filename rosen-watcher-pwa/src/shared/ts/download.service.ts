@@ -19,7 +19,6 @@ class DownloadService {
   private busyCounter = 0;
   constructor(private dataService: DataService) {}
 
-  // Fetch Transactions
   async fetchTransactions(url: string): Promise<FetchTransactionsResponse> {
     try {
       const response: Response = await fetch(url);
@@ -31,7 +30,6 @@ class DownloadService {
     }
   }
 
-  // Download Transactions
   async downloadTransactions(
     address: string,
     offset = 0,
@@ -152,15 +150,14 @@ class DownloadService {
       const itemsz: number = result.transactions.length;
       let halfBoxId = '';
 
-      if (itemsz > rs_InitialNDownloads / 2) {
-        for (let i = Math.floor(itemsz / 2); i < itemsz; i++) {
+      if (itemsz > rs_InitialNDownloads / 4) {
+        for (let i = Math.floor(itemsz / 4); i < itemsz - Math.floor(itemsz / 4); i++) {
           const item: TransactionItem = result.transactions[i];
           for (const input of item.inputs) {
             if (
               input.boxId &&
               halfBoxId === '' &&
-              (input.assets.find((a) => a.name == 'eRSN') ||
-                input.assets.find((a) => a.name == 'RSN')) &&
+              (await this.dataService.getDataByBoxId(input.boxId, address, db)) &&
               getChainType(input.address)
             ) {
               halfBoxId = input.boxId;
