@@ -14,6 +14,11 @@ interface FetchTransactionsResponse {
   total: number;
 }
 
+interface DownloadStatus {
+  address: string;
+  status: string;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService {
   private busyCounter = 0;
@@ -114,7 +119,7 @@ class DownloadService {
       );
 
       if (!result.transactions || result.transactions.length === 0 || offset > 100000) {
-        await this.dataService.setDownloadStatus(address, 'true', db);
+        await this.setDownloadStatus(address, 'true', db);
         console.log(this.busyCounter);
         return;
       }
@@ -128,6 +133,32 @@ class DownloadService {
       this.decreaseBusyCounter(profile);
       console.log(this.busyCounter);
     }
+  }
+
+  // Get Download Status for Address from IndexedDB
+  async getDownloadStatus(address: string, db: IDBDatabase): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const transaction: IDBTransaction = db.transaction([rs_DownloadStatusStoreName], 'readonly');
+      const objectStore: IDBObjectStore = transaction.objectStore(rs_DownloadStatusStoreName);
+      const request: IDBRequest = objectStore.get(address + '_' + this.dataService.getDataType());
+
+      request.onsuccess = () => resolve((request.result as DownloadStatus)?.status || 'false');
+      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
+    });
+  }
+
+  // Set Download Status for Address in IndexedDB
+  async setDownloadStatus(address: string, status: string, db: IDBDatabase): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const transaction: IDBTransaction = db.transaction([rs_DownloadStatusStoreName], 'readwrite');
+      const objectStore: IDBObjectStore = transaction.objectStore(rs_DownloadStatusStoreName);
+      address = address + '_' + this.dataService.getDataType();
+      const Address = address;
+      const request: IDBRequest = objectStore.put({ Address, address, status });
+
+      request.onsuccess = () => resolve();
+      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
+    });
   }
 
   async downloadForAddress(
@@ -170,11 +201,11 @@ class DownloadService {
       console.log('Add bunch of data');
       await this.dataService.addData(address, result.transactions, db, profile);
 
-      const downloadStatus: string = await this.dataService.getDownloadStatus(address, db);
+      const downloadStatus: string = await this.getDownloadStatus(address, db);
       if (boxData && downloadStatus === 'true') {
         console.log(`Found existing boxId in db for ${address}, no need to download more.`);
       } else if (itemsz >= rs_InitialNDownloads) {
-        await this.dataService.setDownloadStatus(address, 'false', db);
+        await this.setDownloadStatus(address, 'false', db);
         console.log(`Downloading all tx's for : ${address}`);
         await this.downloadAllForAddress(address, 0, db, profile);
       }

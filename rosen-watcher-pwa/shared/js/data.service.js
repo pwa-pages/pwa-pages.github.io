@@ -6,6 +6,9 @@ class DataService {
         this.db = db;
         this.chartService = chartService;
     }
+    getDataType() {
+        return 'reward';
+    }
     async getWatcherInputs(db) {
         const inputsPromise = this.getData(rs_InputsStoreName, db);
         console.log('Retrieving watcher inputs and such');
@@ -186,27 +189,6 @@ class DataService {
             const objectStore = transaction.objectStore(storeName);
             const request = objectStore.getAll();
             request.onsuccess = () => resolve(request.result);
-            request.onerror = (event) => reject(event.target.error);
-        });
-    }
-    // Get Download Status for Address from IndexedDB
-    async getDownloadStatus(address, db) {
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction([rs_DownloadStatusStoreName], 'readonly');
-            const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
-            const request = objectStore.get(address);
-            request.onsuccess = () => resolve(request.result?.status || 'false');
-            request.onerror = (event) => reject(event.target.error);
-        });
-    }
-    // Set Download Status for Address in IndexedDB
-    async setDownloadStatus(address, status, db) {
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction([rs_DownloadStatusStoreName], 'readwrite');
-            const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
-            const Address = address;
-            const request = objectStore.put({ Address, address, status });
-            request.onsuccess = () => resolve();
             request.onerror = (event) => reject(event.target.error);
         });
     }

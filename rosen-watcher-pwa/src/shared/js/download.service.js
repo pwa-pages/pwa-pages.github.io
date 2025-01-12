@@ -70,7 +70,7 @@ class DownloadService {
             const result = await this.downloadTransactions(address, offset, rs_FullDownloadsBatchSize + 10, profile);
             console.log(`Processing full download(offset = ${offset}, size = ${rs_FullDownloadsBatchSize}) for: ${address}`);
             if (!result.transactions || result.transactions.length === 0 || offset > 100000) {
-                await this.dataService.setDownloadStatus(address, 'true', db);
+                await this.setDownloadStatus(address, 'true', db);
                 console.log(this.busyCounter);
                 return;
             }
@@ -85,6 +85,28 @@ class DownloadService {
             this.decreaseBusyCounter(profile);
             console.log(this.busyCounter);
         }
+    }
+    // Get Download Status for Address from IndexedDB
+    async getDownloadStatus(address, db) {
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction([rs_DownloadStatusStoreName], 'readonly');
+            const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
+            const request = objectStore.get(address + '_' + this.dataService.getDataType());
+            request.onsuccess = () => resolve(request.result?.status || 'false');
+            request.onerror = (event) => reject(event.target.error);
+        });
+    }
+    // Set Download Status for Address in IndexedDB
+    async setDownloadStatus(address, status, db) {
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction([rs_DownloadStatusStoreName], 'readwrite');
+            const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
+            address = address + '_' + this.dataService.getDataType();
+            const Address = address;
+            const request = objectStore.put({ Address, address, status });
+            request.onsuccess = () => resolve();
+            request.onerror = (event) => reject(event.target.error);
+        });
     }
     async downloadForAddress(address, db, profile) {
         this.increaseBusyCounter(profile);
@@ -110,12 +132,12 @@ class DownloadService {
             const boxData = await this.dataService.getDataByBoxId(halfBoxId, address, db);
             console.log('Add bunch of data');
             await this.dataService.addData(address, result.transactions, db, profile);
-            const downloadStatus = await this.dataService.getDownloadStatus(address, db);
+            const downloadStatus = await this.getDownloadStatus(address, db);
             if (boxData && downloadStatus === 'true') {
                 console.log(`Found existing boxId in db for ${address}, no need to download more.`);
             }
             else if (itemsz >= rs_InitialNDownloads) {
-                await this.dataService.setDownloadStatus(address, 'false', db);
+                await this.setDownloadStatus(address, 'false', db);
                 console.log(`Downloading all tx's for : ${address}`);
                 await this.downloadAllForAddress(address, 0, db, profile);
             }

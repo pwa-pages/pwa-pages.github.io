@@ -1,8 +1,3 @@
-interface DownloadStatus {
-  address: string;
-  status: string;
-}
-
 interface Asset {
   // Define the structure of an asset here
   // Example properties:
@@ -40,6 +35,10 @@ class DataService {
     public db: IDBDatabase,
     private chartService: ChartService,
   ) {}
+
+  getDataType(): string {
+    return 'reward';
+  }
 
   async getWatcherInputs(db: IDBDatabase): Promise<DbInput[]> {
     const inputsPromise = this.getData<DbInput>(rs_InputsStoreName, db);
@@ -243,31 +242,6 @@ class DataService {
       const request: IDBRequest = objectStore.getAll();
 
       request.onsuccess = () => resolve(request.result as T[]);
-      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
-    });
-  }
-
-  // Get Download Status for Address from IndexedDB
-  async getDownloadStatus(address: string, db: IDBDatabase): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = db.transaction([rs_DownloadStatusStoreName], 'readonly');
-      const objectStore: IDBObjectStore = transaction.objectStore(rs_DownloadStatusStoreName);
-      const request: IDBRequest = objectStore.get(address);
-
-      request.onsuccess = () => resolve((request.result as DownloadStatus)?.status || 'false');
-      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
-    });
-  }
-
-  // Set Download Status for Address in IndexedDB
-  async setDownloadStatus(address: string, status: string, db: IDBDatabase): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = db.transaction([rs_DownloadStatusStoreName], 'readwrite');
-      const objectStore: IDBObjectStore = transaction.objectStore(rs_DownloadStatusStoreName);
-      const Address = address;
-      const request: IDBRequest = objectStore.put({ Address, address, status });
-
-      request.onsuccess = () => resolve();
       request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
     });
   }
