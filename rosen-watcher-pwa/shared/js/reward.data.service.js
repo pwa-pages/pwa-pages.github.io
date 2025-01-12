@@ -1,8 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class RewardDataService {
+class RewardDataService extends DataService {
     db;
     chartService;
     constructor(db, chartService) {
+        super(db);
         this.db = db;
         this.chartService = chartService;
     }
@@ -181,16 +182,6 @@ class RewardDataService {
                 resolve();
             })
                 .catch(reject);
-        });
-    }
-    // Get Data from IndexedDB
-    async getData(storeName) {
-        return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction([storeName], 'readonly');
-            const objectStore = transaction.objectStore(storeName);
-            const request = objectStore.getAll();
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = (event) => reject(event.target.error);
         });
     }
     // Get Data by BoxId from IndexedDB

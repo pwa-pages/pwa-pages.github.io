@@ -14,12 +14,15 @@ import { EventService, EventType } from '../service/event.service';
 })
 export class NavigationComponent implements OnInit {
   private visible = true;
+  private logging = false;
+  private navigationHistory = "";
+  public logLines: string[] = [];
   public downloading = false;
   constructor(
     private navigationService: NavigationService,
     private swipeService: SwipeService,
     private eventService: EventService,
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.eventService.subscribeToEvent(EventType.StatisticsScreenLoaded, () => {
@@ -42,6 +45,26 @@ export class NavigationComponent implements OnInit {
     await this.eventService.subscribeToEvent(EventType.EndFullDownload, () => {
       this.downloading = false;
     });
+    this.overrideLogging();
+  }
+
+  overrideLogging() {
+
+    var logLines = this.logLines;
+    const originalConsoleLog = console.log;
+
+    console.log = function (...args: any[]) {
+      const timestamp = new Date().toISOString();
+
+      const logMessage = `[Intercepted] ${timestamp} - ${args.join(' ')}`;
+      logLines.push(logMessage);
+      
+      originalConsoleLog.apply(console, [`[Intercepted] ${timestamp}`, ...args]);
+    };
+  }
+  
+  showLogging(): boolean {
+    return this.logging;
   }
 
   isVisible(): boolean {
@@ -66,6 +89,12 @@ export class NavigationComponent implements OnInit {
     } else {
       this.swipeService.swipe('left', this.navigationService.navigateTo(to).route);
     }
+
+    this.navigationHistory = this.navigationHistory + to;
+    if(this.navigationHistory.indexOf("01210121012101210") >= 0){
+      this.logging = true;
+    }
+
   }
 
   isStatisticsActive(): boolean {

@@ -30,11 +30,13 @@ interface Input {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class RewardDataService implements DataService {
+class RewardDataService extends DataService {
   constructor(
-    public db: IDBDatabase,
+    public override db: IDBDatabase,
     private chartService: ChartService,
-  ) {}
+  ) {
+    super(db);
+  }
 
   getDataType(): string {
     return 'reward';
@@ -231,18 +233,6 @@ class RewardDataService implements DataService {
           resolve();
         })
         .catch(reject);
-    });
-  }
-
-  // Get Data from IndexedDB
-  async getData<T>(storeName: string): Promise<T[]> {
-    return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = this.db.transaction([storeName], 'readonly');
-      const objectStore: IDBObjectStore = transaction.objectStore(storeName);
-      const request: IDBRequest = objectStore.getAll();
-
-      request.onsuccess = () => resolve(request.result as T[]);
-      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
     });
   }
 
