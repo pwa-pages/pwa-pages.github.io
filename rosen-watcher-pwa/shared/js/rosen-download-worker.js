@@ -49,9 +49,9 @@ self.addEventListener('message', async (event) => {
 async function initServices(profile) {
     const db = await initIndexedDB(profile);
     const chartService = new ChartService();
-    const dataService = new DataService(db, chartService);
-    const downloadService = new DownloadService(dataService);
-    return { dataService, downloadService, chartService };
+    const rewardDataService = new RewardDataService(db, chartService);
+    const downloadService = new DownloadService(rewardDataService, db);
+    return { dataService: rewardDataService, downloadService, chartService };
 }
 // IndexedDB Initialization
 async function initIndexedDB(profile) {

@@ -1,9 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService {
     dataService;
+    db;
     busyCounter = 0;
-    constructor(dataService) {
+    constructor(dataService, db) {
         this.dataService = dataService;
+        this.db = db;
     }
     async fetchTransactions(url) {
         try {
@@ -39,9 +41,9 @@ class DownloadService {
     }
     async downloadForAddresses(profile) {
         try {
-            const addresses = await this.dataService.getData(rs_AddressDataStoreName, this.dataService.db);
+            const addresses = await this.dataService.getData(rs_AddressDataStoreName);
             const downloadPromises = addresses.map(async (addressObj) => {
-                await this.downloadForAddress(addressObj.address, this.dataService.db, profile);
+                await this.downloadForAddress(addressObj.address, this.db, profile);
             });
             await Promise.all(downloadPromises);
         }

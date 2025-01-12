@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1736676224118,
+  "timestamp": 1736683278273,
   "appData": {
-    "version": "3.21.4"
+    "version": "3.21.7"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -25,6 +25,7 @@
         "./shared/js/constants.js",
         "./shared/js/data.service.js",
         "./shared/js/download.service.js",
+        "./shared/js/reward.data.service.js",
         "./shared/js/rosen-db-worker.js",
         "./shared/js/rosen-download-worker.js",
         "./styles-LMQ5ROF6.css"
@@ -92,14 +93,15 @@
     "./media/fa-v4compatibility-LFEHZI6Y.woff2": "4fd82f39237a3e52cb4e311d1961bbb47353a147",
     "./media/fa-v4compatibility-YY67RJWG.ttf": "ad415f99aab4d9bf17e523f484a377f839ca8c3c",
     "./polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
-    "./rosen-ngsw-worker.js": "3dd565a1bea791bf6b48ebe984b74067e174ad86",
+    "./rosen-ngsw-worker.js": "ce01fa27d947d858756172d37f4279d5e4886219",
     "./shared/js/chain.service.js": "ee25ace7db2c43d90f2ee0fd79b0fe4d7b8d5d6a",
     "./shared/js/chart.service.js": "8888f5e72a7f7a65824b912cc4bda1673110920f",
     "./shared/js/constants.js": "231e119357bb8aad612f925dbddfb96f381778bc",
-    "./shared/js/data.service.js": "4fe42850dac218a224e3890e9ec0f4739a17b6d8",
-    "./shared/js/download.service.js": "a83c515fa21a42880381c1fdbd956a3a353e836a",
+    "./shared/js/data.service.js": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "./shared/js/download.service.js": "241f9125aac198258a081aa48b083cefecb6fb3b",
+    "./shared/js/reward.data.service.js": "4ff9ac8a642c5a6cabd16d5576c96233329707f0",
     "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
-    "./shared/js/rosen-download-worker.js": "4231a31effbd8ba641d7472238a56c2ea42d89c7",
+    "./shared/js/rosen-download-worker.js": "f95864b0b12c3eb8055bcc48a63d08b904c2a6a4",
     "./styles-LMQ5ROF6.css": "e1f34f18026ead8707a82a81f73421e82c65d5e7"
   },
   "navigationUrls": [

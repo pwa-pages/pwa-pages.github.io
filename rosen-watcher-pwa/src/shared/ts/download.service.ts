@@ -22,7 +22,10 @@ interface DownloadStatus {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService {
   private busyCounter = 0;
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private db: IDBDatabase,
+  ) {}
 
   async fetchTransactions(url: string): Promise<FetchTransactionsResponse> {
     try {
@@ -67,13 +70,11 @@ class DownloadService {
 
   async downloadForAddresses(profile: string | undefined): Promise<void> {
     try {
-      const addresses: AddressData[] = await this.dataService.getData<AddressData>(
-        rs_AddressDataStoreName,
-        this.dataService.db,
-      );
+      const addresses: AddressData[] =
+        await this.dataService.getData<AddressData>(rs_AddressDataStoreName);
 
       const downloadPromises: Promise<void>[] = addresses.map(async (addressObj: AddressData) => {
-        await this.downloadForAddress(addressObj.address, this.dataService.db, profile);
+        await this.downloadForAddress(addressObj.address, this.db, profile);
       });
 
       await Promise.all(downloadPromises);

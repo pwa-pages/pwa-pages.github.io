@@ -23,8 +23,11 @@ self.addEventListener('message', async (event: MessageEvent) => {
       dataService,
       downloadService,
       chartService,
-    }: { dataService: DataService; downloadService: DownloadService; chartService: ChartService } =
-      await initServices(profile);
+    }: {
+      dataService: RewardDataService;
+      downloadService: DownloadService;
+      chartService: ChartService;
+    } = await initServices(profile);
 
     if (data && data.type === 'RequestInputsDownload') {
       console.log(
@@ -75,9 +78,9 @@ self.addEventListener('message', async (event: MessageEvent) => {
 async function initServices(profile: string | undefined) {
   const db: IDBDatabase = await initIndexedDB(profile);
   const chartService: ChartService = new ChartService();
-  const dataService: DataService = new DataService(db, chartService);
-  const downloadService: DownloadService = new DownloadService(dataService);
-  return { dataService, downloadService, chartService };
+  const rewardDataService: RewardDataService = new RewardDataService(db, chartService);
+  const downloadService: DownloadService = new DownloadService(rewardDataService, db);
+  return { dataService: rewardDataService, downloadService, chartService };
 }
 
 // IndexedDB Initialization
