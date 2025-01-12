@@ -15,14 +15,14 @@ import { EventService, EventType } from '../service/event.service';
 export class NavigationComponent implements OnInit {
   private visible = true;
   private logging = false;
-  private navigationHistory = "";
+  private navigationHistory = '';
   public logLines: string[] = [];
   public downloading = false;
   constructor(
     private navigationService: NavigationService,
     private swipeService: SwipeService,
     private eventService: EventService,
-  ) { }
+  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.eventService.subscribeToEvent(EventType.StatisticsScreenLoaded, () => {
@@ -49,20 +49,19 @@ export class NavigationComponent implements OnInit {
   }
 
   overrideLogging() {
-
-    var logLines = this.logLines;
+    const logLines = this.logLines;
     const originalConsoleLog = console.log;
 
-    console.log = function (...args: any[]) {
+    console.log = function (...args: string[]) {
       const timestamp = new Date().toISOString();
 
       const logMessage = `[Intercepted] ${timestamp} - ${args.join(' ')}`;
       logLines.push(logMessage);
-      
+
       originalConsoleLog.apply(console, [`[Intercepted] ${timestamp}`, ...args]);
     };
   }
-  
+
   showLogging(): boolean {
     return this.logging;
   }
@@ -91,10 +90,9 @@ export class NavigationComponent implements OnInit {
     }
 
     this.navigationHistory = this.navigationHistory + to;
-    if(this.navigationHistory.indexOf("01210121012101210") >= 0){
+    if (this.navigationHistory.indexOf('01210121012101210') >= 0) {
       this.logging = true;
     }
-
   }
 
   isStatisticsActive(): boolean {

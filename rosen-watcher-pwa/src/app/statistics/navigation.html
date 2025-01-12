@@ -3,12 +3,7 @@
 </div>
 
 <div class="logging" *ngIf="showLogging()">
-  <div
-    class="log" 
-    *ngFor="let log of logLines;"
-  >
-  {{ log }}
-  </div>
+  <div class="log" *ngFor="let log of logLines;">{{ log }}</div>
 </div>
 
 <div class="navbar" *ngIf="isVisible()">
@@ -38,6 +33,4 @@
       </div>
     </a>
   </div>
-
-
 </div>

@@ -377,16 +377,14 @@ button:active {
   100% {
     transform: translateX(100%) scaleX(0.5);
   }
-  
 }
 
-
-.logging{
+.logging {
   height: 100vh;
   width: 95vw;
   position: absolute;
   top: 0;
   bottom: 0;
-  overflow-y:auto;
-  padding-left:5vw;
+  overflow-y: auto;
+  padding-left: 5vw;
 }
