@@ -71,6 +71,8 @@ class DownloadService {
         try {
             const result = await this.downloadTransactions(address, offset, rs_FullDownloadsBatchSize + 10, profile);
             console.log(`Processing full download(offset = ${offset}, size = ${rs_FullDownloadsBatchSize}) for: ${address}`);
+            const t = this.processItems(result.transactions);
+            console.log('permit amount ' + t);
             if (!result.transactions || result.transactions.length === 0 || offset > 100000) {
                 await this.setDownloadStatus(address, 'true', db);
                 console.log(this.busyCounter);
@@ -87,6 +89,33 @@ class DownloadService {
             this.decreaseBusyCounter(profile);
             console.log(this.busyCounter);
         }
+    }
+    processItems(items) {
+        let r = 0;
+        items.forEach((item) => {
+            /*
+            item.inputs.forEach((i) => {
+              i.assets.forEach((a) => {
+                if (a.name == 'rspv2CardanoRWT') {
+                  r -= a.amount;
+                }
+              });
+            });
+            */
+            item.outputs.forEach((o) => {
+                if (!getChainType(o.address)) {
+                    o.assets.forEach((a) => {
+                        if (a.name == 'rspv2CardanoRWT') {
+                            r += a.amount;
+                            if (a.amount > 30000000) {
+                                console.log('wtfffffffffffffff ' + a.amount);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        return r / 3000000;
     }
     // Get Download Status for Address from IndexedDB
     async getDownloadStatus(address, db) {

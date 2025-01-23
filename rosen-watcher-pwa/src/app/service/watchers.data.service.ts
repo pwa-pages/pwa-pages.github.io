@@ -20,6 +20,8 @@ export class WatchersDataService {
 
   constructor(private downloadService: DownloadService) {}
 
+  
+
   getWatchersInfo(): Observable<WatcherInfo> {
     const result = this.downloadService.downloadStream<WatcherInfo>(this.watcherUrl);
 
@@ -29,6 +31,7 @@ export class WatchersDataService {
   getPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
     const address = permitAddresses[chainType];
     const permitsUrl = `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/confirmed`;
+    
     return this.downloadService
       .downloadStream<WatcherInfo>(permitsUrl)
       .pipe(

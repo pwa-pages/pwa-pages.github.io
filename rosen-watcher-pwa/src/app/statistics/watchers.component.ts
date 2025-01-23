@@ -78,6 +78,8 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     super.ngOnInit();
     const watcherInfo$ = this.watchersDataService.getWatchersInfo();
 
+ 
+
     Object.values(ChainType).forEach((c) => {
       watcherInfo$
         .pipe(

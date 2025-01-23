@@ -167,6 +167,7 @@ a {
   border-bottom: 0.1vmax solid rgba(138, 128, 128);
 }
 
+
 .first,
 .watchersdispl {
   border-left: 0 !important;
@@ -193,6 +194,8 @@ a {
 .watcherscontainer .watchersdispl {
   filter: brightness(0.8);
 }
+
+
 
 .watcherscontainer {
   font-size: 1.8vmax;

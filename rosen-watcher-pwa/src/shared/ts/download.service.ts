@@ -6,6 +6,7 @@ interface TransactionItem {
   outputCreatedAt: string | number | Date;
   timestamp: string;
   inputs: Input[];
+  outputs: Input[];
 }
 
 interface FetchTransactionsResponse {
@@ -119,6 +120,9 @@ class DownloadService {
         `Processing full download(offset = ${offset}, size = ${rs_FullDownloadsBatchSize}) for: ${address}`,
       );
 
+      //const t = this.processItems(result.transactions);
+      //console.log('permit amount ' + t);
+
       if (!result.transactions || result.transactions.length === 0 || offset > 100000) {
         await this.setDownloadStatus(address, 'true', db);
         console.log(this.busyCounter);
@@ -135,6 +139,37 @@ class DownloadService {
       console.log(this.busyCounter);
     }
   }
+/*
+  processItems(items: TransactionItem[]): number {
+    let r = 0;
+    items.forEach((item) => {
+      
+      item.inputs.forEach((i) => {
+        i.assets.forEach((a) => {
+          if (a.name == 'rspv2CardanoRWT') {
+            r -= a.amount;
+          }
+        });
+      });
+      
+
+      item.outputs.forEach((o) => {
+        if (!getChainType(o.address)) {
+          o.assets.forEach((a) => {
+            if (a.name == 'rspv2CardanoRWT') {
+              r += a.amount;
+              if (a.amount > 30000000) {
+                console.log('wtfffffffffffffff ' + a.amount);
+              }
+            }
+          });
+        }
+      });
+    });
+
+    return r / 3000000;
+  }
+  */
 
   // Get Download Status for Address from IndexedDB
   async getDownloadStatus(address: string, db: IDBDatabase): Promise<string> {

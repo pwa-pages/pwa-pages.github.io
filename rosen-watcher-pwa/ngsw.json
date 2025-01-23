@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1736697863769,
+  "timestamp": 1737663345031,
   "appData": {
-    "version": "3.21.9"
+    "version": "3.22.0"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -98,7 +98,7 @@
     "./shared/js/chart.service.js": "8888f5e72a7f7a65824b912cc4bda1673110920f",
     "./shared/js/constants.js": "231e119357bb8aad612f925dbddfb96f381778bc",
     "./shared/js/data.service.js": "2692731f9f31b8eb239be9bf9b0c9b80e4522f41",
-    "./shared/js/download.service.js": "241f9125aac198258a081aa48b083cefecb6fb3b",
+    "./shared/js/download.service.js": "81a438a645288428f79f4335b908756b73d5925a",
     "./shared/js/reward.data.service.js": "35ddc3115f4fcaf111ec24939120fc7badc1bd7e",
     "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
     "./shared/js/rosen-download-worker.js": "f95864b0b12c3eb8055bcc48a63d08b904c2a6a4",
