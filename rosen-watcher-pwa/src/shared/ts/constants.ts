@@ -24,6 +24,15 @@ enum Period {
   All = 'All',
 }
 
+
+enum Currency {
+  EUR = 'EUR',
+  USD = 'USD',
+  ERG = 'ERG',
+  RSN = 'RSN',
+}
+
+
 if (typeof window !== 'undefined') {
   (window as any).rs_DbName = rs_DbName;
   (window as any).rs_DbVersion = rs_DbVersion;
@@ -36,4 +45,5 @@ if (typeof window !== 'undefined') {
   (window as any).rs_Input_Key = rs_Input_Key;
   (window as any).rs_Address_Key = rs_Address_Key;
   (window as any).Period = Period;
+  (window as any).Currency = Currency;
 }

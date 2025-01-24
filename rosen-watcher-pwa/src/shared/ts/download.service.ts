@@ -139,7 +139,7 @@ class DownloadService {
       console.log(this.busyCounter);
     }
   }
-/*
+  /*
   processItems(items: TransactionItem[]): number {
     let r = 0;
     items.forEach((item) => {

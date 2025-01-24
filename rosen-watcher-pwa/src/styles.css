@@ -72,8 +72,8 @@ li:last-child {
 }
 
 .watcherscontainer div {
-  color: rgb(138, 128, 128) !important;
-  filter: brightness(0.8);
+  color: rgb(110, 102, 102) !important;
+  
 }
 
 .linkcontainer {
@@ -167,7 +167,6 @@ a {
   border-bottom: 0.1vmax solid rgba(138, 128, 128);
 }
 
-
 .first,
 .watchersdispl {
   border-left: 0 !important;
@@ -185,17 +184,26 @@ a {
   padding-left: 2.7vh;
 }
 
-.watcherscontainer div {
+.watcherscontainer > div {
   padding-left: 1.1vw;
   padding-right: 1.1vw;
   border-left: 0.1vmax solid rgba(138, 128, 128);
 }
 
+.currencyrow, .watchervaluerow{
+  grid-column: span 6; 
+  border-left: 0 !important;
+  padding-left:0 !important; 
+}
+
+.watchervaluerow{
+  margin-bottom: 3vh;
+  font-size: 1vmax;
+}
+
 .watcherscontainer .watchersdispl {
   filter: brightness(0.8);
 }
-
-
 
 .watcherscontainer {
   font-size: 1.8vmax;
@@ -206,6 +214,11 @@ a {
   grid-template-columns: 3vmax 1fr 1fr 1fr 1fr 1fr;
 }
 
+.fivecolumns{
+  grid-column: span 5; 
+}
+
+
 .watchersmaincontainer {
   display: flex;
   flex-wrap: wrap;
@@ -213,6 +226,7 @@ a {
   align-items: center;
   flex-direction: row;
   width: 100vw;
+  flex-direction: column !important;
 }
 .statdetaildispl.Bitcoin,
 .mainaddressdispl.Bitcoin,
@@ -341,6 +355,16 @@ button:active {
 .period select {
   margin-left: 0.7vh;
 }
+
+.currency,
+.currency select {
+  color: #555;
+  margin-top:1vh;
+  font-size: 1vmax;
+  display: inline-block;
+  margin-bottom:2vh;
+}
+
 
 .version-container {
   margin-top: -1.5vh;

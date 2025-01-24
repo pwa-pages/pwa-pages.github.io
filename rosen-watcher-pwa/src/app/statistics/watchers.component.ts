@@ -10,6 +10,8 @@ import { Location, CommonModule } from '@angular/common';
 import { StorageService } from '../service/storage.service';
 import { NavigationService } from '../service/navigation.service';
 import { ChainService } from '../service/chain.service';
+import { FormsModule } from '@angular/forms';
+import { PriceService } from '../service/price.service';
 
 function createChainNumber(): Record<ChainType, number | undefined> {
   return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as Record<
@@ -22,7 +24,7 @@ function createChainNumber(): Record<ChainType, number | undefined> {
   selector: 'app-watchers',
   templateUrl: './watchers.html',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   chainWatcherCount = createChainNumber();
@@ -34,10 +36,19 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   totalPermitCount: number | undefined;
   totalLockedRSN: number | undefined;
   totalLockedERG: number | undefined;
+  totalLockedRSNConverted: number | undefined;
+  totalLockedERGConverted: number | undefined;
+  totalLocked: number | undefined;
+  watcherValue: number | undefined;
+  permitValue: number | undefined;
+  rsnCollateralValue: number | undefined;
+  ergCollateralValue: number | undefined;
+  selectedCurrency: Currency | null = null;
 
   constructor(
     private watchersDataService: WatchersDataService,
     eventService: EventService,
+    private priceService: PriceService,
     navigationService: NavigationService,
     chainService: ChainService,
     storageService: StorageService,
@@ -46,6 +57,12 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   ) {
     super(eventService, navigationService, chainService, storageService, dataService, location);
   }
+
+  onCurrencyChange(): void {
+    localStorage.setItem('selectedCurrency', this.selectedCurrency as string);
+    this.currencyUpdate();
+  }
+
 
   setLockedAmounts(chainType: ChainType): void {
     this.chainLockedRSN[chainType] =
@@ -72,13 +89,49 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
         (accumulator ?? 0) + (currentValue ?? 0),
       0,
     );
+    this.currencyUpdate();
+
+  }
+
+  currencyUpdate() {
+    this.watcherValue = 0;
+    this.permitValue = 0;
+
+    this.priceService.convert(30000, "RSN", this.selectedCurrency ?? "").subscribe(c => {
+      this.rsnCollateralValue = c
+      this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
+    });
+
+    this.priceService.convert(3000, "RSN", this.selectedCurrency ?? "").subscribe(c => {
+      this.permitValue = c
+    });
+
+    this.priceService.convert(800, "ERG", this.selectedCurrency ?? "").subscribe(c => {
+      this.ergCollateralValue = c;
+      this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
+    });
+
+
+    this.priceService.convert(this.totalLockedERG ?? 0, "ERG", this.selectedCurrency ?? "").subscribe(l => {
+      this.totalLockedERGConverted = l;
+      this.totalLocked = (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
+    });
+    this.priceService.convert((this.totalLockedRSN ?? 0) + (3000 * (this.totalPermitCount ?? 0) ), "RSN", this.selectedCurrency ?? "").subscribe(l => {
+      this.totalLockedRSNConverted = l;
+      this.totalLocked = (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
+    });
   }
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
-    const watcherInfo$ = this.watchersDataService.getWatchersInfo();
 
- 
+    this.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
+    this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
+    this.currencyUpdate();
+
+
+
+    const watcherInfo$ = this.watchersDataService.getWatchersInfo();
 
     Object.values(ChainType).forEach((c) => {
       watcherInfo$

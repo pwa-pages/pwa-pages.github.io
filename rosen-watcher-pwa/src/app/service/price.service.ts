@@ -9,7 +9,7 @@ export interface CurrencyRates {
     eur: number;
     usd: number;
   };
-  "rosen-bridge": {
+  'rosen-bridge': {
     eur: number;
     usd: number;
   };
@@ -18,29 +18,24 @@ export interface CurrencyRates {
 @Injectable({
   providedIn: 'root',
 })
-
 export class PriceService {
-
-  constructor(private downloadService: DownloadService) { }
+  constructor(private downloadService: DownloadService) {}
   private currencyRates: Record<string, Record<string, number>> = {};
 
   public convert(amount: number, from: string, to: string): Observable<number> {
     return this.getPrices().pipe(
       map((rates: Record<string, Record<string, number>>) => {
-
         if (rates[from][to]) {
           return rates[from][to] * amount;
-        }
-        else {
+        } else {
           return (rates[from]['EUR'] / rates[to]['EUR']) * amount;
         }
-      })
+      }),
     );
   }
 
   private getPrices(): Observable<Record<string, Record<string, number>>> {
     const pricesUrl = `https://api.coingecko.com/api/v3/simple/price?ids=rosen-bridge,ergo&vs_currencies=eur,usd`;
-
 
     if (this.currencyRates['ERG']) {
       return of(this.currencyRates);
@@ -48,22 +43,17 @@ export class PriceService {
 
     this.currencyRates = {
       ERG: { EUR: 0, USD: 0 },
-      RSN: { EUR: 0, USD: 0 }
-    }
+      RSN: { EUR: 0, USD: 0 },
+    };
 
-    return this.downloadService
-      .downloadStream<CurrencyRates>(pricesUrl)
-      .pipe(
-        map((data: CurrencyRates) => {
-          this.currencyRates['ERG']['EUR'] = data.ergo.eur;
-          this.currencyRates['ERG']['USD'] = data.ergo.usd;
-          this.currencyRates['RSN']['EUR'] = data["rosen-bridge"].eur;
-          this.currencyRates['RSN']['USD'] = data["rosen-bridge"].usd;
-          return this.currencyRates;
-        }),
-      )
+    return this.downloadService.downloadStream<CurrencyRates>(pricesUrl).pipe(
+      map((data: CurrencyRates) => {
+        this.currencyRates['ERG']['EUR'] = data.ergo.eur;
+        this.currencyRates['ERG']['USD'] = data.ergo.usd;
+        this.currencyRates['RSN']['EUR'] = data['rosen-bridge'].eur;
+        this.currencyRates['RSN']['USD'] = data['rosen-bridge'].usd;
+        return this.currencyRates;
+      }),
+    );
   }
-
-
-
 }
