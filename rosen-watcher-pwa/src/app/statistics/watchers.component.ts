@@ -63,7 +63,6 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.currencyUpdate();
   }
 
-
   setLockedAmounts(chainType: ChainType): void {
     this.chainLockedRSN[chainType] =
       (this.chainPermitCount[chainType] ?? 0) * 3000 +
@@ -90,36 +89,44 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
       0,
     );
     this.currencyUpdate();
-
   }
 
   currencyUpdate() {
     this.watcherValue = 0;
     this.permitValue = 0;
 
-    this.priceService.convert(30000, "RSN", this.selectedCurrency ?? "").subscribe(c => {
-      this.rsnCollateralValue = c
+    this.priceService.convert(30000, 'RSN', this.selectedCurrency ?? '').subscribe((c) => {
+      this.rsnCollateralValue = c;
       this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
     });
 
-    this.priceService.convert(3000, "RSN", this.selectedCurrency ?? "").subscribe(c => {
-      this.permitValue = c
+    this.priceService.convert(3000, 'RSN', this.selectedCurrency ?? '').subscribe((c) => {
+      this.permitValue = c;
     });
 
-    this.priceService.convert(800, "ERG", this.selectedCurrency ?? "").subscribe(c => {
+    this.priceService.convert(800, 'ERG', this.selectedCurrency ?? '').subscribe((c) => {
       this.ergCollateralValue = c;
       this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
     });
 
-
-    this.priceService.convert(this.totalLockedERG ?? 0, "ERG", this.selectedCurrency ?? "").subscribe(l => {
-      this.totalLockedERGConverted = l;
-      this.totalLocked = (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
-    });
-    this.priceService.convert((this.totalLockedRSN ?? 0) + (3000 * (this.totalPermitCount ?? 0) ), "RSN", this.selectedCurrency ?? "").subscribe(l => {
-      this.totalLockedRSNConverted = l;
-      this.totalLocked = (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
-    });
+    this.priceService
+      .convert(this.totalLockedERG ?? 0, 'ERG', this.selectedCurrency ?? '')
+      .subscribe((l) => {
+        this.totalLockedERGConverted = l;
+        this.totalLocked =
+          (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
+      });
+    this.priceService
+      .convert(
+        (this.totalLockedRSN ?? 0) + 3000 * (this.totalPermitCount ?? 0),
+        'RSN',
+        this.selectedCurrency ?? '',
+      )
+      .subscribe((l) => {
+        this.totalLockedRSNConverted = l;
+        this.totalLocked =
+          (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
+      });
   }
 
   override async ngOnInit(): Promise<void> {
@@ -128,8 +135,6 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
     this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
     this.currencyUpdate();
-
-
 
     const watcherInfo$ = this.watchersDataService.getWatchersInfo();
 

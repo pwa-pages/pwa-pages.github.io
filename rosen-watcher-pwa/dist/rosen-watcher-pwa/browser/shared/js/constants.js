@@ -17,6 +17,13 @@ var Period;
     Period["Year"] = "year";
     Period["All"] = "All";
 })(Period || (Period = {}));
+var Currency;
+(function (Currency) {
+    Currency["EUR"] = "EUR";
+    Currency["USD"] = "USD";
+    Currency["ERG"] = "ERG";
+    Currency["RSN"] = "RSN";
+})(Currency || (Currency = {}));
 if (typeof window !== 'undefined') {
     window.rs_DbName = rs_DbName;
     window.rs_DbVersion = rs_DbVersion;
@@ -29,4 +36,5 @@ if (typeof window !== 'undefined') {
     window.rs_Input_Key = rs_Input_Key;
     window.rs_Address_Key = rs_Address_Key;
     window.Period = Period;
+    window.Currency = Currency;
 }

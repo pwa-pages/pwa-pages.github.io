@@ -73,7 +73,6 @@ li:last-child {
 
 .watcherscontainer div {
   color: rgb(110, 102, 102) !important;
-  
 }
 
 .linkcontainer {
@@ -190,13 +189,14 @@ a {
   border-left: 0.1vmax solid rgba(138, 128, 128);
 }
 
-.currencyrow, .watchervaluerow{
-  grid-column: span 6; 
+.currencyrow,
+.watchervaluerow {
+  grid-column: span 6;
   border-left: 0 !important;
-  padding-left:0 !important; 
+  padding-left: 0 !important;
 }
 
-.watchervaluerow{
+.watchervaluerow {
   margin-bottom: 3vh;
   font-size: 1vmax;
 }
@@ -214,10 +214,9 @@ a {
   grid-template-columns: 3vmax 1fr 1fr 1fr 1fr 1fr;
 }
 
-.fivecolumns{
-  grid-column: span 5; 
+.fivecolumns {
+  grid-column: span 5;
 }
-
 
 .watchersmaincontainer {
   display: flex;
@@ -359,12 +358,11 @@ button:active {
 .currency,
 .currency select {
   color: #555;
-  margin-top:1vh;
+  margin-top: 1vh;
   font-size: 1vmax;
   display: inline-block;
-  margin-bottom:2vh;
+  margin-bottom: 2vh;
 }
-
 
 .version-container {
   margin-top: -1.5vh;

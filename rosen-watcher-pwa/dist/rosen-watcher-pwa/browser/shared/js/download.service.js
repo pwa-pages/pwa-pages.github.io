@@ -91,36 +91,36 @@ class DownloadService {
         }
     }
     /*
-      processItems(items: TransactionItem[]): number {
-        let r = 0;
-        items.forEach((item) => {
-          
-          item.inputs.forEach((i) => {
-            i.assets.forEach((a) => {
-              if (a.name == 'rspv2CardanoRWT') {
-                r -= a.amount;
-              }
-            });
-          });
-          
-    
-          item.outputs.forEach((o) => {
-            if (!getChainType(o.address)) {
-              o.assets.forEach((a) => {
-                if (a.name == 'rspv2CardanoRWT') {
-                  r += a.amount;
-                  if (a.amount > 30000000) {
-                    console.log('wtfffffffffffffff ' + a.amount);
-                  }
-                }
-              });
+    processItems(items: TransactionItem[]): number {
+      let r = 0;
+      items.forEach((item) => {
+        
+        item.inputs.forEach((i) => {
+          i.assets.forEach((a) => {
+            if (a.name == 'rspv2CardanoRWT') {
+              r -= a.amount;
             }
           });
         });
-    
-        return r / 3000000;
-      }
-      */
+        
+  
+        item.outputs.forEach((o) => {
+          if (!getChainType(o.address)) {
+            o.assets.forEach((a) => {
+              if (a.name == 'rspv2CardanoRWT') {
+                r += a.amount;
+                if (a.amount > 30000000) {
+                  console.log('wtfffffffffffffff ' + a.amount);
+                }
+              }
+            });
+          }
+        });
+      });
+  
+      return r / 3000000;
+    }
+    */
     // Get Download Status for Address from IndexedDB
     async getDownloadStatus(address, db) {
         return new Promise((resolve, reject) => {

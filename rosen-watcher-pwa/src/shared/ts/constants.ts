@@ -24,14 +24,12 @@ enum Period {
   All = 'All',
 }
 
-
 enum Currency {
   EUR = 'EUR',
   USD = 'USD',
   ERG = 'ERG',
   RSN = 'RSN',
 }
-
 
 if (typeof window !== 'undefined') {
   (window as any).rs_DbName = rs_DbName;

@@ -5,18 +5,11 @@
   </div>
 </div>
 
-
-
 <div class="watchersmaincontainer main-content">
-
-
-
   <div class="watcherscontainer">
-
-    
     <div class="currencyrow">
       <div class="currency">
-        <label for="currencySelect">Select currency: </label>
+        <label for="currencySelect">Select currency:</label>
         <select id="currencySelect" [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
           <option value="EUR">Euro</option>
           <option value="USD">US Dollar</option>
@@ -25,14 +18,15 @@
         </select>
       </div>
     </div>
-    
+
     <div class="watchervaluerow">
-     Watcher requirements (collateral): 30,000 RSN + 800 ERG = {{watcherValue | number: '1.0-0'}} {{this.selectedCurrency}}
+      Watcher requirements (collateral): 30,000 RSN + 800 ERG = {{watcherValue | number: '1.0-0'}}
+      {{this.selectedCurrency}}
     </div>
     <div class="watchervaluerow">
-      Permit value (minimal 1 per watcher): 3,000 RSN = {{permitValue | number: '1.0-0'}} {{this.selectedCurrency}}
-     </div>
-    
+      Permit value (minimal 1 per watcher): 3,000 RSN = {{permitValue | number: '1.0-0'}}
+      {{this.selectedCurrency}}
+    </div>
 
     <div class="watcherheader first"></div>
     <div class="watcherheader">Chain</div>
@@ -87,7 +81,10 @@
     <div class="fivecolumns">&nbsp;</div>
 
     <div class="watchersdispl"></div>
-    <div class="fivecolumns">Total locked value: {{totalLocked | number: '1.0-0'}} {{this.selectedCurrency}} (permits + collateral)</div>
+    <div class="fivecolumns">
+      Total locked value: {{totalLocked | number: '1.0-0'}} {{this.selectedCurrency}} <br/> (permits +
+      collateral)
+    </div>
 
     <br />
   </div>
