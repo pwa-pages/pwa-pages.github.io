@@ -198,7 +198,7 @@ a {
 
 .watchervaluerow {
   margin-bottom: 3vh;
-  font-size: 1vmax;
+  font-size: 1.6vmax;
 }
 
 .watcherscontainer .watchersdispl {
@@ -359,7 +359,7 @@ button:active {
 .currency select {
   color: #555;
   margin-top: 1vh;
-  font-size: 1vmax;
+  font-size: 1.6vmax;
   display: inline-block;
   margin-bottom: 2vh;
 }
