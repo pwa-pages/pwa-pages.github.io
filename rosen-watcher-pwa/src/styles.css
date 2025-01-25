@@ -195,6 +195,7 @@ a {
   grid-column: span 6;
   border-left: 0 !important;
   padding-left: 0 !important;
+  margin-bottom: 1vmax;
 }
 
 .watchervaluerow {
@@ -361,25 +362,23 @@ button:active {
   color: #555;
   font-size: 1.3vmax;
   display: inline-block;
-  
 }
 
-.currencyrow{
+.currencyrow {
   padding-right: 0 !important;
 }
 
-.collateralvalues{
-  padding-left: .3vmax !important;
-  border: .1vmax solid darkgrey !important;
+.collateralvalues {
+  padding-left: 0.3vmax !important;
+  border: 0.1vmax solid darkgrey !important;
   background: lightgrey;
 }
 
-.watcherrequirements{
-  float:left;
-
+.watcherrequirements {
+  float: left;
 }
 
-.currency{
+.currency {
   float: right;
 }
 

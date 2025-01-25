@@ -7,12 +7,8 @@
 
 <div class="watchersmaincontainer main-content">
   <div class="watcherscontainer">
-
-
     <div class="currencyrow">
-      <div class="watcherrequirements">
-        Watcher requirements:
-      </div>
+      <div class="watcherrequirements">Watcher requirements:</div>
       <div class="currency">
         <label for="currencySelect">Currency:</label>
         <select id="currencySelect" [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
@@ -26,14 +22,13 @@
 
     <div class="watchervaluerow collateralvalues">
       Watcher collateral: 30,000 RSN + 800 ERG = {{watcherValue | number: '1.0-0'}}
-      {{this.selectedCurrency}}<br/>
-    
+      {{this.selectedCurrency}}
+      <br />
+
       Permit value: 3,000 RSN = {{permitValue | number: '1.0-0'}} {{this.selectedCurrency}}
     </div>
 
-    <div class="fullrow">
-      Watchers locked values:
-    </div>
+    <div class="fullrow">Watchers stats:</div>
 
     <div class="watcherheader first"></div>
     <div class="watcherheader">Chain</div>
