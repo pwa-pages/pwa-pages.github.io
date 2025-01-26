@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import '../../shared/ts/constants';
+import { SwUpdate } from '@angular/service-worker';
 import { filter } from 'rxjs/operators';
 
 @Injectable({
@@ -8,9 +9,13 @@ import { filter } from 'rxjs/operators';
 })
 export class NavigationService {
   public currentNavigationIndex = 0;
+
   navigationItems: NavigationItem[] = [];
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private swUpdate: SwUpdate,
+  ) {
     this.navigationItems.push({ route: '/statistics' });
     this.navigationItems.push({ route: '/performance' });
     this.navigationItems.push({ route: '/watchers' });
@@ -29,6 +34,15 @@ export class NavigationService {
     const index = this.navigationItems.findIndex((item) => url.startsWith(item.route));
     if (index !== -1) {
       this.currentNavigationIndex = index;
+
+      if (this.swUpdate.isEnabled) {
+        this.swUpdate.checkForUpdate().then((isUpdateAvailable) => {
+          if (isUpdateAvailable) {
+            console.log('Application has been updated, reloading screen.');
+            // window.location.reload();
+          }
+        });
+      }
     }
   }
 
