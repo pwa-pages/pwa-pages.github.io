@@ -9,6 +9,9 @@ const rs_FullDownloadsBatchSize = 200;
 const rs_StartFrom: Date = new Date('2024-01-01');
 const rs_Input_Key = ['boxId', 'outputAddress'];
 const rs_Address_Key = 'address';
+const rs_PermitCost = 3000;
+const rs_WatcherCollateralRSN = 30000;
+const rs_WatcherCollateralERG = 800;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface DateNumberPoint {
@@ -42,6 +45,9 @@ if (typeof window !== 'undefined') {
   (window as any).rs_StartFrom = rs_StartFrom;
   (window as any).rs_Input_Key = rs_Input_Key;
   (window as any).rs_Address_Key = rs_Address_Key;
+  (window as any).rs_PermitCost = rs_PermitCost;
+  (window as any).rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
+  (window as any).rs_WatcherCollateralERG = rs_WatcherCollateralERG;
   (window as any).Period = Period;
   (window as any).Currency = Currency;
 }

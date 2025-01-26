@@ -37,7 +37,7 @@ export class WatchersDataService {
           if (data.tokens) {
             const tokenData = data.tokens.find((token: Token) => token.tokenId === this.rsnToken);
             if (tokenData) {
-              tokenData.amount /= 3000 * Math.pow(10, tokenData.decimals);
+              tokenData.amount /= rs_PermitCost * Math.pow(10, tokenData.decimals);
               tokenData.amount = Math.floor(tokenData.amount);
             }
           }

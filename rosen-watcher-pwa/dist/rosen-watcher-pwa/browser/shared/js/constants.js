@@ -9,6 +9,9 @@ const rs_FullDownloadsBatchSize = 200;
 const rs_StartFrom = new Date('2024-01-01');
 const rs_Input_Key = ['boxId', 'outputAddress'];
 const rs_Address_Key = 'address';
+const rs_PermitCost = 3000;
+const rs_WatcherCollateralRSN = 30000;
+const rs_WatcherCollateralERG = 800;
 var Period;
 (function (Period) {
     Period["Day"] = "Day";
@@ -35,6 +38,9 @@ if (typeof window !== 'undefined') {
     window.rs_StartFrom = rs_StartFrom;
     window.rs_Input_Key = rs_Input_Key;
     window.rs_Address_Key = rs_Address_Key;
+    window.rs_PermitCost = rs_PermitCost;
+    window.rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
+    window.rs_WatcherCollateralERG = rs_WatcherCollateralERG;
     window.Period = Period;
     window.Currency = Currency;
 }

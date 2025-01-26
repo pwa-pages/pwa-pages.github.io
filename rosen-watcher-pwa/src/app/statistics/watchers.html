@@ -21,11 +21,12 @@
     </div>
 
     <div class="watchervaluerow collateralvalues">
-      Watcher collateral: 30,000 RSN + 800 ERG = {{watcherValue | number: '1.0-0'}}
-      {{this.selectedCurrency}}
+      Watcher collateral: {{rs_WatcherCollateralRSN | number: '1.0-0'}} RSN +
+      {{rs_WatcherCollateralERG}} ERG = {{watcherValue | number: '1.0-0'}} {{this.selectedCurrency}}
       <br />
 
-      Permit value: 3,000 RSN = {{permitValue | number: '1.0-0'}} {{this.selectedCurrency}}
+      Permit value: {{rs_PermitCost | number: '1.0-0'}} RSN = {{permitValue | number: '1.0-0'}}
+      {{this.selectedCurrency}}
     </div>
 
     <div class="fullrow">Watchers stats:</div>

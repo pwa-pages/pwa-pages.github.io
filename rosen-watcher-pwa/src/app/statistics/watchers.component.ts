@@ -32,6 +32,9 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   chainLockedRSN = createChainNumber();
   chainLockedERG = createChainNumber();
 
+  rs_PermitCost = rs_PermitCost;
+  rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
+  rs_WatcherCollateralERG = rs_WatcherCollateralERG;
   totalWatcherCount: number | undefined;
   totalPermitCount: number | undefined;
   totalLockedRSN: number | undefined;
@@ -65,9 +68,10 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
   setLockedAmounts(chainType: ChainType): void {
     this.chainLockedRSN[chainType] =
-      (this.chainPermitCount[chainType] ?? 0) * 3000 +
-      (this.chainWatcherCount[chainType] ?? 0) * 30000;
-    this.chainLockedERG[chainType] = (this.chainWatcherCount[chainType] ?? 0) * 800;
+      (this.chainPermitCount[chainType] ?? 0) * rs_PermitCost +
+      (this.chainWatcherCount[chainType] ?? 0) * rs_WatcherCollateralRSN;
+    this.chainLockedERG[chainType] =
+      (this.chainWatcherCount[chainType] ?? 0) * rs_WatcherCollateralERG;
     this.totalWatcherCount = Object.values(this.chainWatcherCount).reduce(
       (accumulator: number | undefined, currentValue: number | undefined) =>
         (accumulator ?? 0) + (currentValue ?? 0),
@@ -95,19 +99,23 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.watcherValue = 0;
     this.permitValue = 0;
 
-    this.priceService.convert(30000, 'RSN', this.selectedCurrency ?? '').subscribe((c) => {
-      this.rsnCollateralValue = c;
-      this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
-    });
+    this.priceService
+      .convert(rs_WatcherCollateralRSN, 'RSN', this.selectedCurrency ?? '')
+      .subscribe((c) => {
+        this.rsnCollateralValue = c;
+        this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
+      });
 
-    this.priceService.convert(3000, 'RSN', this.selectedCurrency ?? '').subscribe((c) => {
+    this.priceService.convert(rs_PermitCost, 'RSN', this.selectedCurrency ?? '').subscribe((c) => {
       this.permitValue = c;
     });
 
-    this.priceService.convert(800, 'ERG', this.selectedCurrency ?? '').subscribe((c) => {
-      this.ergCollateralValue = c;
-      this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
-    });
+    this.priceService
+      .convert(rs_WatcherCollateralERG, 'ERG', this.selectedCurrency ?? '')
+      .subscribe((c) => {
+        this.ergCollateralValue = c;
+        this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
+      });
 
     this.priceService
       .convert(this.totalLockedERG ?? 0, 'ERG', this.selectedCurrency ?? '')
@@ -118,7 +126,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
       });
     this.priceService
       .convert(
-        (this.totalLockedRSN ?? 0) + 3000 * (this.totalPermitCount ?? 0),
+        (this.totalLockedRSN ?? 0) + rs_PermitCost * (this.totalPermitCount ?? 0),
         'RSN',
         this.selectedCurrency ?? '',
       )
