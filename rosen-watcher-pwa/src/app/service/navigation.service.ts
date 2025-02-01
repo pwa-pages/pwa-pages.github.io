@@ -47,7 +47,7 @@ export class NavigationService {
       localStorage.setItem('versionReload', this.latestVersionUpdate);
       this.latestVersionUpdate = null;
       console.log('Application has been updated, reloading screen.');
-      window.location.reload();
+      //window.location.reload();
     }
   }
 
