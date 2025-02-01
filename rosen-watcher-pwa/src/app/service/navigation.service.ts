@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import '../../shared/ts/constants';
-import { SwUpdate } from '@angular/service-worker';
 import { filter } from 'rxjs/operators';
+import { EventService, EventType } from './event.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +11,11 @@ export class NavigationService {
   public currentNavigationIndex = 0;
 
   navigationItems: NavigationItem[] = [];
+  latestVersionUpdate: string | null = null;
 
   constructor(
     private router: Router,
-    private swUpdate: SwUpdate,
+    private eventService: EventService,
   ) {
     this.navigationItems.push({ route: '/statistics' });
     this.navigationItems.push({ route: '/performance' });
@@ -28,22 +29,32 @@ export class NavigationService {
         const url = event.urlAfterRedirects;
         this.updateCurrentNavigationIndex(url);
       });
+
+    this.eventService.subscribeToEvent<string>(EventType.VersionUpdated, (v) => {
+      this.latestVersionUpdate = v;
+
+      if (this.currentNavigationIndex >= 0) {
+        this.checkForReload();
+      }
+    });
+  }
+
+  private checkForReload() {
+    if (
+      this.latestVersionUpdate &&
+      localStorage.getItem('versionReload') != this.latestVersionUpdate
+    ) {
+      localStorage.setItem('versionReload', this.latestVersionUpdate);
+      this.latestVersionUpdate = null;
+      console.log('Application has been updated, reloading screen.');
+      window.location.reload();
+    }
   }
 
   private updateCurrentNavigationIndex(url: string): void {
     const index = this.navigationItems.findIndex((item) => url.startsWith(item.route));
-    if (index !== -1) {
-      this.currentNavigationIndex = index;
-
-      if (this.swUpdate.isEnabled) {
-        this.swUpdate.checkForUpdate().then((isUpdateAvailable) => {
-          if (isUpdateAvailable) {
-            console.log('Application has been updated, reloading screen.');
-            // window.location.reload();
-          }
-        });
-      }
-    }
+    this.currentNavigationIndex = index;
+    this.checkForReload();
   }
 
   public getCurrentNavigationItem(): NavigationItem {

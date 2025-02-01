@@ -85,7 +85,7 @@ export class SettingsComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigate(['main']);
+    this.router.navigate(['statistics']);
   }
 
   async ngOnInit(): Promise<void> {
