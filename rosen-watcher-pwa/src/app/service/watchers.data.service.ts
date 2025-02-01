@@ -28,6 +28,10 @@ export class WatchersDataService {
 
   getPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
     const address = permitAddresses[chainType];
+    return this.downloadPermitInfo(address, this.rsnToken, null);
+  }
+
+  private downloadPermitInfo(address: string, tokenId: string | null, tokenName: string | null) {
     const permitsUrl = `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/confirmed`;
 
     return this.downloadService
@@ -35,7 +39,11 @@ export class WatchersDataService {
       .pipe(
         map((data: { tokens: Token[] }) => {
           if (data.tokens) {
-            const tokenData = data.tokens.find((token: Token) => token.tokenId === this.rsnToken);
+            const tokenData = data.tokens.find(
+              (token: Token) =>
+                (tokenId && token.tokenId === tokenId) || (tokenName && token.name === tokenName),
+            );
+            console.log(permitsUrl);
             if (tokenData) {
               tokenData.amount /= rs_PermitCost * Math.pow(10, tokenData.decimals);
               tokenData.amount = Math.floor(tokenData.amount);
@@ -46,8 +54,21 @@ export class WatchersDataService {
       )
       .pipe(
         map((result) => {
-          return result.tokens.find((token: Token) => token.tokenId === this.rsnToken);
+          return result.tokens.find(
+            (token: Token) =>
+              (tokenId && token.tokenId === tokenId) || (tokenName && token.name === tokenName),
+          );
         }),
       );
+  }
+
+  getTriggerPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
+    const address = permitTriggerAddresses[chainType];
+    return this.downloadPermitInfo(address, null, 'rspv2' + chainType + 'RWT');
+  }
+
+  getBulkPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
+    const address = permitBulkAddresses[chainType];
+    return this.downloadPermitInfo(address, null, 'rspv2' + chainType + 'RWT');
   }
 }

@@ -34,35 +34,35 @@
     <div class="watcherheader first"></div>
     <div class="watcherheader">Chain</div>
     <div class="watcherheader">Watchers</div>
-    <div class="watcherheader">Permits</div>
+    <div class="watcherheader">Permits (Active)</div>
     <div class="watcherheader">Locked RSN</div>
     <div class="watcherheader">Locked ERG</div>
 
     <div class="Bitcoin watchersdispl"></div>
     <div>Bitcoin</div>
     <div>{{chainWatcherCount['Bitcoin']}}</div>
-    <div>{{chainPermitCount['Bitcoin']}}</div>
+    <div>{{chainPermitCount['Bitcoin']}} ({{activePermitCount['Bitcoin']}})</div>
     <div>{{chainLockedRSN['Bitcoin'] | number: '1.0-0'}}</div>
     <div>{{chainLockedERG['Bitcoin'] | number: '1.0-0'}}</div>
 
     <div class="Ethereum watchersdispl"></div>
     <div>Ethereum</div>
     <div>{{chainWatcherCount['Ethereum']}}</div>
-    <div>{{chainPermitCount['Ethereum']}}</div>
+    <div>{{chainPermitCount['Ethereum']}} ({{activePermitCount['Ethereum']}})</div>
     <div>{{chainLockedRSN['Ethereum'] | number: '1.0-0'}}</div>
     <div>{{chainLockedERG['Ethereum'] | number: '1.0-0'}}</div>
 
     <div class="Cardano watchersdispl"></div>
     <div>Cardano</div>
     <div>{{chainWatcherCount['Cardano']}}</div>
-    <div>{{chainPermitCount['Cardano']}}</div>
+    <div>{{chainPermitCount['Cardano']}} ({{activePermitCount['Cardano']}})</div>
     <div>{{chainLockedRSN['Cardano'] | number: '1.0-0'}}</div>
     <div>{{chainLockedERG['Cardano'] | number: '1.0-0'}}</div>
 
     <div class="Ergo watchersdispl"></div>
     <div>Ergo</div>
     <div>{{chainWatcherCount['Ergo']}}</div>
-    <div>{{chainPermitCount['Ergo']}}</div>
+    <div>{{chainPermitCount['Ergo']}} ({{activePermitCount['Ergo']}})</div>
     <div>{{chainLockedRSN['Ergo'] | number: '1.0-0'}}</div>
     <div>{{chainLockedERG['Ergo'] | number: '1.0-0'}}</div>
 
@@ -76,7 +76,7 @@
     <div class="watchersdispl"></div>
     <div>Total</div>
     <div>{{totalWatcherCount}}</div>
-    <div>{{totalPermitCount}}</div>
+    <div>{{totalPermitCount}} ({{totalActivePermitCount}})</div>
     <div>{{totalLockedRSN | number: '1.0-0'}}</div>
     <div>{{totalLockedERG | number: '1.0-0'}}</div>
 
