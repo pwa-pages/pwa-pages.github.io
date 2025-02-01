@@ -96,7 +96,7 @@ export class NavigationComponent implements OnInit {
   }
 
   isStatisticsActive(): boolean {
-    return this.navigationService.currentNavigationIndex == 0;
+    return this.navigationService.currentNavigationIndex <= 0;
   }
 
   isPerformanceActive(): boolean {
