@@ -66,75 +66,55 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.currencyUpdate();
   }
 
+  private getValue(map: Record<ChainType, number | undefined>, chainType: ChainType, multiplier: number): number {
+    return (map[chainType] ?? 0) * multiplier;
+  }
+
+  private updateTotal(map: Record<ChainType, number | undefined>): number | undefined {
+    return Object.values(map).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
+  }
+
+  private convertCurrencies(): void {
+    const conversions = [
+      { amount: rs_WatcherCollateralRSN, from: 'RSN', callback: (c: number) => (this.rsnCollateralValue = c) },
+      { amount: rs_WatcherCollateralERG, from: 'ERG', callback: (c: number) => (this.ergCollateralValue = c) },
+      { amount: rs_PermitCost, from: 'RSN', callback: (c: number) => (this.permitValue = c) },
+      { amount: this.totalLockedERG ?? 0, from: 'ERG', callback: (l: number) => (this.totalLockedERGConverted = l) },
+      { amount: (this.totalLockedRSN ?? 0) + rs_PermitCost * (this.totalPermitCount ?? 0), from: 'RSN', callback: (l: number) => (this.totalLockedRSNConverted = l) }
+    ];
+    
+    conversions.forEach(({ amount, from, callback }) => {
+      this.priceService.convert(amount, from, this.selectedCurrency ?? '').subscribe(callback);
+    });
+  }
+
+  private updateTotalLocked(): void {
+    this.totalLocked = (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
+  }
+
   setLockedAmounts(chainType: ChainType): void {
     this.chainLockedRSN[chainType] =
-      (this.chainPermitCount[chainType] ?? 0) * rs_PermitCost +
-      (this.chainWatcherCount[chainType] ?? 0) * rs_WatcherCollateralRSN;
-    this.chainLockedERG[chainType] =
-      (this.chainWatcherCount[chainType] ?? 0) * rs_WatcherCollateralERG;
-    this.totalWatcherCount = Object.values(this.chainWatcherCount).reduce(
-      (accumulator: number | undefined, currentValue: number | undefined) =>
-        (accumulator ?? 0) + (currentValue ?? 0),
-      0,
-    );
-    this.totalPermitCount = Object.values(this.chainPermitCount).reduce(
-      (accumulator: number | undefined, currentValue: number | undefined) =>
-        (accumulator ?? 0) + (currentValue ?? 0),
-      0,
-    );
-    this.totalLockedRSN = Object.values(this.chainLockedRSN).reduce(
-      (accumulator: number | undefined, currentValue: number | undefined) =>
-        (accumulator ?? 0) + (currentValue ?? 0),
-      0,
-    );
-    this.totalLockedERG = Object.values(this.chainLockedERG).reduce(
-      (accumulator: number | undefined, currentValue: number | undefined) =>
-        (accumulator ?? 0) + (currentValue ?? 0),
-      0,
-    );
+      this.getValue(this.chainPermitCount, chainType, rs_PermitCost) +
+      this.getValue(this.chainWatcherCount, chainType, rs_WatcherCollateralRSN);
+
+    this.chainLockedERG[chainType] = this.getValue(this.chainWatcherCount, chainType, rs_WatcherCollateralERG);
+
+    this.totalWatcherCount = this.updateTotal(this.chainWatcherCount);
+    this.totalPermitCount = this.updateTotal(this.chainPermitCount);
+    this.totalLockedRSN = this.updateTotal(this.chainLockedRSN);
+    this.totalLockedERG = this.updateTotal(this.chainLockedERG);
+
     this.currencyUpdate();
   }
 
-  currencyUpdate() {
+  currencyUpdate(): void {
     this.watcherValue = 0;
     this.permitValue = 0;
 
-    this.priceService
-      .convert(rs_WatcherCollateralRSN, 'RSN', this.selectedCurrency ?? '')
-      .subscribe((c) => {
-        this.rsnCollateralValue = c;
-        this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
-      });
-
-    this.priceService.convert(rs_PermitCost, 'RSN', this.selectedCurrency ?? '').subscribe((c) => {
-      this.permitValue = c;
-    });
-
-    this.priceService
-      .convert(rs_WatcherCollateralERG, 'ERG', this.selectedCurrency ?? '')
-      .subscribe((c) => {
-        this.ergCollateralValue = c;
-        this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
-      });
-
-    this.priceService
-      .convert(this.totalLockedERG ?? 0, 'ERG', this.selectedCurrency ?? '')
-      .subscribe((l) => {
-        this.totalLockedERGConverted = l;
-        this.totalLocked =
-          (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
-      });
-    this.priceService
-      .convert(
-        (this.totalLockedRSN ?? 0) + rs_PermitCost * (this.totalPermitCount ?? 0),
-        'RSN',
-        this.selectedCurrency ?? '',
-      )
-      .subscribe((l) => {
-        this.totalLockedRSNConverted = l;
-        this.totalLocked =
-          (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
-      });
+    this.convertCurrencies();
+    this.updateTotalLocked();
+    
+    this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
   }
 
   override async ngOnInit(): Promise<void> {
