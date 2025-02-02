@@ -50,7 +50,7 @@ export class NavigationService {
       setTimeout(() => {
         console.log('Doing the reload.');
         window.location.reload();
-      }, 10000);
+      }, 2000);
     }
   }
 
