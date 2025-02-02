@@ -9,7 +9,6 @@
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index.html",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js",
@@ -29,7 +28,20 @@
       }
     }
   ],
+  "dataGroups": [
+    {
+      "name": "index-html-group",
+      "urls": [
+        "/index.html"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxAge": "1d",
+        "maxSize": 1
+      }
+    }
+  ],
   "appData": {
-    "version": "3.25.6"
+    "version": "3.25.7"
   }
 }

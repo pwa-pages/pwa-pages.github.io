@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1738527616872,
+  "timestamp": 1738527870599,
   "appData": {
-    "version": "3.25.6"
+    "version": "3.25.7"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -15,7 +15,6 @@
       },
       "urls": [
         "./favicon.ico",
-        "./index.html",
         "./main-KZRKPSUG.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
@@ -65,7 +64,21 @@
       "patterns": []
     }
   ],
-  "dataGroups": [],
+  "dataGroups": [
+    {
+      "name": "index-html-group",
+      "patterns": [
+        "\\/index\\.html"
+      ],
+      "strategy": "freshness",
+      "maxSize": 1,
+      "maxAge": 86400000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
   "hashTable": {
     "./assets/icons/icon-512x512.png": "70bcb04083de346145fa5a506812f23b0ed80772",
     "./assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
@@ -77,7 +90,6 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "83e2af2fc6379cd2dabb97a3c70b6951bf4f552f",
     "./main-KZRKPSUG.js": "1613d6d942f17193fb4c5d23d064f45e4bf30998",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
