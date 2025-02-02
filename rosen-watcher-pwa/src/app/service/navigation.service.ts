@@ -32,10 +32,7 @@ export class NavigationService {
 
     this.eventService.subscribeToEvent<string>(EventType.VersionUpdated, (v) => {
       this.latestVersionUpdate = v;
-
-      if (this.currentNavigationIndex >= 0) {
-        this.checkForReload();
-      }
+      this.checkForReload();
     });
   }
 
