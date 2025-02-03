@@ -32,7 +32,7 @@ export class NavigationService {
 
     this.eventService.subscribeToEvent<string>(EventType.VersionUpdated, (v) => {
       this.latestVersionUpdate = v;
-      this.checkForReload();
+      //this.checkForReload();
     });
   }
 
@@ -52,8 +52,8 @@ export class NavigationService {
   }
 
   private updateCurrentNavigationIndex(url: string): void {
-    var index = this.navigationItems.findIndex((item) => url.startsWith(item.route));
-    if(index == -1){
+    let index = this.navigationItems.findIndex((item) => url.startsWith(item.route));
+    if (index == -1) {
       index = 0;
     }
     this.currentNavigationIndex = index;
