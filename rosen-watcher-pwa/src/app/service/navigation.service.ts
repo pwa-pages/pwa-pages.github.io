@@ -47,12 +47,15 @@ export class NavigationService {
       setTimeout(() => {
         console.log('Doing the reload.');
         window.location.reload();
-      }, 2000);
+      }, 1000);
     }
   }
 
   private updateCurrentNavigationIndex(url: string): void {
-    const index = this.navigationItems.findIndex((item) => url.startsWith(item.route));
+    var index = this.navigationItems.findIndex((item) => url.startsWith(item.route));
+    if(index == -1){
+      index = 0;
+    }
     this.currentNavigationIndex = index;
     this.checkForReload();
   }
