@@ -8,6 +8,11 @@ importScripts('./shared/js/rosen-download-worker.js');
 importScripts('./ngsw-worker.js');
 
 self.addEventListener('install', (_) => {
-    self.skipWaiting();  
-  });
-  
+  console.log('[Service Worker] Installing new version...calling skipWaiting()');
+  self.skipWaiting();
+  console.log('[Service Worker] Installing new version...done skipWaiting()');
+});
+
+self.addEventListener('activate', (_) => {
+  console.log('[Service Worker] Activated new version!');
+});
