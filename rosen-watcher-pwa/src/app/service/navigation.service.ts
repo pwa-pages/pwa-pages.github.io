@@ -45,7 +45,7 @@ export class NavigationService {
       this.latestVersionUpdate = null;
       console.log('Application has been updated, reloading screen.');
       setTimeout(() => {
-        console.log('Doing the reload...');
+        console.log('Doing the reload....');
         window.location.reload();
       }, 1000);
     }
