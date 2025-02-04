@@ -6041,3 +6041,11 @@ WARNING: Unsupported notification method: metals/windowStateDidChange
 2025.02.04 19:41:50 WARN  Build server is not auto-connectable.
 Feb 04, 2025 7:41:52 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:42:54 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:46:59 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:46:59 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:47:25 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
