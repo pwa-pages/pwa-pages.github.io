@@ -6019,3 +6019,25 @@ Feb 04, 2025 7:39:09 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notif
 WARNING: Unsupported notification method: metals/windowStateDidChange
 Feb 04, 2025 7:39:12 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:40:01 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:40:26 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:40:27 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:40:29 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:40:41 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:40:42 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 04, 2025 7:40:56 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+2025.02.04 19:41:04 INFO  Shutting down server
+2025.02.04 19:41:04 INFO  shutting down Metals
+2025.02.04 19:41:04 INFO  Exiting server
+2025.02.04 19:41:48 INFO  Started: Metals version 1.5.1 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+2025.02.04 19:41:50 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2025.02.04 19:41:50 WARN  Build server is not auto-connectable.
+Feb 04, 2025 7:41:52 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
