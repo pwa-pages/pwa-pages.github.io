@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1738694346393,
+  "timestamp": 1738694388644,
   "appData": {
     "version": "3.27.4.4"
   },
@@ -15,7 +15,7 @@
       },
       "urls": [
         "./favicon.ico",
-        "./main-GWIZOV5D.js",
+        "./main-GP64JUZY.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
         "./rosen-ngsw-worker.js",
@@ -90,7 +90,7 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./main-GWIZOV5D.js": "ae94f32308dcf98d698ee165ea630b67f4d4dd1e",
+    "./main-GP64JUZY.js": "351487302be8f4d5b574f276a85ac4392ad6e7ec",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
     "./media/cardano-LICXQYGO.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
