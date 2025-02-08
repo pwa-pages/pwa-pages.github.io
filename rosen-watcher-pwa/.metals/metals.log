@@ -6164,3 +6164,7 @@ Feb 08, 2025 4:07:13 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notif
 WARNING: Unsupported notification method: metals/windowStateDidChange
 Feb 08, 2025 4:07:16 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 08, 2025 4:08:08 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
+Feb 08, 2025 4:08:13 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+WARNING: Unsupported notification method: metals/windowStateDidChange
