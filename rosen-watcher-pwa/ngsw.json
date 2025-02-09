@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1739027302738,
+  "timestamp": 1739089844390,
   "appData": {
-    "version": "3.28.0"
+    "version": "3.28.1"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -48,6 +48,7 @@
         "./assets/images/dogecoin.png",
         "./assets/images/ergo.png",
         "./assets/images/ethereum.png",
+        "./assets/test.html",
         "./media/bitcoin-R7IFWMJM.png",
         "./media/cardano-LICXQYGO.png",
         "./media/ergo-4FSUZRBU.png",
@@ -89,6 +90,7 @@
     "./assets/images/dogecoin.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
+    "./assets/test.html": "ab5d9d82488c11a676134148ff2e717acecadb7d",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
     "./main-OGVNEJM7.js": "dd8405c3a353f8d0601b0c762bdcdc60d9505c0f",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
