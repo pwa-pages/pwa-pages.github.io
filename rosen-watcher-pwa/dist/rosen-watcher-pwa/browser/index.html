@@ -15,23 +15,27 @@
   <body>
     <app-root></app-root>
     <noscript>Please enable JavaScript to continue using this application...</noscript>
-  <script src="./polyfills-FFHMD2TL.js" type="module"></script><script src="./main-OGVNEJM7.js" type="module"></script></body>
+  <script src="./polyfills-FFHMD2TL.js" type="module"></script><script src="./main-KKSSWQPL.js" type="module"></script></body>
 
   <script>
-    window.addEventListener('error', function (event) {
-      if (event.target.tagName === 'SCRIPT') {
-        let errorMessage = document.getElementById('error-message');
-        let failedSrc = event.target.src || 'Unknown script';
-        
-        let listItem = document.createElement('div');
-        listItem.textContent = `Failed to load: ${failedSrc}`;
-        errorMessage.appendChild(listItem);
+    window.addEventListener(
+      'error',
+      function (event) {
+        if (event.target.tagName === 'SCRIPT') {
+          let errorMessage = document.getElementById('error-message');
+          let failedSrc = event.target.src || 'Unknown script';
 
-        listItem = document.createElement('div');
-        listItem.textContent = `Please try reloading the page, or reloading the installed app`;
-        errorMessage.appendChild(listItem);
-      }
-    }, true);
+          let listItem = document.createElement('div');
+          listItem.textContent = `Failed to load: ${failedSrc}`;
+          errorMessage.appendChild(listItem);
+
+          listItem = document.createElement('div');
+          listItem.textContent = `Please try reloading the page, or reloading the installed app`;
+          errorMessage.appendChild(listItem);
+        }
+      },
+      true,
+    );
   </script>
-  <div id="error-message" style="color: red;"></div>
+  <div id="error-message" style="color: red"></div>
 </html>
