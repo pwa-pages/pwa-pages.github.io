@@ -195,8 +195,6 @@ export class ChartService {
     targetPoints: number,
     adaptExtremes: boolean,
   ): DateNumberPoint[] {
-    
-    
     if (data.length == 0) {
       return [];
     }
@@ -262,8 +260,8 @@ export class ChartService {
     }
 
     points = newPoints;
-    if(points.length <= 1 && data.length > 1){
-      points = [data[0], data[data.length-1]];
+    if (points.length <= 1 && data.length > 1) {
+      points = [data[0], data[data.length - 1]];
     }
 
     return points;

@@ -5,7 +5,7 @@
     {
       "name": "app",
       "installMode": "prefetch",
-      "updateMode": "prefetch", 
+      "updateMode": "prefetch",
       "resources": {
         "files": [
           "/favicon.ico",
@@ -13,7 +13,7 @@
           "/manifest.webmanifest",
           "/*.css",
           "/*.js",
-         "/shared/js/**/*.js"
+          "/shared/js/**/*.js"
         ]
       }
     },
@@ -36,13 +36,14 @@
         "/index.html"
       ],
       "cacheConfig": {
-        "strategy": "freshness",
-        "maxAge": "1d",
-        "maxSize": 1
+        "strategy": "performance",
+        "maxAge": "0s",
+        "maxSize": 1,
+        "timeout": "0s"
       }
     }
   ],
   "appData": {
-    "version": "3.28.2"
+    "version": "3.28.3"
   }
 }

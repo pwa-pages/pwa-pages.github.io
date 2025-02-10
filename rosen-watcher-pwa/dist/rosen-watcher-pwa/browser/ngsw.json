@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1739198110187,
+  "timestamp": 1739198594795,
   "appData": {
-    "version": "3.28.2"
+    "version": "3.28.3"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -71,9 +71,10 @@
       "patterns": [
         "\\/index\\.html"
       ],
-      "strategy": "freshness",
+      "strategy": "performance",
       "maxSize": 1,
-      "maxAge": 86400000,
+      "maxAge": 0,
+      "timeoutMs": 0,
       "cacheQueryOptions": {
         "ignoreVary": true
       },
