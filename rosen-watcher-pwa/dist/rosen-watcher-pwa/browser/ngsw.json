@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1739645545114,
+  "timestamp": 1739645788828,
   "appData": {
-    "version": "3.30.8"
+    "version": "3.30.9"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -67,22 +67,7 @@
       "patterns": []
     }
   ],
-  "dataGroups": [
-    {
-      "name": "index-html-group",
-      "patterns": [
-        "\\/index\\.html"
-      ],
-      "strategy": "freshness",
-      "maxSize": 1,
-      "maxAge": 0,
-      "timeoutMs": 2000,
-      "cacheQueryOptions": {
-        "ignoreVary": true
-      },
-      "version": 1
-    }
-  ],
+  "dataGroups": [],
   "hashTable": {
     "./assets/icons/icon-512x512.png": "70bcb04083de346145fa5a506812f23b0ed80772",
     "./assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",

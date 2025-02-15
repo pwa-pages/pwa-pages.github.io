@@ -29,19 +29,7 @@
       }
     }
   ],
-  "dataGroups": [
-    {
-      "name": "index-html-group",
-      "urls": ["/index.html"],
-      "cacheConfig": {
-        "strategy": "freshness",
-        "maxAge": "0d",
-        "maxSize": 1,
-        "timeout": "2s"
-      }
-    }
-  ],
   "appData": {
-    "version": "3.30.8"
+    "version": "3.30.9"
   }
 }
