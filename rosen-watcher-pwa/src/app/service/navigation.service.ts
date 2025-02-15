@@ -36,6 +36,7 @@ export class NavigationService {
     });
   }
 
+  /*
   private checkForReload() {
     if (
       this.latestVersionUpdate &&
@@ -49,7 +50,7 @@ export class NavigationService {
         window.location.reload();
       }, 1000);
     }
-  }
+  }*/
 
   private updateCurrentNavigationIndex(url: string): void {
     let index = this.navigationItems.findIndex((item) => url.startsWith(item.route));
@@ -57,7 +58,7 @@ export class NavigationService {
       index = 0;
     }
     this.currentNavigationIndex = index;
-    this.checkForReload();
+    //this.checkForReload();
   }
 
   public getCurrentNavigationItem(): NavigationItem {
