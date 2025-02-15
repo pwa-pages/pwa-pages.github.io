@@ -71,6 +71,15 @@ export class ServiceWorkerService {
         //window.location.reload();
       });
 
+      navigator.serviceWorker.ready.then((registration) => {
+        if (registration.installing) {
+          console.log('Service worker installing new version.');
+        }
+        registration.addEventListener('updatefound', () => {
+          console.log('updatefound: Service worker installing new version.');
+        });
+      });
+
       navigator.serviceWorker.addEventListener('message', (event) => {
         const message = event.data as ServiceWorkerMessage;
 

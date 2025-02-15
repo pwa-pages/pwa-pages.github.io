@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1739644485291,
+  "timestamp": 1739645005909,
   "appData": {
-    "version": "3.30.4"
+    "version": "3.30.5"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-MJ3GS7ND.js",
+        "./main-EGRM43WA.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
         "./rosen-ngsw-worker.js",
@@ -95,8 +95,8 @@
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "3098482ad0e4fa5b114140a32af33500af4afb4b",
-    "./main-MJ3GS7ND.js": "7576251ba9ca7a613ba5e04dfcd46306a9a094b2",
+    "./index.html": "8b3db2d62ac0acb3e320ada3cfdd03853bc6792b",
+    "./main-EGRM43WA.js": "163c86b565f6babbc5faf8bdcc9248c908856ac0",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
