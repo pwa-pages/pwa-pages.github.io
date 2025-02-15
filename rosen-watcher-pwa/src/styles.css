@@ -241,6 +241,13 @@ a {
   filter: brightness(0.8);
 }
 
+.statdetaildispl.Binance,
+.mainaddressdispl.Binance,
+.watchersdispl.Binance {
+  background-image: url('./assets/images/binance.png');
+  filter: brightness(0.8);
+}
+
 .statdetaildispl.Cardano,
 .mainaddressdispl.Cardano,
 .watchersdispl.Cardano {

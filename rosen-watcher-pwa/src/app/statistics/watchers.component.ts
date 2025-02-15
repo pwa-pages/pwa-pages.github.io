@@ -165,7 +165,8 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
         .pipe(
           map(
             (watcherInfo) =>
-              watcherInfo.tokens.find((token: Token) => token.name === 'rspv2' + c + 'AWC')?.amount,
+              watcherInfo.tokens.find((token: Token) => token.name === 'rspv2' + c + 'AWC')
+                ?.amount ?? 0,
           ),
         )
         .subscribe((amount) => {
