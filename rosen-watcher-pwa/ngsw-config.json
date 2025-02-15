@@ -5,7 +5,7 @@
     {
       "name": "app",
       "installMode": "prefetch",
-      "updateMode": "prefetch", 
+      "updateMode": "prefetch",
       "resources": {
         "files": [
           "/favicon.ico",
@@ -30,19 +30,18 @@
     }
   ],
   "dataGroups": [
-  {
-    "name": "index-html-group",
-    "urls": [
-      "/index.html"
-    ],
-    "cacheConfig": {
-      "strategy": "freshness",
-      "maxAge": "3650d",  
-      "maxSize": 1
+    {
+      "name": "index-html-group",
+      "urls": ["/index.html"],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxAge": "0d",
+        "maxSize": 1,
+        "timeout": "2s"
+      }
     }
-  }
-],
+  ],
   "appData": {
-    "version": "3.29.7"
+    "version": "3.29.8"
   }
 }
