@@ -9,11 +9,11 @@
       "resources": {
         "files": [
           "/favicon.ico",
-          "/*test.html",
+          "/index.html",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js",
-         "/shared/js/**/*.js"
+          "/shared/js/**/*.js"
         ]
       }
     },
@@ -30,19 +30,19 @@
     }
   ],
   "dataGroups": [
-    {
-      "name": "index-html-group",
-      "urls": [
-        "/index.html"
-      ],
-      "cacheConfig": {
-        "strategy": "freshness",
-        "maxAge": "1d",
-        "maxSize": 1
-      }
+  {
+    "name": "index-html-group",
+    "urls": [
+      "/index.html"
+    ],
+    "cacheConfig": {
+      "strategy": "freshness",
+      "maxAge": "3650d",  
+      "maxSize": 1
     }
-  ],
+  }
+],
   "appData": {
-    "version": "3.29.1"
+    "version": "3.29.2"
   }
 }
