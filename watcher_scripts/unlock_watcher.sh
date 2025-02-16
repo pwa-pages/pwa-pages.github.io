@@ -59,13 +59,21 @@ while true; do
     exit 1
   fi
 
+
+
   # Validate API response
   if [ -z "$response" ]; then
     echo "Error: Failed to fetch permit information from $api_url."
     exit 1
   fi
+  
+  if echo "$response" | grep -q "EAI_AGAIN"; then
+    echo "Network error (EAI_AGAIN) encountered. Retrying in 10 seconds."
+    sleep 10
+    continue
+  fi
 
-  echo "Parsing response."
+  echo "Parsing info response to see how many permits are in total and active."
   echo " response = $response"
   # Parse the active permit count using jq
   active_permit_count=$(echo "$response" | jq '.permitCount.active' 2>/dev/null)
@@ -120,6 +128,8 @@ while true; do
   fi
 
   echo "Waiting 10 sec. before trying to unlock more permits or waiting until watcher is completely unlocked."
+  echo
+  echo
   sleep 10
 done
 
