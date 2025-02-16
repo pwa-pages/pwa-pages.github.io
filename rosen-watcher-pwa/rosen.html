@@ -25,9 +25,10 @@
       let errorItem = document.createElement('div');
       errorItem.textContent = message;
       errorMessage.appendChild(errorItem);
+      console.error(message);
     }
 
-    // Capture JavaScript errors
+    // Capture JavaScript runtime errors
     window.onerror = function (message, source, lineno, colno, error) {
       let errorDetails = `Error: ${message} at ${source}:${lineno}:${colno}`;
       showErrorMessage(errorDetails);
@@ -53,18 +54,14 @@
       true,
     );
 
-    (async function () {
+    async function loadAssets() {
       try {
-        let currentPath = window.location.pathname; // This will give you '/rosen-watcher-pwa/rosen.html'
+        let currentPath = window.location.pathname;
         let folderPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
         let jsonPath = folderPath + '/ngsw.json';
 
         let response = await fetch(jsonPath, { cache: 'no-store' });
-
-        if (!response.ok) {
-          console.error('Failed to fetch ngsw.json');
-          return;
-        }
+        if (!response.ok) throw new Error(`Failed to fetch ${jsonPath} - ${response.status} ${response.statusText}`);
 
         let data = await response.json();
         let assetGroups = data.assetGroups || [];
@@ -73,14 +70,9 @@
         assetGroups.forEach((group) => {
           (group.urls || []).forEach((asset) => {
             let match = asset.match(/(styles|polyfills|main)(?:-([A-Z0-9]+))?\.(css|js)$/);
-
             if (match) {
               let [, name, hash, ext] = match;
-              if (hash) {
-                latestVersions[name] = `${name}-${hash}.${ext}`;
-              } else {
-                latestVersions[name] = `${name}.${ext}`;
-              }
+              latestVersions[name] = hash ? `${name}-${hash}.${ext}` : `${name}.${ext}`;
             }
           });
         });
@@ -94,19 +86,14 @@
         }
 
         // Add new scripts if available
-        if (latestVersions['polyfills']) {
-          let newScriptPolyfills = document.createElement('script');
-          newScriptPolyfills.src = `./${latestVersions['polyfills']}`;
-          newScriptPolyfills.type = 'module';
-          document.body.appendChild(newScriptPolyfills);
-        }
-
-        if (latestVersions['main']) {
-          let newScriptMain = document.createElement('script');
-          newScriptMain.src = `./${latestVersions['main']}`;
-          newScriptMain.type = 'module';
-          document.body.appendChild(newScriptMain);
-        }
+        ['polyfills', 'main'].forEach((key) => {
+          if (latestVersions[key]) {
+            let newScript = document.createElement('script');
+            newScript.src = `./${latestVersions[key]}`;
+            newScript.type = 'module';
+            document.body.appendChild(newScript);
+          }
+        });
 
         console.log('Added assets to the page:', latestVersions);
 
@@ -116,8 +103,10 @@
           history.pushState(null, '', `./${page}`);
         }
       } catch (error) {
-        console.error('Error adding assets:', error);
+        showErrorMessage(`Error adding assets: ${error.message}`);
       }
-    })();
+    }
+
+    loadAssets();
   </script>
 </html>
