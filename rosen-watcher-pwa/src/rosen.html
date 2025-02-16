@@ -55,13 +55,11 @@
 
     (async function () {
       try {
+        let currentPath = window.location.pathname; // This will give you '/rosen-watcher-pwa/rosen.html'
+        let folderPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
+        let jsonPath = folderPath + '/ngsw.json';
 
-       let currentPath = window.location.pathname; // This will give you '/rosen-watcher-pwa/rosen.html'
-       let folderPath = currentPath.substring(0, currentPath.lastIndexOf('/')); 
-       let jsonPath = folderPath + '/ngsw.json';
-
-       let response = await fetch(jsonPath, { cache: 'no-store' });
-
+        let response = await fetch(jsonPath, { cache: 'no-store' });
 
         if (!response.ok) {
           console.error('Failed to fetch ngsw.json');
@@ -115,7 +113,7 @@
         let urlParams = new URLSearchParams(window.location.search);
         let page = urlParams.get('page');
         if (page) {
-          history.pushState(null, '', `/${page}`);
+          history.pushState(null, '', `./${page}`);
         }
       } catch (error) {
         console.error('Error adding assets:', error);
