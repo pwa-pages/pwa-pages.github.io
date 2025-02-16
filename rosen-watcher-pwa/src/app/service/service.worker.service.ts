@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EventData, EventService, EventType } from './event.service';
+import { HttpClient } from '@angular/common/http';
 
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {
@@ -21,7 +22,8 @@ export function initializeServiceWorkerService(serviceWorkerService: ServiceWork
 export class ServiceWorkerService {
   private currentProfile: string | null | undefined = null;
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService, private http: HttpClient) {
+    this.checkForVersionDiscrepancy();
     this.listenForServiceWorkerMessages();
   }
 
@@ -39,6 +41,22 @@ export class ServiceWorkerService {
       }
     });
   }
+
+
+  checkForVersionDiscrepancy() {
+    this.http.get('ngsw.json', { responseType: 'json' }).subscribe(
+      (data: any) => {
+        
+        console.log('Current Service Worker Version(ngsw.json) :', data.appData?.version);
+        console.log('localStorage rosenWatcherServiceVersion:', localStorage.getItem('rosenWatcherServiceVersion'));
+      },
+      (error) => {
+        console.error('Error fetching SW version', error);
+      }
+    );
+  }
+  
+
 
   getVersion(): string | null {
     const version = localStorage.getItem('rosenWatcherServiceVersion');
@@ -85,9 +103,9 @@ export class ServiceWorkerService {
 
         console.log(
           'Received message from service worker of type ' +
-            message.type +
-            ', profile ' +
-            message.profile,
+          message.type +
+          ', profile ' +
+          message.profile,
         );
 
         this.handleServiceWorkerMessage(message);
