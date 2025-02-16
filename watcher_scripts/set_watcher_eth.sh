@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /home/pebblerye/crypto_scripts/set_heights.sh
+source /home/youruser/crypto_scripts/set_heights.sh
 
 echo "Extract mnemonic from local.yaml"
 mnemonic=$(sed -n 's/.*mnemonic: "\([^"]*\)".*/\1/p' "local.yaml")

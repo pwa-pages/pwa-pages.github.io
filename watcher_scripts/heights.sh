@@ -2,7 +2,7 @@
 
 # Fetch Bitcoin block height
     echo "Fetching Bitcoin block height..."
-    btc_height=$(curl -s --user pebblerye:pebblerye \
+    btc_height=$(curl -s --user youruser:youruser \
         --data-binary '{"jsonrpc":"1.0","id":"curltext","method":"getblockcount","params":[]}' \
         -H 'content-type: text/plain;' \
         http://127.0.0.1:8332/ | jq -r '.result')

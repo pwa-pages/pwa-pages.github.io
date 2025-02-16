@@ -1,0 +1,18 @@
+network: binance
+api:
+  apiKeyHash: 'PUT_YOUR_HARDCODED_KEY_HERE'
+ergo:
+  type: node
+  initialHeight: #ERGO_HEIGHT#
+  mnemonic: "#MNEMONIC#"
+  node:
+    url: http://host.docker.internal:9053
+binance:
+  type: rpc
+  rpc:
+    url: https://bsc-dataseed3.defibit.io/
+  initial:
+    height: #BSC_HEIGHT#
+observation:
+  confirmation: 400
+  validThreshold: 28800

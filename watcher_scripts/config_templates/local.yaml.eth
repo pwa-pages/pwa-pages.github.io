@@ -1,0 +1,22 @@
+network: ethereum
+api:
+  apiKeyHash: 'PUT_YOUR_HARDCODED_KEY_HERE'
+ergo:
+  type: node
+  initialHeight: #ERGO_HEIGHT#
+  mnemonic: "#MNEMONIC#"
+  node:
+    url: http://host.docker.internal:9053
+ethereum:
+  type: rpc
+  rpc:
+    url: http://host.docker.internal:8545
+  initial:
+    height: #ETH_HEIGHT#
+observation:
+  confirmation: 100
+  validThreshold: 7200
+healthCheck:
+  permit:
+   warnCommitmentCount: 1 # amount of permits left before giving a warning
+   criticalCommitmentCount: 0 # amount of permits left it is critical

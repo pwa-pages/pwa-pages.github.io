@@ -1,0 +1,25 @@
+network: bitcoin
+api:
+  apiKeyHash: 'PUT_YOUR_HARDCODED_KEY_HERE'
+ergo:
+  type: node
+  initialHeight: #ERGO_HEIGHT#
+  mnemonic: "#MNEMONIC#"
+  node:
+    url: http://host.docker.internal:9053
+bitcoin:
+  type: rpc
+  rpc:
+    timeout: 100
+    url: 'http://host.docker.internal:8332'
+    username: 'youruser'
+    password: 'youruser'
+  initial:
+    height: #BTC_HEIGHT#
+healthCheck:
+  permit:
+   warnCommitmentCount: 1 # amount of permits left before giving a warning
+   criticalCommitmentCount: 0 # amount of permits left it is critical
+observation:
+  confirmation: 2
+  validThreshold: 72

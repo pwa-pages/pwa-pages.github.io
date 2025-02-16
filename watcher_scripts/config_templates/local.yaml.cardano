@@ -1,0 +1,23 @@
+network: cardano
+api:
+  apiKeyHash: 'PUT_YOUR_HARDCODED_KEY_HERE'
+ergo:
+  type: node
+  initialHeight: #ERGO_HEIGHT#
+  mnemonic: "#MNEMONIC#"
+  node:
+    url: http://host.docker.internal:9053
+cardano:
+  type: ogmios
+  ogmios:
+    host: 192.168.178.227
+    port: 1337
+    useTls: false
+  initial:
+    height: #CARDANO_HEIGHT#
+    hash: #CARDANO_HASH#
+    slot: #CARDANO_SLOT#
+healthCheck:
+  permit:
+   warnCommitmentCount: 1 # amount of permits left before giving a warning
+   criticalCommitmentCount: 0 # amount of permits left it is critical
