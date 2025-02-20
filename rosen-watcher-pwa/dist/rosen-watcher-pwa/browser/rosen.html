@@ -61,7 +61,10 @@
         let jsonPath = folderPath + '/ngsw.json';
 
         let response = await fetch(jsonPath, { cache: 'no-store' });
-        if (!response.ok) throw new Error(`Failed to fetch ${jsonPath} - ${response.status} ${response.statusText}`);
+        if (!response.ok)
+          throw new Error(
+            `Failed to fetch ${jsonPath} - ${response.status} ${response.statusText}`,
+          );
 
         let data = await response.json();
         let assetGroups = data.assetGroups || [];
