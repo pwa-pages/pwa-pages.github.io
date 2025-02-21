@@ -103,12 +103,68 @@
           }
         }
       }
+    },
+    "rosen-watchers": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/rosen-watchers",  
+            "index": "src/app/web-component.ts",     
+            "main": "src/app/web-component.ts",      
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/assets",
+              "src/favicon.ico"
+            ],
+            "styles": [],
+            "scripts": [],
+            "optimization": {
+              "scripts": true,
+              "styles": true,
+              "fonts": true
+            },
+            "fileReplacements": [],
+            "serviceWorker": false,
+            "sourceMap": false,  
+            "namedChunks": false, 
+            "extractLicenses": false
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": false
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "rosen-watchers:build:production"
+            },
+            "development": {
+              "buildTarget": "rosen-watchers:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
     }
   },
   "cli": {
-    "analytics": false,
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ]
+    "analytics": false
   }
 }

@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1740058483004,
+  "timestamp": 1740143300543,
   "appData": {
-    "version": "3.32.8"
+    "version": "3.32.9"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -100,7 +100,7 @@
     "./polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
     "./rosen-ngsw-worker.js": "d0dfe34bc897361f40d9d724e991a5e81587eaff",
     "./rosen.html": "41b1173bb4bb478135acece9d279cf4dcf2193fd",
-    "./shared/js/chain.service.js": "1d212fd8d766f25c42b61ab2033fb38b5be3fdec",
+    "./shared/js/chain.service.js": "5ee3ce2ad2ec0d95c43804e5007a563dd05b85b5",
     "./shared/js/chart.service.js": "8888f5e72a7f7a65824b912cc4bda1673110920f",
     "./shared/js/constants.js": "74f89379a839c186f8a79c432c57023d6ed80ebc",
     "./shared/js/data.service.js": "2692731f9f31b8eb239be9bf9b0c9b80e4522f41",

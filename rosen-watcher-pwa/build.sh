@@ -1,3 +1,7 @@
 ./clean.sh
 npm install
-npm run build
+ng build rosen-watcher-pwa
+ng build rosen-watchers --configuration production
+
+
+

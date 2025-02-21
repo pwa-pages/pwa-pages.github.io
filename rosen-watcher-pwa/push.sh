@@ -1,6 +1,7 @@
 
 npm install
-ng build --configuration=production --base-href ./ --deploy-url ./
+ng build rosen-watcher-pwa --configuration=production --base-href ./ --deploy-url ./
+ng build rosen-watchers --configuration production
 ./clean.sh
 cp -R dist/rosen-watcher-pwa/browser/* .
 git add .
