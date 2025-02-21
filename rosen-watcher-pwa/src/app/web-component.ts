@@ -2,6 +2,8 @@ import { createCustomElement } from '@angular/elements';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
 import { WatchersComponent } from './statistics/watchers.component';
+import 'zone.js';
+
 
 bootstrapApplication(WatchersComponent, {
   providers: [
