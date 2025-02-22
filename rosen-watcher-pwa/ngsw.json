@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1740144979658,
+  "timestamp": 1740219329462,
   "appData": {
     "version": "3.32.9"
   },
@@ -50,6 +50,7 @@
         "./assets/images/dogecoin.png",
         "./assets/images/ergo.png",
         "./assets/images/ethereum.png",
+        "./assets/rosen_watchers.html",
         "./assets/test.html",
         "./media/binance-WGS5R7MY.png",
         "./media/bitcoin-R7IFWMJM.png",
@@ -79,6 +80,7 @@
     "./assets/images/dogecoin.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
+    "./assets/rosen_watchers.html": "eedd3cdb091d0bb3c1f88e04bc4e48cfb343dbef",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
     "./index.html": "c085cf23e202efd36d7c1c091c4d5e26e8d8a4f0",

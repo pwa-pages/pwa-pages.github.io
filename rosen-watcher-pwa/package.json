@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "tsc -p tsconfig.service.json & npm run format && ng build && ng lint --fix",
+    "prep_web_component": "bash prep_web_component.sh",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "format": "prettier --write 'src/**/*.{ts,css,html}'",

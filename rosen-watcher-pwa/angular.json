@@ -114,15 +114,15 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/rosen-watchers",  
-            "index": "src/app/web-component.ts",     
+            "index": "src/index.html",     
             "main": "src/app/web-component.ts",      
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/assets",
-              "src/favicon.ico"
+              "src/assets/rosen_watchers.html"
             ],
-            "styles": [],
-            "scripts": [],
+            "styles": [
+              "src/styles.css"
+            ],"scripts": [],
             "optimization": {
               "scripts": true,
               "styles": true,

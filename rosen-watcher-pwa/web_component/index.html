@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" data-beasties-container>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Rosen Watcher Rewards</title>
+    <base href="/">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#1976d2">
+  <style>body{padding:0;margin:0!important}body,html{overflow-x:hidden}</style><link rel="stylesheet" href="styles.2e394fa579328504.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.2e394fa579328504.css"></noscript></head>
+
+  <body>
+    <app-root></app-root>
+    <noscript>Please enable JavaScript to continue using this application...</noscript>
+
+    <div id="error-message" style="color: red; font-weight: bold; margin-top: 20px"></div>
+  <script src="runtime.ece741d46337c136.js" type="module"></script><script src="main.d12345a00c5d9965.js" type="module"></script></body>
+
+  <script>
+    function showErrorMessage(message) {
+      let errorMessage = document.getElementById('error-message');
+      let errorItem = document.createElement('div');
+      errorItem.textContent = message;
+      errorMessage.appendChild(errorItem);
+    }
+
+    // Capture JavaScript errors
+    window.onerror = function (message, source, lineno, colno, error) {
+      let errorDetails = `Error: ${message} at ${source}:${lineno}:${colno}`;
+      showErrorMessage(errorDetails);
+      return false; // Prevents default browser error message
+    };
+
+    // Capture unhandled promise rejections
+    window.addEventListener('unhandledrejection', function (event) {
+      let errorDetails = `Unhandled Promise Rejection: ${event.reason}`;
+      showErrorMessage(errorDetails);
+    });
+
+    // Capture script load failures
+    window.addEventListener(
+      'error',
+      function (event) {
+        if (event.target.tagName === 'SCRIPT') {
+          let failedSrc = event.target.src || 'Unknown script';
+          showErrorMessage(`Failed to load: ${failedSrc}`);
+          showErrorMessage(`Please try reloading the page or clearing cache.`);
+        }
+      },
+      true,
+    );
+  </script>
+</html>
