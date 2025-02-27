@@ -34,6 +34,7 @@
               "src/shared/js/chain.service.js",
               "src/shared/js/constants.js",
               "src/shared/js/data.service.js",
+              "src/shared/js/chain.performance.data.service.js",
               "src/shared/js/reward.data.service.js",
               "src/shared/js/chart.service.js",
               "src/shared/js/download.service.js"

@@ -36,6 +36,14 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
       try {
         await downloadService.downloadForAddresses(profile);
+        /*
+        const d = await initIndexedDB(profile);
+        const testDownloadService = new DownloadService(
+          new ChainPerformanceDataService(d, chartService),
+          d,
+        );
+        testDownloadService.downloadForAddress(permitBulkAddresses.Binance, d, undefined);
+        */
 
         //await dataService.compressInputs();
         //({ dataService, downloadService, chartService } = await initServices(profile));

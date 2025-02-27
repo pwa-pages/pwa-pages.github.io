@@ -1,6 +1,6 @@
 ./clean.sh
 npm install
-ng build rosen-watcher-pwa
+npm run build
 ng build rosen-watchers --configuration production
 npm run prep_web_component
 
