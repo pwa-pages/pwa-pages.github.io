@@ -31,10 +31,15 @@ export class DownloadService {
     }
   }
 
-  private async endDownload() {
-    const numActive = Object.values(this.activeDownloads).filter((value) => value === true).length;
-    if (numActive == 0) {
-      this.eventService.sendEvent(EventType.EndFullDownload);
+  private async endDownload(url: string) {
+    if (this.activeDownloads[url]) {
+      this.activeDownloads[url] = false;
+      const numActive = Object.values(this.activeDownloads).filter(
+        (value) => value === true,
+      ).length;
+      if (numActive == 0) {
+        this.eventService.sendEvent(EventType.EndFullDownload);
+      }
     }
   }
 
@@ -59,15 +64,13 @@ export class DownloadService {
         console.log('Downloaded from server:', url);
         localStorage.setItem(url, JSON.stringify(results));
 
-        this.activeDownloads[url] = false;
-        this.endDownload();
+        this.endDownload(url);
         return results;
       }),
       catchError((error) => {
         console.log('Download failed:', url);
 
-        this.activeDownloads[url] = false;
-        this.endDownload();
+        this.endDownload(url);
         return throwError(error);
       }),
     );
