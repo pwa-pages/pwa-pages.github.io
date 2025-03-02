@@ -1,36 +1,20 @@
-interface Asset {
-  // Define the structure of an asset here
-  // Example properties:
-  id: string;
-  name: string;
-  quantity: number;
-  amount: number;
-  decimals: number;
-  tokenId: string | null;
-}
-
-interface DbInput {
-  outputAddress: string;
-  inputDate: Date;
-  boxId: string;
-  assets: Asset[]; // Replace with actual Asset structure
-  address?: string;
-  chainType?: string;
-}
-
-interface Input {
-  boxId: string;
-  outputAddress: string;
-  inputDate: Date;
-  assets: Asset[]; // Replace with actual Asset structure
-  address: string;
-  amount?: number;
-  accumulatedAmount?: number;
-  chainType?: ChainType | null;
-}
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class RewardDataService extends DataService {
+class RewardDataService extends DataService<DbInput> {
+  override async getExistingData(
+    transaction: TransactionItem,
+    address: string,
+  ): Promise<DbInput | null> {
+    for (const input of transaction.inputs) {
+      if (input.boxId && getChainType(input.address)) {
+        const data = await this.getDataByBoxId(input.boxId, address, this.db);
+        if (data) {
+          return data;
+        }
+      }
+    }
+
+    return null;
+  }
   constructor(
     public override db: IDBDatabase,
     private chartService: ChartService,
@@ -237,7 +221,11 @@ class RewardDataService extends DataService {
   }
 
   // Get Data by BoxId from IndexedDB
-  async getDataByBoxId(boxId: string, addressId: string, db: IDBDatabase): Promise<DbInput | null> {
+  private async getDataByBoxId(
+    boxId: string,
+    addressId: string,
+    db: IDBDatabase,
+  ): Promise<DbInput | null> {
     return new Promise((resolve, reject) => {
       const transaction: IDBTransaction = db.transaction([rs_InputsStoreName], 'readonly');
       const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);

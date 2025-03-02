@@ -4,6 +4,9 @@ class DataService {
     constructor(db) {
         this.db = db;
     }
+    getMaxDownloadDateDifference() {
+        return 3155760000000;
+    }
     async getData(storeName) {
         return new Promise((resolve, reject) => {
             const transaction = this.db.transaction([storeName], 'readonly');

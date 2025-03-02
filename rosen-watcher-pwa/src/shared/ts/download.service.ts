@@ -6,7 +6,8 @@ interface TransactionItem {
   outputCreatedAt: string | number | Date;
   timestamp: string;
   inputs: Input[];
-  outputs: Input[];
+  outputs: Output[];
+  id: string;
 }
 
 interface FetchTransactionsResponse {
@@ -21,12 +22,19 @@ interface DownloadStatus {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class DownloadService {
+class DownloadService<T> {
   private busyCounter = 0;
+  private downloadFullSize = rs_FullDownloadsBatchSize;
+  private downloadInitialSize = rs_InitialNDownloads;
   constructor(
-    private dataService: DataService,
+    downloadFullSize: number,
+    downloadInitialSize: number,
+    private dataService: DataService<T>,
     private db: IDBDatabase,
-  ) {}
+  ) {
+    this.downloadFullSize = downloadFullSize;
+    this.downloadInitialSize = downloadInitialSize;
+  }
 
   async fetchTransactions(url: string): Promise<FetchTransactionsResponse> {
     try {
@@ -75,7 +83,7 @@ class DownloadService {
         await this.dataService.getData<AddressData>(rs_AddressDataStoreName);
 
       const downloadPromises: Promise<void>[] = addresses.map(async (addressObj: AddressData) => {
-        await this.downloadForAddress(addressObj.address, this.db, profile);
+        await this.downloadForAddress(addressObj.address, profile);
       });
 
       await Promise.all(downloadPromises);
@@ -113,11 +121,11 @@ class DownloadService {
       const result: FetchTransactionsResponse = await this.downloadTransactions(
         address,
         offset,
-        rs_FullDownloadsBatchSize + 10,
+        this.downloadFullSize + 10,
         profile,
       );
       console.log(
-        `Processing full download(offset = ${offset}, size = ${rs_FullDownloadsBatchSize}) for: ${address}`,
+        `Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`,
       );
 
       //const t = this.processItems(result.transactions);
@@ -131,7 +139,16 @@ class DownloadService {
 
       await this.dataService.addData(address, result.transactions, db, profile);
       //await this.dataService.compressInputs();
-      await this.downloadAllForAddress(address, offset + rs_FullDownloadsBatchSize, db, profile);
+
+      if (
+        this.dataService.getMaxDownloadDateDifference() >
+        new Date().getTime() -
+          new Date(result.transactions[result.transactions.length - 1].timestamp).getTime()
+      ) {
+        await this.downloadAllForAddress(address, offset + this.downloadFullSize, db, profile);
+      } else {
+        await this.setDownloadStatus(address, 'true', db);
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -197,11 +214,7 @@ class DownloadService {
     });
   }
 
-  async downloadForAddress(
-    address: string,
-    db: IDBDatabase,
-    profile: string | undefined,
-  ): Promise<void> {
+  async downloadForAddress(address: string, profile: string | undefined): Promise<void> {
     this.increaseBusyCounter(profile);
     console.log(this.busyCounter);
 
@@ -209,41 +222,38 @@ class DownloadService {
       const result: FetchTransactionsResponse = await this.downloadTransactions(
         address,
         0,
-        rs_InitialNDownloads,
+        this.downloadInitialSize,
         profile,
       );
-      console.log(`Processing initial download(size = ${rs_InitialNDownloads}) for: ${address}`);
+      console.log(
+        `Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`,
+      );
 
       const itemsz: number = result.transactions.length;
-      let halfBoxId = '';
 
-      if (itemsz > rs_InitialNDownloads / 4) {
+      let existingData: T | null = null;
+
+      if (itemsz > this.downloadInitialSize / 4) {
         for (let i = Math.floor(itemsz / 4); i < itemsz - Math.floor(itemsz / 4); i++) {
           const item: TransactionItem = result.transactions[i];
-          for (const input of item.inputs) {
-            if (
-              input.boxId &&
-              halfBoxId === '' &&
-              (await this.dataService.getDataByBoxId(input.boxId, address, db)) &&
-              getChainType(input.address)
-            ) {
-              halfBoxId = input.boxId;
-            }
+
+          existingData = await this.dataService.getExistingData(item, address);
+          if (existingData) {
+            break;
           }
         }
       }
 
-      const boxData = await this.dataService.getDataByBoxId(halfBoxId, address, db);
       console.log('Add bunch of data');
-      await this.dataService.addData(address, result.transactions, db, profile);
+      await this.dataService.addData(address, result.transactions, this.db, profile);
 
-      const downloadStatus: string = await this.getDownloadStatus(address, db);
-      if (boxData && downloadStatus === 'true') {
+      const downloadStatus: string = await this.getDownloadStatus(address, this.db);
+      if (existingData && downloadStatus === 'true') {
         console.log(`Found existing boxId in db for ${address}, no need to download more.`);
-      } else if (itemsz >= rs_InitialNDownloads) {
-        await this.setDownloadStatus(address, 'false', db);
+      } else if (itemsz >= this.downloadInitialSize) {
+        await this.setDownloadStatus(address, 'false', this.db);
         console.log(`Downloading all tx's for : ${address}`);
-        await this.downloadAllForAddress(address, 0, db, profile);
+        await this.downloadAllForAddress(address, 0, this.db, profile);
       }
     } catch (e) {
       console.error(e);

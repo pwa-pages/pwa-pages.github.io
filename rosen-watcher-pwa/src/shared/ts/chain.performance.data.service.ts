@@ -1,117 +1,59 @@
-interface Asset {
-  // Define the structure of an asset here
-  // Example properties:
+interface DbPerfTx {
   id: string;
-  name: string;
-  quantity: number;
-  amount: number;
-  decimals: number;
-  tokenId: string | null;
-}
-
-interface DbInput {
-  outputAddress: string;
-  inputDate: Date;
-  boxId: string;
-  assets: Asset[]; // Replace with actual Asset structure
-  address?: string;
+  timestamp: string;
   chainType?: string;
-}
-
-interface Input {
-  boxId: string;
-  outputAddress: string;
-  inputDate: Date;
-  assets: Asset[]; // Replace with actual Asset structure
-  address: string;
-  amount?: number;
-  accumulatedAmount?: number;
-  chainType?: ChainType | null;
+  amount: number;
+  decimals?: number;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ChainPerformanceDataService extends DataService {
-  constructor(
-    public override db: IDBDatabase,
-    private chartService: ChartService,
-  ) {
-    super(db);
+class ChainPerformanceDataService extends DataService<DbPerfTx> {
+  override async getExistingData(transaction: TransactionItem): Promise<DbPerfTx | null> {
+    return new Promise((resolve, reject) => {
+      const dbTtransaction: IDBTransaction = this.db.transaction([rs_PerfTxStoreName], 'readonly');
+      const objectStore: IDBObjectStore = dbTtransaction.objectStore(rs_PerfTxStoreName);
+      const request: IDBRequest = objectStore.get(transaction.id);
+
+      request.onsuccess = () => {
+        const result: DbPerfTx | null = request.result as DbPerfTx | null;
+        resolve(result);
+      };
+
+      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
+    });
   }
-
-  getDataType(): string {
-    return 'reward';
-  }
-
-  private async getWatcherInputs(): Promise<DbInput[]> {
-    const inputsPromise = this.getData<DbInput>(rs_InputsStoreName);
-
-    console.log('Retrieving watcher inputs and such');
-
-    try {
-      const inputs = await inputsPromise;
-
-      const filteredInputs = inputs.filter(
-        (i: DbInput) => i.chainType != null || getChainType(i.address) != null,
-      );
-
-      filteredInputs.forEach((input: DbInput) => {
-        input.assets = input.assets
-          .filter((asset: Asset) => asset.name === 'RSN' || asset.name === 'eRSN')
-          .map((asset_1: Asset) => {
-            return asset_1;
-          });
-      });
-      filteredInputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
-
-      return await new Promise<DbInput[]>((resolve) => {
-        resolve(filteredInputs);
-      });
-    } catch (error) {
-      console.error(error);
-      return [];
-    }
-  }
-  async addData(
-    address: string,
+  override async addData(
+    _address: string,
     transactions: TransactionItem[],
     db: IDBDatabase,
-    profile: string | undefined,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _profile: string | undefined,
   ): Promise<void> {
     return new Promise((resolve, reject) => {
-      // Create a temporary array to hold DbInput items before bulk insertion
-      const tempData: DbInput[] = [];
+      const tempData: DbPerfTx[] = [];
 
-      // Populate tempData with processed inputs
       transactions.forEach((item: TransactionItem) => {
-        item.inputs.forEach((input: Input) => {
-          input.outputAddress = address;
-          input.inputDate = new Date(item.timestamp);
+        const eRSNTotal = item.outputs.reduce((total, output) => {
+          const assets = output.assets.filter((a) => a.name === 'eRSN');
+          return total + assets.reduce((acc, asset) => acc + asset.amount, 0);
+        }, 0);
 
-          input.assets = input.assets.filter((a) => a.name === 'eRSN' || a.name === 'RSN');
-          input.assets.forEach((a) => {
-            a.tokenId = null;
-          });
+        const dbPerfTx: DbPerfTx = {
+          id: item.id,
+          timestamp: item.timestamp,
+          amount: eRSNTotal,
+        };
 
-          const dbInput: DbInput = {
-            outputAddress: input.outputAddress,
-            inputDate: input.inputDate,
-            boxId: input.boxId,
-            assets: input.assets || [],
-            chainType: getChainType(input.address) as ChainType,
-          };
-
-          if (dbInput.chainType && dbInput.assets.length > 0) {
-            tempData.push(dbInput);
-          }
-        });
+        tempData.push(dbPerfTx);
       });
 
-      const transaction: IDBTransaction = db.transaction([rs_InputsStoreName], 'readwrite');
-      const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
+      const transaction: IDBTransaction = db.transaction([rs_PerfTxStoreName], 'readwrite');
+      const objectStore: IDBObjectStore = transaction.objectStore(rs_PerfTxStoreName);
 
-      const putPromises = tempData.map((dbInput: DbInput) => {
+      const putPromises = tempData.map((dbPerfTx: DbPerfTx) => {
         return new Promise<void>((putResolve, putReject) => {
-          const request: IDBRequest = objectStore.put(dbInput);
+          console.log('Trying to add dbPerfTx to db with id ' + dbPerfTx.id);
+          const request: IDBRequest = objectStore.put(dbPerfTx);
           request.onsuccess = () => putResolve();
           request.onerror = (event: Event) => putReject((event.target as IDBRequest).error);
         });
@@ -119,6 +61,7 @@ class ChainPerformanceDataService extends DataService {
 
       Promise.all(putPromises)
         .then(async () => {
+          /*
           const inputs = await this.getSortedInputs();
           sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
           sendMessageToClients({
@@ -126,65 +69,22 @@ class ChainPerformanceDataService extends DataService {
             data: await this.chartService.getAddressCharts(inputs),
             profile: profile,
           });
+          */
           resolve();
         })
         .catch(reject);
     });
   }
 
-  // Get Data by BoxId from IndexedDB
-  async getDataByBoxId(boxId: string, addressId: string, db: IDBDatabase): Promise<DbInput | null> {
-    return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = db.transaction([rs_InputsStoreName], 'readonly');
-      const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
-      const request: IDBRequest = objectStore.get([
-        boxId,
-        addressId,
-      ]); /* ?? objectStore.get([boxId.slice(0, 12), addressId])*/
-
-      request.onsuccess = () => {
-        const result: DbInput | undefined = request.result as DbInput | undefined;
-        if (!result || result.outputAddress !== addressId) {
-          resolve(null);
-        } else {
-          resolve(result);
-        }
-      };
-
-      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
-    });
+  constructor(public override db: IDBDatabase) {
+    super(db);
   }
 
-  async getSortedInputs(): Promise<Input[]> {
-    const inputsPromise = await this.getWatcherInputs();
-    let amount = 0;
-    const sortedInputs: Input[] = [];
-    console.log('start retrieving chart from database');
-    try {
-      const inputs = await inputsPromise;
+  override getMaxDownloadDateDifference(): number {
+    return 604800000;
+  }
 
-      inputs.forEach((input: DbInput) => {
-        input.assets.forEach((asset: Asset) => {
-          amount += asset.amount;
-          sortedInputs.push({
-            inputDate: input.inputDate,
-            address: input.address ?? '',
-            assets: input.assets,
-            outputAddress: input.outputAddress,
-            boxId: input.boxId,
-            accumulatedAmount: amount,
-            amount: asset.amount / Math.pow(10, asset.decimals),
-            chainType: (input.chainType as ChainType) ?? getChainType(input.address),
-          });
-        });
-      });
-      console.log('done retrieving chart from database ' + inputs.length + ' inputs');
-      return await new Promise<Input[]>((resolve) => {
-        resolve(sortedInputs);
-      });
-    } catch (error) {
-      console.error(error);
-      return sortedInputs;
-    }
+  getDataType(): string {
+    return 'performance_chart';
   }
 }
