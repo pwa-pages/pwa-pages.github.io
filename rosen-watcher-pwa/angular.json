@@ -37,7 +37,8 @@
               "src/shared/js/chain.performance.data.service.js",
               "src/shared/js/reward.data.service.js",
               "src/shared/js/chart.service.js",
-              "src/shared/js/download.service.js"
+              "src/shared/js/download.service.js",
+              "src/shared/js/ngsw-worker.js"
             ],
             "styles": [
               "src/styles.css",

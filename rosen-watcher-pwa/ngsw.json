@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1740905840741,
+  "timestamp": 1740910719602,
   "appData": {
-    "version": "3.33.2"
+    "version": "3.33.4"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -27,6 +27,7 @@
         "./shared/js/constants.js",
         "./shared/js/data.service.js",
         "./shared/js/download.service.js",
+        "./shared/js/ngsw-worker.js",
         "./shared/js/reward.data.service.js",
         "./shared/js/rosen-db-worker.js",
         "./shared/js/rosen-download-worker.js",
@@ -101,7 +102,7 @@
     "./media/fa-v4compatibility-LFEHZI6Y.woff2": "4fd82f39237a3e52cb4e311d1961bbb47353a147",
     "./media/fa-v4compatibility-YY67RJWG.ttf": "ad415f99aab4d9bf17e523f484a377f839ca8c3c",
     "./polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
-    "./rosen-ngsw-worker.js": "b3833e615d38ff157bf72e57bf2e6d2ffc896237",
+    "./rosen-ngsw-worker.js": "3b5df0c987be3ae3f3e3c79bcaec148f8616e846",
     "./rosen.html": "41b1173bb4bb478135acece9d279cf4dcf2193fd",
     "./shared/js/chain.performance.data.service.js": "10f766d3e421661983b95a08efec666ca3328b58",
     "./shared/js/chain.service.js": "a03a64d20a743985c0fd2208c59de6966f512fa2",
@@ -109,6 +110,7 @@
     "./shared/js/constants.js": "9af2a050566abc760cdf45dc0ba29b2bb352d030",
     "./shared/js/data.service.js": "abfe34a51cd22a0b3f46766bbfdde4b6d5d3eaf6",
     "./shared/js/download.service.js": "28b2cd93fa2e3981c861ec06199b4c6f007d6363",
+    "./shared/js/ngsw-worker.js": "0279adb21fec5e4434c8eb9dfdb43b4bf65a70ea",
     "./shared/js/reward.data.service.js": "1fc0db53add8e51c217a378a400942e1db905b96",
     "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
     "./shared/js/rosen-download-worker.js": "0f475a099204a7216c60ee48fc85e562a48a55e9",
