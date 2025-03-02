@@ -44,6 +44,9 @@ export class NavigationComponent implements OnInit {
 
     await this.eventService.subscribeToEvent(EventType.EndFullDownload, () => {
       this.downloads--;
+      if (this.downloads < 0) {
+        this.downloads = 0;
+      }
     });
     this.overrideLogging();
   }

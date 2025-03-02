@@ -58,14 +58,16 @@ export class DownloadService {
       map((results: T) => {
         console.log('Downloaded from server:', url);
         localStorage.setItem(url, JSON.stringify(results));
-        this.activeDownloads[url] = false;
         this.endDownload();
+        this.activeDownloads[url] = false;
+        
         return results;
       }),
       catchError((error) => {
         console.log('Download failed:', url);
-        this.activeDownloads[url] = false;
         this.endDownload();
+        this.activeDownloads[url] = false;
+        
         return throwError(error);
       }),
     );
