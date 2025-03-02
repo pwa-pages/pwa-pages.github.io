@@ -60,14 +60,14 @@ export class DownloadService {
         localStorage.setItem(url, JSON.stringify(results));
         this.endDownload();
         this.activeDownloads[url] = false;
-        
+
         return results;
       }),
       catchError((error) => {
         console.log('Download failed:', url);
         this.endDownload();
         this.activeDownloads[url] = false;
-        
+
         return throwError(error);
       }),
     );
