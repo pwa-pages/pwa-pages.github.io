@@ -1,0 +1,22 @@
+<div class="settingsdialog">
+  <div class="settings">
+    <h2>{{data.title}}</h2>
+    <div class="container">
+      <input
+        class="addressinput"
+        type="text"
+        [(ngModel)]="data.address"
+        placeholder="Address"
+      />
+      <button (click)="pasteData()">
+        <div class="fas fa-paste"></div>
+      </button>
+    </div>
+
+    <div class="container">
+      <button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+      &nbsp;
+      <button (click)="onCancelClick()">Cancel</button>
+    </div>
+  </div>
+</div>

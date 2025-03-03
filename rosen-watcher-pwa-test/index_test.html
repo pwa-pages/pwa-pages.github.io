@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <title>Rosen Watcher Rewards</title>
+    <base href="/" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#1976d2" />
+  </head>
+
+  <body>
+    <app-root></app-root>
+    <noscript>Please enable JavaScript to continue using this application...</noscript>
+
+    <div id="error-message" style="color: red; font-weight: bold; margin-top: 20px"></div>
+  </body>
+
+  <script>
+    function showErrorMessage(message) {
+      let errorMessage = document.getElementById('error-message');
+      let errorItem = document.createElement('div');
+      errorItem.textContent = message;
+      errorMessage.appendChild(errorItem);
+    }
+
+    // Capture JavaScript errors
+    window.onerror = function (message, source, lineno, colno, error) {
+      let errorDetails = `Error: ${message} at ${source}:${lineno}:${colno}`;
+      showErrorMessage(errorDetails);
+      return false; // Prevents default browser error message
+    };
+
+    // Capture unhandled promise rejections
+    window.addEventListener('unhandledrejection', function (event) {
+      let errorDetails = `Unhandled Promise Rejection: ${event.reason}`;
+      showErrorMessage(errorDetails);
+    });
+
+    // Capture script load failures
+    window.addEventListener(
+      'error',
+      function (event) {
+        if (event.target.tagName === 'SCRIPT') {
+          let failedSrc = event.target.src || 'Unknown script';
+          showErrorMessage(`Failed to load: ${failedSrc}`);
+          showErrorMessage(`Please try reloading the page or clearing cache.`);
+        }
+      },
+      true,
+    );
+
+    (async function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (!urlParams.has('v') || urlParams.get('v') !== 'latest') {
+        return;
+      }
+
+      try {
+        let response = await fetch('./ngsw.json', { cache: 'no-store' });
+        if (!response.ok) {
+          console.error('Failed to fetch ngsw.json');
+          return;
+        }
+
+        let data = await response.json();
+        let assetGroups = data.assetGroups || [];
+        let latestVersions = {};
+
+        assetGroups.forEach(group => {
+          (group.urls || []).forEach(asset => {
+            let match = asset.match(/(styles|polyfills|main)(?:-([A-Z0-9]+))?\.(css|js)$/);
+
+            if (match) {
+              let [, name, hash, ext] = match;
+              latestVersions[name] = `${name}-${hash}.${ext}`;
+            }
+          });
+        });
+
+        // Add new stylesheet if available
+        if (latestVersions['styles']) {
+          let newStyle = document.createElement('link');
+          newStyle.rel = 'stylesheet';
+          newStyle.href = `./${latestVersions['styles']}`;
+          document.head.appendChild(newStyle);
+        }
+
+        // Add new scripts if available
+        if (latestVersions['polyfills']) {
+          let newScriptPolyfills = document.createElement('script');
+          newScriptPolyfills.src = `./${latestVersions['polyfills']}`;
+          newScriptPolyfills.type = 'module';
+          document.body.appendChild(newScriptPolyfills);
+        }
+
+        if (latestVersions['main']) {
+          let newScriptMain = document.createElement('script');
+          newScriptMain.src = `./${latestVersions['main']}`;
+          newScriptMain.type = 'module';
+          document.body.appendChild(newScriptMain);
+        }
+
+        console.log('Added assets to the page:', latestVersions);
+      } catch (error) {
+        console.error('Error adding assets:', error);
+      }
+    })();
+  </script>
+</html>
