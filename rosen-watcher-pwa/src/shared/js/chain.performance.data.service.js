@@ -19,14 +19,28 @@ class ChainPerformanceDataService extends DataService {
         return new Promise((resolve, reject) => {
             const tempData = [];
             transactions.forEach((item) => {
+                const chainTokensCount = {};
                 const eRSNTotal = item.outputs.reduce((total, output) => {
+                    output.assets.forEach((asset) => {
+                        if (Object.values(chainTypeTokens).includes(asset.name)) {
+                            if (!chainTokensCount[asset.name]) {
+                                chainTokensCount[asset.name] = 1;
+                            }
+                            else {
+                                chainTokensCount[asset.name]++;
+                            }
+                        }
+                    });
                     const assets = output.assets.filter((a) => a.name === 'eRSN');
                     return total + assets.reduce((acc, asset) => acc + asset.amount, 0);
                 }, 0);
+                const maxKey = Object.entries(chainTokensCount).reduce((max, [key, value]) => (value > chainTokensCount[max] ? key : max), Object.keys(chainTokensCount)[0]);
+                const chainType = Object.entries(chainTypeTokens).find(([, value]) => value === maxKey)?.[0];
                 const dbPerfTx = {
                     id: item.id,
                     timestamp: item.timestamp,
                     amount: eRSNTotal,
+                    chainType: chainType,
                 };
                 tempData.push(dbPerfTx);
             });
