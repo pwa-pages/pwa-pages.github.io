@@ -18,6 +18,7 @@ delete_old_files() {
 # Delete JS and CSS files conditionally
 delete_old_files "main-*.js"
 delete_old_files "poly-*.js"
+delete_old_files "scripts-*.js"
 delete_old_files "*worker*.js"
 delete_old_files "styles-*.css"
 
