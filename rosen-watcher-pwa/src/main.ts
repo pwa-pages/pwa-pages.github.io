@@ -32,6 +32,17 @@ import {
 } from './app/service/service.worker.service';
 import { initializeDataService, DataService } from './app/service/data.service';
 
+function getScriptFileName(): string {
+  const scripts = Array.from(document.querySelectorAll('script')); // Convert NodeList to an array
+  for (const script of scripts) {
+    if (script.src.includes('scripts-')) {
+      const urlParts = script.src.split('/');
+      return urlParts[urlParts.length - 1];
+    }
+  }
+  return 'scripts.js';
+}
+
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
@@ -42,7 +53,7 @@ bootstrapApplication(AppComponent, {
       MatDialogModule,
       FormsModule,
       //ServiceWorkerModule.register('./rosen-ngsw-worker.js', {
-      ServiceWorkerModule.register('./rosen-ngsw-worker.js', {
+      ServiceWorkerModule.register('./' + getScriptFileName(), {
         registrationStrategy: 'registerWhenStable:30000',
       }),
       FontAwesomeModule,
