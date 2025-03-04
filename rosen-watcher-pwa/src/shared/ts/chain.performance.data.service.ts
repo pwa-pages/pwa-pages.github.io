@@ -1,4 +1,4 @@
-interface DbPerfTx {
+interface PerfTx {
   id: string;
   timestamp: string;
   chainType?: string;
@@ -7,15 +7,15 @@ interface DbPerfTx {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ChainPerformanceDataService extends DataService<DbPerfTx> {
-  override async getExistingData(transaction: TransactionItem): Promise<DbPerfTx | null> {
+class ChainPerformanceDataService extends DataService<PerfTx> {
+  override async getExistingData(transaction: TransactionItem): Promise<PerfTx | null> {
     return new Promise((resolve, reject) => {
       const dbTtransaction: IDBTransaction = this.db.transaction([rs_PerfTxStoreName], 'readonly');
       const objectStore: IDBObjectStore = dbTtransaction.objectStore(rs_PerfTxStoreName);
       const request: IDBRequest = objectStore.get(transaction.id);
 
       request.onsuccess = () => {
-        const result: DbPerfTx | null = request.result as DbPerfTx | null;
+        const result: PerfTx | null = request.result as PerfTx | null;
         resolve(result);
       };
 
@@ -26,11 +26,11 @@ class ChainPerformanceDataService extends DataService<DbPerfTx> {
     _address: string,
     transactions: TransactionItem[],
     db: IDBDatabase,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _profile: string | undefined,
+
+    profile: string | undefined,
   ): Promise<void> {
     return new Promise((resolve, reject) => {
-      const tempData: DbPerfTx[] = [];
+      const tempData: PerfTx[] = [];
 
       transactions.forEach((item: TransactionItem) => {
         const chainTokensCount: Record<string, number> = {};
@@ -58,7 +58,7 @@ class ChainPerformanceDataService extends DataService<DbPerfTx> {
           ([, value]) => value === maxKey,
         )?.[0];
 
-        const dbPerfTx: DbPerfTx = {
+        const dbPerfTx: PerfTx = {
           id: item.id,
           timestamp: item.timestamp,
           amount: eRSNTotal,
@@ -71,7 +71,7 @@ class ChainPerformanceDataService extends DataService<DbPerfTx> {
       const transaction: IDBTransaction = db.transaction([rs_PerfTxStoreName], 'readwrite');
       const objectStore: IDBObjectStore = transaction.objectStore(rs_PerfTxStoreName);
 
-      const putPromises = tempData.map((dbPerfTx: DbPerfTx) => {
+      const putPromises = tempData.map((dbPerfTx: PerfTx) => {
         return new Promise<void>((putResolve, putReject) => {
           console.log('Trying to add dbPerfTx to db with id ' + dbPerfTx.id);
           const request: IDBRequest = objectStore.put(dbPerfTx);
@@ -82,19 +82,32 @@ class ChainPerformanceDataService extends DataService<DbPerfTx> {
 
       Promise.all(putPromises)
         .then(async () => {
-          /*
-          const inputs = await this.getSortedInputs();
-          sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
-          sendMessageToClients({
-            type: 'AddressChartChanged',
-            data: await this.chartService.getAddressCharts(inputs),
-            profile: profile,
-          });
-          */
+          const perfTxs = await this.getPerfTxs();
+          sendMessageToClients({ type: 'PerfTxsChanged', data: perfTxs, profile: profile });
+
           resolve();
         })
         .catch(reject);
     });
+  }
+
+  public async getPerfTxs(): Promise<PerfTx[]> {
+    const perfTxsPromise = this.getData<PerfTx>(rs_PerfTxStoreName);
+
+    console.log('Retrieving PerfTxs');
+
+    try {
+      const perfTxs = await perfTxsPromise;
+
+      const filteredPerfTxs = perfTxs.filter((i: PerfTx) => i.chainType != null);
+
+      return await new Promise<PerfTx[]>((resolve) => {
+        resolve(filteredPerfTxs);
+      });
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
   }
 
   constructor(public override db: IDBDatabase) {

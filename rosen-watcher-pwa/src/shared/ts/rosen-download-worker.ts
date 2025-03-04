@@ -24,11 +24,13 @@ self.addEventListener('message', async (event: MessageEvent) => {
       downloadService,
       downloadPerfService,
       chartService,
+      chainPerformanceDataService,
     }: {
       dataService: RewardDataService;
       downloadService: DownloadService<DbInput>;
-      downloadPerfService: DownloadService<DbPerfTx>;
+      downloadPerfService: DownloadService<PerfTx>;
       chartService: ChartService;
+      chainPerformanceDataService: ChainPerformanceDataService;
     } = await initServices(profile);
 
     if (data && data.type === 'RequestInputsDownload') {
@@ -71,6 +73,13 @@ self.addEventListener('message', async (event: MessageEvent) => {
           profile: profile,
         });
 
+        const perfTxs = await chainPerformanceDataService.getPerfTxs();
+        sendMessageToClients({
+          type: 'PerfTxsChanged',
+          data: perfTxs,
+          profile: profile,
+        });
+
         downloadPerfService.downloadForAddress(hotWalletAddress, undefined);
       } catch (error) {
         console.error('Error initializing IndexedDB or downloading addresses:', error);
@@ -92,7 +101,7 @@ async function initServices(profile: string | undefined) {
     rewardDataService,
     db,
   );
-  const downloadPerfService: DownloadService<DbPerfTx> = new DownloadService<DbPerfTx>(
+  const downloadPerfService: DownloadService<PerfTx> = new DownloadService<PerfTx>(
     rs_PerfFullDownloadsBatchSize,
     rs_PerfInitialNDownloads,
     chainPerformanceDataService,
@@ -100,6 +109,7 @@ async function initServices(profile: string | undefined) {
   );
   return {
     dataService: rewardDataService,
+    chainPerformanceDataService: chainPerformanceDataService,
     downloadService,
     chartService,
     downloadPerfService: downloadPerfService,

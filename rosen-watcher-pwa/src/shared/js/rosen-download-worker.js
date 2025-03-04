@@ -7,7 +7,7 @@ self.addEventListener('message', async (event) => {
         data.type === 'PerformanceScreenLoaded' ||
         data.type === 'RequestInputsDownload') {
         const profile = data.data;
-        const { dataService, downloadService, downloadPerfService, chartService, } = await initServices(profile);
+        const { dataService, downloadService, downloadPerfService, chartService, chainPerformanceDataService, } = await initServices(profile);
         if (data && data.type === 'RequestInputsDownload') {
             console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain');
             try {
@@ -39,6 +39,12 @@ self.addEventListener('message', async (event) => {
                     data: addressCharts,
                     profile: profile,
                 });
+                const perfTxs = await chainPerformanceDataService.getPerfTxs();
+                sendMessageToClients({
+                    type: 'PerfTxsChanged',
+                    data: perfTxs,
+                    profile: profile,
+                });
                 downloadPerfService.downloadForAddress(hotWalletAddress, undefined);
             }
             catch (error) {
@@ -56,6 +62,7 @@ async function initServices(profile) {
     const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, db);
     return {
         dataService: rewardDataService,
+        chainPerformanceDataService: chainPerformanceDataService,
         downloadService,
         chartService,
         downloadPerfService: downloadPerfService,

@@ -13,9 +13,7 @@ class ChainPerformanceDataService extends DataService {
             request.onerror = (event) => reject(event.target.error);
         });
     }
-    async addData(_address, transactions, db, 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _profile) {
+    async addData(_address, transactions, db, profile) {
         return new Promise((resolve, reject) => {
             const tempData = [];
             transactions.forEach((item) => {
@@ -56,19 +54,27 @@ class ChainPerformanceDataService extends DataService {
             });
             Promise.all(putPromises)
                 .then(async () => {
-                /*
-                const inputs = await this.getSortedInputs();
-                sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
-                sendMessageToClients({
-                  type: 'AddressChartChanged',
-                  data: await this.chartService.getAddressCharts(inputs),
-                  profile: profile,
-                });
-                */
+                const perfTxs = await this.getPerfTxs();
+                sendMessageToClients({ type: 'PerfTxsChanged', data: perfTxs, profile: profile });
                 resolve();
             })
                 .catch(reject);
         });
+    }
+    async getPerfTxs() {
+        const perfTxsPromise = this.getData(rs_PerfTxStoreName);
+        console.log('Retrieving PerfTxs');
+        try {
+            const perfTxs = await perfTxsPromise;
+            const filteredPerfTxs = perfTxs.filter((i) => i.chainType != null);
+            return await new Promise((resolve) => {
+                resolve(filteredPerfTxs);
+            });
+        }
+        catch (error) {
+            console.error(error);
+            return [];
+        }
     }
     constructor(db) {
         super(db);
