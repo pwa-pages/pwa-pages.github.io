@@ -72,7 +72,7 @@
 
         assetGroups.forEach((group) => {
           (group.urls || []).forEach((asset) => {
-            let match = asset.match(/(styles|polyfills|main)(?:-([A-Z0-9]+))?\.(css|js)$/);
+            let match = asset.match(/(scripts|styles|polyfills|main)(?:-([A-Z0-9]+))?\.(css|js)$/);
             if (match) {
               let [, name, hash, ext] = match;
               latestVersions[name] = hash ? `${name}-${hash}.${ext}` : `${name}.${ext}`;
@@ -94,6 +94,14 @@
             let newScript = document.createElement('script');
             newScript.src = `./${latestVersions[key]}`;
             newScript.type = 'module';
+            document.body.appendChild(newScript);
+          }
+        });
+
+        ['scripts'].forEach((key) => {
+          if (latestVersions[key]) {
+            let newScript = document.createElement('script');
+            newScript.src = `./${latestVersions[key]}`;
             document.body.appendChild(newScript);
           }
         });
