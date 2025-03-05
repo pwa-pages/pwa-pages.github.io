@@ -4,6 +4,7 @@ ng build rosen-watcher-pwa --configuration=production --base-href ./ --deploy-ur
 ./clean.sh
 cp -R dist/rosen-watcher-pwa/browser/* .
 git add .
+cp index_dynamic.html index.html
 cp index.html ../404.html
 git add ../404.html
 
