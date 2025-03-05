@@ -73,7 +73,7 @@ self.addEventListener('message', async (event: MessageEvent) => {
           profile: profile,
         });
 
-        console.log('Downloading perftxsss.');
+        console.log('Downloading perftxssss.');
         const perfTxs = await chainPerformanceDataService.getPerfTxs();
         sendMessageToClients({
           type: 'PerfTxsChanged',
