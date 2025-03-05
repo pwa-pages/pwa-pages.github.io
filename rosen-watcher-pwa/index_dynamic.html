@@ -89,7 +89,7 @@
         }
 
         // Add new scripts if available
-        ['polyfills', 'main'].forEach((key) => {
+        ['polyfills'].forEach((key) => {
           if (latestVersions[key]) {
             let newScript = document.createElement('script');
             newScript.src = `./${latestVersions[key]}`;
@@ -102,6 +102,15 @@
           if (latestVersions[key]) {
             let newScript = document.createElement('script');
             newScript.src = `./${latestVersions[key]}`;
+            document.body.appendChild(newScript);
+          }
+        });
+
+        ['main'].forEach((key) => {
+          if (latestVersions[key]) {
+            let newScript = document.createElement('script');
+            newScript.src = `./${latestVersions[key]}`;
+            newScript.type = 'module';
             document.body.appendChild(newScript);
           }
         });
