@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1741202332109,
+  "timestamp": 1741204718294,
   "appData": {
-    "version": "3.35.1"
+    "version": "3.35.2"
   },
   "index": "./index.html",
   "assetGroups": [
