@@ -55,7 +55,7 @@ class ChainPerformanceDataService extends DataService {
             Promise.all(putPromises)
                 .then(async () => {
                 const perfTxs = await this.getPerfTxs();
-                sendMessageToClients({ type: 'PerfTxsChanged', data: perfTxs, profile: profile });
+                sendMessageToClients({ type: 'PerfChartChanged', data: perfTxs, profile: profile });
                 resolve();
             })
                 .catch(reject);
@@ -66,14 +66,21 @@ class ChainPerformanceDataService extends DataService {
         console.log('Retrieving PerfTxs');
         try {
             const perfTxs = await perfTxsPromise;
-            const filteredPerfTxs = perfTxs.filter((i) => i.chainType != null);
-            return await new Promise((resolve) => {
-                resolve(filteredPerfTxs);
-            });
+            const result = perfTxs.reduce((acc, tx) => {
+                if (tx.chainType !== undefined && tx.chainType !== null) {
+                    const chainKey = tx.chainType;
+                    if (!acc[chainKey]) {
+                        acc[chainKey] = { chart: 0 };
+                    }
+                    acc[chainKey].chart += tx.amount ?? 0;
+                }
+                return acc;
+            }, {});
+            return result;
         }
         catch (error) {
             console.error(error);
-            return [];
+            return {};
         }
     }
     constructor(db) {

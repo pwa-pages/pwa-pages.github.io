@@ -1,0 +1,134 @@
+import { Component, OnInit } from '@angular/core';
+import { EventData, EventService, EventType } from '../service/event.service';
+import { DataService } from '../service/data.service';
+import { BaseWatcherComponent } from '../basewatchercomponent';
+import { ChartService } from '../service/chart.service';
+import { Location, NgFor, NgIf } from '@angular/common';
+import { ChainPerfChartDataSet } from '../../service/ts/models/chart.dataset';
+import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
+import { Chart } from 'chart.js';
+import { StorageService } from '../service/storage.service';
+import { NavigationService } from '../service/navigation.service';
+import { ChainService } from '../service/chain.service';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-chain-performance',
+  templateUrl: './chain.performance.html',
+  standalone: true,
+  imports: [NgFor, NgIf],
+})
+export class ChainPerformanceComponent extends BaseWatcherComponent implements OnInit {
+  data: string;
+
+  performanceCharts: ChainChartPerformance[] = [];
+  performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;
+
+  constructor(
+    location: Location,
+    private route: ActivatedRoute,
+    storageService: StorageService,
+    dataService: DataService,
+    chainService: ChainService,
+    eventService: EventService,
+    private chartService: ChartService,
+    navigationService: NavigationService,
+  ) {
+    super(eventService, navigationService, chainService, storageService, dataService, location);
+    this.data = '';
+    this.addresses = [];
+  }
+
+  async retrieveData(): Promise<void> {
+    this.performanceCharts = await this.getPerformanceChart();
+  }
+
+  override async ngOnInit(): Promise<void> {
+    super.ngOnInit();
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+    });
+
+    await this.retrieveData();
+    this.updateChart();
+
+    this.route.queryParams.subscribe(async (params) => {
+      await this.checkProfileParams(params);
+      const hasAddressParams = await this.checkAddressParams(params);
+
+      if (hasAddressParams) {
+        this.eventService.sendEventWithData(
+          EventType.RequestInputsDownload,
+          this.storageService.getProfile() as EventData,
+        );
+      }
+    });
+
+    this.eventService.sendEventWithData(
+      EventType.PerformanceScreenLoaded,
+      this.storageService.getProfile() as EventData,
+    );
+
+    await this.subscribeToEvent(EventType.RefreshInputs, async () => {
+      await this.retrieveData();
+      this.updateChart();
+    });
+  }
+
+  private async getPerformanceChart(): Promise<ChainChartPerformance[]> {
+    console.log('start retrieving chart from database');
+    const chainChart = this.dataService.getChainChart();
+    console.log('done retrieving chart from database');
+
+    return Object.entries(chainChart).map(([chainType, value], index) => ({
+      color: this.chartService.chartColors[index % this.chartService.chartColors.length],
+      chainType: chainType as ChainType,
+      chart: value.chart,
+      index: index,
+      address: '',
+      addressForDisplay: '',
+    }));
+  }
+
+  private createDataSet(i: number): ChainPerfChartDataSet {
+    const chartColor = this.chartService.chartColors[i % 10];
+    return {
+      label: '',
+      data: [],
+      backgroundColor: chartColor,
+      pointBackgroundColor: chartColor,
+      borderColor: chartColor,
+      borderWidth: 0,
+      borderSkipped: false,
+    };
+  }
+
+  updateChart(): void {
+    //const cnt = this.performanceCharts.length;
+    const dataSet = this.createDataSet(0);
+
+    dataSet.data = this.performanceCharts.map((p) => {
+      return p.chart;
+    });
+    //dataSet.label = this.performanceCharts.map(p => p.chainType);
+
+    /*
+        if (!this.performanceChart) {
+          this.performanceCharts = this.chartService.createPerformanceChart(dataSets);
+        } else {
+          if (this.performanceCharts.length != this.performanceCharts.data.datasets.length) {
+            this.performanceCharts.data.datasets = dataSets;
+          } else {
+            for (let i = 0; i < this.performanceCharts.length; i++) {
+              this.performanceCharts.data.datasets[i].data = dataSets[i].data;
+            }
+          }
+    
+          this.performanceChart.update();
+        }
+          */
+  }
+
+  title = 'rosen-watcher-pwa';
+}

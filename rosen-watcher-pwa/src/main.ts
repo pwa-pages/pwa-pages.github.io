@@ -3,6 +3,7 @@ import '@angular/compiler';
 const routes: Routes = [
   { path: 'settings', component: SettingsComponent },
   { path: 'performance', component: PerformanceComponent },
+  { path: 'chainperformance', component: ChainPerformanceComponent },
   { path: 'watchers', component: WatchersComponent },
   { path: '**', component: StatisticsComponent },
 ];
@@ -31,6 +32,7 @@ import {
   ServiceWorkerService,
 } from './app/service/service.worker.service';
 import { initializeDataService, DataService } from './app/service/data.service';
+import { ChainPerformanceComponent } from './app/statistics/chain.performance.component';
 
 function getScriptFileName(): string {
   const scripts = Array.from(document.querySelectorAll('script')); // Convert NodeList to an array

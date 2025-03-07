@@ -83,30 +83,40 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
       Promise.all(putPromises)
         .then(async () => {
           const perfTxs = await this.getPerfTxs();
-          sendMessageToClients({ type: 'PerfTxsChanged', data: perfTxs, profile: profile });
+          sendMessageToClients({ type: 'PerfChartChanged', data: perfTxs, profile: profile });
 
           resolve();
         })
         .catch(reject);
     });
   }
-
-  public async getPerfTxs(): Promise<PerfTx[]> {
+  public async getPerfTxs(): Promise<Record<ChainType, { chart: number }>> {
     const perfTxsPromise = this.getData<PerfTx>(rs_PerfTxStoreName);
 
     console.log('Retrieving PerfTxs');
 
     try {
       const perfTxs = await perfTxsPromise;
+      const result = perfTxs.reduce(
+        (acc, tx) => {
+          if (tx.chainType !== undefined && tx.chainType !== null) {
+            const chainKey = tx.chainType as ChainType;
 
-      const filteredPerfTxs = perfTxs.filter((i: PerfTx) => i.chainType != null);
+            if (!acc[chainKey]) {
+              acc[chainKey] = { chart: 0 };
+            }
 
-      return await new Promise<PerfTx[]>((resolve) => {
-        resolve(filteredPerfTxs);
-      });
+            acc[chainKey].chart += tx.amount ?? 0;
+          }
+          return acc;
+        },
+        {} as Record<ChainType, { chart: number }>,
+      );
+
+      return result;
     } catch (error) {
       console.error(error);
-      return [];
+      return {} as Record<ChainType, { chart: number }>;
     }
   }
 
