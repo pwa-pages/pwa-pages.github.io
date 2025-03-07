@@ -22,7 +22,7 @@ export class ChartDataSet {
 
 export class ChainPerfChartDataSet {
   label: string;
-  data: number[];
+  data: { x: string; y: number }[];
   backgroundColor: string;
   pointBackgroundColor: string;
   borderColor: string;

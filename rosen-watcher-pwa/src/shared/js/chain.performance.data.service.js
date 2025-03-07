@@ -29,8 +29,9 @@ class ChainPerformanceDataService extends DataService {
                             }
                         }
                     });
-                    const assets = output.assets.filter((a) => a.name === 'eRSN');
-                    return total + assets.reduce((acc, asset) => acc + asset.amount, 0);
+                    const assets = output.assets.filter((a) => a.name === 'eRSN' && Object.values(rewardAddresses).includes(output.address));
+                    return (total +
+                        assets.reduce((acc, asset) => acc + asset.amount / Math.pow(10, asset.decimals), 0));
                 }, 0);
                 const maxKey = Object.entries(chainTokensCount).reduce((max, [key, value]) => (value > chainTokensCount[max] ? key : max), Object.keys(chainTokensCount)[0]);
                 const chainType = Object.entries(chainTypeTokens).find(([, value]) => value === maxKey)?.[0];

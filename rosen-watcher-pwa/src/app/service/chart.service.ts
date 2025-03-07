@@ -27,6 +27,77 @@ export class ChartService {
     '#17becf', // Turquoise
     '#9467bd', // Purple
   ];
+
+  createChainPerformanceChart(
+    dataset: ChartDataset<'bar', { x: string | number | Date; y: number }[]>,
+  ): Chart<'bar', { x: string | number | Date; y: number }[], unknown> {
+    return new Chart<'bar', { x: string | number | Date; y: number }[]>('PerformanceChart', {
+      type: 'bar',
+      data: {
+        datasets: [dataset],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            alignToPixels: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+            },
+            ticks: {
+              callback: function (value: number | string) {
+                return (value as number).toLocaleString('en-US', {
+                  minimumFractionDigits: 0,
+                });
+              },
+            },
+          },
+          x: {
+            type: 'category', // Ensuring it's a categorical axis
+            alignToPixels: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+            },
+          },
+        },
+        plugins: {
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            bodyFont: {
+              size: 14,
+            },
+            titleFont: {
+              size: 16,
+              weight: 'bold',
+            },
+            callbacks: {
+              label: function (context: TooltipItem<'bar'>) {
+                const value = context.raw as { y: number };
+                return (
+                  context.dataset.label +
+                  ': ' +
+                  value.y.toLocaleString('en-US', { minimumFractionDigits: 2 })
+                );
+              },
+            },
+          },
+          legend: {
+            display: false,
+          },
+        },
+        elements: {
+          bar: {
+            borderWidth: 0,
+            borderRadius: 4, // Adds rounded corners
+            borderSkipped: false,
+          },
+        },
+      },
+    });
+  }
+
   createPerformanceChart(
     datasets: ChartDataset<'bar', { x: string | number | Date; y: number }[]>[],
   ): Chart<'bar', { x: string | number | Date; y: number }[], unknown> {

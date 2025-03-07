@@ -109,25 +109,18 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     const dataSet = this.createDataSet(0);
 
     dataSet.data = this.performanceCharts.map((p) => {
-      return p.chart;
+      return { x: p.chainType as string, y: p.chart };
     });
     //dataSet.label = this.performanceCharts.map(p => p.chainType);
 
-    /*
-        if (!this.performanceChart) {
-          this.performanceCharts = this.chartService.createPerformanceChart(dataSets);
-        } else {
-          if (this.performanceCharts.length != this.performanceCharts.data.datasets.length) {
-            this.performanceCharts.data.datasets = dataSets;
-          } else {
-            for (let i = 0; i < this.performanceCharts.length; i++) {
-              this.performanceCharts.data.datasets[i].data = dataSets[i].data;
-            }
-          }
-    
-          this.performanceChart.update();
-        }
-          */
+    if (!this.performanceChart) {
+      this.performanceChart = this.chartService.createChainPerformanceChart(dataSet);
+    } else {
+      this.performanceChart.data.datasets[0].data = dataSet.data;
+
+      this.performanceChart.data.datasets[0].backgroundColor = this.chartService.chartColors;
+      this.performanceChart.update();
+    }
   }
 
   title = 'rosen-watcher-pwa';

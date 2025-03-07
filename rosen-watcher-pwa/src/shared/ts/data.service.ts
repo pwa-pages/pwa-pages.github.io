@@ -30,6 +30,7 @@ interface Input {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Output {
   assets: Asset[];
+  address: string;
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 abstract class DataService<T> {
