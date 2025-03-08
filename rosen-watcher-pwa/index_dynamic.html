@@ -34,13 +34,6 @@
       showErrorMessage(errorDetails);
       return false; // Prevents default browser error message
     };
-/*
-    // Capture unhandled promise rejections
-    window.addEventListener('unhandledrejection', function (event) {
-      let errorDetails = `Unhandled Promise Rejection: ${event.reason}`;
-      showErrorMessage(errorDetails);
-    });
-    */
 
     // Capture script load failures
     window.addEventListener(
@@ -52,8 +45,19 @@
           showErrorMessage(`Please try reloading the page or clearing cache.`);
         }
       },
-      true,
+      true
     );
+
+    async function loadScript(src, type = 'text/javascript') {
+      return new Promise((resolve, reject) => {
+        let script = document.createElement('script');
+        script.src = src;
+        script.type = type;
+        script.onload = () => resolve(src); // Resolve when the script loads
+        script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+        document.body.appendChild(script);
+      });
+    }
 
     async function loadAssets() {
       try {
@@ -62,10 +66,7 @@
         let jsonPath = folderPath + '/ngsw.json';
 
         let response = await fetch(jsonPath, { cache: 'no-store' });
-        if (!response.ok)
-          throw new Error(
-            `Failed to fetch ${jsonPath} - ${response.status} ${response.statusText}`,
-          );
+        if (!response.ok) throw new Error(`Failed to fetch ${jsonPath} - ${response.status} ${response.statusText}`);
 
         let data = await response.json();
         let assetGroups = data.assetGroups || [];
@@ -89,35 +90,12 @@
           document.head.appendChild(newStyle);
         }
 
-        // Add new scripts if available
-        ['polyfills'].forEach((key) => {
-          if (latestVersions[key]) {
-            let newScript = document.createElement('script');
-            newScript.src = `./${latestVersions[key]}`;
-            newScript.type = 'module';
-            document.body.appendChild(newScript);
-          }
-        });
+        // Load JavaScript files in sequence
+        if (latestVersions['polyfills']) await loadScript(`./${latestVersions['polyfills']}`);
+        if (latestVersions['scripts']) await loadScript(`./${latestVersions['scripts']}`);
+        if (latestVersions['main']) await loadScript(`./${latestVersions['main']}`, 'module');
 
-        ['scripts'].forEach((key) => {
-          if (latestVersions[key]) {
-            let newScript = document.createElement('script');
-            newScript.src = `./${latestVersions[key]}`;
-            document.body.appendChild(newScript);
-          }
-        });
-
-        ['main'].forEach((key) => {
-          if (latestVersions[key]) {
-            let newScript = document.createElement('script');
-            newScript.src = `./${latestVersions[key]}`;
-            newScript.type = 'module';
-            document.body.appendChild(newScript);
-          }
-        });
-
-        console.log('Added assets to the page:', latestVersions);
-
+        console.log('All assets loaded successfully:', latestVersions);
       } catch (error) {
         showErrorMessage(`Error adding assets: ${error.message}`);
       }
