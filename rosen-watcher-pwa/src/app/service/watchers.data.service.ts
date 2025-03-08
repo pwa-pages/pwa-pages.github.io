@@ -7,6 +7,13 @@ import { WatcherInfo } from '../../service/ts/models/watcher.info';
 import { Token } from '../../service/ts/models/token';
 import '../../shared/ts/chain.service';
 
+export function createChainNumber(): Record<ChainType, number | undefined> {
+  return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as Record<
+    ChainType,
+    number | undefined
+  >;
+}
+
 @Injectable({
   providedIn: 'root',
 })

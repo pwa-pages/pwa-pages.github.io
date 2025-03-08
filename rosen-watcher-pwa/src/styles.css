@@ -38,6 +38,7 @@ li:last-child {
 
 .addressescontainer,
 .linkcontainer,
+.info-description,
 .profilemessage {
   margin-left: 5vw;
 }
@@ -57,6 +58,7 @@ li:last-child {
 
 .addressescontainer,
 .linkcontainer,
+.info-description,
 .profilemessage,
 .watcherscontainer {
   font-size: 1.8vh;

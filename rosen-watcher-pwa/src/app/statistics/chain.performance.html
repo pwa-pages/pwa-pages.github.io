@@ -6,6 +6,9 @@
 </div>
 
 <div class="performancecontainer main-content">
+  <div class="info-description">
+    Avarage earnings in RSN per chain type over the last week for a single watcher.
+  </div>
   <div class="addressescontainer">
     <div
       class="performancelegend"
@@ -13,7 +16,7 @@
     >
       <div class="chart-legend" [style.background-color]="address.color"></div>
       <div class="performance-chart-address mainaddressdispl {{address.chainType}}">
-        - [{{ address.addressForDisplay }}]
+        - {{ address.chainType }}
       </div>
 
       <span *ngIf="!isLast">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>

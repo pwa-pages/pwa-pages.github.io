@@ -11,6 +11,9 @@ import { StorageService } from '../service/storage.service';
 import { NavigationService } from '../service/navigation.service';
 import { ChainService } from '../service/chain.service';
 import { ActivatedRoute } from '@angular/router';
+import { createChainNumber, WatchersDataService } from '../service/watchers.data.service';
+import { map } from 'rxjs';
+import { Token } from '../../service/ts/models/token';
 
 @Component({
   selector: 'app-chain-performance',
@@ -24,6 +27,8 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
   performanceCharts: ChainChartPerformance[] = [];
   performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;
 
+  chainWatcherCount = createChainNumber();
+
   constructor(
     location: Location,
     private route: ActivatedRoute,
@@ -33,6 +38,7 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     eventService: EventService,
     private chartService: ChartService,
     navigationService: NavigationService,
+    private watchersDataService: WatchersDataService,
   ) {
     super(eventService, navigationService, chainService, storageService, dataService, location);
     this.data = '';
@@ -45,6 +51,8 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
+
+    await this.getWatchers();
 
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
@@ -73,6 +81,25 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     await this.subscribeToEvent(EventType.RefreshInputs, async () => {
       await this.retrieveData();
       this.updateChart();
+    });
+  }
+
+  private async getWatchers() {
+    const watcherInfo$ = this.watchersDataService.getWatchersInfo();
+
+    Object.values(ChainType).forEach((c) => {
+      watcherInfo$
+        .pipe(
+          map(
+            (watcherInfo) =>
+              watcherInfo.tokens.find((token: Token) => token.name === 'rspv2' + c + 'AWC')
+                ?.amount ?? 0,
+          ),
+        )
+        .subscribe((amount) => {
+          this.chainWatcherCount[c] = amount;
+          this.updateChart();
+        });
     });
   }
 
@@ -109,7 +136,14 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     const dataSet = this.createDataSet(0);
 
     dataSet.data = this.performanceCharts.map((p) => {
-      return { x: p.chainType as string, y: p.chart };
+      if (p.chainType && this.chainWatcherCount[p.chainType]) {
+        return {
+          x: p.chainType as string,
+          y: p.chart / (this.chainWatcherCount[p.chainType] ?? 1),
+        };
+      } else {
+        return { x: p.chainType as string, y: 0 };
+      }
     });
     //dataSet.label = this.performanceCharts.map(p => p.chainType);
 
