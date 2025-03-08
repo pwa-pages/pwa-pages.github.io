@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <title>Rosen Watcher Rewards</title>
-    <base href="./" />
+    <base href="/" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
@@ -25,15 +25,20 @@
       let errorItem = document.createElement('div');
       errorItem.textContent = message;
       errorMessage.appendChild(errorItem);
-      console.error(message);
     }
 
-    // Capture JavaScript runtime errors
+    // Capture JavaScript errors
     window.onerror = function (message, source, lineno, colno, error) {
       let errorDetails = `Error: ${message} at ${source}:${lineno}:${colno}`;
       showErrorMessage(errorDetails);
       return false; // Prevents default browser error message
     };
+
+    // Capture unhandled promise rejections
+    window.addEventListener('unhandledrejection', function (event) {
+      let errorDetails = `Unhandled Promise Rejection: ${event.reason}`;
+      showErrorMessage(errorDetails);
+    });
 
     // Capture script load failures
     window.addEventListener(
@@ -45,39 +50,33 @@
           showErrorMessage(`Please try reloading the page or clearing cache.`);
         }
       },
-      true
+      true,
     );
 
-    async function loadScript(src, type = 'text/javascript') {
-      return new Promise((resolve, reject) => {
-        let script = document.createElement('script');
-        script.src = src;
-        script.type = type;
-        script.onload = () => resolve(src); // Resolve when the script loads
-        script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-        document.body.appendChild(script);
-      });
-    }
+    (async function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (!urlParams.has('v') || urlParams.get('v') !== 'latest') {
+        return;
+      }
 
-    async function loadAssets() {
       try {
-        let currentPath = window.location.pathname;
-        let folderPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
-        let jsonPath = folderPath + '/ngsw.json';
-
-        let response = await fetch(jsonPath, { cache: 'no-store' });
-        if (!response.ok) throw new Error(`Failed to fetch ${jsonPath} - ${response.status} ${response.statusText}`);
+        let response = await fetch('./ngsw.json', { cache: 'no-store' });
+        if (!response.ok) {
+          console.error('Failed to fetch ngsw.json');
+          return;
+        }
 
         let data = await response.json();
         let assetGroups = data.assetGroups || [];
         let latestVersions = {};
 
-        assetGroups.forEach((group) => {
-          (group.urls || []).forEach((asset) => {
-            let match = asset.match(/(scripts|styles|polyfills|main)(?:-([A-Z0-9]+))?\.(css|js)$/);
+        assetGroups.forEach(group => {
+          (group.urls || []).forEach(asset => {
+            let match = asset.match(/(styles|polyfills|main)(?:-([A-Z0-9]+))?\.(css|js)$/);
+
             if (match) {
               let [, name, hash, ext] = match;
-              latestVersions[name] = hash ? `${name}-${hash}.${ext}` : `${name}.${ext}`;
+              latestVersions[name] = `${name}-${hash}.${ext}`;
             }
           });
         });
@@ -90,17 +89,25 @@
           document.head.appendChild(newStyle);
         }
 
-        // Load JavaScript files in sequence
-        if (latestVersions['polyfills']) await loadScript(`./${latestVersions['polyfills']}`);
-        if (latestVersions['scripts']) await loadScript(`./${latestVersions['scripts']}`);
-        if (latestVersions['main']) await loadScript(`./${latestVersions['main']}`, 'module');
+        // Add new scripts if available
+        if (latestVersions['polyfills']) {
+          let newScriptPolyfills = document.createElement('script');
+          newScriptPolyfills.src = `./${latestVersions['polyfills']}`;
+          newScriptPolyfills.type = 'module';
+          document.body.appendChild(newScriptPolyfills);
+        }
 
-        console.log('All assets loaded successfully:', latestVersions);
+        if (latestVersions['main']) {
+          let newScriptMain = document.createElement('script');
+          newScriptMain.src = `./${latestVersions['main']}`;
+          newScriptMain.type = 'module';
+          document.body.appendChild(newScriptMain);
+        }
+
+        console.log('Added assets to the page:', latestVersions);
       } catch (error) {
-        showErrorMessage(`Error adding assets: ${error.message}`);
+        console.error('Error adding assets:', error);
       }
-    }
-
-    loadAssets();
+    })();
   </script>
 </html>
