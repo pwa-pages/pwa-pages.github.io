@@ -109,6 +109,7 @@ function getChainType(address?: string): ChainType | null | undefined {
 }
 
 if (typeof window !== 'undefined') {
+  (window as any).ChainType = ChainType;
   (window as any).getChainType = getChainType;
   (window as any).permitAddresses = permitAddresses;
   (window as any).rewardAddresses = rewardAddresses;

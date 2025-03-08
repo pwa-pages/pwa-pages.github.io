@@ -67,6 +67,7 @@ function getChainType(address) {
     }
 }
 if (typeof window !== 'undefined') {
+    window.ChainType = ChainType;
     window.getChainType = getChainType;
     window.permitAddresses = permitAddresses;
     window.rewardAddresses = rewardAddresses;
