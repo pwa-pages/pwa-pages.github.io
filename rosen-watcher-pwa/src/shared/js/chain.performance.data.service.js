@@ -66,7 +66,9 @@ class ChainPerformanceDataService extends DataService {
         const perfTxsPromise = this.getData(rs_PerfTxStoreName);
         console.log('Retrieving PerfTxs');
         try {
-            const perfTxs = await perfTxsPromise;
+            let perfTxs = await perfTxsPromise;
+            perfTxs = perfTxs.filter((p) => this.getMaxDownloadDateDifference() >
+                new Date().getTime() - new Date(p.timestamp).getTime());
             const result = perfTxs.reduce((acc, tx) => {
                 if (tx.chainType !== undefined && tx.chainType !== null) {
                     const chainKey = tx.chainType;

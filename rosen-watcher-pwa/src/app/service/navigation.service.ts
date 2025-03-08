@@ -20,6 +20,7 @@ export class NavigationService {
     this.navigationItems.push({ route: '/statistics' });
     this.navigationItems.push({ route: '/performance' });
     this.navigationItems.push({ route: '/watchers' });
+    this.navigationItems.push({ route: '/chainperformance' });
 
     this.router.events
       .pipe(
@@ -53,6 +54,11 @@ export class NavigationService {
   }*/
 
   private updateCurrentNavigationIndex(url: string): void {
+    if (url.startsWith('/chainperformance')) {
+      this.currentNavigationIndex = 1;
+      return;
+    }
+
     let index = this.navigationItems.findIndex((item) => url.startsWith(item.route));
     if (index == -1) {
       index = 0;
@@ -77,6 +83,10 @@ export class NavigationService {
 
   public getRightItem(): NavigationItem {
     return this.navigationItems[(this.currentNavigationIndex + 1) % this.navigationItems.length];
+  }
+
+  public navigate(to: string): void {
+    this.router.navigate([to]);
   }
 
   public navigateTo(to: number): NavigationItem {

@@ -45,6 +45,10 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     this.addresses = [];
   }
 
+  selectTab(): void {
+    this.navigationService.navigate('performance');
+  }
+
   async retrieveData(): Promise<void> {
     this.performanceCharts = await this.getPerformanceChart();
   }

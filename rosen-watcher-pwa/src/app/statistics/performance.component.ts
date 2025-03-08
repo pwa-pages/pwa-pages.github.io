@@ -134,6 +134,10 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     };
   }
 
+  selectTab(): void {
+    this.navigationService.navigate('chainperformance');
+  }
+
   updateChart(): void {
     const dataSets = [];
     const cnt = this.performanceCharts.length;

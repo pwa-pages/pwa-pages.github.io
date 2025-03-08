@@ -39,8 +39,17 @@ li:last-child {
 .addressescontainer,
 .linkcontainer,
 .info-description,
+.performancetab,
 .profilemessage {
   margin-left: 5vw;
+}
+
+.info-description {
+  padding-top: 8vh;
+}
+
+.mywatchers .performancelegend {
+  margin-top: 8vh;
 }
 
 .profilemessage a {
