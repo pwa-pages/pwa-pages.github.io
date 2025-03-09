@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cp dist/rosen-watchers/assets/*.html  dist/rosen-watchers/
-cp dist/rosen_chain-performance/assets/*.html  dist/rosen_chain-performance/
+cp dist/rosen-chain-performance/assets/*.html  dist/rosen-chain-performance/
 
 
 dir="dist/rosen-watchers/" 
@@ -26,7 +26,7 @@ for file in "$dir"main*.js "$dir"runtime*.js "$dir"styles*.css; do
   fi
 done
 
-dir="dist/rosen_chain-performance/" 
+dir="dist/rosen-chain-performance/" 
 
 for file in "$dir"main*.js "$dir"runtime*.js "$dir"styles*.css; do
   if [[ -f "$file" ]]; then
@@ -49,4 +49,4 @@ done
 
 rm web_component/*
 cp dist/rosen-watchers/* web_component/
-cp dist/rosen_chain-performance/* web_component/
+cp dist/rosen-chain-performance/* web_component/
