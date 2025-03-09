@@ -35,13 +35,13 @@ for file in "$dir"main*.js "$dir"runtime*.js "$dir"styles*.css; do
 
     # Replace {{main.js}} or {{runtime.js}} or {{styles.css}} with the filename in web_component.html
     if [[ "$filename" == main*.js ]]; then
-      sed -i "s|{{main.js}}|$filename|g" dist/rosen-watchers/rosen-chain-performance.html
+      sed -i "s|{{main.js}}|$filename|g" dist/rosen-chain-performance/rosen-chain-performance.html
       echo "Replaced {{main.js}} with $filename in dist/rosen-chain-performance/rosen-chain-performance.html"
     elif [[ "$filename" == runtime*.js ]]; then
-      sed -i "s|{{runtime.js}}|$filename|g" dist/rosen-watchers/rosen-chain-performance.html
+      sed -i "s|{{runtime.js}}|$filename|g" dist/rosen-chain-performance/rosen-chain-performance.html
       echo "Replaced {{runtime.js}} with $filename in dist/rosen-chain-performance/rosen-chain-performance.html"
     elif [[ "$filename" == styles*.css ]]; then
-      sed -i "s|{{styles.css}}|$filename|g" dist/rosen-watchers/rosen-chain-performance.html
+      sed -i "s|{{styles.css}}|$filename|g" dist/rosen-chain-performance/rosen-chain-performance.html
       echo "Replaced {{styles.css}} with $filename in dist/rosen-chain-performance/rosen-chain-performance.html"
     fi
   fi
