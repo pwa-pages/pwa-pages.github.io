@@ -8,8 +8,13 @@ import { ChainPerformanceComponent } from './statistics/chain.performance.compon
 bootstrapApplication(WatchersComponent, {
   providers: [provideHttpClient(withInterceptorsFromDi())],
 }).then((appRef) => {
-  let element = createCustomElement(WatchersComponent, { injector: appRef.injector });
+  const element = createCustomElement(WatchersComponent, { injector: appRef.injector });
   customElements.define('app-watchers', element as CustomElementConstructor);
-  element = createCustomElement(ChainPerformanceComponent, { injector: appRef.injector });
+});
+
+bootstrapApplication(ChainPerformanceComponent, {
+  providers: [provideHttpClient(withInterceptorsFromDi())],
+}).then((appRef) => {
+  const element = createCustomElement(ChainPerformanceComponent, { injector: appRef.injector });
   customElements.define('app-chain-performance', element as CustomElementConstructor);
 });
