@@ -1,6 +1,7 @@
 #!/bin/bash
 
-cp dist/rosen-watchers/assets/rosen_watchers.html  dist/rosen-watchers/
+cp dist/rosen-watchers/assets/*.html  dist/rosen-watchers/
+
 
 dir="dist/rosen-watchers/" 
 
