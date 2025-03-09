@@ -117,7 +117,7 @@
           "options": {
             "outputPath": "dist/rosen-watchers",  
             "index": "src/index.html",     
-            "main": "src/app/web-component.ts",      
+            "main": "src/app/webcomponents/watchers-web-component.ts",      
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets/rosen_watchers.html",
