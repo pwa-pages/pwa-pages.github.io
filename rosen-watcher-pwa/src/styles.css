@@ -96,6 +96,10 @@ li:last-child {
   margin-top: 3vh;
 }
 
+.mywatchers .addressescontainer {
+  margin-top: 8vh;
+}
+
 .permitstitle {
   font-weight: bold;
   color: rgba(138, 128, 128);

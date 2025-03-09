@@ -135,7 +135,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   }
 
   selectTab(): void {
-    this.navigationService.navigate('chainperformance');
+    this.navigationService.navigate('/chainperformance');
   }
 
   updateChart(): void {

@@ -46,7 +46,7 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
   }
 
   selectTab(): void {
-    this.navigationService.navigate('performance');
+    this.navigationService.navigate('/performance');
   }
 
   async retrieveData(): Promise<void> {

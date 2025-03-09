@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1741459727818,
+  "timestamp": 1741511077825,
   "appData": {
     "version": "3.37.2"
   },
@@ -16,13 +16,13 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-PLB5HVNW.js",
+        "./main-EZY3KOHN.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
         "./rosen.html",
         "./scripts-NUBAFVYY.js",
         "./shared/js/ngsw-worker.js",
-        "./styles-AMXFORWA.css"
+        "./styles-W6GQTQFC.css"
       ],
       "patterns": []
     },
@@ -43,6 +43,7 @@
         "./assets/images/dogecoin.png",
         "./assets/images/ergo.png",
         "./assets/images/ethereum.png",
+        "./assets/rosen_chain-performance.html",
         "./assets/rosen_watchers.html",
         "./assets/test.html",
         "./media/binance-WGS5R7MY.png",
@@ -73,11 +74,12 @@
     "./assets/images/dogecoin.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
+    "./assets/rosen_chain-performance.html": "423ebc10aca3a3982c9316b844b6fe4dd0d33e46",
     "./assets/rosen_watchers.html": "c77ef0df4112ccfc7b0115d53dddbbd7c075a23d",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "109afbc4682b696aa6d17f59af0ede2ce40b71aa",
-    "./main-PLB5HVNW.js": "2e36cd6bf47bc6d43724c96bee07a50aaf6888d3",
+    "./index.html": "d39d965e290ef95c150a3e5b4d194a5e80b61eeb",
+    "./main-EZY3KOHN.js": "64a5ea0af563443b480a961b105522bec99be35e",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -96,7 +98,7 @@
     "./rosen.html": "41b1173bb4bb478135acece9d279cf4dcf2193fd",
     "./scripts-NUBAFVYY.js": "f3f463224aa939ea006c9b2812e54f25300fff90",
     "./shared/js/ngsw-worker.js": "0279adb21fec5e4434c8eb9dfdb43b4bf65a70ea",
-    "./styles-AMXFORWA.css": "6e69576b9a63adbfd94098a2cc5b6fbbde41fdab"
+    "./styles-W6GQTQFC.css": "be65ba4fe5e2686042852c995b605257db23274d"
   },
   "navigationUrls": [
     {

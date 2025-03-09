@@ -35,6 +35,11 @@ export class NavigationService {
       this.latestVersionUpdate = v;
       //this.checkForReload();
     });
+
+    const performanceItem = localStorage.getItem('performanceScreen');
+    if (performanceItem?.startsWith('/chainperformance')) {
+      this.swapPerformanceItems();
+    }
   }
 
   /*
@@ -86,7 +91,24 @@ export class NavigationService {
   }
 
   public navigate(to: string): void {
+    if (to.startsWith('/performance') && !this.router.url.startsWith('/performance')) {
+      this.swapPerformanceItems();
+    } else if (
+      to.startsWith('/chainperformance') &&
+      !this.router.url.startsWith('/chainperformance')
+    ) {
+      this.swapPerformanceItems();
+    }
+
+    localStorage.setItem('performanceScreen', this.navigationItems[1].route);
+
     this.router.navigate([to]);
+  }
+
+  private swapPerformanceItems() {
+    const t = this.navigationItems[1];
+    this.navigationItems[1] = this.navigationItems[3];
+    this.navigationItems[3] = t;
   }
 
   public navigateTo(to: number): NavigationItem {
