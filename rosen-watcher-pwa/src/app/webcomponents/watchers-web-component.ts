@@ -10,12 +10,3 @@ bootstrapApplication(WatchersComponent, {
   const element = createCustomElement(WatchersComponent, { injector: appRef.injector });
   customElements.define('app-watchers', element as CustomElementConstructor);
 });
-
-/*
-bootstrapApplication(ChainPerformanceComponent, {
-  providers: [provideHttpClient(withInterceptorsFromDi())],
-}).then((appRef) => {
-  const element = createCustomElement(ChainPerformanceComponent, { injector: appRef.injector });
-  customElements.define('app-chain-performance', element as CustomElementConstructor);
-});
-*/
