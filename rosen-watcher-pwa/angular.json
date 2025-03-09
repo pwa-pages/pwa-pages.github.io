@@ -180,7 +180,7 @@
             "main": "src/app/webcomponents/chain-performance-web-component.ts",      
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/assets/rosen_chain-performance.html"
+              "src/assets/rosen-chain-performance.html"
             ],
             "styles": [
               "src/styles.css"
