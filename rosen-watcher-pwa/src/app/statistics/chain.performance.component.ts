@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { EventData, EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
@@ -31,7 +31,6 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
 
   constructor(
     location: Location,
-    private route: ActivatedRoute,
     storageService: StorageService,
     dataService: DataService,
     chainService: ChainService,
@@ -64,18 +63,6 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
 
     await this.retrieveData();
     this.updateChart();
-
-    this.route.queryParams.subscribe(async (params) => {
-      await this.checkProfileParams(params);
-      const hasAddressParams = await this.checkAddressParams(params);
-
-      if (hasAddressParams) {
-        this.eventService.sendEventWithData(
-          EventType.RequestInputsDownload,
-          this.storageService.getProfile() as EventData,
-        );
-      }
-    });
 
     this.eventService.sendEventWithData(
       EventType.PerformanceScreenLoaded,
