@@ -1,21 +1,21 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { EventData, EventService, EventType } from "../service/event.service";
-import { StorageService } from "../service/storage.service";
-import { DataService } from "../service/data.service";
-import { BaseWatcherComponent } from "../basewatchercomponent";
-import { ActivatedRoute, RouterLink, RouterLinkActive } from "@angular/router";
-import { Location, NgIf, NgStyle, NgFor } from "@angular/common";
-import { Router } from "@angular/router";
-import { MatDialog } from "@angular/material/dialog";
-import { QRDialogComponent } from "./qrdialog.component";
-import "chartjs-adapter-date-fns";
-import { ChartService, LineChart } from "../service/chart.service";
-import { Input } from "../../service/ts/models/input";
-import { Address } from "../../service/ts/models/address";
-import { ServiceWorkerService } from "../service/service.worker.service";
-import { FormsModule } from "@angular/forms";
-import { ChainService } from "../service/chain.service";
-import { NavigationService } from "../service/navigation.service";
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { EventData, EventService, EventType } from '../service/event.service';
+import { StorageService } from '../service/storage.service';
+import { DataService } from '../service/data.service';
+import { BaseWatcherComponent } from '../basewatchercomponent';
+import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { Location, NgIf, NgStyle, NgFor } from '@angular/common';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { QRDialogComponent } from './qrdialog.component';
+import 'chartjs-adapter-date-fns';
+import { ChartService, LineChart } from '../service/chart.service';
+import { Input } from '../../service/ts/models/input';
+import { Address } from '../../service/ts/models/address';
+import { ServiceWorkerService } from '../service/service.worker.service';
+import { FormsModule } from '@angular/forms';
+import { ChainService } from '../service/chain.service';
+import { NavigationService } from '../service/navigation.service';
 
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
@@ -24,18 +24,15 @@ interface WindowWithPrompt extends Window {
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
 }
 @Component({
-  selector: "app-statistics",
-  templateUrl: "./statistics.html",
+  selector: 'app-statistics',
+  templateUrl: './statistics.html',
   standalone: true,
   imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive, FormsModule],
 })
-export class StatisticsComponent
-  extends BaseWatcherComponent
-  implements OnInit
-{
+export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
   totalRewards: string;
   selectedTab: string;
   rewardsChart: DateNumberPoint[];
@@ -49,7 +46,7 @@ export class StatisticsComponent
   shareSupport = false;
   chart: LineChart | undefined;
 
-  @ViewChild("detailsContainer") detailsContainer!: ElementRef;
+  @ViewChild('detailsContainer') detailsContainer!: ElementRef;
 
   constructor(
     location: Location,
@@ -64,21 +61,14 @@ export class StatisticsComponent
     private qrDialog: MatDialog,
     navigationService: NavigationService,
   ) {
-    super(
-      eventService,
-      navigationService,
-      chainService,
-      storageService,
-      dataService,
-      location,
-    );
-    this.totalRewards = "";
-    this.selectedTab = "chart";
+    super(eventService, navigationService, chainService, storageService, dataService, location);
+    this.totalRewards = '';
+    this.selectedTab = 'chart';
     this.addressesForDisplay = [];
     this.rewardsChart = [];
     this.sortedInputs = [];
     this.detailInputs = [];
-    this.version = "";
+    this.version = '';
     this.selectedPeriod = null;
   }
 
@@ -91,20 +81,20 @@ export class StatisticsComponent
   }
 
   formatDate(utcDate: Date): string {
-    const day = utcDate.getUTCDate().toString().padStart(2, "0");
+    const day = utcDate.getUTCDate().toString().padStart(2, '0');
     const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     const month = monthNames[utcDate.getUTCMonth()];
     const year = utcDate.getUTCFullYear();
@@ -113,9 +103,9 @@ export class StatisticsComponent
   }
 
   formatTime(utcDate: Date): string {
-    const hours = utcDate.getUTCHours().toString().padStart(2, "0");
-    const minutes = utcDate.getUTCMinutes().toString().padStart(2, "0");
-    const seconds = utcDate.getUTCSeconds().toString().padStart(2, "0");
+    const hours = utcDate.getUTCHours().toString().padStart(2, '0');
+    const minutes = utcDate.getUTCMinutes().toString().padStart(2, '0');
+    const seconds = utcDate.getUTCSeconds().toString().padStart(2, '0');
 
     return `${hours}:${minutes}:${seconds}`;
   }
@@ -146,14 +136,10 @@ export class StatisticsComponent
   }
 
   async retrieveData(): Promise<void> {
-    this.selectedPeriod = localStorage.getItem("statisticsPeriod") as Period;
-    this.selectedPeriod =
-      this.selectedPeriod == null ? Period.All : this.selectedPeriod;
+    this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
+    this.selectedPeriod = this.selectedPeriod == null ? Period.All : this.selectedPeriod;
 
-    this.sortedInputs = this.reduceData(
-      this.dataService.getSortedInputs(),
-      this.selectedPeriod,
-    );
+    this.sortedInputs = this.reduceData(this.dataService.getSortedInputs(), this.selectedPeriod);
 
     const amounts = this.sortedInputs.map((s) => {
       return { x: s.inputDate, y: s.amount } as DateNumberPoint;
@@ -171,11 +157,7 @@ export class StatisticsComponent
     });
     this.detailInputs = this.sortedInputs.slice(0, 100);
 
-    if (
-      this.rewardsChart.length != 0 &&
-      amounts.length != this.rewardsChart.length &&
-      this.chart
-    ) {
+    if (this.rewardsChart.length != 0 && amounts.length != this.rewardsChart.length && this.chart) {
       this.chart.options.animation = {
         duration: 1000,
       };
@@ -190,23 +172,15 @@ export class StatisticsComponent
     this.updateChart();
 
     if (this.rewardsChart.length > 0) {
-      this.totalRewards = this.rewardsChart[this.rewardsChart.length - 1].y
-        .toFixed(3)
-        .toString();
+      this.totalRewards = this.rewardsChart[this.rewardsChart.length - 1].y.toFixed(3).toString();
     }
 
-    this.addressesForDisplay = await this.dataService.getAddressesForDisplay(
-      this.sortedInputs,
-    );
+    this.addressesForDisplay = await this.dataService.getAddressesForDisplay(this.sortedInputs);
   }
 
   updateChart(): void {
     if (!this.chart) {
-      this.chart = this.chartService.createStatisticsChart(
-        this.rewardsChart,
-        1,
-        [0.4],
-      );
+      this.chart = this.chartService.createStatisticsChart(this.rewardsChart, 1, [0.4]);
     }
 
     this.chart.data.datasets[0].data = this.chartService.reduceChartData(
@@ -231,11 +205,8 @@ export class StatisticsComponent
       (window as WindowWithPrompt).deferredPrompt?.prompt();
 
       (window as WindowWithPrompt).deferredPrompt?.userChoice.then(
-        (choiceResult: {
-          outcome: "accepted" | "dismissed";
-          platform: string;
-        }) => {
-          if (choiceResult.outcome === "accepted") {
+        (choiceResult: { outcome: 'accepted' | 'dismissed'; platform: string }) => {
+          if (choiceResult.outcome === 'accepted') {
             (window as WindowWithPrompt).showHomeLink = false;
           }
           (window as WindowWithPrompt).deferredPrompt = undefined;
@@ -251,29 +222,28 @@ export class StatisticsComponent
   }
 
   onPeriodChange(): void {
-    localStorage.setItem("statisticsPeriod", this.selectedPeriod as string);
+    localStorage.setItem('statisticsPeriod', this.selectedPeriod as string);
     this.retrieveData();
   }
 
   getShareUrl(): string {
     const currentUrl = window.location.pathname;
-    const subdirectory = currentUrl.substring(0, currentUrl.lastIndexOf("/"));
-    const urlTree = this.router.createUrlTree(["main"], {
+    const subdirectory = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
+    const urlTree = this.router.createUrlTree(['main'], {
       queryParams: { addresses: JSON.stringify(this.addresses) },
     });
-    const url =
-      window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
+    const url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
     return url;
   }
 
   share(): void {
     const url = this.getShareUrl();
 
-    console.log("share url: " + url);
+    console.log('share url: ' + url);
 
     navigator.share({
-      title: "Rosen Watcher",
-      text: "Rosen Watcher",
+      title: 'Rosen Watcher',
+      text: 'Rosen Watcher',
       url: url,
     });
   }
@@ -281,7 +251,7 @@ export class StatisticsComponent
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    this.selectedPeriod = localStorage.getItem("statisticsPeriod") as Period;
+    this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
     this.updateChart();
 
     this.route.queryParams.subscribe(async (params) => {
@@ -304,15 +274,14 @@ export class StatisticsComponent
 
     this.shareSupport = navigator.share != null && navigator.share != undefined;
 
-    window.addEventListener("beforeinstallprompt", (event: Event) => {
+    window.addEventListener('beforeinstallprompt', (event: Event) => {
       (window as WindowWithPrompt).showHomeLink = true;
       event.preventDefault();
 
-      (window as WindowWithPrompt).deferredPrompt =
-        event as BeforeInstallPromptEvent;
+      (window as WindowWithPrompt).deferredPrompt = event as BeforeInstallPromptEvent;
     });
 
-    window.addEventListener("beforeinstallprompt", (event: Event) => {
+    window.addEventListener('beforeinstallprompt', (event: Event) => {
       event.preventDefault();
     });
 
@@ -326,5 +295,5 @@ export class StatisticsComponent
     });
   }
 
-  title = "rosen-watcher-pwa";
+  title = 'rosen-watcher-pwa';
 }

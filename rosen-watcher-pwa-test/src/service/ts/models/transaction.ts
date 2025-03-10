@@ -1,4 +1,4 @@
-import type { Input } from "./input";
+import type { Input } from './input';
 
 export class Transaction {
   constructor(

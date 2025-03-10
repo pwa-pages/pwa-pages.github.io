@@ -21,8 +21,8 @@
 
   <script>
     function showErrorMessage(message) {
-      let errorMessage = document.getElementById("error-message");
-      let errorItem = document.createElement("div");
+      let errorMessage = document.getElementById('error-message');
+      let errorItem = document.createElement('div');
       errorItem.textContent = message;
       errorMessage.appendChild(errorItem);
     }
@@ -35,17 +35,17 @@
     };
 
     // Capture unhandled promise rejections
-    window.addEventListener("unhandledrejection", function (event) {
+    window.addEventListener('unhandledrejection', function (event) {
       let errorDetails = `Unhandled Promise Rejection: ${event.reason}`;
       showErrorMessage(errorDetails);
     });
 
     // Capture script load failures
     window.addEventListener(
-      "error",
+      'error',
       function (event) {
-        if (event.target.tagName === "SCRIPT") {
-          let failedSrc = event.target.src || "Unknown script";
+        if (event.target.tagName === 'SCRIPT') {
+          let failedSrc = event.target.src || 'Unknown script';
           showErrorMessage(`Failed to load: ${failedSrc}`);
           showErrorMessage(`Please try reloading the page or clearing cache.`);
         }

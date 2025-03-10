@@ -5,31 +5,14 @@
   </div>
 </div>
 
-<div class="performancecontainer mywatchers main-content">
-  <!--
-  <div class="performancetab">
-    <a tabindex="0" class="tab" [class.active]="true">My watchers</a>
-    <a
-      tabindex="0"
-      class="tab"
-      [class.active]="false"
-      (click)="selectTab()"
-      (keypress)="selectTab()"
-    >
-      Compare chains
-    </a>
-  </div>
--->
-
+<div class="performancecontainer main-content">
   <div class="addressescontainer">
     <div
       class="performancelegend"
       *ngFor="let address of performanceCharts; let i = index; last as isLast"
     >
       <div class="chart-legend" [style.background-color]="address.color"></div>
-      <div
-        class="performance-chart-address mainaddressdispl {{address.chainType}}"
-      >
+      <div class="performance-chart-address mainaddressdispl {{address.chainType}}">
         - [{{ address.addressForDisplay }}]
       </div>
 

@@ -11,11 +11,7 @@
       <div class="watcherrequirements">Watcher requirements:</div>
       <div class="currency">
         <label for="currencySelect">Currency:</label>
-        <select
-          id="currencySelect"
-          [(ngModel)]="selectedCurrency"
-          (change)="onCurrencyChange()"
-        >
+        <select id="currencySelect" [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
           <option value="EUR">Euro</option>
           <option value="USD">US Dollar</option>
           <option value="ERG">Ergo</option>
@@ -26,12 +22,11 @@
 
     <div class="watchervaluerow collateralvalues">
       Watcher collateral: {{rs_WatcherCollateralRSN | number: '1.0-0'}} RSN +
-      {{rs_WatcherCollateralERG}} ERG = {{watcherValue | number: '1.0-0'}}
-      {{this.selectedCurrency}}
+      {{rs_WatcherCollateralERG}} ERG = {{watcherValue | number: '1.0-0'}} {{this.selectedCurrency}}
       <br />
 
-      Permit value: {{rs_PermitCost | number: '1.0-0'}} RSN = {{permitValue |
-      number: '1.0-0'}} {{this.selectedCurrency}}
+      Permit value: {{rs_PermitCost | number: '1.0-0'}} RSN = {{permitValue | number: '1.0-0'}}
+      {{this.selectedCurrency}}
     </div>
 
     <div class="fullrow">Watchers stats:</div>
@@ -46,36 +41,21 @@
     <div class="Bitcoin watchersdispl"></div>
     <div>Bitcoin</div>
     <div>{{chainWatcherCount['Bitcoin']}}</div>
-    <div>
-      {{chainPermitCount['Bitcoin']}} ({{activePermitCount['Bitcoin']}})
-    </div>
+    <div>{{chainPermitCount['Bitcoin']}} ({{activePermitCount['Bitcoin']}})</div>
     <div>{{chainLockedRSN['Bitcoin'] | number: '1.0-0'}}</div>
     <div>{{chainLockedERG['Bitcoin'] | number: '1.0-0'}}</div>
-
-    <div class="Binance watchersdispl"></div>
-    <div>Binance</div>
-    <div>{{chainWatcherCount['Binance']}}</div>
-    <div>
-      {{chainPermitCount['Binance']}} ({{activePermitCount['Binance']}})
-    </div>
-    <div>{{chainLockedRSN['Binance'] | number: '1.0-0'}}</div>
-    <div>{{chainLockedERG['Binance'] | number: '1.0-0'}}</div>
 
     <div class="Ethereum watchersdispl"></div>
     <div>Ethereum</div>
     <div>{{chainWatcherCount['Ethereum']}}</div>
-    <div>
-      {{chainPermitCount['Ethereum']}} ({{activePermitCount['Ethereum']}})
-    </div>
+    <div>{{chainPermitCount['Ethereum']}} ({{activePermitCount['Ethereum']}})</div>
     <div>{{chainLockedRSN['Ethereum'] | number: '1.0-0'}}</div>
     <div>{{chainLockedERG['Ethereum'] | number: '1.0-0'}}</div>
 
     <div class="Cardano watchersdispl"></div>
     <div>Cardano</div>
     <div>{{chainWatcherCount['Cardano']}}</div>
-    <div>
-      {{chainPermitCount['Cardano']}} ({{activePermitCount['Cardano']}})
-    </div>
+    <div>{{chainPermitCount['Cardano']}} ({{activePermitCount['Cardano']}})</div>
     <div>{{chainLockedRSN['Cardano'] | number: '1.0-0'}}</div>
     <div>{{chainLockedERG['Cardano'] | number: '1.0-0'}}</div>
 
@@ -105,8 +85,8 @@
 
     <div class="watchersdispl"></div>
     <div class="fivecolumns">
-      Total locked: {{totalLocked | number: '1.0-0'}} {{this.selectedCurrency}}
-      (permits + collateral)
+      Total locked: {{totalLocked | number: '1.0-0'}} {{this.selectedCurrency}} (permits +
+      collateral)
     </div>
 
     <br />

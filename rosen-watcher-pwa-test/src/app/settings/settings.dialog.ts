@@ -1,10 +1,6 @@
-import { Component, Inject } from "@angular/core";
-import {
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-  MatDialogClose,
-} from "@angular/material/dialog";
-import { FormsModule } from "@angular/forms";
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogClose } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
 
 interface DialogData {
   title: string;
@@ -13,8 +9,8 @@ interface DialogData {
 }
 
 @Component({
-  selector: "app-dialog",
-  templateUrl: "./dialog.html",
+  selector: 'app-dialog',
+  templateUrl: './dialog.html',
   standalone: true,
   imports: [FormsModule, MatDialogClose],
 })
@@ -35,7 +31,7 @@ export class SettingsDialogComponent {
         this.data.address = pastedText;
       })
       .catch((err) => {
-        console.error("Failed to read clipboard contents: ", err);
+        console.error('Failed to read clipboard contents: ', err);
       });
   }
 }

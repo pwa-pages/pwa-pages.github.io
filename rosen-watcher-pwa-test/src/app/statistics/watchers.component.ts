@@ -1,24 +1,28 @@
-import { Component, OnInit } from "@angular/core";
-import { EventService, EventType } from "../service/event.service";
-import {
-  createChainNumber,
-  WatchersDataService,
-} from "../service/watchers.data.service";
-import { BaseWatcherComponent } from "../basewatchercomponent";
-import { DataService } from "../service/data.service";
-import { map } from "rxjs/operators";
-import { ChainType } from "../../service/ts/models/chaintype";
-import { Token } from "../../service/ts/models/token";
-import { Location, CommonModule } from "@angular/common";
-import { StorageService } from "../service/storage.service";
-import { NavigationService } from "../service/navigation.service";
-import { ChainService } from "../service/chain.service";
-import { FormsModule } from "@angular/forms";
-import { PriceService } from "../service/price.service";
+import { Component, OnInit } from '@angular/core';
+import { EventService, EventType } from '../service/event.service';
+import { WatchersDataService } from '../service/watchers.data.service';
+import { BaseWatcherComponent } from '../basewatchercomponent';
+import { DataService } from '../service/data.service';
+import { map } from 'rxjs/operators';
+import { ChainType } from '../../service/ts/models/chaintype';
+import { Token } from '../../service/ts/models/token';
+import { Location, CommonModule } from '@angular/common';
+import { StorageService } from '../service/storage.service';
+import { NavigationService } from '../service/navigation.service';
+import { ChainService } from '../service/chain.service';
+import { FormsModule } from '@angular/forms';
+import { PriceService } from '../service/price.service';
+
+function createChainNumber(): Record<ChainType, number | undefined> {
+  return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as Record<
+    ChainType,
+    number | undefined
+  >;
+}
 
 @Component({
-  selector: "app-watchers",
-  templateUrl: "./watchers.html",
+  selector: 'app-watchers',
+  templateUrl: './watchers.html',
   standalone: true,
   imports: [CommonModule, FormsModule],
 })
@@ -58,18 +62,11 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     dataService: DataService,
     location: Location,
   ) {
-    super(
-      eventService,
-      navigationService,
-      chainService,
-      storageService,
-      dataService,
-      location,
-    );
+    super(eventService, navigationService, chainService, storageService, dataService, location);
   }
 
   onCurrencyChange(): void {
-    localStorage.setItem("selectedCurrency", this.selectedCurrency as string);
+    localStorage.setItem('selectedCurrency', this.selectedCurrency as string);
     this.currencyUpdate();
   }
 
@@ -81,9 +78,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     return (map[chainType] ?? 0) * multiplier;
   }
 
-  private updateTotal(
-    map: Record<ChainType, number | undefined>,
-  ): number | undefined {
+  private updateTotal(map: Record<ChainType, number | undefined>): number | undefined {
     return Object.values(map).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
   }
 
@@ -91,43 +86,34 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     const conversions = [
       {
         amount: rs_WatcherCollateralRSN,
-        from: "RSN",
+        from: 'RSN',
         callback: (c: number) => (this.rsnCollateralValue = c),
       },
       {
         amount: rs_WatcherCollateralERG,
-        from: "ERG",
+        from: 'ERG',
         callback: (c: number) => (this.ergCollateralValue = c),
       },
-      {
-        amount: rs_PermitCost,
-        from: "RSN",
-        callback: (c: number) => (this.permitValue = c),
-      },
+      { amount: rs_PermitCost, from: 'RSN', callback: (c: number) => (this.permitValue = c) },
       {
         amount: this.totalLockedERG ?? 0,
-        from: "ERG",
+        from: 'ERG',
         callback: (l: number) => (this.totalLockedERGConverted = l),
       },
       {
-        amount:
-          (this.totalLockedRSN ?? 0) +
-          rs_PermitCost * (this.totalPermitCount ?? 0),
-        from: "RSN",
+        amount: (this.totalLockedRSN ?? 0) + rs_PermitCost * (this.totalPermitCount ?? 0),
+        from: 'RSN',
         callback: (l: number) => (this.totalLockedRSNConverted = l),
       },
     ];
 
     conversions.forEach(({ amount, from, callback }) => {
-      this.priceService
-        .convert(amount, from, this.selectedCurrency ?? "")
-        .subscribe(callback);
+      this.priceService.convert(amount, from, this.selectedCurrency ?? '').subscribe(callback);
     });
   }
 
   private updateTotalLocked(): void {
-    this.totalLocked =
-      (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
+    this.totalLocked = (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
   }
 
   setLockedAmounts(chainType: ChainType): void {
@@ -162,18 +148,14 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.convertCurrencies();
     this.updateTotalLocked();
 
-    this.watcherValue =
-      (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
+    this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
   }
 
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    this.selectedCurrency = localStorage.getItem(
-      "selectedCurrency",
-    ) as Currency;
-    this.selectedCurrency =
-      this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
+    this.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
+    this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
     this.currencyUpdate();
 
     const watcherInfo$ = this.watchersDataService.getWatchersInfo();
@@ -183,9 +165,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
         .pipe(
           map(
             (watcherInfo) =>
-              watcherInfo.tokens.find(
-                (token: Token) => token.name === "rspv2" + c + "AWC",
-              )?.amount ?? 0,
+              watcherInfo.tokens.find((token: Token) => token.name === 'rspv2' + c + 'AWC')?.amount,
           ),
         )
         .subscribe((amount) => {

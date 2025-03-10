@@ -7,7 +7,7 @@
   font-size: 16px;
   font-weight: bold;
   color: rgba(138, 128, 128);
-  font-family: "Courier New", Courier, monospace;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .settingsdialog {
@@ -35,7 +35,7 @@
 .container input {
   margin-right: 10px;
 
-  font-family: "Courier New", Courier, monospace;
+  font-family: 'Courier New', Courier, monospace;
   font-size: 12px;
   padding: 2px;
   color: #333;

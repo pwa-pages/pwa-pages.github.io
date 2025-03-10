@@ -1,6 +1,5 @@
-import { Injectable } from "@angular/core";
-import { EventData, EventService, EventType } from "./event.service";
-import { HttpClient } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { EventData, EventService, EventType } from './event.service';
 
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {
@@ -10,25 +9,19 @@ interface ServiceWorkerMessage {
   payload?: object;
 }
 
-export function initializeServiceWorkerService(
-  serviceWorkerService: ServiceWorkerService,
-) {
+export function initializeServiceWorkerService(serviceWorkerService: ServiceWorkerService) {
   return (): Promise<void> => {
     return serviceWorkerService.initialize();
   };
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ServiceWorkerService {
   private currentProfile: string | null | undefined = null;
 
-  constructor(
-    private eventService: EventService,
-    private http: HttpClient,
-  ) {
-    this.checkForVersionDiscrepancy();
+  constructor(private eventService: EventService) {
     this.listenForServiceWorkerMessages();
   }
 
@@ -47,30 +40,8 @@ export class ServiceWorkerService {
     });
   }
 
-  checkForVersionDiscrepancy(): void {
-    this.http
-      .get<{
-        appData?: { version?: string };
-      }>("ngsw.json", { responseType: "json" })
-      .subscribe(
-        (data) => {
-          console.log(
-            "Current Service Worker Version(ngsw.json) :",
-            data.appData?.version,
-          );
-          console.log(
-            "localStorage rosenWatcherServiceVersion:",
-            localStorage.getItem("rosenWatcherServiceVersion"),
-          );
-        },
-        (error: unknown) => {
-          console.error("Error fetching SW version", error);
-        },
-      );
-  }
-
   getVersion(): string | null {
-    const version = localStorage.getItem("rosenWatcherServiceVersion");
+    const version = localStorage.getItem('rosenWatcherServiceVersion');
     return version;
   }
 
@@ -82,45 +53,31 @@ export class ServiceWorkerService {
             this.currentProfile = message.data as string | null | undefined;
             registration.active.postMessage(message);
           } else {
-            console.error("Service worker is not active yet");
+            console.error('Service worker is not active yet');
           }
         })
         .catch((error) => {
-          console.error(
-            "Error waiting for service worker to become ready:",
-            error,
-          );
+          console.error('Error waiting for service worker to become ready:', error);
         });
     } else {
-      console.error("No service worker found");
+      console.error('No service worker found');
     }
   }
 
   listenForServiceWorkerMessages() {
     if (navigator.serviceWorker) {
-      navigator.serviceWorker.addEventListener("controllerchange", () => {
-        console.log(
-          "New service worker has taken control. Reloading the page.",
-        );
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        console.log('New service worker has taken control. Reloading the page.');
         //window.location.reload();
       });
 
-      navigator.serviceWorker.ready.then((registration) => {
-        if (registration.installing) {
-          console.log("Service worker installing new version.");
-        }
-        registration.addEventListener("updatefound", () => {
-          console.log("updatefound: Service worker installing new version.");
-        });
-      });
-
-      navigator.serviceWorker.addEventListener("message", (event) => {
+      navigator.serviceWorker.addEventListener('message', (event) => {
         const message = event.data as ServiceWorkerMessage;
 
         console.log(
-          "Received message from service worker of type " +
+          'Received message from service worker of type ' +
             message.type +
-            ", profile " +
+            ', profile ' +
             message.profile,
         );
 
@@ -129,21 +86,17 @@ export class ServiceWorkerService {
         const v = event?.data?.version?.appData?.version;
 
         if (v) {
-          this.eventService.sendEventWithData(
-            EventType.VersionUpdated,
-            v,
-            null,
-          );
-          localStorage.setItem("rosenWatcherServiceVersion", v);
+          this.eventService.sendEventWithData(EventType.VersionUpdated, v, null);
+          localStorage.setItem('rosenWatcherServiceVersion', v);
         }
       });
     } else {
-      console.error("Service worker is not supported in this browser.");
+      console.error('Service worker is not supported in this browser.');
     }
   }
 
   handleServiceWorkerMessage(message: ServiceWorkerMessage) {
-    console.log("Handling message from service worker:", message);
+    console.log('Handling message from service worker:', message);
 
     let process = !message.profile && !this.currentProfile;
 
@@ -151,10 +104,7 @@ export class ServiceWorkerService {
       process = process || message.profile == this.currentProfile;
     }
 
-    if (
-      process &&
-      (Object.values(EventType) as string[]).includes(message.type)
-    ) {
+    if (process && (Object.values(EventType) as string[]).includes(message.type)) {
       if (message.data) {
         this.eventService.sendEventWithData(
           message.type as EventType,
