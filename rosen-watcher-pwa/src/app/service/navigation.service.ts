@@ -82,12 +82,12 @@ export class NavigationService {
 
   public getLeftItem(): NavigationItem {
     return this.navigationItems[
-      (this.currentNavigationIndex - 1 + this.navigationItems.length) % this.navigationItems.length
+      (this.currentNavigationIndex - 1 + this.navigationItems.length) % 3
     ];
   }
 
   public getRightItem(): NavigationItem {
-    return this.navigationItems[(this.currentNavigationIndex + 1) % this.navigationItems.length];
+    return this.navigationItems[(this.currentNavigationIndex + 1) % 3];
   }
 
   public navigate(to: string): void {
@@ -117,13 +117,13 @@ export class NavigationService {
   }
 
   public navigateRight(): NavigationItem {
-    const l = this.navigationItems.length;
+    const l = 3;
     this.currentNavigationIndex = (this.currentNavigationIndex + 1) % l;
     return this.getCurrentNavigationItem();
   }
 
   public navigateLeft(): NavigationItem {
-    const l = this.navigationItems.length;
+    const l = 3;
     this.currentNavigationIndex = (this.currentNavigationIndex - 1 + l) % l;
     return this.getCurrentNavigationItem();
   }
