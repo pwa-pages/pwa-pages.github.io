@@ -7,7 +7,7 @@ self.addEventListener('message', async (event) => {
         data.type === 'PerformanceScreenLoaded' ||
         data.type === 'RequestInputsDownload') {
         const profile = data.data;
-        const { dataService, downloadService, chartService, } = await initServices(profile);
+        const { dataService, downloadService, downloadPerfService, chartService, chainPerformanceDataService, } = await initServices(profile);
         if (data && data.type === 'RequestInputsDownload') {
             console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain');
             try {
@@ -39,6 +39,14 @@ self.addEventListener('message', async (event) => {
                     data: addressCharts,
                     profile: profile,
                 });
+                console.log('Downloading perftxs.');
+                const perfTxs = await chainPerformanceDataService.getPerfTxs();
+                sendMessageToClients({
+                    type: 'PerfChartChanged',
+                    data: perfTxs,
+                    profile: profile,
+                });
+                downloadPerfService.downloadForAddress(hotWalletAddress, undefined);
             }
             catch (error) {
                 console.error('Error initializing IndexedDB or downloading addresses:', error);
@@ -50,8 +58,16 @@ async function initServices(profile) {
     const db = await initIndexedDB(profile);
     const chartService = new ChartService();
     const rewardDataService = new RewardDataService(db, chartService);
-    const downloadService = new DownloadService(rewardDataService, db);
-    return { dataService: rewardDataService, downloadService, chartService };
+    const chainPerformanceDataService = new ChainPerformanceDataService(db);
+    const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, db);
+    const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, db);
+    return {
+        dataService: rewardDataService,
+        chainPerformanceDataService: chainPerformanceDataService,
+        downloadService,
+        chartService,
+        downloadPerfService: downloadPerfService,
+    };
 }
 // IndexedDB Initialization
 async function initIndexedDB(profile) {

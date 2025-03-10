@@ -151,6 +151,10 @@ export class PerformanceComponent
     };
   }
 
+  selectTab(): void {
+    this.navigationService.navigate("/chainperformance");
+  }
+
   updateChart(): void {
     const dataSets = [];
     const cnt = this.performanceCharts.length;

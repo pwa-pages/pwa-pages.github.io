@@ -20,5 +20,45 @@
     <noscript
       >Please enable JavaScript to continue using this application...</noscript
     >
+
+    <div
+      id="error-message"
+      style="color: red; font-weight: bold; margin-top: 20px"
+    ></div>
   </body>
+
+  <script>
+    function showErrorMessage(message) {
+      let errorMessage = document.getElementById("error-message");
+      let errorItem = document.createElement("div");
+      errorItem.textContent = message;
+      errorMessage.appendChild(errorItem);
+    }
+
+    // Capture JavaScript errors
+    window.onerror = function (message, source, lineno, colno, error) {
+      let errorDetails = `Error: ${message} at ${source}:${lineno}:${colno}`;
+      showErrorMessage(errorDetails);
+      return false; // Prevents default browser error message
+    };
+
+    // Capture unhandled promise rejections
+    window.addEventListener("unhandledrejection", function (event) {
+      let errorDetails = `Unhandled Promise Rejection: ${event.reason}`;
+      showErrorMessage(errorDetails);
+    });
+
+    // Capture script load failures
+    window.addEventListener(
+      "error",
+      function (event) {
+        if (event.target.tagName === "SCRIPT") {
+          let failedSrc = event.target.src || "Unknown script";
+          showErrorMessage(`Failed to load: ${failedSrc}`);
+          showErrorMessage(`Please try reloading the page or clearing cache.`);
+        }
+      },
+      true,
+    );
+  </script>
 </html>

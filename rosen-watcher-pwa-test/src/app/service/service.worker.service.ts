@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { EventData, EventService, EventType } from "./event.service";
+import { HttpClient } from "@angular/common/http";
 
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {
@@ -23,7 +24,11 @@ export function initializeServiceWorkerService(
 export class ServiceWorkerService {
   private currentProfile: string | null | undefined = null;
 
-  constructor(private eventService: EventService) {
+  constructor(
+    private eventService: EventService,
+    private http: HttpClient,
+  ) {
+    this.checkForVersionDiscrepancy();
     this.listenForServiceWorkerMessages();
   }
 
@@ -40,6 +45,28 @@ export class ServiceWorkerService {
         } as ServiceWorkerMessage);
       }
     });
+  }
+
+  checkForVersionDiscrepancy(): void {
+    this.http
+      .get<{
+        appData?: { version?: string };
+      }>("ngsw.json", { responseType: "json" })
+      .subscribe(
+        (data) => {
+          console.log(
+            "Current Service Worker Version(ngsw.json) :",
+            data.appData?.version,
+          );
+          console.log(
+            "localStorage rosenWatcherServiceVersion:",
+            localStorage.getItem("rosenWatcherServiceVersion"),
+          );
+        },
+        (error: unknown) => {
+          console.error("Error fetching SW version", error);
+        },
+      );
   }
 
   getVersion(): string | null {
@@ -76,6 +103,15 @@ export class ServiceWorkerService {
           "New service worker has taken control. Reloading the page.",
         );
         //window.location.reload();
+      });
+
+      navigator.serviceWorker.ready.then((registration) => {
+        if (registration.installing) {
+          console.log("Service worker installing new version.");
+        }
+        registration.addEventListener("updatefound", () => {
+          console.log("updatefound: Service worker installing new version.");
+        });
       });
 
       navigator.serviceWorker.addEventListener("message", (event) => {

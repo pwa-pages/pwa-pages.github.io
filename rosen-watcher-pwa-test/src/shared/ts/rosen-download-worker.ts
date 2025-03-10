@@ -22,11 +22,15 @@ self.addEventListener("message", async (event: MessageEvent) => {
     const {
       dataService,
       downloadService,
+      downloadPerfService,
       chartService,
+      chainPerformanceDataService,
     }: {
       dataService: RewardDataService;
-      downloadService: DownloadService;
+      downloadService: DownloadService<DbInput>;
+      downloadPerfService: DownloadService<PerfTx>;
       chartService: ChartService;
+      chainPerformanceDataService: ChainPerformanceDataService;
     } = await initServices(profile);
 
     if (data && data.type === "RequestInputsDownload") {
@@ -78,6 +82,16 @@ self.addEventListener("message", async (event: MessageEvent) => {
           data: addressCharts,
           profile: profile,
         });
+
+        console.log("Downloading perftxs.");
+        const perfTxs = await chainPerformanceDataService.getPerfTxs();
+        sendMessageToClients({
+          type: "PerfChartChanged",
+          data: perfTxs,
+          profile: profile,
+        });
+
+        downloadPerfService.downloadForAddress(hotWalletAddress, undefined);
       } catch (error) {
         console.error(
           "Error initializing IndexedDB or downloading addresses:",
@@ -95,11 +109,29 @@ async function initServices(profile: string | undefined) {
     db,
     chartService,
   );
-  const downloadService: DownloadService = new DownloadService(
-    rewardDataService,
-    db,
-  );
-  return { dataService: rewardDataService, downloadService, chartService };
+  const chainPerformanceDataService: ChainPerformanceDataService =
+    new ChainPerformanceDataService(db);
+  const downloadService: DownloadService<DbInput> =
+    new DownloadService<DbInput>(
+      rs_FullDownloadsBatchSize,
+      rs_InitialNDownloads,
+      rewardDataService,
+      db,
+    );
+  const downloadPerfService: DownloadService<PerfTx> =
+    new DownloadService<PerfTx>(
+      rs_PerfFullDownloadsBatchSize,
+      rs_PerfInitialNDownloads,
+      chainPerformanceDataService,
+      db,
+    );
+  return {
+    dataService: rewardDataService,
+    chainPerformanceDataService: chainPerformanceDataService,
+    downloadService,
+    chartService,
+    downloadPerfService: downloadPerfService,
+  };
 }
 
 // IndexedDB Initialization

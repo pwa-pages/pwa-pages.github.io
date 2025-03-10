@@ -20,6 +20,23 @@ export class DataService {
     string,
     { chainType: ChainType | null; charts: Record<number, number> }
   > = {};
+  private chainChart: Record<ChainType, { chart: number }> = {
+    [ChainType.Bitcoin]: {
+      chart: 0,
+    },
+    [ChainType.Cardano]: {
+      chart: 0,
+    },
+    [ChainType.Ergo]: {
+      chart: 0,
+    },
+    [ChainType.Ethereum]: {
+      chart: 0,
+    },
+    [ChainType.Binance]: {
+      chart: 0,
+    },
+  };
   busyCounter = 0;
 
   constructor(
@@ -33,6 +50,16 @@ export class DataService {
       EventType.InputsChanged,
       async (i: Input[]) => {
         this.rsnInputs = i;
+        this.eventService.sendEvent(EventType.RefreshInputs);
+      },
+    );
+
+    this.eventService.subscribeToEvent(
+      EventType.PerfChartChanged,
+      async (
+        a: Record<string, { chainType: ChainType | null; chart: number }>,
+      ) => {
+        this.chainChart = a;
         this.eventService.sendEvent(EventType.RefreshInputs);
       },
     );
@@ -64,6 +91,10 @@ export class DataService {
     { chainType: ChainType | null; charts: Record<number, number> }
   > {
     return this.addressCharts;
+  }
+
+  getChainChart(): Record<ChainType, { chart: number }> {
+    return this.chainChart;
   }
 
   async getAddresses(): Promise<Address[]> {

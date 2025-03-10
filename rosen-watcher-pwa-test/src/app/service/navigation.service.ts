@@ -20,6 +20,7 @@ export class NavigationService {
     this.navigationItems.push({ route: "/statistics" });
     this.navigationItems.push({ route: "/performance" });
     this.navigationItems.push({ route: "/watchers" });
+    this.navigationItems.push({ route: "/chainperformance" });
 
     this.router.events
       .pipe(
@@ -39,24 +40,35 @@ export class NavigationService {
         //this.checkForReload();
       },
     );
-  }
 
-  private checkForReload() {
-    if (
-      this.latestVersionUpdate &&
-      localStorage.getItem("versionReload") != this.latestVersionUpdate
-    ) {
-      localStorage.setItem("versionReload", this.latestVersionUpdate);
-      this.latestVersionUpdate = null;
-      console.log("Application has been updated, reloading screen.");
-      setTimeout(() => {
-        console.log("Doing the reload...");
-        window.location.reload();
-      }, 1000);
+    const performanceItem = localStorage.getItem("performanceScreen");
+    if (performanceItem?.startsWith("/chainperformance")) {
+      this.swapPerformanceItems();
     }
   }
 
+  /*
+  private checkForReload() {
+    if (
+      this.latestVersionUpdate &&
+      localStorage.getItem('versionReload') != this.latestVersionUpdate
+    ) {
+      localStorage.setItem('versionReload', this.latestVersionUpdate);
+      this.latestVersionUpdate = null;
+      console.log('Application has been updated, reloading screen.');
+      setTimeout(() => {
+        console.log('Doing the reload...');
+        window.location.reload();
+      }, 1000);
+    }
+  }*/
+
   private updateCurrentNavigationIndex(url: string): void {
+    if (url.startsWith("/chainperformance")) {
+      this.currentNavigationIndex = 1;
+      return;
+    }
+
     let index = this.navigationItems.findIndex((item) =>
       url.startsWith(item.route),
     );
@@ -64,7 +76,7 @@ export class NavigationService {
       index = 0;
     }
     this.currentNavigationIndex = index;
-    this.checkForReload();
+    //this.checkForReload();
   }
 
   public getCurrentNavigationItem(): NavigationItem {
@@ -77,15 +89,36 @@ export class NavigationService {
 
   public getLeftItem(): NavigationItem {
     return this.navigationItems[
-      (this.currentNavigationIndex - 1 + this.navigationItems.length) %
-        this.navigationItems.length
+      (this.currentNavigationIndex - 1 + this.navigationItems.length) % 3
     ];
   }
 
   public getRightItem(): NavigationItem {
-    return this.navigationItems[
-      (this.currentNavigationIndex + 1) % this.navigationItems.length
-    ];
+    return this.navigationItems[(this.currentNavigationIndex + 1) % 3];
+  }
+
+  public navigate(to: string): void {
+    if (
+      to.startsWith("/performance") &&
+      !this.router.url.startsWith("/performance")
+    ) {
+      this.swapPerformanceItems();
+    } else if (
+      to.startsWith("/chainperformance") &&
+      !this.router.url.startsWith("/chainperformance")
+    ) {
+      this.swapPerformanceItems();
+    }
+
+    localStorage.setItem("performanceScreen", this.navigationItems[1].route);
+
+    this.router.navigate([to]);
+  }
+
+  private swapPerformanceItems() {
+    const t = this.navigationItems[1];
+    this.navigationItems[1] = this.navigationItems[3];
+    this.navigationItems[3] = t;
   }
 
   public navigateTo(to: number): NavigationItem {
@@ -94,13 +127,13 @@ export class NavigationService {
   }
 
   public navigateRight(): NavigationItem {
-    const l = this.navigationItems.length;
+    const l = 3;
     this.currentNavigationIndex = (this.currentNavigationIndex + 1) % l;
     return this.getCurrentNavigationItem();
   }
 
   public navigateLeft(): NavigationItem {
-    const l = this.navigationItems.length;
+    const l = 3;
     this.currentNavigationIndex = (this.currentNavigationIndex - 1 + l) % l;
     return this.getCurrentNavigationItem();
   }

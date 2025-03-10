@@ -1,5 +1,39 @@
+interface Asset {
+  id: string;
+  name: string;
+  quantity: number;
+  amount: number;
+  decimals: number;
+  tokenId: string | null;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-abstract class DataService {
+interface DbInput {
+  outputAddress: string;
+  inputDate: Date;
+  boxId: string;
+  assets: Asset[];
+  address?: string;
+  chainType?: string;
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface Input {
+  boxId: string;
+  outputAddress: string;
+  inputDate: Date;
+  assets: Asset[];
+  address: string;
+  amount?: number;
+  accumulatedAmount?: number;
+  chainType?: ChainType | null;
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface Output {
+  assets: Asset[];
+  address: string;
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+abstract class DataService<T> {
   constructor(public db: IDBDatabase) {}
   abstract addData(
     address: string,
@@ -8,11 +42,14 @@ abstract class DataService {
     profile: string | undefined,
   ): Promise<void>;
   abstract getDataType(): string;
-  abstract getDataByBoxId(
-    boxId: string,
+  getMaxDownloadDateDifference(): number {
+    return 3155760000000;
+  }
+
+  abstract getExistingData(
+    transaction: TransactionItem,
     address: string,
-    db: IDBDatabase,
-  ): Promise<DbInput | null>;
+  ): Promise<T | null>;
 
   async getData<T>(storeName: string): Promise<T[]> {
     return new Promise((resolve, reject) => {

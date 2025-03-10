@@ -1,7 +1,5 @@
 .performancecontainer {
   height: 75% !important;
-  display: flex;
-  flex-direction: column;
 }
 
 .chartcontainer,
@@ -21,10 +19,6 @@ app-statistics .detailscontainer {
   padding-top: 16vh;
 }
 
-.performancecontainer .chartcontainer {
-  flex: 1;
-}
-
 .chart-container,
 .chart-container canvas,
 app-reward-chart,
@@ -40,7 +34,7 @@ app-performance-chart {
   height: 100% !important;
 }
 
-.performancelegend {
+.p .performancelegend {
   /*width:30vh;*/
 }
 
@@ -86,11 +80,19 @@ app-performance-chart {
 }
 
 .stats-container {
-  border-bottom: 0.2vh solid #ccc;
   margin-left: 5vw;
   margin-right: 5vw;
-  position: fixed;
+}
+
+.stats-container,
+.performancetab {
   width: 90vw;
+}
+
+.stats-container,
+.performancetab {
+  border-bottom: 0.2vh solid #ccc;
+  position: fixed;
   background: white;
   z-index: 100;
 }
@@ -133,4 +135,14 @@ a.tab {
   bottom: 7vh;
   padding-bottom: 4vh;
   width: 95vw;
+}
+
+.performancecontainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.performancecontainer .chartcontainer {
+  flex-grow: 1;
+  overflow: auto;
 }

@@ -20,7 +20,7 @@ export class NavigationComponent implements OnInit {
   private logging = false;
   private navigationHistory = "";
   public logLines: string[] = [];
-  public downloading = false;
+  public downloads = 0;
   constructor(
     private navigationService: NavigationService,
     private swipeService: SwipeService,
@@ -56,12 +56,15 @@ export class NavigationComponent implements OnInit {
     await this.eventService.subscribeToEvent(
       EventType.StartFullDownload,
       () => {
-        this.downloading = true;
+        this.downloads++;
       },
     );
 
     await this.eventService.subscribeToEvent(EventType.EndFullDownload, () => {
-      this.downloading = false;
+      this.downloads--;
+      if (this.downloads < 0) {
+        this.downloads = 0;
+      }
     });
     this.overrideLogging();
   }

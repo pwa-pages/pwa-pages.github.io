@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { EventService, EventType } from "../service/event.service";
-import { WatchersDataService } from "../service/watchers.data.service";
+import {
+  createChainNumber,
+  WatchersDataService,
+} from "../service/watchers.data.service";
 import { BaseWatcherComponent } from "../basewatchercomponent";
 import { DataService } from "../service/data.service";
 import { map } from "rxjs/operators";
@@ -12,12 +15,6 @@ import { NavigationService } from "../service/navigation.service";
 import { ChainService } from "../service/chain.service";
 import { FormsModule } from "@angular/forms";
 import { PriceService } from "../service/price.service";
-
-function createChainNumber(): Record<ChainType, number | undefined> {
-  return Object.fromEntries(
-    Object.values(ChainType).map((key) => [key, undefined]),
-  ) as Record<ChainType, number | undefined>;
-}
 
 @Component({
   selector: "app-watchers",
@@ -188,7 +185,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
             (watcherInfo) =>
               watcherInfo.tokens.find(
                 (token: Token) => token.name === "rspv2" + c + "AWC",
-              )?.amount,
+              )?.amount ?? 0,
           ),
         )
         .subscribe((amount) => {
