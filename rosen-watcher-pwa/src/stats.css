@@ -19,10 +19,6 @@ app-statistics .detailscontainer {
   padding-top: 16vh;
 }
 
-.performancecontainer .chartcontainer {
-  flex: 1;
-}
-
 .chart-container,
 .chart-container canvas,
 app-reward-chart,
@@ -94,7 +90,6 @@ app-performance-chart {
 }
 
 .stats-container,
-.performancecontainer,
 .performancetab {
   border-bottom: 0.2vh solid #ccc;
   position: fixed;
@@ -140,4 +135,14 @@ a.tab {
   bottom: 7vh;
   padding-bottom: 4vh;
   width: 95vw;
+}
+
+.performancecontainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.performancecontainer .chartcontainer {
+  flex-grow: 1;
+  overflow: auto;
 }

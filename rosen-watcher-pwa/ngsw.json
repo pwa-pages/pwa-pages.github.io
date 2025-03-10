@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1741628829341,
+  "timestamp": 1741630770386,
   "appData": {
-    "version": "3.37.4"
+    "version": "3.37.5"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,13 +16,13 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-TW7KMQID.js",
+        "./main-7L3OZCQF.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
         "./rosen.html",
-        "./scripts-NUBAFVYY.js",
+        "./scripts-4QD2VHRK.js",
         "./shared/js/ngsw-worker.js",
-        "./styles-W6GQTQFC.css"
+        "./styles-UBS4LJLT.css"
       ],
       "patterns": []
     },
@@ -78,8 +78,8 @@
     "./assets/rosen_watchers.html": "c77ef0df4112ccfc7b0115d53dddbbd7c075a23d",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "5b8260dbadf6b72b0737acb0ab938f6e6034455c",
-    "./main-TW7KMQID.js": "e2e5c52c9b52792cf9f8d05a777dfc2a1dc8ece8",
+    "./index.html": "1e3516df91cbb0749b9933fe951c7af0676f6684",
+    "./main-7L3OZCQF.js": "33c2e4dc167384226d2ff5addb31cdfe51d038f3",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -96,9 +96,9 @@
     "./media/fa-v4compatibility-YY67RJWG.ttf": "ad415f99aab4d9bf17e523f484a377f839ca8c3c",
     "./polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
     "./rosen.html": "41b1173bb4bb478135acece9d279cf4dcf2193fd",
-    "./scripts-NUBAFVYY.js": "f3f463224aa939ea006c9b2812e54f25300fff90",
+    "./scripts-4QD2VHRK.js": "44966b65a57675af0993e064fdb4606d15198cb3",
     "./shared/js/ngsw-worker.js": "0279adb21fec5e4434c8eb9dfdb43b4bf65a70ea",
-    "./styles-W6GQTQFC.css": "be65ba4fe5e2686042852c995b605257db23274d"
+    "./styles-UBS4LJLT.css": "0e4dc83deba94fc9d4863442338a43bec1dcb552"
   },
   "navigationUrls": [
     {

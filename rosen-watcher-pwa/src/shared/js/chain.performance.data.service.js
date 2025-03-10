@@ -79,7 +79,7 @@ class ChainPerformanceDataService extends DataService {
                 }
                 return acc;
             }, {});
-            return result;
+            return Object.fromEntries(Object.values(ChainType).map((chain) => [chain, result[chain] || { chart: 0 }]));
         }
         catch (error) {
             console.error(error);

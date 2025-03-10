@@ -125,7 +125,9 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
         {} as Record<ChainType, { chart: number }>,
       );
 
-      return result;
+      return Object.fromEntries(
+        Object.values(ChainType).map((chain) => [chain, result[chain] || { chart: 0 }]),
+      ) as Record<ChainType, { chart: number }>;
     } catch (error) {
       console.error(error);
       return {} as Record<ChainType, { chart: number }>;
