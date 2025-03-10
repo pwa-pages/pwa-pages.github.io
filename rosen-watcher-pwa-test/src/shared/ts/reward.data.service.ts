@@ -1,36 +1,20 @@
-interface Asset {
-  // Define the structure of an asset here
-  // Example properties:
-  id: string;
-  name: string;
-  quantity: number;
-  amount: number;
-  decimals: number;
-  tokenId: string | null;
-}
-
-interface DbInput {
-  outputAddress: string;
-  inputDate: Date;
-  boxId: string;
-  assets: Asset[]; // Replace with actual Asset structure
-  address?: string;
-  chainType?: string;
-}
-
-interface Input {
-  boxId: string;
-  outputAddress: string;
-  inputDate: Date;
-  assets: Asset[]; // Replace with actual Asset structure
-  address: string;
-  amount?: number;
-  accumulatedAmount?: number;
-  chainType?: ChainType | null;
-}
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class RewardDataService extends DataService {
+class RewardDataService extends DataService<DbInput> {
+  override async getExistingData(
+    transaction: TransactionItem,
+    address: string,
+  ): Promise<DbInput | null> {
+    for (const input of transaction.inputs) {
+      if (input.boxId && getChainType(input.address)) {
+        const data = await this.getDataByBoxId(input.boxId, address, this.db);
+        if (data) {
+          return data;
+        }
+      }
+    }
+
+    return null;
+  }
   constructor(
     public override db: IDBDatabase,
     private chartService: ChartService,
@@ -39,13 +23,13 @@ class RewardDataService extends DataService {
   }
 
   getDataType(): string {
-    return 'reward';
+    return "reward";
   }
 
   private async getWatcherInputs(): Promise<DbInput[]> {
     const inputsPromise = this.getData<DbInput>(rs_InputsStoreName);
 
-    console.log('Retrieving watcher inputs and such');
+    console.log("Retrieving watcher inputs and such");
 
     try {
       const inputs = await inputsPromise;
@@ -56,12 +40,16 @@ class RewardDataService extends DataService {
 
       filteredInputs.forEach((input: DbInput) => {
         input.assets = input.assets
-          .filter((asset: Asset) => asset.name === 'RSN' || asset.name === 'eRSN')
+          .filter(
+            (asset: Asset) => asset.name === "RSN" || asset.name === "eRSN",
+          )
           .map((asset_1: Asset) => {
             return asset_1;
           });
       });
-      filteredInputs.sort((a, b) => a.inputDate.getTime() - b.inputDate.getTime());
+      filteredInputs.sort(
+        (a, b) => a.inputDate.getTime() - b.inputDate.getTime(),
+      );
 
       return await new Promise<DbInput[]>((resolve) => {
         resolve(filteredInputs);
@@ -191,7 +179,9 @@ class RewardDataService extends DataService {
           input.outputAddress = address;
           input.inputDate = new Date(item.timestamp);
 
-          input.assets = input.assets.filter((a) => a.name === 'eRSN' || a.name === 'RSN');
+          input.assets = input.assets.filter(
+            (a) => a.name === "eRSN" || a.name === "RSN",
+          );
           input.assets.forEach((a) => {
             a.tokenId = null;
           });
@@ -210,23 +200,32 @@ class RewardDataService extends DataService {
         });
       });
 
-      const transaction: IDBTransaction = db.transaction([rs_InputsStoreName], 'readwrite');
-      const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
+      const transaction: IDBTransaction = db.transaction(
+        [rs_InputsStoreName],
+        "readwrite",
+      );
+      const objectStore: IDBObjectStore =
+        transaction.objectStore(rs_InputsStoreName);
 
       const putPromises = tempData.map((dbInput: DbInput) => {
         return new Promise<void>((putResolve, putReject) => {
           const request: IDBRequest = objectStore.put(dbInput);
           request.onsuccess = () => putResolve();
-          request.onerror = (event: Event) => putReject((event.target as IDBRequest).error);
+          request.onerror = (event: Event) =>
+            putReject((event.target as IDBRequest).error);
         });
       });
 
       Promise.all(putPromises)
         .then(async () => {
           const inputs = await this.getSortedInputs();
-          sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
           sendMessageToClients({
-            type: 'AddressChartChanged',
+            type: "InputsChanged",
+            data: inputs,
+            profile: profile,
+          });
+          sendMessageToClients({
+            type: "AddressChartChanged",
             data: await this.chartService.getAddressCharts(inputs),
             profile: profile,
           });
@@ -237,17 +236,27 @@ class RewardDataService extends DataService {
   }
 
   // Get Data by BoxId from IndexedDB
-  async getDataByBoxId(boxId: string, addressId: string, db: IDBDatabase): Promise<DbInput | null> {
+  private async getDataByBoxId(
+    boxId: string,
+    addressId: string,
+    db: IDBDatabase,
+  ): Promise<DbInput | null> {
     return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = db.transaction([rs_InputsStoreName], 'readonly');
-      const objectStore: IDBObjectStore = transaction.objectStore(rs_InputsStoreName);
+      const transaction: IDBTransaction = db.transaction(
+        [rs_InputsStoreName],
+        "readonly",
+      );
+      const objectStore: IDBObjectStore =
+        transaction.objectStore(rs_InputsStoreName);
       const request: IDBRequest = objectStore.get([
         boxId,
         addressId,
       ]); /* ?? objectStore.get([boxId.slice(0, 12), addressId])*/
 
       request.onsuccess = () => {
-        const result: DbInput | undefined = request.result as DbInput | undefined;
+        const result: DbInput | undefined = request.result as
+          | DbInput
+          | undefined;
         if (!result || result.outputAddress !== addressId) {
           resolve(null);
         } else {
@@ -255,7 +264,8 @@ class RewardDataService extends DataService {
         }
       };
 
-      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
+      request.onerror = (event: Event) =>
+        reject((event.target as IDBRequest).error);
     });
   }
 
@@ -263,7 +273,7 @@ class RewardDataService extends DataService {
     const inputsPromise = await this.getWatcherInputs();
     let amount = 0;
     const sortedInputs: Input[] = [];
-    console.log('start retrieving chart from database');
+    console.log("start retrieving chart from database");
     try {
       const inputs = await inputsPromise;
 
@@ -272,17 +282,20 @@ class RewardDataService extends DataService {
           amount += asset.amount;
           sortedInputs.push({
             inputDate: input.inputDate,
-            address: input.address ?? '',
+            address: input.address ?? "",
             assets: input.assets,
             outputAddress: input.outputAddress,
             boxId: input.boxId,
             accumulatedAmount: amount,
             amount: asset.amount / Math.pow(10, asset.decimals),
-            chainType: (input.chainType as ChainType) ?? getChainType(input.address),
+            chainType:
+              (input.chainType as ChainType) ?? getChainType(input.address),
           });
         });
       });
-      console.log('done retrieving chart from database ' + inputs.length + ' inputs');
+      console.log(
+        "done retrieving chart from database " + inputs.length + " inputs",
+      );
       return await new Promise<Input[]>((resolve) => {
         resolve(sortedInputs);
       });

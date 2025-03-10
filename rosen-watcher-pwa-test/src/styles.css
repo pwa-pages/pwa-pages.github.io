@@ -28,7 +28,7 @@ ul {
 }
 
 li {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 1.3vh;
 }
 
@@ -38,8 +38,18 @@ li:last-child {
 
 .addressescontainer,
 .linkcontainer,
+.info-description,
+.performancetab,
 .profilemessage {
   margin-left: 5vw;
+}
+
+.info-description {
+  padding-top: 8vh;
+}
+
+.mywatchers .performancelegend {
+  margin-top: 1vh;
 }
 
 .profilemessage a {
@@ -57,6 +67,7 @@ li:last-child {
 
 .addressescontainer,
 .linkcontainer,
+.info-description,
 .profilemessage,
 .watcherscontainer {
   font-size: 1.8vh;
@@ -85,6 +96,10 @@ li:last-child {
   margin-top: 3vh;
 }
 
+.mywatchers .addressescontainer {
+  margin-top: 8vh;
+}
+
 .permitstitle {
   font-weight: bold;
   color: rgba(138, 128, 128);
@@ -105,7 +120,7 @@ li:last-child {
 }
 
 .permitscontainer .address {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 
 .permitscontainer {
@@ -237,28 +252,35 @@ a {
 .statdetaildispl.Bitcoin,
 .mainaddressdispl.Bitcoin,
 .watchersdispl.Bitcoin {
-  background-image: url('./assets/images/bitcoin.png');
+  background-image: url("./assets/images/bitcoin.png");
+  filter: brightness(0.8);
+}
+
+.statdetaildispl.Binance,
+.mainaddressdispl.Binance,
+.watchersdispl.Binance {
+  background-image: url("./assets/images/binance.png");
   filter: brightness(0.8);
 }
 
 .statdetaildispl.Cardano,
 .mainaddressdispl.Cardano,
 .watchersdispl.Cardano {
-  background-image: url('./assets/images/cardano.png');
+  background-image: url("./assets/images/cardano.png");
   filter: brightness(0.8);
 }
 
 .statdetaildispl.Ergo,
 .mainaddressdispl.Ergo,
 .watchersdispl.Ergo {
-  background-image: url('./assets/images/ergo.png');
+  background-image: url("./assets/images/ergo.png");
   filter: brightness(0.8);
 }
 
 .statdetaildispl.Ethereum,
 .mainaddressdispl.Ethereum,
 .watchersdispl.Ethereum {
-  background-image: url('./assets/images/ethereum.png');
+  background-image: url("./assets/images/ethereum.png");
   filter: brightness(0.8);
 }
 
@@ -428,11 +450,11 @@ button:active {
 }
 
 .logging {
+  padding-left: 5vw;
   height: 100vh;
   width: 95vw;
   position: absolute;
   top: 0;
   bottom: 0;
   overflow-y: auto;
-  padding-left: 5vw;
 }

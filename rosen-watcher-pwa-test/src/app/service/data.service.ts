@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { StorageService } from './storage.service';
+import { Injectable } from "@angular/core";
+import { StorageService } from "./storage.service";
 
-import { Input } from '../../service/ts/models/input';
-import { Address } from '../../service/ts/models/address';
-import { EventService, EventType } from './event.service';
+import { Input } from "../../service/ts/models/input";
+import { Address } from "../../service/ts/models/address";
+import { EventService, EventType } from "./event.service";
 
 export function initializeDataService(dataService: DataService) {
   return (): Promise<void> => {
@@ -12,7 +12,7 @@ export function initializeDataService(dataService: DataService) {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class DataService {
   private rsnInputs: Input[] = [];
@@ -20,6 +20,23 @@ export class DataService {
     string,
     { chainType: ChainType | null; charts: Record<number, number> }
   > = {};
+  private chainChart: Record<ChainType, { chart: number }> = {
+    [ChainType.Bitcoin]: {
+      chart: 0,
+    },
+    [ChainType.Cardano]: {
+      chart: 0,
+    },
+    [ChainType.Ergo]: {
+      chart: 0,
+    },
+    [ChainType.Ethereum]: {
+      chart: 0,
+    },
+    [ChainType.Binance]: {
+      chart: 0,
+    },
+  };
   busyCounter = 0;
 
   constructor(
@@ -29,15 +46,31 @@ export class DataService {
   ) {}
 
   public async initialize() {
-    this.eventService.subscribeToEvent(EventType.InputsChanged, async (i: Input[]) => {
-      this.rsnInputs = i;
-      this.eventService.sendEvent(EventType.RefreshInputs);
-    });
+    this.eventService.subscribeToEvent(
+      EventType.InputsChanged,
+      async (i: Input[]) => {
+        this.rsnInputs = i;
+        this.eventService.sendEvent(EventType.RefreshInputs);
+      },
+    );
+
+    this.eventService.subscribeToEvent(
+      EventType.PerfChartChanged,
+      async (
+        a: Record<string, { chainType: ChainType | null; chart: number }>,
+      ) => {
+        this.chainChart = a;
+        this.eventService.sendEvent(EventType.RefreshInputs);
+      },
+    );
 
     this.eventService.subscribeToEvent(
       EventType.AddressChartChanged,
       async (
-        a: Record<string, { chainType: ChainType | null; charts: Record<number, number> }>,
+        a: Record<
+          string,
+          { chainType: ChainType | null; charts: Record<number, number> }
+        >,
       ) => {
         this.addressCharts = a;
         this.eventService.sendEvent(EventType.RefreshInputs);
@@ -60,6 +93,10 @@ export class DataService {
     return this.addressCharts;
   }
 
+  getChainChart(): Record<ChainType, { chart: number }> {
+    return this.chainChart;
+  }
+
   async getAddresses(): Promise<Address[]> {
     return await this.storageService.getAddressData();
   }
@@ -71,15 +108,15 @@ export class DataService {
       const result: Address[] = [];
       addresses.forEach((a: Address) => {
         result.push({
-          address: a.address.substring(0, 6) + '...',
-          Address: a.address.substring(0, 6) + '...',
+          address: a.address.substring(0, 6) + "...",
+          Address: a.address.substring(0, 6) + "...",
           chainType: a.chainType,
         });
       });
 
       result.sort((a, b) =>
-        (a.chainType != null ? a.chainType : '').localeCompare(
-          b.chainType != null ? b.chainType : '',
+        (a.chainType != null ? a.chainType : "").localeCompare(
+          b.chainType != null ? b.chainType : "",
         ),
       );
 
@@ -92,7 +129,9 @@ export class DataService {
 
     try {
       inputs.forEach((input: Input) => {
-        if (!addresses.some((address) => address.address == input.outputAddress)) {
+        if (
+          !addresses.some((address) => address.address == input.outputAddress)
+        ) {
           addresses.push({
             address: input.outputAddress,
             Address: input.outputAddress,

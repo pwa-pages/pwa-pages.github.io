@@ -1,31 +1,33 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Input } from '../../service/ts/models/input';
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
+import { Input } from "../../service/ts/models/input";
 
 export enum EventType {
-  StartFullDownload = 'StartFullDownload',
-  EndFullDownload = 'EndFullDownload',
-  RefreshInputs = 'RefreshInputs',
-  InputsChanged = 'InputsChanged',
-  SwipeActivated = 'SwipeActivated',
-  SwipeDeActivated = 'SwipeDeActivated',
-  SwipeVertical = 'SwipeVertical',
-  StatisticsScreenLoaded = 'StatisticsScreenLoaded',
-  RequestInputsDownload = 'RequestInputsDownload',
-  WatchersScreenLoaded = 'WatchersScreenLoaded',
-  SettingsScreenLoaded = 'SettingsScreenLoaded',
-  PerformanceScreenLoaded = 'PerformanceScreenLoaded',
-  AddressChartChanged = 'AddressChartChanged',
-  VersionUpdated = 'VersionUpdated',
+  StartFullDownload = "StartFullDownload",
+  EndFullDownload = "EndFullDownload",
+  RefreshInputs = "RefreshInputs",
+  InputsChanged = "InputsChanged",
+  PerfChartChanged = "PerfChartChanged",
+  SwipeActivated = "SwipeActivated",
+  SwipeDeActivated = "SwipeDeActivated",
+  SwipeVertical = "SwipeVertical",
+  StatisticsScreenLoaded = "StatisticsScreenLoaded",
+  RequestInputsDownload = "RequestInputsDownload",
+  WatchersScreenLoaded = "WatchersScreenLoaded",
+  SettingsScreenLoaded = "SettingsScreenLoaded",
+  PerformanceScreenLoaded = "PerformanceScreenLoaded",
+  AddressChartChanged = "AddressChartChanged",
+  VersionUpdated = "VersionUpdated",
 }
 
 export type EventData = string | Input;
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class EventService {
-  eventSubscriptions: Record<EventType, Subject<EventData>> = this.resetSubscriptions();
+  eventSubscriptions: Record<EventType, Subject<EventData>> =
+    this.resetSubscriptions();
 
   resetSubscriptions() {
     this.eventSubscriptions = {
@@ -33,6 +35,7 @@ export class EventService {
       [EventType.EndFullDownload]: new Subject<EventData>(),
       [EventType.RefreshInputs]: new Subject<EventData>(),
       [EventType.InputsChanged]: new Subject<EventData>(),
+      [EventType.PerfChartChanged]: new Subject<EventData>(),
       [EventType.SwipeActivated]: new Subject<EventData>(),
       [EventType.SwipeDeActivated]: new Subject<EventData>(),
       [EventType.SwipeVertical]: new Subject<EventData>(),
@@ -48,7 +51,7 @@ export class EventService {
   }
 
   async sendEvent(eventType: EventType) {
-    console.log('Received event: ' + eventType);
+    console.log("Received event: " + eventType);
     this.eventSubscriptions[eventType].next({} as EventData);
   }
 
@@ -57,33 +60,43 @@ export class EventService {
     eventData: EventData,
     profile?: string | undefined | null,
   ) {
-    console.log('Received event: ' + eventType + ' for profile ' + profile);
+    console.log("Received event: " + eventType + " for profile " + profile);
 
     this.eventSubscriptions[eventType].next(eventData);
   }
 
-  async subscribeToEvent<T>(eventType: EventType, callback: (...args: T[]) => void) {
+  async subscribeToEvent<T>(
+    eventType: EventType,
+    callback: (...args: T[]) => void,
+  ) {
     const eventCallBack: (...args: EventData[]) => void = callback as (
       ...args: EventData[]
     ) => void;
     await this.subscribe(eventType, eventCallBack);
   }
 
-  private async subscribe(eventType: EventType, callback: (...args: EventData[]) => void) {
+  private async subscribe(
+    eventType: EventType,
+    callback: (...args: EventData[]) => void,
+  ) {
     this.eventSubscriptions[eventType].subscribe((...eventData) => {
       callback(...eventData);
     });
   }
 
-  async subscribeToAllEvents(callback: (eventType: EventType, ...args: EventData[]) => void) {
+  async subscribeToAllEvents(
+    callback: (eventType: EventType, ...args: EventData[]) => void,
+  ) {
     Object.values(EventType).forEach((eventType) => {
-      this.subscribeToEvent(eventType, (...args: EventData[]) => callback(eventType, ...args));
+      this.subscribeToEvent(eventType, (...args: EventData[]) =>
+        callback(eventType, ...args),
+      );
     });
   }
 
   async unSubscribeAll(events: EventType[]) {
     for (const eventType of events) {
-      console.log('Unsubscribing all from ' + eventType);
+      console.log("Unsubscribing all from " + eventType);
       this.eventSubscriptions[eventType].unsubscribe();
       this.eventSubscriptions[eventType] = new Subject<EventData>();
     }

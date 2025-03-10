@@ -1,0 +1,11 @@
+--2025-02-22 22:15:32--  https://api.sigmaspace.io/api/v1/addresses/ZsPNMsGz8D8y11MAneZTVjJndCjgTUjPFBh5wF6ZNmMySHVDcBmMx2VxGFNCcMxCKDPkdPEzZp4bt5pgwrpZyKV6nmzCAh6SaX5ZnN2fL2X2UTuLvmuk6t8BqrxoiKHmqASttYk6xJPNabuF9ZNMYQBikFWDmq2jrxZS1MG6gQQ2Mx1MgXVvPs9ZkDTe8TykK4MuvQwtjaatjugK3FC5gsB4e4KiTcMPzreUkHvC8mZQGTtGkmHSbq8hkUDfa8MUMAka4oV3unyhgvx9MHjSDNaKWtqrWJpHCsQqPxvzPKohoYSNQt6H3V6ddw1dzGbBz8eKSbno5tEaLSryLDeMAbXhivALPZ3uCyWvx9BKFxSpuqCuQs9aXH7zKedvxzE6XRrrC2TZcWn5UinvbMNu3S4i5oTK2Y8WeVfoy5XHRbK7AL9w9pimJBp5Dx2UnhhHrWbeg9XyVZP7uCEqcUK3iVFmdG2euUa84Jbr7XVaE8v3sBa8LvYdxc6wAVfgPNNbQNxK7Y/transactions?offset=0
+Resolving api.sigmaspace.io (api.sigmaspace.io)... 2606:4700:3030::6815:30c7, 2606:4700:3036::ac43:bbea, 104.21.48.199, ...
+Connecting to api.sigmaspace.io (api.sigmaspace.io)|2606:4700:3030::6815:30c7|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 6957762 (6,6M) [application/json]
+Saving to: ‘transactions?offset=0’
+
+transactions?offset=0              0%[                                                         ]       0  --.-KB/s               transactions?offset=0            100%[========================================================>]   6,63M  35,5MB/s    in 0,2s    
+
+2025-02-22 22:15:34 (35,5 MB/s) - ‘transactions?offset=0’ saved [6957762/6957762]
+

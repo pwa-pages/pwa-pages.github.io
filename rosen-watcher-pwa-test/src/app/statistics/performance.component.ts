@@ -1,28 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { EventData, EventService, EventType } from '../service/event.service';
-import { DataService } from '../service/data.service';
-import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ChartService } from '../service/chart.service';
-import { Location, NgFor, NgIf } from '@angular/common';
-import { ChartDataSet } from '../../service/ts/models/chart.dataset';
-import { ChartPoint } from '../../service/ts/models/chart.point';
-import { ChartPerformance } from '../../service/ts/models/chart.performance';
-import { Chart } from 'chart.js';
-import { StorageService } from '../service/storage.service';
-import { NavigationService } from '../service/navigation.service';
-import { ChainService } from '../service/chain.service';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { EventData, EventService, EventType } from "../service/event.service";
+import { DataService } from "../service/data.service";
+import { BaseWatcherComponent } from "../basewatchercomponent";
+import { ChartService } from "../service/chart.service";
+import { Location, NgFor, NgIf } from "@angular/common";
+import { ChartDataSet } from "../../service/ts/models/chart.dataset";
+import { ChartPoint } from "../../service/ts/models/chart.point";
+import { ChartPerformance } from "../../service/ts/models/chart.performance";
+import { Chart } from "chart.js";
+import { StorageService } from "../service/storage.service";
+import { NavigationService } from "../service/navigation.service";
+import { ChainService } from "../service/chain.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-performance',
-  templateUrl: './performance.html',
+  selector: "app-performance",
+  templateUrl: "./performance.html",
   standalone: true,
   imports: [NgFor, NgIf],
 })
-export class PerformanceComponent extends BaseWatcherComponent implements OnInit {
+export class PerformanceComponent
+  extends BaseWatcherComponent
+  implements OnInit
+{
   data: string;
   performanceCharts: ChartPerformance[];
-  performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;
+  performanceChart:
+    | Chart<"bar", { x: string | number | Date; y: number }[], unknown>
+    | undefined;
 
   constructor(
     location: Location,
@@ -34,8 +39,15 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     private chartService: ChartService,
     navigationService: NavigationService,
   ) {
-    super(eventService, navigationService, chainService, storageService, dataService, location);
-    this.data = '';
+    super(
+      eventService,
+      navigationService,
+      chainService,
+      storageService,
+      dataService,
+      location,
+    );
+    this.data = "";
     this.addresses = [];
     this.performanceCharts = [];
   }
@@ -47,7 +59,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    window.addEventListener('beforeinstallprompt', (event) => {
+    window.addEventListener("beforeinstallprompt", (event) => {
       event.preventDefault();
     });
 
@@ -80,7 +92,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   private async getPerformanceChart(): Promise<ChartPerformance[]> {
     let performanceChart: ChartPerformance[] = [];
 
-    console.log('start retrieving chart from database');
+    console.log("start retrieving chart from database");
 
     const addressCharts = this.dataService.getAddressCharts();
 
@@ -96,35 +108,40 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
           });
         }
         const addressForDisplay =
-          key.substring(0, 6) + '...' + key.substring(key.length - 6, key.length);
+          key.substring(0, 6) +
+          "..." +
+          key.substring(key.length - 6, key.length);
         performanceChart.push({
           address: key,
           addressForDisplay: addressForDisplay,
           chart: chart,
           chainType: addressCharts[key].chainType,
-          color: '',
+          color: "",
         });
       }
     }
 
     performanceChart.sort((a: ChartPerformance, b: ChartPerformance) =>
-      (a.chainType == null ? '' : a.chainType).localeCompare(
-        b.chainType == null ? '' : b.chainType,
+      (a.chainType == null ? "" : a.chainType).localeCompare(
+        b.chainType == null ? "" : b.chainType,
       ),
     );
 
-    console.log('done retrieving chart from database');
+    console.log("done retrieving chart from database");
 
     return performanceChart.map((c: ChartPerformance, index: number) => ({
       ...c,
-      color: this.chartService.chartColors[index % this.chartService.chartColors.length],
+      color:
+        this.chartService.chartColors[
+          index % this.chartService.chartColors.length
+        ],
     }));
   }
 
   private createDataSet(i: number): ChartDataSet {
     const chartColor = this.chartService.chartColors[i % 10];
     return {
-      label: '',
+      label: "",
       data: [],
       backgroundColor: chartColor,
       pointBackgroundColor: chartColor,
@@ -132,6 +149,10 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
       borderWidth: 0,
       borderSkipped: false,
     };
+  }
+
+  selectTab(): void {
+    this.navigationService.navigate("/chainperformance");
   }
 
   updateChart(): void {
@@ -143,13 +164,18 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
     for (let i = 0; i < this.performanceCharts.length; i++) {
       dataSets[i].data = this.performanceCharts[i].chart;
-      dataSets[i].label = 'Address: ' + this.performanceCharts[i].addressForDisplay;
+      dataSets[i].label =
+        "Address: " + this.performanceCharts[i].addressForDisplay;
     }
 
     if (!this.performanceChart) {
-      this.performanceChart = this.chartService.createPerformanceChart(dataSets);
+      this.performanceChart =
+        this.chartService.createPerformanceChart(dataSets);
     } else {
-      if (this.performanceCharts.length != this.performanceChart.data.datasets.length) {
+      if (
+        this.performanceCharts.length !=
+        this.performanceChart.data.datasets.length
+      ) {
         this.performanceChart.data.datasets = dataSets;
       } else {
         for (let i = 0; i < this.performanceCharts.length; i++) {
@@ -161,5 +187,5 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     }
   }
 
-  title = 'rosen-watcher-pwa';
+  title = "rosen-watcher-pwa";
 }

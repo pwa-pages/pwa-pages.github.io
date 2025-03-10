@@ -1,6 +1,7 @@
 export enum ChainType {
-  Bitcoin = 'Bitcoin',
-  Cardano = 'Cardano',
-  Ergo = 'Ergo',
-  Ethereum = 'Ethereum',
+  Binance = "Binance",
+  Bitcoin = "Bitcoin",
+  Cardano = "Cardano",
+  Ergo = "Ergo",
+  Ethereum = "Ethereum",
 }

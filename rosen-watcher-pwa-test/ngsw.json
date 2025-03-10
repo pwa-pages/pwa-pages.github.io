@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1741643129135,
+  "timestamp": 1741643313078,
   "appData": {
-    "version": "3.28.0"
+    "version": "3.37.6"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -15,19 +15,14 @@
       },
       "urls": [
         "./favicon.ico",
-        "./main-OGVNEJM7.js",
+        "./index.html",
+        "./main-BDYCO7VX.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
-        "./rosen-ngsw-worker.js",
-        "./shared/js/chain.service.js",
-        "./shared/js/chart.service.js",
-        "./shared/js/constants.js",
-        "./shared/js/data.service.js",
-        "./shared/js/download.service.js",
-        "./shared/js/reward.data.service.js",
-        "./shared/js/rosen-db-worker.js",
-        "./shared/js/rosen-download-worker.js",
-        "./styles-SDZRJ2ZR.css"
+        "./rosen.html",
+        "./scripts-4QD2VHRK.js",
+        "./shared/js/ngsw-worker.js",
+        "./styles-UBS4LJLT.css"
       ],
       "patterns": []
     },
@@ -48,6 +43,10 @@
         "./assets/images/dogecoin.png",
         "./assets/images/ergo.png",
         "./assets/images/ethereum.png",
+        "./assets/rosen-chain-performance.html",
+        "./assets/rosen_watchers.html",
+        "./assets/test.html",
+        "./media/binance-WGS5R7MY.png",
         "./media/bitcoin-R7IFWMJM.png",
         "./media/cardano-LICXQYGO.png",
         "./media/ergo-4FSUZRBU.png",
@@ -64,21 +63,7 @@
       "patterns": []
     }
   ],
-  "dataGroups": [
-    {
-      "name": "index-html-group",
-      "patterns": [
-        "\\/index\\.html"
-      ],
-      "strategy": "freshness",
-      "maxSize": 1,
-      "maxAge": 86400000,
-      "cacheQueryOptions": {
-        "ignoreVary": true
-      },
-      "version": 1
-    }
-  ],
+  "dataGroups": [],
   "hashTable": {
     "./assets/icons/icon-512x512.png": "70bcb04083de346145fa5a506812f23b0ed80772",
     "./assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
@@ -89,9 +74,14 @@
     "./assets/images/dogecoin.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
+    "./assets/rosen-chain-performance.html": "da7e98842f152b65be2ce819f6d24361ca3c5fe3",
+    "./assets/rosen_watchers.html": "af8115d49d43a585d262a6f1d9f54082b35409f7",
+    "./assets/test.html": "4c2ff14fe46d50b2d0eda2ac75427f577734be3b",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./main-OGVNEJM7.js": "dd8405c3a353f8d0601b0c762bdcdc60d9505c0f",
+    "./index.html": "80d7db3ff804b0534378ee67f29ce9c998624b69",
+    "./main-BDYCO7VX.js": "d3bf7ca19875a6062a4da5233c1e12176f8ed9ad",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
+    "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
     "./media/cardano-LICXQYGO.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
     "./media/ergo-4FSUZRBU.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
@@ -105,16 +95,10 @@
     "./media/fa-v4compatibility-LFEHZI6Y.woff2": "4fd82f39237a3e52cb4e311d1961bbb47353a147",
     "./media/fa-v4compatibility-YY67RJWG.ttf": "ad415f99aab4d9bf17e523f484a377f839ca8c3c",
     "./polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
-    "./rosen-ngsw-worker.js": "d0dfe34bc897361f40d9d724e991a5e81587eaff",
-    "./shared/js/chain.service.js": "a950d43357b9f927094ee908b070d3eb7e66ca66",
-    "./shared/js/chart.service.js": "8888f5e72a7f7a65824b912cc4bda1673110920f",
-    "./shared/js/constants.js": "74f89379a839c186f8a79c432c57023d6ed80ebc",
-    "./shared/js/data.service.js": "2692731f9f31b8eb239be9bf9b0c9b80e4522f41",
-    "./shared/js/download.service.js": "afd6911d893014f2dcf28be8ccaa931ba5af1b92",
-    "./shared/js/reward.data.service.js": "35ddc3115f4fcaf111ec24939120fc7badc1bd7e",
-    "./shared/js/rosen-db-worker.js": "5e29afd52d5d499dd7a75aee231c05da2da04e4a",
-    "./shared/js/rosen-download-worker.js": "f95864b0b12c3eb8055bcc48a63d08b904c2a6a4",
-    "./styles-SDZRJ2ZR.css": "f5717c3dcb3ce13fa79b770b64e262961f977616"
+    "./rosen.html": "b7c9782d85a4ff8db63ec0740d3e9d675bc0fe9c",
+    "./scripts-4QD2VHRK.js": "44966b65a57675af0993e064fdb4606d15198cb3",
+    "./shared/js/ngsw-worker.js": "0279adb21fec5e4434c8eb9dfdb43b4bf65a70ea",
+    "./styles-UBS4LJLT.css": "0e4dc83deba94fc9d4863442338a43bec1dcb552"
   },
   "navigationUrls": [
     {

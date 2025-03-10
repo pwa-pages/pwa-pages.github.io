@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import '../../shared/ts/constants';
-import { filter } from 'rxjs/operators';
-import { EventService, EventType } from './event.service';
+import { Injectable } from "@angular/core";
+import { Router, NavigationEnd } from "@angular/router";
+import "../../shared/ts/constants";
+import { filter } from "rxjs/operators";
+import { EventService, EventType } from "./event.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class NavigationService {
   public currentNavigationIndex = 0;
@@ -17,25 +17,37 @@ export class NavigationService {
     private router: Router,
     private eventService: EventService,
   ) {
-    this.navigationItems.push({ route: '/statistics' });
-    this.navigationItems.push({ route: '/performance' });
-    this.navigationItems.push({ route: '/watchers' });
+    this.navigationItems.push({ route: "/statistics" });
+    this.navigationItems.push({ route: "/performance" });
+    this.navigationItems.push({ route: "/watchers" });
+    this.navigationItems.push({ route: "/chainperformance" });
 
     this.router.events
       .pipe(
-        filter((event): event is NavigationEnd => event instanceof NavigationEnd), // Type guard for NavigationEnd
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd,
+        ), // Type guard for NavigationEnd
       )
       .subscribe((event) => {
         const url = event.urlAfterRedirects;
         this.updateCurrentNavigationIndex(url);
       });
 
-    this.eventService.subscribeToEvent<string>(EventType.VersionUpdated, (v) => {
-      this.latestVersionUpdate = v;
-      //this.checkForReload();
-    });
+    this.eventService.subscribeToEvent<string>(
+      EventType.VersionUpdated,
+      (v) => {
+        this.latestVersionUpdate = v;
+        //this.checkForReload();
+      },
+    );
+
+    const performanceItem = localStorage.getItem("performanceScreen");
+    if (performanceItem?.startsWith("/chainperformance")) {
+      this.swapPerformanceItems();
+    }
   }
 
+  /*
   private checkForReload() {
     if (
       this.latestVersionUpdate &&
@@ -49,15 +61,22 @@ export class NavigationService {
         window.location.reload();
       }, 1000);
     }
-  }
+  }*/
 
   private updateCurrentNavigationIndex(url: string): void {
-    let index = this.navigationItems.findIndex((item) => url.startsWith(item.route));
+    if (url.startsWith("/chainperformance")) {
+      this.currentNavigationIndex = 1;
+      return;
+    }
+
+    let index = this.navigationItems.findIndex((item) =>
+      url.startsWith(item.route),
+    );
     if (index == -1) {
       index = 0;
     }
     this.currentNavigationIndex = index;
-    this.checkForReload();
+    //this.checkForReload();
   }
 
   public getCurrentNavigationItem(): NavigationItem {
@@ -70,12 +89,36 @@ export class NavigationService {
 
   public getLeftItem(): NavigationItem {
     return this.navigationItems[
-      (this.currentNavigationIndex - 1 + this.navigationItems.length) % this.navigationItems.length
+      (this.currentNavigationIndex - 1 + this.navigationItems.length) % 3
     ];
   }
 
   public getRightItem(): NavigationItem {
-    return this.navigationItems[(this.currentNavigationIndex + 1) % this.navigationItems.length];
+    return this.navigationItems[(this.currentNavigationIndex + 1) % 3];
+  }
+
+  public navigate(to: string): void {
+    if (
+      to.startsWith("/performance") &&
+      !this.router.url.startsWith("/performance")
+    ) {
+      this.swapPerformanceItems();
+    } else if (
+      to.startsWith("/chainperformance") &&
+      !this.router.url.startsWith("/chainperformance")
+    ) {
+      this.swapPerformanceItems();
+    }
+
+    localStorage.setItem("performanceScreen", this.navigationItems[1].route);
+
+    this.router.navigate([to]);
+  }
+
+  private swapPerformanceItems() {
+    const t = this.navigationItems[1];
+    this.navigationItems[1] = this.navigationItems[3];
+    this.navigationItems[3] = t;
   }
 
   public navigateTo(to: number): NavigationItem {
@@ -84,13 +127,13 @@ export class NavigationService {
   }
 
   public navigateRight(): NavigationItem {
-    const l = this.navigationItems.length;
+    const l = 3;
     this.currentNavigationIndex = (this.currentNavigationIndex + 1) % l;
     return this.getCurrentNavigationItem();
   }
 
   public navigateLeft(): NavigationItem {
-    const l = this.navigationItems.length;
+    const l = 3;
     this.currentNavigationIndex = (this.currentNavigationIndex - 1 + l) % l;
     return this.getCurrentNavigationItem();
   }

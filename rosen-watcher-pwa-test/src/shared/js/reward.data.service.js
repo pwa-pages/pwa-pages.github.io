@@ -2,6 +2,17 @@
 class RewardDataService extends DataService {
     db;
     chartService;
+    async getExistingData(transaction, address) {
+        for (const input of transaction.inputs) {
+            if (input.boxId && getChainType(input.address)) {
+                const data = await this.getDataByBoxId(input.boxId, address, this.db);
+                if (data) {
+                    return data;
+                }
+            }
+        }
+        return null;
+    }
     constructor(db, chartService) {
         super(db);
         this.db = db;

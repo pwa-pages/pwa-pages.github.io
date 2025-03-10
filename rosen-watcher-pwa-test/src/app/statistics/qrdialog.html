@@ -1,4 +1,9 @@
-<div tabindex="0" class="qrdialog" (click)="onCancelClick()" (keypress)="onCancelClick()">
+<div
+  tabindex="0"
+  class="qrdialog"
+  (click)="onCancelClick()"
+  (keypress)="onCancelClick()"
+>
   <qrcode [qrdata]="data['qrData']" errorCorrectionLevel="M"></qrcode>
 
   <button (click)="onCancelClick()" (keypress)="onCancelClick()">Cancel</button>

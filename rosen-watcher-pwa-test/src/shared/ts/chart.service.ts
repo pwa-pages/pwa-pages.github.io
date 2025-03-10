@@ -2,7 +2,12 @@
 class ChartService {
   async getAddressCharts(
     inputs: Input[],
-  ): Promise<Record<string, { chainType: ChainType | null; charts: Record<number, number> }>> {
+  ): Promise<
+    Record<
+      string,
+      { chainType: ChainType | null; charts: Record<number, number> }
+    >
+  > {
     const addressCharts: Record<
       string,
       { chainType: ChainType | null; charts: Record<number, number> }

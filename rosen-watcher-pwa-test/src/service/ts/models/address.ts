@@ -1,4 +1,4 @@
-import type { ChainType } from './chaintype';
+import type { ChainType } from "./chaintype";
 
 export class Address {
   address: string;

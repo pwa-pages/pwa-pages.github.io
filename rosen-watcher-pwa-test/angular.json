@@ -26,16 +26,9 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/rosen.html",
               "src/manifest.webmanifest",
-              "src/rosen-ngsw-worker.js",
-              "src/shared/js/rosen-download-worker.js",
-              "src/shared/js/rosen-db-worker.js",
-              "src/shared/js/chain.service.js",
-              "src/shared/js/constants.js",
-              "src/shared/js/data.service.js",
-              "src/shared/js/reward.data.service.js",
-              "src/shared/js/chart.service.js",
-              "src/shared/js/download.service.js"
+              "src/shared/js/ngsw-worker.js"
             ],
             "styles": [
               "src/styles.css",
@@ -46,7 +39,17 @@
               "src/app/basewatchercomponent.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/rosen-ngsw-worker.js",
+              "src/shared/js/rosen-download-worker.js",
+              "src/shared/js/rosen-db-worker.js",
+              "src/shared/js/chain.service.js",
+              "src/shared/js/constants.js",
+              "src/shared/js/data.service.js",
+              "src/shared/js/chain.performance.data.service.js",
+              "src/shared/js/reward.data.service.js",
+              "src/shared/js/chart.service.js",
+              "src/shared/js/download.service.js"]
           },
           "configurations": {
             "production": {
@@ -102,12 +105,129 @@
           }
         }
       }
+    },
+    "rosen-watchers": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/rosen-watchers",  
+            "index": "src/index.html",     
+            "main": "src/app/webcomponents/watchers-web-component.ts",      
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/assets/rosen_watchers.html"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],"scripts": [],
+            "optimization": {
+              "scripts": true,
+              "styles": true,
+              "fonts": true
+            },
+            "fileReplacements": [],
+            "serviceWorker": false,
+            "sourceMap": false,  
+            "namedChunks": false, 
+            "extractLicenses": false
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": false,
+              "vendorChunk": false
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "rosen-watchers:build:production"
+            },
+            "development": {
+              "buildTarget": "rosen-watchers:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    },
+    "rosen-chain-performance": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/rosen-chain-performance",  
+            "index": "src/index.html",     
+            "main": "src/app/webcomponents/chain-performance-web-component.ts",      
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/assets/rosen-chain-performance.html"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],"scripts": [],
+            "optimization": {
+              "scripts": true,
+              "styles": true,
+              "fonts": true
+            },
+            "fileReplacements": [],
+            "serviceWorker": false,
+            "sourceMap": false,  
+            "namedChunks": false, 
+            "extractLicenses": false
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": false,
+              "vendorChunk": false
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "rosen-chain-performance:build:production"
+            },
+            "development": {
+              "buildTarget": "rosen-chain-performance:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
     }
   },
   "cli": {
-    "analytics": false,
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ]
+    "analytics": false
   }
 }
