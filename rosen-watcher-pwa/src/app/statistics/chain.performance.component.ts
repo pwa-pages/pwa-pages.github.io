@@ -72,6 +72,11 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
       await this.retrieveData();
       this.updateChart();
     });
+
+    this.eventService.sendEventWithData(
+      EventType.RequestInputsDownload,
+      this.storageService.getProfile() as EventData,
+    );
   }
 
   private async getWatchers() {
