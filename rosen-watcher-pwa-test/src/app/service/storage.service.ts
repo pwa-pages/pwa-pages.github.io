@@ -39,11 +39,6 @@ export class StorageService {
         }
         db.createObjectStore(rs_InputsStoreName, { keyPath: rs_Input_Key });
 
-        if (db.objectStoreNames.contains(rs_PerfTxStoreName)) {
-          db.deleteObjectStore(rs_PerfTxStoreName);
-        }
-        db.createObjectStore(rs_PerfTxStoreName, { keyPath: rs_PerfTx_Key });
-
         if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
           db.createObjectStore(rs_AddressDataStoreName, {
             keyPath: rs_Address_Key,

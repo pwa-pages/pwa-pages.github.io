@@ -35,18 +35,6 @@ import {
 } from "./app/service/service.worker.service";
 import { initializeDataService, DataService } from "./app/service/data.service";
 
-function getScriptFileName(): string {
-  const scripts = Array.from(document.querySelectorAll("script")); // Convert NodeList to an array
-  for (const script of scripts) {
-    if (script.src.includes("scripts-")) {
-      // Look for the dynamically generated script
-      const urlParts = script.src.split("/");
-      return urlParts[urlParts.length - 1]; // Extract filename
-    }
-  }
-  return "scripts.js"; // Fallback to default if not found
-}
-
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(
@@ -57,7 +45,7 @@ bootstrapApplication(AppComponent, {
       MatDialogModule,
       FormsModule,
       //ServiceWorkerModule.register('./rosen-ngsw-worker.js', {
-      ServiceWorkerModule.register("./" + getScriptFileName(), {
+      ServiceWorkerModule.register("./rosen-ngsw-worker.js", {
         registrationStrategy: "registerWhenStable:30000",
       }),
       FontAwesomeModule,

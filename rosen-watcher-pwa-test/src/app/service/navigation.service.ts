@@ -41,21 +41,20 @@ export class NavigationService {
     );
   }
 
-  /*
   private checkForReload() {
     if (
       this.latestVersionUpdate &&
-      localStorage.getItem('versionReload') != this.latestVersionUpdate
+      localStorage.getItem("versionReload") != this.latestVersionUpdate
     ) {
-      localStorage.setItem('versionReload', this.latestVersionUpdate);
+      localStorage.setItem("versionReload", this.latestVersionUpdate);
       this.latestVersionUpdate = null;
-      console.log('Application has been updated, reloading screen.');
+      console.log("Application has been updated, reloading screen.");
       setTimeout(() => {
-        console.log('Doing the reload...');
+        console.log("Doing the reload...");
         window.location.reload();
       }, 1000);
     }
-  }*/
+  }
 
   private updateCurrentNavigationIndex(url: string): void {
     let index = this.navigationItems.findIndex((item) =>
@@ -65,7 +64,7 @@ export class NavigationService {
       index = 0;
     }
     this.currentNavigationIndex = index;
-    //this.checkForReload();
+    this.checkForReload();
   }
 
   public getCurrentNavigationItem(): NavigationItem {

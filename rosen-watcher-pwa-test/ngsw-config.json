@@ -5,16 +5,14 @@
     {
       "name": "app",
       "installMode": "prefetch",
-      "updateMode": "prefetch",
+      "updateMode": "prefetch", 
       "resources": {
         "files": [
           "/favicon.ico",
-          "/index.html",
-          "/rosen.html",
           "/manifest.webmanifest",
           "/*.css",
           "/*.js",
-          "/shared/js/**/*.js"
+         "/shared/js/**/*.js"
         ]
       }
     },
@@ -30,7 +28,20 @@
       }
     }
   ],
+  "dataGroups": [
+    {
+      "name": "index-html-group",
+      "urls": [
+        "/index.html"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxAge": "1d",
+        "maxSize": 1
+      }
+    }
+  ],
   "appData": {
-    "version": "3.33.9"
+    "version": "3.28.0"
   }
 }

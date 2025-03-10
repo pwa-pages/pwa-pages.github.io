@@ -22,12 +22,10 @@ self.addEventListener("message", async (event: MessageEvent) => {
     const {
       dataService,
       downloadService,
-      downloadPerfService,
       chartService,
     }: {
       dataService: RewardDataService;
-      downloadService: DownloadService<DbInput>;
-      downloadPerfService: DownloadService<DbPerfTx>;
+      downloadService: DownloadService;
       chartService: ChartService;
     } = await initServices(profile);
 
@@ -80,8 +78,6 @@ self.addEventListener("message", async (event: MessageEvent) => {
           data: addressCharts,
           profile: profile,
         });
-
-        downloadPerfService.downloadForAddress(hotWalletAddress, undefined);
       } catch (error) {
         console.error(
           "Error initializing IndexedDB or downloading addresses:",
@@ -99,28 +95,11 @@ async function initServices(profile: string | undefined) {
     db,
     chartService,
   );
-  const chainPerformanceDataService: ChainPerformanceDataService =
-    new ChainPerformanceDataService(db);
-  const downloadService: DownloadService<DbInput> =
-    new DownloadService<DbInput>(
-      rs_FullDownloadsBatchSize,
-      rs_InitialNDownloads,
-      rewardDataService,
-      db,
-    );
-  const downloadPerfService: DownloadService<DbPerfTx> =
-    new DownloadService<DbPerfTx>(
-      rs_PerfFullDownloadsBatchSize,
-      rs_PerfInitialNDownloads,
-      chainPerformanceDataService,
-      db,
-    );
-  return {
-    dataService: rewardDataService,
-    downloadService,
-    chartService,
-    downloadPerfService: downloadPerfService,
-  };
+  const downloadService: DownloadService = new DownloadService(
+    rewardDataService,
+    db,
+  );
+  return { dataService: rewardDataService, downloadService, chartService };
 }
 
 // IndexedDB Initialization

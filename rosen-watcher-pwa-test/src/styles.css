@@ -241,13 +241,6 @@ a {
   filter: brightness(0.8);
 }
 
-.statdetaildispl.Binance,
-.mainaddressdispl.Binance,
-.watchersdispl.Binance {
-  background-image: url("./assets/images/binance.png");
-  filter: brightness(0.8);
-}
-
 .statdetaildispl.Cardano,
 .mainaddressdispl.Cardano,
 .watchersdispl.Cardano {
@@ -435,11 +428,11 @@ button:active {
 }
 
 .logging {
-  padding-left: 5vw;
   height: 100vh;
   width: 95vw;
   position: absolute;
   top: 0;
   bottom: 0;
   overflow-y: auto;
+  padding-left: 5vw;
 }
