@@ -1,4 +1,4 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EventData, EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
@@ -10,7 +10,6 @@ import { Chart } from 'chart.js';
 import { StorageService } from '../service/storage.service';
 import { NavigationService } from '../service/navigation.service';
 import { ChainService } from '../service/chain.service';
-import { ActivatedRoute } from '@angular/router';
 import { createChainNumber, WatchersDataService } from '../service/watchers.data.service';
 import { map } from 'rxjs';
 import { Token } from '../../service/ts/models/token';
