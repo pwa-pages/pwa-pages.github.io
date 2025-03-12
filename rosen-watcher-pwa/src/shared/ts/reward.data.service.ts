@@ -18,6 +18,7 @@ class RewardDataService extends DataService<DbInput> {
   constructor(
     public override db: IDBDatabase,
     private chartService: ChartService,
+    private eventSender: EventSender,
   ) {
     super(db);
   }
@@ -208,12 +209,19 @@ class RewardDataService extends DataService<DbInput> {
       Promise.all(putPromises)
         .then(async () => {
           const inputs = await this.getSortedInputs();
-          sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
-          sendMessageToClients({
+
+          this.eventSender.sendEvent({
+            type: 'InputsChanged',
+            profile: profile,
+            data: inputs,
+          });
+
+          this.eventSender.sendEvent({
             type: 'AddressChartChanged',
             data: await this.chartService.getAddressCharts(inputs),
             profile: profile,
           });
+
           resolve();
         })
         .catch(reject);

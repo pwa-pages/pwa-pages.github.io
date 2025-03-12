@@ -89,7 +89,11 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
       Promise.all(putPromises)
         .then(async () => {
           const perfTxs = await this.getPerfTxs();
-          sendMessageToClients({ type: 'PerfChartChanged', data: perfTxs, profile: profile });
+          this.eventSender.sendEvent({
+            type: 'PerfChartChanged',
+            profile: profile,
+            data: perfTxs,
+          });
 
           resolve();
         })
@@ -134,7 +138,10 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
     }
   }
 
-  constructor(public override db: IDBDatabase) {
+  constructor(
+    public override db: IDBDatabase,
+    private eventSender: EventSender,
+  ) {
     super(db);
   }
 

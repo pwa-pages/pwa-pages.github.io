@@ -30,6 +30,7 @@ class DownloadService<T> {
     downloadFullSize: number,
     downloadInitialSize: number,
     private dataService: DataService<T>,
+    private eventSender: EventSender,
     private db: IDBDatabase,
   ) {
     this.downloadFullSize = downloadFullSize;
@@ -56,7 +57,10 @@ class DownloadService<T> {
     const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
     console.log(`Downloading from: ${url}`);
 
-    sendMessageToClients({ type: 'StartDownload', profile: profile });
+    this.eventSender.sendEvent({
+      type: 'StartDownload',
+      profile: profile,
+    });
 
     const response: FetchTransactionsResponse = await this.fetchTransactions(url);
     const result: FetchTransactionsResponse = {
@@ -68,12 +72,20 @@ class DownloadService<T> {
     for (const item of response.items) {
       const inputDate: Date = new Date(item.timestamp);
       if (inputDate < rs_StartFrom) {
-        sendMessageToClients({ type: 'EndDownload', profile: profile });
+        this.eventSender.sendEvent({
+          type: 'EndDownload',
+          profile: profile,
+        });
+
         return result;
       }
     }
 
-    sendMessageToClients({ type: 'EndDownload', profile: profile });
+    this.eventSender.sendEvent({
+      type: 'EndDownload',
+      profile: profile,
+    });
+
     return result;
   }
 
@@ -95,7 +107,10 @@ class DownloadService<T> {
   // Busy Counter
   private increaseBusyCounter(profile: string | undefined): void {
     if (this.busyCounter === 0) {
-      sendMessageToClients({ type: 'StartFullDownload', profile: profile });
+      this.eventSender.sendEvent({
+        type: 'StartFullDownload',
+        profile: profile,
+      });
     }
     this.busyCounter++;
   }
@@ -103,7 +118,10 @@ class DownloadService<T> {
   private decreaseBusyCounter(profile: string | undefined): void {
     this.busyCounter--;
     if (this.busyCounter === 0) {
-      sendMessageToClients({ type: 'EndFullDownload', profile: profile });
+      this.eventSender.sendEvent({
+        type: 'EndFullDownload',
+        profile: profile,
+      });
     }
   }
 

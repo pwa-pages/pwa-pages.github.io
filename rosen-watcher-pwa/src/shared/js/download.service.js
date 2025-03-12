@@ -1,12 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService {
     dataService;
+    eventSender;
     db;
     busyCounter = 0;
     downloadFullSize = rs_FullDownloadsBatchSize;
     downloadInitialSize = rs_InitialNDownloads;
-    constructor(downloadFullSize, downloadInitialSize, dataService, db) {
+    constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, db) {
         this.dataService = dataService;
+        this.eventSender = eventSender;
         this.db = db;
         this.downloadFullSize = downloadFullSize;
         this.downloadInitialSize = downloadInitialSize;
@@ -26,7 +28,10 @@ class DownloadService {
     async downloadTransactions(address, offset = 0, limit = 500, profile) {
         const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
         console.log(`Downloading from: ${url}`);
-        sendMessageToClients({ type: 'StartDownload', profile: profile });
+        this.eventSender.sendEvent({
+            type: 'StartDownload',
+            profile: profile,
+        });
         const response = await this.fetchTransactions(url);
         const result = {
             transactions: response.items,
@@ -36,11 +41,17 @@ class DownloadService {
         for (const item of response.items) {
             const inputDate = new Date(item.timestamp);
             if (inputDate < rs_StartFrom) {
-                sendMessageToClients({ type: 'EndDownload', profile: profile });
+                this.eventSender.sendEvent({
+                    type: 'EndDownload',
+                    profile: profile,
+                });
                 return result;
             }
         }
-        sendMessageToClients({ type: 'EndDownload', profile: profile });
+        this.eventSender.sendEvent({
+            type: 'EndDownload',
+            profile: profile,
+        });
         return result;
     }
     async downloadForAddresses(profile) {
@@ -58,14 +69,20 @@ class DownloadService {
     // Busy Counter
     increaseBusyCounter(profile) {
         if (this.busyCounter === 0) {
-            sendMessageToClients({ type: 'StartFullDownload', profile: profile });
+            this.eventSender.sendEvent({
+                type: 'StartFullDownload',
+                profile: profile,
+            });
         }
         this.busyCounter++;
     }
     decreaseBusyCounter(profile) {
         this.busyCounter--;
         if (this.busyCounter === 0) {
-            sendMessageToClients({ type: 'EndFullDownload', profile: profile });
+            this.eventSender.sendEvent({
+                type: 'EndFullDownload',
+                profile: profile,
+            });
         }
     }
     // Download All for Address (recursive)

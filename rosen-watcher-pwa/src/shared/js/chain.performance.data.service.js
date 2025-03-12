@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ChainPerformanceDataService extends DataService {
     db;
+    eventSender;
     async getExistingData(transaction) {
         return new Promise((resolve, reject) => {
             const dbTtransaction = this.db.transaction([rs_PerfTxStoreName], 'readonly');
@@ -56,7 +57,11 @@ class ChainPerformanceDataService extends DataService {
             Promise.all(putPromises)
                 .then(async () => {
                 const perfTxs = await this.getPerfTxs();
-                sendMessageToClients({ type: 'PerfChartChanged', data: perfTxs, profile: profile });
+                this.eventSender.sendEvent({
+                    type: 'PerfChartChanged',
+                    profile: profile,
+                    data: perfTxs,
+                });
                 resolve();
             })
                 .catch(reject);
@@ -86,9 +91,10 @@ class ChainPerformanceDataService extends DataService {
             return {};
         }
     }
-    constructor(db) {
+    constructor(db, eventSender) {
         super(db);
         this.db = db;
+        this.eventSender = eventSender;
     }
     getMaxDownloadDateDifference() {
         return 604800000;

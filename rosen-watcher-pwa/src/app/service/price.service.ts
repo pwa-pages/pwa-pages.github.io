@@ -25,7 +25,7 @@ export class PriceService {
   public convert(amount: number, from: string, to: string): Observable<number> {
     return this.getPrices().pipe(
       map((rates: Record<string, Record<string, number>>) => {
-        if (rates[from][to]) {
+        if (rates[from][to] || rates[from][to] == 0) {
           return rates[from][to] * amount;
         } else {
           return (rates[from]['EUR'] / rates[to]['EUR']) * amount;

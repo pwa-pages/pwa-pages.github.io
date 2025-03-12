@@ -2,6 +2,7 @@
 class RewardDataService extends DataService {
     db;
     chartService;
+    eventSender;
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId && getChainType(input.address)) {
@@ -13,10 +14,11 @@ class RewardDataService extends DataService {
         }
         return null;
     }
-    constructor(db, chartService) {
+    constructor(db, chartService, eventSender) {
         super(db);
         this.db = db;
         this.chartService = chartService;
+        this.eventSender = eventSender;
     }
     getDataType() {
         return 'reward';
@@ -184,8 +186,12 @@ class RewardDataService extends DataService {
             Promise.all(putPromises)
                 .then(async () => {
                 const inputs = await this.getSortedInputs();
-                sendMessageToClients({ type: 'InputsChanged', data: inputs, profile: profile });
-                sendMessageToClients({
+                this.eventSender.sendEvent({
+                    type: 'InputsChanged',
+                    profile: profile,
+                    data: inputs,
+                });
+                this.eventSender.sendEvent({
                     type: 'AddressChartChanged',
                     data: await this.chartService.getAddressCharts(inputs),
                     profile: profile,
