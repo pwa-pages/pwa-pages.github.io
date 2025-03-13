@@ -34,12 +34,13 @@
       showErrorMessage(errorDetails);
       return false; // Prevents default browser error message
     };
-
+    /*
     // Capture unhandled promise rejections
     window.addEventListener('unhandledrejection', function (event) {
       let errorDetails = `Unhandled Promise Rejection: ${event.reason}`;
       showErrorMessage(errorDetails);
     });
+    */
 
     // Capture script load failures
     window.addEventListener(
@@ -72,7 +73,7 @@
 
         assetGroups.forEach((group) => {
           (group.urls || []).forEach((asset) => {
-            let match = asset.match(/(styles|polyfills|main)(?:-([A-Z0-9]+))?\.(css|js)$/);
+            let match = asset.match(/(scripts|styles|polyfills|main)(?:-([A-Z0-9]+))?\.(css|js)$/);
             if (match) {
               let [, name, hash, ext] = match;
               latestVersions[name] = hash ? `${name}-${hash}.${ext}` : `${name}.${ext}`;
@@ -89,7 +90,24 @@
         }
 
         // Add new scripts if available
-        ['polyfills', 'main'].forEach((key) => {
+        ['polyfills'].forEach((key) => {
+          if (latestVersions[key]) {
+            let newScript = document.createElement('script');
+            newScript.src = `./${latestVersions[key]}`;
+            newScript.type = 'module';
+            document.body.appendChild(newScript);
+          }
+        });
+
+        ['scripts'].forEach((key) => {
+          if (latestVersions[key]) {
+            let newScript = document.createElement('script');
+            newScript.src = `./${latestVersions[key]}`;
+            document.body.appendChild(newScript);
+          }
+        });
+
+        ['main'].forEach((key) => {
           if (latestVersions[key]) {
             let newScript = document.createElement('script');
             newScript.src = `./${latestVersions[key]}`;

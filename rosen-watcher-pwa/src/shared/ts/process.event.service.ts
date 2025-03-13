@@ -63,7 +63,7 @@ class ProcessEventService {
       event.type === 'PerformanceScreenLoaded' ||
       event.type === 'RequestInputsDownload'
     ) {
-      const profile = event.data as string | undefined;
+      const profile = event.data as unknown as string | undefined;
 
       const {
         dataService,

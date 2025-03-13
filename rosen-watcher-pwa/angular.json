@@ -27,6 +27,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/rosen.html",
+              "src/load.html",
               "src/manifest.webmanifest",
               "src/shared/js/ngsw-worker.js"
             ],

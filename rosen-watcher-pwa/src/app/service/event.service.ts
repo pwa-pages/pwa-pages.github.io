@@ -20,7 +20,7 @@ export enum EventType {
   VersionUpdated = 'VersionUpdated',
 }
 
-export type EventData = string | Input;
+export type EventData = string | Input | object;
 
 @Injectable({
   providedIn: 'root',

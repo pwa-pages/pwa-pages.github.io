@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1741811394300,
+  "timestamp": 1741893053896,
   "appData": {
-    "version": "3.37.7"
+    "version": "3.37.8"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-ANNEQSAN.js",
+        "./main-ZACDZOXV.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
         "./rosen.html",
-        "./scripts-GR53NCMI.js",
+        "./scripts-UIITXIFL.js",
         "./shared/js/ngsw-worker.js",
         "./styles-UBS4LJLT.css"
       ],
@@ -78,8 +78,8 @@
     "./assets/rosen_watchers.html": "c77ef0df4112ccfc7b0115d53dddbbd7c075a23d",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "a6877d513a01eb1d2492f90ccf0abcddc29a1add",
-    "./main-ANNEQSAN.js": "8fb4775f7d88ac9fd8fd818709ab6e8acc8c600c",
+    "./index.html": "9f669f529c02a34bf924fdf313b558dbfd755ee5",
+    "./main-ZACDZOXV.js": "25032456e4da1b6c284a87df2146106fab2678ea",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -95,8 +95,8 @@
     "./media/fa-v4compatibility-LFEHZI6Y.woff2": "4fd82f39237a3e52cb4e311d1961bbb47353a147",
     "./media/fa-v4compatibility-YY67RJWG.ttf": "ad415f99aab4d9bf17e523f484a377f839ca8c3c",
     "./polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
-    "./rosen.html": "41b1173bb4bb478135acece9d279cf4dcf2193fd",
-    "./scripts-GR53NCMI.js": "392475f77759fd5ba68249e457f584dad0686c75",
+    "./rosen.html": "fdd96211de1f83e4e064b109ca06d9906235943c",
+    "./scripts-UIITXIFL.js": "7cad10d5a846798253c8aeeffd29f2911a48a3f7",
     "./shared/js/ngsw-worker.js": "0279adb21fec5e4434c8eb9dfdb43b4bf65a70ea",
     "./styles-UBS4LJLT.css": "0e4dc83deba94fc9d4863442338a43bec1dcb552"
   },

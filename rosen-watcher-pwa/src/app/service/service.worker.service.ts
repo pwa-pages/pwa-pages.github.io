@@ -10,6 +10,14 @@ interface ServiceWorkerMessage {
   payload?: object;
 }
 
+class AngularEventSender implements EventSender {
+  constructor(private eventService: EventService) {}
+
+  async sendEvent<T>(event: EventPayload<T>): Promise<void> {
+    this.eventService.sendEventWithData(event.type as EventType, event.data ?? '');
+  }
+}
+
 export function initializeServiceWorkerService(serviceWorkerService: ServiceWorkerService) {
   return (): Promise<void> => {
     return serviceWorkerService.initialize();
@@ -21,6 +29,7 @@ export function initializeServiceWorkerService(serviceWorkerService: ServiceWork
 })
 export class ServiceWorkerService {
   private currentProfile: string | null | undefined = null;
+  private avoidServiceWorker = true;
 
   constructor(
     private eventService: EventService,
@@ -37,10 +46,22 @@ export class ServiceWorkerService {
         eventType == EventType.StatisticsScreenLoaded ||
         eventType == EventType.RequestInputsDownload
       ) {
-        this.sendMessageToServiceWorker({
-          type: eventType,
-          data: eventData,
-        } as ServiceWorkerMessage);
+        console.log(eventData);
+
+        if (this.avoidServiceWorker) {
+          console.log('Avoiding service worker, sending event ' + eventType + 'to angular worker');
+          const processEventService = new ProcessEventService(
+            new AngularEventSender(this.eventService),
+          );
+
+          processEventService.processEvent({ profile: this.currentProfile ?? '', type: eventType });
+        } else {
+          console.log('Sending to service worker, event ' + eventType);
+          this.sendMessageToServiceWorker({
+            type: eventType,
+            data: eventData,
+          } as ServiceWorkerMessage);
+        }
       }
     });
   }
@@ -55,6 +76,14 @@ export class ServiceWorkerService {
             'localStorage rosenWatcherServiceVersion:',
             localStorage.getItem('rosenWatcherServiceVersion'),
           );
+
+          if (data.appData?.version == localStorage.getItem('rosenWatcherServiceVersion')) {
+            console.log('sw versions in sync');
+            this.avoidServiceWorker = false;
+          } else {
+            console.log('sw versions not in sync');
+            this.avoidServiceWorker = true;
+          }
         },
         (error: unknown) => {
           console.error('Error fetching SW version', error);

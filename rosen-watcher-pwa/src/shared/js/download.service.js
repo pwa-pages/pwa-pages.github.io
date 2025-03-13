@@ -25,13 +25,9 @@ class DownloadService {
             throw error;
         }
     }
-    async downloadTransactions(address, offset = 0, limit = 500, profile) {
+    async downloadTransactions(address, offset = 0, limit = 500) {
         const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
         console.log(`Downloading from: ${url}`);
-        this.eventSender.sendEvent({
-            type: 'StartDownload',
-            profile: profile,
-        });
         const response = await this.fetchTransactions(url);
         const result = {
             transactions: response.items,
@@ -41,17 +37,9 @@ class DownloadService {
         for (const item of response.items) {
             const inputDate = new Date(item.timestamp);
             if (inputDate < rs_StartFrom) {
-                this.eventSender.sendEvent({
-                    type: 'EndDownload',
-                    profile: profile,
-                });
                 return result;
             }
         }
-        this.eventSender.sendEvent({
-            type: 'EndDownload',
-            profile: profile,
-        });
         return result;
     }
     async downloadForAddresses(profile) {
@@ -90,7 +78,7 @@ class DownloadService {
         this.increaseBusyCounter(profile);
         console.log(this.busyCounter);
         try {
-            const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10, profile);
+            const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10);
             console.log(`Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`);
             //const t = this.processItems(result.transactions);
             //console.log('permit amount ' + t);
@@ -175,7 +163,7 @@ class DownloadService {
         this.increaseBusyCounter(profile);
         console.log(this.busyCounter);
         try {
-            const result = await this.downloadTransactions(address, 0, this.downloadInitialSize, profile);
+            const result = await this.downloadTransactions(address, 0, this.downloadInitialSize);
             console.log(`Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`);
             const itemsz = result.transactions.length;
             let existingData = null;

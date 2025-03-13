@@ -52,15 +52,9 @@ class DownloadService<T> {
     address: string,
     offset = 0,
     limit = 500,
-    profile: string | undefined,
   ): Promise<FetchTransactionsResponse> {
     const url = `https://api.ergoplatform.com/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
     console.log(`Downloading from: ${url}`);
-
-    this.eventSender.sendEvent({
-      type: 'StartDownload',
-      profile: profile,
-    });
 
     const response: FetchTransactionsResponse = await this.fetchTransactions(url);
     const result: FetchTransactionsResponse = {
@@ -72,19 +66,9 @@ class DownloadService<T> {
     for (const item of response.items) {
       const inputDate: Date = new Date(item.timestamp);
       if (inputDate < rs_StartFrom) {
-        this.eventSender.sendEvent({
-          type: 'EndDownload',
-          profile: profile,
-        });
-
         return result;
       }
     }
-
-    this.eventSender.sendEvent({
-      type: 'EndDownload',
-      profile: profile,
-    });
 
     return result;
   }
@@ -140,7 +124,6 @@ class DownloadService<T> {
         address,
         offset,
         this.downloadFullSize + 10,
-        profile,
       );
       console.log(
         `Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`,
@@ -241,7 +224,6 @@ class DownloadService<T> {
         address,
         0,
         this.downloadInitialSize,
-        profile,
       );
       console.log(
         `Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`,
