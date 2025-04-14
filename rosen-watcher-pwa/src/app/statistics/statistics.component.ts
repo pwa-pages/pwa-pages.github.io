@@ -47,7 +47,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   rewardsChart: DateNumberPoint[];
   sortedInputs: Input[];
   detailInputs: Input[];
-  window: any = document.body;
+  window: HTMLElement = document.body;
   detailInputsSize = 100;
 
   version: string | null;
