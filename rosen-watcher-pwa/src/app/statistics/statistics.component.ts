@@ -185,7 +185,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     }
 
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay(
-      this.dataService.getSortedInputs(false),
+      this.dataService.rsnInputs,
     );
   }
 

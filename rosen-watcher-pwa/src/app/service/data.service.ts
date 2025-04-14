@@ -15,7 +15,7 @@ export function initializeDataService(dataService: DataService) {
   providedIn: 'root',
 })
 export class DataService {
-  private rsnInputs: Input[] = [];
+  public rsnInputs: Input[] = [];
   private addressCharts: Record<
     string,
     { chainType: ChainType | null; charts: Record<number, number> }
