@@ -16,6 +16,7 @@ import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
 import { ChainService } from '../service/chain.service';
 import { NavigationService } from '../service/navigation.service';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
@@ -30,7 +31,15 @@ interface BeforeInstallPromptEvent extends Event {
   selector: 'app-statistics',
   templateUrl: './statistics.html',
   standalone: true,
-  imports: [NgIf, NgStyle, NgFor, RouterLink, RouterLinkActive, FormsModule],
+  imports: [
+    NgIf,
+    NgStyle,
+    NgFor,
+    RouterLink,
+    RouterLinkActive,
+    FormsModule,
+    InfiniteScrollDirective,
+  ],
 })
 export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
   totalRewards: string;
@@ -38,6 +47,8 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   rewardsChart: DateNumberPoint[];
   sortedInputs: Input[];
   detailInputs: Input[];
+  window: any = document.body;
+  detailInputsSize = 100;
 
   version: string | null;
 
@@ -70,6 +81,11 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.detailInputs = [];
     this.version = '';
     this.selectedPeriod = null;
+  }
+
+  loadMoreInputs() {
+    this.detailInputsSize += 100;
+    this.detailInputs = this.dataService.getSortedInputs(false).slice(0, this.detailInputsSize);
   }
 
   showHomeLink(): boolean {
@@ -139,23 +155,16 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
     this.selectedPeriod = this.selectedPeriod == null ? Period.All : this.selectedPeriod;
 
-    this.sortedInputs = this.reduceData(this.dataService.getSortedInputs(), this.selectedPeriod);
+    this.sortedInputs = this.reduceData(
+      this.dataService.getSortedInputs(true),
+      this.selectedPeriod,
+    );
 
     const amounts = this.sortedInputs.map((s) => {
       return { x: s.inputDate, y: s.amount } as DateNumberPoint;
     });
 
-    this.sortedInputs.sort((a, b) => {
-      const aTime = Math.round(a.inputDate.getTime() / 1000) * 1000;
-      const bTime = Math.round(b.inputDate.getTime() / 1000) * 1000;
-
-      if (aTime !== bTime) {
-        return bTime - aTime;
-      }
-
-      return (b.amount ?? 0) - (a.amount ?? 0);
-    });
-    this.detailInputs = this.sortedInputs.slice(0, 100);
+    this.detailInputs = this.dataService.getSortedInputs(false).slice(0, this.detailInputsSize);
 
     if (this.rewardsChart.length != 0 && amounts.length != this.rewardsChart.length && this.chart) {
       this.chart.options.animation = {
@@ -175,7 +184,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       this.totalRewards = this.rewardsChart[this.rewardsChart.length - 1].y.toFixed(3).toString();
     }
 
-    this.addressesForDisplay = await this.dataService.getAddressesForDisplay(this.sortedInputs);
+    this.addressesForDisplay = await this.dataService.getAddressesForDisplay(
+      this.dataService.getSortedInputs(false),
+    );
   }
 
   updateChart(): void {

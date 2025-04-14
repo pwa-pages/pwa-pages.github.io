@@ -25,7 +25,7 @@
     Details
   </a>
 
-  <div class="period">
+  <div class="period" *ngIf="selectedTab === 'chart'">
     <label for="periodSelect">Period:</label>
     <select id="periodSelect" [(ngModel)]="selectedPeriod" (change)="onPeriodChange()">
       <option value="Day">Last day</option>
@@ -47,6 +47,11 @@
 </div>
 
 <div
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="150"
+  [infiniteScrollContainer]="window"
+  (scrolled)="loadMoreInputs()"
   class="detailscontainer verticalscrollablecontainer"
   [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}"
 >
