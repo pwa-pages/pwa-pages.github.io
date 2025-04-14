@@ -104,7 +104,28 @@ export class DataService {
     return await this.storageService.getAddressData();
   }
 
-  async getAddressesForDisplay(inputs: Input[]): Promise<Address[]> {
+  async getAddressesForDisplay(): Promise<Address[]> {
+    const addresses = this.getAddresses();
+
+    return addresses.then((addresses) => {
+      const result: Address[] = [];
+      addresses.forEach((a: Address) => {
+        result.push({
+          address: a.address.substring(0, 6) + '...',
+          Address: a.address.substring(0, 6) + '...',
+          chainType: a.chainType,
+        });
+      });
+
+      result.sort((a, b) =>
+        (a.chainType != null ? a.chainType : '').localeCompare(
+          b.chainType != null ? b.chainType : '',
+        ),
+      );
+
+      return result;
+    });
+    /*
     const addresses = this.getAddressesFromInputs(inputs);
 
     return addresses.then((addresses) => {
@@ -125,6 +146,7 @@ export class DataService {
 
       return result;
     });
+    */
   }
 
   async getAddressesFromInputs(inputs: Input[]): Promise<Address[]> {
