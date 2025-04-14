@@ -131,13 +131,17 @@ export class DataService {
     const addresses: Address[] = [];
 
     try {
+      const existingAddresses = new Set(addresses.map((a) => a.address));
+
       inputs.forEach((input: Input) => {
-        if (!addresses.some((address) => address.address == input.outputAddress)) {
-          addresses.push({
+        if (!existingAddresses.has(input.outputAddress)) {
+          const newAddress = {
             address: input.outputAddress,
             Address: input.outputAddress,
             chainType: input.chainType ?? null,
-          });
+          };
+          addresses.push(newAddress);
+          existingAddresses.add(input.outputAddress);
         }
       });
 
