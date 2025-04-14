@@ -104,8 +104,8 @@ export class DataService {
     return await this.storageService.getAddressData();
   }
 
-  async getAddressesForDisplay(): Promise<Address[]> {
-    const addresses = this.getAddresses();
+  async getAddressesForDisplay(inputs: Input[]): Promise<Address[]> {
+    const addresses = this.getAddressesFromInputs(inputs);
 
     return addresses.then((addresses) => {
       const result: Address[] = [];

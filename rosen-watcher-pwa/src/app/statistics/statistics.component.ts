@@ -184,7 +184,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       this.totalRewards = this.rewardsChart[this.rewardsChart.length - 1].y.toFixed(3).toString();
     }
 
-    this.addressesForDisplay = await this.dataService.getAddressesForDisplay();
+    this.addressesForDisplay = await this.dataService.getAddressesForDisplay(
+      this.dataService.getSortedInputs(false),
+    );
   }
 
   updateChart(): void {
