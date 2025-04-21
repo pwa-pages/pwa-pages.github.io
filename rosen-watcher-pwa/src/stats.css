@@ -43,6 +43,10 @@ app-performance-chart {
   margin-left: 0.4vh;
 }
 
+.statdetaildispl .chainType {
+  width: 4vh;
+}
+
 .chart-legend {
   height: 2vh;
   width: 4vh;
@@ -59,7 +63,6 @@ app-performance-chart {
 }
 
 .statdetaildispl {
-  padding-left: 4vh;
   font-size: 2vh;
   margin-bottom: 1vh;
   display: flex;

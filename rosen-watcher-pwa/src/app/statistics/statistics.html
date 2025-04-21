@@ -35,6 +35,10 @@
       <option value="All">All</option>
     </select>
   </div>
+
+  <div class="period" *ngIf="selectedTab !== 'chart'">
+    <button (click)="onExportClick()" (keypress)="onExportClick()">Export to csv</button>
+  </div>
 </div>
 
 <div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
@@ -55,10 +59,22 @@
   class="detailscontainer verticalscrollablecontainer"
   [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}"
 >
+  <filter-date
+    [fromDate]="fromDate"
+    [toDate]="toDate"
+    *ngIf="filterDateActive"
+    (dateRangeCanceled)="filterDateActive = false"
+    (dateRangeChanged)="onDateRangeChanged($event)"
+  ></filter-date>
+
   <div #detailsContainer class="details-container">
     <div>
       <div class="statdetaildispl">
-        <div class="inputDate">Date</div>
+        <div class="chainType"><!--<a class="fas fa-filter"></a>--></div>
+        <div class="inputDate">
+          Date
+          <a class="fas fa-filter" (click)="filterDateClick()" (keypress)="filterDateClick()"></a>
+        </div>
         <div class="inputTime">Time</div>
         <div class="amount">Reward</div>
       </div>
@@ -66,7 +82,8 @@
 
     <ng-container>
       <div *ngFor="let input of detailInputs">
-        <div class="statdetaildispl {{input.chainType}}">
+        <div class="statdetaildispl">
+          <div class="{{input.chainType}} chainType"></div>
           <div class="inputDate">{{ formatDate(input.inputDate) }}</div>
           <div class="inputTime">{{ formatTime(input.inputDate) }}</div>
           <div class="amount">{{ input.amount }} RSN</div>

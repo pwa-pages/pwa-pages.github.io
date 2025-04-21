@@ -188,7 +188,8 @@ a {
 
 .statdetaildispl,
 .mainaddressdispl,
-.watchersdispl {
+.watchersdispl,
+.chainType {
   background-size: contain;
   background-repeat: no-repeat;
   display: block;
@@ -251,35 +252,40 @@ a {
 }
 .statdetaildispl.Bitcoin,
 .mainaddressdispl.Bitcoin,
-.watchersdispl.Bitcoin {
+.watchersdispl.Bitcoin,
+.chainType.Bitcoin {
   background-image: url('./assets/images/bitcoin.png');
   filter: brightness(0.8);
 }
 
 .statdetaildispl.Binance,
 .mainaddressdispl.Binance,
-.watchersdispl.Binance {
+.watchersdispl.Binance,
+.chainType.Binance {
   background-image: url('./assets/images/binance.png');
   filter: brightness(0.8);
 }
 
 .statdetaildispl.Cardano,
 .mainaddressdispl.Cardano,
-.watchersdispl.Cardano {
+.watchersdispl.Cardano,
+.chainType.Cardano {
   background-image: url('./assets/images/cardano.png');
   filter: brightness(0.8);
 }
 
 .statdetaildispl.Ergo,
 .mainaddressdispl.Ergo,
-.watchersdispl.Ergo {
+.watchersdispl.Ergo,
+.chainType.Ergo {
   background-image: url('./assets/images/ergo.png');
   filter: brightness(0.8);
 }
 
 .statdetaildispl.Ethereum,
 .mainaddressdispl.Ethereum,
-.watchersdispl.Ethereum {
+.watchersdispl.Ethereum,
+.chainType.Ethereum {
   background-image: url('./assets/images/ethereum.png');
   filter: brightness(0.8);
 }
@@ -337,13 +343,16 @@ qrcode {
   padding-top: 20vh;
 }
 
+.period button {
+  font-size: 2vh;
+}
+
 button {
-  background: linear-gradient(135deg, #4a4a4a, #787878);
-  color: #fff;
-  border: none;
+  color: rgba(138, 128, 128);
+  border: 0.1vh solid #ccc;
   border-radius: 5px;
   cursor: pointer;
-  padding: 5px 10px;
+
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-shadow: none;
   transition: all 0.3s ease-in-out;
@@ -351,12 +360,10 @@ button {
 }
 
 button:hover {
-  background: linear-gradient(135deg, #787878, #4a4a4a);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 button:active {
-  background: linear-gradient(135deg, #3a3a3a, #585858);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transform: translateY(2px);
 }
@@ -457,4 +464,19 @@ button:active {
   top: 0;
   bottom: 0;
   overflow-y: auto;
+}
+
+.context-menu {
+  position: fixed;
+  background: white;
+  border: 0.2vh solid rgba(138, 128, 128);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  padding: 0.5vh;
+  z-index: 1000;
+  width: 270px;
+}
+
+.datepicker-panel {
+  background-color: white;
+  border: 0.2vh dashed rgba(138, 128, 128);
 }

@@ -16,6 +16,7 @@ import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
 import { ChainService } from '../service/chain.service';
 import { NavigationService } from '../service/navigation.service';
+import { FilterDate } from './filter.date';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 interface WindowWithPrompt extends Window {
@@ -39,11 +40,13 @@ interface BeforeInstallPromptEvent extends Event {
     RouterLinkActive,
     FormsModule,
     InfiniteScrollDirective,
+    FilterDate,
   ],
 })
 export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
   totalRewards: string;
   selectedTab: string;
+  csvUrl = 'csvUrl';
   rewardsChart: DateNumberPoint[];
   sortedInputs: Input[];
   detailInputs: Input[];
@@ -58,6 +61,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   chart: LineChart | undefined;
 
   @ViewChild('detailsContainer') detailsContainer!: ElementRef;
+  filterDateActive = false;
+  fromDate: Date | null = null;
+  toDate: Date | null = null;
 
   constructor(
     location: Location,
@@ -85,7 +91,50 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
   loadMoreInputs() {
     this.detailInputsSize += 100;
-    this.detailInputs = this.dataService.getSortedInputs(false).slice(0, this.detailInputsSize);
+    this.detailInputs = this.getDetailInputs(this.detailInputsSize);
+  }
+
+  getDetailInputs(size: number | null): Input[] {
+    let inputs = this.dataService.getSortedInputs(false);
+
+    const stripTimeUTC = (date: Date | null): Date | null => {
+      if (!date) return null;
+      return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+    };
+
+    function convertToUTCWithSameFields(date: Date | null): Date | null {
+      if (!date) {
+        return null;
+      }
+      return new Date(
+        Date.UTC(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          date.getHours(),
+          date.getMinutes(),
+          date.getSeconds(),
+          date.getMilliseconds(),
+        ),
+      );
+    }
+
+    const fromDateUTC = convertToUTCWithSameFields(this.fromDate);
+    const toDateUTC = convertToUTCWithSameFields(this.toDate);
+
+    inputs = inputs.filter((i) => {
+      const inputDateStripped = stripTimeUTC(i.inputDate);
+      return (
+        (!fromDateUTC || inputDateStripped! >= fromDateUTC) &&
+        (!toDateUTC || inputDateStripped! <= toDateUTC)
+      );
+    });
+
+    if (size) {
+      inputs = inputs.slice(0, size);
+    }
+
+    return inputs;
   }
 
   showHomeLink(): boolean {
@@ -164,7 +213,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       return { x: s.inputDate, y: s.amount } as DateNumberPoint;
     });
 
-    this.detailInputs = this.dataService.getSortedInputs(false).slice(0, this.detailInputsSize);
+    this.detailInputs = this.getDetailInputs(this.detailInputsSize);
 
     if (this.rewardsChart.length != 0 && amounts.length != this.rewardsChart.length && this.chart) {
       this.chart.options.animation = {
@@ -189,6 +238,33 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     );
   }
 
+  filterDateClick() {
+    this.filterDateActive = true;
+  }
+
+  onExportClick() {
+    const content = this.getDetailInputs(null)
+      .map((i) => `"${i.chainType}","${i.inputDate}","${i.amount}"`)
+      .join('\n');
+
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'export.csv';
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  onDateRangeChanged(range: { from: Date | null; to: Date | null }) {
+    this.fromDate = range.from;
+    this.toDate = range.to;
+    this.detailInputs = this.getDetailInputs(this.detailInputsSize);
+    this.filterDateActive = false;
+  }
   updateChart(): void {
     if (!this.chart) {
       this.chart = this.chartService.createStatisticsChart(this.rewardsChart, 1, [0.4]);
