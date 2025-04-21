@@ -59,13 +59,13 @@
   class="detailscontainer verticalscrollablecontainer"
   [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}"
 >
-  <filter-date
+  <app-filter-date
     [fromDate]="fromDate"
     [toDate]="toDate"
     *ngIf="filterDateActive"
     (dateRangeCanceled)="filterDateActive = false"
     (dateRangeChanged)="onDateRangeChanged($event)"
-  ></filter-date>
+  ></app-filter-date>
 
   <div #detailsContainer class="details-container">
     <div>
@@ -73,7 +73,14 @@
         <div class="chainType"><!--<a class="fas fa-filter"></a>--></div>
         <div class="inputDate">
           Date
-          <a class="fas fa-filter" (click)="filterDateClick()" (keypress)="filterDateClick()"></a>
+          <a
+            tabindex="0"
+            class="fas fa-filter"
+            (click)="filterDateClick()"
+            (keypress)="filterDateClick()"
+          >
+            &nbsp;
+          </a>
         </div>
         <div class="inputTime">Time</div>
         <div class="amount">Reward</div>

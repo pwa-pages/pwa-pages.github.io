@@ -16,7 +16,7 @@ import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
 import { ChainService } from '../service/chain.service';
 import { NavigationService } from '../service/navigation.service';
-import { FilterDate } from './filter.date';
+import { FilterDateComponent } from './filter.date.component';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 interface WindowWithPrompt extends Window {
@@ -40,7 +40,7 @@ interface BeforeInstallPromptEvent extends Event {
     RouterLinkActive,
     FormsModule,
     InfiniteScrollDirective,
-    FilterDate,
+    FilterDateComponent,
   ],
 })
 export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
