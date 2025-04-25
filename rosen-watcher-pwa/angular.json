@@ -38,7 +38,9 @@
               "src/settings.css",
               "src/stats.css",
               "src/app/basewatchercomponent.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.css"
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "src/mat-theme.scss",
+              "src/styles_theme-colors.scss"
             ],
             "scripts": [
               "src/rosen-ngsw-worker.js",
