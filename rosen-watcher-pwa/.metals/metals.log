@@ -18404,3 +18404,9 @@ WARNING: Unsupported notification method: metals/windowStateDidChange
 2025.04.25 20:41:27 INFO  Started: Metals version 1.5.2 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
 2025.04.25 20:41:28 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
 2025.04.25 20:41:28 WARN  Build server is not auto-connectable.
+2025.04.25 22:30:20 INFO  Shutting down server
+2025.04.25 22:30:20 INFO  shutting down Metals
+2025.04.25 22:30:20 INFO  Exiting server
+2025.04.26 08:47:53 INFO  Started: Metals version 1.5.2 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.94.0.
+2025.04.26 08:47:54 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2025.04.26 08:47:55 WARN  Build server is not auto-connectable.
