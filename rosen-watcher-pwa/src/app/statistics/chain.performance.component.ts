@@ -35,10 +35,10 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     chainService: ChainService,
     eventService: EventService,
     private chartService: ChartService,
-    navigationService: NavigationService,
+    private navigationService: NavigationService,
     private watchersDataService: WatchersDataService,
   ) {
-    super(eventService, navigationService, chainService, storageService, dataService, location);
+    super(eventService, chainService, storageService, dataService, location);
     this.data = '';
     this.addresses = [];
   }

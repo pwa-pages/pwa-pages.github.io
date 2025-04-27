@@ -5,9 +5,6 @@ import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { Location, NgIf, NgStyle, NgFor } from '@angular/common';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { QRDialogComponent } from './qrdialog.component';
 import 'chartjs-adapter-date-fns';
 import { ChartService, LineChart } from '../service/chart.service';
 import { Input } from '../../service/ts/models/input';
@@ -15,20 +12,11 @@ import { Address } from '../../service/ts/models/address';
 import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
 import { ChainService } from '../service/chain.service';
-import { NavigationService } from '../service/navigation.service';
 import { FilterDateComponent } from './filter.date.component';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { DateUtils } from './date.utils';
+import { BrowserService } from '../service/browser.service';
 
-interface WindowWithPrompt extends Window {
-  showHomeLink?: boolean;
-  deferredPrompt?: BeforeInstallPromptEvent;
-}
-
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
-}
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.html',
@@ -75,12 +63,10 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     storageService: StorageService,
     private chartService: ChartService,
     eventService: EventService,
+    private browserService: BrowserService,
     private serviceWorkerService: ServiceWorkerService,
-    private router: Router,
-    private qrDialog: MatDialog,
-    navigationService: NavigationService,
   ) {
-    super(eventService, navigationService, chainService, storageService, dataService, location);
+    super(eventService, chainService, storageService, dataService, location);
     this.totalRewards = '';
     this.selectedTab = 'chart';
     this.addressesForDisplay = [];
@@ -100,7 +86,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     let inputs = this.dataService.getSortedInputs(false);
 
     const stripTimeUTC = DateUtils.StripTimeUTC();
-
     const fromDateUTC = DateUtils.convertToUTCWithSameFields(this.fromDate);
     const toDateUTC = DateUtils.convertToUTCWithSameFields(this.toDate);
 
@@ -120,7 +105,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   showHomeLink(): boolean {
-    return (window as WindowWithPrompt).showHomeLink == true;
+    return this.browserService.showHomeLink();
   }
 
   selectTab(tab: string): void {
@@ -232,24 +217,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   installApp(): void {
-    if ((window as WindowWithPrompt).deferredPrompt) {
-      (window as WindowWithPrompt).deferredPrompt?.prompt();
-
-      (window as WindowWithPrompt).deferredPrompt?.userChoice.then(
-        (choiceResult: { outcome: 'accepted' | 'dismissed'; platform: string }) => {
-          if (choiceResult.outcome === 'accepted') {
-            (window as WindowWithPrompt).showHomeLink = false;
-          }
-          (window as WindowWithPrompt).deferredPrompt = undefined;
-        },
-      );
-    }
-  }
-
-  showQR(): void {
-    this.qrDialog.open(QRDialogComponent, {
-      data: { qrData: this.getShareUrl() },
-    });
+    this.browserService.installApp();
   }
 
   onPeriodChange(): void {
@@ -257,26 +225,12 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.retrieveData();
   }
 
-  getShareUrl(): string {
-    const currentUrl = window.location.pathname;
-    const subdirectory = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-    const urlTree = this.router.createUrlTree(['main'], {
-      queryParams: { addresses: JSON.stringify(this.addresses) },
-    });
-    const url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
-    return url;
+  showQR(): void {
+    this.browserService.showQR(this.addresses);
   }
 
   share(): void {
-    const url = this.getShareUrl();
-
-    console.log('share url: ' + url);
-
-    navigator.share({
-      title: 'Rosen Watcher',
-      text: 'Rosen Watcher',
-      url: url,
-    });
+    this.browserService.share(this.addresses);
   }
 
   override async ngOnInit(): Promise<void> {
@@ -296,13 +250,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     });
 
     this.shareSupport = navigator.share != null && navigator.share != undefined;
-
-    window.addEventListener('beforeinstallprompt', (event: Event) => {
-      (window as WindowWithPrompt).showHomeLink = true;
-      event.preventDefault();
-
-      (window as WindowWithPrompt).deferredPrompt = event as BeforeInstallPromptEvent;
-    });
 
     window.addEventListener('beforeinstallprompt', (event: Event) => {
       event.preventDefault();

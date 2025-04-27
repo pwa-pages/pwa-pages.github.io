@@ -32,9 +32,9 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     chainService: ChainService,
     eventService: EventService,
     private chartService: ChartService,
-    navigationService: NavigationService,
+    private navigationService: NavigationService,
   ) {
-    super(eventService, navigationService, chainService, storageService, dataService, location);
+    super(eventService, chainService, storageService, dataService, location);
     this.data = '';
     this.addresses = [];
     this.performanceCharts = [];

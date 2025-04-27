@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventData, EventService, EventType } from './service/event.service';
-import { NavigationService } from './service/navigation.service';
 import { Params } from '@angular/router';
 import { ChainService } from './service/chain.service';
 import { Location } from '@angular/common';
@@ -21,7 +20,6 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
 
   constructor(
     public eventService: EventService,
-    public navigationService: NavigationService,
     private chainService: ChainService,
     public storageService: StorageService,
     public dataService: DataService,

@@ -8,7 +8,6 @@ import { ChainType } from '../../service/ts/models/chaintype';
 import { Token } from '../../service/ts/models/token';
 import { Location, CommonModule } from '@angular/common';
 import { StorageService } from '../service/storage.service';
-import { NavigationService } from '../service/navigation.service';
 import { ChainService } from '../service/chain.service';
 import { FormsModule } from '@angular/forms';
 import { PriceService } from '../service/price.service';
@@ -49,13 +48,12 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     private watchersDataService: WatchersDataService,
     eventService: EventService,
     private priceService: PriceService,
-    navigationService: NavigationService,
     chainService: ChainService,
     storageService: StorageService,
     dataService: DataService,
     location: Location,
   ) {
-    super(eventService, navigationService, chainService, storageService, dataService, location);
+    super(eventService, chainService, storageService, dataService, location);
   }
 
   onCurrencyChange(): void {
