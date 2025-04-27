@@ -3,7 +3,7 @@ import { EventData, EventService, EventType } from '../service/event.service';
 import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChartService } from '../service/chart.service';
-import { Location, NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { ChainPerfChartDataSet } from '../../service/ts/models/chart.dataset';
 import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
 import { Chart } from 'chart.js';
@@ -13,6 +13,7 @@ import { ChainService } from '../service/chain.service';
 import { createChainNumber, WatchersDataService } from '../service/watchers.data.service';
 import { map } from 'rxjs';
 import { Token } from '../../service/ts/models/token';
+import { BrowserService } from '../service/browser.service';
 
 @Component({
   selector: 'app-chain-performance',
@@ -29,7 +30,6 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
   chainWatcherCount = createChainNumber();
 
   constructor(
-    location: Location,
     storageService: StorageService,
     dataService: DataService,
     chainService: ChainService,
@@ -37,8 +37,9 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     private chartService: ChartService,
     private navigationService: NavigationService,
     private watchersDataService: WatchersDataService,
+    browserService: BrowserService,
   ) {
-    super(eventService, chainService, storageService, dataService, location);
+    super(eventService, chainService, storageService, dataService, browserService);
     this.data = '';
     this.addresses = [];
   }

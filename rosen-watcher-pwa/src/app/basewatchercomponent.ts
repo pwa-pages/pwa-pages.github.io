@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventData, EventService, EventType } from './service/event.service';
 import { Params } from '@angular/router';
 import { ChainService } from './service/chain.service';
-import { Location } from '@angular/common';
 import { Address } from '../service/ts/models/address';
 import { StorageService } from './service/storage.service';
 import { DataService } from './service/data.service';
+import { BrowserService } from './service/browser.service';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     private chainService: ChainService,
     public storageService: StorageService,
     public dataService: DataService,
-    private location: Location,
+    public browserService: BrowserService,
   ) {}
 
   resetHeight(): void {
@@ -72,13 +72,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
 
       individualAddresses.forEach((i) => this.addresses.push(i));
 
-      const currentPath = this.location.path();
-
-      if (currentPath.includes('?')) {
-        const parts = currentPath.split('?');
-        const newPath = parts[0];
-        this.location.replaceState(newPath);
-      }
+      this.browserService.replacePath();
 
       await this.storageService.putAddressData(this.addresses);
 

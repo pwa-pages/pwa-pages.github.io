@@ -6,11 +6,12 @@ import { DataService } from '../service/data.service';
 import { map } from 'rxjs/operators';
 import { ChainType } from '../../service/ts/models/chaintype';
 import { Token } from '../../service/ts/models/token';
-import { Location, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { StorageService } from '../service/storage.service';
 import { ChainService } from '../service/chain.service';
 import { FormsModule } from '@angular/forms';
 import { PriceService } from '../service/price.service';
+import { BrowserService } from '../service/browser.service';
 
 @Component({
   selector: 'app-watchers',
@@ -51,9 +52,9 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     chainService: ChainService,
     storageService: StorageService,
     dataService: DataService,
-    location: Location,
+    browserService: BrowserService,
   ) {
-    super(eventService, chainService, storageService, dataService, location);
+    super(eventService, chainService, storageService, dataService, browserService);
   }
 
   onCurrencyChange(): void {

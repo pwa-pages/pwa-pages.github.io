@@ -4,7 +4,7 @@ import { StorageService } from '../service/storage.service';
 import { DataService } from '../service/data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
-import { Location, NgIf, NgStyle, NgFor } from '@angular/common';
+import { NgIf, NgStyle, NgFor } from '@angular/common';
 import 'chartjs-adapter-date-fns';
 import { ChartService, LineChart } from '../service/chart.service';
 import { Input } from '../../service/ts/models/input';
@@ -56,17 +56,16 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   toDate: Date | null = null;
 
   constructor(
-    location: Location,
     private route: ActivatedRoute,
     chainService: ChainService,
     dataService: DataService,
     storageService: StorageService,
     private chartService: ChartService,
     eventService: EventService,
-    private browserService: BrowserService,
+    browserService: BrowserService,
     private serviceWorkerService: ServiceWorkerService,
   ) {
-    super(eventService, chainService, storageService, dataService, location);
+    super(eventService, chainService, storageService, dataService, browserService);
     this.totalRewards = '';
     this.selectedTab = 'chart';
     this.addressesForDisplay = [];

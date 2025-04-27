@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { QRDialogComponent } from '../statistics/qrdialog.component';
 import { Router } from '@angular/router';
 import { Address } from '../../service/ts/models/address';
+import { Location } from '@angular/common';
 
 export interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -22,6 +23,7 @@ export class BrowserService {
   constructor(
     private qrDialog: MatDialog,
     private router: Router,
+    private location: Location,
   ) {
     window.addEventListener('beforeinstallprompt', (event: Event) => {
       (window as WindowWithPrompt).showHomeLink = true;
@@ -45,6 +47,16 @@ export class BrowserService {
     });
     const url = window.location.origin + subdirectory + this.router.serializeUrl(urlTree);
     return url;
+  }
+
+  replacePath() {
+    const currentPath = this.location.path();
+
+    if (currentPath.includes('?')) {
+      const parts = currentPath.split('?');
+      const newPath = parts[0];
+      this.location.replaceState(newPath);
+    }
   }
 
   share(addresses: Address[]): void {
