@@ -18,6 +18,7 @@ import { ChainService } from '../service/chain.service';
 import { NavigationService } from '../service/navigation.service';
 import { FilterDateComponent } from './filter.date.component';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { DateUtils } from './date.utils';
 
 interface WindowWithPrompt extends Window {
   showHomeLink?: boolean;
@@ -44,6 +45,7 @@ interface BeforeInstallPromptEvent extends Event {
   ],
 })
 export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
+  DateUtils = DateUtils;
   totalRewards: string;
   selectedTab: string;
   csvUrl = 'csvUrl';
@@ -97,30 +99,10 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   getDetailInputs(size: number | null): Input[] {
     let inputs = this.dataService.getSortedInputs(false);
 
-    const stripTimeUTC = (date: Date | null): Date | null => {
-      if (!date) return null;
-      return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
-    };
+    const stripTimeUTC = DateUtils.StripTimeUTC();
 
-    function convertToUTCWithSameFields(date: Date | null): Date | null {
-      if (!date) {
-        return null;
-      }
-      return new Date(
-        Date.UTC(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate(),
-          date.getHours(),
-          date.getMinutes(),
-          date.getSeconds(),
-          date.getMilliseconds(),
-        ),
-      );
-    }
-
-    const fromDateUTC = convertToUTCWithSameFields(this.fromDate);
-    const toDateUTC = convertToUTCWithSameFields(this.toDate);
+    const fromDateUTC = DateUtils.convertToUTCWithSameFields(this.fromDate);
+    const toDateUTC = DateUtils.convertToUTCWithSameFields(this.toDate);
 
     inputs = inputs.filter((i) => {
       const inputDateStripped = stripTimeUTC(i.inputDate);
@@ -143,36 +125,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
   selectTab(tab: string): void {
     this.selectedTab = tab;
-  }
-
-  formatDate(utcDate: Date): string {
-    const day = utcDate.getUTCDate().toString().padStart(2, '0');
-    const monthNames = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    const month = monthNames[utcDate.getUTCMonth()];
-    const year = utcDate.getUTCFullYear();
-
-    return `${day} ${month} ${year}`;
-  }
-
-  formatTime(utcDate: Date): string {
-    const hours = utcDate.getUTCHours().toString().padStart(2, '0');
-    const minutes = utcDate.getUTCMinutes().toString().padStart(2, '0');
-    const seconds = utcDate.getUTCSeconds().toString().padStart(2, '0');
-
-    return `${hours}:${minutes}:${seconds}`;
   }
 
   private reduceData(inputs: Input[], period: Period): Input[] {
@@ -276,14 +228,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       true,
     );
 
-    /*
-    this.chart.data.datasets[1].data = this.chartService.reduceChartData(
-      this.rewardsChart,
-      20,
-      true,
-    );
-    */
-
     this.chart.update();
   }
 
@@ -343,16 +287,8 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     this.route.queryParams.subscribe(async (params) => {
       await this.checkProfileParams(params);
-      //const hasAddressParams =
       await this.checkAddressParams(params);
-      /*
-      if (!hasAddressParams) {
-        this.eventService.sendEventWithData(
-          EventType.RequestInputsDownload,
-          this.storageService.getProfile() as EventData,
-        );
-      }
-        */
+
       this.eventService.sendEventWithData(
         EventType.StatisticsScreenLoaded,
         this.storageService.getProfile() as EventData,
