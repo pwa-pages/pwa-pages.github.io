@@ -75,6 +75,16 @@ export class DataService {
     return this.storageService.getInputs();
   }
 
+  public getInputsPart(size: number | null, fromDate: Date | null, toDate: Date | null): Input[] {
+    let inputs = this.getSortedInputs(false, fromDate, toDate);
+
+    if (size) {
+      inputs = inputs.slice(0, size);
+    }
+
+    return inputs;
+  }
+
   getSortedInputs(ascending: boolean, fromDate: Date | null, toDate: Date | null): Input[] {
     this.rsnInputs.sort((a, b) => {
       const aTime = Math.round(a.inputDate.getTime() / 1000) * 1000;

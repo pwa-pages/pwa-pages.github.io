@@ -16,6 +16,7 @@ import { FilterDateComponent } from './filter.date.component';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { DateUtils } from './date.utils';
 import { BrowserService } from '../service/browser.service';
+import { CsvUtils } from './csv.utils';
 
 @Component({
   selector: 'app-statistics',
@@ -81,13 +82,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   getDetailInputs(size: number | null): Input[] {
-    let inputs = this.dataService.getSortedInputs(false, this.fromDate, this.toDate);
-
-    if (size) {
-      inputs = inputs.slice(0, size);
-    }
-
-    return inputs;
+    return this.dataService.getInputsPart(size, this.fromDate, this.toDate);
   }
 
   showHomeLink(): boolean {
@@ -113,6 +108,15 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     this.detailInputs = this.getDetailInputs(this.detailInputsSize);
 
+    this.setupRewardChart(amounts);
+    this.updateChart();
+
+    this.addressesForDisplay = await this.dataService.getAddressesForDisplay(
+      this.dataService.rsnInputs,
+    );
+  }
+
+  private setupRewardChart(amounts: DateNumberPoint[]) {
     if (this.rewardsChart.length != 0 && amounts.length != this.rewardsChart.length && this.chart) {
       this.chart.options.animation = {
         duration: 1000,
@@ -125,15 +129,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       return { x: s.x, y: accumulatedAmount } as DateNumberPoint;
     });
 
-    this.updateChart();
-
     if (this.rewardsChart.length > 0) {
       this.totalRewards = this.rewardsChart[this.rewardsChart.length - 1].y.toFixed(3).toString();
     }
-
-    this.addressesForDisplay = await this.dataService.getAddressesForDisplay(
-      this.dataService.rsnInputs,
-    );
   }
 
   filterDateClick() {
@@ -141,20 +139,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   onExportClick() {
-    const content = this.getDetailInputs(null)
-      .map((i) => `"${i.chainType}","${i.inputDate}","${i.amount}"`)
-      .join('\n');
-
-    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'export.csv';
-    a.click();
-
-    URL.revokeObjectURL(url);
+    CsvUtils.csvExportInputs(this.getDetailInputs(null));
   }
 
   onDateRangeChanged(range: { from: Date | null; to: Date | null }) {
@@ -203,18 +188,13 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.route.queryParams.subscribe(async (params) => {
       await this.checkProfileParams(params);
       await this.checkAddressParams(params);
-
-      this.eventService.sendEventWithData(
+      await this.eventService.sendEventWithData(
         EventType.StatisticsScreenLoaded,
         this.storageService.getProfile() as EventData,
       );
     });
 
     this.shareSupport = navigator.share != null && navigator.share != undefined;
-
-    window.addEventListener('beforeinstallprompt', (event: Event) => {
-      event.preventDefault();
-    });
 
     await this.subscribeToEvent<Input[]>(EventType.RefreshInputs, async () => {
       await this.retrieveData();
