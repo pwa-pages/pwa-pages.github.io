@@ -36,7 +36,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   DateUtils = DateUtils;
   totalRewards: string;
   selectedTab: string;
-  csvUrl = 'csvUrl';
   rewardsChart: DateNumberPoint[];
   sortedInputs: Input[];
   detailInputs: Input[];
@@ -82,19 +81,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   getDetailInputs(size: number | null): Input[] {
-    let inputs = this.dataService.getSortedInputs(false);
-
-    const stripTimeUTC = DateUtils.StripTimeUTC();
-    const fromDateUTC = DateUtils.convertToUTCWithSameFields(this.fromDate);
-    const toDateUTC = DateUtils.convertToUTCWithSameFields(this.toDate);
-
-    inputs = inputs.filter((i) => {
-      const inputDateStripped = stripTimeUTC(i.inputDate);
-      return (
-        (!fromDateUTC || inputDateStripped! >= fromDateUTC) &&
-        (!toDateUTC || inputDateStripped! <= toDateUTC)
-      );
-    });
+    let inputs = this.dataService.getSortedInputs(false, this.fromDate, this.toDate);
 
     if (size) {
       inputs = inputs.slice(0, size);
@@ -111,37 +98,12 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.selectedTab = tab;
   }
 
-  private reduceData(inputs: Input[], period: Period): Input[] {
-    const date = new Date();
-
-    switch (period) {
-      case Period.Day:
-        date.setDate(date.getDate() - 1);
-        break;
-      case Period.Week:
-        date.setDate(date.getDate() - 7);
-        break;
-      case Period.Month:
-        date.setMonth(date.getMonth() - 1);
-        break;
-      case Period.Year:
-        date.setFullYear(date.getFullYear() - 1);
-        break;
-      default:
-        date.setFullYear(date.getFullYear() - 100);
-    }
-
-    inputs = inputs.filter((r) => r.inputDate >= date);
-
-    return inputs;
-  }
-
   async retrieveData(): Promise<void> {
     this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
     this.selectedPeriod = this.selectedPeriod == null ? Period.All : this.selectedPeriod;
 
-    this.sortedInputs = this.reduceData(
-      this.dataService.getSortedInputs(true),
+    this.sortedInputs = DateUtils.filterByPeriod(
+      this.dataService.getSortedInputs(true, null, null),
       this.selectedPeriod,
     );
 

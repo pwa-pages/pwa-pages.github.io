@@ -4,6 +4,7 @@ import { StorageService } from './storage.service';
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { EventService, EventType } from './event.service';
+import { DateUtils } from '../statistics/date.utils';
 
 export function initializeDataService(dataService: DataService) {
   return (): Promise<void> => {
@@ -74,7 +75,7 @@ export class DataService {
     return this.storageService.getInputs();
   }
 
-  getSortedInputs(ascending: boolean): Input[] {
+  getSortedInputs(ascending: boolean, fromDate: Date | null, toDate: Date | null): Input[] {
     this.rsnInputs.sort((a, b) => {
       const aTime = Math.round(a.inputDate.getTime() / 1000) * 1000;
       const bTime = Math.round(b.inputDate.getTime() / 1000) * 1000;
@@ -86,7 +87,19 @@ export class DataService {
       return (b.amount ?? 0) - (a.amount ?? 0);
     });
 
-    return this.rsnInputs;
+    let result = this.rsnInputs;
+    const stripTimeUTC = DateUtils.StripTimeUTC();
+    const fromDateUTC = DateUtils.convertToUTCWithSameFields(fromDate);
+    const toDateUTC = DateUtils.convertToUTCWithSameFields(toDate);
+
+    result = result.filter((i) => {
+      const inputDateStripped = stripTimeUTC(i.inputDate);
+      return (
+        (!fromDateUTC || inputDateStripped! >= fromDateUTC) &&
+        (!toDateUTC || inputDateStripped! <= toDateUTC)
+      );
+    });
+    return result;
   }
 
   getAddressCharts(): Record<

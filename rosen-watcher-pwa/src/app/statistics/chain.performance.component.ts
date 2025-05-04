@@ -22,8 +22,6 @@ import { BrowserService } from '../service/browser.service';
   imports: [NgFor, NgIf],
 })
 export class ChainPerformanceComponent extends BaseWatcherComponent implements OnInit {
-  data: string;
-
   performanceCharts: ChainChartPerformance[] = [];
   performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;
 
@@ -40,8 +38,6 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     browserService: BrowserService,
   ) {
     super(eventService, chainService, storageService, dataService, browserService);
-    this.data = '';
-    this.addresses = [];
   }
 
   selectTab(): void {
@@ -55,7 +51,7 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    await this.getWatchers();
+    this.getWatchers();
 
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
@@ -80,7 +76,7 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     );
   }
 
-  private async getWatchers() {
+  private getWatchers() {
     const watcherInfo$ = this.watchersDataService.getWatchersInfo();
 
     Object.values(ChainType).forEach((c) => {
@@ -128,8 +124,8 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
   }
 
   updateChart(): void {
-    //const cnt = this.performanceCharts.length;
     const dataSet = this.createDataSet(0);
+    //const cnt = this.performanceCharts.length;
 
     dataSet.data = this.performanceCharts.map((p) => {
       if (p.chainType && this.chainWatcherCount[p.chainType]) {
