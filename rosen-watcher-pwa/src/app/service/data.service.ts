@@ -127,75 +127,40 @@ export class DataService {
     return await this.storageService.getAddressData();
   }
 
-  async getAddressesForDisplay(inputs: Input[]): Promise<Address[]> {
+  getAddressesForDisplay(inputs: Input[]): Address[] {
     const addresses = this.getAddressesFromInputs(inputs);
 
-    return addresses.then((addresses) => {
-      const result: Address[] = [];
-      addresses.forEach((a: Address) => {
-        result.push({
-          address: a.address.substring(0, 6) + '...',
-          Address: a.address.substring(0, 6) + '...',
-          chainType: a.chainType,
-        });
+    const result: Address[] = [];
+    addresses.forEach((a: Address) => {
+      result.push({
+        address: a.address.substring(0, 6) + '...',
+        Address: a.address.substring(0, 6) + '...',
+        chainType: a.chainType,
       });
-
-      result.sort((a, b) =>
-        (a.chainType != null ? a.chainType : '').localeCompare(
-          b.chainType != null ? b.chainType : '',
-        ),
-      );
-
-      return result;
     });
-    /*
-    const addresses = this.getAddressesFromInputs(inputs);
 
-    return addresses.then((addresses) => {
-      const result: Address[] = [];
-      addresses.forEach((a: Address) => {
-        result.push({
-          address: a.address.substring(0, 6) + '...',
-          Address: a.address.substring(0, 6) + '...',
-          chainType: a.chainType,
-        });
-      });
+    result.sort((a, b) => (a.chainType ?? '').localeCompare(b.chainType ?? ''));
 
-      result.sort((a, b) =>
-        (a.chainType != null ? a.chainType : '').localeCompare(
-          b.chainType != null ? b.chainType : '',
-        ),
-      );
-
-      return result;
-    });
-    */
+    return result;
   }
 
-  async getAddressesFromInputs(inputs: Input[]): Promise<Address[]> {
+  getAddressesFromInputs(inputs: Input[]): Address[] {
     const addresses: Address[] = [];
 
-    try {
-      const existingAddresses = new Set(addresses.map((a) => a.address));
+    const existingAddresses = new Set(addresses.map((a) => a.address));
 
-      inputs.forEach((input: Input) => {
-        if (!existingAddresses.has(input.outputAddress)) {
-          const newAddress = {
-            address: input.outputAddress,
-            Address: input.outputAddress,
-            chainType: input.chainType ?? null,
-          };
-          addresses.push(newAddress);
-          existingAddresses.add(input.outputAddress);
-        }
-      });
+    inputs.forEach((input: Input) => {
+      if (!existingAddresses.has(input.outputAddress)) {
+        const newAddress = {
+          address: input.outputAddress,
+          Address: input.outputAddress,
+          chainType: input.chainType ?? null,
+        };
+        addresses.push(newAddress);
+        existingAddresses.add(input.outputAddress);
+      }
+    });
 
-      return await new Promise<Address[]>((resolve) => {
-        resolve(addresses);
-      });
-    } catch (error) {
-      console.error(error);
-      return addresses;
-    }
+    return addresses;
   }
 }

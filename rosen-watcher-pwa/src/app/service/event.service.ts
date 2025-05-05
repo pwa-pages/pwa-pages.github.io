@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Input } from '../../service/ts/models/input';
+import { NgZone } from '@angular/core';
 
 export enum EventType {
   StartFullDownload = 'StartFullDownload',
@@ -26,6 +27,8 @@ export type EventData = string | Input | object;
   providedIn: 'root',
 })
 export class EventService {
+  constructor(private ngZone: NgZone) {}
+
   eventSubscriptions: Record<EventType, Subject<EventData>> = this.resetSubscriptions();
 
   resetSubscriptions() {
@@ -73,7 +76,10 @@ export class EventService {
 
   private async subscribe(eventType: EventType, callback: (...args: EventData[]) => void) {
     this.eventSubscriptions[eventType].subscribe((...eventData) => {
-      callback(...eventData);
+      // Ensure Angular detects the change
+      this.ngZone.run(() => {
+        callback(...eventData);
+      });
     });
   }
 

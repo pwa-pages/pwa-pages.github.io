@@ -91,28 +91,27 @@ export class SettingsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const inputs = await this.dataService.getInputs();
 
-    this.dataService.getAddressesFromInputs(inputs).then((dataServiceAddresses) => {
-      // combine addresses from address store,
-      // but also from input data for backwards compatibility reasons
+    const dataServiceAddresses = this.dataService.getAddressesFromInputs(inputs);
+    // combine addresses from address store,
+    // but also from input data for backwards compatibility reasons
 
-      return this.storageService.getAddressData().then((storageServiceAddresses) => {
-        const addressMap = new Map<string, Address>();
+    return this.storageService.getAddressData().then((storageServiceAddresses) => {
+      const addressMap = new Map<string, Address>();
 
-        dataServiceAddresses.forEach((address: Address) => {
-          addressMap.set(address.address, address);
-        });
-
-        storageServiceAddresses.forEach((address: Address) => {
-          if (addressMap.has(address.address)) {
-            const existingAddress = addressMap.get(address.address);
-            addressMap.set(address.address, { ...existingAddress, ...address });
-          } else {
-            addressMap.set(address.address, address);
-          }
-        });
-
-        this.addresses = Array.from(addressMap.values());
+      dataServiceAddresses.forEach((address: Address) => {
+        addressMap.set(address.address, address);
       });
+
+      storageServiceAddresses.forEach((address: Address) => {
+        if (addressMap.has(address.address)) {
+          const existingAddress = addressMap.get(address.address);
+          addressMap.set(address.address, { ...existingAddress, ...address });
+        } else {
+          addressMap.set(address.address, address);
+        }
+      });
+
+      this.addresses = Array.from(addressMap.values());
     });
 
     this.eventService.sendEvent(EventType.SettingsScreenLoaded);
