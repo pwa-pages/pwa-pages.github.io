@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -15,7 +15,7 @@ export class RewardChartComponent implements OnChanges {
   previousLength = 0;
 
   constructor(private chartService: ChartService) {}
-  ngOnChanges(_: SimpleChanges): void {
+  ngOnChanges(): void {
     this.setupRewardChart(this.rewardsChart);
     this.updateChart();
   }
