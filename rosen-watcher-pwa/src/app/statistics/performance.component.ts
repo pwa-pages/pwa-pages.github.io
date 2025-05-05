@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { EventData, EventService, EventType } from '../service/event.service';
-import { DataService } from '../service/data.service';
+import { Component, Injector, OnInit } from '@angular/core';
+import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChartService } from '../service/chart.service';
 import { NgFor, NgIf } from '@angular/common';
@@ -8,11 +7,8 @@ import { ChartDataSet } from '../../service/ts/models/chart.dataset';
 import { ChartPoint } from '../../service/ts/models/chart.point';
 import { ChartPerformance } from '../../service/ts/models/chart.performance';
 import { Chart } from 'chart.js';
-import { StorageService } from '../service/storage.service';
+
 import { NavigationService } from '../service/navigation.service';
-import { ChainService } from '../service/chain.service';
-import { ActivatedRoute } from '@angular/router';
-import { BrowserService } from '../service/browser.service';
 
 @Component({
   selector: 'app-performance',
@@ -26,16 +22,11 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;
 
   constructor(
-    private route: ActivatedRoute,
-    storageService: StorageService,
-    dataService: DataService,
-    chainService: ChainService,
-    eventService: EventService,
-    browserService: BrowserService,
+    injector: Injector,
     private chartService: ChartService,
     private navigationService: NavigationService,
   ) {
-    super(eventService, chainService, storageService, dataService, browserService);
+    super(injector);
     this.data = '';
     this.addresses = [];
     this.performanceCharts = [];

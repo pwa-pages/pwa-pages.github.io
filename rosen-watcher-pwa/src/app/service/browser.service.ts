@@ -23,7 +23,7 @@ export class BrowserService {
   constructor(
     private qrDialog: MatDialog,
     private router: Router,
-    private location: Location,
+    private location?: Location,
   ) {
     window.addEventListener('beforeinstallprompt', (event: Event) => {
       (window as WindowWithPrompt).showHomeLink = true;
@@ -50,12 +50,16 @@ export class BrowserService {
   }
 
   replacePath() {
-    const currentPath = this.location.path();
+    const currentPath = this.location?.path();
+
+    if (!currentPath) {
+      return;
+    }
 
     if (currentPath.includes('?')) {
       const parts = currentPath.split('?');
       const newPath = parts[0];
-      this.location.replaceState(newPath);
+      this.location?.replaceState(newPath);
     }
   }
 

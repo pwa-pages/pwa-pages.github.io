@@ -1,9 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { EventData, EventService, EventType } from '../service/event.service';
-import { StorageService } from '../service/storage.service';
-import { DataService } from '../service/data.service';
+import { Component, OnInit, ViewChild, ElementRef, Injector } from '@angular/core';
+import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIf, NgStyle, NgFor } from '@angular/common';
 import 'chartjs-adapter-date-fns';
 import { ChartService, LineChart } from '../service/chart.service';
@@ -11,11 +9,9 @@ import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
-import { ChainService } from '../service/chain.service';
 import { FilterDateComponent } from './filter.date.component';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { DateUtils } from './date.utils';
-import { BrowserService } from '../service/browser.service';
 import { CsvUtils } from './csv.utils';
 
 @Component({
@@ -42,9 +38,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   detailInputs: Input[];
   window: HTMLElement = document.body;
   detailInputsSize = 100;
-
   version: string | null;
-
   selectedPeriod: Period | null;
   addressesForDisplay: Address[];
   shareSupport = false;
@@ -56,16 +50,11 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   toDate: Date | null = null;
 
   constructor(
-    private route: ActivatedRoute,
-    chainService: ChainService,
-    dataService: DataService,
-    storageService: StorageService,
+    injector: Injector,
     private chartService: ChartService,
-    eventService: EventService,
-    browserService: BrowserService,
     private serviceWorkerService: ServiceWorkerService,
   ) {
-    super(eventService, chainService, storageService, dataService, browserService);
+    super(injector);
     this.totalRewards = '';
     this.selectedTab = 'chart';
     this.addressesForDisplay = [];
@@ -82,11 +71,12 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   getDetailInputs(size: number | null): Input[] {
-    return this.dataService.getInputsPart(size, this.fromDate, this.toDate);
+    const result = this.dataService.getInputsPart(size, this.fromDate, this.toDate);
+    return result ? result : [];
   }
 
   showHomeLink(): boolean {
-    return this.browserService.showHomeLink();
+    return this.browserService.showHomeLink() ?? false;
   }
 
   selectTab(tab: string): void {
@@ -94,11 +84,13 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   async retrieveData(): Promise<void> {
-    this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
-    this.selectedPeriod = this.selectedPeriod == null ? Period.All : this.selectedPeriod;
+    this.selectedPeriod =
+      this.selectedPeriod == null
+        ? Period.All
+        : (localStorage.getItem('statisticsPeriod') as Period);
 
     this.sortedInputs = DateUtils.filterByPeriod(
-      this.dataService.getSortedInputs(true, null, null),
+      this.dataService.getSortedInputs(true, null, null) ?? [],
       this.selectedPeriod,
     );
 
@@ -184,16 +176,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
     this.updateChart();
-
-    this.route.queryParams.subscribe(async (params) => {
-      await this.checkProfileParams(params);
-      await this.checkAddressParams(params);
-      await this.eventService.sendEventWithData(
-        EventType.StatisticsScreenLoaded,
-        this.storageService.getProfile() as EventData,
-      );
-    });
-
+    this.SetupRoute();
     this.shareSupport = navigator.share != null && navigator.share != undefined;
 
     await this.subscribeToEvent<Input[]>(EventType.RefreshInputs, async () => {
@@ -204,6 +187,11 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     await this.subscribeToEvent<string>(EventType.VersionUpdated, async (v) => {
       this.version = v;
     });
+
+    await this.eventService.sendEventWithData(
+      EventType.StatisticsScreenLoaded,
+      this.storageService.getProfile() as EventData,
+    );
   }
 
   title = 'rosen-watcher-pwa';

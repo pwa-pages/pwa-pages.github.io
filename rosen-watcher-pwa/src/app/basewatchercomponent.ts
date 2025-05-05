@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { EventData, EventService, EventType } from './service/event.service';
-import { Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { ChainService } from './service/chain.service';
 import { Address } from '../service/ts/models/address';
 import { StorageService } from './service/storage.service';
@@ -17,14 +17,21 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
   profile: string | null = null;
   addresses: Address[] = [];
   noAddresses = false;
+  protected eventService: EventService;
+  protected chainService: ChainService;
+  protected storageService: StorageService;
+  protected dataService: DataService;
+  protected browserService: BrowserService;
+  protected route: ActivatedRoute;
 
-  constructor(
-    public eventService: EventService,
-    private chainService: ChainService,
-    public storageService: StorageService,
-    public dataService: DataService,
-    public browserService: BrowserService,
-  ) {}
+  constructor(protected injector: Injector) {
+    this.eventService = this.injector.get(EventService);
+    this.chainService = this.injector.get(ChainService);
+    this.storageService = this.injector.get(StorageService);
+    this.dataService = this.injector.get(DataService);
+    this.browserService = this.injector.get(BrowserService);
+    this.route = this.injector.get(ActivatedRoute);
+  }
 
   resetHeight(): void {
     document.body.style.height = window.innerHeight + 'px';
@@ -52,6 +59,13 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
 
       this.storageService.initIndexedDB(profileParam);
     }
+  }
+
+  protected SetupRoute() {
+    this.route.queryParams.subscribe(async (params) => {
+      await this.checkProfileParams(params);
+      await this.checkAddressParams(params);
+    });
   }
 
   public async checkAddressParams(params: Params): Promise<boolean> {

@@ -1,19 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { EventData, EventService, EventType } from '../service/event.service';
-import { DataService } from '../service/data.service';
+import { Component, Injector, OnInit } from '@angular/core';
+import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChartService } from '../service/chart.service';
 import { NgFor, NgIf } from '@angular/common';
 import { ChainPerfChartDataSet } from '../../service/ts/models/chart.dataset';
 import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
 import { Chart } from 'chart.js';
-import { StorageService } from '../service/storage.service';
 import { NavigationService } from '../service/navigation.service';
-import { ChainService } from '../service/chain.service';
 import { createChainNumber, WatchersDataService } from '../service/watchers.data.service';
 import { map } from 'rxjs';
 import { Token } from '../../service/ts/models/token';
-import { BrowserService } from '../service/browser.service';
 
 @Component({
   selector: 'app-chain-performance',
@@ -28,16 +24,12 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
   chainWatcherCount = createChainNumber();
 
   constructor(
-    storageService: StorageService,
-    dataService: DataService,
-    chainService: ChainService,
-    eventService: EventService,
+    injector: Injector,
     private chartService: ChartService,
     private navigationService: NavigationService,
     private watchersDataService: WatchersDataService,
-    browserService: BrowserService,
   ) {
-    super(eventService, chainService, storageService, dataService, browserService);
+    super(injector);
   }
 
   selectTab(): void {

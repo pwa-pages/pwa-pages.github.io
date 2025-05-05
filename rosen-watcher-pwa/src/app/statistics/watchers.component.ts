@@ -1,17 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { EventService, EventType } from '../service/event.service';
+import { Component, Injector, OnInit } from '@angular/core';
+import { EventType } from '../service/event.service';
 import { createChainNumber, WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { DataService } from '../service/data.service';
 import { map } from 'rxjs/operators';
 import { ChainType } from '../../service/ts/models/chaintype';
 import { Token } from '../../service/ts/models/token';
 import { CommonModule } from '@angular/common';
-import { StorageService } from '../service/storage.service';
-import { ChainService } from '../service/chain.service';
 import { FormsModule } from '@angular/forms';
 import { PriceService } from '../service/price.service';
-import { BrowserService } from '../service/browser.service';
 
 @Component({
   selector: 'app-watchers',
@@ -46,15 +42,11 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   selectedCurrency: Currency | null = null;
 
   constructor(
+    injector: Injector,
     private watchersDataService: WatchersDataService,
-    eventService: EventService,
     private priceService: PriceService,
-    chainService: ChainService,
-    storageService: StorageService,
-    dataService: DataService,
-    browserService: BrowserService,
   ) {
-    super(eventService, chainService, storageService, dataService, browserService);
+    super(injector);
   }
 
   onCurrencyChange(): void {

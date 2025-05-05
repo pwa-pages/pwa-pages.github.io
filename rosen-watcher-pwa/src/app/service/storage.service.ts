@@ -142,7 +142,10 @@ export class StorageService {
     });
   }
 
-  async putAddressData(addressData: Address[]): Promise<void> {
+  async putAddressData(addressData: Address[] | undefined): Promise<void> {
+    if (!addressData) {
+      return;
+    }
     await this.clearAddressStore();
     const db = await this.getDB();
 
