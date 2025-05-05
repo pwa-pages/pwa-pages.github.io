@@ -96,6 +96,11 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       return { x: s.inputDate, y: s.amount } as DateNumberPoint;
     });
 
+    if (this.amounts.length > 0) {
+      const total = this.amounts.reduce((sum, item) => sum + item.y, 0);
+      this.totalRewards = total.toFixed(3).toString();
+    }
+
     this.detailInputs = this.getDetailInputs(this.detailInputsSize);
 
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay(
