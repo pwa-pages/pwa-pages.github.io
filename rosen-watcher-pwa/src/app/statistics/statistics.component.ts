@@ -4,7 +4,6 @@ import { BaseWatcherComponent } from '../basewatchercomponent';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIf, NgStyle, NgFor } from '@angular/common';
 import 'chartjs-adapter-date-fns';
-import { ChartService, LineChart } from '../service/chart.service';
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { ServiceWorkerService } from '../service/service.worker.service';
@@ -13,6 +12,7 @@ import { FilterDateComponent } from './filter.date.component';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { DateUtils } from './date.utils';
 import { CsvUtils } from './csv.utils';
+import { RewardChartComponent } from './reward.chart.component';
 
 @Component({
   selector: 'app-statistics',
@@ -27,13 +27,13 @@ import { CsvUtils } from './csv.utils';
     FormsModule,
     InfiniteScrollDirective,
     FilterDateComponent,
+    RewardChartComponent,
   ],
 })
 export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
   DateUtils = DateUtils;
   totalRewards: string;
   selectedTab: string;
-  rewardsChart: DateNumberPoint[];
   sortedInputs: Input[];
   detailInputs: Input[];
   window: HTMLElement = document.body;
@@ -42,23 +42,21 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   selectedPeriod: Period | null;
   addressesForDisplay: Address[];
   shareSupport = false;
-  chart: LineChart | undefined;
 
   @ViewChild('detailsContainer') detailsContainer!: ElementRef;
   filterDateActive = false;
   fromDate: Date | null = null;
   toDate: Date | null = null;
+  amounts: DateNumberPoint[] = [];
 
   constructor(
     injector: Injector,
-    private chartService: ChartService,
     private serviceWorkerService: ServiceWorkerService,
   ) {
     super(injector);
     this.totalRewards = '';
     this.selectedTab = 'chart';
     this.addressesForDisplay = [];
-    this.rewardsChart = [];
     this.sortedInputs = [];
     this.detailInputs = [];
     this.version = '';
@@ -94,36 +92,15 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       this.selectedPeriod,
     );
 
-    const amounts = this.sortedInputs.map((s) => {
+    this.amounts = this.sortedInputs.map((s) => {
       return { x: s.inputDate, y: s.amount } as DateNumberPoint;
     });
 
     this.detailInputs = this.getDetailInputs(this.detailInputsSize);
 
-    this.setupRewardChart(amounts);
-    this.updateChart();
-
     this.addressesForDisplay = await this.dataService.getAddressesForDisplay(
       this.dataService.rsnInputs,
     );
-  }
-
-  private setupRewardChart(amounts: DateNumberPoint[]) {
-    if (this.rewardsChart.length != 0 && amounts.length != this.rewardsChart.length && this.chart) {
-      this.chart.options.animation = {
-        duration: 1000,
-      };
-    }
-
-    let accumulatedAmount = 0;
-    this.rewardsChart = amounts.map((s) => {
-      accumulatedAmount += s.y;
-      return { x: s.x, y: accumulatedAmount } as DateNumberPoint;
-    });
-
-    if (this.rewardsChart.length > 0) {
-      this.totalRewards = this.rewardsChart[this.rewardsChart.length - 1].y.toFixed(3).toString();
-    }
   }
 
   filterDateClick() {
@@ -139,19 +116,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.toDate = range.to;
     this.detailInputs = this.getDetailInputs(this.detailInputsSize);
     this.filterDateActive = false;
-  }
-  updateChart(): void {
-    if (!this.chart) {
-      this.chart = this.chartService.createStatisticsChart(this.rewardsChart, 1, [0.4]);
-    }
-
-    this.chart.data.datasets[0].data = this.chartService.reduceChartData(
-      this.rewardsChart,
-      20,
-      true,
-    );
-
-    this.chart.update();
   }
 
   installApp(): void {
@@ -175,7 +139,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     super.ngOnInit();
 
     this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
-    this.updateChart();
     this.SetupRoute();
     this.shareSupport = navigator.share != null && navigator.share != undefined;
 
