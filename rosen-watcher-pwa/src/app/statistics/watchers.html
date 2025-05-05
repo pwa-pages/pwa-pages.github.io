@@ -38,40 +38,14 @@
     <div class="watcherheader">Locked RSN</div>
     <div class="watcherheader">Locked ERG</div>
 
-    <div class="Bitcoin watchersdispl"></div>
-    <div>Bitcoin</div>
-    <div>{{chainWatcherCount['Bitcoin']}}</div>
-    <div>{{chainPermitCount['Bitcoin']}} ({{activePermitCount['Bitcoin']}})</div>
-    <div>{{chainLockedRSN['Bitcoin'] | number: '1.0-0'}}</div>
-    <div>{{chainLockedERG['Bitcoin'] | number: '1.0-0'}}</div>
-
-    <div class="Binance watchersdispl"></div>
-    <div>Binance</div>
-    <div>{{chainWatcherCount['Binance']}}</div>
-    <div>{{chainPermitCount['Binance']}} ({{activePermitCount['Binance']}})</div>
-    <div>{{chainLockedRSN['Binance'] | number: '1.0-0'}}</div>
-    <div>{{chainLockedERG['Binance'] | number: '1.0-0'}}</div>
-
-    <div class="Ethereum watchersdispl"></div>
-    <div>Ethereum</div>
-    <div>{{chainWatcherCount['Ethereum']}}</div>
-    <div>{{chainPermitCount['Ethereum']}} ({{activePermitCount['Ethereum']}})</div>
-    <div>{{chainLockedRSN['Ethereum'] | number: '1.0-0'}}</div>
-    <div>{{chainLockedERG['Ethereum'] | number: '1.0-0'}}</div>
-
-    <div class="Cardano watchersdispl"></div>
-    <div>Cardano</div>
-    <div>{{chainWatcherCount['Cardano']}}</div>
-    <div>{{chainPermitCount['Cardano']}} ({{activePermitCount['Cardano']}})</div>
-    <div>{{chainLockedRSN['Cardano'] | number: '1.0-0'}}</div>
-    <div>{{chainLockedERG['Cardano'] | number: '1.0-0'}}</div>
-
-    <div class="Ergo watchersdispl"></div>
-    <div>Ergo</div>
-    <div>{{chainWatcherCount['Ergo']}}</div>
-    <div>{{chainPermitCount['Ergo']}} ({{activePermitCount['Ergo']}})</div>
-    <div>{{chainLockedRSN['Ergo'] | number: '1.0-0'}}</div>
-    <div>{{chainLockedERG['Ergo'] | number: '1.0-0'}}</div>
+    <ng-container *ngFor="let chainType of getChainTypes()">
+      <div class="{{ chainType }} watchersdispl"></div>
+      <div>{{ chainType }}</div>
+      <div>{{ chainWatcherCount[chainType] }}</div>
+      <div>{{ chainPermitCount[chainType] }} ({{ activePermitCount[chainType] }})</div>
+      <div>{{ chainLockedRSN[chainType] | number: '1.0-0' }}</div>
+      <div>{{ chainLockedERG[chainType] | number: '1.0-0' }}</div>
+    </ng-container>
 
     <div class="watchersdispl"></div>
     <div>&nbsp;</div>

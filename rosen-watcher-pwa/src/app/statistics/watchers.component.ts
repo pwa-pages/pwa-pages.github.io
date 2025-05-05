@@ -135,6 +135,10 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
   }
 
+  getChainTypes(): ChainType[] {
+    return Object.values(ChainType);
+  }
+
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
