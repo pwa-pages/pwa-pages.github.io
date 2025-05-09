@@ -3,7 +3,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-(cd /home/youruser/ergo/watchers/watcher5 && deploy.sh $1) &
-(cd /home/youruser/ergo/watchers/watcher8 && deploy.sh $1) &
-(cd /home/youruser/ergo/watchers/watcher7 && deploy.sh $1) &
+(cd /home/pebblerye/ergo/watchers/watcher5 && deploy.sh $1) &
+(cd /home/pebblerye/ergo/watchers/watcher8 && deploy.sh $1) &
+(cd /home/pebblerye/ergo/watchers/watcher7 && deploy.sh $1) &
 wait

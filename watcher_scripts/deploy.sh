@@ -34,5 +34,17 @@ cd ..
 reinstall_watcher.sh
 echo "Sleeping 30 seconds..."
 sleep 30
-#./lock.sh
+./lock.sh
+echo "Sleeping another 30 seconds..."
+sleep 30
+./lock.sh
+echo "Sleeping another 30 seconds..."
+sleep 30
+./lock.sh
+echo "Sleeping another 30 seconds..."
+sleep 30
+./lock.sh
+echo "Sleeping another 30 seconds..."
+sleep 30
+./lock.sh
 

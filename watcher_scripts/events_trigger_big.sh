@@ -94,8 +94,9 @@ BEGIN {
             (numeric_amount > 5 && (token == "ETH" || token == "rsETH")) ||
             (numeric_amount > 100 && (token == "BNB" || token == "rsBNB")) ||
             (numeric_amount > 200000 && (token == "RSN" || token == "rsRSN")) ||
+            (numeric_amount > 40000000 && (token == "PALM" || token == "rsPALM")) ||
             (numeric_amount > 100000000000 && (token == "GIF" || token == "rsGIF")) ||
-            (numeric_amount > 0.5 && (token == "BTC" || token == "rsBTC"))) {
+            (numeric_amount > 0.49999 && (token == "BTC" || token == "rsBTC"))) {
             # Trigger the appropriate script based on token type
             if (first_part == "ergo") {
                 # Trigger for high-value ERG transactions

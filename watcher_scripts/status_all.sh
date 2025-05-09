@@ -136,7 +136,7 @@ done
 
 
 # Check Bitcoin RPC health
-bitcoin_rpc_result=$(curl -s --user youruser:youruser --data-binary '{"jsonrpc":"1.0","id":"curltext","method":"getblockchaininfo","params":[]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/)
+bitcoin_rpc_result=$(curl -s --user pebblerye:pebblerye --data-binary '{"jsonrpc":"1.0","id":"curltext","method":"getblockchaininfo","params":[]}' -H 'content-type: text/plain;' http://127.0.0.1:8332/)
 
 # Parse the Bitcoin RPC response using jq
 chain=$(echo "$bitcoin_rpc_result" | jq -r '.result.chain')
