@@ -83,9 +83,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
   async retrieveData(): Promise<void> {
     this.selectedPeriod =
-      this.selectedPeriod == null
-        ? Period.All
-        : (localStorage.getItem('statisticsPeriod') as Period);
+      this.selectedPeriod ?? (localStorage.getItem('statisticsPeriod') as Period) ?? Period.All;
 
     this.sortedInputs = DateUtils.filterByPeriod(
       this.dataService.getSortedInputs(true, null, null) ?? [],
@@ -127,9 +125,9 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.browserService.installApp();
   }
 
-  onPeriodChange(): void {
+  async onPeriodChange(): Promise<void> {
     localStorage.setItem('statisticsPeriod', this.selectedPeriod as string);
-    this.retrieveData();
+    await this.retrieveData();
   }
 
   showQR(): void {
