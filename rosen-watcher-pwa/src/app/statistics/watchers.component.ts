@@ -146,6 +146,24 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
     this.currencyUpdate();
 
+    Object.values(ChainType).forEach((c) => {
+      this.watchersDataService
+        .getTriggerPermitsInfo(c)
+        .pipe(map((permitsInfo) => permitsInfo?.amount))
+        .subscribe((amount) => {
+          this.triggerPermitCount[c] = amount;
+          this.setLockedAmounts(c);
+        });
+
+      this.watchersDataService
+        .getBulkPermitsInfo(c)
+        .pipe(map((permitsInfo) => permitsInfo?.amount))
+        .subscribe((amount) => {
+          this.bulkPermitCount[c] = amount;
+          this.setLockedAmounts(c);
+        });
+    });
+
     const watcherInfo$ = this.watchersDataService.getWatchersInfo();
 
     Object.values(ChainType).forEach((c) => {
@@ -167,22 +185,6 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
         .pipe(map((permitsInfo) => permitsInfo?.amount))
         .subscribe((amount) => {
           this.chainPermitCount[c] = amount;
-          this.setLockedAmounts(c);
-        });
-
-      this.watchersDataService
-        .getTriggerPermitsInfo(c)
-        .pipe(map((permitsInfo) => permitsInfo?.amount))
-        .subscribe((amount) => {
-          this.triggerPermitCount[c] = amount;
-          this.setLockedAmounts(c);
-        });
-
-      this.watchersDataService
-        .getBulkPermitsInfo(c)
-        .pipe(map((permitsInfo) => permitsInfo?.amount))
-        .subscribe((amount) => {
-          this.bulkPermitCount[c] = amount;
           this.setLockedAmounts(c);
         });
     });
