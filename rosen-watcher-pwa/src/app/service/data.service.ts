@@ -75,14 +75,27 @@ export class DataService {
     return this.storageService.getInputs();
   }
 
-  public getInputsPart(size: number | null, fromDate: Date | null, toDate: Date | null): Input[] {
-    let inputs = this.getSortedInputs(false, fromDate, toDate);
+  public getInputsPart(
+    size: number | null,
+    fromDate: Date | null,
+    toDate: Date | null,
+    addresses: Address[] | null,
+  ): Input[] {
+    let result = this.getSortedInputs(false, fromDate, toDate);
 
-    if (size) {
-      inputs = inputs.slice(0, size);
+    if (result && addresses && addresses.length > 0) {
+      const activeAddresses = addresses
+        .filter((address) => address.active)
+        .map((address) => address.address);
+
+      result = result.filter((input) => activeAddresses.includes(input.outputAddress));
     }
 
-    return inputs;
+    if (size) {
+      result = result.slice(0, size);
+    }
+
+    return result;
   }
 
   getSortedInputs(ascending: boolean, fromDate: Date | null, toDate: Date | null): Input[] {

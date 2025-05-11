@@ -72,15 +72,12 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   }
 
   getDetailInputs(size: number | null): Input[] {
-    const result = this.dataService.getInputsPart(size, this.fromDate, this.toDate);
-
-    if (result && this.addressesForDisplay && this.addressesForDisplay.length > 0) {
-      const activeAddresses = this.addressesForDisplay
-        .filter((address) => address.active)
-        .map((address) => address.address);
-
-      return result.filter((input) => activeAddresses.includes(input.outputAddress));
-    }
+    const result = this.dataService.getInputsPart(
+      size,
+      this.fromDate,
+      this.toDate,
+      this.addressesForDisplay,
+    );
 
     return result ? result : [];
   }
