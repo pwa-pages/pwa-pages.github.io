@@ -5,12 +5,16 @@ export class Address {
   Address: string;
   active = true;
   chainType: ChainType | null | undefined;
-  addressForDisplay: string;
+  smallAddressForDisplay: string;
+  largeAddressForDisplay: string;
 
   constructor(address: string, chainType: ChainType | null | undefined, active = true) {
     this.address = address;
     this.Address = address;
-    this.addressForDisplay = address.substring(0, 6) + '...';
+    this.smallAddressForDisplay = address.substring(0, 6) + '...';
+    this.largeAddressForDisplay =
+      address.substring(0, 6) + '...' + address.substring(address.length - 6, address.length);
+
     this.chainType = chainType;
     this.active = active;
   }

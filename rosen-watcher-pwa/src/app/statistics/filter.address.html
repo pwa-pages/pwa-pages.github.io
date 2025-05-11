@@ -1,9 +1,8 @@
 <div class="context-menu" style="display: flex; flex-direction: column">
   Select address
   <div *ngFor="let address of addresses; let i = index; last as isLast">
-    <div class="mainaddressdispl {{address.chainType}}">&nbsp;</div>
     <mat-checkbox [(ngModel)]="address.active" [name]="'checkbox' + i">
-      {{ address.addressForDisplay }}
+      {{ address.largeAddressForDisplay }}
     </mat-checkbox>
   </div>
 
