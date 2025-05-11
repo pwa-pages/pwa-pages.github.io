@@ -485,3 +485,7 @@ button:active {
   float: left;
   margin-top: 10px;
 }
+
+.date-selection {
+  width: 300px;
+}
