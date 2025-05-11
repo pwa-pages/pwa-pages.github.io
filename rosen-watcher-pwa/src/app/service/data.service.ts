@@ -130,18 +130,9 @@ export class DataService {
   getAddressesForDisplay(inputs: Input[]): Address[] {
     const addresses = this.getAddressesFromInputs(inputs);
 
-    const result: Address[] = [];
-    addresses.forEach((a: Address) => {
-      result.push({
-        address: a.address.substring(0, 6) + '...',
-        Address: a.address.substring(0, 6) + '...',
-        chainType: a.chainType,
-      });
-    });
+    addresses.sort((a, b) => (a.chainType ?? '').localeCompare(b.chainType ?? ''));
 
-    result.sort((a, b) => (a.chainType ?? '').localeCompare(b.chainType ?? ''));
-
-    return result;
+    return addresses;
   }
 
   getAddressesFromInputs(inputs: Input[]): Address[] {
@@ -151,11 +142,7 @@ export class DataService {
 
     inputs.forEach((input: Input) => {
       if (!existingAddresses.has(input.outputAddress)) {
-        const newAddress = {
-          address: input.outputAddress,
-          Address: input.outputAddress,
-          chainType: input.chainType ?? null,
-        };
+        const newAddress = new Address(input.outputAddress, input.chainType ?? null);
         addresses.push(newAddress);
         existingAddresses.add(input.outputAddress);
       }

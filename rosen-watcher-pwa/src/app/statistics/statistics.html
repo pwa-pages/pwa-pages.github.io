@@ -67,10 +67,26 @@
     (dateRangeChanged)="onDateRangeChanged($event)"
   ></app-filter-date>
 
+  <app-filter-address
+    [addresses]="addressesForDisplay"
+    *ngIf="filterAddressActive"
+    (addressesCanceled)="filterAddressActive = false"
+    (addressesChanged)="onAddressesChanged($event)"
+  ></app-filter-address>
+
   <div #detailsContainer class="details-container">
     <div>
       <div class="statdetaildispl">
-        <div class="chainType"><!--<a class="fas fa-filter"></a>--></div>
+        <div class="chainType">
+          <a
+            tabindex="0"
+            class="fas fa-filter rsn_filter"
+            (click)="filterAddressClick()"
+            (keypress)="filterAddressClick()"
+          >
+            &nbsp;
+          </a>
+        </div>
         <div class="inputDate">
           Date
           <a
@@ -107,7 +123,7 @@
       class="mainaddressdispl {{address.chainType}}"
       *ngFor="let address of addressesForDisplay; let i = index; last as isLast"
     >
-      - [{{ address.address }}]
+      - [{{ address.addressForDisplay }}]
       <span *ngIf="!isLast">,&nbsp;&nbsp;</span>
     </div>
   </div>

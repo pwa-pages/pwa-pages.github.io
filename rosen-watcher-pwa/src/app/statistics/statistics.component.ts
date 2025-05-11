@@ -9,6 +9,7 @@ import { Address } from '../../service/ts/models/address';
 import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
 import { FilterDateComponent } from './filter.date.component';
+import { FilterAddressComponent } from './filter.address.component';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { DateUtils } from './date.utils';
 import { CsvUtils } from './csv.utils';
@@ -28,6 +29,7 @@ import { RewardChartComponent } from './reward.chart.component';
     InfiniteScrollDirective,
     FilterDateComponent,
     RewardChartComponent,
+    FilterAddressComponent,
   ],
 })
 export class StatisticsComponent extends BaseWatcherComponent implements OnInit {
@@ -48,6 +50,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
   fromDate: Date | null = null;
   toDate: Date | null = null;
   amounts: DateNumberPoint[] = [];
+  filterAddressActive = false;
 
   constructor(
     injector: Injector,
@@ -70,6 +73,15 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
   getDetailInputs(size: number | null): Input[] {
     const result = this.dataService.getInputsPart(size, this.fromDate, this.toDate);
+
+    if (result && this.addressesForDisplay && this.addressesForDisplay.length > 0) {
+      const activeAddresses = this.addressesForDisplay
+        .filter((address) => address.active)
+        .map((address) => address.address);
+
+      return result.filter((input) => activeAddresses.includes(input.outputAddress));
+    }
+
     return result ? result : [];
   }
 
@@ -110,6 +122,10 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.filterDateActive = true;
   }
 
+  filterAddressClick() {
+    this.filterAddressActive = true;
+  }
+
   onExportClick() {
     CsvUtils.csvExportInputs(this.getDetailInputs(null));
   }
@@ -119,6 +135,15 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.toDate = range.to;
     this.detailInputs = this.getDetailInputs(this.detailInputsSize);
     this.filterDateActive = false;
+  }
+
+  onAddressesChanged(addresses: Address[] | null) {
+    if (addresses) {
+      this.addresses = addresses;
+    }
+
+    this.detailInputs = this.getDetailInputs(this.detailInputsSize);
+    this.filterAddressActive = false;
   }
 
   installApp(): void {

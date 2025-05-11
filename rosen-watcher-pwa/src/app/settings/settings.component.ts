@@ -105,7 +105,10 @@ export class SettingsComponent implements OnInit {
       storageServiceAddresses.forEach((address: Address) => {
         if (addressMap.has(address.address)) {
           const existingAddress = addressMap.get(address.address);
-          addressMap.set(address.address, { ...existingAddress, ...address });
+          addressMap.set(address.address, {
+            ...existingAddress,
+            ...address,
+          });
         } else {
           addressMap.set(address.address, address);
         }
