@@ -5,6 +5,7 @@ import { QRDialogComponent } from '../statistics/qrdialog.component';
 import { Router } from '@angular/router';
 import { Address } from '../../service/ts/models/address';
 import { Location } from '@angular/common';
+import { EventService, EventType } from './event.service';
 
 export interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -24,12 +25,17 @@ export class BrowserService {
     private qrDialog: MatDialog,
     private router: Router,
     private location?: Location,
+    private eventService?: EventService,
   ) {
     window.addEventListener('beforeinstallprompt', (event: Event) => {
       (window as WindowWithPrompt).showHomeLink = true;
       event.preventDefault();
 
       (window as WindowWithPrompt).deferredPrompt = event as BeforeInstallPromptEvent;
+    });
+
+    window.addEventListener('resize', () => {
+      this.eventService?.sendEvent(EventType.WindowResized);
     });
   }
 

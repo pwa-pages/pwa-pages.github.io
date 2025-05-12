@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ElementRef, AfterViewInit } from '@angular/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { ChartService, LineChart } from '../service/chart.service';
+import { EventService, EventType } from '../service/event.service';
 
 @Component({
   selector: 'app-reward-chart',
@@ -11,16 +12,34 @@ import { ChartService, LineChart } from '../service/chart.service';
   standalone: true,
   imports: [MatDatepickerModule, MatInputModule, MatNativeDateModule, FormsModule],
 })
-export class RewardChartComponent implements OnChanges {
+export class RewardChartComponent implements OnChanges, AfterViewInit {
   previousLength = 0;
+  chart: LineChart | null = null;
 
-  constructor(private chartService: ChartService) {}
+  @Input() rewardsChart: DateNumberPoint[] = [];
+
+  constructor(
+    private chartService: ChartService,
+    private eventService: EventService,
+    private elementRef: ElementRef,
+  ) {
+    // Subscribe to window resize events
+    this.eventService.subscribeToEvent(EventType.WindowResized, () => {
+      if (this.chart) {
+        this.chart.resize();
+      }
+      this.updateChart();
+    });
+  }
+
   ngOnChanges(): void {
     this.setupRewardChart(this.rewardsChart);
     this.updateChart();
   }
-  chart: LineChart | null = null;
-  @Input() rewardsChart: DateNumberPoint[] = [];
+
+  ngAfterViewInit(): void {
+    this.observeVisibility();
+  }
 
   updateChart(): void {
     if (!this.chart) {
@@ -38,9 +57,9 @@ export class RewardChartComponent implements OnChanges {
 
   private setupRewardChart(amounts: DateNumberPoint[]) {
     if (
-      this.rewardsChart.length != 0 &&
-      this.previousLength != 0 &&
-      this.previousLength != this.rewardsChart.length &&
+      this.rewardsChart.length !== 0 &&
+      this.previousLength !== 0 &&
+      this.previousLength !== this.rewardsChart.length &&
       this.chart
     ) {
       this.chart.options.animation = {
@@ -55,5 +74,23 @@ export class RewardChartComponent implements OnChanges {
       accumulatedAmount += s.y;
       return { x: s.x, y: accumulatedAmount } as DateNumberPoint;
     });
+  }
+
+  private observeVisibility(): void {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (this.chart) {
+              this.chart.resize();
+            }
+            this.updateChart();
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(this.elementRef.nativeElement);
   }
 }

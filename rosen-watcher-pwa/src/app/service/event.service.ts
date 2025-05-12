@@ -18,6 +18,7 @@ export enum EventType {
   SettingsScreenLoaded = 'SettingsScreenLoaded',
   PerformanceScreenLoaded = 'PerformanceScreenLoaded',
   AddressChartChanged = 'AddressChartChanged',
+  WindowResized = 'WindowResized',
   VersionUpdated = 'VersionUpdated',
 }
 
@@ -48,6 +49,7 @@ export class EventService {
       [EventType.VersionUpdated]: new Subject<EventData>(),
       [EventType.WatchersScreenLoaded]: new Subject<EventData>(),
       [EventType.SettingsScreenLoaded]: new Subject<EventData>(),
+      [EventType.WindowResized]: new Subject<EventData>(),
     };
     return this.eventSubscriptions;
   }
