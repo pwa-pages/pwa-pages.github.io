@@ -226,6 +226,7 @@ class DownloadService<T> {
       }
     }
 
+    DownloadService.addressDownloadDateMap.set(address, new Date());
     this.increaseBusyCounter(profile);
     console.log(this.busyCounter);
 
@@ -268,7 +269,6 @@ class DownloadService<T> {
     } catch (e) {
       console.error(e);
     } finally {
-      DownloadService.addressDownloadDateMap.set(address, new Date());
       this.decreaseBusyCounter(profile);
       console.log(this.busyCounter);
     }
