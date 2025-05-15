@@ -46,20 +46,8 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     await this.retrieveData();
     this.updateChart();
 
-    this.route.queryParams.subscribe(async (params) => {
-      await this.checkProfileParams(params);
-      const hasAddressParams = await this.checkAddressParams(params);
-
-      if (hasAddressParams) {
-        this.eventService.sendEventWithData(
-          EventType.RequestInputsDownload,
-          this.storageService.getProfile() as EventData,
-        );
-      }
-    });
-
     this.eventService.sendEventWithData(
-      EventType.PerformanceScreenLoaded,
+      EventType.RequestInputsDownload,
       this.storageService.getProfile() as EventData,
     );
 
