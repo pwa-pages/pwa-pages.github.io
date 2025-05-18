@@ -85,6 +85,13 @@ class ProcessEventService {
         );
 
         try {
+          const inputs = await dataService.getSortedInputs();
+          this.eventSender.sendEvent({
+            type: 'InputsChanged',
+            profile: profile,
+            data: inputs,
+          });
+
           await downloadService.downloadForAddresses(profile);
 
           //await dataService.compressInputs();

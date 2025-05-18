@@ -40,6 +40,12 @@ class ProcessEventService {
             if (event.type === 'RequestInputsDownload') {
                 console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain');
                 try {
+                    const inputs = await dataService.getSortedInputs();
+                    this.eventSender.sendEvent({
+                        type: 'InputsChanged',
+                        profile: profile,
+                        data: inputs,
+                    });
                     await downloadService.downloadForAddresses(profile);
                     //await dataService.compressInputs();
                     //({ dataService, downloadService, chartService } = await initServices(profile));
