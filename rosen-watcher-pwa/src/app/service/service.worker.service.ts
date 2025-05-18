@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EventData, EventService, EventType } from './event.service';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
 
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {
@@ -36,12 +35,11 @@ export class ServiceWorkerService {
     private eventService: EventService,
     private http: HttpClient,
   ) {
+    this.checkForVersionDiscrepancy();
     this.listenForServiceWorkerMessages();
   }
 
   public async initialize() {
-    await this.checkForVersionDiscrepancy();
-
     this.eventService.subscribeToAllEvents((eventType, eventData) => {
       if (
         eventType == EventType.PerformanceScreenLoaded ||
@@ -68,27 +66,29 @@ export class ServiceWorkerService {
     });
   }
 
-  async checkForVersionDiscrepancy(): Promise<void> {
-    try {
-      const data = await firstValueFrom(
-        this.http.get<{ appData?: { version?: string } }>('ngsw.json', { responseType: 'json' }),
-      );
-      console.log('Current Service Worker Version(ngsw.json) :', data.appData?.version);
-      console.log(
-        'localStorage rosenWatcherServiceVersion:',
-        localStorage.getItem('rosenWatcherServiceVersion'),
-      );
+  checkForVersionDiscrepancy(): void {
+    this.http
+      .get<{ appData?: { version?: string } }>('ngsw.json', { responseType: 'json' })
+      .subscribe(
+        (data) => {
+          console.log('Current Service Worker Version(ngsw.json) :', data.appData?.version);
+          console.log(
+            'localStorage rosenWatcherServiceVersion:',
+            localStorage.getItem('rosenWatcherServiceVersion'),
+          );
 
-      if (data.appData?.version == localStorage.getItem('rosenWatcherServiceVersion')) {
-        console.log('sw versions in sync');
-        this.avoidServiceWorker = false;
-      } else {
-        console.log('sw versions not in sync');
-        this.avoidServiceWorker = true;
-      }
-    } catch (error) {
-      console.error('Error fetching SW version', error);
-    }
+          if (data.appData?.version == localStorage.getItem('rosenWatcherServiceVersion')) {
+            console.log('sw versions in sync');
+            this.avoidServiceWorker = false;
+          } else {
+            console.log('sw versions not in sync');
+            this.avoidServiceWorker = true;
+          }
+        },
+        (error: unknown) => {
+          console.error('Error fetching SW version', error);
+        },
+      );
   }
 
   getVersion(): string | null {
