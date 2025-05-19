@@ -144,18 +144,23 @@ class DownloadService {
             const transaction = db.transaction([rs_DownloadStatusStoreName], 'readonly');
             const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
             const request = objectStore.get(address + '_' + this.dataService.getDataType());
-            request.onsuccess = () => resolve(request.result?.status || 'false');
+            request.onsuccess = () => resolve(request.result);
             request.onerror = (event) => reject(event.target.error);
         });
     }
     // Set Download Status for Address in IndexedDB
     async setDownloadStatus(address, status, db) {
+        const existingStatus = await this.getDownloadStatus(address, db);
+        existingStatus.status = status;
+        existingStatus.address = address + '_' + this.dataService.getDataType();
+        existingStatus.Address = address;
+        this.saveDownloadStatus(existingStatus, db);
+    }
+    async saveDownloadStatus(downloadStatus, db) {
         return new Promise((resolve, reject) => {
             const transaction = db.transaction([rs_DownloadStatusStoreName], 'readwrite');
             const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
-            address = address + '_' + this.dataService.getDataType();
-            const Address = address;
-            const request = objectStore.put({ Address, address, status });
+            const request = objectStore.put(downloadStatus);
             request.onsuccess = () => resolve();
             request.onerror = (event) => reject(event.target.error);
         });
@@ -189,7 +194,7 @@ class DownloadService {
             }
             console.log('Add bunch of data');
             await this.dataService.addData(address, result.transactions, this.db, profile);
-            const downloadStatus = await this.getDownloadStatus(address, this.db);
+            const downloadStatus = (await this.getDownloadStatus(address, this.db))?.status || 'false';
             if (existingData && downloadStatus === 'true') {
                 console.log(`Found existing boxId in db for ${address}, no need to download more.`);
             }
