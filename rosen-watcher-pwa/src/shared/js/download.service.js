@@ -6,7 +6,7 @@ class DownloadService {
     busyCounter = 0;
     downloadFullSize = rs_FullDownloadsBatchSize;
     downloadInitialSize = rs_InitialNDownloads;
-    static addressDownloadDateMap = new Map();
+    //private static addressDownloadDateMap = new Map<string, Date>();
     constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, db) {
         this.dataService = dataService;
         this.eventSender = eventSender;
@@ -161,13 +161,16 @@ class DownloadService {
         });
     }
     async downloadForAddress(address, profile) {
-        if (DownloadService.addressDownloadDateMap.has(address)) {
-            const lastDownloadDate = DownloadService.addressDownloadDateMap.get(address);
-            if (lastDownloadDate && lastDownloadDate.getTime() > new Date().getTime() - 1000 * 60) {
-                return;
-            }
+        /*if (DownloadService.addressDownloadDateMap.has(address)) {
+          const lastDownloadDate: Date | undefined =
+            DownloadService.addressDownloadDateMap.get(address);
+          if (lastDownloadDate && lastDownloadDate.getTime() > new Date().getTime() - 1000 * 60) {
+            return;
+          }
         }
+    
         DownloadService.addressDownloadDateMap.set(address, new Date());
+        */
         this.increaseBusyCounter(profile);
         console.log(this.busyCounter);
         try {
