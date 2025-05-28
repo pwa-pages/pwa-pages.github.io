@@ -207,11 +207,22 @@ class DownloadService<T> {
 
   // Set Download Status for Address in IndexedDB
   async setDownloadStatus(address: string, status: string, db: IDBDatabase): Promise<void> {
-    const existingStatus: DownloadStatus | undefined = await this.getDownloadStatus(address, db);
-    existingStatus.status = status;
-    existingStatus.address = address + '_' + this.dataService.getDataType();
-    existingStatus.Address = address;
-    this.saveDownloadStatus(existingStatus, db);
+    let dbStatus: DownloadStatus | undefined = await this.getDownloadStatus(address, db);
+
+    if (!dbStatus) {
+      dbStatus = {
+        address: address + '_' + this.dataService.getDataType(),
+        Address: address,
+        status: status,
+        lastDownloadDate: undefined,
+      };
+    } else {
+      dbStatus.status = status;
+      dbStatus.address = address + '_' + this.dataService.getDataType();
+      dbStatus.Address = address;
+    }
+
+    await this.saveDownloadStatus(dbStatus, db);
   }
 
   async saveDownloadStatus(downloadStatus: DownloadStatus, db: IDBDatabase): Promise<void> {
