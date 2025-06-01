@@ -238,16 +238,20 @@ class DownloadService<T> {
   }
 
   async downloadForAddress(address: string, profile: string | undefined): Promise<void> {
-    /*if (DownloadService.addressDownloadDateMap.has(address)) {
-      const lastDownloadDate: Date | undefined =
-        DownloadService.addressDownloadDateMap.get(address);
-      if (lastDownloadDate && lastDownloadDate.getTime() > new Date().getTime() - 1000 * 60) {
+    const downloadStatus = await this.getDownloadStatus(address, this.db);
+
+    if (downloadStatus?.lastDownloadDate) {
+      const lastDownloadDate: Date | undefined = downloadStatus.lastDownloadDate;
+      if (lastDownloadDate && lastDownloadDate.getTime() > new Date().getTime() - 1000 * 120) {
         return;
       }
     }
 
-    DownloadService.addressDownloadDateMap.set(address, new Date());
-    */
+    if (downloadStatus) {
+      downloadStatus.lastDownloadDate = new Date();
+      await this.saveDownloadStatus(downloadStatus, this.db);
+    }
+
     this.increaseBusyCounter(profile);
     console.log(this.busyCounter);
 
