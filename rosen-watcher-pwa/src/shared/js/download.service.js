@@ -176,17 +176,21 @@ class DownloadService {
         });
     }
     async downloadForAddress(address, profile) {
-        const downloadStatus = await this.getDownloadStatus(address, this.db);
+        /*const downloadStatus = await this.getDownloadStatus(address, this.db);
+    
+        
         if (downloadStatus?.lastDownloadDate) {
-            const lastDownloadDate = downloadStatus.lastDownloadDate;
-            if (lastDownloadDate && lastDownloadDate.getTime() > new Date().getTime() - 1000 * 120) {
-                return;
-            }
+          const lastDownloadDate: Date | undefined = downloadStatus.lastDownloadDate;
+          if (lastDownloadDate && lastDownloadDate.getTime() > new Date().getTime() - 1000 * 120) {
+            return;
+          }
         }
+    
         if (downloadStatus) {
-            downloadStatus.lastDownloadDate = new Date();
-            await this.saveDownloadStatus(downloadStatus, this.db);
+          downloadStatus.lastDownloadDate = new Date();
+          await this.saveDownloadStatus(downloadStatus, this.db);
         }
+    */
         this.increaseBusyCounter(profile);
         console.log(this.busyCounter);
         try {

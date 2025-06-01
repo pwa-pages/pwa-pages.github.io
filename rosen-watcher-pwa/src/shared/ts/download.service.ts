@@ -238,8 +238,9 @@ class DownloadService<T> {
   }
 
   async downloadForAddress(address: string, profile: string | undefined): Promise<void> {
-    const downloadStatus = await this.getDownloadStatus(address, this.db);
+    /*const downloadStatus = await this.getDownloadStatus(address, this.db);
 
+    
     if (downloadStatus?.lastDownloadDate) {
       const lastDownloadDate: Date | undefined = downloadStatus.lastDownloadDate;
       if (lastDownloadDate && lastDownloadDate.getTime() > new Date().getTime() - 1000 * 120) {
@@ -251,7 +252,7 @@ class DownloadService<T> {
       downloadStatus.lastDownloadDate = new Date();
       await this.saveDownloadStatus(downloadStatus, this.db);
     }
-
+*/
     this.increaseBusyCounter(profile);
     console.log(this.busyCounter);
 
