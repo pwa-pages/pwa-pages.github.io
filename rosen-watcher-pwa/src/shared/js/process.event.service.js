@@ -40,11 +40,11 @@ class ProcessEventService {
             if (event.type === 'RequestInputsDownload') {
                 console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain');
                 try {
-                    const inputs = await dataService.getSortedInputs();
+                    const addressCharts = await chartService.getAddressCharts(await dataService.getSortedInputs());
                     this.eventSender.sendEvent({
-                        type: 'InputsChanged',
+                        type: 'AddressChartChanged',
                         profile: profile,
-                        data: inputs,
+                        data: addressCharts,
                     });
                     await downloadService.downloadForAddresses(profile);
                     //await dataService.compressInputs();
@@ -72,12 +72,6 @@ class ProcessEventService {
             else if (event.type === 'PerformanceScreenLoaded') {
                 console.log('Rosen service worker received PerformanceScreenLoaded');
                 try {
-                    const addressCharts = await chartService.getAddressCharts(await dataService.getSortedInputs());
-                    this.eventSender.sendEvent({
-                        type: 'AddressChartChanged',
-                        profile: profile,
-                        data: addressCharts,
-                    });
                     console.log('Downloading perftxs.');
                     const perfTxs = await chainPerformanceDataService.getPerfTxs();
                     this.eventSender.sendEvent({
