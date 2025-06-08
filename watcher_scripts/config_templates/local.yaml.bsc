@@ -10,7 +10,7 @@ ergo:
 binance:
   type: rpc
   rpc:
-    url: https://bsc-dataseed3.defibit.io/
+    url: http://192.168.178.227:8545/
   initial:
     height: #BSC_HEIGHT#
 observation:

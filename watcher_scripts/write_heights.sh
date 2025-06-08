@@ -69,7 +69,7 @@ sleep 600
     echo "Fetching Binance Smart Chain (BSC) block height..."
     bsc_block_hex=$(curl -s -X POST -H "Content-Type: application/json" \
         --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-        https://bsc-dataseed3.defibit.io/ | jq -r '.result')
+        http://192.168.178.227:8545/ | jq -r '.result')
 
     if [ -n "$bsc_block_hex" ]; then
         bsc_block_height=$(printf "%d" "$bsc_block_hex")

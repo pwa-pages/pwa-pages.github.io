@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Hardcoded values for block heights and information
-btc_height="895920"
-bsc_height="49350283"
-eth_height="22443848"
-ergo_height="1521010"
-cardano_block_hash="dd36700487537fd6b44e8c1375eaee425064a22b4d31dd47f73b026d5626e9ce"
-cardano_block_height="11840742"
-cardano_absolute_slot="155202308"
+btc_height=""
+bsc_height="51083316"
+eth_height=""
+ergo_height="1542482"
+cardano_block_hash="33beeb09848f23f46b1855e7f328515afe1568d3685bf8f18d6024ea8c877160"
+cardano_block_height="11969232"
+cardano_absolute_slot="157802708"
 
 # Export variables for usage
 export btc_height

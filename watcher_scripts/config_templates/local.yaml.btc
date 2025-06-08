@@ -12,8 +12,8 @@ bitcoin:
   rpc:
     timeout: 100
     url: 'http://host.docker.internal:8332'
-    username: 'youruser'
-    password: 'youruser'
+    username: 'pebblerye'
+    password: 'pebblerye'
   initial:
     height: #BTC_HEIGHT#
 healthCheck:
