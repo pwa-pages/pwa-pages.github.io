@@ -1,0 +1,65 @@
+{
+  "configVersion": 1,
+  "timestamp": 1749975054934,
+  "appData": {
+    "version": "3.43.0"
+  },
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/index.html",
+        "/main-JCP6HOFF.js",
+        "/manifest.webmanifest",
+        "/polyfills-FFHMD2TL.js",
+        "/scripts-BWXHQQGI.js",
+        "/styles-5INURTSO.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/index.html": "57f83e015306a167848c69ff3f4c92a8ddbbb3ed",
+    "/main-JCP6HOFF.js": "c1bc099c1d7032c04df866178cdf2678618c954f",
+    "/manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
+    "/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
+    "/scripts-BWXHQQGI.js": "1b00078656ababf954429de3400ca4e92821d342",
+    "/styles-5INURTSO.css": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
