@@ -1,1 +1,12 @@
-gallery
+<div class="gallery-grid">
+  @for (painting of paintings; track painting) {
+    <div class="painting-card">
+      <img [src]="'assets/thumbnails/images/' + painting.id + '.jpg'" [alt]="painting.title" />
+      <div class="painting-info">
+        <h3>{{ painting.title }}</h3>
+        <p>{{ painting.artist }} ({{ painting.year }})</p>
+        <p>{{ painting.dimensions }}</p>
+      </div>
+    </div>
+  }
+</div>
