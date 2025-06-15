@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "rosen-watcher-pwa": {
+    "paintings": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -65,10 +65,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "rosen-watcher-pwa:build:production"
+              "buildTarget": "paintings:build:production"
             },
             "development": {
-              "buildTarget": "rosen-watcher-pwa:build:development"
+              "buildTarget": "paintings:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n",
           "options": {
-            "buildTarget": "rosen-watcher-pwa:build"
+            "buildTarget": "paintings:build"
           }
         },
         "lint": {

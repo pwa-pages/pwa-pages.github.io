@@ -14,6 +14,9 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
+
+    "@angular-eslint/prefer-inject": "warn",
+
       "@angular-eslint/directive-selector": [
         "error",
         {
