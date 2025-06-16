@@ -4,4 +4,5 @@ export interface Painting {
   artist: string;
   year: number;
   dimensions: string;
+  status: string;
 }

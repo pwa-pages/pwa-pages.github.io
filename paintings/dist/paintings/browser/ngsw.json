@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1750054138073,
+  "timestamp": 1750065584614,
   "appData": {
-    "version": "1.0.1"
+    "version": "1.0.2"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -15,7 +15,7 @@
       },
       "urls": [
         "/index.html",
-        "/main-HZVV5FQE.js",
+        "/main-XCWVMHOV.js",
         "/manifest.webmanifest",
         "/polyfills-B6TNHZQ6.js",
         "/scripts-BWXHQQGI.js",
@@ -31,9 +31,15 @@
         "ignoreVary": true
       },
       "urls": [
-        "/assets/images/50x64_andy_warhol_is_not_dead.jpg",
-        "/assets/images/75x54_oranje_figuur.jpg",
+        "/assets/images/100x120_rol1.jpg",
+        "/assets/images/100x138_rol2.jpg",
+        "/assets/images/50x64_frame1.jpg",
+        "/assets/images/75x54_frame2.jpg",
+        "/assets/thumbnails/images/100x120_rol1.jpg",
+        "/assets/thumbnails/images/100x138_rol2.jpg",
         "/assets/thumbnails/images/50x64_andy_warhol_is_not_dead.jpg",
+        "/assets/thumbnails/images/50x64_frame1.jpg",
+        "/assets/thumbnails/images/75x54_frame2.jpg",
         "/assets/thumbnails/images/75x54_oranje_figuur.jpg"
       ],
       "patterns": []
@@ -41,12 +47,18 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/assets/images/50x64_andy_warhol_is_not_dead.jpg": "bda84f3b0b3e3cccd0e12d4cdde50f129a497582",
-    "/assets/images/75x54_oranje_figuur.jpg": "fc61ecd554c91306fc4eb23e6f3e569e18579678",
+    "/assets/images/100x120_rol1.jpg": "281281aba3d5be3a7fc3e578c3bd5795267e4d7f",
+    "/assets/images/100x138_rol2.jpg": "18c86ed704ffe0deebb453434b995afa50b69ff1",
+    "/assets/images/50x64_frame1.jpg": "bda84f3b0b3e3cccd0e12d4cdde50f129a497582",
+    "/assets/images/75x54_frame2.jpg": "fc61ecd554c91306fc4eb23e6f3e569e18579678",
+    "/assets/thumbnails/images/100x120_rol1.jpg": "1b29f1c46d0aa267f593a6da208662bba613a1c9",
+    "/assets/thumbnails/images/100x138_rol2.jpg": "1176a21f346d4461c211e5e62684ab6ddb06b802",
     "/assets/thumbnails/images/50x64_andy_warhol_is_not_dead.jpg": "bbb8be7c4eb85a6663900ebc8ce5616deb0cb20e",
+    "/assets/thumbnails/images/50x64_frame1.jpg": "bbb8be7c4eb85a6663900ebc8ce5616deb0cb20e",
+    "/assets/thumbnails/images/75x54_frame2.jpg": "1c3296b84349cf012ef1f4ca4f94f67d42b846bd",
     "/assets/thumbnails/images/75x54_oranje_figuur.jpg": "1c3296b84349cf012ef1f4ca4f94f67d42b846bd",
-    "/index.html": "855420ab11ae9097b2c1cbf4eab838870e7c7a29",
-    "/main-HZVV5FQE.js": "70410dac7b0522238025da1d40e8114194e64dc5",
+    "/index.html": "5c7e972bfa1251bdf83b3014bc058cf994129490",
+    "/main-XCWVMHOV.js": "4077e5217d6df26330ff21e6353d4cbb8654b617",
     "/manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "/polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
     "/scripts-BWXHQQGI.js": "1b00078656ababf954429de3400ca4e92821d342",
