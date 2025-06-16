@@ -5,4 +5,5 @@ export interface Painting {
   year: number;
   dimensions: string;
   status: string;
+  type: string;
 }
