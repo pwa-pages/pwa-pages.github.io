@@ -1,25 +1,42 @@
+body {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.gallery-header {
+  text-align: center;
+}
+
 .gallery-grid {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
+  justify-content: center;
   overflow-x: auto;
   gap: 1.5rem;
   padding: 1rem 0;
+  color: #333333;
 }
 
 .painting-card {
   flex: 0 0 auto;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   margin-right: 0.5rem;
   border: 1px solid #dddddd;
-  padding : 0.5rem;
+  padding: 0.5rem;
   width: 220px;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.painting-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
 .painting-card img {
@@ -28,6 +45,11 @@
   object-fit: cover;
   max-height: 180px;
   border-radius: 8px 8px 0 0;
+  transition: transform 0.3s ease;
+}
+
+.painting-card:hover img {
+  transform: scale(1.05);
 }
 
 .painting-info {

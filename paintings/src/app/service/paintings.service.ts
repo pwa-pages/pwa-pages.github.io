@@ -28,7 +28,6 @@ export class PaintingService {
       id: "120x100_rol1",
       title: "No Title",
       artist: "Alexander van den Bosch",
-      year: 0,
       dimensions: "100x120",
       status: "rolled",
       type: "oilpainting",
@@ -47,8 +46,8 @@ export class PaintingService {
       title: "Inferno 4",
       artist: "Alexander van den Bosch",
       year: 1987,
-      dimensions: "100x138",
-      status: "rolled",
+      dimensions: "64x50",
+      status: "framed",
       type: "drawing",
     },
   ];

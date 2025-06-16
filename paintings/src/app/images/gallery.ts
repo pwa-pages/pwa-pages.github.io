@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NgFor } from "@angular/common"; // <-- Import NgFor
+import { NgFor, NgIf } from "@angular/common"; // <-- Import NgFor
 import { PaintingService } from "../service/paintings.service";
 import { Painting } from "../models/painting";
 import { Gallery, GalleryModule, GalleryItem, ImageItem } from "ng-gallery";
@@ -10,7 +10,7 @@ import { Lightbox, LightboxModule } from "ng-gallery/lightbox";
   templateUrl: "./gallery.html",
   standalone: true,
   providers: [PaintingService],
-  imports: [GalleryModule, LightboxModule, NgFor], // <-- Add NgFor to imports
+  imports: [GalleryModule, LightboxModule, NgFor, NgIf], // <-- Add NgFor to imports
 })
 export class GalleryComponent implements OnInit {
   title = "paintings";
@@ -34,12 +34,10 @@ export class GalleryComponent implements OnInit {
         }),
     );
 
-    // Load images into the gallery reference 'paintings'
     this.gallery.ref("paintings").load(this.items);
   }
 
   openLightbox(index: number) {
-    // Open the lightbox for the gallery 'paintings' at the given index
     this.lightbox.open(index, "paintings");
   }
 
