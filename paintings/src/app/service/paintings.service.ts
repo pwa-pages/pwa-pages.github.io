@@ -50,6 +50,15 @@ export class PaintingService {
       status: "framed",
       type: "drawing",
     },
+    {
+      id: "54x74_frame4",
+      title: "No Title",
+      artist: "Alexander van den Bosch",
+      dimensions: "54x74",
+      status: "framed",
+      type: "oilpainting",
+      note: "Damaged glass",
+    },
   ];
 
   getPaintings(): Painting[] {

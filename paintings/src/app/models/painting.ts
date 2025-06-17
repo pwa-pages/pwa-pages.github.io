@@ -6,4 +6,5 @@ export interface Painting {
   dimensions: string;
   status: string;
   type: string;
+  note?: string;
 }
