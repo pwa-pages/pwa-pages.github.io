@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1750177047538,
+  "timestamp": 1750263818680,
   "appData": {
-    "version": "1.0.6"
+    "version": "1.0.7"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -15,7 +15,7 @@
       },
       "urls": [
         "/index.html",
-        "/main-YIGNG4OL.js",
+        "/main-LIIQKXN6.js",
         "/manifest.webmanifest",
         "/polyfills-B6TNHZQ6.js",
         "/scripts-BWXHQQGI.js",
@@ -33,6 +33,7 @@
       "urls": [
         "/assets/images/120x100_rol1.jpg",
         "/assets/images/138x100_rol2.jpg",
+        "/assets/images/47x58_frame5.jpg",
         "/assets/images/54x74_frame4.jpg",
         "/assets/images/64x50_frame1.jpg",
         "/assets/images/64x50_frame3.jpg",
@@ -41,6 +42,7 @@
         "/assets/thumbnails/images/100x138_rol2.jpg",
         "/assets/thumbnails/images/120x100_rol1.jpg",
         "/assets/thumbnails/images/138x100_rol2.jpg",
+        "/assets/thumbnails/images/47x58_frame5.jpg",
         "/assets/thumbnails/images/50x64_andy_warhol_is_not_dead.jpg",
         "/assets/thumbnails/images/50x64_frame1.jpg",
         "/assets/thumbnails/images/54x74_frame4.jpg",
@@ -56,6 +58,7 @@
   "hashTable": {
     "/assets/images/120x100_rol1.jpg": "281281aba3d5be3a7fc3e578c3bd5795267e4d7f",
     "/assets/images/138x100_rol2.jpg": "18c86ed704ffe0deebb453434b995afa50b69ff1",
+    "/assets/images/47x58_frame5.jpg": "f41617665f9f4660909df8bcda9eee99b000f1f1",
     "/assets/images/54x74_frame4.jpg": "d15f90214297f5f408f2d6d7491b7e1c3ef27251",
     "/assets/images/64x50_frame1.jpg": "bda84f3b0b3e3cccd0e12d4cdde50f129a497582",
     "/assets/images/64x50_frame3.jpg": "37bccc0677406a30f38776fedf23cc26a49d3624",
@@ -64,6 +67,7 @@
     "/assets/thumbnails/images/100x138_rol2.jpg": "1176a21f346d4461c211e5e62684ab6ddb06b802",
     "/assets/thumbnails/images/120x100_rol1.jpg": "1b29f1c46d0aa267f593a6da208662bba613a1c9",
     "/assets/thumbnails/images/138x100_rol2.jpg": "1176a21f346d4461c211e5e62684ab6ddb06b802",
+    "/assets/thumbnails/images/47x58_frame5.jpg": "6591ec70bb457b65b0a1677a6cc78a20c2c818aa",
     "/assets/thumbnails/images/50x64_andy_warhol_is_not_dead.jpg": "bbb8be7c4eb85a6663900ebc8ce5616deb0cb20e",
     "/assets/thumbnails/images/50x64_frame1.jpg": "bbb8be7c4eb85a6663900ebc8ce5616deb0cb20e",
     "/assets/thumbnails/images/54x74_frame4.jpg": "2b04ea9cdee41fab07fb3055fadc1d42560343ed",
@@ -71,8 +75,8 @@
     "/assets/thumbnails/images/64x50_frame3.jpg": "2786fed97d3340fcb631cf2c4ccc7d4342b9f80c",
     "/assets/thumbnails/images/75x54_frame2.jpg": "1c3296b84349cf012ef1f4ca4f94f67d42b846bd",
     "/assets/thumbnails/images/75x54_oranje_figuur.jpg": "1c3296b84349cf012ef1f4ca4f94f67d42b846bd",
-    "/index.html": "18eba5ba7328c47e9ca7891978436791fbcdd1aa",
-    "/main-YIGNG4OL.js": "74279e069c3c63484d960ec45b439d63b573618b",
+    "/index.html": "b7c7e1794323070a1b8fa71646db22c4dc500053",
+    "/main-LIIQKXN6.js": "0005cf61467848752b1346da3a03f98a1f83006f",
     "/manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "/polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
     "/scripts-BWXHQQGI.js": "1b00078656ababf954429de3400ca4e92821d342",
