@@ -80,6 +80,15 @@ export class PaintingService {
       status: "framed",
       type: "oilpainting",
     },
+    {
+      id: "121x96_frame8",
+      title: "Zeilbootje bij kalme zee",
+      artist: "Alexander van den Bosch",
+      year: 1978,
+      dimensions: "121x96",
+      status: "framed",
+      type: "oilpainting",
+    },
   ];
 
   getPaintings(): Painting[] {
