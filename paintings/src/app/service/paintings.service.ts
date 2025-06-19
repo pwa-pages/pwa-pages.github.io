@@ -90,7 +90,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "121x100_frame8",
+      id: "121x100_frame9",
       title: "De speelgoedhoek",
       artist: "Alexander van den Bosch",
       year: 1984,

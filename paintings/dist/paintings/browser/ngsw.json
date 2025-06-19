@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1750356161489,
+  "timestamp": 1750356267718,
   "appData": {
-    "version": "1.1.1"
+    "version": "1.1.2"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -15,7 +15,7 @@
       },
       "urls": [
         "/index.html",
-        "/main-KIA7XZET.js",
+        "/main-5ARP3WMW.js",
         "/manifest.webmanifest",
         "/polyfills-B6TNHZQ6.js",
         "/scripts-BWXHQQGI.js",
@@ -91,8 +91,8 @@
     "/assets/thumbnails/images/75x54_frame2.jpg": "8acca6f453b34b6dfc2658feed059237d77c864e",
     "/assets/thumbnails/images/75x54_oranje_figuur.jpg": "1c3296b84349cf012ef1f4ca4f94f67d42b846bd",
     "/assets/thumbnails/images/75x56_frame6.jpg": "8fc5504583e7a36d28b69cd1c094c4f1e9b82e7b",
-    "/index.html": "33aab20eb50bc2e1e5d0b4078dcca7c5e589c285",
-    "/main-KIA7XZET.js": "4299dd9bd54f37e49330b7fdcf75e8f50bc01cb8",
+    "/index.html": "e6b013e0a97082979182747cdba298c335ed43ff",
+    "/main-5ARP3WMW.js": "5d869583120f95bb0044ed5d3ac87cc086597474",
     "/manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "/polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
     "/scripts-BWXHQQGI.js": "1b00078656ababf954429de3400ca4e92821d342",
