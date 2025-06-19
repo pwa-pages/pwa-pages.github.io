@@ -89,6 +89,15 @@ export class PaintingService {
       status: "framed",
       type: "oilpainting",
     },
+    {
+      id: "121x100_frame8",
+      title: "De speelgoedhoek",
+      artist: "Alexander van den Bosch",
+      year: 1984,
+      dimensions: "121x100",
+      status: "framed",
+      type: "oilpainting",
+    },
   ];
 
   getPaintings(): Painting[] {

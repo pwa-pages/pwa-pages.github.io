@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1750330232520,
+  "timestamp": 1750356161489,
   "appData": {
-    "version": "1.1.0"
+    "version": "1.1.1"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -15,7 +15,7 @@
       },
       "urls": [
         "/index.html",
-        "/main-BIULH3DC.js",
+        "/main-KIA7XZET.js",
         "/manifest.webmanifest",
         "/polyfills-B6TNHZQ6.js",
         "/scripts-BWXHQQGI.js",
@@ -32,6 +32,7 @@
       },
       "urls": [
         "/assets/images/120x100_rol1.jpg",
+        "/assets/images/121x100_frame9.jpg",
         "/assets/images/121x96_frame8.jpg",
         "/assets/images/138x100_rol2.jpg",
         "/assets/images/47x58_frame5.jpg",
@@ -44,6 +45,7 @@
         "/assets/thumbnails/images/100x120_rol1.jpg",
         "/assets/thumbnails/images/100x138_rol2.jpg",
         "/assets/thumbnails/images/120x100_rol1.jpg",
+        "/assets/thumbnails/images/121x100_frame9.jpg",
         "/assets/thumbnails/images/121x96_frame8.jpg",
         "/assets/thumbnails/images/138x100_rol2.jpg",
         "/assets/thumbnails/images/47x58_frame5.jpg",
@@ -63,6 +65,7 @@
   "dataGroups": [],
   "hashTable": {
     "/assets/images/120x100_rol1.jpg": "2f0f0f6b563af756a53ea36d4e87a9ed94424b5c",
+    "/assets/images/121x100_frame9.jpg": "8d33c77d8022982f71b870a8bf10f55516a90046",
     "/assets/images/121x96_frame8.jpg": "2598e7b49381b22ba8e0f135241ea50babe5590c",
     "/assets/images/138x100_rol2.jpg": "fd5e227d9b87bd39688cccd21c02e7fea822851e",
     "/assets/images/47x58_frame5.jpg": "a3b7fc81933c4ced697b324b8d64bfaa9b1a640a",
@@ -75,6 +78,7 @@
     "/assets/thumbnails/images/100x120_rol1.jpg": "1b29f1c46d0aa267f593a6da208662bba613a1c9",
     "/assets/thumbnails/images/100x138_rol2.jpg": "1176a21f346d4461c211e5e62684ab6ddb06b802",
     "/assets/thumbnails/images/120x100_rol1.jpg": "b9d19119ffc6b51b7e1a2c39746a15a0957c9eb3",
+    "/assets/thumbnails/images/121x100_frame9.jpg": "7e2b7867a5dab9ee53a8501e73dff9945cfc8117",
     "/assets/thumbnails/images/121x96_frame8.jpg": "0e8bbef103089e8effda407fefd40abe8fce31f1",
     "/assets/thumbnails/images/138x100_rol2.jpg": "0034fe230bf4e966d3705b1d6cc18b847488e6aa",
     "/assets/thumbnails/images/47x58_frame5.jpg": "869d00377586cd2704d58761af208a8097c39c53",
@@ -87,8 +91,8 @@
     "/assets/thumbnails/images/75x54_frame2.jpg": "8acca6f453b34b6dfc2658feed059237d77c864e",
     "/assets/thumbnails/images/75x54_oranje_figuur.jpg": "1c3296b84349cf012ef1f4ca4f94f67d42b846bd",
     "/assets/thumbnails/images/75x56_frame6.jpg": "8fc5504583e7a36d28b69cd1c094c4f1e9b82e7b",
-    "/index.html": "a44d79a3c3a6d5f831c61abc53302444eaa20dd3",
-    "/main-BIULH3DC.js": "415b04cad899092814e721f329012333ff982483",
+    "/index.html": "33aab20eb50bc2e1e5d0b4078dcca7c5e589c285",
+    "/main-KIA7XZET.js": "4299dd9bd54f37e49330b7fdcf75e8f50bc01cb8",
     "/manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "/polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
     "/scripts-BWXHQQGI.js": "1b00078656ababf954429de3400ca4e92821d342",
