@@ -1,6 +1,6 @@
 export interface Painting {
   id: string;
-  title: string;
+  title?: string;
   artist: string;
   year?: number;
   dimensions: string;

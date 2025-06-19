@@ -26,7 +26,6 @@ export class PaintingService {
     },
     {
       id: "120x100_rol1",
-      title: "No Title",
       artist: "Alexander van den Bosch",
       dimensions: "100x120",
       status: "rolled",
@@ -34,7 +33,6 @@ export class PaintingService {
     },
     {
       id: "138x100_rol2",
-      title: "No Title",
       artist: "Alexander van den Bosch",
       year: 1979,
       dimensions: "100x138",
@@ -52,7 +50,6 @@ export class PaintingService {
     },
     {
       id: "54x74_frame4",
-      title: "No Title",
       artist: "Alexander van den Bosch",
       dimensions: "54x74",
       status: "framed",
@@ -61,12 +58,27 @@ export class PaintingService {
     },
     {
       id: "47x58_frame5",
-      title: "No Title",
       artist: "Alexander van den Bosch",
+      year: 1988,
       dimensions: "47x58",
       status: "framed",
       type: "drawing",
       note: "Damaged glass",
+    },
+    {
+      id: "75x56_frame6",
+      artist: "Alexander van den Bosch",
+      year: 1977,
+      dimensions: "75x56",
+      status: "framed",
+      type: "oilpainting",
+    },
+    {
+      id: "70x85_frame7",
+      artist: "Alexander van den Bosch",
+      dimensions: "70x85",
+      status: "framed",
+      type: "oilpainting",
     },
   ];
 
