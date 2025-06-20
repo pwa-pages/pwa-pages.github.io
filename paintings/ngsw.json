@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1750426580650,
+  "timestamp": 1750426911705,
   "appData": {
-    "version": "1.1.4"
+    "version": "1.1.5"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -66,7 +66,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/assets/images/100x120_frame10.jpg": "bb0014c4af975007759333ea3681d0ec61f08070",
+    "/assets/images/100x120_frame10.jpg": "d95ad06039d9ab73b25d56e581145c6c7c1e1274",
     "/assets/images/120x100_rol1.jpg": "2f0f0f6b563af756a53ea36d4e87a9ed94424b5c",
     "/assets/images/121x100_frame9.jpg": "a3217584124b28aa94f63676981b2f2cd7cef5dd",
     "/assets/images/121x96_frame8.jpg": "2598e7b49381b22ba8e0f135241ea50babe5590c",
@@ -78,7 +78,7 @@
     "/assets/images/70x85_frame7.jpg": "7f351000018355803bdb66fdd51a0bfb2e201f3e",
     "/assets/images/75x54_frame2.jpg": "c5d087b4176021ea0bbbbfb0845ed615ef399e13",
     "/assets/images/75x56_frame6.jpg": "c5a1fdd715c9938acb91a25c31d4939aa426b4c6",
-    "/assets/thumbnails/images/100x120_frame10.jpg": "c9ae4bf6c1621a875fd2f9b485ae2db7d0d2d752",
+    "/assets/thumbnails/images/100x120_frame10.jpg": "d56abf4c9cf774a4543eec2c1c7ec15d30e84a31",
     "/assets/thumbnails/images/100x120_rol1.jpg": "1b29f1c46d0aa267f593a6da208662bba613a1c9",
     "/assets/thumbnails/images/100x138_rol2.jpg": "1176a21f346d4461c211e5e62684ab6ddb06b802",
     "/assets/thumbnails/images/120x100_rol1.jpg": "b9d19119ffc6b51b7e1a2c39746a15a0957c9eb3",
