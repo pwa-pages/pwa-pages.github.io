@@ -98,6 +98,15 @@ export class PaintingService {
       status: "framed",
       type: "oilpainting",
     },
+    {
+      id: "100x120_frame10",
+      title: "IJshockiers",
+      artist: "Alexander van den Bosch",
+      year: 1984,
+      dimensions: "100x120",
+      status: "framed",
+      type: "oilpainting",
+    },
   ];
 
   getPaintings(): Painting[] {
