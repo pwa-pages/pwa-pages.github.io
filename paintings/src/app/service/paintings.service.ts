@@ -107,6 +107,22 @@ export class PaintingService {
       status: "framed",
       type: "oilpainting",
     },
+    {
+      id: "100x140_frame11",
+      artist: "Alexander van den Bosch",
+      year: 1980,
+      dimensions: "100x140",
+      status: "framed",
+      type: "oilpainting",
+    },
+    {
+      id: "100x140_frame12",
+      artist: "Alexander van den Bosch",
+      year: 1980,
+      dimensions: "100x140",
+      status: "framed",
+      type: "oilpainting",
+    },
   ];
 
   getPaintings(): Painting[] {
