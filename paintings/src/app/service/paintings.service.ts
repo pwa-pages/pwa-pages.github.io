@@ -148,7 +148,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "102x120_rol6.jpg",
+      id: "102x120_rol6",
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "102x120",
