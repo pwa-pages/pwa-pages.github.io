@@ -1,4 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { NgFor, NgIf } from "@angular/common"; // <-- Import NgFor
 import { PaintingService } from "../service/paintings.service";
 import { Painting } from "../models/painting";
@@ -35,6 +41,14 @@ export class GalleryComponent implements OnInit {
     );
 
     this.gallery.ref("paintings").load(this.items);
+  }
+
+  @ViewChild("bg", { static: true }) bg!: ElementRef<HTMLDivElement>;
+
+  @HostListener("window:scroll", [])
+  onWindowScroll() {
+    const offset = window.scrollY;
+    this.bg.nativeElement.style.top = `${offset * 0.3 - 5000}px`;
   }
 
   openLightbox(index: number) {
