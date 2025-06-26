@@ -263,6 +263,30 @@ export class PaintingService {
       status: "rolled",
       type: "oilpainting",
     },
+    {
+      id: "137x110_rol21",
+      artist: "Alexander van den Bosch",
+      year: 1964,
+      dimensions: "137x110",
+      status: "rolled",
+      type: "oilpainting",
+    },
+    {
+      id: "112x112_rol22",
+      artist: "Alexander van den Bosch",
+      year: 1973,
+      dimensions: "112x112",
+      status: "rolled",
+      type: "oilpainting",
+    },
+    {
+      id: "120x103_rol23",
+      artist: "Alexander van den Bosch",
+      year: 1976,
+      dimensions: "120x103",
+      status: "rolled",
+      type: "oilpainting",
+    },
   ];
 
   getPaintings(): Painting[] {
