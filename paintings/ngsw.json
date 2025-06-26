@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1750963663444,
+  "timestamp": 1750964032769,
   "appData": {
-    "version": "1.3.7"
+    "version": "1.3.8"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -194,7 +194,7 @@
     "/assets/thumbnails/images/75x56_frame6.jpg": "8fc5504583e7a36d28b69cd1c094c4f1e9b82e7b",
     "/index.html": "0b3b1eb852b4ff43c67bf9bf74fe0ea4ed7ede06",
     "/main-5GWXRYMH.js": "da7b78e0f5bc2706dae23fdeaa9939bd37912b52",
-    "/manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
+    "/manifest.webmanifest": "94b9a7ccf4e17475eda0e98be5580497b4f47b15",
     "/media/100x140_frame12-SO3DPRY2.jpg": "9f2f8ecaca8cf457d904fa12ca17444080abb215",
     "/polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
     "/scripts-BWXHQQGI.js": "1b00078656ababf954429de3400ca4e92821d342",
