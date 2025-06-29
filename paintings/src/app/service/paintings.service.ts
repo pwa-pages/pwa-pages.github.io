@@ -311,6 +311,14 @@ export class PaintingService {
       status: "rolled",
       type: "oilpainting",
     },
+    {
+      id: "118x101_rol27",
+      artist: "Alexander van den Bosch",
+      year: 1979,
+      dimensions: "118x101",
+      status: "rolled",
+      type: "oilpainting",
+    },
   ];
 
   getPaintings(): Painting[] {
