@@ -319,6 +319,46 @@ export class PaintingService {
       status: "rolled",
       type: "oilpainting",
     },
+    {
+      id: "32x43_frame14",
+      artist: "Alexander van den Bosch",
+      year: 1981,
+      dimensions: "32x43",
+      status: "framed",
+      type: "etching",
+    },
+    {
+      id: "32x43_frame15",
+      artist: "Alexander van den Bosch",
+      year: 1977,
+      dimensions: "32x43",
+      status: "framed",
+      type: "etching",
+    },
+    {
+      id: "32x43_frame16",
+      artist: "Alexander van den Bosch",
+      year: 1976,
+      dimensions: "32x43",
+      status: "framed",
+      type: "etching",
+    },
+    {
+      id: "60x51_rol29",
+      artist: "Alexander van den Bosch",
+      year: 1975,
+      dimensions: "60x51",
+      status: "rolled",
+      type: "oilpainting",
+    },
+    {
+      id: "110x70_rol30 ",
+      artist: "Alexander van den Bosch",
+      year: 1976,
+      dimensions: "110x70",
+      status: "rolled",
+      type: "oilpainting",
+    },
   ];
 
   getPaintings(): Painting[] {
