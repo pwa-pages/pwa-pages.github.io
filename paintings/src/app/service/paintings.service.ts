@@ -360,14 +360,6 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "frame16",
-      artist: "Alexander van den Bosch",
-      year: 1976,
-      dimensions: "32x43",
-      status: "framed",
-      type: "etching",
-    },
-    {
       id: "frame17",
       artist: "Alexander van den Bosch",
       year: 1977,
