@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1751483789810,
+  "timestamp": 1751484506910,
   "appData": {
-    "version": "1.5.5"
+    "version": "1.5.6"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -15,7 +15,7 @@
       },
       "urls": [
         "/index.html",
-        "/main-2XBVXN2S.js",
+        "/main-ZJDQIOYQ.js",
         "/manifest.webmanifest",
         "/polyfills-B6TNHZQ6.js",
         "/scripts-BWXHQQGI.js",
@@ -496,8 +496,8 @@
     "/assets/thumbnails/images/rol8_bg.jpg": "7b0b29e6f6f0fc21878373ce218fb421d66b5cdc",
     "/assets/thumbnails/images/rol9.jpg": "8523e67cd9c8830fae801e8fe9c7d231327c444f",
     "/assets/thumbnails/images/rol9_bg.jpg": "404ab1852b61bbb3e68fac9b5d33301012aa952b",
-    "/index.html": "828eb86294ca4cb0f98b6f7edce8720da21fb8ba",
-    "/main-2XBVXN2S.js": "d85dbffc98ea1f028b1490e9fa34a15aa26753bd",
+    "/index.html": "459b783eec6651283f47a6016e9bb2a2a2cdd4c4",
+    "/main-ZJDQIOYQ.js": "587eb2e3ea9c8dd5c7134db746bd9787dd83d21c",
     "/manifest.webmanifest": "94b9a7ccf4e17475eda0e98be5580497b4f47b15",
     "/media/frame12-SO3DPRY2.jpg": "9f2f8ecaca8cf457d904fa12ca17444080abb215",
     "/polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
