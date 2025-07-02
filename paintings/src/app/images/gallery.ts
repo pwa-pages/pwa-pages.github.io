@@ -42,6 +42,11 @@ export class GalleryComponent implements OnInit {
 
     this.gallery.ref("paintings").load(this.items);
 
+    const randomIndex = Math.floor(Math.random() * this.paintings.length);
+    const randomPainting = this.paintings[randomIndex];
+    if (this.bg && randomPainting) {
+      this.bg.nativeElement.style.backgroundImage = `url('assets/images/${randomPainting.id}.jpg')`;
+    }
     this.onWindowScroll();
   }
 
@@ -50,7 +55,7 @@ export class GalleryComponent implements OnInit {
   @HostListener("window:scroll", [])
   onWindowScroll() {
     const offset = window.scrollY;
-    this.bg.nativeElement.style.top = `${offset * 0.3 - 10000}px`;
+    this.bg.nativeElement.style.top = `${offset * 0.3 - 9300}px`;
   }
 
   openLightbox(index: number) {

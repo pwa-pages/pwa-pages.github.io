@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1751476249117,
+  "timestamp": 1751481194460,
   "appData": {
-    "version": "1.5.1"
+    "version": "1.5.2"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -15,7 +15,7 @@
       },
       "urls": [
         "/index.html",
-        "/main-OUA6TEBO.js",
+        "/main-FF2XO3MM.js",
         "/manifest.webmanifest",
         "/polyfills-B6TNHZQ6.js",
         "/scripts-BWXHQQGI.js",
@@ -376,8 +376,8 @@
     "/assets/thumbnails/images/rol7.jpg": "f8262e914eed67fff7ec298d99ccf3261146d400",
     "/assets/thumbnails/images/rol8.jpg": "de48eafcb7f9e4061bdadddfa503f6b2281ab1af",
     "/assets/thumbnails/images/rol9.jpg": "8523e67cd9c8830fae801e8fe9c7d231327c444f",
-    "/index.html": "a3c8009f29c08a32494cf400d58c1d199c837c96",
-    "/main-OUA6TEBO.js": "372a2f7af28fe9dd823efe1b201fa3bd91ff8560",
+    "/index.html": "7da5cd14c88d3c437ae060034e81bf0c01513e13",
+    "/main-FF2XO3MM.js": "d7b986cb19efed309682c9b54d7ca60f4cbfdfa1",
     "/manifest.webmanifest": "94b9a7ccf4e17475eda0e98be5580497b4f47b15",
     "/media/frame12-SO3DPRY2.jpg": "9f2f8ecaca8cf457d904fa12ca17444080abb215",
     "/polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
