@@ -73,9 +73,9 @@ body {
   width: 100%;
   height: 11000px;
   background-image: url('assets/images/frame12.jpg');
-  
-  background-repeat: repeat-y;
+  background-repeat: repeat-both;
   background-position: center;
+  background-size: 200%;
   pointer-events: none;
   z-index: -1;
   transform: translateY(0);

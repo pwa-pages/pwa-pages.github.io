@@ -45,7 +45,7 @@ export class GalleryComponent implements OnInit {
     const randomIndex = Math.floor(Math.random() * this.paintings.length);
     const randomPainting = this.paintings[randomIndex];
     if (this.bg && randomPainting) {
-      this.bg.nativeElement.style.backgroundImage = `url('assets/images/${randomPainting.id}.jpg')`;
+      this.bg.nativeElement.style.backgroundImage = `url('assets/thumbnails/images/${randomPainting.id}_bg.jpg')`;
     }
     this.onWindowScroll();
   }
@@ -55,7 +55,7 @@ export class GalleryComponent implements OnInit {
   @HostListener("window:scroll", [])
   onWindowScroll() {
     const offset = window.scrollY;
-    this.bg.nativeElement.style.top = `${offset * 0.3 - 9300}px`;
+    this.bg.nativeElement.style.top = `${offset * 0.3 - 10000}px`;
   }
 
   openLightbox(index: number) {
