@@ -41,6 +41,8 @@ export class GalleryComponent implements OnInit {
     );
 
     this.gallery.ref("paintings").load(this.items);
+
+    this.onWindowScroll();
   }
 
   @ViewChild("bg", { static: true }) bg!: ElementRef<HTMLDivElement>;
