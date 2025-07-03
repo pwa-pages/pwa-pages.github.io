@@ -364,7 +364,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "75x54",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -372,7 +372,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "75x54",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -380,7 +380,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "75x54",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -388,7 +388,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "75x54",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -396,7 +396,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "75x54",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -404,7 +404,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "75x54",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -413,7 +413,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "75x50",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -422,7 +422,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "63x47",
-      status: "framed",
+      status: "passepartout",
       type: "gouache",
     },
     {
@@ -439,7 +439,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "76x50",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -457,7 +457,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "76x50",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -466,7 +466,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "76x50",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -475,7 +475,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "76x50",
-      status: "framed",
+      status: "passepartout",
       type: "oilpainting",
     },
     {
@@ -484,7 +484,7 @@ export class PaintingService {
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "47x63",
-      status: "framed",
+      status: "passepartout",
       type: "gouache",
     },
     {
