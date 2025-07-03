@@ -776,6 +776,46 @@ export class PaintingService {
       status: "loose",
       type: "oilpainting",
     },
+    {
+      id: "frame67",
+      artist: "Alexander van den Bosch",
+      year: 1978,
+      dimensions: "78x51",
+      status: "loose",
+      type: "oilpainting",
+    },
+    {
+      id: "frame68",
+      artist: "Alexander van den Bosch",
+      year: 1978,
+      dimensions: "78x58",
+      status: "loose",
+      type: "oilpainting",
+    },
+    {
+      id: "rol31",
+      artist: "Alexander van den Bosch",
+      year: 1975,
+      dimensions: "137x100",
+      status: "rolled",
+      type: "oilpainting",
+    },
+    {
+      id: "rol32",
+      artist: "Alexander van den Bosch",
+      year: 1978,
+      dimensions: "120x101",
+      status: "rolled",
+      type: "oilpainting",
+    },
+    {
+      id: "rol33",
+      artist: "Alexander van den Bosch",
+      year: 1975,
+      dimensions: "51x57",
+      status: "rolled",
+      type: "oilpainting",
+    },
   ];
 
   getPaintings(): Painting[] {
