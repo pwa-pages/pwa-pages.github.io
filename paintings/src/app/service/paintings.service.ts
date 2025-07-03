@@ -691,7 +691,7 @@ export class PaintingService {
     {
       id: "frame56",
       artist: "Alexander van den Bosch",
-      year: 1987,
+      year: 1977,
       dimensions: "78x56",
       status: "loose",
       type: "oilpainting",

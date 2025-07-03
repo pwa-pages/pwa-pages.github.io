@@ -28,8 +28,8 @@ function processImage(filePath, outputDir) {
   const createBg = sharp(filePath)
     .metadata()
     .then(metadata => {
-      const cropWidth = Math.floor(metadata.width * 0.5);
-      const cropHeight = Math.floor(metadata.height * 0.5);
+      const cropWidth = Math.floor(metadata.width * 0.9);
+      const cropHeight = Math.floor(metadata.height * 0.9);
       const left = Math.floor((metadata.width - cropWidth) / 2);
       const top = Math.floor((metadata.height - cropHeight) / 2);
 
