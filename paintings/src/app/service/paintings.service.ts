@@ -633,6 +633,7 @@ export class PaintingService {
     {
       id: "frame49",
       artist: "Alexander van den Bosch",
+      title: "Andy Warhol is not dead",
       year: 1988,
       dimensions: "66x51",
       status: "loose",
@@ -640,7 +641,6 @@ export class PaintingService {
     },
     {
       id: "frame50",
-      title: "Andy Warhol is not dead",
       artist: "Alexander van den Bosch",
       year: 1988,
       dimensions: "66x51",
