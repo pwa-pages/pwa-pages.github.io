@@ -365,6 +365,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "75x54",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -373,6 +374,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "75x54",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -381,6 +383,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "75x54",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -389,6 +392,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "75x54",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -397,6 +401,7 @@ export class PaintingService {
       year: 1980,
       dimensions: "75x54",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -405,6 +410,7 @@ export class PaintingService {
       year: 1978,
       dimensions: "75x54",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -414,6 +420,7 @@ export class PaintingService {
       year: 1978,
       dimensions: "75x50",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -423,6 +430,7 @@ export class PaintingService {
       year: 1976,
       dimensions: "63x47",
       status: "passepartout",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -431,6 +439,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "91x63",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -440,6 +449,7 @@ export class PaintingService {
       year: 1978,
       dimensions: "76x50",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -449,6 +459,7 @@ export class PaintingService {
       year: 1978,
       dimensions: "76x50",
       status: "framed",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -458,6 +469,7 @@ export class PaintingService {
       year: 1978,
       dimensions: "76x50",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -467,6 +479,7 @@ export class PaintingService {
       year: 1978,
       dimensions: "76x50",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -476,6 +489,7 @@ export class PaintingService {
       year: 1978,
       dimensions: "76x50",
       status: "passepartout",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -485,6 +499,7 @@ export class PaintingService {
       year: 1976,
       dimensions: "47x63",
       status: "passepartout",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -494,6 +509,7 @@ export class PaintingService {
       year: 1976,
       dimensions: "64x47",
       status: "framed",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -503,6 +519,7 @@ export class PaintingService {
       year: 1976,
       dimensions: "64x47",
       status: "framed",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -512,6 +529,7 @@ export class PaintingService {
       year: 1976,
       dimensions: "64x47",
       status: "framed",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -521,6 +539,7 @@ export class PaintingService {
       year: 1976,
       dimensions: "63x47",
       status: "framed",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -530,6 +549,7 @@ export class PaintingService {
       year: 1975,
       dimensions: "56x39",
       status: "framed",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -539,6 +559,7 @@ export class PaintingService {
       year: 1976,
       dimensions: "63x47",
       status: "framed",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -547,6 +568,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "76x56",
       status: "loose",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -555,6 +577,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "56x76",
       status: "loose",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -563,6 +586,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "56x76",
       status: "loose",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -571,6 +595,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "56x76",
       status: "loose",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -579,6 +604,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "56x76",
       status: "loose",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -587,6 +613,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "56x76",
       status: "loose",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -595,6 +622,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "56x76",
       status: "loose",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -603,6 +631,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "76x56",
       status: "loose",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -611,6 +640,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "56x76",
       status: "loose",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -619,6 +649,7 @@ export class PaintingService {
       year: 1981,
       dimensions: "76x56",
       status: "loose",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -628,6 +659,7 @@ export class PaintingService {
       year: 1964,
       dimensions: "49x34",
       status: "passepartout",
+      stored: "box",
       type: "gouache",
     },
     {
@@ -637,6 +669,7 @@ export class PaintingService {
       year: 1988,
       dimensions: "66x51",
       status: "loose",
+      stored: "box",
       type: "drawing",
     },
     {
@@ -645,6 +678,7 @@ export class PaintingService {
       year: 1988,
       dimensions: "66x51",
       status: "loose",
+      stored: "box",
       type: "drawing",
     },
     {
@@ -654,6 +688,7 @@ export class PaintingService {
       year: 1988,
       dimensions: "66x51",
       status: "loose",
+      stored: "box",
       type: "drawing",
     },
     {
@@ -662,6 +697,7 @@ export class PaintingService {
       year: 1987,
       dimensions: "66x51",
       status: "loose",
+      stored: "box",
       type: "drawing",
     },
     {
@@ -670,6 +706,7 @@ export class PaintingService {
       year: 1987,
       dimensions: "66x51",
       status: "loose",
+      stored: "box",
       type: "drawing",
     },
     {
@@ -678,6 +715,7 @@ export class PaintingService {
       year: 1987,
       dimensions: "66x51",
       status: "loose",
+      stored: "box",
       type: "drawing",
     },
     {
@@ -686,6 +724,7 @@ export class PaintingService {
       year: 1987,
       dimensions: "66x51",
       status: "loose",
+      stored: "box",
       type: "drawing",
     },
     {
@@ -694,6 +733,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -702,6 +742,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -710,6 +751,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -718,6 +760,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -726,6 +769,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -734,6 +778,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -742,6 +787,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -750,6 +796,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -758,6 +805,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -766,6 +814,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -774,6 +823,7 @@ export class PaintingService {
       year: 1977,
       dimensions: "78x56",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -782,6 +832,7 @@ export class PaintingService {
       year: 1978,
       dimensions: "78x51",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -790,6 +841,7 @@ export class PaintingService {
       year: 1978,
       dimensions: "78x58",
       status: "loose",
+      stored: "box",
       type: "oilpainting",
     },
     {
@@ -815,6 +867,113 @@ export class PaintingService {
       dimensions: "51x57",
       status: "rolled",
       type: "oilpainting",
+    },
+    {
+      id: "rol34",
+      artist: "Alexander van den Bosch",
+      year: 1973,
+      dimensions: "48x65",
+      status: "loose",
+      stored: "box",
+      type: "gouache",
+    },
+    {
+      id: "rol35",
+      artist: "Alexander van den Bosch",
+      year: 1973,
+      dimensions: "65x48",
+      status: "loose",
+      stored: "box",
+      type: "gouache",
+    },
+    {
+      id: "rol36",
+      artist: "Alexander van den Bosch",
+      year: 1975,
+      dimensions: "75x55",
+      status: "loose",
+      stored: "box",
+      type: "gouache",
+    },
+    {
+      id: "rol37",
+      artist: "Alexander van den Bosch",
+      dimensions: "49x75",
+      status: "loose",
+      stored: "box",
+      type: "gouache",
+    },
+    {
+      id: "rol38",
+      artist: "Alexander van den Bosch",
+      dimensions: "48x65",
+      status: "loose",
+      stored: "box",
+      type: "gouache",
+    },
+    {
+      id: "rol39",
+      artist: "Alexander van den Bosch",
+      year: 1974,
+      dimensions: "68x55",
+      status: "loose",
+      stored: "box",
+      type: "gouache",
+    },
+    {
+      id: "rol40",
+      artist: "Alexander van den Bosch",
+      year: 1973,
+      dimensions: "33x23",
+      status: "loose",
+      stored: "box",
+      type: "screenprint",
+    },
+    {
+      id: "rol41",
+      artist: "Alexander van den Bosch",
+      year: 1975,
+      dimensions: "75x55",
+      status: "loose",
+      stored: "box",
+      type: "goauche",
+    },
+    {
+      id: "rol42",
+      artist: "Alexander van den Bosch",
+      year: 1975,
+      dimensions: "75x55",
+      status: "loose",
+      stored: "box",
+      type: "goauche",
+    },
+    {
+      id: "rol43",
+      artist: "Alexander van den Bosch",
+      year: 1971,
+      dimensions: "75x55",
+      status: "loose",
+      stored: "box",
+      type: "goauche",
+    },
+    {
+      id: "rol44",
+      artist: "Alexander van den Bosch",
+      title: "Zonder titel",
+      year: 1974,
+      dimensions: "75x53",
+      status: "loose",
+      stored: "box",
+      type: "goauche",
+    },
+    {
+      id: "rol45",
+      artist: "Alexander van den Bosch",
+      year: 1974,
+      dimensions: "75x49",
+      status: "loose",
+      stored: "box",
+      type: "goauche",
     },
   ];
 
