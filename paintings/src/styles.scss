@@ -79,6 +79,6 @@ body {
   background-size: 200%;
   pointer-events: none;
   z-index: -1;
-  transform: translateY(0);
+  
   will-change: transform;
 }
