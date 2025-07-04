@@ -23,6 +23,7 @@ delete_old_files "*worker*.js"
 delete_old_files "styles-*.css"
 
 # Remove other directories and files
+rm -rf assets
 rm -rf shared
 sudo rm -rf node_modules
 sudo rm -rf .angular
