@@ -30,13 +30,19 @@ export class GalleryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.paintings = this.paintingService.getPaintings();
+    this.paintings = this.paintingService.getPaintings().sort((a, b) => {
+      if (a.year == null && b.year == null) return 0;
+      if (a.year == null) return 1;
+      if (b.year == null) return -1;
+      return a.year - b.year;
+    });
 
     this.items = this.paintings.map(
       (painting) =>
         new ImageItem({
           src: `assets/gen/images/${painting.id}_r.jpg`, // full size image path
           thumb: `assets/gen/images/${painting.id}.jpg`, // thumbnail path
+          alt: `${painting.artist} - ${painting.year} - ${painting.dimensions}`,
         }),
     );
 

@@ -1,1 +1,0 @@
-typeof importScripts=="function"&&(self.addEventListener("install",e=>{console.log("[Service Worker] Installing new version...calling skipWaiting()"),self.skipWaiting(),console.log("[Service Worker] Installing new version...done skipWaiting()")}),self.addEventListener("activate",e=>{console.log("[Service Worker] Activated new version!")}));

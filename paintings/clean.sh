@@ -24,6 +24,7 @@ delete_old_files "styles-*.css"
 
 # Remove other directories and files
 rm -rf assets
+rm -rf dist
 rm -rf shared
 rm -rf src/assets/gen/*
 sudo rm -rf node_modules
