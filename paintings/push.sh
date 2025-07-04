@@ -1,5 +1,5 @@
-./build.sh
 ./clean.sh
+./build.sh
 cp -R dist/paintings/browser/* .
 git add .
 git commit -m "Automated commit $(date)"
