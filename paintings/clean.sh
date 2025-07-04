@@ -25,6 +25,7 @@ delete_old_files "styles-*.css"
 # Remove other directories and files
 rm -rf assets
 rm -rf shared
+rm -rf src/assets/gen/*
 sudo rm -rf node_modules
 sudo rm -rf .angular
 sudo rm -rf out-tsc

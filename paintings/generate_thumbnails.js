@@ -3,7 +3,7 @@ const path = require('path');
 const sharp = require('sharp');
 
 const imagesDir = path.join(__dirname, 'src/assets');
-const thumbnailDir = path.join(imagesDir, 'thumbnails');
+const thumbnailDir = path.join(imagesDir, 'gen');
 const thumbnailWidth = 200;
 
 function isImage(file) {
@@ -14,8 +14,10 @@ function processImage(filePath, outputDir) {
   const filename = path.basename(filePath);
   const name = path.parse(filename).name;
   const ext = path.extname(filename);
+
   const outputPath = path.join(outputDir, filename);
   const bgOutputPath = path.join(outputDir, `${name}_bg${ext}`);
+  const resizedOutputPath = path.join(outputDir, `${name}_r${ext}`);
 
   // Create resized thumbnail
   const createThumbnail = sharp(filePath)
@@ -24,7 +26,7 @@ function processImage(filePath, outputDir) {
     .then(() => console.log(`✔ Thumbnail created: ${outputPath}`))
     .catch(err => console.error(`✖ Failed to create thumbnail: ${filePath}`, err));
 
-  // Create center-cropped "_bg" version (50% crop), then resize height to 1000px
+  // Create center-cropped "_bg" version
   const createBg = sharp(filePath)
     .metadata()
     .then(metadata => {
@@ -35,13 +37,30 @@ function processImage(filePath, outputDir) {
 
       return sharp(filePath)
         .extract({ width: cropWidth, height: cropHeight, left, top })
-        .resize({ height: 1000 }) // scale height to 1000, width auto to preserve aspect ratio
+        .resize({ height: 1000 })
         .toFile(bgOutputPath);
     })
     .then(() => console.log(`✔ Cropped and resized _bg image created: ${bgOutputPath}`))
     .catch(err => console.error(`✖ Failed to create _bg image: ${filePath}`, err));
 
-  return Promise.all([createThumbnail, createBg]);
+  // Create resized image with max dimension = 1000px
+  const createResized = sharp(filePath)
+    .metadata()
+    .then(metadata => {
+      const maxDim = Math.max(metadata.width, metadata.height);
+      const resizeOptions =
+        metadata.width >= metadata.height
+          ? { width: 1000 }
+          : { height: 1000 };
+
+      return sharp(filePath)
+        .resize(resizeOptions)
+        .toFile(resizedOutputPath);
+    })
+    .then(() => console.log(`✔ Resized _r image created: ${resizedOutputPath}`))
+    .catch(err => console.error(`✖ Failed to create _r image: ${filePath}`, err));
+
+  return Promise.all([createThumbnail, createBg, createResized]);
 }
 
 function walkDir(dir) {

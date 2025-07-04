@@ -35,8 +35,8 @@ export class GalleryComponent implements OnInit {
     this.items = this.paintings.map(
       (painting) =>
         new ImageItem({
-          src: `assets/images/${painting.id}.jpg`, // full size image path
-          thumb: `assets/thumbnails/images/${painting.id}.jpg`, // thumbnail path
+          src: `assets/gen/images/${painting.id}_r.jpg`, // full size image path
+          thumb: `assets/gen/images/${painting.id}.jpg`, // thumbnail path
         }),
     );
 
@@ -45,7 +45,7 @@ export class GalleryComponent implements OnInit {
     const randomIndex = Math.floor(Math.random() * this.paintings.length);
     const randomPainting = this.paintings[randomIndex];
     if (this.bg && randomPainting) {
-      this.bg.nativeElement.style.backgroundImage = `url('assets/thumbnails/images/${randomPainting.id}_bg.jpg')`;
+      this.bg.nativeElement.style.backgroundImage = `url('assets/gen/images/${randomPainting.id}_bg.jpg')`;
     }
     this.onWindowScroll();
   }
