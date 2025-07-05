@@ -1139,6 +1139,15 @@ export class PaintingService {
       stored: "box",
       type: "goauche",
     },
+    {
+      id: "134",
+      artist: "Alexander van den Bosch",
+      title: "Inferno 3",
+      year: 1987,
+      dimensions: "64x49",
+      status: "framed",
+      type: "drawing",
+    },
   ];
 
   getPaintings(): Painting[] {
