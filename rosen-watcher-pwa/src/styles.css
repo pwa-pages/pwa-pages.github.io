@@ -290,6 +290,14 @@ a {
   filter: brightness(0.8);
 }
 
+.statdetaildispl.Doge,
+.mainaddressdispl.Doge,
+.watchersdispl.Doge,
+.chainType.Doge {
+  background-image: url('./assets/images/doge.png');
+  filter: brightness(0.8);
+}
+
 .noAddresses {
   color: green;
   font-size: 3vh;

@@ -37,6 +37,9 @@ export class DataService {
     [ChainType.Binance]: {
       chart: 0,
     },
+    [ChainType.Doge]: {
+      chart: 0,
+    },
   };
   busyCounter = 0;
 
