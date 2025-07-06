@@ -1344,6 +1344,40 @@ export class PaintingService {
       stored: "box 2",
       type: "gouache",
     },
+    {
+      id: "157",
+      artist: "Alexander van den Bosch",
+      year: 1975,
+      dimensions: "65x48",
+      status: "loose",
+      stored: "box 2",
+      type: "gouache",
+    },
+    {
+      id: "158",
+      artist: "Alexander van den Bosch",
+      year: 1975,
+      dimensions: "69x47",
+      status: "loose",
+      stored: "box 2",
+      type: "gouache",
+    },
+    {
+      id: "159",
+      artist: "Alexander van den Bosch",
+      dimensions: "38x55",
+      status: "loose",
+      stored: "box 2",
+      type: "drawing",
+    },
+    {
+      id: "160",
+      artist: "Alexander van den Bosch",
+      dimensions: "38x55",
+      status: "loose",
+      stored: "box 2",
+      type: "drawing",
+    },
   ];
 
   getPaintings(): Painting[] {
