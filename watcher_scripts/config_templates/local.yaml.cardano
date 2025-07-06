@@ -1,6 +1,6 @@
 network: cardano
 api:
-  apiKeyHash: 'PUT_YOUR_HARDCODED_KEY_HERE'
+  apiKeyHash: '#APIKEY#'
 ergo:
   type: node
   initialHeight: #ERGO_HEIGHT#

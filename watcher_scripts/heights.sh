@@ -77,3 +77,18 @@ else
     bsc_block_height=""
 fi
 export bsc_block_height
+
+
+echo "Fetching Dogecoin (DOGE) block height..."
+doge_height=$(curl -s --user doge:doge \
+    --data-binary '{"jsonrpc":"1.0","id":"curltext","method":"getblockcount","params":[]}' \
+    -H 'content-type: text/plain;' \
+    http://192.168.178.227:22555/ | jq -r '.result')
+
+if [ -n "$doge_height" ]; then
+    echo "Dogecoin (DOGE) Block Height: $doge_height"
+else
+    echo "Dogecoin (DOGE): Unable to fetch block height"
+    doge_height=""
+fi
+export doge_height

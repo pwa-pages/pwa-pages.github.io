@@ -1,4 +1,4 @@
-network: binance
+network: doge
 api:
   apiKeyHash: '#APIKEY#'
 ergo:
@@ -7,12 +7,15 @@ ergo:
   mnemonic: "#MNEMONIC#"
   node:
     url: http://host.docker.internal:9053
-binance:
+doge:
   type: rpc
   rpc:
-    url: http://192.168.178.227:8545/
+    - url: http://192.168.178.227:22555/
+      timeout: 10
+      username: doge
+      password: doge
   initial:
-    height: #BSC_HEIGHT#
+    height: #DOGE_HEIGHT#
 observation:
-  confirmation: 400
-  validThreshold: 28800
+  confirmation: 20
+  validThreshold: 1440

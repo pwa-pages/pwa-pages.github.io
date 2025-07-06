@@ -17,19 +17,19 @@ sleep 600
     fi
     export btc_height
 
-    echo "Fetching Ethereum block height..."
-    eth_block_hex=$(curl -s -X POST -H "Content-Type: application/json" \
-        --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-        http://localhost:8545 | jq -r '.result')
+#    echo "Fetching Ethereum block height..."
+ #   eth_block_hex=$(curl -s -X POST -H "Content-Type: application/json" \
+#        --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+#        http://localhost:8545 | jq -r '.result')
 
-    if [ -n "$eth_block_hex" ]; then
-        eth_height=$(printf "%d" "$eth_block_hex")
-        echo "Ethereum (ETH) Block Height: $eth_height"
-    else
-        echo "Ethereum (ETH): Unable to fetch block height"
-        eth_height=""
-    fi
-    export eth_height
+ #   if [ -n "$eth_block_hex" ]; then
+ #       eth_height=$(printf "%d" "$eth_block_hex")
+ #       echo "Ethereum (ETH) Block Height: $eth_height"
+ #   else
+ #       echo "Ethereum (ETH): Unable to fetch block height"
+ #       eth_height=""
+ #   fi
+ #   export eth_height
 
     echo "Fetching Ergo block height..."
     ergo_height=$(curl -s http://localhost:9053/info | jq -r '.fullHeight')
@@ -81,6 +81,21 @@ sleep 600
     export bsc_block_height
 
 
+echo "Fetching Dogecoin (DOGE) block height..."
+doge_height=$(curl -s --user doge:doge \
+    --data-binary '{"jsonrpc":"1.0","id":"curltext","method":"getblockcount","params":[]}' \
+    -H 'content-type: text/plain;' \
+    http://192.168.178.227:22555/ | jq -r '.result')
+
+if [ -n "$doge_height" ]; then
+    echo "Dogecoin (DOGE) Block Height: $doge_height"
+else
+    echo "Dogecoin (DOGE): Unable to fetch block height"
+    doge_height=""
+fi
+export doge_height
+
+
 # Generate a new script with hardcoded values
 cat <<EOF > set_heights.sh
 #!/bin/bash
@@ -90,6 +105,7 @@ btc_height="$btc_height"
 bsc_height="$bsc_block_height"
 eth_height="$eth_height"
 ergo_height="$ergo_height"
+doge_height="$doge_height"
 cardano_block_hash="$cardano_block_hash"
 cardano_block_height="$cardano_block_height"
 cardano_absolute_slot="$cardano_absolute_slot"
@@ -99,6 +115,7 @@ export btc_height
 export bsc_height
 export eth_height
 export ergo_height
+export doge_height
 export cardano_block_hash
 export cardano_block_height
 export cardano_absolute_slot
@@ -108,6 +125,7 @@ echo "Hardcoded Bitcoin (BTC) Block Height: \$btc_height"
 echo "Hardcoded Binance (BSC) Block Height: \$bsc_height"
 echo "Hardcoded Ethereum (ETH) Block Height: \$eth_height"
 echo "Hardcoded Ergo (ERG) Block Height: \$ergo_height"
+echo "Hardcoded Doge Block Height: \$doge_height"
 echo "Hardcoded Cardano (ADA) Block Info:"
 echo "  Block Hash: \$cardano_block_hash"
 echo "  Block Height: \$cardano_block_height"
