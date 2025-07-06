@@ -1551,7 +1551,6 @@ export class PaintingService {
       id: "180",
       artist: "Alexander van den Bosch",
       year: 1976,
-      title: "Fantomas cinema",
       dimensions: "65x51",
       status: "loose",
       stored: "box 2",
@@ -1570,6 +1569,7 @@ export class PaintingService {
     {
       id: "182",
       artist: "Alexander van den Bosch",
+      title: "Fantomas cinema",
       year: 1976,
       dimensions: "65x49",
       status: "loose",

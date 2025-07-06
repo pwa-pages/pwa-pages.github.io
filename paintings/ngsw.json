@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1751806765177,
+  "timestamp": 1751808659375,
   "appData": {
-    "version": "1.8.2"
+    "version": "1.8.3"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -15,7 +15,7 @@
       },
       "urls": [
         "/index.html",
-        "/main-2FHXBIMI.js",
+        "/main-DUDYRQNN.js",
         "/manifest.webmanifest",
         "/polyfills-B6TNHZQ6.js",
         "/scripts-BWXHQQGI.js",
@@ -1678,8 +1678,8 @@
     "/assets/images/97.jpg": "2f5bad58d3e2277a31c4f1e38fa1a8bb6f4a6516",
     "/assets/images/98.jpg": "ab8f11f9b137ab0040cc30dcb06c0b30bc01e1d3",
     "/assets/images/99.jpg": "cf04e411a20fb311395b927abd2463cbd073bdbe",
-    "/index.html": "dcd3f3df51e400acb077b75a41b3398d96b80df6",
-    "/main-2FHXBIMI.js": "9941ba46370e1c6bbfe66a81cabc75e5ea504c73",
+    "/index.html": "a89c65b591dd22588fa0a9a7ad6d895b7daf5315",
+    "/main-DUDYRQNN.js": "dbf694d9757a9193421d0c13cbfd928abb4cbcb7",
     "/manifest.webmanifest": "94b9a7ccf4e17475eda0e98be5580497b4f47b15",
     "/media/1-EEHHGHE6.jpg": "3af547aefcc0e87de32076be76dd260c0b451776",
     "/polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
