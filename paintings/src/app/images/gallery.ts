@@ -62,7 +62,7 @@ export class GalleryComponent implements OnInit {
   onWindowScroll() {
     const offset = window.scrollY;
 
-    this.bg.nativeElement.style.top = `${offset * 0.3 - 19500}px`;
+    this.bg.nativeElement.style.top = `${offset * 0.3 - 29500}px`;
   }
 
   openLightbox(index: number) {
