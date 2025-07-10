@@ -1,4 +1,5 @@
 import "@angular/compiler";
+import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 
 const routes: Routes = [
   { path: "image/:image", component: ImagesComponent },
@@ -54,5 +55,6 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(routes),
     provideAnimations(),
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
 });

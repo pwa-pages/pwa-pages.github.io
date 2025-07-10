@@ -8,7 +8,7 @@
       tabindex
       class="painting-card"
       *ngFor="let painting of paintings; trackBy: trackByPainting"
-      href="/image/{{ painting.id }}"
+      href="/#/image/{{ painting.id }}"
     >
       <img
         [src]="'assets/gen/images/' + painting.id + '.jpg'"
