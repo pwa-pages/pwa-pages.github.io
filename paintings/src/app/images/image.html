@@ -1,0 +1,25 @@
+<a tabindex class="gallery-link" href="paintings"> Back to gallery </a>
+
+<div tabindex class="single-painting">
+  <div class="painting-metadata" *ngIf="getCurrentPainting() as painting">
+    <h2 *ngIf="painting.title">{{ painting.title }}</h2>
+    <p *ngIf="painting.id"><strong>Number:</strong> {{ painting.id }}</p>
+    <p *ngIf="painting.year"><strong>Year:</strong> {{ painting.year }}</p>
+    <p *ngIf="painting.dimensions">
+      <strong>Dimensions:</strong> {{ painting.dimensions }}
+    </p>
+  </div>
+
+  <img alt="{{ image }}" src="assets/gen/images/{{ image }}_r.jpg" />
+</div>
+
+<a
+  tabindex="0"
+  class="fas fa-chevron-left nav-icon left"
+  (click)="swipeLeft()"
+></a>
+<a
+  tabindex="0"
+  class="fas fa-chevron-right nav-icon right"
+  (click)="swipeRight()"
+></a>

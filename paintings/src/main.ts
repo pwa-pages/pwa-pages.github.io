@@ -1,6 +1,9 @@
 import "@angular/compiler";
 
-const routes: Routes = [{ path: "**", component: GalleryComponent }];
+const routes: Routes = [
+  { path: "image/:image", component: ImagesComponent },
+  { path: "**", component: GalleryComponent },
+];
 
 // Import AppModule
 import { AppComponent } from "./app/app.component";
@@ -20,6 +23,7 @@ import {
 import { BrowserModule, bootstrapApplication } from "@angular/platform-browser";
 import { DatePipe, CommonModule } from "@angular/common";
 import { GalleryComponent } from "./app/images/gallery";
+import { ImagesComponent } from "./app/images/images";
 
 function getScriptFileName(): string {
   const scripts = Array.from(document.querySelectorAll("script")); // Convert NodeList to an array

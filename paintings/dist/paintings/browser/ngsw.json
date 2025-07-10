@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1752000959693,
+  "timestamp": 1752171866983,
   "appData": {
-    "version": "1.8.6"
+    "version": "1.8.7"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -15,11 +15,11 @@
       },
       "urls": [
         "/index.html",
-        "/main-62C3WDES.js",
+        "/main-YDISMHCZ.js",
         "/manifest.webmanifest",
         "/polyfills-B6TNHZQ6.js",
         "/scripts-BWXHQQGI.js",
-        "/styles-FRVAG5SI.css"
+        "/styles-SMFSG3B6.css"
       ],
       "patterns": []
     },
@@ -903,7 +903,15 @@
         "/assets/images/97.jpg",
         "/assets/images/98.jpg",
         "/assets/images/99.jpg",
-        "/media/1-EEHHGHE6.jpg"
+        "/media/1-EEHHGHE6.jpg",
+        "/media/fa-brands-400-Q3XCMWHQ.woff2",
+        "/media/fa-brands-400-R2XQZCET.ttf",
+        "/media/fa-regular-400-QSNYFYRT.woff2",
+        "/media/fa-regular-400-XUOPSR7E.ttf",
+        "/media/fa-solid-900-5ZUYHGA7.woff2",
+        "/media/fa-solid-900-PJNKLK6W.ttf",
+        "/media/fa-v4compatibility-LFEHZI6Y.woff2",
+        "/media/fa-v4compatibility-YY67RJWG.ttf"
       ],
       "patterns": []
     }
@@ -1782,13 +1790,21 @@
     "/assets/images/97.jpg": "2f5bad58d3e2277a31c4f1e38fa1a8bb6f4a6516",
     "/assets/images/98.jpg": "ab8f11f9b137ab0040cc30dcb06c0b30bc01e1d3",
     "/assets/images/99.jpg": "cf04e411a20fb311395b927abd2463cbd073bdbe",
-    "/index.html": "f5db708826f1c7e8e49b0acc8c8c2f3e332e1187",
-    "/main-62C3WDES.js": "95c608e75e1d5562f064c12e8ae6cd42971120c2",
+    "/index.html": "9eadfa7e2c24ff55ff98101d187ab8ceb211f847",
+    "/main-YDISMHCZ.js": "77211513a2d25a45dcf44dc84d7ad89f4957d470",
     "/manifest.webmanifest": "94b9a7ccf4e17475eda0e98be5580497b4f47b15",
     "/media/1-EEHHGHE6.jpg": "3af547aefcc0e87de32076be76dd260c0b451776",
+    "/media/fa-brands-400-Q3XCMWHQ.woff2": "31c30351084e2670bbe5c47bd342e11540a68717",
+    "/media/fa-brands-400-R2XQZCET.ttf": "da6f537cd597b76d264970f1c95e4beebc82fde9",
+    "/media/fa-regular-400-QSNYFYRT.woff2": "e9b6f5b842be227e2423733feb961dd6cb804066",
+    "/media/fa-regular-400-XUOPSR7E.ttf": "6e7f0651059eea9783ea8b28892b2c979c2f7f30",
+    "/media/fa-solid-900-5ZUYHGA7.woff2": "7cd8afd6501962fda35d66f0e4c3b8815ac471d8",
+    "/media/fa-solid-900-PJNKLK6W.ttf": "780a8ff16ebb681f85d5d30fac94ebe845a12b5e",
+    "/media/fa-v4compatibility-LFEHZI6Y.woff2": "4fd82f39237a3e52cb4e311d1961bbb47353a147",
+    "/media/fa-v4compatibility-YY67RJWG.ttf": "ad415f99aab4d9bf17e523f484a377f839ca8c3c",
     "/polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
     "/scripts-BWXHQQGI.js": "1b00078656ababf954429de3400ca4e92821d342",
-    "/styles-FRVAG5SI.css": "4448b1167b8f5e9af1bf0eff84ed91c7b4f3608a"
+    "/styles-SMFSG3B6.css": "5f9289ad4d2d056b2610f212426fcf1111b2bedd"
   },
   "navigationUrls": [
     {

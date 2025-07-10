@@ -5,9 +5,31 @@ import { Painting } from "../models/painting";
   providedIn: "root",
 })
 export class PaintingService {
+  getNextImageUrl(imageId: number): string {
+    const paintings = this.getPaintings();
+    const currentIndex = paintings.findIndex((p) => p.id === imageId);
+    const nextIndex = (currentIndex + 1) % paintings.length;
+    const nextPainting = this.getPaintings()[nextIndex];
+    if (nextPainting && nextPainting.id !== undefined) {
+      return "/image/" + nextPainting.id;
+    }
+    return "/image/0";
+  }
+
+  getPrevImageUrl(imageId: number): string {
+    const paintings = this.getPaintings();
+    const currentIndex = paintings.findIndex((p) => p.id === imageId);
+    const prevIndex = (currentIndex - 1 + paintings.length) % paintings.length;
+    const prevPainting = paintings[prevIndex];
+    if (prevPainting && prevPainting.id !== undefined) {
+      return "/image/" + prevPainting.id;
+    }
+    return "/image/0";
+  }
+
   private paintings: Painting[] = [
     {
-      id: "46",
+      id: 46,
       title: "Andy Warhol is not dead",
       artist: "Alexander van den Bosch",
       year: 1988,
@@ -16,7 +38,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "47",
+      id: 47,
       title: "Oranje figuur",
       artist: "Alexander van den Bosch",
       year: 1985,
@@ -25,14 +47,14 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "1",
+      id: 1,
       artist: "Alexander van den Bosch",
       dimensions: "100x120",
       status: "rolled",
       type: "oilpainting",
     },
     {
-      id: "2",
+      id: 2,
       artist: "Alexander van den Bosch",
       year: 1979,
       dimensions: "100x138",
@@ -40,7 +62,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "48",
+      id: 48,
       title: "Inferno 4",
       artist: "Alexander van den Bosch",
       year: 1987,
@@ -49,7 +71,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "49",
+      id: 49,
       artist: "Alexander van den Bosch",
       dimensions: "54x74",
       status: "framed",
@@ -57,7 +79,7 @@ export class PaintingService {
       note: "Damaged glass",
     },
     {
-      id: "50",
+      id: 50,
       artist: "Alexander van den Bosch",
       year: 1988,
       dimensions: "47x58",
@@ -66,7 +88,7 @@ export class PaintingService {
       note: "Damaged glass",
     },
     {
-      id: "51",
+      id: 51,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "75x56",
@@ -74,14 +96,14 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "52",
+      id: 52,
       artist: "Alexander van den Bosch",
       dimensions: "70x85",
       status: "framed",
       type: "oilpainting",
     },
     {
-      id: "53",
+      id: 53,
       title: "Zeilbootje bij kalme zee",
       artist: "Alexander van den Bosch",
       year: 1978,
@@ -90,7 +112,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "54",
+      id: 54,
       title: "De speelgoedhoek",
       artist: "Alexander van den Bosch",
       year: 1984,
@@ -99,7 +121,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "55",
+      id: 55,
       title: "IJshockiers",
       artist: "Alexander van den Bosch",
       year: 1984,
@@ -108,7 +130,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "56",
+      id: 56,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x140",
@@ -116,7 +138,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "57",
+      id: 57,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x140",
@@ -124,7 +146,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "3",
+      id: 3,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "120x102",
@@ -132,7 +154,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "4",
+      id: 4,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "139x101",
@@ -140,7 +162,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "5",
+      id: 5,
       artist: "Alexander van den Bosch",
       year: 1973,
       dimensions: "102x141",
@@ -148,7 +170,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "6",
+      id: 6,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "102x120",
@@ -156,7 +178,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "7",
+      id: 7,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "120x102",
@@ -164,7 +186,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "8",
+      id: 8,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "120x102",
@@ -172,7 +194,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "9",
+      id: 9,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "121x101",
@@ -180,7 +202,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "10",
+      id: 10,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "140x101",
@@ -188,14 +210,14 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "11",
+      id: 11,
       artist: "Alexander van den Bosch",
       dimensions: "100x140",
       status: "rolled",
       type: "oilpainting",
     },
     {
-      id: "12",
+      id: 12,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "121x102",
@@ -203,7 +225,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "14",
+      id: 14,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "139x101",
@@ -211,14 +233,14 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "13",
+      id: 13,
       artist: "Alexander van den Bosch",
       dimensions: "141x101",
       status: "rolled",
       type: "oilpainting",
     },
     {
-      id: "15",
+      id: 15,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "120x101",
@@ -226,21 +248,21 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "16",
+      id: 16,
       artist: "Alexander van den Bosch",
       dimensions: "138x101",
       status: "rolled",
       type: "oilpainting",
     },
     {
-      id: "17",
+      id: 17,
       artist: "Alexander van den Bosch",
       dimensions: "126x96",
       status: "rolled",
       type: "oilpainting",
     },
     {
-      id: "18",
+      id: 18,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "120x100",
@@ -248,7 +270,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "19",
+      id: 19,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "141x101",
@@ -256,7 +278,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "20",
+      id: 20,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "120x101",
@@ -264,7 +286,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "21",
+      id: 21,
       artist: "Alexander van den Bosch",
       year: 1964,
       dimensions: "137x110",
@@ -272,7 +294,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "22",
+      id: 22,
       artist: "Alexander van den Bosch",
       year: 1973,
       dimensions: "112x112",
@@ -280,7 +302,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "23",
+      id: 23,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "120x103",
@@ -288,7 +310,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "24",
+      id: 24,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "118x100",
@@ -296,7 +318,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "25",
+      id: 25,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "111x70",
@@ -304,7 +326,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "26",
+      id: 26,
       artist: "Alexander van den Bosch",
       year: 1979,
       dimensions: "110x135",
@@ -312,7 +334,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "27",
+      id: 27,
       artist: "Alexander van den Bosch",
       year: 1979,
       dimensions: "118x101",
@@ -320,7 +342,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "58",
+      id: 58,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "32x43",
@@ -328,7 +350,7 @@ export class PaintingService {
       type: "etching",
     },
     {
-      id: "59",
+      id: 59,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "32x43",
@@ -336,7 +358,7 @@ export class PaintingService {
       type: "etching",
     },
     {
-      id: "60",
+      id: 60,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "32x43",
@@ -344,7 +366,7 @@ export class PaintingService {
       type: "etching",
     },
     {
-      id: "61",
+      id: 61,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "75x54",
@@ -353,7 +375,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "62",
+      id: 62,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "75x54",
@@ -362,7 +384,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "63",
+      id: 63,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "75x54",
@@ -371,7 +393,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "64",
+      id: 64,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "75x54",
@@ -380,7 +402,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "65",
+      id: 65,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "75x54",
@@ -389,7 +411,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "66",
+      id: 66,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "75x54",
@@ -398,7 +420,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "67",
+      id: 67,
       title: "Oranje figuren",
       artist: "Alexander van den Bosch",
       year: 1978,
@@ -408,7 +430,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "68",
+      id: 68,
       title: "Fantomas cinema",
       artist: "Alexander van den Bosch",
       year: 1976,
@@ -418,7 +440,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "69",
+      id: 69,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "91x63",
@@ -427,7 +449,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "70",
+      id: 70,
       title: "Compositie in oranje rood",
       artist: "Alexander van den Bosch",
       year: 1978,
@@ -437,7 +459,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "71",
+      id: 71,
       title: "Compositie in oranje rood",
       artist: "Alexander van den Bosch",
       year: 1978,
@@ -447,7 +469,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "72",
+      id: 72,
       title: "Compositie in oranje rood",
       artist: "Alexander van den Bosch",
       year: 1978,
@@ -457,7 +479,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "73",
+      id: 73,
       title: "Oranje figuren",
       artist: "Alexander van den Bosch",
       year: 1978,
@@ -467,7 +489,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "74",
+      id: 74,
       title: "Oranje figuren",
       artist: "Alexander van den Bosch",
       year: 1978,
@@ -477,7 +499,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "75",
+      id: 75,
       title: "Fantomas cinema",
       artist: "Alexander van den Bosch",
       year: 1976,
@@ -487,7 +509,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "76",
+      id: 76,
       title: "Landschap na zonsondergang",
       artist: "Alexander van den Bosch",
       year: 1976,
@@ -497,7 +519,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "77",
+      id: 77,
       title: "Bloesemboompjes",
       artist: "Alexander van den Bosch",
       year: 1976,
@@ -507,7 +529,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "78",
+      id: 78,
       title: "Veulen met jong bij onweer",
       artist: "Alexander van den Bosch",
       year: 1976,
@@ -517,7 +539,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "79",
+      id: 79,
       title: "Landschap bij zonnig weer",
       artist: "Alexander van den Bosch",
       year: 1976,
@@ -527,7 +549,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "80",
+      id: 80,
       title: "Vier marionetten",
       artist: "Alexander van den Bosch",
       year: 1975,
@@ -537,7 +559,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "81",
+      id: 81,
       title: "Landschap met oude molen",
       artist: "Alexander van den Bosch",
       year: 1976,
@@ -547,7 +569,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "82",
+      id: 82,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "76x56",
@@ -556,7 +578,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "83",
+      id: 83,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "56x76",
@@ -565,7 +587,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "84",
+      id: 84,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "56x76",
@@ -574,7 +596,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "85",
+      id: 85,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "56x76",
@@ -583,7 +605,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "86",
+      id: 86,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "56x76",
@@ -592,7 +614,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "87",
+      id: 87,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "56x76",
@@ -601,7 +623,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "88",
+      id: 88,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "56x76",
@@ -610,7 +632,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "89",
+      id: 89,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "76x56",
@@ -619,7 +641,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "90",
+      id: 90,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "56x76",
@@ -628,7 +650,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "91",
+      id: 91,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "76x56",
@@ -637,7 +659,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "92",
+      id: 92,
       title: "Muze bevredigd",
       artist: "Alexander van den Bosch",
       year: 1964,
@@ -647,7 +669,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "93",
+      id: 93,
       artist: "Alexander van den Bosch",
       title: "Andy Warhol is not dead",
       year: 1988,
@@ -657,7 +679,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "94",
+      id: 94,
       artist: "Alexander van den Bosch",
       year: 1988,
       dimensions: "66x51",
@@ -666,7 +688,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "95",
+      id: 95,
       title: "Andy Warhol is not dead",
       artist: "Alexander van den Bosch",
       year: 1988,
@@ -676,7 +698,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "96",
+      id: 96,
       artist: "Alexander van den Bosch",
       year: 1987,
       dimensions: "66x51",
@@ -685,7 +707,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "97",
+      id: 97,
       artist: "Alexander van den Bosch",
       year: 1987,
       dimensions: "66x51",
@@ -694,7 +716,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "98",
+      id: 98,
       artist: "Alexander van den Bosch",
       year: 1987,
       dimensions: "66x51",
@@ -703,7 +725,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "99",
+      id: 99,
       artist: "Alexander van den Bosch",
       year: 1987,
       dimensions: "66x51",
@@ -712,7 +734,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "100",
+      id: 100,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -721,7 +743,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "101",
+      id: 101,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -730,7 +752,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "102",
+      id: 102,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -739,7 +761,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "103",
+      id: 103,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -748,7 +770,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "104",
+      id: 104,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -757,7 +779,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "105",
+      id: 105,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -766,7 +788,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "106",
+      id: 106,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -775,7 +797,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "107",
+      id: 107,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -784,7 +806,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "108",
+      id: 108,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -793,7 +815,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "109",
+      id: 109,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -802,7 +824,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "110",
+      id: 110,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x56",
@@ -811,7 +833,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "111",
+      id: 111,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "78x51",
@@ -820,7 +842,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "112",
+      id: 112,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "78x58",
@@ -829,7 +851,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "31",
+      id: 31,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "137x100",
@@ -837,7 +859,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "32",
+      id: 32,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "120x101",
@@ -845,7 +867,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "33",
+      id: 33,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "51x57",
@@ -853,7 +875,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "34",
+      id: 34,
       artist: "Alexander van den Bosch",
       year: 1973,
       dimensions: "48x65",
@@ -862,7 +884,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "35",
+      id: 35,
       artist: "Alexander van den Bosch",
       year: 1973,
       dimensions: "65x48",
@@ -871,7 +893,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "36",
+      id: 36,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -880,7 +902,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "37",
+      id: 37,
       artist: "Alexander van den Bosch",
       dimensions: "49x75",
       status: "loose",
@@ -888,7 +910,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "38",
+      id: 38,
       artist: "Alexander van den Bosch",
       dimensions: "48x65",
       status: "loose",
@@ -896,7 +918,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "39",
+      id: 39,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "68x55",
@@ -905,7 +927,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "40",
+      id: 40,
       artist: "Alexander van den Bosch",
       year: 1973,
       dimensions: "33x23",
@@ -914,7 +936,7 @@ export class PaintingService {
       type: "screenprint",
     },
     {
-      id: "41",
+      id: 41,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -923,7 +945,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "42",
+      id: 42,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -932,7 +954,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "43",
+      id: 43,
       artist: "Alexander van den Bosch",
       year: 1971,
       dimensions: "75x55",
@@ -941,7 +963,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "44",
+      id: 44,
       artist: "Alexander van den Bosch",
       title: "Zonder titel",
       year: 1974,
@@ -951,7 +973,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "113",
+      id: 113,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x53",
@@ -960,7 +982,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "114",
+      id: 114,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -969,7 +991,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "115",
+      id: 115,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -978,7 +1000,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "116",
+      id: 116,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "48x65",
@@ -987,7 +1009,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "117",
+      id: 117,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "65x48",
@@ -996,7 +1018,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "118",
+      id: 118,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "76x54",
@@ -1005,7 +1027,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "119",
+      id: 119,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "76x52",
@@ -1014,7 +1036,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "120",
+      id: 120,
       artist: "Alexander van den Bosch",
       year: 1965,
       dimensions: "63x49",
@@ -1023,7 +1045,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "121",
+      id: 121,
       artist: "Alexander van den Bosch",
       year: 1968,
       dimensions: "62x45",
@@ -1032,7 +1054,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "122",
+      id: 122,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "77x56",
@@ -1041,7 +1063,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "123",
+      id: 123,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "83x63",
@@ -1050,7 +1072,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "124",
+      id: 124,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "65x48",
@@ -1059,7 +1081,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "125",
+      id: 125,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "63x52",
@@ -1068,7 +1090,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "126",
+      id: 126,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "77x57",
@@ -1077,7 +1099,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "127",
+      id: 127,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -1086,7 +1108,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "128",
+      id: 128,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -1095,7 +1117,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "129",
+      id: 129,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1104,7 +1126,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "130",
+      id: 130,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "69x55",
@@ -1113,7 +1135,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "131",
+      id: 131,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "77x58",
@@ -1122,7 +1144,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "132",
+      id: 132,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "74x54",
@@ -1131,7 +1153,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "133",
+      id: 133,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "58x78",
@@ -1140,7 +1162,7 @@ export class PaintingService {
       type: "goauche",
     },
     {
-      id: "134",
+      id: 134,
       artist: "Alexander van den Bosch",
       title: "Inferno 3",
       year: 1987,
@@ -1149,7 +1171,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "135",
+      id: 135,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "108x75",
@@ -1158,7 +1180,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "136",
+      id: 136,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "108x75",
@@ -1167,7 +1189,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "137",
+      id: 137,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "77x56",
@@ -1176,7 +1198,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "138",
+      id: 138,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "77x56",
@@ -1185,7 +1207,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "139",
+      id: 139,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "77x56",
@@ -1194,7 +1216,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "140",
+      id: 140,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "77x56",
@@ -1203,7 +1225,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "141",
+      id: 141,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "75x55",
@@ -1212,7 +1234,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "142",
+      id: 142,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "78x57",
@@ -1221,14 +1243,14 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "143",
+      id: 143,
       dimensions: "55x38",
       status: "loose",
       stored: "box 2",
       type: "gouache",
     },
     {
-      id: "144",
+      id: 144,
       artist: "Alexander van den Bosch",
       year: 1972,
       dimensions: "65x47",
@@ -1237,7 +1259,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "145",
+      id: 145,
       artist: "Alexander van den Bosch",
       year: 1973,
       dimensions: "60x48",
@@ -1246,7 +1268,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "146",
+      id: 146,
       artist: "Alexander van den Bosch",
       year: 1973,
       dimensions: "65x39",
@@ -1255,7 +1277,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "147",
+      id: 147,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "78x58",
@@ -1264,7 +1286,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "148",
+      id: 148,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -1273,7 +1295,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "149",
+      id: 149,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "76x56",
@@ -1282,7 +1304,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "150",
+      id: 150,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "76x56",
@@ -1291,7 +1313,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "151",
+      id: 151,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "48x35",
@@ -1300,7 +1322,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "152",
+      id: 152,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "78x58",
@@ -1309,7 +1331,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "153",
+      id: 153,
       artist: "Alexander van den Bosch",
       year: 1978,
       dimensions: "78x56",
@@ -1318,7 +1340,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "154",
+      id: 154,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "77x58",
@@ -1327,7 +1349,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "155",
+      id: 155,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1336,7 +1358,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "156",
+      id: 156,
       artist: "Alexander van den Bosch",
       year: 1977,
       dimensions: "77x56",
@@ -1345,7 +1367,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "157",
+      id: 157,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "65x48",
@@ -1354,7 +1376,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "158",
+      id: 158,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "69x47",
@@ -1363,7 +1385,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "159",
+      id: 159,
       artist: "Alexander van den Bosch",
       dimensions: "38x55",
       status: "loose",
@@ -1371,7 +1393,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "160",
+      id: 160,
       artist: "Alexander van den Bosch",
       dimensions: "38x55",
       status: "loose",
@@ -1379,7 +1401,7 @@ export class PaintingService {
       type: "drawing",
     },
     {
-      id: "161",
+      id: 161,
       artist: "Alexander van den Bosch",
       dimensions: "54x53",
       status: "loose",
@@ -1387,7 +1409,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "162",
+      id: 162,
       artist: "Alexander van den Bosch",
       dimensions: "75x55",
       status: "loose",
@@ -1395,16 +1417,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "163",
-      artist: "Alexander van den Bosch",
-      year: 1974,
-      dimensions: "75x55",
-      status: "loose",
-      stored: "box 2",
-      type: "gouache",
-    },
-    {
-      id: "164",
+      id: 163,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1413,7 +1426,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "165",
+      id: 164,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1422,7 +1435,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "166",
+      id: 165,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1431,7 +1444,16 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "167",
+      id: 166,
+      artist: "Alexander van den Bosch",
+      year: 1974,
+      dimensions: "75x55",
+      status: "loose",
+      stored: "box 2",
+      type: "gouache",
+    },
+    {
+      id: 167,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -1440,7 +1462,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "168",
+      id: 168,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "60x55",
@@ -1449,7 +1471,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "169",
+      id: 169,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x49",
@@ -1458,7 +1480,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "170",
+      id: 170,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -1467,7 +1489,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "171",
+      id: 171,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -1476,7 +1498,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "172",
+      id: 172,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1485,7 +1507,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "173",
+      id: 173,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "65x48",
@@ -1494,7 +1516,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "174",
+      id: 174,
       artist: "Alexander van den Bosch",
       title: "Oranje rotsen",
       year: 1973,
@@ -1504,7 +1526,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "175",
+      id: 175,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1513,7 +1535,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "176",
+      id: 176,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -1522,7 +1544,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "177",
+      id: 177,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1531,7 +1553,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "178",
+      id: 178,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "65x48",
@@ -1540,7 +1562,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "179",
+      id: 179,
       artist: "Alexander van den Bosch",
       dimensions: "65x48",
       status: "loose",
@@ -1548,7 +1570,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "180",
+      id: 180,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "65x51",
@@ -1557,7 +1579,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "181",
+      id: 181,
       artist: "Alexander van den Bosch",
       year: 1976,
       title: "Fantomas cinema",
@@ -1567,7 +1589,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "182",
+      id: 182,
       artist: "Alexander van den Bosch",
       title: "Fantomas cinema",
       year: 1976,
@@ -1577,7 +1599,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "183",
+      id: 183,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "65x49",
@@ -1586,7 +1608,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "184",
+      id: 184,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x48",
@@ -1595,7 +1617,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "185",
+      id: 185,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1604,7 +1626,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "186",
+      id: 186,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "77x57",
@@ -1613,7 +1635,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "187",
+      id: 187,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -1622,7 +1644,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "188",
+      id: 188,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1631,7 +1653,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "189",
+      id: 189,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "65x48",
@@ -1640,7 +1662,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "190",
+      id: 190,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "65x48",
@@ -1649,7 +1671,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "191",
+      id: 191,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "65x48",
@@ -1658,7 +1680,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "192",
+      id: 192,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "65x48",
@@ -1667,7 +1689,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "193",
+      id: 193,
       artist: "Alexander van den Bosch",
       year: 1976,
       dimensions: "65x48",
@@ -1676,7 +1698,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "194",
+      id: 194,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x49",
@@ -1685,7 +1707,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "195",
+      id: 195,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x48",
@@ -1694,7 +1716,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "196",
+      id: 196,
       artist: "Alexander van den Bosch",
       dimensions: "65x48",
       status: "loose",
@@ -1702,7 +1724,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "197",
+      id: 197,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1711,7 +1733,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "198",
+      id: 198,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1720,7 +1742,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "199",
+      id: 199,
       artist: "Alexander van den Bosch",
       year: 1975,
       dimensions: "75x55",
@@ -1729,7 +1751,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "200",
+      id: 200,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1738,7 +1760,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "201",
+      id: 201,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "55x35",
@@ -1747,7 +1769,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "202",
+      id: 202,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "75x55",
@@ -1756,7 +1778,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "203",
+      id: 203,
       artist: "Alexander van den Bosch",
       dimensions: "75x55",
       status: "loose",
@@ -1764,7 +1786,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "204",
+      id: 204,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "69x52",
@@ -1773,7 +1795,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "205",
+      id: 205,
       artist: "Alexander van den Bosch",
       year: 1974,
       dimensions: "69x52",
@@ -1782,7 +1804,7 @@ export class PaintingService {
       type: "gouache",
     },
     {
-      id: "206",
+      id: 206,
       artist: "Alexander van den Bosch",
       year: 1981,
       dimensions: "54x74",
@@ -1790,7 +1812,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "207",
+      id: 207,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1798,7 +1820,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "208",
+      id: 208,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1806,7 +1828,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "209",
+      id: 209,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1814,7 +1836,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "210",
+      id: 210,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1822,7 +1844,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "211",
+      id: 211,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1830,7 +1852,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "212",
+      id: 212,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1838,7 +1860,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "213",
+      id: 213,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1846,7 +1868,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "214",
+      id: 214,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1854,7 +1876,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "215",
+      id: 215,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1862,7 +1884,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "216",
+      id: 216,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1870,7 +1892,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "217",
+      id: 217,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1878,7 +1900,7 @@ export class PaintingService {
       type: "oilpainting",
     },
     {
-      id: "218",
+      id: 218,
       artist: "Alexander van den Bosch",
       year: 1980,
       dimensions: "100x120",
@@ -1888,6 +1910,7 @@ export class PaintingService {
   ];
 
   getPaintings(): Painting[] {
+    this.paintings.sort((a, b) => a.id - b.id);
     return this.paintings;
   }
 }

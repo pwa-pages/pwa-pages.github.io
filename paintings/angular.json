@@ -30,7 +30,10 @@
               "src/shared/js/ngsw-worker.js"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/swipe.scss",
+              "src/styles.scss",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css"
+
             ],
             "scripts": [
               "src/paintings-ngsw-worker.js"]
@@ -55,7 +58,11 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
+              "sourceMap": {
+                "scripts": true,
+                "styles": false,
+                "vendor": false
+},
               "serviceWorker": "ngsw-config.json"
             }
           },

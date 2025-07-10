@@ -1,6 +1,23 @@
+
+body,
+html {
+  overflow-x: hidden;
+}
+
+.screen-div {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: relative;
+}
+
+
 body {
-  background-color: #ffffff;
+  background-color: #000000;
   color: #000000;
+  padding: 0;
+  margin: 0px !important;
 }
 
 .gallery-header {
@@ -82,4 +99,87 @@ body {
   z-index: -1;
   
   will-change: transform;
+}
+
+
+
+.single-painting {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center children */
+  align-items: center;
+  height: 90vh; /* Ensure vertical space for centering */
+  padding: 10px;
+
+  max-width: 90vw;
+  max-height: 90vh;
+  margin: 0 auto;
+}
+
+
+.single-painting img {
+  max-width: 70vw;
+  max-height: 70vh;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  object-fit: contain;
+  background: #fafafa;
+}
+.nav-icon {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.5rem;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 9999;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.nav-icon:hover,
+.nav-icon:focus {
+  color: #007bff;
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.nav-icon.left {
+  left: 20px;
+}
+
+.nav-icon.right {
+  right: 20px;
+}
+
+.gallery-link{
+  position: fixed;
+  text-decoration: none;
+}
+
+.painting-metadata, .gallery-link {
+  color : #cccccc;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  margin: 2rem;
+  padding: 0;
+}
+
+.painting-metadata h2 {
+  font-size: 1.1rem;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.painting-metadata p {
+  margin: 2px 0;
+  padding: 0;
+}
+
+.painting-metadata strong {
+  font-weight: 600;
 }
