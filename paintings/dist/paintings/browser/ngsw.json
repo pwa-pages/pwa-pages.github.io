@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1752172352648,
+  "timestamp": 1752172740563,
   "appData": {
-    "version": "1.8.7"
+    "version": "1.8.9"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -1790,7 +1790,7 @@
     "/assets/images/97.jpg": "2f5bad58d3e2277a31c4f1e38fa1a8bb6f4a6516",
     "/assets/images/98.jpg": "ab8f11f9b137ab0040cc30dcb06c0b30bc01e1d3",
     "/assets/images/99.jpg": "cf04e411a20fb311395b927abd2463cbd073bdbe",
-    "/index.html": "44cc0213b830807a192c592d691d9593f3bcca99",
+    "/index.html": "7b1a0fa8a3a54bc2fb5e6c198d4dbea18c2ca0b4",
     "/main-KF2QTQVA.js": "ec3a34e3ea8c5892a57603bbcaa0a3cb39fbcf46",
     "/manifest.webmanifest": "94b9a7ccf4e17475eda0e98be5580497b4f47b15",
     "/media/1-EEHHGHE6.jpg": "3af547aefcc0e87de32076be76dd260c0b451776",
