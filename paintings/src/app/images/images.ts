@@ -23,7 +23,7 @@ export class ImagesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((_) => {
+    this.route.paramMap.subscribe(() => {
       this.image = this.getCurrentPainting().id;
     });
 

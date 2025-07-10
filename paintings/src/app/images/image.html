@@ -17,9 +17,17 @@
   tabindex="0"
   class="fas fa-chevron-left nav-icon left"
   (click)="swipeLeft()"
-></a>
+  (keydown.enter)="swipeLeft()"
+  (keydown.space)="swipeLeft()"
+  aria-label="Previous painting"
+>
+</a>
 <a
   tabindex="0"
   class="fas fa-chevron-right nav-icon right"
   (click)="swipeRight()"
-></a>
+  (keydown.enter)="swipeRight()"
+  (keydown.space)="swipeRight()"
+  aria-label="Next painting"
+>
+</a>
