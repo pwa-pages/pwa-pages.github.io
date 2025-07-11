@@ -1518,7 +1518,6 @@ export class PaintingService {
     {
       id: 174,
       artist: "Alexander van den Bosch",
-      title: "Oranje rotsen",
       year: 1973,
       dimensions: "66x51",
       status: "loose",
@@ -1529,6 +1528,7 @@ export class PaintingService {
       id: 175,
       artist: "Alexander van den Bosch",
       year: 1974,
+      title: "Oranje rotsen",
       dimensions: "75x55",
       status: "loose",
       stored: "box 2",
