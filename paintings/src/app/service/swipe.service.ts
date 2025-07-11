@@ -22,7 +22,9 @@ export class SwipeService {
   }
 
   getTouchSurface(): HTMLElement {
-    return document.body.querySelector(".screen-div") as HTMLElement;
+    return document.body.querySelector(
+      ".single-painting-container",
+    ) as HTMLElement;
   }
 
   getSpeed(): number {

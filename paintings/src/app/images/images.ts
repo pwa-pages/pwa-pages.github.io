@@ -68,7 +68,11 @@ export class ImagesComponent implements OnInit, OnDestroy {
   };
 
   handleDocumentClick(event: MouseEvent) {
-    if (!this.paintingImage?.nativeElement?.contains(event.target)) {
+    const clickedNavIcon = (event.target as HTMLElement).closest(".nav-icon");
+    if (
+      !this.paintingImage?.nativeElement?.contains(event.target) &&
+      !clickedNavIcon
+    ) {
       // Navigate back to gallery (adjust route if needed)
       this.router.navigate(["."]);
     }

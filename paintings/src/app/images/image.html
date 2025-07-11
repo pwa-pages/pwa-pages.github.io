@@ -1,20 +1,21 @@
 <a tabindex class="gallery-link" href="."> Back to gallery </a>
 
-<div tabindex class="single-painting">
-  <div class="painting-metadata" *ngIf="getCurrentPainting() as painting">
-    <h2 *ngIf="painting.title">{{ painting.title }}</h2>
-    <p *ngIf="painting.id"><strong>Number:</strong> {{ painting.id }}</p>
-    <p *ngIf="painting.year"><strong>Year:</strong> {{ painting.year }}</p>
-    <p *ngIf="painting.dimensions">
-      <strong>Dimensions:</strong> {{ painting.dimensions }}
-    </p>
+<div class="single-painting-container">
+  <div tabindex class="single-painting">
+    <div class="painting-metadata" *ngIf="getCurrentPainting() as painting">
+      <h2 *ngIf="painting.title">{{ painting.title }}</h2>
+      <p *ngIf="painting.id"><strong>Number:</strong> {{ painting.id }}</p>
+      <p *ngIf="painting.year"><strong>Year:</strong> {{ painting.year }}</p>
+      <p *ngIf="painting.dimensions">
+        <strong>Dimensions:</strong> {{ painting.dimensions }}
+      </p>
+    </div>
+    <img
+      #paintingImage
+      alt="{{ image }}"
+      src="assets/gen/images/{{ image }}_r.jpg"
+    />
   </div>
-
-  <img
-    #paintingImage
-    alt="{{ image }}"
-    src="assets/gen/images/{{ image }}_r.jpg"
-  />
 </div>
 
 <a
