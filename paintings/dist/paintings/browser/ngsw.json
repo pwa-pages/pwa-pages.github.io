@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1752175493569,
+  "timestamp": 1752218410758,
   "appData": {
-    "version": "1.9.4"
+    "version": "1.9.6"
   },
   "index": "/index.html",
   "assetGroups": [
@@ -15,7 +15,7 @@
       },
       "urls": [
         "/index.html",
-        "/main-YPYT7GFY.js",
+        "/main-AOQB7IIQ.js",
         "/manifest.webmanifest",
         "/polyfills-B6TNHZQ6.js",
         "/scripts-BWXHQQGI.js",
@@ -1790,8 +1790,8 @@
     "/assets/images/97.jpg": "2f5bad58d3e2277a31c4f1e38fa1a8bb6f4a6516",
     "/assets/images/98.jpg": "ab8f11f9b137ab0040cc30dcb06c0b30bc01e1d3",
     "/assets/images/99.jpg": "cf04e411a20fb311395b927abd2463cbd073bdbe",
-    "/index.html": "f6501ccf3f4c23dbcc0ccd78597ef245cd296d24",
-    "/main-YPYT7GFY.js": "edc75ec8c3ac892072a086d7bbe4c24bc011880e",
+    "/index.html": "501ab3dfb85441a6aadc99cd99c25800c87ac468",
+    "/main-AOQB7IIQ.js": "d68c22afdb9909532c83d837a558637508aef5b7",
     "/manifest.webmanifest": "94b9a7ccf4e17475eda0e98be5580497b4f47b15",
     "/media/1-EEHHGHE6.jpg": "3af547aefcc0e87de32076be76dd260c0b451776",
     "/media/fa-brands-400-Q3XCMWHQ.woff2": "31c30351084e2670bbe5c47bd342e11540a68717",
