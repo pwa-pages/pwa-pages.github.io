@@ -14,6 +14,26 @@ export function createChainNumber(): Record<ChainType, number | undefined> {
   >;
 }
 
+export class WatchersStats {
+  chainWatcherCount = createChainNumber();
+  chainPermitCount = createChainNumber();
+  activePermitCount = createChainNumber();
+  chainLockedRSN = createChainNumber();
+  chainLockedERG = createChainNumber();
+  totalWatcherCount: number | undefined;
+  totalPermitCount: number | undefined;
+  totalActivePermitCount: number | undefined;
+  totalLockedRSN: number | undefined;
+  totalLockedERG: number | undefined;
+  totalLocked: number | undefined;
+  watcherValue: number | undefined;
+  permitValue: number | undefined;
+  selectedCurrency: Currency | null = null;
+  rs_PermitCost = rs_PermitCost;
+  rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
+  rs_WatcherCollateralERG = rs_WatcherCollateralERG;
+}
+
 @Injectable({
   providedIn: 'root',
 })

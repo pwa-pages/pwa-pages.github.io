@@ -1,6 +1,10 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { EventType } from '../service/event.service';
-import { createChainNumber, WatchersDataService } from '../service/watchers.data.service';
+import {
+  createChainNumber,
+  WatchersDataService,
+  WatchersStats,
+} from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { map } from 'rxjs/operators';
 import { ChainType } from '../../service/ts/models/chaintype';
@@ -16,30 +20,14 @@ import { PriceService } from '../service/price.service';
   imports: [CommonModule, FormsModule],
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {
-  chainWatcherCount = createChainNumber();
-  chainPermitCount = createChainNumber();
-  activePermitCount = createChainNumber();
+  watcherStats = new WatchersStats();
+
   triggerPermitCount = createChainNumber();
   bulkPermitCount = createChainNumber();
-  chainLockedRSN = createChainNumber();
-  chainLockedERG = createChainNumber();
-
-  rs_PermitCost = rs_PermitCost;
-  rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
-  rs_WatcherCollateralERG = rs_WatcherCollateralERG;
-  totalWatcherCount: number | undefined;
-  totalPermitCount: number | undefined;
-  totalActivePermitCount: number | undefined;
-  totalLockedRSN: number | undefined;
-  totalLockedERG: number | undefined;
   totalLockedRSNConverted: number | undefined;
   totalLockedERGConverted: number | undefined;
-  totalLocked: number | undefined;
-  watcherValue: number | undefined;
-  permitValue: number | undefined;
   rsnCollateralValue: number | undefined;
   ergCollateralValue: number | undefined;
-  selectedCurrency: Currency | null = null;
 
   constructor(
     injector: Injector,
@@ -50,7 +38,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   }
 
   onCurrencyChange(): void {
-    localStorage.setItem('selectedCurrency', this.selectedCurrency as string);
+    localStorage.setItem('selectedCurrency', this.watcherStats.selectedCurrency as string);
     this.currencyUpdate();
   }
 
@@ -78,61 +66,73 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
         from: 'ERG',
         callback: (c: number) => (this.ergCollateralValue = c),
       },
-      { amount: rs_PermitCost, from: 'RSN', callback: (c: number) => (this.permitValue = c) },
       {
-        amount: this.totalLockedERG ?? 0,
+        amount: rs_PermitCost,
+        from: 'RSN',
+        callback: (c: number) => (this.watcherStats.permitValue = c),
+      },
+      {
+        amount: this.watcherStats.totalLockedERG ?? 0,
         from: 'ERG',
         callback: (l: number) => (this.totalLockedERGConverted = l),
       },
       {
-        amount: (this.totalLockedRSN ?? 0) + rs_PermitCost * (this.totalPermitCount ?? 0),
+        amount:
+          (this.watcherStats.totalLockedRSN ?? 0) +
+          rs_PermitCost * (this.watcherStats.totalPermitCount ?? 0),
         from: 'RSN',
         callback: (l: number) => (this.totalLockedRSNConverted = l),
       },
     ];
 
     conversions.forEach(({ amount, from, callback }) => {
-      this.priceService.convert(amount, from, this.selectedCurrency ?? '').subscribe(callback);
+      this.priceService
+        .convert(amount, from, this.watcherStats.selectedCurrency ?? '')
+        .subscribe(callback);
     });
   }
 
   private updateTotalLocked(): void {
-    this.totalLocked = (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
+    this.watcherStats.totalLocked =
+      (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
   }
 
   setLockedAmounts(chainType: ChainType): void {
-    this.chainLockedRSN[chainType] =
-      this.getValue(this.chainPermitCount, chainType, rs_PermitCost) +
-      this.getValue(this.chainWatcherCount, chainType, rs_WatcherCollateralRSN);
+    this.watcherStats.chainLockedRSN[chainType] =
+      this.getValue(this.watcherStats.chainPermitCount, chainType, rs_PermitCost) +
+      this.getValue(this.watcherStats.chainWatcherCount, chainType, rs_WatcherCollateralRSN);
 
-    this.chainLockedERG[chainType] = this.getValue(
-      this.chainWatcherCount,
+    this.watcherStats.chainLockedERG[chainType] = this.getValue(
+      this.watcherStats.chainWatcherCount,
       chainType,
       rs_WatcherCollateralERG,
     );
 
     Object.values(ChainType).forEach((c) => {
-      this.activePermitCount[c] =
+      this.watcherStats.activePermitCount[c] =
         (this.bulkPermitCount[c] ?? 0) + (this.triggerPermitCount[c] ?? 0);
     });
 
-    this.totalWatcherCount = this.updateTotal(this.chainWatcherCount);
-    this.totalPermitCount = this.updateTotal(this.chainPermitCount);
-    this.totalActivePermitCount = this.updateTotal(this.activePermitCount);
-    this.totalLockedRSN = this.updateTotal(this.chainLockedRSN);
-    this.totalLockedERG = this.updateTotal(this.chainLockedERG);
+    this.watcherStats.totalWatcherCount = this.updateTotal(this.watcherStats.chainWatcherCount);
+    this.watcherStats.totalPermitCount = this.updateTotal(this.watcherStats.chainPermitCount);
+    this.watcherStats.totalActivePermitCount = this.updateTotal(
+      this.watcherStats.activePermitCount,
+    );
+    this.watcherStats.totalLockedRSN = this.updateTotal(this.watcherStats.chainLockedRSN);
+    this.watcherStats.totalLockedERG = this.updateTotal(this.watcherStats.chainLockedERG);
 
     this.currencyUpdate();
   }
 
   currencyUpdate(): void {
-    this.watcherValue = 0;
-    this.permitValue = 0;
+    this.watcherStats.watcherValue = 0;
+    this.watcherStats.permitValue = 0;
 
     this.convertCurrencies();
     this.updateTotalLocked();
 
-    this.watcherValue = (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
+    this.watcherStats.watcherValue =
+      (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
   }
 
   getChainTypes(): ChainType[] {
@@ -142,8 +142,11 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    this.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
-    this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
+    this.watcherStats.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
+    this.watcherStats.selectedCurrency =
+      this.watcherStats.selectedCurrency == null
+        ? Currency.EUR
+        : this.watcherStats.selectedCurrency;
     this.currencyUpdate();
 
     Object.values(ChainType).forEach((c) => {
@@ -176,7 +179,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
           ),
         )
         .subscribe((amount) => {
-          this.chainWatcherCount[c] = amount;
+          this.watcherStats.chainWatcherCount[c] = amount;
           this.setLockedAmounts(c);
         });
 
@@ -184,7 +187,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
         .getPermitsInfo(c)
         .pipe(map((permitsInfo) => permitsInfo?.amount))
         .subscribe((amount) => {
-          this.chainPermitCount[c] = amount;
+          this.watcherStats.chainPermitCount[c] = amount;
           this.setLockedAmounts(c);
         });
     });
