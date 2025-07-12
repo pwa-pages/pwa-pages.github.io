@@ -20,6 +20,12 @@ export class WatchersStats {
   activePermitCount = createChainNumber();
   chainLockedRSN = createChainNumber();
   chainLockedERG = createChainNumber();
+  triggerPermitCount = createChainNumber();
+  bulkPermitCount = createChainNumber();
+  totalLockedRSNConverted: number | undefined;
+  totalLockedERGConverted: number | undefined;
+  rsnCollateralValue: number | undefined;
+  ergCollateralValue: number | undefined;
   totalWatcherCount: number | undefined;
   totalPermitCount: number | undefined;
   totalActivePermitCount: number | undefined;

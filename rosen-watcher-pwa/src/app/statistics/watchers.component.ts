@@ -1,10 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { EventType } from '../service/event.service';
-import {
-  createChainNumber,
-  WatchersDataService,
-  WatchersStats,
-} from '../service/watchers.data.service';
+import { WatchersDataService, WatchersStats } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { map } from 'rxjs/operators';
 import { ChainType } from '../../service/ts/models/chaintype';
@@ -21,13 +17,6 @@ import { PriceService } from '../service/price.service';
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   watcherStats = new WatchersStats();
-
-  triggerPermitCount = createChainNumber();
-  bulkPermitCount = createChainNumber();
-  totalLockedRSNConverted: number | undefined;
-  totalLockedERGConverted: number | undefined;
-  rsnCollateralValue: number | undefined;
-  ergCollateralValue: number | undefined;
 
   constructor(
     injector: Injector,
@@ -59,12 +48,12 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
       {
         amount: rs_WatcherCollateralRSN,
         from: 'RSN',
-        callback: (c: number) => (this.rsnCollateralValue = c),
+        callback: (c: number) => (this.watcherStats.rsnCollateralValue = c),
       },
       {
         amount: rs_WatcherCollateralERG,
         from: 'ERG',
-        callback: (c: number) => (this.ergCollateralValue = c),
+        callback: (c: number) => (this.watcherStats.ergCollateralValue = c),
       },
       {
         amount: rs_PermitCost,
@@ -74,14 +63,14 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
       {
         amount: this.watcherStats.totalLockedERG ?? 0,
         from: 'ERG',
-        callback: (l: number) => (this.totalLockedERGConverted = l),
+        callback: (l: number) => (this.watcherStats.totalLockedERGConverted = l),
       },
       {
         amount:
           (this.watcherStats.totalLockedRSN ?? 0) +
           rs_PermitCost * (this.watcherStats.totalPermitCount ?? 0),
         from: 'RSN',
-        callback: (l: number) => (this.totalLockedRSNConverted = l),
+        callback: (l: number) => (this.watcherStats.totalLockedRSNConverted = l),
       },
     ];
 
@@ -94,7 +83,8 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
   private updateTotalLocked(): void {
     this.watcherStats.totalLocked =
-      (this.totalLockedERGConverted ?? 0) + (this.totalLockedRSNConverted ?? 0);
+      (this.watcherStats.totalLockedERGConverted ?? 0) +
+      (this.watcherStats.totalLockedRSNConverted ?? 0);
   }
 
   setLockedAmounts(chainType: ChainType): void {
@@ -110,7 +100,8 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
     Object.values(ChainType).forEach((c) => {
       this.watcherStats.activePermitCount[c] =
-        (this.bulkPermitCount[c] ?? 0) + (this.triggerPermitCount[c] ?? 0);
+        (this.watcherStats.bulkPermitCount[c] ?? 0) +
+        (this.watcherStats.triggerPermitCount[c] ?? 0);
     });
 
     this.watcherStats.totalWatcherCount = this.updateTotal(this.watcherStats.chainWatcherCount);
@@ -132,7 +123,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.updateTotalLocked();
 
     this.watcherStats.watcherValue =
-      (this.rsnCollateralValue ?? 0) + (this.ergCollateralValue ?? 0);
+      (this.watcherStats.rsnCollateralValue ?? 0) + (this.watcherStats.ergCollateralValue ?? 0);
   }
 
   getChainTypes(): ChainType[] {
@@ -154,7 +145,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
         .getTriggerPermitsInfo(c)
         .pipe(map((permitsInfo) => permitsInfo?.amount))
         .subscribe((amount) => {
-          this.triggerPermitCount[c] = amount;
+          this.watcherStats.triggerPermitCount[c] = amount;
           this.setLockedAmounts(c);
         });
 
@@ -162,7 +153,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
         .getBulkPermitsInfo(c)
         .pipe(map((permitsInfo) => permitsInfo?.amount))
         .subscribe((amount) => {
-          this.bulkPermitCount[c] = amount;
+          this.watcherStats.bulkPermitCount[c] = amount;
           this.setLockedAmounts(c);
         });
     });
