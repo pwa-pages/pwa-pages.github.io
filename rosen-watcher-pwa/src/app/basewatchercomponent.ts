@@ -22,7 +22,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
   protected storageService: StorageService;
   protected dataService: DataService;
   protected browserService: BrowserService;
-  protected route: ActivatedRoute;
+  protected route: ActivatedRoute | undefined;
 
   constructor(protected injector: Injector) {
     this.eventService = this.injector.get(EventService);
@@ -30,7 +30,11 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     this.storageService = this.injector.get(StorageService);
     this.dataService = this.injector.get(DataService);
     this.browserService = this.injector.get(BrowserService);
-    this.route = this.injector.get(ActivatedRoute);
+    try {
+      this.route = this.injector.get(ActivatedRoute);
+    } catch {
+      this.route = undefined;
+    }
   }
 
   resetHeight(): void {
@@ -62,7 +66,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
   }
 
   protected SetupRoute() {
-    this.route.queryParams.subscribe(async (params) => {
+    this.route?.queryParams.subscribe(async (params) => {
       await this.checkProfileParams(params);
       await this.checkAddressParams(params);
     });
