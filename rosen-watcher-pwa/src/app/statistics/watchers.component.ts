@@ -16,7 +16,8 @@ import { PriceService } from '../service/price.service';
   imports: [CommonModule, FormsModule],
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {
-  watcherStats = new WatchersStats();
+  watcherStats: WatchersStats = new WatchersStats();
+  selectedCurrency = '';
 
   constructor(
     injector: Injector,
@@ -27,7 +28,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   }
 
   onCurrencyChange(): void {
-    localStorage.setItem('selectedCurrency', this.watcherStats.selectedCurrency as string);
+    localStorage.setItem('selectedCurrency', this.selectedCurrency as string);
     this.currencyUpdate();
   }
 
@@ -44,86 +45,107 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   }
 
   private convertCurrencies(): void {
-    const conversions = [
-      {
-        amount: rs_WatcherCollateralRSN,
-        from: 'RSN',
-        callback: (c: number) => (this.watcherStats.rsnCollateralValue = c),
-      },
-      {
-        amount: rs_WatcherCollateralERG,
-        from: 'ERG',
-        callback: (c: number) => (this.watcherStats.ergCollateralValue = c),
-      },
-      {
-        amount: rs_PermitCost,
-        from: 'RSN',
-        callback: (c: number) => (this.watcherStats.permitValue = c),
-      },
-      {
-        amount: this.watcherStats.totalLockedERG ?? 0,
-        from: 'ERG',
-        callback: (l: number) => (this.watcherStats.totalLockedERGConverted = l),
-      },
-      {
-        amount:
-          (this.watcherStats.totalLockedRSN ?? 0) +
-          rs_PermitCost * (this.watcherStats.totalPermitCount ?? 0),
-        from: 'RSN',
-        callback: (l: number) => (this.watcherStats.totalLockedRSNConverted = l),
-      },
-    ];
+    Object.values(Currency).forEach((currency) => {
+      const conversions = [
+        {
+          amount: rs_WatcherCollateralRSN,
+          from: 'RSN',
+          callback: (c: number) =>
+            (this.watcherStats.watchersAmounts[currency].rsnCollateralValue = c),
+        },
+        {
+          amount: rs_WatcherCollateralERG,
+          from: 'ERG',
+          callback: (c: number) =>
+            (this.watcherStats.watchersAmounts[currency].ergCollateralValue = c),
+        },
+        {
+          amount: rs_PermitCost,
+          from: 'RSN',
+          callback: (c: number) => (this.watcherStats.watchersAmounts[currency].permitValue = c),
+        },
+        {
+          amount: this.watcherStats.watchersAmounts[currency].totalLockedERG ?? 0,
+          from: 'ERG',
+          callback: (l: number) =>
+            (this.watcherStats.watchersAmounts[currency].totalLockedERGConverted = l),
+        },
+        {
+          amount:
+            (this.watcherStats.watchersAmounts[currency].totalLockedRSN ?? 0) +
+            rs_PermitCost * (this.watcherStats.totalPermitCount ?? 0),
+          from: 'RSN',
+          callback: (l: number) =>
+            (this.watcherStats.watchersAmounts[currency].totalLockedRSNConverted = l),
+        },
+      ];
 
-    conversions.forEach(({ amount, from, callback }) => {
-      this.priceService
-        .convert(amount, from, this.watcherStats.selectedCurrency ?? '')
-        .subscribe(callback);
+      conversions.forEach(({ amount, from, callback }) => {
+        this.priceService.convert(amount, from, currency ?? '').subscribe(callback);
+      });
     });
   }
 
   private updateTotalLocked(): void {
-    this.watcherStats.totalLocked =
-      (this.watcherStats.totalLockedERGConverted ?? 0) +
-      (this.watcherStats.totalLockedRSNConverted ?? 0);
+    Object.values(Currency).forEach((currency) => {
+      this.watcherStats.watchersAmounts[currency].totalLocked =
+        (this.watcherStats.watchersAmounts[currency].totalLockedERGConverted ?? 0) +
+        (this.watcherStats.watchersAmounts[currency].totalLockedRSNConverted ?? 0);
+    });
   }
 
   setLockedAmounts(chainType: ChainType): void {
-    this.watcherStats.chainLockedRSN[chainType] =
-      this.getValue(this.watcherStats.chainPermitCount, chainType, rs_PermitCost) +
-      this.getValue(this.watcherStats.chainWatcherCount, chainType, rs_WatcherCollateralRSN);
+    Object.values(Currency).forEach((currency) => {
+      this.watcherStats.watchersAmounts[currency].chainLockedRSN[chainType] =
+        this.getValue(this.watcherStats.chainPermitCount, chainType, rs_PermitCost) +
+        this.getValue(this.watcherStats.chainWatcherCount, chainType, rs_WatcherCollateralRSN);
 
-    this.watcherStats.chainLockedERG[chainType] = this.getValue(
-      this.watcherStats.chainWatcherCount,
-      chainType,
-      rs_WatcherCollateralERG,
-    );
+      this.watcherStats.watchersAmounts[currency].chainLockedERG[chainType] = this.getValue(
+        this.watcherStats.chainWatcherCount,
+        chainType,
+        rs_WatcherCollateralERG,
+      );
 
-    Object.values(ChainType).forEach((c) => {
-      this.watcherStats.activePermitCount[c] =
-        (this.watcherStats.bulkPermitCount[c] ?? 0) +
-        (this.watcherStats.triggerPermitCount[c] ?? 0);
+      Object.values(ChainType).forEach((c) => {
+        this.watcherStats.activePermitCount[c] =
+          (this.watcherStats.bulkPermitCount[c] ?? 0) +
+          (this.watcherStats.triggerPermitCount[c] ?? 0);
+      });
+
+      this.watcherStats.totalWatcherCount = this.updateTotal(this.watcherStats.chainWatcherCount);
+      this.watcherStats.totalPermitCount = this.updateTotal(this.watcherStats.chainPermitCount);
+      this.watcherStats.totalActivePermitCount = this.updateTotal(
+        this.watcherStats.activePermitCount,
+      );
+      this.watcherStats.watchersAmounts[currency].totalLockedRSN = this.updateTotal(
+        this.watcherStats.watchersAmounts[currency].chainLockedRSN,
+      );
+      this.watcherStats.watchersAmounts[currency].totalLockedERG = this.updateTotal(
+        this.watcherStats.watchersAmounts[currency].chainLockedERG,
+      );
     });
-
-    this.watcherStats.totalWatcherCount = this.updateTotal(this.watcherStats.chainWatcherCount);
-    this.watcherStats.totalPermitCount = this.updateTotal(this.watcherStats.chainPermitCount);
-    this.watcherStats.totalActivePermitCount = this.updateTotal(
-      this.watcherStats.activePermitCount,
-    );
-    this.watcherStats.totalLockedRSN = this.updateTotal(this.watcherStats.chainLockedRSN);
-    this.watcherStats.totalLockedERG = this.updateTotal(this.watcherStats.chainLockedERG);
 
     this.currencyUpdate();
   }
 
+  getWatcherAmounts() {
+    return this.watcherStats.watchersAmounts[this.selectedCurrency as Currency];
+  }
+
   currencyUpdate(): void {
-    this.watcherStats.watcherValue = 0;
-    this.watcherStats.permitValue = 0;
+    Object.values(Currency).forEach((currency) => {
+      this.watcherStats.watchersAmounts[currency].watcherValue = 0;
+      this.watcherStats.watchersAmounts[currency].permitValue = 0;
+    });
 
     this.convertCurrencies();
     this.updateTotalLocked();
 
-    this.watcherStats.watcherValue =
-      (this.watcherStats.rsnCollateralValue ?? 0) + (this.watcherStats.ergCollateralValue ?? 0);
+    Object.values(Currency).forEach((currency) => {
+      this.watcherStats.watchersAmounts[currency].watcherValue =
+        (this.watcherStats.watchersAmounts[currency].rsnCollateralValue ?? 0) +
+        (this.watcherStats.watchersAmounts[currency].ergCollateralValue ?? 0);
+    });
   }
 
   getChainTypes(): ChainType[] {
@@ -133,11 +155,8 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    this.watcherStats.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
-    this.watcherStats.selectedCurrency =
-      this.watcherStats.selectedCurrency == null
-        ? Currency.EUR
-        : this.watcherStats.selectedCurrency;
+    this.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
+    this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
     this.currencyUpdate();
 
     Object.values(ChainType).forEach((c) => {

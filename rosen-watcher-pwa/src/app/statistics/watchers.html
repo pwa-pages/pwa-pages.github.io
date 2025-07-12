@@ -11,11 +11,7 @@
       <div class="watcherrequirements">Watcher requirements:</div>
       <div class="currency">
         <label for="currencySelect">Currency:</label>
-        <select
-          id="currencySelect"
-          [(ngModel)]="watcherStats.selectedCurrency"
-          (change)="onCurrencyChange()"
-        >
+        <select id="currencySelect" [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
           <option value="EUR">Euro</option>
           <option value="USD">US Dollar</option>
           <option value="ERG">Ergo</option>
@@ -25,13 +21,13 @@
     </div>
 
     <div class="watchervaluerow collateralvalues">
-      Watcher collateral: {{watcherStats.rs_WatcherCollateralRSN | number: '1.0-0'}} RSN +
-      {{watcherStats.rs_WatcherCollateralERG}} ERG = {{watcherStats.watcherValue | number: '1.0-0'}}
-      {{this.watcherStats.selectedCurrency}}
+      Watcher collateral: {{getWatcherAmounts().rs_WatcherCollateralRSN | number: '1.0-0'}} RSN +
+      {{getWatcherAmounts().rs_WatcherCollateralERG}} ERG = {{getWatcherAmounts().watcherValue |
+      number: '1.0-0'}} {{this.selectedCurrency}}
       <br />
 
-      Permit value: {{watcherStats.rs_PermitCost | number: '1.0-0'}} RSN =
-      {{watcherStats.permitValue | number: '1.0-0'}} {{this.watcherStats.selectedCurrency}}
+      Permit value: {{getWatcherAmounts().rs_PermitCost | number: '1.0-0'}} RSN =
+      {{getWatcherAmounts().permitValue | number: '1.0-0'}} {{this.selectedCurrency}}
     </div>
 
     <div class="fullrow">Watchers stats:</div>
@@ -51,8 +47,8 @@
         {{ watcherStats.chainPermitCount[chainType] }} ({{ watcherStats.activePermitCount[chainType]
         }})
       </div>
-      <div>{{ watcherStats.chainLockedRSN[chainType] | number: '1.0-0' }}</div>
-      <div>{{ watcherStats.chainLockedERG[chainType] | number: '1.0-0' }}</div>
+      <div>{{ getWatcherAmounts().chainLockedRSN[chainType] | number: '1.0-0' }}</div>
+      <div>{{ getWatcherAmounts().chainLockedERG[chainType] | number: '1.0-0' }}</div>
     </ng-container>
 
     <div class="watchersdispl"></div>
@@ -66,16 +62,16 @@
     <div>Total</div>
     <div>{{watcherStats.totalWatcherCount}}</div>
     <div>{{watcherStats.totalPermitCount}} ({{watcherStats.totalActivePermitCount}})</div>
-    <div>{{watcherStats.totalLockedRSN | number: '1.0-0'}}</div>
-    <div>{{watcherStats.totalLockedERG | number: '1.0-0'}}</div>
+    <div>{{getWatcherAmounts().totalLockedRSN | number: '1.0-0'}}</div>
+    <div>{{getWatcherAmounts().totalLockedERG | number: '1.0-0'}}</div>
 
     <div class="watchersdispl">&nbsp;</div>
     <div class="fivecolumns">&nbsp;</div>
 
     <div class="watchersdispl"></div>
     <div class="fivecolumns">
-      Total locked: {{watcherStats.totalLocked | number: '1.0-0'}}
-      {{this.watcherStats.selectedCurrency}} (permits + collateral)
+      Total locked: {{getWatcherAmounts().totalLocked | number: '1.0-0'}} {{this.selectedCurrency}}
+      (permits + collateral)
     </div>
 
     <br />

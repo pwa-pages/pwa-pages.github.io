@@ -14,30 +14,36 @@ export function createChainNumber(): Record<ChainType, number | undefined> {
   >;
 }
 
-export class WatchersStats {
-  chainWatcherCount = createChainNumber();
-  chainPermitCount = createChainNumber();
-  activePermitCount = createChainNumber();
+export class WatchersAmounts {
   chainLockedRSN = createChainNumber();
   chainLockedERG = createChainNumber();
-  triggerPermitCount = createChainNumber();
-  bulkPermitCount = createChainNumber();
   totalLockedRSNConverted: number | undefined;
   totalLockedERGConverted: number | undefined;
   rsnCollateralValue: number | undefined;
   ergCollateralValue: number | undefined;
-  totalWatcherCount: number | undefined;
-  totalPermitCount: number | undefined;
-  totalActivePermitCount: number | undefined;
   totalLockedRSN: number | undefined;
   totalLockedERG: number | undefined;
   totalLocked: number | undefined;
   watcherValue: number | undefined;
   permitValue: number | undefined;
-  selectedCurrency: Currency | null = null;
   rs_PermitCost = rs_PermitCost;
   rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
   rs_WatcherCollateralERG = rs_WatcherCollateralERG;
+}
+
+export class WatchersStats {
+  chainWatcherCount = createChainNumber();
+  chainPermitCount = createChainNumber();
+  activePermitCount = createChainNumber();
+  triggerPermitCount = createChainNumber();
+  bulkPermitCount = createChainNumber();
+  totalWatcherCount: number | undefined;
+  totalPermitCount: number | undefined;
+  totalActivePermitCount: number | undefined;
+
+  watchersAmounts: Record<Currency, WatchersAmounts> = Object.fromEntries(
+    Object.values(Currency).map((currency) => [currency, new WatchersAmounts()]),
+  ) as Record<Currency, WatchersAmounts>;
 }
 
 @Injectable({
