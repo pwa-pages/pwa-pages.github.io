@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1752312438540,
+  "timestamp": 1752332073173,
   "appData": {
-    "version": "3.43.7"
+    "version": "3.43.8"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-MSG36IJC.js",
+        "./main-VV3M32SA.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
         "./rosen.html",
-        "./scripts-NMVDMDN7.js",
+        "./scripts-LQMJOSXG.js",
         "./shared/js/ngsw-worker.js",
         "./styles-QCENVXIT.css"
       ],
@@ -79,8 +79,8 @@
     "./assets/rosen_watchers.html": "c77ef0df4112ccfc7b0115d53dddbbd7c075a23d",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "0f722345bcef04d4688a7c6bc0660af6ef6b771b",
-    "./main-MSG36IJC.js": "aa350f4f8f4e0e3192ff2963eb070bc3fe653514",
+    "./index.html": "e623d56d0b87183d457dac4e78e42c92c286a0ce",
+    "./main-VV3M32SA.js": "d4e32245588036e6c613451731326032018d986d",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -98,7 +98,7 @@
     "./media/fa-v4compatibility-YY67RJWG.ttf": "ad415f99aab4d9bf17e523f484a377f839ca8c3c",
     "./polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
     "./rosen.html": "fdd96211de1f83e4e064b109ca06d9906235943c",
-    "./scripts-NMVDMDN7.js": "481cdaeaeb21c66953f0e2dee0ee45dcb1ff5988",
+    "./scripts-LQMJOSXG.js": "72eea9c251f8a0a6e137ce183ee0d69330b94b53",
     "./shared/js/ngsw-worker.js": "0279adb21fec5e4434c8eb9dfdb43b4bf65a70ea",
     "./styles-QCENVXIT.css": "9a3af198fb5ff40f702ec4a63eb9b39af706ff13"
   },
