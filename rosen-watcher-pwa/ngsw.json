@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1752407060908,
+  "timestamp": 1752407742264,
   "appData": {
     "version": "3.44.6"
   },
@@ -34,6 +34,7 @@
         "ignoreVary": true
       },
       "urls": [
+        "./assets/README.md",
         "./assets/icons/icon-512x512.png",
         "./assets/icons/icon-512x512_bk.png",
         "./assets/icons/icon-512x512_bk2.png",
@@ -66,6 +67,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
+    "./assets/README.md": "e82f8f6e1c2a50fec1fce293a0f7099a4ebd165f",
     "./assets/icons/icon-512x512.png": "70bcb04083de346145fa5a506812f23b0ed80772",
     "./assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./assets/icons/icon-512x512_bk2.png": "bc9f886184d64802571f0d7878d64e7b15f9f1ea",

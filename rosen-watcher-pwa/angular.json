@@ -124,7 +124,8 @@
             "main": "src/app/webcomponents/watchers-web-component.ts",      
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/assets/rosen_watchers.html"
+              "src/assets/rosen_watchers.html",
+              "src/assets/README.md"
             ],
             "styles": [
               "src/styles.css"

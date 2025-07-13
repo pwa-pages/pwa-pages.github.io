@@ -48,5 +48,6 @@ for file in "$dir"main*.js "$dir"runtime*.js "$dir"styles*.css; do
 done
 
 rm web_component/*
+cp dist/rosen-watchers/assets/README.md web_component/
 cp dist/rosen-watchers/* web_component/
 cp dist/rosen-chain-performance/* web_component/
