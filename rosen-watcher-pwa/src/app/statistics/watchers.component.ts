@@ -13,7 +13,22 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {
-  @Input() renderHtml = true;
+  private _renderHtml = true;
+
+  @Input()
+  set renderHtml(value: string | boolean) {
+    // Treat 'false' string or false boolean as false, otherwise true
+    this._renderHtml = value === false || value === 'false' ? false : true;
+  }
+
+  get renderHtml(): boolean {
+    return this._renderHtml;
+  }
+
+  isHtmlRenderEnabled(): boolean {
+    return this._renderHtml;
+  }
+
   @Output() notifyWatchersStatsChanged = new EventEmitter<WatchersStats>();
 
   watchersStats: WatchersStats = new WatchersStats();

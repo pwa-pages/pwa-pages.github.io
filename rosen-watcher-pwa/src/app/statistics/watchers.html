@@ -1,11 +1,11 @@
-<div *ngIf="renderHtml" class="headercontainer">
+<div *ngIf="isHtmlRenderEnabled()" class="headercontainer">
   <div class="headerblock">
     Number of watchers:
     <div class="header">{{ watchersStats.totalWatcherCount }}</div>
   </div>
 </div>
 
-<div *ngIf="renderHtml" class="watchersmaincontainer main-content">
+<div *ngIf="isHtmlRenderEnabled()" class="watchersmaincontainer main-content">
   <div class="watcherscontainer">
     <div class="currencyrow">
       <div class="watcherrequirements">Watcher requirements:</div>
