@@ -44,6 +44,12 @@ similar to https://pwa-pages.github.io/rosen-watcher-pwa/watchers.<br/>
 All data from that screen can also be retrieved by a dom event in case
 the intention is to design the html oneself. <br/>
 In this way all relevant data is exposed through a dom event.
+<br/><br/>
+An example of usage of the component with the latest versions can be found at:
+<br/><br/>
+<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen_watchers.html">https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen_watchers.html</a> This file always contains the latest javascript versions with the latest build.
+A css is added to that page and can be used to build on, but it can be ignored if all css needs to be custom.
+<br/><br/>
 </p>
 
 <hr />
@@ -347,29 +353,6 @@ and act accordingly.
 
 <h2 id="full-usage-example">📄 Full Usage Example</h2>
 
-<pre><code>&lt;!doctype html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8" /&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
-    &lt;title&gt;Web Component Example&lt;/title&gt;
-
-    &lt;link rel="stylesheet" href="styles.css" media="all" onload="this.media='all'" /&gt;
-
-    &lt;script src="runtime.js" type="module"&gt;&lt;/script&gt;
-    &lt;script src="main.js" type="module"&gt;&lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;app-watchers render-html="true"&gt;&lt;/app-watchers&gt;
-
-    &lt;script&gt;
-      const watchersEl = document.querySelector('app-watchers');
-
-      watchersEl.addEventListener('notifyWatchersStatsChanged', (event) =&gt; {
-        console.log('Watchers stats changed:', JSON.stringify(event.detail));
-      });
-    &lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
+As mentioned above a full usage example can be found at <br/>
+<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen_watchers.html">https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen_watchers.html</a>
+This page always contains the latest versions of javascript and css, download those and use the component similarly as in the html.
