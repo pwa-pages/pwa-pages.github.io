@@ -70,7 +70,7 @@ A css is added to that page and can be used to build on, but it can be ignored i
       <td><code>render-html</code></td>
       <td>Boolean</td>
       <td>"true", "false"</td>
-      <td>Enables or disables rendering of inner HTML content inside the component. Defaults to <code>"false"</code>.</td>
+      <td>Enables or disables rendering of inner HTML content inside the component. Defaults to <code>"true"</code>.</td>
     </tr>
   </tbody>
 </table>

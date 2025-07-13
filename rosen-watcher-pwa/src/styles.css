@@ -497,3 +497,20 @@ button:active {
 .date-selection {
   width: 300px;
 }
+
+.watchers-readme {
+  font-size: 1.6vh;
+  color: #333;
+  background: #f7f7f7;
+  border-left: 4px solid #8a8080;
+  padding: 1vh 1vw;
+  margin: 1vh 0;
+  border-radius: 6px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  line-height: 1.7;
+}
+.watchers-readme a {
+  text-decoration: underline;
+  font-weight: bold;
+  word-break: break-all;
+}
