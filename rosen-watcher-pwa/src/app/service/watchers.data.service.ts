@@ -16,33 +16,33 @@ export function createChainNumber(): Record<ChainType, number | undefined> {
 }
 
 export class WatchersAmounts {
-  totalLockedRSNConverted: number | undefined;
-  totalLockedERGConverted: number | undefined;
-  rsnCollateralValue: number | undefined;
-  ergCollateralValue: number | undefined;
-  totalLocked: number | undefined;
-  watcherValue: number | undefined;
+  ergCollateral: number | undefined;
   permitValue: number | undefined;
+  rsnCollateral: number | undefined;
+  totalLocked: number | undefined;
+  totalLockedERG: number | undefined;
+  totalLockedRSN: number | undefined;
+  watcherValue: number | undefined;
 }
 
 export class WatchersStats {
-  chainWatcherCount = createChainNumber();
-  chainPermitCount = createChainNumber();
   activePermitCount = createChainNumber();
-  triggerPermitCount = createChainNumber();
   bulkPermitCount = createChainNumber();
-  chainLockedRSN = createChainNumber();
   chainLockedERG = createChainNumber();
-  totalLockedRSN: number | undefined;
-  totalLockedERG: number | undefined;
-  totalWatcherCount: number | undefined;
-  totalPermitCount: number | undefined;
+  chainLockedRSN = createChainNumber();
+  chainPermitCount = createChainNumber();
+  chainWatcherCount = createChainNumber();
+  permitCost = rs_PermitCost;
   totalActivePermitCount: number | undefined;
-  rs_PermitCost = rs_PermitCost;
-  rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
-  rs_WatcherCollateralERG = rs_WatcherCollateralERG;
+  totalLockedERG: number | undefined;
+  totalLockedRSN: number | undefined;
+  totalPermitCount: number | undefined;
+  totalWatcherCount: number | undefined;
+  triggerPermitCount = createChainNumber();
+  watcherCollateralERG = rs_WatcherCollateralERG;
+  watcherCollateralRSN = rs_WatcherCollateralRSN;
 
-  watchersAmounts: Record<Currency, WatchersAmounts> = Object.fromEntries(
+  watchersAmountsPerCurrency: Record<Currency, WatchersAmounts> = Object.fromEntries(
     Object.values(Currency).map((currency) => [currency, new WatchersAmounts()]),
   ) as Record<Currency, WatchersAmounts>;
 }
@@ -91,24 +91,25 @@ export class WatchersDataService {
           amount: rs_WatcherCollateralRSN,
           from: 'RSN',
           callback: (c: number) =>
-            (this.watchersStats.watchersAmounts[currency].rsnCollateralValue = c),
+            (this.watchersStats.watchersAmountsPerCurrency[currency].rsnCollateral = c),
         },
         {
           amount: rs_WatcherCollateralERG,
           from: 'ERG',
           callback: (c: number) =>
-            (this.watchersStats.watchersAmounts[currency].ergCollateralValue = c),
+            (this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral = c),
         },
         {
           amount: rs_PermitCost,
           from: 'RSN',
-          callback: (c: number) => (this.watchersStats.watchersAmounts[currency].permitValue = c),
+          callback: (c: number) =>
+            (this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = c),
         },
         {
           amount: this.watchersStats.totalLockedERG ?? 0,
           from: 'ERG',
           callback: (l: number) =>
-            (this.watchersStats.watchersAmounts[currency].totalLockedERGConverted = l),
+            (this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedERG = l),
         },
         {
           amount:
@@ -116,7 +117,7 @@ export class WatchersDataService {
             rs_PermitCost * (this.watchersStats.totalPermitCount ?? 0),
           from: 'RSN',
           callback: (l: number) =>
-            (this.watchersStats.watchersAmounts[currency].totalLockedRSNConverted = l),
+            (this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedRSN = l),
         },
       ];
 
@@ -128,9 +129,9 @@ export class WatchersDataService {
 
   private updateTotalLocked(): void {
     Object.values(Currency).forEach((currency) => {
-      this.watchersStats.watchersAmounts[currency].totalLocked =
-        (this.watchersStats.watchersAmounts[currency].totalLockedERGConverted ?? 0) +
-        (this.watchersStats.watchersAmounts[currency].totalLockedRSNConverted ?? 0);
+      this.watchersStats.watchersAmountsPerCurrency[currency].totalLocked =
+        (this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedERG ?? 0) +
+        (this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedRSN ?? 0);
     });
   }
   private getValue(
@@ -171,17 +172,17 @@ export class WatchersDataService {
 
   currencyUpdate(): void {
     Object.values(Currency).forEach((currency) => {
-      this.watchersStats.watchersAmounts[currency].watcherValue = 0;
-      this.watchersStats.watchersAmounts[currency].permitValue = 0;
+      this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = 0;
+      this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = 0;
     });
 
     this.convertCurrencies();
     this.updateTotalLocked();
 
     Object.values(Currency).forEach((currency) => {
-      this.watchersStats.watchersAmounts[currency].watcherValue =
-        (this.watchersStats.watchersAmounts[currency].rsnCollateralValue ?? 0) +
-        (this.watchersStats.watchersAmounts[currency].ergCollateralValue ?? 0);
+      this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue =
+        (this.watchersStats.watchersAmountsPerCurrency[currency].rsnCollateral ?? 0) +
+        (this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral ?? 0);
     });
 
     const newStats = JSON.stringify(this.watchersStats);

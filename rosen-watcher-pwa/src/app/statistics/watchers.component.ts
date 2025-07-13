@@ -57,7 +57,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   }
 
   getWatcherAmounts() {
-    return this.watchersStats.watchersAmounts[this.selectedCurrency as Currency];
+    return this.watchersStats.watchersAmountsPerCurrency[this.selectedCurrency as Currency];
   }
 
   override async ngOnInit(): Promise<void> {
