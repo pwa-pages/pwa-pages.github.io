@@ -1,7 +1,7 @@
 <div class="headercontainer">
   <div class="headerblock">
     Number of watchers:
-    <div class="header">{{ watcherStats.totalWatcherCount }}</div>
+    <div class="header">{{ watchersStats.totalWatcherCount }}</div>
   </div>
 </div>
 
@@ -42,10 +42,10 @@
     <ng-container *ngFor="let chainType of getChainTypes()">
       <div class="{{ chainType }} watchersdispl"></div>
       <div>{{ chainType }}</div>
-      <div>{{ watcherStats.chainWatcherCount[chainType] }}</div>
+      <div>{{ watchersStats.chainWatcherCount[chainType] }}</div>
       <div>
-        {{ watcherStats.chainPermitCount[chainType] }} ({{ watcherStats.activePermitCount[chainType]
-        }})
+        {{ watchersStats.chainPermitCount[chainType] }} ({{
+        watchersStats.activePermitCount[chainType] }})
       </div>
       <div>{{ getWatcherAmounts().chainLockedRSN[chainType] | number: '1.0-0' }}</div>
       <div>{{ getWatcherAmounts().chainLockedERG[chainType] | number: '1.0-0' }}</div>
@@ -60,8 +60,8 @@
 
     <div class="watchersdispl"></div>
     <div>Total</div>
-    <div>{{watcherStats.totalWatcherCount}}</div>
-    <div>{{watcherStats.totalPermitCount}} ({{watcherStats.totalActivePermitCount}})</div>
+    <div>{{watchersStats.totalWatcherCount}}</div>
+    <div>{{watchersStats.totalPermitCount}} ({{watchersStats.totalActivePermitCount}})</div>
     <div>{{getWatcherAmounts().totalLockedRSN | number: '1.0-0'}}</div>
     <div>{{getWatcherAmounts().totalLockedERG | number: '1.0-0'}}</div>
 

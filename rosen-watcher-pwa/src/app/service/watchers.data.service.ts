@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, signal } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { DownloadService } from './download.service';
 import { Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { ChainType } from '../../service/ts/models/chaintype';
 import { WatcherInfo } from '../../service/ts/models/watcher.info';
 import { Token } from '../../service/ts/models/token';
 import '../../shared/ts/chain.service';
+import { PriceService } from './price.service';
 
 export function createChainNumber(): Record<ChainType, number | undefined> {
   return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as Record<
@@ -54,10 +55,19 @@ export class WatchersDataService {
     'https://api.ergoplatform.com/api/v1/addresses/ChTbcUHgBNqNMVjzV1dvCb2UDrX9nh6rGGcURCFEYXuH5ykKh7Ea3FvpFhHb9AnxXJkgAZ6WASN7Rdn7VMgkFaqP5Z5RWp84cDTmsZkhYrgAVGN7mjeLs8UxqUvRi2ArZbm35Xqk8Y88Uq2MJzmDVHLHzCYRGym8XPxFM4YEVxqzHSKYYDvaMLgKvoskFXKrvceAqEiyih26hjpekCmefiF1VmrPwwShrYYxgHLFCZdigw5JWKV4DmewuR1FH3oNtGoFok859SXeuRbpQfrTjHhGVfDsbXEo3GYP2imAh1APKyLEsG9LcE5WZnJV8eseQnYA8sACLDKZ8Tbpp9KUE7QZNFpnwGnkYx7eybbrCeFDFjTGpsBzaS6fRKrWj2J4Wy3TTyTU1F8iMCrHBF8inZPw9Kg9YEZuJMdXDFNtuaK15u86mF2s2Z5B1vdL5MtZfWThFLnixKds8ABEmGbe8n75Dym5Wv3pkEXQ6XPpaMjUxHfRJB3EfcoFM5nsZHWSTfbFBcHxSRnEiiU67cgJsBUpQn7FvEvqNLiKM4fL3yyykMtQ6RjAS8rhycszphvQa5qFrDHie4vPuTq8/balance/confirmed';
 
   readonly rsnToken = '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';
+  readonly watchersStatsSignal = signal<WatchersStats>(new WatchersStats());
+  readonly watchersStats = new WatchersStats();
 
   busyCounter = 0;
 
-  constructor(private downloadService: DownloadService) {}
+  constructor(
+    private downloadService: DownloadService,
+    private priceService: PriceService,
+  ) {}
+
+  getWatcherStats(): Signal<WatchersStats> {
+    return this.watchersStatsSignal;
+  }
 
   getWatchersInfo(): Observable<WatcherInfo> {
     const result = this.downloadService.downloadStream<WatcherInfo>(this.watcherUrl);
@@ -68,6 +78,119 @@ export class WatchersDataService {
   getPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
     const address = permitAddresses[chainType];
     return this.downloadPermitInfo(address, this.rsnToken, null);
+  }
+
+  private updateTotal(map: Record<ChainType, number | undefined>): number | undefined {
+    return Object.values(map).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
+  }
+
+  private convertCurrencies(): void {
+    Object.values(Currency).forEach((currency) => {
+      const conversions = [
+        {
+          amount: rs_WatcherCollateralRSN,
+          from: 'RSN',
+          callback: (c: number) =>
+            (this.watchersStats.watchersAmounts[currency].rsnCollateralValue = c),
+        },
+        {
+          amount: rs_WatcherCollateralERG,
+          from: 'ERG',
+          callback: (c: number) =>
+            (this.watchersStats.watchersAmounts[currency].ergCollateralValue = c),
+        },
+        {
+          amount: rs_PermitCost,
+          from: 'RSN',
+          callback: (c: number) => (this.watchersStats.watchersAmounts[currency].permitValue = c),
+        },
+        {
+          amount: this.watchersStats.watchersAmounts[currency].totalLockedERG ?? 0,
+          from: 'ERG',
+          callback: (l: number) =>
+            (this.watchersStats.watchersAmounts[currency].totalLockedERGConverted = l),
+        },
+        {
+          amount:
+            (this.watchersStats.watchersAmounts[currency].totalLockedRSN ?? 0) +
+            rs_PermitCost * (this.watchersStats.totalPermitCount ?? 0),
+          from: 'RSN',
+          callback: (l: number) =>
+            (this.watchersStats.watchersAmounts[currency].totalLockedRSNConverted = l),
+        },
+      ];
+
+      conversions.forEach(({ amount, from, callback }) => {
+        this.priceService.convert(amount, from, currency ?? '').subscribe(callback);
+      });
+    });
+  }
+
+  private updateTotalLocked(): void {
+    Object.values(Currency).forEach((currency) => {
+      this.watchersStats.watchersAmounts[currency].totalLocked =
+        (this.watchersStats.watchersAmounts[currency].totalLockedERGConverted ?? 0) +
+        (this.watchersStats.watchersAmounts[currency].totalLockedRSNConverted ?? 0);
+    });
+  }
+  private getValue(
+    map: Record<ChainType, number | undefined>,
+    chainType: ChainType,
+    multiplier: number,
+  ): number {
+    return (map[chainType] ?? 0) * multiplier;
+  }
+
+  setLockedAmounts(chainType: ChainType): void {
+    Object.values(Currency).forEach((currency) => {
+      this.watchersStats.watchersAmounts[currency].chainLockedRSN[chainType] =
+        this.getValue(this.watchersStats.chainPermitCount, chainType, rs_PermitCost) +
+        this.getValue(this.watchersStats.chainWatcherCount, chainType, rs_WatcherCollateralRSN);
+
+      this.watchersStats.watchersAmounts[currency].chainLockedERG[chainType] = this.getValue(
+        this.watchersStats.chainWatcherCount,
+        chainType,
+        rs_WatcherCollateralERG,
+      );
+
+      Object.values(ChainType).forEach((c) => {
+        this.watchersStats.activePermitCount[c] =
+          (this.watchersStats.bulkPermitCount[c] ?? 0) +
+          (this.watchersStats.triggerPermitCount[c] ?? 0);
+      });
+
+      this.watchersStats.totalWatcherCount = this.updateTotal(this.watchersStats.chainWatcherCount);
+      this.watchersStats.totalPermitCount = this.updateTotal(this.watchersStats.chainPermitCount);
+      this.watchersStats.totalActivePermitCount = this.updateTotal(
+        this.watchersStats.activePermitCount,
+      );
+      this.watchersStats.watchersAmounts[currency].totalLockedRSN = this.updateTotal(
+        this.watchersStats.watchersAmounts[currency].chainLockedRSN,
+      );
+      this.watchersStats.watchersAmounts[currency].totalLockedERG = this.updateTotal(
+        this.watchersStats.watchersAmounts[currency].chainLockedERG,
+      );
+    });
+
+    this.currencyUpdate();
+  }
+
+  currencyUpdate(): void {
+    Object.values(Currency).forEach((currency) => {
+      this.watchersStats.watchersAmounts[currency].watcherValue = 0;
+      this.watchersStats.watchersAmounts[currency].permitValue = 0;
+    });
+
+    this.convertCurrencies();
+    this.updateTotalLocked();
+
+    Object.values(Currency).forEach((currency) => {
+      this.watchersStats.watchersAmounts[currency].watcherValue =
+        (this.watchersStats.watchersAmounts[currency].rsnCollateralValue ?? 0) +
+        (this.watchersStats.watchersAmounts[currency].ergCollateralValue ?? 0);
+    });
+
+    this.watchersStatsSignal.set(this.watchersStats);
   }
 
   private downloadPermitInfo(address: string, tokenId: string | null, tokenName: string | null) {
@@ -109,5 +232,47 @@ export class WatchersDataService {
   getBulkPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
     const address = permitBulkAddresses[chainType];
     return this.downloadPermitInfo(address, null, 'rspv2' + chainType + 'RWT');
+  }
+
+  download() {
+    Object.values(ChainType).forEach((c) => {
+      this.getTriggerPermitsInfo(c)
+        .pipe(map((permitsInfo) => permitsInfo?.amount))
+        .subscribe((amount) => {
+          this.watchersStats.triggerPermitCount[c] = amount;
+          this.setLockedAmounts(c);
+        });
+
+      this.getBulkPermitsInfo(c)
+        .pipe(map((permitsInfo) => permitsInfo?.amount))
+        .subscribe((amount) => {
+          this.watchersStats.bulkPermitCount[c] = amount;
+          this.setLockedAmounts(c);
+        });
+    });
+
+    const watcherInfo$ = this.getWatchersInfo();
+
+    Object.values(ChainType).forEach((c) => {
+      watcherInfo$
+        .pipe(
+          map(
+            (watcherInfo) =>
+              watcherInfo.tokens.find((token: Token) => token.name === 'rspv2' + c + 'AWC')
+                ?.amount ?? 0,
+          ),
+        )
+        .subscribe((amount) => {
+          this.watchersStats.chainWatcherCount[c] = amount;
+          this.setLockedAmounts(c);
+        });
+
+      this.getPermitsInfo(c)
+        .pipe(map((permitsInfo) => permitsInfo?.amount))
+        .subscribe((amount) => {
+          this.watchersStats.chainPermitCount[c] = amount;
+          this.setLockedAmounts(c);
+        });
+    });
   }
 }
