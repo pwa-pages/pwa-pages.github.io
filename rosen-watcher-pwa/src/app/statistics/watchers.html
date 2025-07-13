@@ -21,12 +21,12 @@
     </div>
 
     <div class="watchervaluerow collateralvalues">
-      Watcher collateral: {{getWatcherAmounts().rs_WatcherCollateralRSN | number: '1.0-0'}} RSN +
-      {{getWatcherAmounts().rs_WatcherCollateralERG}} ERG = {{getWatcherAmounts().watcherValue |
-      number: '1.0-0'}} {{this.selectedCurrency}}
+      Watcher collateral: {{watchersStats.rs_WatcherCollateralRSN | number: '1.0-0'}} RSN +
+      {{watchersStats.rs_WatcherCollateralERG}} ERG = {{getWatcherAmounts().watcherValue | number:
+      '1.0-0'}} {{this.selectedCurrency}}
       <br />
 
-      Permit value: {{getWatcherAmounts().rs_PermitCost | number: '1.0-0'}} RSN =
+      Permit value: {{watchersStats.rs_PermitCost | number: '1.0-0'}} RSN =
       {{getWatcherAmounts().permitValue | number: '1.0-0'}} {{this.selectedCurrency}}
     </div>
 
@@ -47,8 +47,8 @@
         {{ watchersStats.chainPermitCount[chainType] }} ({{
         watchersStats.activePermitCount[chainType] }})
       </div>
-      <div>{{ getWatcherAmounts().chainLockedRSN[chainType] | number: '1.0-0' }}</div>
-      <div>{{ getWatcherAmounts().chainLockedERG[chainType] | number: '1.0-0' }}</div>
+      <div>{{ watchersStats.chainLockedRSN[chainType] | number: '1.0-0' }}</div>
+      <div>{{ watchersStats.chainLockedERG[chainType] | number: '1.0-0' }}</div>
     </ng-container>
 
     <div class="watchersdispl"></div>
@@ -62,8 +62,8 @@
     <div>Total</div>
     <div>{{watchersStats.totalWatcherCount}}</div>
     <div>{{watchersStats.totalPermitCount}} ({{watchersStats.totalActivePermitCount}})</div>
-    <div>{{getWatcherAmounts().totalLockedRSN | number: '1.0-0'}}</div>
-    <div>{{getWatcherAmounts().totalLockedERG | number: '1.0-0'}}</div>
+    <div>{{watchersStats.totalLockedRSN | number: '1.0-0'}}</div>
+    <div>{{watchersStats.totalLockedERG | number: '1.0-0'}}</div>
 
     <div class="watchersdispl">&nbsp;</div>
     <div class="fivecolumns">&nbsp;</div>
