@@ -11,8 +11,7 @@
     <script src="{{main.js}}" type="module"></script>
   </head>
   <body>
-    <!-- Use your custom web component -->
-    <app-watchers></app-watchers>
+    <app-watchers render-html="true"></app-watchers>
 
     <script>
       const watchersEl = document.querySelector('app-watchers');
