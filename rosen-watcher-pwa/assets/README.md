@@ -6,7 +6,7 @@
 <p>The components are based on functionality from rosen watchers pwa app: https://pwa-pages.github.io/rosen-watcher-pwa/.
 Some people showed interest in using this functionality on their site,
 having this exposed as a javascript component seems to be an easy way of integrating.
-
+If there are issues pls send them to https://t.me/rosenbridge_erg to @Pebblerye.
 </p>
 
 
