@@ -119,7 +119,14 @@ and act accordingly.
     "Ethereum": 0,
     "Doge": 0
   },
-  "bulkPermitCount": {},
+  "bulkPermitCount": {
+    "Binance": 0,
+    "Bitcoin": 0,
+    "Cardano": 0,
+    "Ergo": 0,
+    "Ethereum": 0,
+    "Doge": 0
+  },
   "chainLockedERG": {
     "Binance": 20000,
     "Bitcoin": 21600,
