@@ -45,7 +45,7 @@ All data from that screen can also be retrieved by a dom event in case
 the intention is to design the html oneself. <br/>
 In this way all relevant data is exposed through a dom event.
 <br/><br/>
-An example of usage of the component with the latest versions can be found at:
+An example(and the place to download the needed javascripts) of usage of the component with the latest versions can be found at:
 <br/><br/>
 <a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen_watchers.html">https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen_watchers.html</a> This file always contains the latest javascript versions with the latest build.
 A css is added to that page and can be used to build on, but it can be ignored if all css needs to be custom.
