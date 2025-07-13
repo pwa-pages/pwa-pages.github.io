@@ -1,4 +1,4 @@
-import { Component, effect, Injector, OnInit } from '@angular/core';
+import { Component, effect, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { EventType } from '../service/event.service';
 import { WatchersDataService, WatchersStats } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
@@ -13,6 +13,9 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {
+  @Input() renderHtml = true;
+  @Output() notifyWatchersStatsChanged = new EventEmitter<WatchersStats>();
+
   watchersStats: WatchersStats = new WatchersStats();
   selectedCurrency = '';
 
@@ -26,6 +29,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
     effect(() => {
       this.watchersStats = watcherStats();
+      this.notifyWatchersStatsChanged.emit(this.watchersStats);
     });
   }
 

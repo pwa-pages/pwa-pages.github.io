@@ -8,10 +8,18 @@
     <link rel="stylesheet" href="styles.7120001b0d90dbf4.css" media="all" onload="this.media='all'" />
 
     <script src="runtime.ece741d46337c136.js" type="module"></script>
-    <script src="main.f2eecf031c684bbc.js" type="module"></script>
+    <script src="main.f369aaa42ee78443.js" type="module"></script>
   </head>
   <body>
     <!-- Use your custom web component -->
     <app-watchers></app-watchers>
+
+    <script>
+      const watchersEl = document.querySelector('app-watchers');
+
+      watchersEl.addEventListener('notifyWatchersStatsChanged', (event) => {
+        console.log('Watchers stats changed:', JSON.stringify(event.detail));
+      });
+    </script>
   </body>
 </html>

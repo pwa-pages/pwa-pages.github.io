@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1752392835923,
+  "timestamp": 1752397170382,
   "appData": {
-    "version": "3.44.1"
+    "version": "3.44.2"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-TVGLLJSI.js",
+        "./main-P7DAJMCO.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
         "./rosen.html",
@@ -76,11 +76,11 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./assets/rosen-chain-performance.html": "423ebc10aca3a3982c9316b844b6fe4dd0d33e46",
-    "./assets/rosen_watchers.html": "c77ef0df4112ccfc7b0115d53dddbbd7c075a23d",
+    "./assets/rosen_watchers.html": "a59be5cb9dfb633dc0eae9ebefe0e665cc6401c9",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "d00b061e737167ea24a8110a068176ecd6caeb98",
-    "./main-TVGLLJSI.js": "17e6ce47a5ff368a7b6e36ac76b704e461a9838f",
+    "./index.html": "48fd000d025d2c19c98feb77e8dc5025a3a9276b",
+    "./main-P7DAJMCO.js": "7a2e27780abab9a17977889ffb33ff4d57a8cc42",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",

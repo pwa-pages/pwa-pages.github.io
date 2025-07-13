@@ -190,7 +190,10 @@ export class WatchersDataService {
         (this.watchersStats.watchersAmounts[currency].ergCollateralValue ?? 0);
     });
 
-    this.watchersStatsSignal.set(this.watchersStats);
+    const newStats = JSON.stringify(this.watchersStats);
+    if (JSON.stringify(this.watchersStatsSignal()) !== newStats) {
+      this.watchersStatsSignal.set(JSON.parse(newStats));
+    }
   }
 
   private downloadPermitInfo(address: string, tokenId: string | null, tokenName: string | null) {

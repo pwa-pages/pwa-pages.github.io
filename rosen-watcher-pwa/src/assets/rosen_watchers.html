@@ -13,5 +13,13 @@
   <body>
     <!-- Use your custom web component -->
     <app-watchers></app-watchers>
+
+    <script>
+      const watchersEl = document.querySelector('app-watchers');
+
+      watchersEl.addEventListener('notifyWatchersStatsChanged', (event) => {
+        console.log('Watchers stats changed:', JSON.stringify(event.detail));
+      });
+    </script>
   </body>
 </html>
