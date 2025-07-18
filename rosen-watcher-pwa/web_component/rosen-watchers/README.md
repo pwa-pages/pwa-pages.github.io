@@ -47,7 +47,7 @@ In this way all relevant data is exposed through a dom event.
 <br/><br/>
 An example(and the place to download the needed javascripts) of usage of the component with the latest versions can be found at:
 <br/><br/>
-<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers">https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers</a> This file always contains the latest javascript versions with the latest build.
+<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers/index.html">https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers/index.html</a> This file always contains the latest javascript versions with the latest build.
 A css is added to that page and can be used to build on, but it can be ignored if all css needs to be custom.
 <br/><br/>
 </p>
@@ -361,5 +361,5 @@ and act accordingly.
 <h2 id="full-usage-example">📄 Full Usage Example</h2>
 
 As mentioned above a full usage example can be found at <br/>
-<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers">https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers</a>
+<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers/index.html">https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers/index.html</a>
 This page always contains the latest versions of javascript and css, download those and use the component similarly as in the html.
