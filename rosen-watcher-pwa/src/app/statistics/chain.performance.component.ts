@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Inject, Injector, OnInit } from '@angular/core';
 import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChartService } from '../service/chart.service';
@@ -10,12 +10,14 @@ import { NavigationService } from '../service/navigation.service';
 import { createChainNumber, WatchersDataService } from '../service/watchers.data.service';
 import { map } from 'rxjs';
 import { Token } from '../../service/ts/models/token';
+import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-chain-performance',
   templateUrl: './chain.performance.html',
   standalone: true,
-  imports: [NgFor, NgIf],
+  imports: [NgFor, NgIf, CommonModule],
 })
 export class ChainPerformanceComponent extends BaseWatcherComponent implements OnInit {
   performanceCharts: ChainChartPerformance[] = [];
@@ -25,6 +27,7 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
 
   constructor(
     injector: Injector,
+    @Inject(IS_ELEMENTS_ACTIVE) public isElementsActive: boolean,
     private chartService: ChartService,
     private navigationService: NavigationService,
     private watchersDataService: WatchersDataService,

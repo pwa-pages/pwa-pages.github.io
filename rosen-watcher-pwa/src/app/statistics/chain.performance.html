@@ -1,12 +1,14 @@
-<div class="headercontainer">
+<div *ngIf="!isElementsActive" class="headercontainer">
   <div class="headerblock">
     Performance&nbsp;
     <div class="header">Compare chains</div>
   </div>
 </div>
 
-<div class="performancecontainer main-content">
-  <div class="performancetab">
+<div
+  [ngClass]="{  'performancecontainer': true,  'main-content': true,    'elementsActive': isElementsActive}"
+>
+  <div *ngIf="!isElementsActive" class="performancetab">
     <a
       tabindex="0"
       class="tab"
@@ -19,7 +21,7 @@
     <a tabindex="0" class="tab" [class.active]="true">Compare chains</a>
   </div>
 
-  <div class="info-description">
+  <div *ngIf="!isElementsActive" class="info-description">
     Avarage earnings in RSN per chain type over the last week for a single watcher.
   </div>
   <div class="addressescontainer">

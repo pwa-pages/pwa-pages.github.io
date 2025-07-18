@@ -10,7 +10,6 @@ class ServiceWorkerEventSender {
         }
     }
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ProcessEventService {
     eventSender;
     constructor(eventSender) {
@@ -106,4 +105,8 @@ class ProcessEventService {
             };
         });
     }
+}
+/* eslint-disable @typescript-eslint/no-explicit-any */
+if (typeof window !== 'undefined') {
+    window.ProcessEventService = ProcessEventService;
 }

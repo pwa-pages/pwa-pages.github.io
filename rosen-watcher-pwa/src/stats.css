@@ -38,21 +38,6 @@ app-performance-chart {
   /*width:30vh;*/
 }
 
-.performance-chart-address {
-  display: inline-block;
-  margin-left: 0.4vh;
-}
-
-.statdetaildispl .chainType {
-  width: 4vh;
-}
-
-.chart-legend {
-  height: 2vh;
-  width: 4vh;
-  float: left;
-}
-
 .details-container {
   color: rgba(138, 128, 128);
   display: flex;

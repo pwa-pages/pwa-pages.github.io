@@ -28,7 +28,7 @@ done
 
 dir="dist/rosen-chain-performance/" 
 
-for file in "$dir"main*.js "$dir"runtime*.js "$dir"styles*.css; do
+for file in "$dir"main*.js "$dir"runtime*.js "$dir"scripts*.js "$dir"styles*.css; do
   if [[ -f "$file" ]]; then
     # Extract the filename without the path
     filename=$(basename "$file")
@@ -40,6 +40,9 @@ for file in "$dir"main*.js "$dir"runtime*.js "$dir"styles*.css; do
     elif [[ "$filename" == runtime*.js ]]; then
       sed -i "s|{{runtime.js}}|$filename|g" dist/rosen-chain-performance/rosen-chain-performance.html
       echo "Replaced {{runtime.js}} with $filename in dist/rosen-chain-performance/rosen-chain-performance.html"
+    elif [[ "$filename" == scripts*.js ]]; then
+      sed -i "s|{{scripts.js}}|$filename|g" dist/rosen-chain-performance/rosen-chain-performance.html
+      echo "Replaced {{scripts.js}} with $filename in dist/rosen-chain-performance/rosen-chain-performance.html"
     elif [[ "$filename" == styles*.css ]]; then
       sed -i "s|{{styles.css}}|$filename|g" dist/rosen-chain-performance/rosen-chain-performance.html
       echo "Replaced {{styles.css}} with $filename in dist/rosen-chain-performance/rosen-chain-performance.html"

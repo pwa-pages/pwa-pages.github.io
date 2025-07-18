@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1752435702866,
+  "timestamp": 1752834990174,
   "appData": {
-    "version": "3.44.8"
+    "version": "3.44.9"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,13 +16,13 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-PDNHGEMF.js",
+        "./main-YQLGEX74.js",
         "./manifest.webmanifest",
         "./polyfills-FFHMD2TL.js",
         "./rosen.html",
-        "./scripts-LQMJOSXG.js",
+        "./scripts-CBMIHXK7.js",
         "./shared/js/ngsw-worker.js",
-        "./styles-LLXWMYUJ.css"
+        "./styles-WHEPKRQR.css"
       ],
       "patterns": []
     },
@@ -77,12 +77,12 @@
     "./assets/images/doge.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
-    "./assets/rosen-chain-performance.html": "423ebc10aca3a3982c9316b844b6fe4dd0d33e46",
+    "./assets/rosen-chain-performance.html": "a1c691101468310094d91b47ba7f4139f962af75",
     "./assets/rosen_watchers.html": "f515afce519cc3882224bfb8480b3730ed784d9e",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "a7f6900a328c870cada31ec9cc7cb3a674894b13",
-    "./main-PDNHGEMF.js": "316aff667cbeef5a853242e437ad5cc135f18d3b",
+    "./index.html": "af547b847cf46da53d92b51c267db83985bb3a1a",
+    "./main-YQLGEX74.js": "0c932fbdeb1890a138e2b8fb0e6feac0d8616fa4",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -100,9 +100,9 @@
     "./media/fa-v4compatibility-YY67RJWG.ttf": "ad415f99aab4d9bf17e523f484a377f839ca8c3c",
     "./polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
     "./rosen.html": "fdd96211de1f83e4e064b109ca06d9906235943c",
-    "./scripts-LQMJOSXG.js": "72eea9c251f8a0a6e137ce183ee0d69330b94b53",
+    "./scripts-CBMIHXK7.js": "08e9adffa1b417ec15c1481618525addf4c4a94a",
     "./shared/js/ngsw-worker.js": "0279adb21fec5e4434c8eb9dfdb43b4bf65a70ea",
-    "./styles-LLXWMYUJ.css": "194ca9f2ff5a9a7409cc725e637832a9bbadc887"
+    "./styles-WHEPKRQR.css": "f4a6660d513ec74d122877eadf3e0c5987d51ab8"
   },
   "navigationUrls": [
     {

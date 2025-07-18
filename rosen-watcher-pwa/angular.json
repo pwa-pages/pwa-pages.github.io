@@ -189,7 +189,18 @@
             ],
             "styles": [
               "src/styles.css"
-            ],"scripts": [],
+            ],"scripts": [
+              "src/rosen-ngsw-worker.js",
+              "src/shared/js/rosen-download-worker.js",
+              "src/shared/js/rosen-db-worker.js",
+              "src/shared/js/chain.service.js",
+              "src/shared/js/constants.js",
+              "src/shared/js/data.service.js",
+              "src/shared/js/chain.performance.data.service.js",
+              "src/shared/js/reward.data.service.js",
+              "src/shared/js/chart.service.js",
+              "src/shared/js/download.service.js",
+              "src/shared/js/process.event.service.js"],
             "optimization": {
               "scripts": true,
               "styles": true,

@@ -21,7 +21,6 @@ class ServiceWorkerEventSender implements EventSender {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ProcessEventService {
   constructor(private eventSender: EventSender) {}
   private async initServices(profile: string | undefined) {
@@ -164,4 +163,9 @@ class ProcessEventService {
       };
     });
   }
+}
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+if (typeof window !== 'undefined') {
+  (window as any).ProcessEventService = ProcessEventService;
 }

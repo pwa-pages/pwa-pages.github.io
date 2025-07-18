@@ -514,3 +514,25 @@ button:active {
   font-weight: bold;
   word-break: break-all;
 }
+
+.elementsActive #PerformanceChart,
+.elementsActive .chart-container,
+.elementsActive .chartcontainer {
+  width: inherit !important;
+  height: inherit !important;
+}
+
+.chart-legend {
+  height: 2vh;
+  width: 4vh;
+  float: left;
+}
+
+.performance-chart-address {
+  display: inline-block;
+  margin-left: 0.4vh;
+}
+
+.statdetaildispl .chainType {
+  width: 4vh;
+}
