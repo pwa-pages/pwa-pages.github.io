@@ -122,7 +122,7 @@
             "outputPath": "dist/rosen-watchers",  
             "index": "src/index.html",     
             "main": "src/app/webcomponents/watchers-web-component.ts",      
-            "tsConfig": "tsconfig.app.json",
+            "tsConfig": "tsconfig.app.web.watchers.json",
             "assets": [
               "src/assets/rosen_watchers.html",
               "src/assets/README.md"
@@ -183,7 +183,7 @@
             "outputPath": "dist/rosen-chain-performance",  
             "index": "src/index.html",     
             "main": "src/app/webcomponents/chain-performance-web-component.ts",      
-            "tsConfig": "tsconfig.app.json",
+            "tsConfig": "tsconfig.app.web.chainperformance.json",
             "assets": [
               "src/assets/rosen-chain-performance.html"
             ],

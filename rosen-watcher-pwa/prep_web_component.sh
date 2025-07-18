@@ -50,7 +50,12 @@ for file in "$dir"main*.js "$dir"runtime*.js "$dir"scripts*.js "$dir"styles*.css
   fi
 done
 
-rm web_component/*
-cp dist/rosen-watchers/assets/README.md web_component/
-cp dist/rosen-watchers/* web_component/
-cp dist/rosen-chain-performance/* web_component/
+rm -rf web_component/*
+mkdir web_component/rosen-watchers
+mkdir web_component/rosen-chain-performance
+cp dist/rosen-watchers/assets/README.md web_component/rosen-watchers
+cp dist/rosen-watchers/* web_component/rosen-watchers
+cp dist/rosen-chain-performance/* web_component/rosen-chain-performance
+cp web_component/rosen-watchers/rosen_watchers.html web_component/rosen-watchers/index.html
+cp web_component/rosen-chain-performance/rosen-chain-performance.html web_component/rosen-chain-performance/index.html
+
