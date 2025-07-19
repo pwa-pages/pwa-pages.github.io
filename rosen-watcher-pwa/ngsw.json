@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1752842476817,
+  "timestamp": 1752917446456,
   "appData": {
-    "version": "3.45.1"
+    "version": "3.45.2"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -45,6 +45,7 @@
         "./assets/images/ergo.png",
         "./assets/images/ethereum.png",
         "./assets/rosen-chain-performance.html",
+        "./assets/rosen-web-component.html",
         "./assets/rosen_watchers.html",
         "./assets/test.html",
         "./media/binance-WGS5R7MY.png",
@@ -67,7 +68,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "./assets/README.md": "60122d2b256d6040221bffcef49a5cb2e5da6eeb",
+    "./assets/README.md": "de9a0f5b97777023677a07677ba5092a3a3d796c",
     "./assets/icons/icon-512x512.png": "70bcb04083de346145fa5a506812f23b0ed80772",
     "./assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./assets/icons/icon-512x512_bk2.png": "bc9f886184d64802571f0d7878d64e7b15f9f1ea",
@@ -78,6 +79,7 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./assets/rosen-chain-performance.html": "5e5175730960e423e1d45be17c2242ffd6a0922f",
+    "./assets/rosen-web-component.html": "6ec8fccd37241501b329d8ab5685b4008b750a6f",
     "./assets/rosen_watchers.html": "84156dec588a406c39d36dd0bae2ab67bc47fc92",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",

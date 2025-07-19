@@ -17,7 +17,6 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
   @Input()
   set renderHtml(value: string | boolean) {
-    // Treat 'false' string or false boolean as false, otherwise true
     this._renderHtml = value === false || value === 'false' ? false : true;
   }
 

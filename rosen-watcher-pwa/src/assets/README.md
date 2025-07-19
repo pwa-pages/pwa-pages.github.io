@@ -1,5 +1,9 @@
 <h1>🔧 Rosen watcher Web Component Library</h1>
 
+<p style="color: red; font-weight: bold;">
+⚠️ <strong>Warning:</strong> The component API will change soon. You can use the documentation below, but be aware there will be slight changes in how to call the component(s), such as naming and event handling and script names. The main ideas and functionality will remain the same.
+</p>
+
 <p>This project contains a growing collection of reusable, standalone web components built with <strong>Angular Elements</strong>. These components are framework-agnostic and work in any HTML/JavaScript environment — no Angular required in the host app.
 </p>
 
