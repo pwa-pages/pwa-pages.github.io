@@ -187,6 +187,7 @@ export class WatchersDataService {
 
     const newStats = JSON.stringify(this.watchersStats);
     if (JSON.stringify(this.watchersStatsSignal()) !== newStats) {
+      console.log('Settings watchers stats signal');
       this.watchersStatsSignal.set(JSON.parse(newStats));
     }
   }

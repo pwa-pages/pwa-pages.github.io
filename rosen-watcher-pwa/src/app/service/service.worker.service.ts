@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { EventData, EventService, EventType } from './event.service';
 import { HttpClient } from '@angular/common/http';
+import { IS_ELEMENTS_ACTIVE } from './tokens';
 
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {
@@ -34,6 +35,7 @@ export class ServiceWorkerService {
   constructor(
     private eventService: EventService,
     private http: HttpClient,
+    @Inject(IS_ELEMENTS_ACTIVE) public isElementsActive: boolean,
   ) {
     this.checkForVersionDiscrepancy();
     this.listenForServiceWorkerMessages();
@@ -67,6 +69,12 @@ export class ServiceWorkerService {
   }
 
   checkForVersionDiscrepancy(): void {
+    if (this.isElementsActive) {
+      console.log('Elements are active, avoiding service worker');
+      this.avoidServiceWorker = true;
+      return;
+    }
+
     this.http
       .get<{ appData?: { version?: string } }>('ngsw.json', { responseType: 'json' })
       .subscribe(

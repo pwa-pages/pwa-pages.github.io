@@ -1,10 +1,20 @@
-import { Component, effect, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  effect,
+  EventEmitter,
+  Inject,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { EventType } from '../service/event.service';
 import { WatchersDataService, WatchersStats } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainType } from '../../service/ts/models/chaintype';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 
 @Component({
   selector: 'app-watchers',
@@ -36,6 +46,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   constructor(
     injector: Injector,
     private watchersDataService: WatchersDataService,
+    @Inject(IS_ELEMENTS_ACTIVE) public isElementsActive: boolean,
   ) {
     super(injector);
 
@@ -43,7 +54,8 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
     effect(() => {
       this.watchersStats = watcherStats();
-      this.notifyWatchersStatsChanged.emit(this.watchersStats);
+      console.log('Sending watchers stats changed event');
+      this.eventService.sendEventWithData(EventType.WatchersStatsChanged, this.watchersStats);
     });
   }
 

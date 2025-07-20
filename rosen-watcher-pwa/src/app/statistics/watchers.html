@@ -1,4 +1,4 @@
-<div *ngIf="isHtmlRenderEnabled()" class="headercontainer">
+<div *ngIf="isHtmlRenderEnabled() ? !isElementsActive : false" class="headercontainer">
   <div class="headerblock">
     Number of watchers:
     <div class="header">{{ watchersStats.totalWatcherCount }}</div>

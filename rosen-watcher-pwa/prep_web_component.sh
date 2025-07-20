@@ -104,6 +104,10 @@ echo "" >> "$tmpfile"
 cat web_component/rosen-web-component/main*.js >> "$tmpfile"
 echo "" >> "$tmpfile"
 
-mv "$tmpfile" web_component/rosen-web-component/rosen-watchers.js
+
+version=$(jq -r '.appData.version' ngsw-config.json)
+dest="web_component/rosen-web-component/rosen-watcher-components.$version.js"
+mv "$tmpfile" "$dest"
+sed -i "s|rosen-watcher-components.js|rosen-watcher-components.$version.js|g" web_component/rosen-web-component/index.html
 
 

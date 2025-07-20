@@ -9,7 +9,7 @@ import {
   ServiceWorkerService,
 } from '../service/service.worker.service';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
-import { RosenComponent } from '../statistics/rosen.component';
+import { RosenWatcherComponent } from '../statistics/rosen.watcher.component';
 
 export const dataServiceInitializer = {
   provide: APP_INITIALIZER,
@@ -25,7 +25,7 @@ export const serviceWorkerInitializer = {
   multi: true,
 };
 
-bootstrapApplication(RosenComponent, {
+bootstrapApplication(RosenWatcherComponent, {
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
     dataServiceInitializer,
@@ -36,7 +36,7 @@ bootstrapApplication(RosenComponent, {
     },
   ],
 }).then((appRef) => {
-  const element = createCustomElement(RosenComponent, {
+  const element = createCustomElement(RosenWatcherComponent, {
     injector: appRef.injector,
   });
   customElements.define('app-rosen-component', element as CustomElementConstructor);
