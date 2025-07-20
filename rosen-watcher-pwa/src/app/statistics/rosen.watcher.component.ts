@@ -52,6 +52,9 @@ export class RosenWatcherComponent {
     private eventService: EventService,
   ) {
     this.eventService.subscribeToEvent(EventType.WatchersStatsChanged, (data: WatchersStats) => {
+      console.log(
+        'Received watchers stats changed event, sending through notifyWatchersStatsChanged',
+      );
       this.notifyWatchersStatsChanged.emit(data);
     });
   }

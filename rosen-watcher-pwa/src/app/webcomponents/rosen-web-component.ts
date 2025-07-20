@@ -39,5 +39,5 @@ bootstrapApplication(RosenWatcherComponent, {
   const element = createCustomElement(RosenWatcherComponent, {
     injector: appRef.injector,
   });
-  customElements.define('app-rosen-component', element as CustomElementConstructor);
+  customElements.define('app-rosen-watcher-component', element as CustomElementConstructor);
 });
