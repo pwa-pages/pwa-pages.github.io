@@ -2637,6 +2637,46 @@ export class PaintingService {
       type: "etching",
       stored: "box 5",
     },
+    {
+      id: 302,
+      artist: "Alexander van den Bosch",
+      year: 1980,
+      dimensions: "100x80",
+      status: "loose",
+      type: "oilpainting",
+    },
+    {
+      id: 303,
+      artist: "Alexander van den Bosch",
+      year: 1978,
+      dimensions: "100x90",
+      status: "loose",
+      type: "oilpainting",
+    },
+    {
+      id: 304,
+      artist: "Alexander van den Bosch",
+      year: 1979,
+      dimensions: "100x80",
+      status: "loose",
+      type: "oilpainting",
+    },
+    {
+      id: 305,
+      artist: "Alexander van den Bosch",
+      year: 1980,
+      dimensions: "100x80",
+      status: "loose",
+      type: "oilpainting",
+    },
+    {
+      id: 306,
+      artist: "Alexander van den Bosch",
+      year: 1977,
+      dimensions: "75x53",
+      status: "loose",
+      type: "gouache",
+    },
   ];
 
   getPaintings(): Painting[] {
