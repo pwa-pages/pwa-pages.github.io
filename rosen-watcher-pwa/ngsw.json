@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1753005461549,
+  "timestamp": 1753048327708,
   "appData": {
-    "version": "3.45.7"
+    "version": "3.45.8"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -22,7 +22,7 @@
         "./rosen.html",
         "./scripts-CBMIHXK7.js",
         "./shared/js/ngsw-worker.js",
-        "./styles-WHEPKRQR.css"
+        "./styles-N6QEXXWX.css"
       ],
       "patterns": []
     },
@@ -77,11 +77,11 @@
     "./assets/images/doge.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
-    "./assets/rosen-chain-performance.html": "5e5175730960e423e1d45be17c2242ffd6a0922f",
+    "./assets/rosen-chain-performance.html": "5034ef48d7ed79f996705f6775f316352ae22bc7",
     "./assets/rosen-watchers.html": "c29c42fb7372f4122a9a3ad3e2b7c9e5f790b8a3",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "deb34e72803d880963329d3276ce946f107f5abe",
+    "./index.html": "35a28689a54a451756772611a10e81ba02c9f1ab",
     "./main-JNXFJBD7.js": "aa042ecf976d8c42c7984e2f707a378da6ac92ef",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
@@ -102,7 +102,7 @@
     "./rosen.html": "fdd96211de1f83e4e064b109ca06d9906235943c",
     "./scripts-CBMIHXK7.js": "08e9adffa1b417ec15c1481618525addf4c4a94a",
     "./shared/js/ngsw-worker.js": "0279adb21fec5e4434c8eb9dfdb43b4bf65a70ea",
-    "./styles-WHEPKRQR.css": "f4a6660d513ec74d122877eadf3e0c5987d51ab8"
+    "./styles-N6QEXXWX.css": "722705fb89e7976b0037df842e416d86d1367075"
   },
   "navigationUrls": [
     {

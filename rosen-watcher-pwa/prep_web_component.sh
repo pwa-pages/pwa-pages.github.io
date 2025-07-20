@@ -14,6 +14,8 @@ for file in "$dir"main*.js "$dir"runtime*.js "$dir"scripts*.js "$dir"styles*.css
     if [[ "$filename" == styles*.css ]]; then
       sed -i "s|{{styles.css}}|$filename|g" dist/rosen-web-component/rosen-watchers.html
       echo "Replaced {{styles.css}} with $filename in dist/rosen-web-component/rosen-watchers.html"
+      sed -i "s|{{styles.css}}|$filename|g" dist/rosen-web-component/rosen-chain-performance.html
+      echo "Replaced {{styles.css}} with $filename in dist/rosen-web-component/rosen-chain-performance.html"
     fi
 
   fi
@@ -41,5 +43,6 @@ version=$(jq -r '.appData.version' ngsw-config.json)
 dest="web-component/rosen-watcher-components.$version.js"
 mv "$tmpfile" "$dest"
 sed -i "s|rosen-watcher-components.js|rosen-watcher-components.$version.js|g" web-component/rosen-watchers.html
+sed -i "s|rosen-watcher-components.js|rosen-watcher-components.$version.js|g" web-component/rosen-chain-performance.html
 
 

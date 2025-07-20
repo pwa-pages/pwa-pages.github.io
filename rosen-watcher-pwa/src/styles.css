@@ -517,9 +517,12 @@ button:active {
 
 .elementsActive #PerformanceChart,
 .elementsActive .chart-container,
-.elementsActive .chartcontainer {
+app-chain-performance.elementsActive,
+.elementsActive .chartcontainer,
+.performancecontainer.elementsActive {
   width: inherit !important;
   height: inherit !important;
+  display: block !important;
 }
 
 .chart-legend {
