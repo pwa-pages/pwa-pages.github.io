@@ -9,8 +9,9 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { WatchersStats } from '../service/watchers.data.service';
 import { EventService, EventType } from '../service/event.service';
 
+/* eslint-disable @angular-eslint/component-selector */
 @Component({
-  selector: 'app-rosen-watcher-component',
+  selector: 'rosen-watcher-component',
   templateUrl: './rosen.watcher.component.html',
   standalone: true,
   imports: [NgFor, NgIf, CommonModule, WatchersComponent, ChainPerformanceComponent],

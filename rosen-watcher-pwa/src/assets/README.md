@@ -1,8 +1,5 @@
 <h1>🔧 Rosen watcher Web Component Library</h1>
 
-<p style="color: red; font-weight: bold;">
-⚠️ <strong>Warning:</strong> The component API will change soon. You can use the documentation below, but be aware there will be slight changes in how to call the component(s), such as naming and event handling and script names. The main ideas and functionality will remain the same.
-</p>
 
 <p>This project contains a growing collection of reusable, standalone web components built with <strong>Angular Elements</strong>. These components are framework-agnostic and work in any HTML/JavaScript environment — no Angular required in the host app.
 </p>
@@ -27,11 +24,11 @@ If there are issues pls send them to https://t.me/rosenbridge_erg to @Pebblerye.
   </thead>
   <tbody>
     <tr>
-      <td><a href="#app-watchers"><code>&lt;app-watchers&gt;</code></a></td>
+      <td><a href="#watchers"><code>watchers</code></a></td>
       <td>Displays watcher stats or retrieve watcher stats from dom events</td>
     </tr>
     <tr>
-      <td><code>&lt;app-compare-chain-rewards&gt;</code></td>
+      <td><code>compare-chain-rewards</code></td>
       <td><em>(Coming soon)</em> Compare rewards per chain</td>
     </tr>
   </tbody>
@@ -39,11 +36,11 @@ If there are issues pls send them to https://t.me/rosenbridge_erg to @Pebblerye.
 
 <hr />
 
-<h2 id="app-watchers">📺 <code>&lt;app-watchers&gt;</code></h2>
+<h2 id="watchers">📺 <code>watchers</code></h2>
 
 <h3>Description</h3>
 
-<p>The <code>&lt;app-watchers&gt;</code> component can be used to render html with rosen bridge watcher stats
+<p>The <code>watchers</code> component can be used to render html with rosen bridge watcher stats
 similar to https://pwa-pages.github.io/rosen-watcher-pwa/watchers.<br/>
 All data from that screen can also be retrieved by a dom event in case
 the intention is to design the html oneself. <br/>
@@ -51,7 +48,7 @@ In this way all relevant data is exposed through a dom event.
 <br/><br/>
 An example(and the place to download the needed javascripts) of usage of the component with the latest versions can be found at:
 <br/><br/>
-<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers/index.html">https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers/index.html</a> This file always contains the latest javascript versions with the latest build.
+<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html">https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html</a> This file always contains the latest javascript versions with the latest build.
 A css is added to that page and can be used to build on, but it can be ignored if all css needs to be custom.
 <br/><br/>
 </p>
@@ -81,7 +78,7 @@ A css is added to that page and can be used to build on, but it can be ignored i
 
 <p><strong>Example:</strong></p>
 
-<pre><code>&lt;app-watchers render-html="true"&gt;&lt;/app-watchers&gt;</code></pre>
+<pre><code>&lt;rosen-watcher-component component="watchers" render-html="true"&lt;/rosen-watcher-component&gt;</code></pre>
 
 <hr />
 
@@ -89,7 +86,7 @@ A css is added to that page and can be used to build on, but it can be ignored i
 
 <h4><code>notifyWatchersStatsChanged</code></h4>
 
-<p>Fired whenever the internal watcher statistics update, app-watchers can send multiple events of type notifyWatchersStatsChanged
+<p>Fired whenever the internal watcher statistics update, watchers can send multiple events of type notifyWatchersStatsChanged
 as it retrieves data from multiple sources and refreshes the data based on this,
 so in the few first updates the data might still be incomplete,
 but in the end after all updates the data is complete.
@@ -97,11 +94,11 @@ but in the end after all updates the data is complete.
 
 <p><strong>JavaScript usage:</strong></p>
 
-<pre><code>const watchersEl = document.querySelector('app-watchers');
+<pre><code>const watchersEl = document.querySelector('rosen-watcher-component');
 
-watchersEl.addEventListener('notifyWatchersStatsChanged', (event) =&gt; {
-  console.log('Watchers stats changed:', JSON.stringify(event.detail));
-});
+      watchersEl.addEventListener('notifyWatchersStatsChanged', (event) => {
+        console.log('Watchers stats changed:', JSON.stringify(event.detail));
+      });
 </code></pre>
 
 <p>
@@ -365,5 +362,5 @@ and act accordingly.
 <h2 id="full-usage-example">📄 Full Usage Example</h2>
 
 As mentioned above a full usage example can be found at <br/>
-<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers/index.html">https://pwa-pages.github.io/rosen-watcher-pwa/web_component/rosen-watchers/index.html</a>
+<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html">https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html</a>
 This page always contains the latest versions of javascript and css, download those and use the component similarly as in the html.

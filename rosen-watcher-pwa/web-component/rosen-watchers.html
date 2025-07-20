@@ -8,8 +8,7 @@
 
     <link rel="stylesheet" href="styles.14add4859d0d7512.css" media="all" onload="this.media='all'" />
 
-    <script src="runtime.ece741d46337c136.js" type="module"></script>
-    <script src="main.15b2e8921e5d74e5.js" type="module"></script>
+    <script src="rosen-watcher-components.3.45.5.js" type="module"></script>
   </head>
   <body>
     <style>
@@ -50,9 +49,9 @@
     <section>
       <p>
         This page shows example usage of the
-        <code>&lt;app-watchers&gt;</code>
-        tag. This is a javascript component that can be used in any html page (it is angular under
-        the hood, but works with any html + js).
+        <code>&lt;rosen-watcher-component&gt;</code>
+        tag using watchers component. This is a javascript component that can be used in any html
+        page (it is angular under the hood, but works with any html + js).
         <br />
         The latest JavaScript versions and styles are used on this page. Download these files and
         use them similarly (see source of this html page).
@@ -73,15 +72,14 @@
           build on, the file is not necessary and if all styling is to be done custom this file can
           be ignored.)
         </li>
-        <li><a href="runtime.ece741d46337c136.js">runtime.ece741d46337c136.js (Required)</a></li>
-        <li><a href="main.15b2e8921e5d74e5.js">main.15b2e8921e5d74e5.js (Required)</a></li>
+        <li><a href="rosen-watcher-components.3.45.5.js">rosen-watcher-components.3.45.5.js (Required)</a></li>
       </ul>
     </section>
 
-    <app-watchers render-html="true"></app-watchers>
+    <rosen-watcher-component component="watchers" render-html="true"></rosen-watcher-component>
 
     <script>
-      const watchersEl = document.querySelector('app-watchers');
+      const watchersEl = document.querySelector('rosen-watcher-component');
 
       watchersEl.addEventListener('notifyWatchersStatsChanged', (event) => {
         console.log('Watchers stats changed:', JSON.stringify(event.detail));
