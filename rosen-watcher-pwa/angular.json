@@ -125,7 +125,8 @@
             "tsConfig": "tsconfig.app.web.json",
             "assets": [
               "src/assets/rosen-chain-performance.html",
-              "src/assets/rosen-watchers.html"
+              "src/assets/rosen-watchers.html",
+              "src/assets/README.md"
             ],
             "styles": [
               "src/styles.css"

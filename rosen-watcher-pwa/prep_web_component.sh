@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cp dist/rosen-web-component/assets/*.html  dist/rosen-web-component/
+cp dist/rosen-web-component/assets/*  dist/rosen-web-component/
 
 dir="dist/rosen-web-component/" 
 
