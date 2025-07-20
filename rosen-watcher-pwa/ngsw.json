@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1753005107491,
+  "timestamp": 1753005461549,
   "appData": {
     "version": "3.45.7"
   },
@@ -78,7 +78,7 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./assets/rosen-chain-performance.html": "5e5175730960e423e1d45be17c2242ffd6a0922f",
-    "./assets/rosen-watchers.html": "118a904c63196e640fc78d6bb332c2ce07fddcd4",
+    "./assets/rosen-watchers.html": "c29c42fb7372f4122a9a3ad3e2b7c9e5f790b8a3",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
     "./index.html": "deb34e72803d880963329d3276ce946f107f5abe",
