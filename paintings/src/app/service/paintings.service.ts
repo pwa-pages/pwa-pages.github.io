@@ -2677,6 +2677,31 @@ export class PaintingService {
       status: "loose",
       type: "gouache",
     },
+    {
+      id: 307,
+      title: "Fantomas cinema",
+      artist: "Alexander van den Bosch",
+      year: 1978,
+      dimensions: "125x95",
+      status: "loose",
+      type: "oilpainting",
+    },
+    {
+      id: 308,
+      artist: "Alexander van den Bosch",
+      year: 1977,
+      dimensions: "125x95",
+      status: "loose",
+      type: "oilpainting",
+    },
+    {
+      id: 309,
+      artist: "Alexander van den Bosch",
+      year: 1979,
+      dimensions: "139x110",
+      status: "loose",
+      type: "oilpainting",
+    },
   ];
 
   getPaintings(): Painting[] {
