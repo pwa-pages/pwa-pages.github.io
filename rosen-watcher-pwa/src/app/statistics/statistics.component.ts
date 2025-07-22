@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, Injector } from '@angular/cor
 import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { NgIf, NgStyle, NgFor } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import 'chartjs-adapter-date-fns';
 import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
@@ -20,9 +20,7 @@ import { RewardChartComponent } from './reward.chart.component';
   templateUrl: './statistics.html',
   standalone: true,
   imports: [
-    NgIf,
     NgStyle,
-    NgFor,
     RouterLink,
     RouterLinkActive,
     FormsModule,

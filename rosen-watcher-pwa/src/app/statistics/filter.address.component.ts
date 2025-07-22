@@ -3,13 +3,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { Address } from '../../service/ts/models/address';
-import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-filter-address',
   templateUrl: './filter.address.html',
   standalone: true,
-  imports: [MatInputModule, FormsModule, MatCheckboxModule, NgFor],
+  imports: [MatInputModule, FormsModule, MatCheckboxModule],
 })
 export class FilterAddressComponent {
   constructor(private eRef: ElementRef) {}

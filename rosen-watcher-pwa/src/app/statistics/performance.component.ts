@@ -2,7 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChartService } from '../service/chart.service';
-import { NgFor, NgIf } from '@angular/common';
+
 import { ChartDataSet } from '../../service/ts/models/chart.dataset';
 import { ChartPoint } from '../../service/ts/models/chart.point';
 import { ChartPerformance } from '../../service/ts/models/chart.performance';
@@ -14,7 +14,7 @@ import { NavigationService } from '../service/navigation.service';
   selector: 'app-performance',
   templateUrl: './performance.html',
   standalone: true,
-  imports: [NgFor, NgIf],
+  imports: [],
 })
 export class PerformanceComponent extends BaseWatcherComponent implements OnInit {
   data: string;

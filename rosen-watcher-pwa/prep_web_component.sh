@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cp dist/rosen-web-component/assets/*  dist/rosen-web-component/
+cp dist/rosen-web-component/browser/assets/*  dist/rosen-web-component/browser/
 
-dir="dist/rosen-web-component/" 
+dir="dist/rosen-web-component/browser/" 
 
 for file in "$dir"main*.js "$dir"runtime*.js "$dir"scripts*.js "$dir"styles*.css; do
   if [[ -f "$file" ]]; then
@@ -12,10 +12,10 @@ for file in "$dir"main*.js "$dir"runtime*.js "$dir"scripts*.js "$dir"styles*.css
 
     
     if [[ "$filename" == styles*.css ]]; then
-      sed -i "s|{{styles.css}}|$filename|g" dist/rosen-web-component/rosen-watchers.html
-      echo "Replaced {{styles.css}} with $filename in dist/rosen-web-component/rosen-watchers.html"
-      sed -i "s|{{styles.css}}|$filename|g" dist/rosen-web-component/rosen-chain-performance.html
-      echo "Replaced {{styles.css}} with $filename in dist/rosen-web-component/rosen-chain-performance.html"
+      sed -i "s|{{styles.css}}|$filename|g" dist/rosen-web-component/browser/rosen-watchers.html
+      echo "Replaced {{styles.css}} with $filename in dist/rosen-web-component/browser/rosen-watchers.html"
+      sed -i "s|{{styles.css}}|$filename|g" dist/rosen-web-component/browser/rosen-chain-performance.html
+      echo "Replaced {{styles.css}} with $filename in dist/rosen-web-component/browser/rosen-chain-performance.html"
     fi
 
   fi
@@ -24,7 +24,7 @@ done
 
 rm -rf web-component/*
 mkdir web-component
-cp dist/rosen-web-component/* web-component
+cp dist/rosen-web-component/browser/* web-component
 rm web-component/index.html
 
 tmpfile=$(mktemp)

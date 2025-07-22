@@ -4,7 +4,7 @@ import { StorageService } from '../service/storage.service';
 import { Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings.dialog';
 import { MatDialog } from '@angular/material/dialog';
-import { NgFor } from '@angular/common';
+
 import { Address } from '../../service/ts/models/address';
 import { EventService, EventType } from '../service/event.service';
 
@@ -12,7 +12,7 @@ import { EventService, EventType } from '../service/event.service';
   selector: 'app-settings',
   templateUrl: './settings.html',
   standalone: true,
-  imports: [NgFor],
+  imports: [],
 })
 export class SettingsComponent implements OnInit {
   addresses: Address[];
@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit {
     this.addresses = [];
   }
 
-  trackByFn(index: number) {
+  trackByFn(_: Address, index: number) {
     return index;
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgIf, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import 'chartjs-adapter-date-fns';
 import { FormsModule } from '@angular/forms';
 import { NavigationItem, NavigationService } from '../service/navigation.service';
@@ -10,7 +10,7 @@ import { EventService, EventType } from '../service/event.service';
   selector: 'app-navigation',
   templateUrl: './navigation.html',
   standalone: true,
-  imports: [NgIf, FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule],
 })
 export class NavigationComponent implements OnInit {
   private visible = true;

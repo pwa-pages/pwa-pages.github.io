@@ -3,16 +3,17 @@
   <br />
   <br />
   <br />
+
   <div class="settingscontainer watchergrid container addressdispl">
-    <ng-container *ngFor="let address of addresses; let i = index; trackBy: trackByFn">
-      <div class="watcheritem first-column">{{ address.address }}</div>
-      <div class="watcheritem">
-        <button (click)="editaddress(i)">Edit</button>
-      </div>
-      <div class="watcheritem">
-        <button (click)="deleteaddress(i)">Delete</button>
-      </div>
-    </ng-container>
+    @for (address of addresses; track trackByFn(address, i); let i = $index) {
+    <div class="watcheritem first-column">{{ address.address }}</div>
+    <div class="watcheritem">
+      <button (click)="editaddress(i)">Edit</button>
+    </div>
+    <div class="watcheritem">
+      <button (click)="deleteaddress(i)">Delete</button>
+    </div>
+    }
   </div>
 
   <div class="container">

@@ -1,12 +1,15 @@
-<div class="progress-bar" *ngIf="downloads > 0">
+@if (downloads > 0) {
+<div class="progress-bar">
   <div class="progress-bar-value"></div>
 </div>
-
-<div class="logging" *ngIf="showLogging()">
-  <div class="log" *ngFor="let log of logLines;">{{ log }}</div>
+} @if (showLogging()) {
+<div class="logging">
+  @for (log of logLines; track log) {
+  <div class="log">{{ log }}</div>
+  }
 </div>
-
-<div class="navbar" *ngIf="isVisible()">
+} @if (isVisible()) {
+<div class="navbar">
   <div [ngClass]="{ 'navbuttons': true, 'active': isStatisticsActive() }">
     <a tabindex="0" (click)="navRewards()" (keypress)="navRewards()">
       <div class="nav-icon">
@@ -15,7 +18,6 @@
       </div>
     </a>
   </div>
-
   <div [ngClass]="{ 'navbuttons': true, 'active': isPerformanceActive() }">
     <a tabindex="0" (click)="navPerformance()" (keypress)="navPerformance()">
       <div class="nav-icon">
@@ -24,7 +26,6 @@
       </div>
     </a>
   </div>
-
   <div [ngClass]="{ 'navbuttons': true, 'active': isWatchersActive() }">
     <a tabindex="0" (click)="navWatchers()" (keypress)="navWatchers()">
       <div class="nav-icon">
@@ -34,3 +35,4 @@
     </a>
   </div>
 </div>
+}

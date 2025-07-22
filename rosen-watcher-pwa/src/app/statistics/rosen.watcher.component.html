@@ -1,9 +1,6 @@
-<app-watchers
-  class="elementsActive"
-  *ngIf="appWatchersActive()"
-  render-html="{{ renderHtml }}"
-></app-watchers>
-<app-chain-performance
-  class="elementsActive"
-  *ngIf="appChainPerformanceActive()"
-></app-chain-performance>
+@if (appWatchersActive()) {
+  <app-watchers class="elementsActive" render-html="{{ renderHtml }}"></app-watchers>
+}
+@if (appChainPerformanceActive()) {
+  <app-chain-performance class="elementsActive"></app-chain-performance>
+}

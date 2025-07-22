@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
+
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
-import { CommonModule } from '@angular/common';
+
 import { WatchersComponent } from './watchers.component';
 import { ChainPerformanceComponent } from './chain.performance.component';
 
@@ -14,7 +14,7 @@ import { EventService, EventType } from '../service/event.service';
   selector: 'rosen-watcher-component',
   templateUrl: './rosen.watcher.component.html',
   standalone: true,
-  imports: [NgFor, NgIf, CommonModule, WatchersComponent, ChainPerformanceComponent],
+  imports: [WatchersComponent, ChainPerformanceComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RosenWatcherComponent {

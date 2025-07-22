@@ -2,7 +2,7 @@ import { Component, Inject, Injector, OnInit } from '@angular/core';
 import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChartService } from '../service/chart.service';
-import { NgFor, NgIf } from '@angular/common';
+
 import { ChainPerfChartDataSet } from '../../service/ts/models/chart.dataset';
 import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
 import { Chart } from 'chart.js';
@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-chain-performance',
   templateUrl: './chain.performance.html',
   standalone: true,
-  imports: [NgFor, NgIf, CommonModule],
+  imports: [CommonModule],
 })
 export class ChainPerformanceComponent extends BaseWatcherComponent implements OnInit {
   performanceCharts: ChainChartPerformance[] = [];

@@ -25,7 +25,8 @@
     Details
   </a>
 
-  <div class="period" *ngIf="selectedTab === 'chart'">
+  @if (selectedTab === 'chart') {
+  <div class="period">
     <label for="periodSelect">Period:</label>
     <select id="periodSelect" [(ngModel)]="selectedPeriod" (change)="onPeriodChange()">
       <option value="Day">Last day</option>
@@ -35,10 +36,11 @@
       <option value="All">All</option>
     </select>
   </div>
-
-  <div class="period" *ngIf="selectedTab !== 'chart'">
+  } @if (selectedTab !== 'chart') {
+  <div class="period">
     <button (click)="onExportClick()" (keypress)="onExportClick()">Export to csv</button>
   </div>
+  }
 </div>
 
 <div class="chartcontainer" [ngStyle]="{'display': selectedTab === 'chart' ? 'block' : 'none'}">
@@ -59,20 +61,20 @@
   class="detailscontainer verticalscrollablecontainer"
   [ngStyle]="{'display': selectedTab === 'details' ? 'block' : 'none'}"
 >
+  @if (filterDateActive) {
   <app-filter-date
     [fromDate]="fromDate"
     [toDate]="toDate"
-    *ngIf="filterDateActive"
     (dateRangeCanceled)="filterDateActive = false"
     (dateRangeChanged)="onDateRangeChanged($event)"
   ></app-filter-date>
-
+  } @if (filterAddressActive) {
   <app-filter-address
     [addresses]="addressesForDisplay"
-    *ngIf="filterAddressActive"
     (addressesCanceled)="filterAddressActive = false"
     (addressesChanged)="onAddressesChanged($event)"
   ></app-filter-address>
+  }
 
   <div #detailsContainer class="details-container">
     <div>
@@ -104,7 +106,8 @@
     </div>
 
     <ng-container>
-      <div *ngFor="let input of detailInputs">
+      @for (input of detailInputs; track input) {
+      <div>
         <div class="statdetaildispl">
           <div class="{{input.chainType}} chainType"></div>
           <div class="inputDate">{{ DateUtils.formatDate(input.inputDate) }}</div>
@@ -112,20 +115,21 @@
           <div class="amount">{{ input.amount }} RSN</div>
         </div>
       </div>
+      }
     </ng-container>
   </div>
 </div>
 
 <div class="statistics-footer">
   <div class="addressescontainer">
-    Addresses: &nbsp;&nbsp;
-    <div
-      class="mainaddressdispl {{address.chainType}}"
-      *ngFor="let address of addressesForDisplay; let i = index; last as isLast"
-    >
-      - [{{ address.smallAddressForDisplay }}]
-      <span *ngIf="!isLast">,&nbsp;&nbsp;</span>
+    Addresses: &nbsp;&nbsp; @for (address of addressesForDisplay; track address; let i = $index; let
+    isLast = $last) {
+    <div class="mainaddressdispl {{address.chainType}}">
+      - [{{ address.smallAddressForDisplay }}] @if (!isLast) {
+      <span>,&nbsp;&nbsp;</span>
+      }
     </div>
+    }
   </div>
 
   <br />
@@ -142,7 +146,8 @@
     </div>
   </div>
 
-  <div class="linkcontainer" *ngIf="showHomeLink()">
+  @if (showHomeLink()) {
+  <div class="linkcontainer">
     <div class="linkicon" id="homelink">
       <a tabindex="0" (click)="installApp()" (keypress)="installApp()">
         <div class="fas fa-home"></div>
@@ -153,8 +158,8 @@
       <a tabindex="0" (click)="installApp()" (keypress)="installApp()">Add to home</a>
     </div>
   </div>
-
-  <div class="linkcontainer" *ngIf="shareSupport">
+  } @if (shareSupport) {
+  <div class="linkcontainer">
     <div class="linkicon" id="sharelink">
       <a tabindex="0" (click)="share()" (keypress)="share()">
         <div class="fas fa-share-nodes"></div>
@@ -165,6 +170,7 @@
       <a tabindex="0" (click)="share()" (keypress)="share()">Share</a>
     </div>
   </div>
+  }
 
   <div class="linkcontainer">
     <div class="linkicon" id="qrlink">
