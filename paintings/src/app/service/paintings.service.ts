@@ -2702,6 +2702,15 @@ export class PaintingService {
       status: "loose",
       type: "oilpainting",
     },
+    {
+      id: 310,
+      artist: "Alexander van den Bosch",
+      year: 1987,
+      dimensions: "64x50",
+      status: "framed",
+      type: "drawing",
+      title: "Inferno 2",
+    },
   ];
 
   getPaintings(): Painting[] {
