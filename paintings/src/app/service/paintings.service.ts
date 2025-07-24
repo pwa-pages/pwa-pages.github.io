@@ -2991,6 +2991,16 @@ export class PaintingService {
       type: "gouache",
       stored: "box 7",
     },
+    {
+      id: 342,
+      artist: "Alexander van den Bosch",
+      dimensions: "64x50",
+      year: 1987,
+      status: "framed",
+      type: "drawing",
+      stored: "box 7",
+      title: "Inferno 1",
+    },
   ];
 
   getPaintings(): Painting[] {
