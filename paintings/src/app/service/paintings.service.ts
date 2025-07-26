@@ -3001,6 +3001,30 @@ export class PaintingService {
       stored: "box 7",
       title: "Inferno 1",
     },
+    {
+      id: 343,
+      artist: "Alexander van den Bosch",
+      dimensions: "141x100",
+      year: 1976,
+      status: "loose",
+      type: "oilpainting",
+    },
+    {
+      id: 344,
+      artist: "Alexander van den Bosch",
+      dimensions: "141x100",
+      year: 1973,
+      status: "loose",
+      type: "oilpainting",
+    },
+    {
+      id: 345,
+      artist: "Alexander van den Bosch",
+      dimensions: "100x80",
+      year: 1979,
+      status: "framed",
+      type: "oilpainting",
+    },
   ];
 
   getPaintings(): Painting[] {
