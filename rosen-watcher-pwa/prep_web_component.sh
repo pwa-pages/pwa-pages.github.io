@@ -25,6 +25,7 @@ done
 rm -rf web-component/*
 mkdir web-component
 cp dist/rosen-web-component/browser/* web-component
+cp -r dist/rosen-web-component/browser/media web-component
 rm web-component/index.html
 
 tmpfile=$(mktemp)

@@ -431,7 +431,7 @@ button:active {
   width: 89vw;
 }
 
-.main-content {
+.main-content:not(.elementsActive .main-content) {
   padding-top: 10vh;
 }
 

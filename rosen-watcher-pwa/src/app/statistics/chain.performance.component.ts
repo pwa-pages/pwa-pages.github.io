@@ -41,6 +41,10 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
 
   async retrieveData(): Promise<void> {
     this.performanceCharts = await this.getPerformanceChart();
+    this.eventService.sendEventWithData(
+      EventType.ChainPerformanceChartsChanged,
+      this.performanceCharts as EventData,
+    );
   }
 
   override async ngOnInit(): Promise<void> {

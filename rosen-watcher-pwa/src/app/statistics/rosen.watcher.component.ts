@@ -8,6 +8,7 @@ import { ChainPerformanceComponent } from './chain.performance.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { WatchersStats } from '../service/watchers.data.service';
 import { EventService, EventType } from '../service/event.service';
+import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
@@ -21,6 +22,7 @@ export class RosenWatcherComponent {
   private _renderHtml = true;
 
   @Output() notifyWatchersStatsChanged = new EventEmitter<WatchersStats>();
+  @Output() notifyChainPerformanceChartsChanged = new EventEmitter<ChainChartPerformance[]>();
 
   @Input()
   set renderHtml(value: string | boolean) {
@@ -58,5 +60,15 @@ export class RosenWatcherComponent {
       );
       this.notifyWatchersStatsChanged.emit(data);
     });
+
+    this.eventService.subscribeToEvent(
+      EventType.ChainPerformanceChartsChanged,
+      (data: ChainChartPerformance[]) => {
+        console.log(
+          'Received watchers stats changed event, sending through notifyWatchersStatsChanged',
+        );
+        this.notifyChainPerformanceChartsChanged.emit(data);
+      },
+    );
   }
 }

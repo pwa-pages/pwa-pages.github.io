@@ -21,6 +21,7 @@ export enum EventType {
   WindowResized = 'WindowResized',
   VersionUpdated = 'VersionUpdated',
   WatchersStatsChanged = 'WatchersStatsChanged',
+  ChainPerformanceChartsChanged = 'ChainPerformanceChartsChanged',
 }
 
 export type EventData = string | Input | object;
@@ -52,6 +53,7 @@ export class EventService {
       [EventType.SettingsScreenLoaded]: new Subject<EventData>(),
       [EventType.WindowResized]: new Subject<EventData>(),
       [EventType.WatchersStatsChanged]: new Subject<EventData>(),
+      [EventType.ChainPerformanceChartsChanged]: new Subject<EventData>(),
     };
     return this.eventSubscriptions;
   }
