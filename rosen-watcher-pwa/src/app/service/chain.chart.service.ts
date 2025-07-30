@@ -14,7 +14,7 @@ export type LineChart = Chart<
 @Injectable({
   providedIn: 'root',
 })
-export class ChartService {
+export class ChainChartService {
   readonly chartColors: string[] = [
     '#1f77b4', // Blue
     '#2ca02c', // Green

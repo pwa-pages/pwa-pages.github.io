@@ -1,7 +1,7 @@
 import { Component, Inject, Injector, OnInit } from '@angular/core';
 import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ChartService } from '../service/chart.service';
+import { ChainChartService } from '../service/chain.chart.service';
 
 import { ChainPerfChartDataSet } from '../../service/ts/models/chart.dataset';
 import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
@@ -28,7 +28,7 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
   constructor(
     injector: Injector,
     @Inject(IS_ELEMENTS_ACTIVE) public isElementsActive: boolean,
-    private chartService: ChartService,
+    private chartService: ChainChartService,
     private navigationService: NavigationService,
     private watchersDataService: WatchersDataService,
   ) {

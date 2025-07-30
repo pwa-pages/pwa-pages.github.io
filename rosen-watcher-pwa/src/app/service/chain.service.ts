@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import '../../shared/ts/chain.service';
 
 @Injectable({
   providedIn: 'root',

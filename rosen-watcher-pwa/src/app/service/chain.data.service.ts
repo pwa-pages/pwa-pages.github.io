@@ -6,7 +6,7 @@ import { Address } from '../../service/ts/models/address';
 import { EventService, EventType } from './event.service';
 import { DateUtils } from '../statistics/date.utils';
 
-export function initializeDataService(dataService: DataService) {
+export function initializeDataService(dataService: ChainDataService) {
   return (): Promise<void> => {
     return dataService.initialize();
   };
@@ -15,7 +15,7 @@ export function initializeDataService(dataService: DataService) {
 @Injectable({
   providedIn: 'root',
 })
-export class DataService {
+export class ChainDataService {
   public rsnInputs: Input[] = [];
   private addressCharts: Record<
     string,

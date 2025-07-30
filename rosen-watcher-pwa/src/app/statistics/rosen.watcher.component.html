@@ -2,5 +2,8 @@
   <app-watchers class="elementsActive" render-html="{{ renderHtml }}"></app-watchers>
 }
 @if (appChainPerformanceActive()) {
-  <app-chain-performance class="elementsActive"></app-chain-performance>
+  <app-chain-performance
+    class="elementsActive"
+    render-html="{{ renderHtml }}"
+  ></app-chain-performance>
 }

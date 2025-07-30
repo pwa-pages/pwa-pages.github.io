@@ -31,7 +31,7 @@ import {
   initializeServiceWorkerService,
   ServiceWorkerService,
 } from './app/service/service.worker.service';
-import { initializeDataService, DataService } from './app/service/data.service';
+import { initializeDataService, ChainDataService } from './app/service/chain.data.service';
 import { ChainPerformanceComponent } from './app/statistics/chain.performance.component';
 
 function getScriptFileName(): string {
@@ -73,7 +73,7 @@ bootstrapApplication(AppComponent, {
     {
       provide: APP_INITIALIZER,
       useFactory: initializeDataService,
-      deps: [DataService],
+      deps: [ChainDataService],
       multi: true,
     },
   ],

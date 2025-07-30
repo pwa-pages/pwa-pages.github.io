@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import '../../shared/ts/constants';
 import { filter } from 'rxjs/operators';
 import { EventService, EventType } from './event.service';
 

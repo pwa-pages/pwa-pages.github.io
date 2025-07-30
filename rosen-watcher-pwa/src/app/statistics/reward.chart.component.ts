@@ -3,7 +3,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
-import { ChartService, LineChart } from '../service/chart.service';
+import { ChainChartService, LineChart } from '../service/chain.chart.service';
 import { EventService, EventType } from '../service/event.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
   @Input() rewardsChart: DateNumberPoint[] = [];
 
   constructor(
-    private chartService: ChartService,
+    private chartService: ChainChartService,
     private eventService: EventService,
     private elementRef: ElementRef,
   ) {

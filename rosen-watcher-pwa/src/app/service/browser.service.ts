@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import '../../shared/ts/chain.service';
+
 import { MatDialog } from '@angular/material/dialog';
 import { QRDialogComponent } from '../statistics/qrdialog.component';
 import { Router } from '@angular/router';

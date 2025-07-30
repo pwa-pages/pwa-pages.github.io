@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../service/data.service';
+import { ChainDataService } from '../service/chain.data.service';
 import { StorageService } from '../service/storage.service';
 import { Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings.dialog';
@@ -19,7 +19,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private dataService: DataService,
+    private dataService: ChainDataService,
     private storageService: StorageService,
     private eventService: EventService,
     public dialog: MatDialog,

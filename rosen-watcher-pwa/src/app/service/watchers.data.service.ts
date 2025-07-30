@@ -1,11 +1,10 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { DownloadService } from './download.service';
+import { HttpDownloadService } from './http.download.service';
 import { Observable } from 'rxjs';
 import { ChainType } from '../../service/ts/models/chaintype';
 import { WatcherInfo } from '../../service/ts/models/watcher.info';
 import { Token } from '../../service/ts/models/token';
-import '../../shared/ts/chain.service';
 import { PriceService } from './price.service';
 
 export function createChainNumber(): Record<ChainType, number | undefined> {
@@ -61,7 +60,7 @@ export class WatchersDataService {
   busyCounter = 0;
 
   constructor(
-    private downloadService: DownloadService,
+    private downloadService: HttpDownloadService,
     private priceService: PriceService,
   ) {}
 

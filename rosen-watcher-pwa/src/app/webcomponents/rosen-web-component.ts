@@ -3,7 +3,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
 import 'zone.js';
 import { APP_INITIALIZER } from '@angular/core';
-import { initializeDataService, DataService } from '../service/data.service';
+import { initializeDataService, ChainDataService } from '../service/chain.data.service';
 import {
   initializeServiceWorkerService,
   ServiceWorkerService,
@@ -14,7 +14,7 @@ import { RosenWatcherComponent } from '../statistics/rosen.watcher.component';
 export const dataServiceInitializer = {
   provide: APP_INITIALIZER,
   useFactory: initializeDataService,
-  deps: [DataService],
+  deps: [ChainDataService],
   multi: true,
 };
 

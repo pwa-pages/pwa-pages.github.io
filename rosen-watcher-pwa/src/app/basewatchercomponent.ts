@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { ChainService } from './service/chain.service';
 import { Address } from '../service/ts/models/address';
 import { StorageService } from './service/storage.service';
-import { DataService } from './service/data.service';
+import { ChainDataService } from './service/chain.data.service';
 import { BrowserService } from './service/browser.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
   protected eventService: EventService;
   protected chainService: ChainService;
   protected storageService: StorageService;
-  protected dataService: DataService;
+  protected dataService: ChainDataService;
   protected browserService: BrowserService;
   protected route: ActivatedRoute | undefined;
 
@@ -28,7 +28,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     this.eventService = this.injector.get(EventService);
     this.chainService = this.injector.get(ChainService);
     this.storageService = this.injector.get(StorageService);
-    this.dataService = this.injector.get(DataService);
+    this.dataService = this.injector.get(ChainDataService);
     this.browserService = this.injector.get(BrowserService);
     try {
       this.route = this.injector.get(ActivatedRoute);

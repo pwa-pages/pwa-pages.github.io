@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import '../../shared/ts/chain.service';
 import { map } from 'rxjs/operators';
-import { DownloadService } from './download.service';
+import { HttpDownloadService } from './http.download.service';
 import { Observable, of } from 'rxjs';
 
 export interface CurrencyRates {
@@ -19,7 +18,7 @@ export interface CurrencyRates {
   providedIn: 'root',
 })
 export class PriceService {
-  constructor(private downloadService: DownloadService) {}
+  constructor(private downloadService: HttpDownloadService) {}
   private currencyRates: Record<string, Record<string, number>> = {};
 
   public convert(amount: number, from: string, to: string): Observable<number> {

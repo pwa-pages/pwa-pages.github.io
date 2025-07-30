@@ -4,7 +4,7 @@ import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http'
 import 'zone.js';
 import { ChainPerformanceComponent } from '../statistics/chain.performance.component';
 import { APP_INITIALIZER } from '@angular/core';
-import { initializeDataService, DataService } from '../service/data.service';
+import { initializeDataService, ChainDataService } from '../service/chain.data.service';
 import {
   initializeServiceWorkerService,
   ServiceWorkerService,
@@ -14,7 +14,7 @@ import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 export const dataServiceInitializer = {
   provide: APP_INITIALIZER,
   useFactory: initializeDataService,
-  deps: [DataService],
+  deps: [ChainDataService],
   multi: true,
 };
 

@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ChartService } from '../service/chart.service';
+import { ChainChartService } from '../service/chain.chart.service';
 
 import { ChartDataSet } from '../../service/ts/models/chart.dataset';
 import { ChartPoint } from '../../service/ts/models/chart.point';
@@ -23,7 +23,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
 
   constructor(
     injector: Injector,
-    private chartService: ChartService,
+    private chartService: ChainChartService,
     private navigationService: NavigationService,
   ) {
     super(injector);

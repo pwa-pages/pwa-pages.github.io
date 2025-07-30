@@ -8,7 +8,7 @@ import { EventService, EventType } from './event.service';
 @Injectable({
   providedIn: 'root',
 })
-export class DownloadService {
+export class HttpDownloadService {
   private activeDownloads: Record<string, boolean> = {};
   constructor(
     private http: HttpClient,
