@@ -1,4 +1,4 @@
-@if (!isElementsActive) {
+@if (isHtmlRenderEnabled() ? !isElementsActive : false) {
 <div class="headercontainer">
   <div class="headerblock">
     Performance&nbsp;
@@ -27,7 +27,7 @@
   <div class="info-description">
     Avarage earnings in RSN per chain type over the last week for a single watcher.
   </div>
-  }
+  } @if (isHtmlRenderEnabled()) {
   <div class="addressescontainer">
     @for (address of performanceCharts; track address; let i = $index; let isLast = $last) {
     <div class="performancelegend">
@@ -41,8 +41,9 @@
     </div>
     }
   </div>
+  }
 
-  <div class="chartcontainer">
+  <div class="chartcontainer" [style.display]="isHtmlRenderEnabled() ? null : 'none'">
     <div class="chart-container">
       <canvas id="PerformanceChart"></canvas>
     </div>

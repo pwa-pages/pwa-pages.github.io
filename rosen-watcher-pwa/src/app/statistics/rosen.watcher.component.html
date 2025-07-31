@@ -1,9 +1,14 @@
 @if (appWatchersActive()) {
-  <app-watchers class="elementsActive" render-html="{{ renderHtml }}"></app-watchers>
+  <app-watchers
+    class="elementsActive"
+    [renderHtml]="renderHtml"
+    [ngStyle]="{ display: renderHtml ? null : 'none' }"
+  ></app-watchers>
 }
 @if (appChainPerformanceActive()) {
   <app-chain-performance
     class="elementsActive"
-    render-html="{{ renderHtml }}"
+    [renderHtml]="renderHtml"
+    [ngStyle]="{ display: renderHtml ? null : 'none' }"
   ></app-chain-performance>
 }

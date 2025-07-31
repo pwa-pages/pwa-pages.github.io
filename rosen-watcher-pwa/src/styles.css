@@ -522,7 +522,7 @@ app-chain-performance.elementsActive,
 .performancecontainer.elementsActive {
   width: inherit !important;
   height: inherit !important;
-  display: block !important;
+  display: block;
 }
 
 .chart-legend {

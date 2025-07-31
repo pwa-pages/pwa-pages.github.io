@@ -1,4 +1,4 @@
-import { Component, Inject, Injector, OnInit } from '@angular/core';
+import { Component, Inject, Injector, Input, OnInit } from '@angular/core';
 import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainChartService } from '../service/chain.chart.service';
@@ -20,6 +20,21 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
 })
 export class ChainPerformanceComponent extends BaseWatcherComponent implements OnInit {
+  private _renderHtml = true;
+
+  @Input()
+  set renderHtml(value: string | boolean) {
+    this._renderHtml = value === false || value === 'false' ? false : true;
+  }
+
+  get renderHtml(): boolean {
+    return this._renderHtml;
+  }
+
+  isHtmlRenderEnabled(): boolean {
+    return this._renderHtml;
+  }
+
   performanceCharts: ChainChartPerformance[] = [];
   performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;
 
@@ -123,8 +138,10 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
   }
 
   updateChart(): void {
+    if (!this._renderHtml) {
+      return;
+    }
     const dataSet = this.createDataSet(0);
-    //const cnt = this.performanceCharts.length;
 
     dataSet.data = this.performanceCharts.map((p) => {
       if (p.chainType && this.chainWatcherCount[p.chainType]) {
@@ -136,7 +153,6 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
         return { x: p.chainType as string, y: 0 };
       }
     });
-    //dataSet.label = this.performanceCharts.map(p => p.chainType);
 
     if (!this.performanceChart) {
       this.performanceChart = this.chartService.createChainPerformanceChart(dataSet);
