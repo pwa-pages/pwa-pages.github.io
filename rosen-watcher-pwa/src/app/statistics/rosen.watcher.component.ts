@@ -22,7 +22,9 @@ export class RosenWatcherComponent {
   private _renderHtml = true;
 
   @Output() notifyWatchersStatsChanged = new EventEmitter<WatchersStats>();
-  @Output() notifyChainPerformanceChartsChanged = new EventEmitter<ChainChartPerformance[]>();
+  @Output() notifyChainPerformanceChartsChanged = new EventEmitter<
+    { chainType: ChainType | null; chart: number }[]
+  >();
 
   @Input()
   set renderHtml(value: string | boolean) {
@@ -67,7 +69,9 @@ export class RosenWatcherComponent {
         console.log(
           'Received watchers stats changed event, sending through notifyWatchersStatsChanged',
         );
-        this.notifyChainPerformanceChartsChanged.emit(data);
+        this.notifyChainPerformanceChartsChanged.emit(
+          data.map(({ chainType, chart }) => ({ chainType, chart })),
+        );
       },
     );
   }
