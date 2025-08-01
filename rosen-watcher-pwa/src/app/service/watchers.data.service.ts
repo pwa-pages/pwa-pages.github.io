@@ -251,20 +251,21 @@ export class WatchersDataService {
 
     const watcherInfo$ = this.getWatchersInfo();
 
-    Object.values(ChainType).forEach((c) => {
-      watcherInfo$
-        .pipe(
-          map(
-            (watcherInfo) =>
+    watcherInfo$
+      .pipe(
+        map((watcherInfo) => {
+          Object.values(ChainType).forEach((c) => {
+            const amount =
               watcherInfo.tokens.find((token: Token) => token.name === 'rspv2' + c + 'AWC')
-                ?.amount ?? 0,
-          ),
-        )
-        .subscribe((amount) => {
-          this.watchersStats.chainWatcherCount[c] = amount;
-          this.setLockedAmounts(c);
-        });
+                ?.amount ?? 0;
+            this.watchersStats.chainWatcherCount[c] = amount;
+            this.setLockedAmounts(c);
+          });
+        }),
+      )
+      .subscribe();
 
+    Object.values(ChainType).forEach((c) => {
       this.getPermitsInfo(c)
         .pipe(map((permitsInfo) => permitsInfo?.amount))
         .subscribe((amount) => {
