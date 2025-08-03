@@ -1,14 +1,23 @@
 // No triple-slash directives or 'declare const self'
 
-// Define interfaces for the data structures used
 interface MessageEventData {
   type: string;
   data: string;
 }
 
-// Service Worker Event Listener
 self.addEventListener('message', async (event: MessageEvent) => {
-  const processEventService = new ProcessEventService(new ServiceWorkerEventSender());
+  const processEventServiceSingleton = (() => {
+    console.log('Initializing ProcessEventService singleton');
+    let instance: ProcessEventService | null = null;
+    return () => {
+      if (!instance) {
+        instance = new ProcessEventService(new ServiceWorkerEventSender());
+      }
+      return instance;
+    };
+  })();
+
+  const processEventService = processEventServiceSingleton();
   const data: MessageEventData = event.data;
 
   console.log(`Rosen service worker received event of type ${data.type}`);
