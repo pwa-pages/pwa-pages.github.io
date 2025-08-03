@@ -26,8 +26,6 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
     _address: string,
     transactions: TransactionItem[],
     db: IDBDatabase,
-
-    profile: string | undefined,
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       const tempData: PerfTx[] = [];
@@ -91,7 +89,7 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
           const perfTxs = await this.getPerfTxs();
           this.eventSender.sendEvent({
             type: 'PerfChartChanged',
-            profile: profile,
+            metaData: '',
             data: perfTxs,
           });
 

@@ -1,7 +1,7 @@
 interface EventPayload<T> {
   type: string;
   data?: T;
-  profile: string | undefined;
+  metaData: string | undefined;
 }
 
 interface EventSender {
@@ -23,8 +23,8 @@ class ServiceWorkerEventSender implements EventSender {
 
 class ProcessEventService {
   constructor(private eventSender: EventSender) {}
-  private async initServices(profile: string | undefined) {
-    const db: IDBDatabase = await this.initIndexedDB(profile);
+  private async initServices() {
+    const db: IDBDatabase = await this.initIndexedDB();
     const chartService: ChartService = new ChartService();
     const rewardDataService: RewardDataService = new RewardDataService(
       db,
@@ -62,8 +62,6 @@ class ProcessEventService {
       event.type === 'PerformanceScreenLoaded' ||
       event.type === 'RequestInputsDownload'
     ) {
-      const profile = event.data as unknown as string | undefined;
-
       const {
         dataService,
         downloadService,
@@ -76,7 +74,7 @@ class ProcessEventService {
         downloadPerfService: DownloadService<PerfTx>;
         chartService: ChartService;
         chainPerformanceDataService: ChainPerformanceDataService;
-      } = await this.initServices(profile);
+      } = await this.initServices();
 
       if (event.type === 'RequestInputsDownload') {
         console.log(
@@ -90,14 +88,11 @@ class ProcessEventService {
 
           this.eventSender.sendEvent({
             type: 'AddressChartChanged',
-            profile: profile,
+            metaData: '',
             data: addressCharts,
           });
 
-          await downloadService.downloadForAddresses(profile);
-
-          //await dataService.compressInputs();
-          //({ dataService, downloadService, chartService } = await initServices(profile));
+          await downloadService.downloadForAddresses();
         } catch (error) {
           console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
@@ -110,11 +105,11 @@ class ProcessEventService {
           const inputs = await dataService.getSortedInputs();
           this.eventSender.sendEvent({
             type: 'InputsChanged',
-            profile: profile,
+            metaData: '',
             data: inputs,
           });
 
-          await downloadService.downloadForAddresses(profile);
+          await downloadService.downloadForAddresses();
         } catch (error) {
           console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
@@ -127,11 +122,11 @@ class ProcessEventService {
 
           this.eventSender.sendEvent({
             type: 'PerfChartChanged',
-            profile: profile,
+            metaData: '',
             data: perfTxs,
           });
 
-          downloadPerfService.downloadForAddress(hotWalletAddress, undefined);
+          downloadPerfService.downloadForAddress(hotWalletAddress);
         } catch (error) {
           console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
@@ -140,15 +135,9 @@ class ProcessEventService {
   }
 
   // IndexedDB Initialization
-  private async initIndexedDB(profile: string | undefined): Promise<IDBDatabase> {
+  private async initIndexedDB(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      console.log('Loading service worker db with profile: ' + profile);
-
       let dbName = rs_DbName;
-
-      if (profile) {
-        dbName = dbName + '_' + profile;
-      }
 
       const request: IDBOpenDBRequest = indexedDB.open(dbName);
 

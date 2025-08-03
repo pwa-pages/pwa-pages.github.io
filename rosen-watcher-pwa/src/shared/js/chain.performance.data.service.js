@@ -14,7 +14,7 @@ class ChainPerformanceDataService extends DataService {
             request.onerror = (event) => reject(event.target.error);
         });
     }
-    async addData(_address, transactions, db, profile) {
+    async addData(_address, transactions, db) {
         return new Promise((resolve, reject) => {
             const tempData = [];
             transactions.forEach((item) => {
@@ -59,7 +59,7 @@ class ChainPerformanceDataService extends DataService {
                 const perfTxs = await this.getPerfTxs();
                 this.eventSender.sendEvent({
                     type: 'PerfChartChanged',
-                    profile: profile,
+                    metaData: '',
                     data: perfTxs,
                 });
                 resolve();

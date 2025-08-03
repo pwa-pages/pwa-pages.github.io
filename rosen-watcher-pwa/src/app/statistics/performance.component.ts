@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { EventData, EventType } from '../service/event.service';
+import { EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainChartService } from '../service/chain.chart.service';
 
@@ -46,10 +46,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     await this.retrieveData();
     this.updateChart();
 
-    this.eventService.sendEventWithData(
-      EventType.RequestInputsDownload,
-      this.storageService.getProfile() as EventData,
-    );
+    this.eventService.sendEvent(EventType.RequestInputsDownload);
 
     await this.subscribeToEvent(EventType.RefreshInputs, async () => {
       await this.retrieveData();

@@ -63,13 +63,7 @@ export class EventService {
     this.eventSubscriptions[eventType].next({} as EventData);
   }
 
-  async sendEventWithData(
-    eventType: EventType,
-    eventData: EventData,
-    profile?: string | undefined | null,
-  ) {
-    console.log('Received event: ' + eventType + ' for profile ' + profile);
-
+  async sendEventWithData(eventType: EventType, eventData: EventData) {
     this.eventSubscriptions[eventType].next(eventData);
   }
 

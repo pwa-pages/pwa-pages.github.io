@@ -39,7 +39,6 @@ abstract class DataService<T> {
     address: string,
     transactions: TransactionItem[],
     db: IDBDatabase,
-    profile: string | undefined,
   ): Promise<void>;
   abstract getDataType(): string;
   getMaxDownloadDateDifference(): number {

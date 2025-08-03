@@ -14,7 +14,6 @@ import { BrowserService } from './service/browser.service';
 export class BaseWatcherComponent implements OnInit, OnDestroy {
   public busyCounter = 1;
   loaderLogs: string[] = [];
-  profile: string | null = null;
   addresses: Address[] = [];
   noAddresses = false;
   protected eventService: EventService;
@@ -55,19 +54,8 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     await this.eventService.unSubscribeAll([EventType.RefreshInputs]);
   }
 
-  public async checkProfileParams(params: Params): Promise<void> {
-    if (params['profile']) {
-      const profileParam = params['profile'];
-      this.profile = profileParam;
-      console.log(profileParam);
-
-      this.storageService.initIndexedDB(profileParam);
-    }
-  }
-
   protected SetupRoute() {
     this.route?.queryParams.subscribe(async (params) => {
-      await this.checkProfileParams(params);
       await this.checkAddressParams(params);
     });
   }
@@ -100,7 +88,7 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
       }
       await this.eventService.sendEventWithData(
         EventType.StatisticsScreenLoaded,
-        this.storageService.getProfile() as EventData,
+        null as unknown as EventData,
       );
       return true;
     } else {

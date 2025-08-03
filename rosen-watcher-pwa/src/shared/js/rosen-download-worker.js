@@ -4,5 +4,5 @@ self.addEventListener('message', async (event) => {
     const processEventService = new ProcessEventService(new ServiceWorkerEventSender());
     const data = event.data;
     console.log(`Rosen service worker received event of type ${data.type}`);
-    processEventService.processEvent({ profile: data.data, type: data.type });
+    processEventService.processEvent({ metaData: data.data, type: data.type });
 });

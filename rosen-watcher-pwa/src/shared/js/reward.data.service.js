@@ -149,7 +149,7 @@ class RewardDataService extends DataService {
       dt.setHours(0, 0, 0, 0);
       return dt;
     }*/
-    async addData(address, transactions, db, profile) {
+    async addData(address, transactions, db) {
         return new Promise((resolve, reject) => {
             // Create a temporary array to hold DbInput items before bulk insertion
             const tempData = [];
@@ -188,13 +188,13 @@ class RewardDataService extends DataService {
                 const inputs = await this.getSortedInputs();
                 this.eventSender.sendEvent({
                     type: 'InputsChanged',
-                    profile: profile,
+                    metaData: '',
                     data: inputs,
                 });
                 this.eventSender.sendEvent({
                     type: 'AddressChartChanged',
                     data: await this.chartService.getAddressCharts(inputs),
-                    profile: profile,
+                    metaData: '',
                 });
                 resolve();
             })

@@ -15,8 +15,8 @@ class ProcessEventService {
     constructor(eventSender) {
         this.eventSender = eventSender;
     }
-    async initServices(profile) {
-        const db = await this.initIndexedDB(profile);
+    async initServices() {
+        const db = await this.initIndexedDB();
         const chartService = new ChartService();
         const rewardDataService = new RewardDataService(db, chartService, this.eventSender);
         const chainPerformanceDataService = new ChainPerformanceDataService(db, this.eventSender);
@@ -34,20 +34,17 @@ class ProcessEventService {
         if (event.type === 'StatisticsScreenLoaded' ||
             event.type === 'PerformanceScreenLoaded' ||
             event.type === 'RequestInputsDownload') {
-            const profile = event.data;
-            const { dataService, downloadService, downloadPerfService, chartService, chainPerformanceDataService, } = await this.initServices(profile);
+            const { dataService, downloadService, downloadPerfService, chartService, chainPerformanceDataService, } = await this.initServices();
             if (event.type === 'RequestInputsDownload') {
                 console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain');
                 try {
                     const addressCharts = await chartService.getAddressCharts(await dataService.getSortedInputs());
                     this.eventSender.sendEvent({
                         type: 'AddressChartChanged',
-                        profile: profile,
+                        metaData: '',
                         data: addressCharts,
                     });
-                    await downloadService.downloadForAddresses(profile);
-                    //await dataService.compressInputs();
-                    //({ dataService, downloadService, chartService } = await initServices(profile));
+                    await downloadService.downloadForAddresses();
                 }
                 catch (error) {
                     console.error('Error initializing IndexedDB or downloading addresses:', error);
@@ -59,10 +56,10 @@ class ProcessEventService {
                     const inputs = await dataService.getSortedInputs();
                     this.eventSender.sendEvent({
                         type: 'InputsChanged',
-                        profile: profile,
+                        metaData: '',
                         data: inputs,
                     });
-                    await downloadService.downloadForAddresses(profile);
+                    await downloadService.downloadForAddresses();
                 }
                 catch (error) {
                     console.error('Error initializing IndexedDB or downloading addresses:', error);
@@ -75,10 +72,10 @@ class ProcessEventService {
                     const perfTxs = await chainPerformanceDataService.getPerfTxs();
                     this.eventSender.sendEvent({
                         type: 'PerfChartChanged',
-                        profile: profile,
+                        metaData: '',
                         data: perfTxs,
                     });
-                    downloadPerfService.downloadForAddress(hotWalletAddress, undefined);
+                    downloadPerfService.downloadForAddress(hotWalletAddress);
                 }
                 catch (error) {
                     console.error('Error initializing IndexedDB or downloading addresses:', error);
@@ -87,13 +84,9 @@ class ProcessEventService {
         }
     }
     // IndexedDB Initialization
-    async initIndexedDB(profile) {
+    async initIndexedDB() {
         return new Promise((resolve, reject) => {
-            console.log('Loading service worker db with profile: ' + profile);
             let dbName = rs_DbName;
-            if (profile) {
-                dbName = dbName + '_' + profile;
-            }
             const request = indexedDB.open(dbName);
             request.onsuccess = (event) => {
                 const db = event.target.result;

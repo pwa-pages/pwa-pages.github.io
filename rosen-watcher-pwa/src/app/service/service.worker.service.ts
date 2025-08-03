@@ -7,7 +7,7 @@ import { IS_ELEMENTS_ACTIVE } from './tokens';
 interface ServiceWorkerMessage {
   type: string;
   data?: object;
-  profile: string | undefined | null;
+  metaData: string | undefined | null;
   payload?: object;
 }
 
@@ -29,7 +29,6 @@ export function initializeServiceWorkerService(serviceWorkerService: ServiceWork
   providedIn: 'root',
 })
 export class ServiceWorkerService {
-  private currentProfile: string | null | undefined = null;
   private avoidServiceWorker = true;
 
   constructor(
@@ -56,7 +55,7 @@ export class ServiceWorkerService {
             new AngularEventSender(this.eventService),
           );
 
-          processEventService.processEvent({ profile: this.currentProfile ?? '', type: eventType });
+          processEventService.processEvent({ metaData: '', type: eventType });
         } else {
           console.log('Sending to service worker, event ' + eventType);
           this.sendMessageToServiceWorker({
@@ -109,7 +108,6 @@ export class ServiceWorkerService {
       navigator.serviceWorker.ready
         .then((registration) => {
           if (registration.active) {
-            this.currentProfile = message.data as string | null | undefined;
             registration.active.postMessage(message);
           } else {
             console.error('Service worker is not active yet');
@@ -145,8 +143,8 @@ export class ServiceWorkerService {
         console.log(
           'Received message from service worker of type ' +
             message.type +
-            ', profile ' +
-            message.profile,
+            ', metaData ' +
+            message.metaData,
         );
 
         this.handleServiceWorkerMessage(message);
@@ -154,7 +152,7 @@ export class ServiceWorkerService {
         const v = event?.data?.version?.appData?.version;
 
         if (v) {
-          this.eventService.sendEventWithData(EventType.VersionUpdated, v, null);
+          this.eventService.sendEventWithData(EventType.VersionUpdated, v);
           localStorage.setItem('rosenWatcherServiceVersion', v);
         }
       });
@@ -166,19 +164,9 @@ export class ServiceWorkerService {
   handleServiceWorkerMessage(message: ServiceWorkerMessage) {
     console.log('Handling message from service worker:', message);
 
-    let process = !message.profile && !this.currentProfile;
-
-    if (message.profile || this.currentProfile) {
-      process = process || message.profile == this.currentProfile;
-    }
-
-    if (process && (Object.values(EventType) as string[]).includes(message.type)) {
+    if ((Object.values(EventType) as string[]).includes(message.type)) {
       if (message.data) {
-        this.eventService.sendEventWithData(
-          message.type as EventType,
-          message.data as EventData,
-          message.profile,
-        );
+        this.eventService.sendEventWithData(message.type as EventType, message.data as EventData);
       } else {
         this.eventService.sendEvent(message.type as EventType);
       }

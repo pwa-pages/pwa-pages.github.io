@@ -8,24 +8,13 @@ import { Address } from '../../service/ts/models/address';
 export class StorageService {
   dbPromise!: Promise<IDBDatabase>;
   inputsCache: Input[] = [];
-  profile: string | null = null;
 
   constructor() {
     this.initIndexedDB();
   }
 
-  public getProfile(): string | null {
-    return this.profile;
-  }
-
-  async initIndexedDB(profile: string | null = null): Promise<void> {
+  async initIndexedDB(): Promise<void> {
     let dbName = rs_DbName;
-
-    this.profile = profile;
-
-    if (profile) {
-      dbName = dbName + '_' + profile;
-    }
 
     this.dbPromise = new Promise((resolve, reject) => {
       const request = window.indexedDB.open(dbName, rs_DbVersion);

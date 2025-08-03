@@ -160,12 +160,7 @@ class RewardDataService extends DataService<DbInput> {
     return dt;
   }*/
 
-  async addData(
-    address: string,
-    transactions: TransactionItem[],
-    db: IDBDatabase,
-    profile: string | undefined,
-  ): Promise<void> {
+  async addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void> {
     return new Promise((resolve, reject) => {
       // Create a temporary array to hold DbInput items before bulk insertion
       const tempData: DbInput[] = [];
@@ -212,14 +207,14 @@ class RewardDataService extends DataService<DbInput> {
 
           this.eventSender.sendEvent({
             type: 'InputsChanged',
-            profile: profile,
+            metaData: '',
             data: inputs,
           });
 
           this.eventSender.sendEvent({
             type: 'AddressChartChanged',
             data: await this.chartService.getAddressCharts(inputs),
-            profile: profile,
+            metaData: '',
           });
 
           resolve();

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Injector } from '@angular/core';
-import { EventData, EventType } from '../service/event.service';
+import { EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgStyle } from '@angular/common';
@@ -174,10 +174,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       this.version = v;
     });
 
-    await this.eventService.sendEventWithData(
-      EventType.StatisticsScreenLoaded,
-      this.storageService.getProfile() as EventData,
-    );
+    await this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
   }
 
   title = 'rosen-watcher-pwa';

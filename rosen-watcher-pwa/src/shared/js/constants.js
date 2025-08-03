@@ -16,6 +16,7 @@ const rs_Address_Key = 'address';
 const rs_PermitCost = 3000;
 const rs_WatcherCollateralRSN = 30000;
 const rs_WatcherCollateralERG = 800;
+const rs_ErgoExplorerHost = 'api.ergoplatform.com';
 var Period;
 (function (Period) {
     Period["Day"] = "Day";
@@ -51,4 +52,5 @@ if (typeof window !== 'undefined') {
     window.Currency = Currency;
     window.rs_PerfInitialNDownloads = rs_PerfInitialNDownloads;
     window.rs_PerfFullDownloadsBatchSize = rs_PerfFullDownloadsBatchSize;
+    window.rs_ErgoExplorerHost = rs_ErgoExplorerHost;
 }

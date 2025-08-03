@@ -16,6 +16,8 @@ const rs_Address_Key = 'address';
 const rs_PermitCost = 3000;
 const rs_WatcherCollateralRSN = 30000;
 const rs_WatcherCollateralERG = 800;
+const rs_ErgoExplorerHost = 'api.ergoplatform.com';
+//const rs_ErgoExplorerHost = 'api.ergo.aap.cornell.edu';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface DateNumberPoint {
@@ -58,4 +60,5 @@ if (typeof window !== 'undefined') {
   (window as any).Currency = Currency;
   (window as any).rs_PerfInitialNDownloads = rs_PerfInitialNDownloads;
   (window as any).rs_PerfFullDownloadsBatchSize = rs_PerfFullDownloadsBatchSize;
+  (window as any).rs_ErgoExplorerHost = rs_ErgoExplorerHost;
 }
