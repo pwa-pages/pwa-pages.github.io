@@ -7,13 +7,14 @@ import { WatchersStats } from '../service/watchers.data.service';
 import { EventService, EventType } from '../service/event.service';
 import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
 import { StatisticsChartComponent } from './statistics.chart.component';
+import { CommonModule } from '@angular/common';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
   selector: 'rosen-watcher-component',
   templateUrl: './rosen.watcher.component.html',
   standalone: true,
-  imports: [WatchersComponent, ChainPerformanceComponent, StatisticsChartComponent],
+  imports: [CommonModule, WatchersComponent, ChainPerformanceComponent, StatisticsChartComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RosenWatcherComponent {
@@ -71,7 +72,7 @@ export class RosenWatcherComponent {
     return filledAddresses;
   }
 
-  private _component = 'watchers';
+  private _component = '';
   @Input()
   set component(value: string) {
     this._component = value;

@@ -1,23 +1,18 @@
-@if (appWatchersActive()) {
-  <app-watchers
-    class="elementsActive"
-    [renderHtml]="renderHtml"
-    [ngStyle]="{ display: renderHtml ? null : 'none' }"
-  ></app-watchers>
-}
-@if (appChainPerformanceActive()) {
-  <app-chain-performance
-    class="elementsActive"
-    [renderHtml]="renderHtml"
-    [ngStyle]="{ display: renderHtml ? null : 'none' }"
-  ></app-chain-performance>
-}
+<app-watchers
+  *ngIf="appWatchersActive() && renderHtml"
+  class="elementsActive"
+  [renderHtml]="renderHtml"
+></app-watchers>
 
-@if (appStatisticsActive()) {
-  <app-statistics-chart
-    class="elementsActive"
-    [renderHtml]="renderHtml"
-    [ngStyle]="{ display: renderHtml ? null : 'none' }"
-    [filledAddresses]="getFilledAddresses()"
-  ></app-statistics-chart>
-}
+<app-chain-performance
+  *ngIf="appChainPerformanceActive() && renderHtml"
+  class="elementsActive"
+  [renderHtml]="renderHtml"
+></app-chain-performance>
+
+<app-statistics-chart
+  *ngIf="appStatisticsActive() && renderHtml"
+  class="elementsActive"
+  [renderHtml]="renderHtml"
+  [filledAddresses]="getFilledAddresses()"
+></app-statistics-chart>

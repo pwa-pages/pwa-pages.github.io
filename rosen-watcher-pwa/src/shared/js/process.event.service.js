@@ -44,7 +44,12 @@ class ProcessEventService {
                         type: 'AddressChartChanged',
                         data: addressCharts,
                     });
-                    await downloadService.downloadForAddresses();
+                    if (event.data) {
+                        await downloadService.downloadForAddress(event.data);
+                    }
+                    else {
+                        await downloadService.downloadForAddresses();
+                    }
                 }
                 catch (error) {
                     console.error('Error initializing IndexedDB or downloading addresses:', error);

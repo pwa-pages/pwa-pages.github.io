@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, OnChanges, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -16,6 +16,7 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
   previousLength = 0;
   chart: LineChart | null = null;
 
+  @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
   @Input() rewardsChart: DateNumberPoint[] = [];
 
   constructor(
@@ -43,7 +44,11 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
 
   updateChart(): void {
     if (!this.chart) {
-      this.chart = this.chartService.createStatisticsChart(this.rewardsChart, 1, [0.4]);
+      if (!this.chartCanvas || !this.chartCanvas.nativeElement) {
+        return;
+      }
+      const canvas = this.chartCanvas.nativeElement;
+      this.chart = this.chartService.createStatisticsChart(canvas, this.rewardsChart, 1, [0.4]);
     }
 
     this.chart.data.datasets[0].data = this.chartService.reduceChartData(

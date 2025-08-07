@@ -516,7 +516,7 @@ button:active {
 }
 
 .elementsActive #PerformanceChart,
-.elementsActive #RewardChart,
+.elementsActive .RewardChart,
 .elementsActive .chart-container,
 app-chain-performance.elementsActive,
 app-statistics-chart.elementsActive,

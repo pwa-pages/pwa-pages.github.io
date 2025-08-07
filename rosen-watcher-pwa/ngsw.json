@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1754545885651,
+  "timestamp": 1754596982871,
   "appData": {
-    "version": "3.46.9"
+    "version": "3.47.0"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,13 +16,13 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-V63CAOOA.js",
+        "./main-LJLTIZIT.js",
         "./manifest.webmanifest",
         "./polyfills-B6TNHZQ6.js",
         "./rosen.html",
-        "./scripts-DYNICY6U.js",
+        "./scripts-SALKQJUM.js",
         "./shared/js/ngsw-worker.js",
-        "./styles-VITNYIN7.css"
+        "./styles-SJ5ERVZM.css"
       ],
       "patterns": []
     },
@@ -75,12 +75,12 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./assets/rosen-chain-performance.html": "df9b9852b7da75aa9d57781b35dc7256e0c6db8a",
-    "./assets/rosen-statistics.html": "67803fc217d602f566a8a11df3618aee247f0134",
+    "./assets/rosen-statistics.html": "cc84bbe474a9c99c7fd94739e57308a1e945ec3f",
     "./assets/rosen-watchers.html": "0bcb934fb1077fba59729ba44b7ec2fea220f755",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "9d3ed27462dde2686e95de30376d5025611b53bc",
-    "./main-V63CAOOA.js": "2976c4292b88105109eeff9ab549ee601b76a741",
+    "./index.html": "bb0b9c4ea2de4959f7476f5cb2ca5f44185b8d2e",
+    "./main-LJLTIZIT.js": "905048bec4547a2bc29205a5a4c72f70143022e0",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -94,9 +94,9 @@
     "./media/fa-v4compatibility-EXH5IDFW.woff2": "e346f8b0d6fa5ce68c1d5a41f66355578361449e",
     "./polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
     "./rosen.html": "fdd96211de1f83e4e064b109ca06d9906235943c",
-    "./scripts-DYNICY6U.js": "70e5b39b151135262d0942f5a08baea5f1a2e5bc",
+    "./scripts-SALKQJUM.js": "9600cb7d76e112f0ea6a3d157dbb70faec0156c7",
     "./shared/js/ngsw-worker.js": "7252b22603450459402c29600acd3af85fbd6d6a",
-    "./styles-VITNYIN7.css": "323dc61be9231bc4bb4224eaee7b6f8682b935cd"
+    "./styles-SJ5ERVZM.css": "1a232774ab5c3ad443f1d1eda2ddc27539f6da0b"
   },
   "navigationUrls": [
     {

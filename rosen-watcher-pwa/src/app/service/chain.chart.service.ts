@@ -174,6 +174,7 @@ export class ChainChartService {
   }
 
   createStatisticsChart(
+    canvasElement: HTMLCanvasElement,
     rewardsChart: DateNumberPoint[],
     nDataSets: number,
     tensions: number[],
@@ -197,7 +198,7 @@ export class ChainChartService {
       });
     }
 
-    return new Chart<'line', DateNumberPoint[]>('RewardChart', {
+    return new Chart<'line', DateNumberPoint[]>(canvasElement, {
       type: 'line',
       data: {
         datasets: dataSets,

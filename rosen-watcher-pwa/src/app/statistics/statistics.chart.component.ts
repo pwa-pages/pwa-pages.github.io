@@ -36,15 +36,19 @@ export class StatisticsChartComponent implements OnInit {
       Period.All,
     );
 
-    this.amounts = this.sortedInputs.map((s) => {
-      return { x: s.inputDate, y: s.amount } as DateNumberPoint;
-    });
+    this.amounts = this.sortedInputs
+      .filter((s) => this.filledAddresses.includes(s.outputAddress))
+      .map((s) => {
+        return { x: s.inputDate, y: s.amount } as DateNumberPoint;
+      });
   }
 
   async ngOnInit(): Promise<void> {
     await this.eventService.subscribeToEvent<Input[]>(EventType.RefreshInputs, async () => {
       await this.retrieveData();
     });
+
+    await this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
 
     for (const address of this.filledAddresses) {
       await this.eventService.sendEventWithData(EventType.RequestInputsDownload, address);
