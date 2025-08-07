@@ -207,14 +207,12 @@ class RewardDataService extends DataService<DbInput> {
 
           this.eventSender.sendEvent({
             type: 'InputsChanged',
-            metaData: '',
             data: inputs,
           });
 
           this.eventSender.sendEvent({
             type: 'AddressChartChanged',
             data: await this.chartService.getAddressCharts(inputs),
-            metaData: '',
           });
 
           resolve();

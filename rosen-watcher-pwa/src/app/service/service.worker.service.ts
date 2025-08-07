@@ -7,7 +7,6 @@ import { IS_ELEMENTS_ACTIVE } from './tokens';
 interface ServiceWorkerMessage {
   type: string;
   data?: object;
-  metaData: string | undefined | null;
   payload?: object;
 }
 
@@ -55,7 +54,10 @@ export class ServiceWorkerService {
             new AngularEventSender(this.eventService),
           );
 
-          processEventService.processEvent({ metaData: '', type: eventType });
+          processEventService.processEvent({
+            data: eventData as object | undefined,
+            type: eventType,
+          });
         } else {
           console.log('Sending to service worker, event ' + eventType);
           this.sendMessageToServiceWorker({
@@ -141,10 +143,7 @@ export class ServiceWorkerService {
         const message = event.data as ServiceWorkerMessage;
 
         console.log(
-          'Received message from service worker of type ' +
-            message.type +
-            ', metaData ' +
-            message.metaData,
+          'Received message from service worker of type ' + message.type + ', data ' + message.data,
         );
 
         this.handleServiceWorkerMessage(message);

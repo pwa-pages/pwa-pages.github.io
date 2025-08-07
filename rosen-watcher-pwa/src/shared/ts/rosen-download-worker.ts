@@ -21,5 +21,5 @@ self.addEventListener('message', async (event: MessageEvent) => {
   const data: MessageEventData = event.data;
 
   console.log(`Rosen service worker received event of type ${data.type}`);
-  processEventService.processEvent({ metaData: data.data, type: data.type });
+  processEventService.processEvent({ data: data.data as unknown as object, type: data.type });
 });

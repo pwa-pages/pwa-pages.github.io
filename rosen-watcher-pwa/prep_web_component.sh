@@ -16,6 +16,8 @@ for file in "$dir"main*.js "$dir"runtime*.js "$dir"scripts*.js "$dir"styles*.css
       echo "Replaced {{styles.css}} with $filename in dist/rosen-web-component/browser/rosen-watchers.html"
       sed -i "s|{{styles.css}}|$filename|g" dist/rosen-web-component/browser/rosen-chain-performance.html
       echo "Replaced {{styles.css}} with $filename in dist/rosen-web-component/browser/rosen-chain-performance.html"
+      sed -i "s|{{styles.css}}|$filename|g" dist/rosen-web-component/browser/rosen-statistics.html
+      echo "Replaced {{styles.css}} with $filename in dist/rosen-web-component/browser/rosen-statistics.html"
     fi
 
   fi
@@ -45,5 +47,6 @@ dest="web-component/rosen-watcher-components.$version.js"
 mv "$tmpfile" "$dest"
 sed -i "s|rosen-watcher-components.js|rosen-watcher-components.$version.js|g" web-component/rosen-watchers.html
 sed -i "s|rosen-watcher-components.js|rosen-watcher-components.$version.js|g" web-component/rosen-chain-performance.html
+sed -i "s|rosen-watcher-components.js|rosen-watcher-components.$version.js|g" web-component/rosen-statistics.html
 
 

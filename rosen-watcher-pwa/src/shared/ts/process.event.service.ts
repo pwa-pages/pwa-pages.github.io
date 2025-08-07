@@ -1,7 +1,6 @@
 interface EventPayload<T> {
   type: string;
   data?: T;
-  metaData: string | undefined;
 }
 
 interface EventSender {
@@ -78,7 +77,8 @@ class ProcessEventService {
 
       if (event.type === 'RequestInputsDownload') {
         console.log(
-          'Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain',
+          'Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
+            event.data,
         );
 
         try {
@@ -88,7 +88,6 @@ class ProcessEventService {
 
           this.eventSender.sendEvent({
             type: 'AddressChartChanged',
-            metaData: '',
             data: addressCharts,
           });
 
@@ -105,7 +104,6 @@ class ProcessEventService {
           const inputs = await dataService.getSortedInputs();
           this.eventSender.sendEvent({
             type: 'InputsChanged',
-            metaData: '',
             data: inputs,
           });
 
@@ -122,7 +120,6 @@ class ProcessEventService {
 
           this.eventSender.sendEvent({
             type: 'PerfChartChanged',
-            metaData: '',
             data: perfTxs,
           });
 

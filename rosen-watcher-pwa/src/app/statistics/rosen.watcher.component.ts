@@ -1,21 +1,19 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
-
 import { WatchersComponent } from './watchers.component';
 import { ChainPerformanceComponent } from './chain.performance.component';
-
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { WatchersStats } from '../service/watchers.data.service';
 import { EventService, EventType } from '../service/event.service';
 import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
+import { StatisticsChartComponent } from './statistics.chart.component';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
   selector: 'rosen-watcher-component',
   templateUrl: './rosen.watcher.component.html',
   standalone: true,
-  imports: [WatchersComponent, ChainPerformanceComponent],
+  imports: [WatchersComponent, ChainPerformanceComponent, StatisticsChartComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RosenWatcherComponent {
@@ -39,6 +37,40 @@ export class RosenWatcherComponent {
     return this._renderHtml;
   }
 
+  @Input() address1?: string;
+  @Input() address2?: string;
+  @Input() address3?: string;
+  @Input() address4?: string;
+  @Input() address5?: string;
+  @Input() address6?: string;
+  @Input() address7?: string;
+  @Input() address8?: string;
+  @Input() address9?: string;
+  @Input() address10?: string;
+  @Input() address11?: string;
+  @Input() address12?: string;
+  @Input() address13?: string;
+  @Input() address14?: string;
+  @Input() address15?: string;
+  @Input() address16?: string;
+  @Input() address17?: string;
+  @Input() address18?: string;
+  @Input() address19?: string;
+  @Input() address20?: string;
+
+  getFilledAddresses(): string[] {
+    const filledAddresses: string[] = [];
+
+    for (let i = 1; i <= 20; i++) {
+      const address = this[`address${i}` as keyof this] as string | undefined;
+      if (typeof address === 'string' && address.trim() !== '') {
+        filledAddresses.push(address);
+      }
+    }
+
+    return filledAddresses;
+  }
+
   private _component = 'watchers';
   @Input()
   set component(value: string) {
@@ -50,6 +82,10 @@ export class RosenWatcherComponent {
 
   public appChainPerformanceActive(): boolean {
     return this._component === 'chain-performance';
+  }
+
+  public appStatisticsActive(): boolean {
+    return this._component === 'statistics';
   }
 
   constructor(

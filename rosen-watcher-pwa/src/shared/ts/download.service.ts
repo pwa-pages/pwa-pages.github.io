@@ -97,7 +97,6 @@ class DownloadService<T> {
     if (this.busyCounter === 0) {
       this.eventSender.sendEvent({
         type: 'StartFullDownload',
-        metaData: '',
       });
     }
     this.busyCounter++;
@@ -108,7 +107,6 @@ class DownloadService<T> {
     if (this.busyCounter === 0) {
       this.eventSender.sendEvent({
         type: 'EndFullDownload',
-        metaData: '',
       });
     }
   }

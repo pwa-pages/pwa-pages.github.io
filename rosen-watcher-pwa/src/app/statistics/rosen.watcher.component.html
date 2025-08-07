@@ -12,3 +12,12 @@
     [ngStyle]="{ display: renderHtml ? null : 'none' }"
   ></app-chain-performance>
 }
+
+@if (appStatisticsActive()) {
+  <app-statistics-chart
+    class="elementsActive"
+    [renderHtml]="renderHtml"
+    [ngStyle]="{ display: renderHtml ? null : 'none' }"
+    [filledAddresses]="getFilledAddresses()"
+  ></app-statistics-chart>
+}

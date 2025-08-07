@@ -188,13 +188,11 @@ class RewardDataService extends DataService {
                 const inputs = await this.getSortedInputs();
                 this.eventSender.sendEvent({
                     type: 'InputsChanged',
-                    metaData: '',
                     data: inputs,
                 });
                 this.eventSender.sendEvent({
                     type: 'AddressChartChanged',
                     data: await this.chartService.getAddressCharts(inputs),
-                    metaData: '',
                 });
                 resolve();
             })

@@ -36,12 +36,12 @@ class ProcessEventService {
             event.type === 'RequestInputsDownload') {
             const { dataService, downloadService, downloadPerfService, chartService, chainPerformanceDataService, } = await this.initServices();
             if (event.type === 'RequestInputsDownload') {
-                console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain');
+                console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
+                    event.data);
                 try {
                     const addressCharts = await chartService.getAddressCharts(await dataService.getSortedInputs());
                     this.eventSender.sendEvent({
                         type: 'AddressChartChanged',
-                        metaData: '',
                         data: addressCharts,
                     });
                     await downloadService.downloadForAddresses();
@@ -56,7 +56,6 @@ class ProcessEventService {
                     const inputs = await dataService.getSortedInputs();
                     this.eventSender.sendEvent({
                         type: 'InputsChanged',
-                        metaData: '',
                         data: inputs,
                     });
                     await downloadService.downloadForAddresses();
@@ -72,7 +71,6 @@ class ProcessEventService {
                     const perfTxs = await chainPerformanceDataService.getPerfTxs();
                     this.eventSender.sendEvent({
                         type: 'PerfChartChanged',
-                        metaData: '',
                         data: perfTxs,
                     });
                     downloadPerfService.downloadForAddress(hotWalletAddress);

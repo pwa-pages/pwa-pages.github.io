@@ -4,21 +4,19 @@
     <base href="./" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Web Component Example (watchers statistics)</title>
+    <title>Web Component Example (chain performance)</title>
 
-    <link rel="stylesheet" href="styles-OZAMWAJT.css" media="all" onload="this.media='all'" />
+    <link rel="stylesheet" href="{{styles.css}}" media="all" onload="this.media='all'" />
 
-    <script src="rosen-watcher-components.3.46.9.js" type="module"></script>
+    <script src="rosen-watcher-components.js" type="module"></script>
   </head>
   <body>
     <style>
       section {
         padding-left: 24px;
         padding-top: 16px;
-        padding-bottom: 16px;
         background: #f9f9f9;
         border-radius: 8px;
-        margin-bottom: 24px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
       }
       section p {
@@ -67,22 +65,28 @@
       </p>
       <ul>
         <li>
-          <a href="styles-OZAMWAJT.css">styles-OZAMWAJT.css</a>
+          <a href="{{styles.css}}">{{styles.css}}</a>
           (This file can be downloaded and used if the default styling is something one wants to
           build on, the file is not necessary and if all styling is to be done custom this file can
           be ignored.)
         </li>
-        <li><a href="rosen-watcher-components.3.46.9.js">rosen-watcher-components.3.46.9.js (Required)</a></li>
+        <li><a href="rosen-watcher-components.js">rosen-watcher-components.js (Required)</a></li>
       </ul>
     </section>
 
-    <rosen-watcher-component component="watchers" render-html="true"></rosen-watcher-component>
+    <rosen-watcher-component
+      style="display: block; width: 50vw; height: 50vh"
+      component="statistics"
+      address1="9i2Kj8sLSWiGQ5vhfk4KH9XyVR98ftXpnVQm9YRDyKyGX9bNnu6"
+      address2="9gWWVhZX1nmzjaKqtmQMvE15gV3u8exUgaZHokwT2he9ru5B5NV"
+      render-html="true"
+    ></rosen-watcher-component>
 
     <script>
       const watchersEl = document.querySelector('rosen-watcher-component');
 
-      watchersEl.addEventListener('notifyWatchersStatsChanged', (event) => {
-        console.log('Watchers stats changed:', JSON.stringify(event.detail));
+      watchersEl.addEventListener('notifyChainPerformanceChartsChanged', (event) => {
+        console.log('Chain performance charts changed:', JSON.stringify(event.detail));
       });
     </script>
   </body>
