@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1754596982871,
+  "timestamp": 1754638483673,
   "appData": {
-    "version": "3.47.0"
+    "version": "3.47.1"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-LJLTIZIT.js",
+        "./main-U45XGMWX.js",
         "./manifest.webmanifest",
         "./polyfills-B6TNHZQ6.js",
         "./rosen.html",
@@ -75,12 +75,12 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./assets/rosen-chain-performance.html": "df9b9852b7da75aa9d57781b35dc7256e0c6db8a",
-    "./assets/rosen-statistics.html": "cc84bbe474a9c99c7fd94739e57308a1e945ec3f",
+    "./assets/rosen-statistics.html": "7f71f184c99a0870be9e001068c9fc720893c7c7",
     "./assets/rosen-watchers.html": "0bcb934fb1077fba59729ba44b7ec2fea220f755",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "bb0b9c4ea2de4959f7476f5cb2ca5f44185b8d2e",
-    "./main-LJLTIZIT.js": "905048bec4547a2bc29205a5a4c72f70143022e0",
+    "./index.html": "dbb0f8469f71385b97530a89afd743e869585bdb",
+    "./main-U45XGMWX.js": "03e103f1c307127a24d436ae292b401a5c9e1d4c",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",

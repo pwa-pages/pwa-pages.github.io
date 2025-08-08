@@ -14,5 +14,8 @@
   *ngIf="appStatisticsActive() && renderHtml"
   class="elementsActive"
   [renderHtml]="renderHtml"
+  [period]="period"
+  [chartTitle]="chartTitle"
+  [period]="period"
   [filledAddresses]="getFilledAddresses()"
 ></app-statistics-chart>

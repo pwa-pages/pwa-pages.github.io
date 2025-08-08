@@ -16,6 +16,8 @@ export class StatisticsChartComponent implements OnInit {
   DateUtils = DateUtils;
   sortedInputs: Input[];
   detailInputs: Input[];
+  @AngularInput() period?: Period;
+  @AngularInput() chartTitle?: string;
 
   @AngularInput()
   filledAddresses: string[] = [];
@@ -33,7 +35,7 @@ export class StatisticsChartComponent implements OnInit {
   async retrieveData(): Promise<void> {
     this.sortedInputs = DateUtils.filterByPeriod(
       this.dataService.getSortedInputs(true, null, null) ?? [],
-      Period.All,
+      this.period || Period.All,
     );
 
     this.amounts = this.sortedInputs

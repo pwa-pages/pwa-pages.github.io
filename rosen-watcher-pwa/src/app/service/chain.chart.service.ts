@@ -178,6 +178,7 @@ export class ChainChartService {
     rewardsChart: DateNumberPoint[],
     nDataSets: number,
     tensions: number[],
+    chartTitle: string,
   ): LineChart {
     const dataSets: ChartDataset<'line', DateNumberPoint[]>[] = [];
     for (let i = 0; i < nDataSets; i++) {
@@ -187,7 +188,7 @@ export class ChainChartService {
       }
 
       dataSets.push({
-        label: 'Total rewards earned (RSN)',
+        label: chartTitle,
         data: rewardsChart,
         borderColor: chartColor,
         borderWidth: 4,

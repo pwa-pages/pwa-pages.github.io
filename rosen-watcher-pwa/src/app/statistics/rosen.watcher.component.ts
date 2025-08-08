@@ -38,6 +38,9 @@ export class RosenWatcherComponent {
     return this._renderHtml;
   }
 
+  @Input() period?: Period;
+  @Input() chartTitle?: string;
+
   @Input() address1?: string;
   @Input() address2?: string;
   @Input() address3?: string;

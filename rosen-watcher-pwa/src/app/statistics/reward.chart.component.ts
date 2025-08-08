@@ -18,13 +18,13 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
 
   @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
   @Input() rewardsChart: DateNumberPoint[] = [];
+  @Input() chartTitle? = 'Total Rewards Earned (RSN)';
 
   constructor(
     private chartService: ChainChartService,
     private eventService: EventService,
     private elementRef: ElementRef,
   ) {
-    // Subscribe to window resize events
     this.eventService.subscribeToEvent(EventType.WindowResized, () => {
       if (this.chart) {
         this.chart.resize();
@@ -48,7 +48,13 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
         return;
       }
       const canvas = this.chartCanvas.nativeElement;
-      this.chart = this.chartService.createStatisticsChart(canvas, this.rewardsChart, 1, [0.4]);
+      this.chart = this.chartService.createStatisticsChart(
+        canvas,
+        this.rewardsChart,
+        1,
+        [0.4],
+        this.chartTitle || 'Total Rewards Earned (RSN)',
+      );
     }
 
     this.chart.data.datasets[0].data = this.chartService.reduceChartData(
