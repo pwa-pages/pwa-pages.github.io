@@ -261,6 +261,68 @@ export class ChainChartService {
     });
   }
 
+  updateStatisticsChart(chart: LineChart, newTitle: string, newColor?: string): void {
+    chart.data.datasets.forEach((dataset, i) => {
+      dataset.label = newTitle;
+      let chartColor = newColor ?? 'rgba(138, 128, 128)';
+      if (i > 0) {
+        chartColor = this.chartColors[i - 1];
+      }
+      (dataset as ChartDataset<'line', DateNumberPoint[]>).borderColor = chartColor;
+      (dataset as ChartDataset<'line', DateNumberPoint[]>).pointBackgroundColor = chartColor;
+      (dataset as ChartDataset<'line', DateNumberPoint[]>).backgroundColor =
+        newColor ?? 'rgba(0, 0, 0, 0.1)';
+    });
+
+    if (
+      chart.options.scales &&
+      chart.options.scales['y'] &&
+      typeof chart.options.scales['y'] === 'object'
+    ) {
+      chart.options.scales['y'].grid = {
+        ...chart.options.scales['y'].grid,
+        color: newColor ?? 'rgba(0, 0, 0, 0.1)',
+      };
+      chart.options.scales['y'].ticks = {
+        ...chart.options.scales['y'].ticks,
+        color: newColor ?? 'rgba(0, 0, 0, 0.7)',
+      };
+    }
+    if (
+      chart.options.scales &&
+      chart.options.scales['x'] &&
+      typeof chart.options.scales['x'] === 'object'
+    ) {
+      chart.options.scales['x'].grid = {
+        ...chart.options.scales['x'].grid,
+        color: newColor ?? 'rgba(0, 0, 0, 0.1)',
+      };
+      chart.options.scales['x'].ticks = {
+        ...chart.options.scales['x'].ticks,
+        color: newColor ?? 'rgba(0, 0, 0, 0.7)',
+      };
+    }
+    if (
+      chart.options.plugins &&
+      chart.options.plugins.legend &&
+      typeof chart.options.plugins.legend === 'object'
+    ) {
+      chart.options.plugins.legend.labels = {
+        ...chart.options.plugins.legend.labels,
+        color: newColor ?? 'rgba(0, 0, 0, 0.7)',
+      };
+    }
+    if (
+      chart.options.plugins &&
+      chart.options.plugins.tooltip &&
+      typeof chart.options.plugins.tooltip === 'object'
+    ) {
+      chart.options.plugins.tooltip.backgroundColor = newColor ?? 'rgba(0, 0, 0, 0.7)';
+    }
+
+    chart.update();
+  }
+
   calculateTriangleArea(p1: DateNumberPoint, p2: DateNumberPoint, p3: DateNumberPoint): number {
     return Math.abs(
       (p1.x.getTime() * (p2.y - p3.y) +

@@ -9,7 +9,7 @@ import {
   ServiceWorkerService,
 } from '../service/service.worker.service';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
-import { RosenWatcherComponent } from '../statistics/rosen.watcher.component';
+import { RosenWatcherComponent } from '../elements/rosen.watcher.component';
 
 export const dataServiceInitializer = {
   provide: APP_INITIALIZER,

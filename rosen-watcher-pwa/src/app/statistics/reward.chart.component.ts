@@ -18,6 +18,7 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
 
   @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
   @Input() rewardsChart: DateNumberPoint[] = [];
+  accumulatedRewardsChart: DateNumberPoint[] = [];
   @Input() chartTitle? = 'Total Rewards Earned (RSN)';
   @Input() color?: string;
 
@@ -51,20 +52,22 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
       const canvas = this.chartCanvas.nativeElement;
       this.chart = this.chartService.createStatisticsChart(
         canvas,
-        this.rewardsChart,
+        this.accumulatedRewardsChart,
         1,
         [0.4],
         this.chartTitle || 'Total Rewards Earned (RSN)',
         this.color,
       );
     } else {
-      this.chart.data.datasets.forEach((dataset) => {
-        dataset.label = this.chartTitle || 'Total Rewards Earned (RSN)';
-      });
+      this.chartService.updateStatisticsChart(
+        this.chart,
+        this.chartTitle || 'Total Rewards Earned (RSN)',
+        this.color,
+      );
     }
 
     this.chart.data.datasets[0].data = this.chartService.reduceChartData(
-      this.rewardsChart,
+      this.accumulatedRewardsChart,
       20,
       true,
     );
@@ -87,7 +90,7 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
     this.previousLength = this.rewardsChart.length;
 
     let accumulatedAmount = 0;
-    this.rewardsChart = amounts.map((s) => {
+    this.accumulatedRewardsChart = amounts.map((s) => {
       accumulatedAmount += s.y;
       return { x: s.x, y: accumulatedAmount } as DateNumberPoint;
     });

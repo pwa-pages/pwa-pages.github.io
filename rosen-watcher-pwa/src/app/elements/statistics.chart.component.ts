@@ -1,9 +1,9 @@
-import { Component, OnInit, Input as AngularInput } from '@angular/core';
+import { Component, OnInit, Input as AngularInput, OnChanges } from '@angular/core';
 import { EventService, EventType } from '../service/event.service';
 import 'chartjs-adapter-date-fns';
 import { Input } from '../../service/ts/models/input';
-import { DateUtils } from './date.utils';
-import { RewardChartComponent } from './reward.chart.component';
+import { DateUtils } from '../statistics/date.utils';
+import { RewardChartComponent } from '../statistics/reward.chart.component';
 import { ChainDataService } from '../service/chain.data.service';
 
 @Component({
@@ -12,16 +12,18 @@ import { ChainDataService } from '../service/chain.data.service';
   standalone: true,
   imports: [RewardChartComponent],
 })
-export class StatisticsChartComponent implements OnInit {
+export class StatisticsChartComponent implements OnInit, OnChanges {
   DateUtils = DateUtils;
   sortedInputs: Input[];
   detailInputs: Input[];
   @AngularInput() period?: Period;
+  previousPeriod?: Period;
   @AngularInput() chartTitle?: string;
   chartFullTitle?: string;
   downloadInProgress: Record<string, boolean> = {};
   @AngularInput()
   filledAddresses: string[] = [];
+  prevFilledAddresses: string[] = [];
   @AngularInput()
   color?: string;
 
@@ -33,6 +35,23 @@ export class StatisticsChartComponent implements OnInit {
   ) {
     this.sortedInputs = [];
     this.detailInputs = [];
+  }
+
+  ngOnChanges(): void {
+    if (this.previousPeriod !== this.period) {
+      this.previousPeriod = this.period;
+      this.retrieveData();
+      return;
+    }
+
+    if (
+      !this.prevFilledAddresses ||
+      this.filledAddresses.length !== this.prevFilledAddresses.length ||
+      !this.filledAddresses.every((addr, i) => addr === this.prevFilledAddresses![i])
+    ) {
+      this.prevFilledAddresses = [...this.filledAddresses];
+      this.retrieveData();
+    }
   }
 
   async retrieveData(): Promise<void> {

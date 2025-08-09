@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
-import { WatchersComponent } from './watchers.component';
-import { ChainPerformanceComponent } from './chain.performance.component';
+import { WatchersComponent } from '../statistics/watchers.component';
+import { ChainPerformanceComponent } from '../statistics/chain.performance.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { WatchersStats } from '../service/watchers.data.service';
 import { EventService, EventType } from '../service/event.service';
