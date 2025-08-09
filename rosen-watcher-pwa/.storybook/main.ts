@@ -1,17 +1,12 @@
-import type { StorybookConfig } from '@storybook/angular';
-
-const config: StorybookConfig = {
-  "stories": [
-    "../src/**/*.mdx",
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
-  ],
-  "addons": [
-    "@storybook/addon-docs",
-    "@storybook/addon-onboarding"
-  ],
-  "framework": {
-    "name": "@storybook/angular",
-    "options": {}
-  }
+module.exports = {
+  stories: ['../stories/**/*.stories.js'],
+  staticDirs: ['../web-components'],
+  framework: {
+    name: '@storybook/web-components-vite',
+    options: {},
+  },
+  core: {
+    builder: 'storybook-builder-vite',
+  },
 };
-export default config;
+
