@@ -56,25 +56,27 @@ class DownloadService {
         }
     }
     // Busy Counter
-    increaseBusyCounter() {
+    increaseBusyCounter(address) {
         if (this.busyCounter === 0) {
             this.eventSender.sendEvent({
                 type: 'StartFullDownload',
+                data: address,
             });
         }
         this.busyCounter++;
     }
-    decreaseBusyCounter() {
+    decreaseBusyCounter(address) {
         this.busyCounter--;
         if (this.busyCounter === 0) {
             this.eventSender.sendEvent({
                 type: 'EndFullDownload',
+                data: address,
             });
         }
     }
     // Download All for Address (recursive)
     async downloadAllForAddress(address, offset, db) {
-        this.increaseBusyCounter();
+        this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
             const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10);
@@ -101,7 +103,7 @@ class DownloadService {
             console.error(e);
         }
         finally {
-            this.decreaseBusyCounter();
+            this.decreaseBusyCounter(address);
             console.log(this.busyCounter);
         }
     }
@@ -189,7 +191,7 @@ class DownloadService {
           await this.saveDownloadStatus(downloadStatus, this.db);
         }
     */
-        this.increaseBusyCounter();
+        this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
             const result = await this.downloadTransactions(address, 0, this.downloadInitialSize);
@@ -221,7 +223,7 @@ class DownloadService {
             console.error(e);
         }
         finally {
-            this.decreaseBusyCounter();
+            this.decreaseBusyCounter(address);
             console.log(this.busyCounter);
         }
     }

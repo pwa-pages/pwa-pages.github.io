@@ -179,10 +179,11 @@ export class ChainChartService {
     nDataSets: number,
     tensions: number[],
     chartTitle: string,
+    color?: string,
   ): LineChart {
     const dataSets: ChartDataset<'line', DateNumberPoint[]>[] = [];
     for (let i = 0; i < nDataSets; i++) {
-      let chartColor = 'rgba(138, 128, 128)';
+      let chartColor = color ?? 'rgba(138, 128, 128)';
       if (i > 0) {
         chartColor = this.chartColors[i - 1];
       }
@@ -191,6 +192,7 @@ export class ChainChartService {
         label: chartTitle,
         data: rewardsChart,
         borderColor: chartColor,
+        backgroundColor: color ?? 'rgba(0, 0, 0, 0.1)',
         borderWidth: 4,
         pointBackgroundColor: chartColor,
         cubicInterpolationMode: 'default',
@@ -213,9 +215,10 @@ export class ChainChartService {
         scales: {
           y: {
             grid: {
-              color: 'rgba(0, 0, 0, 0.1)',
+              color: color ?? 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
+              color: color ?? 'rgba(0, 0, 0, 0.7)',
               callback: function (value: number | string) {
                 return value as number;
               },
@@ -227,13 +230,16 @@ export class ChainChartService {
               unit: 'day',
             },
             grid: {
-              color: 'rgba(0, 0, 0, 0.1)',
+              color: color ?? 'rgba(0, 0, 0, 0.1)',
+            },
+            ticks: {
+              color: color ?? 'rgba(0, 0, 0, 0.7)',
             },
           },
         },
         plugins: {
           tooltip: {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            backgroundColor: color ?? 'rgba(0, 0, 0, 0.7)',
             bodyFont: {
               size: 14,
             },
@@ -244,6 +250,7 @@ export class ChainChartService {
           },
           legend: {
             labels: {
+              color: color ?? 'rgba(0, 0, 0, 0.7)',
               font: {
                 size: 14,
               },

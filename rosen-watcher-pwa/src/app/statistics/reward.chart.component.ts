@@ -19,6 +19,7 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
   @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
   @Input() rewardsChart: DateNumberPoint[] = [];
   @Input() chartTitle? = 'Total Rewards Earned (RSN)';
+  @Input() color?: string;
 
   constructor(
     private chartService: ChainChartService,
@@ -54,7 +55,12 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
         1,
         [0.4],
         this.chartTitle || 'Total Rewards Earned (RSN)',
+        this.color,
       );
+    } else {
+      this.chart.data.datasets.forEach((dataset) => {
+        dataset.label = this.chartTitle || 'Total Rewards Earned (RSN)';
+      });
     }
 
     this.chart.data.datasets[0].data = this.chartService.reduceChartData(

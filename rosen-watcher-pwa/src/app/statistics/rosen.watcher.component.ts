@@ -16,6 +16,22 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, WatchersComponent, ChainPerformanceComponent, StatisticsChartComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  styles: [
+    `
+      :host ::ng-deep .elementsActive #PerformanceChart,
+      :host ::ng-deep .elementsActive .RewardChart,
+      :host ::ng-deep .elementsActive .chart-container,
+      :host ::ng-deep app-chain-performance.elementsActive,
+      :host ::ng-deep app-statistics-chart.elementsActive,
+      :host ::ng-deep .elementsActive app-reward-chart,
+      :host ::ng-deep .elementsActive .chartcontainer,
+      :host ::ng-deep .performancecontainer.elementsActive {
+        width: inherit;
+        height: inherit;
+        display: block;
+      }
+    `,
+  ],
 })
 export class RosenWatcherComponent {
   private _renderHtml = true;
@@ -61,6 +77,8 @@ export class RosenWatcherComponent {
   @Input() address18?: string;
   @Input() address19?: string;
   @Input() address20?: string;
+
+  @Input() color?: string;
 
   getFilledAddresses(): string[] {
     const filledAddresses: string[] = [];

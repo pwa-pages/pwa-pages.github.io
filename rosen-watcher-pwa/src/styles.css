@@ -515,19 +515,6 @@ button:active {
   word-break: break-all;
 }
 
-.elementsActive #PerformanceChart,
-.elementsActive .RewardChart,
-.elementsActive .chart-container,
-app-chain-performance.elementsActive,
-app-statistics-chart.elementsActive,
-.elementsActive app-reward-chart,
-.elementsActive .chartcontainer,
-.performancecontainer.elementsActive {
-  width: inherit !important;
-  height: inherit !important;
-  display: block;
-}
-
 .chart-legend {
   height: 2vh;
   width: 4vh;

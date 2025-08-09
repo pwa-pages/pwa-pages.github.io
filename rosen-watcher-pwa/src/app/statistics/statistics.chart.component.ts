@@ -18,9 +18,12 @@ export class StatisticsChartComponent implements OnInit {
   detailInputs: Input[];
   @AngularInput() period?: Period;
   @AngularInput() chartTitle?: string;
-
+  chartFullTitle?: string;
+  downloadInProgress: Record<string, boolean> = {};
   @AngularInput()
   filledAddresses: string[] = [];
+  @AngularInput()
+  color?: string;
 
   amounts: DateNumberPoint[] = [];
 
@@ -46,6 +49,7 @@ export class StatisticsChartComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.chartFullTitle = this.chartTitle;
     await this.eventService.subscribeToEvent<Input[]>(EventType.RefreshInputs, async () => {
       await this.retrieveData();
     });
@@ -55,5 +59,21 @@ export class StatisticsChartComponent implements OnInit {
     for (const address of this.filledAddresses) {
       await this.eventService.sendEventWithData(EventType.RequestInputsDownload, address);
     }
+    /*
+    await this.eventService.subscribeToEvent(EventType.StartFullDownload, (address: string) => {
+      console.log('Starting full download for statistics chart for address:', address);
+      this.downloadInProgress[address] = true;
+      this.chartFullTitle = this.chartTitle + ' (Downloading...)';
+    });
+
+    await this.eventService.subscribeToEvent(EventType.EndFullDownload, (address: string) => {
+      console.log('Ending full download for statistics chart for address:', address);
+      this.downloadInProgress[address] = false;
+
+      if (Object.values(this.downloadInProgress).some((inProgress) => inProgress)) {
+        return;
+      }
+      this.chartFullTitle = this.chartTitle;
+    });*/
   }
 }
