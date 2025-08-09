@@ -53,7 +53,8 @@
               "src/shared/js/reward.data.service.js",
               "src/shared/js/chart.service.js",
               "src/shared/js/download.service.js",
-              "src/shared/js/process.event.service.js"]
+              "src/shared/js/process.event.service.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -121,7 +122,7 @@
           "options": {
             "outputPath": {
               "base": "dist/rosen-web-component"
-            },  
+            },
             "index": "src/index.html",
             "tsConfig": "tsconfig.app.web.json",
             "assets": [
@@ -129,7 +130,8 @@
             ],
             "styles": [
               "src/styles.css"
-            ],"scripts": [
+            ],
+            "scripts": [
               "src/shared/js/rosen-download-worker.js",
               "src/shared/js/rosen-db-worker.js",
               "src/shared/js/chain.service.js",
@@ -139,7 +141,8 @@
               "src/shared/js/reward.data.service.js",
               "src/shared/js/chart.service.js",
               "src/shared/js/download.service.js",
-              "src/shared/js/process.event.service.js"],
+              "src/shared/js/process.event.service.js"
+            ],
             "optimization": {
               "scripts": true,
               "styles": true,
@@ -147,8 +150,8 @@
             },
             "fileReplacements": [],
             "serviceWorker": false,
-            "sourceMap": false,  
-            "namedChunks": false, 
+            "sourceMap": false,
+            "namedChunks": false,
             "extractLicenses": false,
             "browser": "src/app/webcomponents/rosen-web-component.ts"
           },
@@ -178,6 +181,36 @@
             }
           },
           "defaultConfiguration": "development"
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "rosen-web-component:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "."
+            ],
+            "port": 6006
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "rosen-web-component:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "."
+            ],
+            "outputDir": "dist/storybook/rosen-web-component"
+          }
         }
       }
     }
