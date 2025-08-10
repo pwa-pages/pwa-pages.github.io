@@ -1,8 +1,10 @@
 
+document.body.insertAdjacentHTML('beforeend', '<rosen-watcher-component></rosen-watcher-component>');
+
 const script = document.createElement('script');
 script.src = '/rosen-watcher-components.3.47.6.js'; 
 script.type = 'module';    
-script.async = true;
+script.async = false;
 document.body.appendChild(script);
 
 const link = document.createElement('link');
@@ -11,3 +13,6 @@ link.href = '/styles.css';
 document.head.appendChild(link);
 
 export const parameters = {};
+
+
+

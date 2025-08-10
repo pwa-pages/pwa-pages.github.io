@@ -13,7 +13,7 @@ export const createButton = ({
   rosenWatcherComponent.setAttribute('address1', '9gWWVhZX1nmzjaKqtmQMvE15gV3u8exUgaZHokwT2he9ru5B5NV');
   rosenWatcherComponent.setAttribute('period', 'Month');
   rosenWatcherComponent.setAttribute('chart-title', 'Crab pool rewards last month');
-
+  rosenWatcherComponent.setAttribute('style', 'border:1px solid black; width: 500px; height:300px; display: block;');
   
 
 
