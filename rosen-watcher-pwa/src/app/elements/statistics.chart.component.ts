@@ -25,7 +25,9 @@ export class StatisticsChartComponent implements OnInit, OnChanges {
   filledAddresses: string[] = [];
   prevFilledAddresses: string[] = [];
   @AngularInput()
-  color?: string;
+  chartColor?: string;
+  @AngularInput()
+  accentChartColor?: string;
 
   amounts: DateNumberPoint[] = [];
 

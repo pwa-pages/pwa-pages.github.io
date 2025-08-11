@@ -20,7 +20,8 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
   @Input() rewardsChart: DateNumberPoint[] = [];
   accumulatedRewardsChart: DateNumberPoint[] = [];
   @Input() chartTitle? = 'Total Rewards Earned (RSN)';
-  @Input() color?: string;
+  @Input() chartColor?: string;
+  @Input() accentChartColor?: string;
 
   constructor(
     private chartService: ChainChartService,
@@ -56,13 +57,15 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
         1,
         [0.4],
         this.chartTitle || 'Total Rewards Earned (RSN)',
-        this.color,
+        this.chartColor,
+        this.accentChartColor,
       );
     } else {
       this.chartService.updateStatisticsChart(
         this.chart,
         this.chartTitle || 'Total Rewards Earned (RSN)',
-        this.color,
+        this.chartColor,
+        this.accentChartColor,
       );
     }
 

@@ -529,3 +529,12 @@ button:active {
 .statdetaildispl .chainType {
   width: 4vh;
 }
+
+.performancecontainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.performancecontainer .chartcontainer {
+  flex-grow: 1;
+}

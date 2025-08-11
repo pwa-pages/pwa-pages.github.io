@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1754766251580,
+  "timestamp": 1754936209432,
   "appData": {
-    "version": "3.47.6"
+    "version": "3.47.7"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,13 +16,13 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-ARJP6GEB.js",
+        "./main-HEV2MNKM.js",
         "./manifest.webmanifest",
         "./polyfills-B6TNHZQ6.js",
         "./rosen.html",
         "./scripts-QMGIPWYT.js",
         "./shared/js/ngsw-worker.js",
-        "./styles-M7P2CLOM.css"
+        "./styles-SXATJECU.css"
       ],
       "patterns": []
     },
@@ -75,12 +75,12 @@
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
     "./assets/rosen-chain-performance.html": "df9b9852b7da75aa9d57781b35dc7256e0c6db8a",
-    "./assets/rosen-statistics.html": "4053bb6ff7ff18777257822e494ce3dfdae9c9e3",
+    "./assets/rosen-statistics.html": "6ce0796caf3fe3d32e860697dde828ef449f2847",
     "./assets/rosen-watchers.html": "0bcb934fb1077fba59729ba44b7ec2fea220f755",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "ed4a6536da459d88253a3ba03aa2e44aadec54e3",
-    "./main-ARJP6GEB.js": "57f1d284cd4080f42260596c8989ae80df07ffdc",
+    "./index.html": "ec98720e2dc076cad7bb8c05d54fb734a8dd4f0f",
+    "./main-HEV2MNKM.js": "a8bce9ed950f0d7d71bc471192ecf032c1437345",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -96,7 +96,7 @@
     "./rosen.html": "fdd96211de1f83e4e064b109ca06d9906235943c",
     "./scripts-QMGIPWYT.js": "ced958430f0c6089fb812ac5781f49cf32ca377c",
     "./shared/js/ngsw-worker.js": "a424955690d990a196a465b83c45e92f8d69727c",
-    "./styles-M7P2CLOM.css": "81b00bccd793f3afc2c2df16c4e91d4f78face48"
+    "./styles-SXATJECU.css": "68c154eb46b78ea91b6d38096d995a3424bd8f24"
   },
   "navigationUrls": [
     {

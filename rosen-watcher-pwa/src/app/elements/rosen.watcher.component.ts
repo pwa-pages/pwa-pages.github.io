@@ -18,17 +18,25 @@ import { CommonModule } from '@angular/common';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styles: [
     `
-      :host ::ng-deep .elementsActive #PerformanceChart,
+      :host ::ng-deep .elementsActive .PerformanceChart,
       :host ::ng-deep .elementsActive .RewardChart,
-      :host ::ng-deep .elementsActive .chart-container,
+      :host ::ng-deep .elementsActive app-statistics-chart .chart-container,
+      :host ::ng-deep .elementsActive app-statistics-chart .chartcontainer,
       :host ::ng-deep app-chain-performance.elementsActive,
       :host ::ng-deep app-statistics-chart.elementsActive,
-      :host ::ng-deep .elementsActive app-reward-chart,
-      :host ::ng-deep .elementsActive .chartcontainer,
-      :host ::ng-deep .performancecontainer.elementsActive {
+      :host ::ng-deep .elementsActive app-reward-chart {
         width: inherit;
         height: inherit;
         display: block;
+      }
+      :host ::ng-deep .performancecontainer.elementsActive {
+        width: inherit;
+        height: inherit;
+      }
+      :host ::ng-deep app-chain-performance.elementsActive .chart-container,
+      :host ::ng-deep app-chain-performance.elementsActive .PerformanceChart {
+        width: 100%;
+        height: 100%;
       }
     `,
   ],
@@ -78,7 +86,8 @@ export class RosenWatcherComponent {
   @Input() address19?: string;
   @Input() address20?: string;
 
-  @Input() color?: string;
+  @Input() chartColor?: string;
+  @Input() accentChartColor?: string;
 
   getFilledAddresses(): string[] {
     const filledAddresses: string[] = [];

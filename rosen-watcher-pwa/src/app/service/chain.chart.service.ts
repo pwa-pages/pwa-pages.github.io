@@ -30,8 +30,9 @@ export class ChainChartService {
 
   createChainPerformanceChart(
     dataset: ChartDataset<'bar', { x: string | number | Date; y: number }[]>,
+    canvasElement: HTMLCanvasElement,
   ): Chart<'bar', { x: string | number | Date; y: number }[], unknown> {
-    return new Chart<'bar', { x: string | number | Date; y: number }[]>('PerformanceChart', {
+    return new Chart<'bar', { x: string | number | Date; y: number }[]>(canvasElement, {
       type: 'bar',
       data: {
         datasets: [dataset],
@@ -179,22 +180,23 @@ export class ChainChartService {
     nDataSets: number,
     tensions: number[],
     chartTitle: string,
-    color?: string,
+    chartColor?: string,
+    accentChartColor?: string,
   ): LineChart {
     const dataSets: ChartDataset<'line', DateNumberPoint[]>[] = [];
     for (let i = 0; i < nDataSets; i++) {
-      let chartColor = color ?? 'rgba(138, 128, 128)';
+      let cColor = accentChartColor ?? 'rgba(138, 128, 128)';
       if (i > 0) {
-        chartColor = this.chartColors[i - 1];
+        cColor = this.chartColors[i - 1];
       }
 
       dataSets.push({
         label: chartTitle,
         data: rewardsChart,
-        borderColor: chartColor,
-        backgroundColor: color ?? 'rgba(0, 0, 0, 0.1)',
+        borderColor: cColor,
+        backgroundColor: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
         borderWidth: 4,
-        pointBackgroundColor: chartColor,
+        pointBackgroundColor: cColor,
         cubicInterpolationMode: 'default',
         tension: tensions[i],
         pointRadius: 0,
@@ -215,10 +217,10 @@ export class ChainChartService {
         scales: {
           y: {
             grid: {
-              color: color ?? 'rgba(0, 0, 0, 0.1)',
+              color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
-              color: color ?? 'rgba(0, 0, 0, 0.7)',
+              color: chartColor ?? 'rgba(0, 0, 0, 0.7)',
               callback: function (value: number | string) {
                 return value as number;
               },
@@ -230,16 +232,16 @@ export class ChainChartService {
               unit: 'day',
             },
             grid: {
-              color: color ?? 'rgba(0, 0, 0, 0.1)',
+              color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
-              color: color ?? 'rgba(0, 0, 0, 0.7)',
+              color: chartColor ?? 'rgba(0, 0, 0, 0.7)',
             },
           },
         },
         plugins: {
           tooltip: {
-            backgroundColor: color ?? 'rgba(0, 0, 0, 0.7)',
+            backgroundColor: chartColor ?? 'rgba(0, 0, 0, 0.7)',
             bodyFont: {
               size: 14,
             },
@@ -250,7 +252,7 @@ export class ChainChartService {
           },
           legend: {
             labels: {
-              color: color ?? 'rgba(0, 0, 0, 0.7)',
+              color: chartColor ?? 'rgba(0, 0, 0, 0.7)',
               font: {
                 size: 14,
               },
@@ -261,17 +263,22 @@ export class ChainChartService {
     });
   }
 
-  updateStatisticsChart(chart: LineChart, newTitle: string, newColor?: string): void {
+  updateStatisticsChart(
+    chart: LineChart,
+    newTitle: string,
+    chartColor?: string,
+    accentChartColor?: string,
+  ): void {
     chart.data.datasets.forEach((dataset, i) => {
       dataset.label = newTitle;
-      let chartColor = newColor ?? 'rgba(138, 128, 128)';
+      let cColor = chartColor ?? 'rgba(138, 128, 128)';
       if (i > 0) {
-        chartColor = this.chartColors[i - 1];
+        cColor = this.chartColors[i - 1];
       }
-      (dataset as ChartDataset<'line', DateNumberPoint[]>).borderColor = chartColor;
-      (dataset as ChartDataset<'line', DateNumberPoint[]>).pointBackgroundColor = chartColor;
+      (dataset as ChartDataset<'line', DateNumberPoint[]>).borderColor = cColor;
+      (dataset as ChartDataset<'line', DateNumberPoint[]>).pointBackgroundColor = cColor;
       (dataset as ChartDataset<'line', DateNumberPoint[]>).backgroundColor =
-        newColor ?? 'rgba(0, 0, 0, 0.1)';
+        accentChartColor ?? 'rgba(0, 0, 0, 0.1)';
     });
 
     if (
@@ -281,11 +288,11 @@ export class ChainChartService {
     ) {
       chart.options.scales['y'].grid = {
         ...chart.options.scales['y'].grid,
-        color: newColor ?? 'rgba(0, 0, 0, 0.1)',
+        color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
       };
       chart.options.scales['y'].ticks = {
         ...chart.options.scales['y'].ticks,
-        color: newColor ?? 'rgba(0, 0, 0, 0.7)',
+        color: chartColor ?? 'rgba(0, 0, 0, 0.7)',
       };
     }
     if (
@@ -295,11 +302,11 @@ export class ChainChartService {
     ) {
       chart.options.scales['x'].grid = {
         ...chart.options.scales['x'].grid,
-        color: newColor ?? 'rgba(0, 0, 0, 0.1)',
+        color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
       };
       chart.options.scales['x'].ticks = {
         ...chart.options.scales['x'].ticks,
-        color: newColor ?? 'rgba(0, 0, 0, 0.7)',
+        color: chartColor ?? 'rgba(0, 0, 0, 0.7)',
       };
     }
     if (
@@ -309,7 +316,7 @@ export class ChainChartService {
     ) {
       chart.options.plugins.legend.labels = {
         ...chart.options.plugins.legend.labels,
-        color: newColor ?? 'rgba(0, 0, 0, 0.7)',
+        color: chartColor ?? 'rgba(0, 0, 0, 0.7)',
       };
     }
     if (
@@ -317,7 +324,7 @@ export class ChainChartService {
       chart.options.plugins.tooltip &&
       typeof chart.options.plugins.tooltip === 'object'
     ) {
-      chart.options.plugins.tooltip.backgroundColor = newColor ?? 'rgba(0, 0, 0, 0.7)';
+      chart.options.plugins.tooltip.backgroundColor = chartColor ?? 'rgba(0, 0, 0, 0.7)';
     }
 
     chart.update();

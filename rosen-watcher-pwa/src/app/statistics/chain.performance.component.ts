@@ -1,4 +1,4 @@
-import { Component, Inject, Injector, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainChartService } from '../service/chain.chart.service';
@@ -21,6 +21,8 @@ import { CommonModule } from '@angular/common';
 })
 export class ChainPerformanceComponent extends BaseWatcherComponent implements OnInit {
   private _renderHtml = true;
+
+  @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 
   @Input()
   set renderHtml(value: string | boolean) {
@@ -132,6 +134,12 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     if (!this._renderHtml) {
       return;
     }
+
+    if (!this.chartCanvas || !this.chartCanvas.nativeElement) {
+      return;
+    }
+
+    const canvas = this.chartCanvas.nativeElement;
     const dataSet = this.createDataSet(0);
 
     dataSet.data = this.performanceCharts.map((p) => {
@@ -146,7 +154,7 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
     });
 
     if (!this.performanceChart) {
-      this.performanceChart = this.chartService.createChainPerformanceChart(dataSet);
+      this.performanceChart = this.chartService.createChainPerformanceChart(dataSet, canvas);
     } else {
       this.performanceChart.data.datasets[0].data = dataSet.data;
 
