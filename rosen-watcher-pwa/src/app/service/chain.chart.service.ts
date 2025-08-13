@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import Chart, { ChartDataset, TooltipItem } from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
+import { ChartPerformance } from '../../service/ts/models/chart.performance';
+import { ChartPoint } from '../../service/ts/models/chart.point';
+import { ChartDataSet } from '../../service/ts/models/chart.dataset';
 
 export type LineChart = Chart<
   'line',
@@ -172,6 +175,75 @@ export class ChainChartService {
         },
       },
     });
+  }
+
+  private createDataSet(i: number): ChartDataSet {
+    const chartColor = this.chartColors[i % 10];
+    return {
+      label: '',
+      data: [],
+      backgroundColor: chartColor,
+      pointBackgroundColor: chartColor,
+      borderColor: chartColor,
+      borderWidth: 0,
+      borderSkipped: false,
+    };
+  }
+
+  public CreatePerformanceDataSets(performanceCharts: ChartPerformance[]) {
+    const dataSets = [];
+    const cnt = performanceCharts.length;
+    for (let i = 0; i < cnt; i++) {
+      dataSets.push(this.createDataSet(i));
+    }
+
+    for (let i = 0; i < performanceCharts.length; i++) {
+      dataSets[i].data = performanceCharts[i].chart;
+      dataSets[i].label = 'Address: ' + performanceCharts[i].addressForDisplay;
+    }
+    return dataSets;
+  }
+
+  public async getPerformanceChart(
+    addressCharts: Record<string, { chainType: ChainType | null; charts: Record<number, number> }>,
+  ): Promise<ChartPerformance[]> {
+    let performanceChart: ChartPerformance[] = [];
+
+    performanceChart = [];
+
+    for (const key in addressCharts) {
+      if (Object.prototype.hasOwnProperty.call(addressCharts, key)) {
+        const chart: ChartPoint[] = [];
+        for (const ckey in addressCharts[key].charts) {
+          chart.push({
+            x: new Date(Number(ckey)),
+            y: addressCharts[key].charts[ckey],
+          });
+        }
+        const addressForDisplay =
+          key.substring(0, 6) + '...' + key.substring(key.length - 6, key.length);
+        performanceChart.push({
+          address: key,
+          addressForDisplay: addressForDisplay,
+          chart: chart,
+          chainType: addressCharts[key].chainType,
+          color: '',
+        });
+      }
+    }
+
+    performanceChart.sort((a: ChartPerformance, b: ChartPerformance) =>
+      (a.chainType == null ? '' : a.chainType).localeCompare(
+        b.chainType == null ? '' : b.chainType,
+      ),
+    );
+
+    console.log('done retrieving chart from database');
+
+    return performanceChart.map((c: ChartPerformance, index: number) => ({
+      ...c,
+      color: this.chartColors[index % this.chartColors.length],
+    }));
   }
 
   createStatisticsChart(

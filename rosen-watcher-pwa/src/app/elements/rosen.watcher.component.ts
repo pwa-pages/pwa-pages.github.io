@@ -8,13 +8,20 @@ import { EventService, EventType } from '../service/event.service';
 import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
 import { StatisticsChartComponent } from './statistics.chart.component';
 import { CommonModule } from '@angular/common';
+import { PerformanceChartComponent } from './performance.chart.component';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
   selector: 'rosen-watcher-component',
   templateUrl: './rosen.watcher.component.html',
   standalone: true,
-  imports: [CommonModule, WatchersComponent, ChainPerformanceComponent, StatisticsChartComponent],
+  imports: [
+    CommonModule,
+    WatchersComponent,
+    ChainPerformanceComponent,
+    StatisticsChartComponent,
+    PerformanceChartComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styles: [
     `
@@ -117,6 +124,10 @@ export class RosenWatcherComponent {
 
   public appStatisticsActive(): boolean {
     return this._component === 'statistics';
+  }
+
+  public appPerformanceActive(): boolean {
+    return this._component === 'performance';
   }
 
   constructor(

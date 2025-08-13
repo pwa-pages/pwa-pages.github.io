@@ -10,6 +10,18 @@
   [renderHtml]="renderHtml"
 ></app-chain-performance>
 
+<app-performance-chart
+  *ngIf="appPerformanceActive() && renderHtml"
+  class="elementsActive"
+  [renderHtml]="renderHtml"
+  [period]="period"
+  [chartTitle]="chartTitle"
+  [period]="period"
+  [filledAddresses]="getFilledAddresses()"
+  [chartColor]="chartColor"
+  [accentChartColor]="accentChartColor"
+></app-performance-chart>
+
 <app-statistics-chart
   *ngIf="appStatisticsActive() && renderHtml"
   class="elementsActive"
