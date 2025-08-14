@@ -103,12 +103,14 @@ export class ChainChartService {
   }
 
   createPerformanceChart(
-    datasets: ChartDataset<'bar', { x: string | number | Date; y: number }[]>[],
+    performanceCharts: ChartPerformance[],
+    canvasElement: HTMLCanvasElement,
   ): Chart<'bar', { x: string | number | Date; y: number }[], unknown> {
-    return new Chart<'bar', { x: string | number | Date; y: number }[]>('PerformanceChart', {
+    const dataSets = this.CreatePerformanceDataSets(performanceCharts);
+    return new Chart<'bar', { x: string | number | Date; y: number }[]>(canvasElement, {
       type: 'bar',
       data: {
-        datasets: datasets,
+        datasets: dataSets,
       },
       options: {
         responsive: true,
@@ -175,6 +177,21 @@ export class ChainChartService {
         },
       },
     });
+  }
+
+  public convertPerformanceCharts(
+    performanceCharts: ChartPerformance[],
+    performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined,
+  ) {
+    const dataSets = this.CreatePerformanceDataSets(performanceCharts);
+
+    if (performanceCharts.length != performanceChart?.data.datasets.length) {
+      performanceChart!.data.datasets = dataSets;
+    } else {
+      for (let i = 0; i < performanceCharts.length; i++) {
+        performanceChart.data.datasets[i].data = dataSets[i].data;
+      }
+    }
   }
 
   private createDataSet(i: number): ChartDataSet {

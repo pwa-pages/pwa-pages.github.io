@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainChartService } from '../service/chain.chart.service';
@@ -17,6 +17,7 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   data: string;
   performanceCharts: ChartPerformance[];
   performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;
+  @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 
   constructor(
     injector: Injector,
@@ -41,6 +42,10 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     });
 
     await this.retrieveData();
+    this.performanceChart = this.chartService.createPerformanceChart(
+      this.performanceCharts,
+      this.chartCanvas.nativeElement,
+    );
     this.updateChart();
 
     this.eventService.sendEvent(EventType.RequestInputsDownload);
@@ -63,21 +68,8 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
   }
 
   updateChart(): void {
-    const dataSets = this.chartService.CreatePerformanceDataSets(this.performanceCharts);
-
-    if (!this.performanceChart) {
-      this.performanceChart = this.chartService.createPerformanceChart(dataSets);
-    } else {
-      if (this.performanceCharts.length != this.performanceChart.data.datasets.length) {
-        this.performanceChart.data.datasets = dataSets;
-      } else {
-        for (let i = 0; i < this.performanceCharts.length; i++) {
-          this.performanceChart.data.datasets[i].data = dataSets[i].data;
-        }
-      }
-
-      this.performanceChart.update();
-    }
+    this.chartService.convertPerformanceCharts(this.performanceCharts, this.performanceChart);
+    this.performanceChart?.update();
   }
 
   title = 'rosen-watcher-pwa';
