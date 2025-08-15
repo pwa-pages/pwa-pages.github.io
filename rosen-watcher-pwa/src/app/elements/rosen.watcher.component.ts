@@ -1,14 +1,15 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Injector, Input, Output } from '@angular/core';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { WatchersComponent } from '../statistics/watchers.component';
 import { ChainPerformanceComponent } from '../statistics/chain.performance.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { WatchersStats } from '../service/watchers.data.service';
-import { EventService, EventType } from '../service/event.service';
+import { EventType } from '../service/event.service';
 import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
 import { StatisticsChartComponent } from './statistics.chart.component';
 import { CommonModule } from '@angular/common';
 import { PerformanceChartComponent } from './performance.chart.component';
+import { BaseEventAwareComponent } from '../baseeventawarecomponent';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
@@ -48,7 +49,7 @@ import { PerformanceChartComponent } from './performance.chart.component';
     `,
   ],
 })
-export class RosenWatcherComponent {
+export class RosenWatcherComponent extends BaseEventAwareComponent {
   private _renderHtml = true;
 
   @Output() notifyWatchersStatsChanged = new EventEmitter<WatchersStats>();
@@ -131,17 +132,18 @@ export class RosenWatcherComponent {
   }
 
   constructor(
+    protected override injector: Injector,
     @Inject(IS_ELEMENTS_ACTIVE) public isElementsActive: boolean,
-    private eventService: EventService,
   ) {
-    this.eventService.subscribeToEvent(EventType.WatchersStatsChanged, (data: WatchersStats) => {
+    super(injector);
+    this.subscribeToEvent(EventType.WatchersStatsChanged, (data: WatchersStats) => {
       console.log(
         'Received watchers stats changed event, sending through notifyWatchersStatsChanged',
       );
       this.notifyWatchersStatsChanged.emit(data);
     });
 
-    this.eventService.subscribeToEvent(
+    this.subscribeToEvent(
       EventType.ChainPerformanceChartsChanged,
       (data: ChainChartPerformance[]) => {
         console.log(

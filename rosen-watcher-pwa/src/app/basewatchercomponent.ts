@@ -1,30 +1,31 @@
-import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
-import { EventData, EventService, EventType } from './service/event.service';
+import { Component, OnInit, Injector } from '@angular/core';
+import { EventData, EventType } from './service/event.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ChainService } from './service/chain.service';
 import { Address } from '../service/ts/models/address';
 import { StorageService } from './service/storage.service';
 import { ChainDataService } from './service/chain.data.service';
 import { BrowserService } from './service/browser.service';
+import { BaseEventAwareComponent } from './baseeventawarecomponent';
 
 @Component({
   selector: 'app-root',
   template: '',
 })
-export class BaseWatcherComponent implements OnInit, OnDestroy {
+export class BaseWatcherComponent extends BaseEventAwareComponent implements OnInit {
   public busyCounter = 1;
   loaderLogs: string[] = [];
   addresses: Address[] = [];
   noAddresses = false;
-  protected eventService: EventService;
   protected chainService: ChainService;
   protected storageService: StorageService;
   protected dataService: ChainDataService;
   protected browserService: BrowserService;
   protected route: ActivatedRoute | undefined;
 
-  constructor(protected injector: Injector) {
-    this.eventService = this.injector.get(EventService);
+  constructor(protected override injector: Injector) {
+    super(injector);
+
     this.chainService = this.injector.get(ChainService);
     this.storageService = this.injector.get(StorageService);
     this.dataService = this.injector.get(ChainDataService);
@@ -47,11 +48,6 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
     window.addEventListener('resize', this.resetHeight);
 
     this.resetHeight();
-  }
-
-  async ngOnDestroy(): Promise<void> {
-    this.eventService.sendEvent(EventType.SwipeDeActivated);
-    await this.eventService.unSubscribeAll([EventType.RefreshInputs]);
   }
 
   protected SetupRoute() {
@@ -98,18 +94,5 @@ export class BaseWatcherComponent implements OnInit, OnDestroy {
       }
       return false;
     }
-  }
-
-  async subscribeToEvent<T>(eventType: EventType, callback: (...args: T[]) => void) {
-    const eventCallBack: (...args: EventData[]) => void = callback as (
-      ...args: EventData[]
-    ) => void;
-    await this.eventService.subscribeToEvent(eventType, eventCallBack);
-  }
-
-  async subscribeToEvents(eventTypes: EventType[], callback: () => void) {
-    eventTypes.forEach(async (eventType) => {
-      await this.eventService.subscribeToEvent(eventType, callback);
-    });
   }
 }

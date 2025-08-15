@@ -91,7 +91,7 @@ class ProcessEventService {
             data: addressCharts,
           });
 
-          if (event.data) {
+          if (event.data && typeof event.data === 'string') {
             await downloadService.downloadForAddress(event.data as unknown as string);
           } else {
             await downloadService.downloadForAddresses();

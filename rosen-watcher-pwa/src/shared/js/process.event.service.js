@@ -44,7 +44,7 @@ class ProcessEventService {
                         type: 'AddressChartChanged',
                         data: addressCharts,
                     });
-                    if (event.data) {
+                    if (event.data && typeof event.data === 'string') {
                         await downloadService.downloadForAddress(event.data);
                     }
                     else {

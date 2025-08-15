@@ -1,18 +1,26 @@
-import { Component, OnInit, Input as AngularInput, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input as AngularInput,
+  ElementRef,
+  ViewChild,
+  Injector,
+} from '@angular/core';
 import 'chartjs-adapter-date-fns';
 import { DateUtils } from '../statistics/date.utils';
 import { ChartPerformance } from '../../service/ts/models/chart.performance';
 import { Chart } from 'chart.js';
 import { ChainChartService } from '../service/chain.chart.service';
-import { EventService, EventType } from '../service/event.service';
+import { EventType } from '../service/event.service';
 import { ChainDataService } from '../service/chain.data.service';
+import { BaseEventAwareComponent } from '../baseeventawarecomponent';
 
 @Component({
   selector: 'app-performance-chart',
   templateUrl: './performance.chart.html',
   standalone: true,
 })
-export class PerformanceChartComponent implements OnInit {
+export class PerformanceChartComponent extends BaseEventAwareComponent implements OnInit {
   DateUtils = DateUtils;
   @AngularInput() period?: Period;
   previousPeriod?: Period;
@@ -45,10 +53,11 @@ export class PerformanceChartComponent implements OnInit {
   amounts: DateNumberPoint[] = [];
 
   constructor(
+    protected override injector: Injector,
     private chartService: ChainChartService,
-    private eventService: EventService,
     private dataService: ChainDataService,
   ) {
+    super(injector);
     this.performanceCharts = [];
   }
 
@@ -66,7 +75,7 @@ export class PerformanceChartComponent implements OnInit {
 
     this.eventService.sendEvent(EventType.RequestInputsDownload);
 
-    await this.eventService.subscribeToEvent(EventType.RefreshInputs, async () => {
+    await this.subscribeToEvent(EventType.RefreshInputs, async () => {
       await this.retrieveData();
       this.updateChart();
     });

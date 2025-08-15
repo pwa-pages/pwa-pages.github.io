@@ -142,9 +142,7 @@ export class ServiceWorkerService {
       navigator.serviceWorker.addEventListener('message', (event) => {
         const message = event.data as ServiceWorkerMessage;
 
-        console.log(
-          'Received message from service worker of type ' + message.type + ', data ' + message.data,
-        );
+        console.log('Received message from service worker of type ' + message.type);
 
         this.handleServiceWorkerMessage(message);
 
