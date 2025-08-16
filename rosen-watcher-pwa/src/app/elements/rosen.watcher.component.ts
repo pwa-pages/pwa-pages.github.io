@@ -30,8 +30,11 @@ import { BaseEventAwareComponent } from '../baseeventawarecomponent';
       :host ::ng-deep .elementsActive .RewardChart,
       :host ::ng-deep .elementsActive app-statistics-chart .chart-container,
       :host ::ng-deep .elementsActive app-statistics-chart .chartcontainer,
+      :host ::ng-deep app-performance-chart.elementsActive .chart-container,
+      :host ::ng-deep app-performance-chart.elementsActive .chartcontainer,
       :host ::ng-deep app-chain-performance.elementsActive,
       :host ::ng-deep app-statistics-chart.elementsActive,
+      :host ::ng-deep app-performance-chart.elementsActive,
       :host ::ng-deep .elementsActive app-reward-chart {
         width: inherit;
         height: inherit;
@@ -42,7 +45,9 @@ import { BaseEventAwareComponent } from '../baseeventawarecomponent';
         height: inherit;
       }
       :host ::ng-deep app-chain-performance.elementsActive .chart-container,
-      :host ::ng-deep app-chain-performance.elementsActive .PerformanceChart {
+      :host ::ng-deep app-chain-performance.elementsActive .PerformanceChart,
+      :host ::ng-deep app-performance-chart.elementsActive .chart-container,
+      :host ::ng-deep app-performance-chart.elementsActive .PerformanceChart {
         width: 100%;
         height: 100%;
       }
