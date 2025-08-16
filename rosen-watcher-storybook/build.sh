@@ -1,4 +1,4 @@
-rm -rf .public/*
+rm -rf ./public/*
 cp -R ../rosen-watcher-pwa/web-component/* ./public
 ./prep.sh
 ./clean.sh

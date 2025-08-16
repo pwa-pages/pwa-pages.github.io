@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:styles/component:css;42412d48fcb90d9d991509f50365478d05c0679b0ce52876c72fe033e75cb7d5;/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa/src/app/elements/rosen.watcher.component.ts"],
-  "sourcesContent": ["\n      :host ::ng-deep .elementsActive #PerformanceChart,\n      :host ::ng-deep .elementsActive .RewardChart,\n      :host ::ng-deep .elementsActive .chart-container,\n      :host ::ng-deep app-chain-performance.elementsActive,\n      :host ::ng-deep app-statistics-chart.elementsActive,\n      :host ::ng-deep .elementsActive app-reward-chart,\n      :host ::ng-deep .elementsActive .chartcontainer,\n      :host ::ng-deep .performancecontainer.elementsActive {\n        width: inherit;\n        height: inherit;\n        display: block;\n      }\n    "],
-  "mappings": ";AACM,MAAM,UAAU,CAAC,eAAe,CAAC;AACjC,MAAM,UAAU,CADC,eACe,CAAC;AACjC,MAAM,UAAU,CAFC,eAEe,CAAC;AACjC,MAAM,UAAU,qBAAqB,CAHpB;AAIjB,MAAM,UAAU,oBAAoB,CAJnB;AAKjB,MAAM,UAAU,CALC,eAKe;AAChC,MAAM,UAAU,CANC,eAMe,CAAC;AACjC,MAAM,UAAU,CAAC,oBAAoB,CAPpB;AAQf,SAAO;AACP,UAAQ;AACR,WAAS;AACX;",
-  "names": []
-}

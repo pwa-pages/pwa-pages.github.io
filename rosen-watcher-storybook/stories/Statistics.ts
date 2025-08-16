@@ -1,4 +1,4 @@
-import './statistics.css';
+
 
 export const createStatistics = ({
   period,
@@ -8,6 +8,7 @@ export const createStatistics = ({
   accentChartColor,
   address1,
   address2,
+  style = 'border:1px solid black; width: 500px; height:300px; display: block;',
 }) => {
   const rosenWatcherComponent = document.createElement('rosen-watcher-component');
   rosenWatcherComponent.setAttribute('component', 'statistics');
@@ -18,7 +19,7 @@ export const createStatistics = ({
   rosenWatcherComponent.setAttribute('chart-title', chartTitle);
   rosenWatcherComponent.setAttribute('chart-color', chartColor);
   rosenWatcherComponent.setAttribute('accent-chart-color', accentChartColor);
-  rosenWatcherComponent.setAttribute('style', 'border:1px solid black; width: 500px; height:300px; display: block;');
+  rosenWatcherComponent.setAttribute('style', style);
 
 
 
