@@ -14,5 +14,7 @@ document.head.appendChild(link);
 
 export const parameters = {};
 
+export const rosenScriptFile = script.src;
+export const rosenStyleFile = link.href;
 
 

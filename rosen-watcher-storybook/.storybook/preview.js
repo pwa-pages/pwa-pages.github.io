@@ -2,7 +2,7 @@
 document.body.insertAdjacentHTML('beforeend', '<rosen-watcher-component></rosen-watcher-component>');
 
 const script = document.createElement('script');
-script.src = '/rosen-watcher-components.3.48.7.js'; 
+script.src = '/rosen-watcher-components.3.48.8.js'; 
 script.type = 'module';    
 script.async = false;
 document.body.appendChild(script);
@@ -14,5 +14,7 @@ document.head.appendChild(link);
 
 export const parameters = {};
 
+export const rosenScriptFile = script.src;
+export const rosenStyleFile = link.href;
 
 

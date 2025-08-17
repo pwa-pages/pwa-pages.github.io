@@ -1,16 +1,38 @@
 <h3>Description</h3>
 
-<p>The <code>watchers</code> component can be used to render html with rosen bridge watcher stats
+
+
+
+<p>The watchers component can be used to render html with rosen bridge watcher stats
 similar to <a href="https://pwa-pages.github.io/rosen-watcher-pwa/watchers">https://pwa-pages.github.io/rosen-watcher-pwa/watchers</a>.<br/>
 All data from that screen can also be retrieved by a dom event in case
 the intention is to design the html oneself. <br/>
 In this way all relevant data is exposed through a dom event.
 <br/><br/>
-An example(and the place to download the needed javascripts) of usage of the component with the latest versions can be found at:
+An example of usage of the component can be tried <a href = "./?path=/story/example-watchers--primary">here on story book</a>
 <br/><br/>
-<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html">https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html</a> This file always contains the latest javascript versions with the latest build.
-A css is added to that page and can be used to build on, but it can be ignored if all css needs to be custom.
-<br/><br/>
+
+<h3>
+Setup component in your html:
+</h3>
+<br/>
+Include <a href = "__SCRIPT_FILE__">__SCRIPT_FILE__</a> in html.
+Include <a href = "__STYLE_FILE__">__STYLE_FILE__</a> if you want to use the default css, 
+this file can be ignored if all css needs to be custom.<br/><br/>
+Minimal example: 
+<pre><code>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles-2DAK2Q3E.css&quot; /&gt;
+    &lt;script src=&quot;rosen-watcher-components.3.48.8.js&quot; type=&quot;module&quot;&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;rosen-watcher-component component=&quot;watchers&quot; render-html=&quot;true&quot;&gt; &lt;/rosen-watcher-component&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+
 </p>
 
 <hr />
@@ -294,7 +316,8 @@ and act accordingly.
       <td>number</td>
       <td>Total number of watchers across all chains.</td>
     </tr>
-    <tr>
+    <tr><h2 id="chain-performance"> <code>Chain performance</code></h2>
+
       <td><code>totalPermitCount</code></td>
       <td>number</td>
       <td>Total number of permits across all chains.</td>
@@ -319,11 +342,3 @@ and act accordingly.
 
 <hr />
 
-<h2 id="full-usage-example">📄 Full Usage Example</h2>
-
-As mentioned above a full usage example can be found at <br/>
-<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html">https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html</a>
-This page always contains the latest versions of javascript and css, download those and use the component similarly as in the html.
-
-
-<hr />

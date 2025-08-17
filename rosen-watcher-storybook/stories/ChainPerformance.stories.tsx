@@ -1,5 +1,6 @@
 import { createChainPerformance } from './ChainPerformance';
-
+import htmlContent from './chainperformance.html?raw';
+import React from 'react';
 
 const baseArgs = {
 
@@ -16,7 +17,17 @@ export default {
   },
   
   args: baseArgs,
+    parameters: {
+  docs: {
+    page: () => (
+      <div
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
+      />
+    ),
+  },
+}
 };
+
 
 function buildSourceCode(args) {
   return `

@@ -1,5 +1,5 @@
 
-
+import './rosen.css';
 export const createStatistics = ({
   period,
   backgroundColor,
