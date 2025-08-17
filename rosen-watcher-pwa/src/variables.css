@@ -1,0 +1,29 @@
+:root {
+  --screen-width: 100vw;
+  --screen-height: 100vh;
+  --small-font: 1vh;
+  --medium-font: 1.8vh;
+  --large-font: 3vh;
+  --version-margin: -1.5vh;
+  --link-margin: 0.5vh;
+  --context-menu-margin: 0.5vh;
+  --chart-margin: 0.4vh;
+  --large-height: 8vh;
+  --medium-height: 5vh;
+  --medium-width: 5vh;
+  --small-medium-height: 4vh;
+  --small-height: 2vh;
+  --tiny-height: 1vh;
+  --tiny-width: 1vw;
+  --small-border: 0.1vh;
+  --medium-border: 0.2vh;
+  --main-address-padding: 2.7vh;
+  --qrcode-padding: 20vh;
+  --period-select-margin: 0.7vh;
+  --main-content-padding: 10vh;
+  --progress-bar-bottom: 7vh;
+  --watchers-readme-font: 1.6vh;
+  --watchers-padding: 1.1vw;
+  --watchers-width: 100vw;
+  --versions-width: 89vw;
+}

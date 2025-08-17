@@ -32,6 +32,7 @@
               "src/shared/js/ngsw-worker.js"
             ],
             "styles": [
+              "src/variables.css",
               "src/styles.css",
               "src/navigation.css",
               "src/header.css",
@@ -129,6 +130,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/variables_elements.css",
               "src/styles.css"
             ],
             "scripts": [

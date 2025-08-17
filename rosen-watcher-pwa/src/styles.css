@@ -9,8 +9,8 @@ html {
 }
 
 .screen-div {
-  width: 100vw;
-  height: 100vh;
+  width: var(--screen-width);
+  height: var(--screen-height);
   top: 0;
   left: 0;
   position: relative;
@@ -18,7 +18,7 @@ html {
 
 h1 {
   color: #333;
-  font-size: 3vh;
+  font-size: var(--large-font);
   font-weight: bold;
 }
 
@@ -29,7 +29,7 @@ ul {
 
 li {
   font-family: 'Courier New', Courier, monospace;
-  font-size: 1.3vh;
+  font-size: var(--small-font);
 }
 
 li:last-child {
@@ -41,15 +41,15 @@ li:last-child {
 .info-description,
 .performancetab,
 .profilemessage {
-  margin-left: 5vw;
+  margin-left: var(--medium-width);
 }
 
 .info-description {
-  padding-top: 8vh;
+  padding-top: var(--large-height);
 }
 
 .mywatchers .performancelegend {
-  margin-top: 1vh;
+  margin-top: var(--tiny-height);
 }
 
 .profilemessage a {
@@ -57,12 +57,12 @@ li:last-child {
 }
 
 .addressescontainer {
-  width: 95vw;
+  width: 80%;
 }
 
 .profilemessage {
   color: rgba(119, 17, 17, 0.836) !important;
-  font-size: 3vh !important;
+  font-size: var(--large-font) !important;
 }
 
 .addressescontainer,
@@ -70,7 +70,7 @@ li:last-child {
 .info-description,
 .profilemessage,
 .watcherscontainer {
-  font-size: 1.8vh;
+  font-size: var(--medium-font);
   font-weight: bold;
   color: rgba(138, 128, 128);
   animation: fadeIn 1s ease-in-out forwards;
@@ -78,8 +78,8 @@ li:last-child {
 }
 
 .watcherscontainer {
-  margin-left: 5vw;
-  margin-right: 5vw;
+  margin-left: var(--medium-width);
+  margin-right: var(--medium-width);
 }
 
 .watcherscontainer div {
@@ -92,31 +92,24 @@ li:last-child {
 
 .addressescontainer {
   display: inline-flex;
-  margin-bottom: 5vh;
-  margin-top: 3vh;
+  margin-bottom: var(--medium-height);
+  margin-top: var(--large-font);
 }
 
 .mywatchers .addressescontainer {
-  margin-top: 8vh;
-}
-
-.permitstitle {
-  font-weight: bold;
-  color: rgba(138, 128, 128);
-  font-size: 5vh;
-  padding-top: 5vh;
+  margin-top: var(--large-height);
 }
 
 .permitscontainer {
   font-weight: bold;
   color: rgba(138, 128, 128);
-  padding-top: 2vh;
+  padding-top: var(--small-height);
   font-size: 16px;
 }
 
 .watcherscreen {
-  margin-left: 5vw;
-  margin-right: 5vw;
+  margin-left: var(--medium-width);
+  margin-right: var(--medium-width);
 }
 
 .permitscontainer .address {
@@ -165,11 +158,11 @@ a {
 
 .linkicon div {
   padding-bottom: 10px;
-  font-size: 3vh;
+  font-size: var(--large-font);
 }
 
 .link {
-  margin-top: 0.5vh;
+  margin-top: var(--link-margin);
   white-space: nowrap;
 }
 
@@ -196,12 +189,12 @@ a {
 }
 
 .mainaddressdispl {
-  padding-left: 2.7vh;
+  padding-left: var(--main-address-padding);
 }
 
 .watcherscontainer > div {
-  padding-left: 1.1vw;
-  padding-right: 1.1vw;
+  padding-left: var(--watchers-padding);
+  padding-right: var(--watchers-padding);
   border-left: 0.1vmax solid rgba(138, 128, 128);
   white-space: nowrap;
 }
@@ -220,7 +213,7 @@ a {
 }
 
 .watchervaluerow {
-  margin-bottom: 3vh;
+  margin-bottom: var(--large-font);
   font-size: 1.6vmax;
 }
 
@@ -230,7 +223,7 @@ a {
 
 .watcherscontainer {
   font-size: 1.6vmax;
-  margin-top: 4vh;
+  margin-top: var(--small-medium-height);
   float: left;
   border-radius: 3vmax;
   display: grid;
@@ -247,7 +240,7 @@ a {
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  width: 100vw;
+  width: var(--watchers-width);
   flex-direction: column !important;
 }
 .statdetaildispl.Bitcoin,
@@ -300,14 +293,14 @@ a {
 
 .noAddresses {
   color: green;
-  font-size: 3vh;
+  font-size: var(--large-font);
 }
 
 .custom-snackbar {
   color: white;
   background-color: red;
-  top: 5vh;
-  left: 5vw;
+  top: var(--medium-height);
+  left: var(--medium-width);
   position: fixed;
 }
 
@@ -332,32 +325,32 @@ a {
 }
 
 .qrdialog #close {
-  top: 3vh;
-  right: 3vh;
+  top: var(--large-font);
+  right: var(--large-font);
   position: fixed;
 }
 
 .qrdialog button {
-  bottom: 3vh;
+  bottom: var(--large-font);
 
   position: fixed;
 }
 
 .qrdialog #close div {
-  font-size: 5vh;
+  font-size: var(--medium-height);
 }
 
 qrcode {
-  padding-top: 20vh;
+  padding-top: var(--qrcode-padding);
 }
 
 .period button {
-  font-size: 2vh;
+  font-size: var(--small-height);
 }
 
 button {
   color: rgba(138, 128, 128);
-  border: 0.1vh solid #ccc;
+  border: var(--small-border) solid #ccc;
   border-radius: 5px;
   cursor: pointer;
 
@@ -378,25 +371,25 @@ button:active {
 
 .version {
   color: rgba(138, 128, 128);
-  font-size: 2vh;
+  font-size: var(--small-height);
 
-  font-size: 1.3vh;
+  font-size: var(--small-font);
   padding-top: 0;
 
   text-decoration: none;
-  height: 2vh;
+  height: var(--small-height);
   display: inline-block;
 }
 
 .period,
 .period select {
   color: rgba(138, 128, 128);
-  font-size: 2vh;
+  font-size: var(--small-height);
   display: inline-block;
 }
 
 .period select {
-  margin-left: 0.7vh;
+  margin-left: var(--period-select-margin);
 }
 
 .currency,
@@ -425,23 +418,23 @@ button:active {
 }
 
 .version-container {
-  margin-top: -1.5vh;
+  margin-top: var(--version-margin);
   position: absolute;
   text-align: right;
-  width: 89vw;
+  width: var(--versions-width);
 }
 
 .main-content:not(.elementsActive .main-content) {
-  padding-top: 10vh;
+  padding-top: var(--main-content-padding);
 }
 
 .progress-bar {
-  height: 1vh;
+  height: var(--tiny-height);
   background-color: white;
   width: 100%;
   overflow: hidden;
   position: fixed;
-  bottom: 7vh;
+  bottom: var(--progress-bar-bottom);
 }
 
 .progress-bar-value {
@@ -465,7 +458,7 @@ button:active {
 }
 
 .logging {
-  padding-left: 5vw;
+  padding-left: var(--medium-width);
   height: 100vh;
   width: 95vw;
   position: absolute;
@@ -477,16 +470,16 @@ button:active {
 .context-menu {
   position: fixed;
   background: white;
-  border: 0.2vh solid rgba(138, 128, 128);
+  border: var(--medium-border) solid rgba(138, 128, 128);
   color: rgba(138, 128, 128);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  padding: 0.5vh;
+  padding: var(--context-menu-margin);
   z-index: 1000;
 }
 
 .datepicker-panel {
   background-color: white;
-  border: 0.2vh dashed rgba(138, 128, 128);
+  border: var(--medium-border) dashed rgba(138, 128, 128);
 }
 
 .context-menu .mainaddressdispl {
@@ -499,12 +492,12 @@ button:active {
 }
 
 .watchers-readme {
-  font-size: 1.6vh;
+  font-size: var(--watchers-readme-font);
   color: #333;
   background: #f7f7f7;
   border-left: 4px solid #8a8080;
-  padding: 1vh 1vw;
-  margin: 1vh 0;
+  padding: var(--tiny-height) var(--tiny-width);
+  margin: var(--tiny-height) 0;
   border-radius: 6px;
   font-family: 'Segoe UI', Arial, sans-serif;
   line-height: 1.7;
@@ -516,18 +509,18 @@ button:active {
 }
 
 .chart-legend {
-  height: 2vh;
-  width: 4vh;
+  height: var(--small-height);
+  width: var(--small-medium-height);
   float: left;
 }
 
 .performance-chart-address {
   display: inline-block;
-  margin-left: 0.4vh;
+  margin-left: var(--chart-margin);
 }
 
 .statdetaildispl .chainType {
-  width: 4vh;
+  width: var(--small-medium-height);
 }
 
 .performancecontainer {

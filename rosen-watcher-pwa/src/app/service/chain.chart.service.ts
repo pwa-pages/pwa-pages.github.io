@@ -105,6 +105,7 @@ export class ChainChartService {
   createPerformanceChart(
     performanceCharts: ChartPerformance[],
     canvasElement: HTMLCanvasElement,
+    accentChartColor?: string,
   ): Chart<'bar', { x: string | number | Date; y: number }[], unknown> {
     const dataSets = this.CreatePerformanceDataSets(performanceCharts);
     return new Chart<'bar', { x: string | number | Date; y: number }[]>(canvasElement, {
@@ -121,9 +122,10 @@ export class ChainChartService {
             stacked: true,
             alignToPixels: true,
             grid: {
-              color: 'rgba(0, 0, 0, 0.1)',
+              color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
+              color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
               callback: function (value: number | string) {
                 return (value as number).toLocaleString('en-US', {
                   minimumFractionDigits: 0,
@@ -139,7 +141,10 @@ export class ChainChartService {
               unit: 'week',
             },
             grid: {
-              color: 'rgba(0, 0, 0, 0.1)',
+              color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
+            },
+            ticks: {
+              color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
             },
           },
         },

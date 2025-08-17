@@ -5,6 +5,7 @@ import {
   ElementRef,
   ViewChild,
   Injector,
+  OnChanges,
 } from '@angular/core';
 import 'chartjs-adapter-date-fns';
 import { DateUtils } from '../statistics/date.utils';
@@ -20,18 +21,15 @@ import { BaseEventAwareComponent } from '../baseeventawarecomponent';
   templateUrl: './performance.chart.html',
   standalone: true,
 })
-export class PerformanceChartComponent extends BaseEventAwareComponent implements OnInit {
+export class PerformanceChartComponent
+  extends BaseEventAwareComponent
+  implements OnInit, OnChanges
+{
   DateUtils = DateUtils;
-  @AngularInput() period?: Period;
-  previousPeriod?: Period;
-  @AngularInput() chartTitle?: string;
-  chartFullTitle?: string;
   downloadInProgress: Record<string, boolean> = {};
   @AngularInput()
   filledAddresses: string[] = [];
   prevFilledAddresses: string[] = [];
-  @AngularInput()
-  chartColor?: string;
   @AngularInput()
   accentChartColor?: string;
   performanceCharts: ChartPerformance[];
@@ -65,11 +63,23 @@ export class PerformanceChartComponent extends BaseEventAwareComponent implement
     this.performanceCharts = await this.getPerformanceChart();
   }
 
-  async ngOnInit(): Promise<void> {
+  ngOnChanges(): void {
+    if (
+      !this.prevFilledAddresses ||
+      this.filledAddresses.length !== this.prevFilledAddresses.length ||
+      !this.filledAddresses.every((addr, i) => addr === this.prevFilledAddresses![i])
+    ) {
+      this.prevFilledAddresses = [...this.filledAddresses];
+      this.updateCharts();
+    }
+  }
+
+  private async updateCharts() {
     await this.retrieveData();
     this.performanceChart = this.chartService.createPerformanceChart(
       this.performanceCharts,
       this.chartCanvas.nativeElement,
+      this.accentChartColor,
     );
     this.updateChart();
 
@@ -81,11 +91,16 @@ export class PerformanceChartComponent extends BaseEventAwareComponent implement
     });
   }
 
+  async ngOnInit(): Promise<void> {
+    await this.updateCharts();
+  }
+
   private async getPerformanceChart(): Promise<ChartPerformance[]> {
     console.log('start retrieving chart from database');
 
     const addressCharts = this.dataService.getAddressCharts();
-    return this.chartService.getPerformanceChart(addressCharts);
+    let addresses = this.chartService.getPerformanceChart(addressCharts);
+    return (await addresses).filter((chart) => this.filledAddresses.includes(chart.address));
   }
 
   updateChart(): void {
