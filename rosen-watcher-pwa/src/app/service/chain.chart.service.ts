@@ -125,7 +125,7 @@ export class ChainChartService {
               color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
-              color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
+              color: accentChartColor ?? 'rgba(0, 0, 0, 0.7)',
               callback: function (value: number | string) {
                 return (value as number).toLocaleString('en-US', {
                   minimumFractionDigits: 0,
@@ -144,7 +144,7 @@ export class ChainChartService {
               color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
             },
             ticks: {
-              color: accentChartColor ?? 'rgba(0, 0, 0, 0.1)',
+              color: accentChartColor ?? 'rgba(0, 0, 0, 0.7)',
             },
           },
         },
