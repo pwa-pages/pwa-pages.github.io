@@ -120,7 +120,7 @@ a.tab {
 .statistics-footer {
   position: fixed;
   background: white;
-  bottom: 7vh;
+  bottom: 5vh;
   padding-bottom: 4vh;
   width: 95vw;
 }

@@ -92,7 +92,7 @@ li:last-child {
 
 .addressescontainer {
   display: inline-flex;
-  margin-bottom: var(--medium-height);
+  margin-bottom: 3vh;
   margin-top: var(--large-font);
 }
 

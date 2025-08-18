@@ -10,14 +10,14 @@
   --chart-margin: 0.4vh;
   --large-height: 8vh;
   --medium-height: 5vh;
-  --medium-width: 5vh;
+  --medium-width: 5vw;
   --small-medium-height: 4vh;
   --small-height: 2vh;
   --tiny-height: 1vh;
   --tiny-width: 1vw;
   --small-border: 0.1vh;
   --medium-border: 0.2vh;
-  --main-address-padding: 2.7vh;
+  --main-address-padding: 2vh;
   --qrcode-padding: 20vh;
   --period-select-margin: 0.7vh;
   --main-content-padding: 10vh;
