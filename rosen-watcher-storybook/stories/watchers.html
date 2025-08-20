@@ -30,6 +30,15 @@ Minimal example:
     &lt;rosen-watcher-component component=&quot;watchers&quot; render-html=&quot;true&quot;&gt; &lt;/rosen-watcher-component&gt;
   &lt;/body&gt;
 &lt;/html&gt;
+
+&lt;script&gt;
+      const watchersEl = document.querySelector('rosen-watcher-component');
+
+      watchersEl.addEventListener('notifyWatchersStatsChanged', (event) =&gt; {
+        console.log('Watchers stats changed:', JSON.stringify(event.detail));
+      });
+&lt;/script&gt;
+
 </code>
 </pre>
 

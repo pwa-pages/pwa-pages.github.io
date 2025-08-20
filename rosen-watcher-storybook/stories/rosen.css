@@ -46,23 +46,19 @@ a:hover {
 }
 pre {
     background-color: #f6f8fa !important;
-    padding: 1rem;
-    border-radius: 8px;
-    white-space: pre-wrap !important;
-    word-wrap: break-word !important;
     font-size: 0.875rem;
-    width: 100%;      /* full width */
-    overflow: hidden;  /* suppress scrollbars */
-    border: 1px solid #d0d7de !important;}
+    overflow: auto;
+    border: 1px solid #d0d7de !important;
+    padding: 0.875rem !important; 
+}
 
 code {
-    padding: 0.25em 0.5em;
+    
     border-radius: 6px;
     font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
     font-size: 0.875rem;
-    width: 100%;
-    display: inline-block; /* allows full width without scroll */
-    overflow: hidden;      /* suppress scrollbars */
+
+
     
 }
 
