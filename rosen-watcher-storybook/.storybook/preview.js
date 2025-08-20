@@ -12,7 +12,14 @@ link.rel = 'stylesheet';
 link.href = '/styles-2KIPJFYC.css'; 
 document.head.appendChild(link);
 
-export const parameters = {};
+export const parameters = {
+options: {
+    storySort: {
+      method: 'alphabetical',
+    },
+    initialStory: 'Components/Watchers--Primary'
+}
+}
 
 export const rosenScriptFile = script.src;
 export const rosenStyleFile = link.href;

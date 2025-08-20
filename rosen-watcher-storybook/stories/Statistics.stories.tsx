@@ -12,7 +12,7 @@ const baseArgs = {
 };
 
 export default {
-  title: 'Example/Statistics',
+  title: 'Components/Statistics',
   tags: ['autodocs'],
   render: (args) => {
     return createStatistics({ ...args });

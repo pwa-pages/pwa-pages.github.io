@@ -8,7 +8,7 @@ const baseArgs = {
 };
 
 export default {
-  title: 'Example/Performance',
+  title: 'Components/Performance',
   tags: ['autodocs'],
   render: (args) => {
     return createPerformance({ ...args });

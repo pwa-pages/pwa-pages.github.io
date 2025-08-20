@@ -12,7 +12,7 @@ var content = htmlContent
           .replace(/__STYLE_FILE__/g, rosenStyleFile);
 
 export default {
-  title: 'Example/Watchers',
+  title: 'Components/Watchers',
   tags: ['autodocs'],
   render: (args) => {
     return createWatchers({ ...args });

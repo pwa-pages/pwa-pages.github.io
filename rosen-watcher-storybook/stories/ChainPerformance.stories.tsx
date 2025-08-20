@@ -1,13 +1,18 @@
 import { createChainPerformance } from './ChainPerformance';
 import htmlContent from './chainperformance.html?raw';
 import React from 'react';
+import { rosenScriptFile, rosenStyleFile } from '../.storybook/preview';
 
 const baseArgs = {
 
 };
 
+var content = htmlContent
+          .replace(/__SCRIPT_FILE__/g, rosenScriptFile)
+          .replace(/__STYLE_FILE__/g, rosenStyleFile);
+
 export default {
-  title: 'Example/ChainPerformance',
+  title: 'Components/ChainPerformance',
   tags: ['autodocs'],
   render: (args) => {
     return createChainPerformance({ ...args });
@@ -21,7 +26,7 @@ export default {
   docs: {
     page: () => (
       <div
-        dangerouslySetInnerHTML={{ __html: htmlContent }}
+        dangerouslySetInnerHTML={{ __html: content }}
       />
     ),
   },
@@ -44,6 +49,7 @@ function buildSourceCode(args) {
 }
 
 export const Primary = {
+  name: 'Chain performance Component',
   args: {
     
     

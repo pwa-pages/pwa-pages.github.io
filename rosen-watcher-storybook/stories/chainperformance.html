@@ -1,4 +1,3 @@
-
 <h3>Description</h3>
 
 <p>The chain-performance component can be used to render html with rosen bridge chain performance comparison
@@ -9,9 +8,37 @@ In this way all relevant data is exposed through a dom event.
 <br/><br/>
 An example of usage of the component can be tried <a href = "./?path=/story/example-chainperformance--primary">here on story book</a>
 <br/><br/>
-<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-chain-performance.html">https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-chain-performance.html</a> This file always contains the latest javascript versions with the latest build.
-A css is added to that page and can be used to build on, but it can be ignored if all css needs to be custom.
-<br/><br/>
+
+<h3>
+Setup component in your html:
+</h3>
+<br/>
+Include <a href = "__SCRIPT_FILE__">__SCRIPT_FILE__</a> in html.
+Include <a href = "__STYLE_FILE__">__STYLE_FILE__</a> if you want to use the default css, 
+this file can be ignored if all css needs to be custom.<br/><br/>
+Minimal example: 
+<pre><code>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;__STYLE_FILE__&quot; /&gt;
+    &lt;script src=&quot;__SCRIPT_FILE__&quot; type=&quot;module&quot;&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;rosen-watcher-component component=&quot;watchers&quot; render-html=&quot;true&quot;&gt; &lt;/rosen-watcher-component&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+&lt;script&gt;
+      const watchersEl = document.querySelector('rosen-watcher-component');
+
+      watchersEl.addEventListener('notifyWatchersStatsChanged', (event) =&gt; {
+        console.log('Watchers stats changed:', JSON.stringify(event.detail));
+      });
+&lt;/script&gt;
+
+</code>
+</pre>
+
 </p>
 
 <hr />
