@@ -33,9 +33,10 @@ export class PerformanceChartComponent
   @AngularInput()
   accentChartColor?: string;
   performanceCharts: ChartPerformance[];
-  performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined;
+  performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined =
+    undefined;
   private _renderHtml = true;
-  @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('performanceChartCanvas') performanceChartCanvas!: ElementRef<HTMLCanvasElement>;
 
   @AngularInput()
   set renderHtml(value: string | boolean) {
@@ -61,6 +62,7 @@ export class PerformanceChartComponent
 
   async retrieveData(): Promise<void> {
     this.performanceCharts = await this.getPerformanceChart();
+    this.eventService.sendEventWithData(EventType.PerformanceChartsChanged, this.performanceCharts);
   }
 
   ngOnChanges(): void {
@@ -76,11 +78,14 @@ export class PerformanceChartComponent
 
   private async updateCharts() {
     await this.retrieveData();
-    this.performanceChart = this.chartService.createPerformanceChart(
-      this.performanceCharts,
-      this.chartCanvas.nativeElement,
-      this.accentChartColor,
-    );
+    if (!this.performanceChart) {
+      this.performanceChart = this.chartService.createPerformanceChart(
+        this.performanceCharts,
+        this.performanceChartCanvas.nativeElement,
+        this.accentChartColor,
+      );
+    }
+
     this.updateChart();
 
     this.eventService.sendEvent(EventType.RequestInputsDownload);

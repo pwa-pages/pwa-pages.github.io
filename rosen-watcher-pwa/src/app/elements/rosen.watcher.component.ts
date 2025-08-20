@@ -5,7 +5,7 @@ import { ChainPerformanceComponent } from '../statistics/chain.performance.compo
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { WatchersStats } from '../service/watchers.data.service';
 import { EventType } from '../service/event.service';
-import { ChainChartPerformance } from '../../service/ts/models/chart.performance';
+import { ChainChartPerformance, ChartPerformance } from '../../service/ts/models/chart.performance';
 import { StatisticsChartComponent } from './statistics.chart.component';
 import { CommonModule } from '@angular/common';
 import { PerformanceChartComponent } from './performance.chart.component';
@@ -61,6 +61,8 @@ export class RosenWatcherComponent extends BaseEventAwareComponent {
   @Output() notifyChainPerformanceChartsChanged = new EventEmitter<
     { chainType: ChainType | null; chart: number }[]
   >();
+  @Output() notifyPerformanceChartsChanged = new EventEmitter<ChartPerformance[]>();
+  @Output() notifyStatisticsChartChanged = new EventEmitter<DateNumberPoint[]>();
 
   @Input()
   set renderHtml(value: string | boolean) {
@@ -152,12 +154,26 @@ export class RosenWatcherComponent extends BaseEventAwareComponent {
       EventType.ChainPerformanceChartsChanged,
       (data: ChainChartPerformance[]) => {
         console.log(
-          'Received watchers stats changed event, sending through notifyWatchersStatsChanged',
+          'Received chain performance changed event, sending through notifyChainPerformanceChartsChanged',
         );
         this.notifyChainPerformanceChartsChanged.emit(
           data.map(({ chainType, chart }) => ({ chainType, chart })),
         );
       },
     );
+
+    this.subscribeToEvent(EventType.PerformanceChartsChanged, (data: ChartPerformance[]) => {
+      console.log(
+        'Received performance charts changed event, sending through notifyPerformanceChartsChanged',
+      );
+      this.notifyPerformanceChartsChanged.emit(data);
+    });
+
+    this.subscribeToEvent(EventType.StatisticsChartChanged, (data: DateNumberPoint[]) => {
+      console.log(
+        'Received statistics chart changed event, sending through notifyStatisticsChartChanged',
+      );
+      this.notifyStatisticsChartChanged.emit(data);
+    });
   }
 }

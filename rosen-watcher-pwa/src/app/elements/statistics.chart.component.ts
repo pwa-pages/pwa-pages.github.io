@@ -67,6 +67,8 @@ export class StatisticsChartComponent implements OnInit, OnChanges {
       .map((s) => {
         return { x: s.inputDate, y: s.amount } as DateNumberPoint;
       });
+
+    this.eventService.sendEventWithData(EventType.StatisticsChartChanged, this.amounts);
   }
 
   async ngOnInit(): Promise<void> {
