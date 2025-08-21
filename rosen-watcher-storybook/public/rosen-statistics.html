@@ -73,7 +73,7 @@
         <li><a href="rosen-watcher-components.3.48.9.js">rosen-watcher-components.3.48.9.js (Required)</a></li>
       </ul>
     </section>
-
+    <!--
     <rosen-watcher-component
       style="display: block; width: 500px; height: 300px; float: left"
       component="statistics"
@@ -102,7 +102,7 @@
       chart-title="Rewards last day for watcher"
       period="Day"
     ></rosen-watcher-component>
-
+-->
     <rosen-watcher-component
       style="display: block; width: 500px; height: 300px; float: left"
       component="statistics"
@@ -111,13 +111,13 @@
       address3="9gWWVhZX1nmzjaKqtmQMvE15gV3u8exUgaZHokwT2he9ru5B5NV"
       render-html="true"
       chart-title="All watchers"
-      period="All"
+      period="Day"
     ></rosen-watcher-component>
 
     <script>
       const watchersEl = document.querySelector('rosen-watcher-component');
 
-      watchersEl.addEventListener('notifyChainPerformanceChartsChanged', (event) => {
+      watchersEl.addEventListener('notifyStatisticsChartChanged', (event) => {
         console.log('Chain performance charts changed:', JSON.stringify(event.detail));
       });
     </script>

@@ -52,7 +52,7 @@ export const Primary = {
     
     
   },
-   name: 'Watchers Component',
+   name: 'Explore Component',
   parameters: {
     docs: {
       source: {

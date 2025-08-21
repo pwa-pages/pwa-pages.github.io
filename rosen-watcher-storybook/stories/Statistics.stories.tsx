@@ -1,6 +1,7 @@
 import { createStatistics } from './Statistics';
 import htmlContent from './statistics.html?raw';
 import React from 'react';
+import { rosenScriptFile, rosenStyleFile } from '../.storybook/preview';
 
 const baseArgs = {
   address1: '9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38',
@@ -10,6 +11,10 @@ const baseArgs = {
   accentChartColor: '#cccccc',
   period: 'All',
 };
+
+var content = htmlContent
+          .replace(/__SCRIPT_FILE__/g, rosenScriptFile)
+          .replace(/__STYLE_FILE__/g, rosenStyleFile);
 
 export default {
   title: 'Components/Statistics',
@@ -35,7 +40,7 @@ parameters: {
   docs: {
     page: () => (
       <div
-        dangerouslySetInnerHTML={{ __html: htmlContent }}
+        dangerouslySetInnerHTML={{ __html: content }}
       />
     ),
   },
@@ -63,6 +68,7 @@ function buildSourceCode(args) {
 }
 
 export const Primary = {
+  name: 'Explore Component',
   args: {
     address1: "",
     address2: "9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38"

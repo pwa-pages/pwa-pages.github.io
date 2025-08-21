@@ -40,6 +40,7 @@ function buildSourceCode(args) {
 }
 
 export const Primary = {
+  name: 'Explore Component',
   args: {
     
     

@@ -49,7 +49,7 @@ function buildSourceCode(args) {
 }
 
 export const Primary = {
-  name: 'Chain performance Component',
+  name: 'Explore Component',
   args: {
     
     

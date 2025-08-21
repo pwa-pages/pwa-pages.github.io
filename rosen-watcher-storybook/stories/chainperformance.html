@@ -31,7 +31,7 @@ Minimal example:
 &lt;script&gt;
       const watchersEl = document.querySelector('rosen-watcher-component');
 
-      watchersEl.addEventListener('notifyWatchersStatsChanged', (event) =&gt; {
+      watchersEl.addEventListener('notifyChainPerformanceChartsChanged', (event) =&gt; {
         console.log('Watchers stats changed:', JSON.stringify(event.detail));
       });
 &lt;/script&gt;
@@ -41,7 +41,6 @@ Minimal example:
 
 </p>
 
-<hr />
 
 <h3>Attributes</h3>
 
@@ -64,17 +63,11 @@ Minimal example:
   </tbody>
 </table>
 
-<p><strong>Example:</strong></p>
-
-<pre><code>&lt;rosen-watcher-component component="chain-performance" render-html="true"&lt;/rosen-watcher-component&gt;</code></pre>
-
-<hr />
-
 <h3>Events</h3>
 
 <h4><code>notifyChainPerformanceChartsChanged</code></h4>
 
-<p>Fired whenever the internal watcher statistics update, component can send multiple events of type notifyChainPerformanceChartsChanged
+<p>Fired whenever the internal chain performance data update, component can send multiple events of type notifyChainPerformanceChartsChanged
 as it retrieves data incrementally and refreshes the data based on this,
 so in the few first updates the data might still be incomplete,
 but in the end after all updates the data is complete.

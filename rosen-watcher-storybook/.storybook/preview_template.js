@@ -17,7 +17,7 @@ options: {
     storySort: {
       method: 'alphabetical',
     },
-    initialStory: 'Components/Watchers--Primary'
+    initialStory: 'Overview--Primary'
 }
 }
 
