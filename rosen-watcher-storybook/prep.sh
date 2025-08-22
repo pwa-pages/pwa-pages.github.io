@@ -26,4 +26,4 @@ for file in "$dir"rosen*.js "$dir"styles*.css; do
   fi
 done
 
-zip -j public/rosen_components.zip public/rosen-chain-performance.html  public/rosen-statistics.html public/rosen-watchers.html public/rosen*.js public/styles*.css
+zip -j public/rosen_components.zip public/rosen-chain-performance.html  public/rosen-statistics.html public/rosen-performance.html public/rosen-watchers.html public/rosen*.js public/styles*.css

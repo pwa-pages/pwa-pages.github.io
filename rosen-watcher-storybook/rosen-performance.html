@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="styles-2KIPJFYC.css" media="all" onload="this.media='all'" />
+    <script src="rosen-watcher-components.3.48.9.js" type="module"></script>
+  </head>
+  <body>
+    <rosen-watcher-component
+      component="performance"
+      render-html="true"
+      address1="9gWWVhZX1nmzjaKqtmQMvE15gV3u8exUgaZHokwT2he9ru5B5NV"
+      address2="9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38"
+      accent-chart-color="#666666"
+      style="height: 300px; width: 500px"
+    />
+  </body>
+</html>
+
+<script>
+  const watchersEl = document.querySelector('rosen-watcher-component');
+
+  watchersEl.addEventListener('notifyPerformanceChartsChanged', (event) => {
+    console.log('Performance changed:', JSON.stringify(event.detail));
+  });
+</script>
