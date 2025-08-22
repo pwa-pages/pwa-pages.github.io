@@ -1,4 +1,4 @@
-<h3>Description</h3>
+/* empty css              */import{e as r}from"./index-1v6kQ9Nt.js";import{r as o,a}from"./iframe-CReibHnE.js";import"./preload-helper-D9Z9MdNV.js";const d=({backgroundColor:t})=>{const n=document.createElement("rosen-watcher-component");return n.setAttribute("component","watchers"),n.setAttribute("render-html","true"),n.style.backgroundColor=t,n},c=`<h3>Description</h3>
 
 <p>The watchers component can be used to render html with rosen bridge watcher stats
 similar to <a href="https://pwa-pages.github.io/rosen-watcher-pwa/watchers">https://pwa-pages.github.io/rosen-watcher-pwa/watchers</a>.<br/>
@@ -348,3 +348,24 @@ and act accordingly.
 
 <hr />
 
+`,l={};var s=c.replace(/__SCRIPT_FILE__/g,o).replace(/__STYLE_FILE__/g,a);const g={title:"Components/Watchers",tags:["autodocs"],render:t=>d({...t}),argTypes:{backgroundColor:{control:"color"}},args:l,parameters:{docs:{page:()=>r.createElement("div",{dangerouslySetInnerHTML:{__html:s}})}}};function i(t){return`
+
+    <rosen-watcher-component
+
+      component="watchers"
+      render-html="true"
+      >
+      
+    </rosen-watcher-component>
+
+  `}const e={args:{},name:"Explore Component",parameters:{docs:{source:{code:i()}}}};e.parameters={...e.parameters,docs:{...e.parameters?.docs,source:{originalSource:`{
+  args: {},
+  name: 'Explore Component',
+  parameters: {
+    docs: {
+      source: {
+        code: buildSourceCode(baseArgs)
+      }
+    }
+  }
+}`,...e.parameters?.docs?.source}}};const b=["Primary"];export{e as Primary,b as __namedExportsOrder,g as default};

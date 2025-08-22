@@ -1,44 +1,58 @@
+<h1>🔧 Rosen watcher Web Component Library</h1>
+
+
+<p>This project contains a growing collection of reusable, standalone web components built with <strong>Angular Elements</strong>. These components are framework-agnostic and work in any HTML/JavaScript environment — no Angular required in the host app.
+</p>
+<p>
+The components are based on functionality from rosen watchers pwa app: 
+<a href="https://pwa-pages.github.io/rosen-watcher-pwa/">https://pwa-pages.github.io/rosen-watcher-pwa/</a>.
+</p>
+Some people showed interest in using this functionality on their site,
+having this exposed as a javascript component seems to be an easy way of integrating.
+If there are issues, please send them to <a href="https://t.me/rosenbridge_erg">https://t.me/rosenbridge_erg</a> to @Pebblerye.
+</p>
+
+
+<hr />
+
+<h2>📦 Available Components</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="#watchers"><code>watchers</code></a></td>
+      <td>Displays watcher stats or retrieve watcher stats from dom events</td>
+    </tr>
+    <tr>
+      <td><a href="#chain-performance"><code>chain-performance</code></a></td>
+      <td>Show avarage performance over all watchers per chain</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="watchers">📺 <code>watchers</code></h2>
+
 <h3>Description</h3>
 
-<p>The watchers component can be used to render html with rosen bridge watcher stats
+<p>The <code>watchers</code> component can be used to render html with rosen bridge watcher stats
 similar to <a href="https://pwa-pages.github.io/rosen-watcher-pwa/watchers">https://pwa-pages.github.io/rosen-watcher-pwa/watchers</a>.<br/>
 All data from that screen can also be retrieved by a dom event in case
 the intention is to design the html oneself. <br/>
 In this way all relevant data is exposed through a dom event.
 <br/><br/>
-An example of usage of the component can be tried <a href = "./?path=/story/components-watchers--primary">here</a>
+An example(and the place to download the needed javascripts) of usage of the component with the latest versions can be found at:
 <br/><br/>
-
-<h3>
-Setup component in your html:
-</h3>
-<br/>
-Include <a href = "__SCRIPT_FILE__">__SCRIPT_FILE__</a> in html.
-Include <a href = "__STYLE_FILE__">__STYLE_FILE__</a> if you want to use the default css, 
-this file can be ignored if all css needs to be custom.<br/><br/>
-Minimal example (Example with all html css and js can be downloaded from <a href = "rosen_components.zip">rosen_components.zip</a>): 
-<pre><code>
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;__STYLE_FILE__&quot; /&gt;
-    &lt;script src=&quot;__SCRIPT_FILE__&quot; type=&quot;module&quot;&gt;&lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;rosen-watcher-component component=&quot;watchers&quot; render-html=&quot;true&quot;&gt; &lt;/rosen-watcher-component&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-
-&lt;script&gt;
-      const watchersEl = document.querySelector('rosen-watcher-component');
-
-      watchersEl.addEventListener('notifyWatchersStatsChanged', (event) =&gt; {
-        console.log('Watchers stats changed:', JSON.stringify(event.detail));
-      });
-&lt;/script&gt;
-
-</code>
-</pre>
-
+<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html">https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html</a> This file always contains the latest javascript versions with the latest build.
+A css is added to that page and can be used to build on, but it can be ignored if all css needs to be custom.
+<br/><br/>
 </p>
 
 <hr />
@@ -322,8 +336,7 @@ and act accordingly.
       <td>number</td>
       <td>Total number of watchers across all chains.</td>
     </tr>
-    <tr><h2 id="chain-performance"> <code>Chain performance</code></h2>
-
+    <tr>
       <td><code>totalPermitCount</code></td>
       <td>number</td>
       <td>Total number of permits across all chains.</td>
@@ -348,3 +361,146 @@ and act accordingly.
 
 <hr />
 
+<h2 id="full-usage-example">📄 Full Usage Example</h2>
+
+As mentioned above a full usage example can be found at <br/>
+<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html">https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html</a>
+This page always contains the latest versions of javascript and css, download those and use the component similarly as in the html.
+
+
+<hr />
+
+<h2 id="chain-performance">📺 <code>Chain performance</code></h2>
+
+<h3>Description</h3>
+
+<p>The <code>chain-performance</code> component can be used to render html with rosen bridge chain performance comparison
+similar to <a href="https://pwa-pages.github.io/rosen-watcher-pwa/load.html?page=chainperformance">https://pwa-pages.github.io/rosen-watcher-pwa/load.html?page=chainperformance</a>.<br/>
+All data from that screen can also be retrieved by a dom event in case
+the intention is to design the html oneself. <br/>
+In this way all relevant data is exposed through a dom event.
+<br/><br/>
+An example(and the place to download the needed javascripts) of usage of the component with the latest versions can be found at:
+<br/><br/>
+<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-chain-performance.html">https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-chain-performance.html</a> This file always contains the latest javascript versions with the latest build.
+A css is added to that page and can be used to build on, but it can be ignored if all css needs to be custom.
+<br/><br/>
+</p>
+
+<hr />
+
+<h3>Attributes</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Values</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>render-html</code></td>
+      <td>Boolean</td>
+      <td>"true", "false"</td>
+      <td>Enables or disables rendering of inner HTML content inside the component. Defaults to <code>"true"</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Example:</strong></p>
+
+<pre><code>&lt;rosen-watcher-component component="chain-performance" render-html="true"&lt;/rosen-watcher-component&gt;</code></pre>
+
+<hr />
+
+<h3>Events</h3>
+
+<h4><code>notifyChainPerformanceChartsChanged</code></h4>
+
+<p>Fired whenever the internal watcher statistics update, component can send multiple events of type notifyChainPerformanceChartsChanged
+as it retrieves data incrementally and refreshes the data based on this,
+so in the few first updates the data might still be incomplete,
+but in the end after all updates the data is complete.
+</p>
+
+<p><strong>JavaScript usage:</strong></p>
+
+<pre><code>const watchersEl = document.querySelector('rosen-watcher-component');
+
+      watchersEl.addEventListener('notifyChainPerformanceChartsChanged', (event) => {
+        console.log('WChain performance charts changed:', JSON.stringify(event.detail));
+      });
+</code></pre>
+
+<p>
+The json sent back is shown below. The intention is not to introduce many breaking changes,
+will try to remain backwards compatibale as much as possibe,
+but it is adviced when using newer versions to check if the json has changes,
+and act accordingly. 
+</p>
+
+<pre><code>
+
+[
+  {
+    "chainType": "Bitcoin",
+    "chart": 0
+  },
+  {
+    "chainType": "Cardano",
+    "chart": 2160.9759999999987
+  },
+  {
+    "chainType": "Ergo",
+    "chart": 6442.441
+  },
+  {
+    "chainType": "Ethereum",
+    "chart": 0
+  },
+  {
+    "chainType": "Binance",
+    "chart": 0
+  },
+  {
+    "chainType": "Doge",
+    "chart": 0
+  }
+]
+
+</code></pre>
+
+<h3>JSON Fields Explanation</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>chainType</code></td>
+      <td>string</td>
+      <td>Chain type. Note new versions of the components might return more chaintypes.</td>
+    </tr>
+    <tr>
+      <td><code>chart</code></td>
+      <td>number</td>
+      <td>Amount of rewards earned for a watcher for chaintype in last week in RSN.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="full-usage-example">📄 Full Usage Example</h2>
+
+As mentioned above a full usage example can be found at <br/>
+<a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-chain-performance.html">https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-chain-performance.html</a>
+This page always contains the latest versions of javascript and css, download those and use the component similarly as in the html.

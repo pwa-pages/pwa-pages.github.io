@@ -4,3 +4,5 @@ cp -R ../rosen-watcher-pwa/web-component/* ./public
 ./clean.sh
 npm install
 npm run build-storybook
+cp -R storybook-static/* .
+
