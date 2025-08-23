@@ -82,8 +82,8 @@ export const Primary = {
     },
   },
   render: (args) => {
-    const style = 'display: block; width: 600px; height: 350px; border: 2px solid #666; border-radius: 8px; background: #f9f9f9; padding: 16px;';
-    return createStatistics({ ...args, style });
+    
+    return createStatistics({ ...args });
 
   }
 };
