@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1755716377761,
+  "timestamp": 1755933865463,
   "appData": {
-    "version": "3.48.9"
+    "version": "3.49.0"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -45,6 +45,7 @@
         "./assets/images/ergo.png",
         "./assets/images/ethereum.png",
         "./assets/rosen-chain-performance.html",
+        "./assets/rosen-performance.html",
         "./assets/rosen-statistics.html",
         "./assets/rosen-watchers.html",
         "./assets/test.html",
@@ -74,9 +75,10 @@
     "./assets/images/doge.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
-    "./assets/rosen-chain-performance.html": "df9b9852b7da75aa9d57781b35dc7256e0c6db8a",
-    "./assets/rosen-statistics.html": "6ce0796caf3fe3d32e860697dde828ef449f2847",
-    "./assets/rosen-watchers.html": "0bcb934fb1077fba59729ba44b7ec2fea220f755",
+    "./assets/rosen-chain-performance.html": "6d787867e20ab90f03c2e561b15fa8bddb5b9814",
+    "./assets/rosen-performance.html": "4a9b29bebe350ab76ec619331ade01b1bfd032bc",
+    "./assets/rosen-statistics.html": "370c01657d61709100963cb9ef9832dd51c62ecf",
+    "./assets/rosen-watchers.html": "40657d404800e7e3a22694e7c2ba6044e7ad3b24",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
     "./index.html": "70a3a37de7609fe16fd11c60eb7226b0627fedb3",

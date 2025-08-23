@@ -88,7 +88,9 @@ export class PerformanceChartComponent
 
     this.updateChart();
 
-    this.eventService.sendEvent(EventType.RequestInputsDownload);
+    for (const address of this.filledAddresses) {
+      await this.eventService.sendEventWithData(EventType.RequestInputsDownload, address);
+    }
 
     await this.subscribeToEvent(EventType.RefreshInputs, async () => {
       await this.retrieveData();

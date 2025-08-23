@@ -5,14 +5,11 @@
   </head>
   <body>
     <rosen-watcher-component
-      component="statistics"
+      component="performance"
       render-html="true"
       address1="9gWWVhZX1nmzjaKqtmQMvE15gV3u8exUgaZHokwT2he9ru5B5NV"
       address2="9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38"
-      period="All"
-      chart-title="Lobster pool rewards"
-      chart-color="#666666"
-      accent-chart-color="#cccccc"
+      accent-chart-color="#666666"
       style="height: 300px; width: 500px"
     />
   </body>
@@ -21,7 +18,7 @@
 <script>
   const watchersEl = document.querySelector('rosen-watcher-component');
 
-  watchersEl.addEventListener('notifyStatisticsChartChanged', (event) => {
-    console.log('Statistics changed:', JSON.stringify(event.detail));
+  watchersEl.addEventListener('notifyPerformanceChartsChanged', (event) => {
+    console.log('Performance changed:', JSON.stringify(event.detail));
   });
 </script>
