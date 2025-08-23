@@ -1,4 +1,4 @@
-<h3>Description</h3>
+/* empty css              */import{e as p}from"./index-1v6kQ9Nt.js";import{r as u,a as m}from"./iframe-DiperuIx.js";import"./preload-helper-D9Z9MdNV.js";const o=({period:t,backgroundColor:r,chartTitle:s,chartColor:d,accentChartColor:c,address1:i,address2:h,style:l="border:1px solid black; width: 500px; height:300px; display: block;"})=>{const e=document.createElement("rosen-watcher-component");return e.setAttribute("component","statistics"),e.setAttribute("render-html","true"),e.setAttribute("address1",i),e.setAttribute("address2",h),e.setAttribute("period",t),e.setAttribute("chart-title",s),e.setAttribute("chart-color",d),e.setAttribute("accent-chart-color",c),e.setAttribute("style",l),e.style.backgroundColor=r,e},b=`<h3>Description</h3>
 
 <p>The statistics component can be used to render HTML that shows the amount earned for a set of watchers over time,
 similar to <a href="https://pwa-pages.github.io/rosen-watcher-pwa/load.html?page=statistics">https://pwa-pages.github.io/rosen-watcher-pwa/load.html?page=statistics</a>.<br/>
@@ -187,3 +187,39 @@ which can be accumulated by the components that use this event if needed.
     </tr>
   </tbody>
 </table>
+`,a={address1:"9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38",address2:"",chartTitle:"Lobster pool rewards",chartColor:"#666666",accentChartColor:"#cccccc",period:"All"};var g=b.replace(/__SCRIPT_FILE__/g,u).replace(/__STYLE_FILE__/g,m);const _={title:"Components/Statistics",tags:["autodocs"],render:t=>o({...t}),argTypes:{backgroundColor:{control:"color"},accentChartColor:{control:"color"},chartColor:{control:"color"},address1:{control:"text"},address2:{control:"text"},period:{control:{type:"select"},options:["Day","Week","Month","Year","All"]}},args:a,parameters:{docs:{page:()=>p.createElement("div",{dangerouslySetInnerHTML:{__html:g}})}}};function y(t){return`
+
+    <rosen-watcher-component
+      style="display: block; width: 500px; height: 300px; float: left"
+      component="statistics"
+      address1="${t.address1||""}"
+      address2="${t.address2||""}"
+      render-html="true"
+      chart-title="${t.chartTitle||""}"
+      chart-color="${t.chartColor||""}"
+      accent-chart-color="${t.accentChartColor||""}"
+      period="${t.period||"Day"}">
+      
+    </rosen-watcher-component>
+
+  `}const n={name:"Explore Component",args:{address1:"",address2:"9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38"},parameters:{docs:{source:{code:y(a)}}},render:t=>o({...t,style:"display: block; width: 600px; height: 350px; border: 2px solid #666; border-radius: 8px; background: #f9f9f9; padding: 16px;"})};n.parameters={...n.parameters,docs:{...n.parameters?.docs,source:{originalSource:`{
+  name: 'Explore Component',
+  args: {
+    address1: "",
+    address2: "9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38"
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: buildSourceCode(baseArgs)
+      }
+    }
+  },
+  render: args => {
+    const style = 'display: block; width: 600px; height: 350px; border: 2px solid #666; border-radius: 8px; background: #f9f9f9; padding: 16px;';
+    return createStatistics({
+      ...args,
+      style
+    });
+  }
+}`,...n.parameters?.docs?.source}}};const v=["Primary"];export{n as Primary,v as __namedExportsOrder,_ as default};
