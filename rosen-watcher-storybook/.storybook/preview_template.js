@@ -15,7 +15,7 @@ document.head.appendChild(link);
 export const parameters = {
 options: {
     storySort: {
-      method: 'alphabetical',
+       order: ['Overview', '*']
     },
     initialStory: 'Overview--Primary'
 }
