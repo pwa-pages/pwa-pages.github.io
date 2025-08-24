@@ -51,6 +51,8 @@ export class StatisticsChartComponent extends BaseEventAwareComponent implements
       return;
     }
 
+    this.chartFullTitle = this.chartTitle;
+
     if (
       !this.prevFilledAddresses ||
       this.filledAddresses.length !== this.prevFilledAddresses.length ||

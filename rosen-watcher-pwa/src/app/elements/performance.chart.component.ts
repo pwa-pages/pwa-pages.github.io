@@ -32,6 +32,7 @@ export class PerformanceChartComponent
   prevFilledAddresses: string[] = [];
   @AngularInput()
   accentChartColor?: string;
+  prevAccentChartColor?: string;
   performanceCharts: ChartPerformance[];
   performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined =
     undefined;
@@ -74,6 +75,11 @@ export class PerformanceChartComponent
       this.prevFilledAddresses = [...this.filledAddresses];
       this.updateCharts();
     }
+
+    if (this.accentChartColor !== this.prevAccentChartColor) {
+      this.prevAccentChartColor = this.accentChartColor;
+      this.updateCharts();
+    }
   }
 
   private async updateCharts() {
@@ -111,7 +117,11 @@ export class PerformanceChartComponent
   }
 
   updateChart(): void {
-    this.chartService.convertPerformanceCharts(this.performanceCharts, this.performanceChart);
+    this.chartService.convertPerformanceCharts(
+      this.performanceCharts,
+      this.performanceChart,
+      this.accentChartColor,
+    );
     this.performanceChart?.update();
   }
 }

@@ -187,6 +187,7 @@ export class ChainChartService {
   public convertPerformanceCharts(
     performanceCharts: ChartPerformance[],
     performanceChart: Chart<'bar', { x: string | number | Date; y: number }[], unknown> | undefined,
+    accentChartColor?: string,
   ) {
     const dataSets = this.CreatePerformanceDataSets(performanceCharts);
 
@@ -197,6 +198,34 @@ export class ChainChartService {
         performanceChart.data.datasets[i].data = dataSets[i].data;
       }
     }
+
+    if (accentChartColor) {
+      if (
+        performanceChart &&
+        performanceChart.options &&
+        performanceChart.options.scales &&
+        performanceChart.options.scales['y'] &&
+        performanceChart.options.scales['x']
+      ) {
+        performanceChart.options.scales['y'].grid = {
+          ...performanceChart.options.scales['y'].grid,
+          color: accentChartColor,
+        };
+        performanceChart.options.scales['y'].ticks = {
+          ...performanceChart.options.scales['y'].ticks,
+          color: accentChartColor,
+        };
+        performanceChart.options.scales['x'].grid = {
+          ...performanceChart.options.scales['x'].grid,
+          color: accentChartColor,
+        };
+        performanceChart.options.scales['x'].ticks = {
+          ...performanceChart.options.scales['x'].ticks,
+          color: accentChartColor,
+        };
+      }
+    }
+    performanceChart!.update();
   }
 
   private createDataSet(i: number): ChartDataSet {
