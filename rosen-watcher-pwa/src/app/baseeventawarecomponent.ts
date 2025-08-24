@@ -30,6 +30,7 @@ export class BaseEventAwareComponent implements OnDestroy {
   }
 
   async ngOnDestroy(): Promise<void> {
+    console.log(`BaseEventAwareComponent with ID ${this.componentId} is being destroyed.`);
     this.eventService.sendEvent(EventType.SwipeDeActivated);
     await this.eventService.unSubscribe(this.componentId);
   }

@@ -32,7 +32,9 @@ export type EventData = string | Input | object;
   providedIn: 'root',
 })
 export class EventService {
-  constructor(private ngZone: NgZone) {}
+  constructor(private ngZone: NgZone) {
+    console.log('EventService initialized');
+  }
 
   eventSubscriptions: Record<EventType, Subject<EventData>> = this.resetSubscriptions();
   eventSubscriptionsById: Record<number, Subscription[]> = {};
@@ -84,6 +86,7 @@ export class EventService {
     callback: (...args: EventData[]) => void,
     id: number,
   ) {
+    console.log(`Subscribing to event: ${eventType} with id: ${id}`);
     let subscription = this.eventSubscriptions[eventType]
       .asObservable()
       .subscribe((...eventData) => {
@@ -112,11 +115,14 @@ export class EventService {
       this.eventSubscriptionsById[id].forEach((subscription) => subscription.unsubscribe());
       delete this.eventSubscriptionsById[id];
     }
-    /*
+
+    Object.entries(this.eventSubscriptionsById).forEach(([key, subs]) => {
+      console.log(`eventSubscriptionsById[${key}] size: ${subs.length}`);
+    });
+
     if (this.eventSubscriptionsById[-1]) {
       this.eventSubscriptionsById[-1].forEach((subscription) => subscription.unsubscribe());
       delete this.eventSubscriptionsById[-1];
     }
-      */
   }
 }

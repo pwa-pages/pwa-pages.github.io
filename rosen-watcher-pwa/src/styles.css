@@ -428,6 +428,10 @@ button:active {
   padding-top: var(--main-content-padding);
 }
 
+.elementsActive .addressescontainer {
+  margin-bottom: 0px !important;
+}
+
 .progress-bar {
   height: var(--tiny-height);
   background-color: white;

@@ -1,10 +1,11 @@
-import { Component, OnInit, Input as AngularInput, OnChanges } from '@angular/core';
-import { EventService, EventType } from '../service/event.service';
+import { Component, OnInit, Input as AngularInput, OnChanges, Injector } from '@angular/core';
+import { EventType } from '../service/event.service';
 import 'chartjs-adapter-date-fns';
 import { Input } from '../../service/ts/models/input';
 import { DateUtils } from '../statistics/date.utils';
 import { RewardChartComponent } from '../statistics/reward.chart.component';
 import { ChainDataService } from '../service/chain.data.service';
+import { BaseEventAwareComponent } from '../baseeventawarecomponent';
 
 @Component({
   selector: 'app-statistics-chart',
@@ -12,7 +13,7 @@ import { ChainDataService } from '../service/chain.data.service';
   standalone: true,
   imports: [RewardChartComponent],
 })
-export class StatisticsChartComponent implements OnInit, OnChanges {
+export class StatisticsChartComponent extends BaseEventAwareComponent implements OnInit, OnChanges {
   DateUtils = DateUtils;
   sortedInputs: Input[];
   detailInputs: Input[];
@@ -32,16 +33,20 @@ export class StatisticsChartComponent implements OnInit, OnChanges {
   amounts: DateNumberPoint[] = [];
 
   constructor(
+    protected override injector: Injector,
     private dataService: ChainDataService,
-    private eventService: EventService,
   ) {
+    super(injector);
     this.sortedInputs = [];
     this.detailInputs = [];
   }
 
   ngOnChanges(): void {
+    console.log('StatisticsChartComponent ngOnChanges called with period:', this.period);
+
     if (this.previousPeriod !== this.period) {
       this.previousPeriod = this.period;
+
       this.retrieveData();
       return;
     }
@@ -51,7 +56,7 @@ export class StatisticsChartComponent implements OnInit, OnChanges {
       this.filledAddresses.length !== this.prevFilledAddresses.length ||
       !this.filledAddresses.every((addr, i) => addr === this.prevFilledAddresses![i])
     ) {
-      this.prevFilledAddresses = [...this.filledAddresses];
+      this.prevFilledAddresses = JSON.parse(JSON.stringify(this.filledAddresses));
       this.retrieveData();
     }
   }
@@ -73,7 +78,7 @@ export class StatisticsChartComponent implements OnInit, OnChanges {
 
   async ngOnInit(): Promise<void> {
     this.chartFullTitle = this.chartTitle;
-    await this.eventService.subscribeToEvent<Input[]>(EventType.RefreshInputs, async () => {
+    await this.subscribeToEvent<Input[]>(EventType.RefreshInputs, async () => {
       await this.retrieveData();
     });
 

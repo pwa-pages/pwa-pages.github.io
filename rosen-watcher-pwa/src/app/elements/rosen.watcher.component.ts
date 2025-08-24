@@ -104,17 +104,26 @@ export class RosenWatcherComponent extends BaseEventAwareComponent {
   @Input() chartColor?: string;
   @Input() accentChartColor?: string;
 
+  private filledAddresses: string[] = [];
+
   getFilledAddresses(): string[] {
-    const filledAddresses: string[] = [];
+    const newFilledAddresses: string[] = [];
 
     for (let i = 1; i <= 20; i++) {
       const address = this[`address${i}` as keyof this] as string | undefined;
       if (typeof address === 'string' && address.trim() !== '') {
-        filledAddresses.push(address);
+        newFilledAddresses.push(address);
       }
     }
 
-    return filledAddresses;
+    if (
+      this.filledAddresses.length !== newFilledAddresses.length ||
+      !this.filledAddresses.every((addr, idx) => addr === newFilledAddresses[idx])
+    ) {
+      this.filledAddresses = newFilledAddresses;
+    }
+
+    return this.filledAddresses;
   }
 
   private _component = '';
@@ -143,6 +152,7 @@ export class RosenWatcherComponent extends BaseEventAwareComponent {
     @Inject(IS_ELEMENTS_ACTIVE) public isElementsActive: boolean,
   ) {
     super(injector);
+    console.log('RosenWatcherComponent initialized with componentId:', this.componentId);
     this.subscribeToEvent(EventType.WatchersStatsChanged, (data: WatchersStats) => {
       console.log(
         'Received watchers stats changed event, sending through notifyWatchersStatsChanged',
