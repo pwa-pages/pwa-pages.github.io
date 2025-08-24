@@ -120,9 +120,11 @@ export class EventService {
       console.log(`eventSubscriptionsById[${key}] size: ${subs.length}`);
     });
 
+    /*
     if (this.eventSubscriptionsById[-1]) {
       this.eventSubscriptionsById[-1].forEach((subscription) => subscription.unsubscribe());
       delete this.eventSubscriptionsById[-1];
     }
+      */
   }
 }
