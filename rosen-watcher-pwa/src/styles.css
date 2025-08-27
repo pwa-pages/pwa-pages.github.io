@@ -56,6 +56,10 @@ li:last-child {
   color: rgba(119, 17, 17, 1) !important;
 }
 
+.statistics-footer .addressescontainer {
+  width: 95%;
+}
+
 .addressescontainer {
   width: 80%;
 }
