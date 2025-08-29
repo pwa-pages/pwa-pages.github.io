@@ -134,7 +134,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
   onAddressesChanged(addresses: Address[] | null) {
     if (addresses) {
-      this.addresses = addresses;
+      this.addressesForDisplay = addresses;
     }
 
     this.detailInputs = this.getDetailInputs(this.detailInputsSize);

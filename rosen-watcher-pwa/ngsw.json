@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1756272702628,
+  "timestamp": 1756448503844,
   "appData": {
-    "version": "3.50.1"
+    "version": "3.50.2"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-G3UIRQ7R.js",
+        "./main-J36VBDLD.js",
         "./manifest.webmanifest",
         "./polyfills-B6TNHZQ6.js",
         "./rosen.html",
@@ -44,6 +44,7 @@
         "./assets/images/doge.png",
         "./assets/images/ergo.png",
         "./assets/images/ethereum.png",
+        "./assets/images/runes.png",
         "./assets/rosen-chain-performance.html",
         "./assets/rosen-performance.html",
         "./assets/rosen-statistics.html",
@@ -75,14 +76,15 @@
     "./assets/images/doge.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
     "./assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
+    "./assets/images/runes.png": "9c109d077d6f1b5043a640c80ff04f85a8a06bdf",
     "./assets/rosen-chain-performance.html": "6d787867e20ab90f03c2e561b15fa8bddb5b9814",
     "./assets/rosen-performance.html": "4a9b29bebe350ab76ec619331ade01b1bfd032bc",
     "./assets/rosen-statistics.html": "370c01657d61709100963cb9ef9832dd51c62ecf",
     "./assets/rosen-watchers.html": "40657d404800e7e3a22694e7c2ba6044e7ad3b24",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "3cf2292018df5da6b2731d02995267423d5c3654",
-    "./main-G3UIRQ7R.js": "9e6d1c2261dab19c4de52d91e5df869408cd5d01",
+    "./index.html": "f4244ce565824210bf28a0d6810308dc6c0242d7",
+    "./main-J36VBDLD.js": "dc0e28236c63659e6daea31d4a901998fd7e5934",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
