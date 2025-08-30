@@ -1,4 +1,3 @@
-import type { ChainType } from './chaintype';
 import type { Asset } from './asset';
 
 export class Input {

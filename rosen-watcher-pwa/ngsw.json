@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1756448503844,
+  "timestamp": 1756544622177,
   "appData": {
-    "version": "3.50.2"
+    "version": "3.50.3"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,13 +16,13 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-J36VBDLD.js",
+        "./main-NXQUPB6O.js",
         "./manifest.webmanifest",
         "./polyfills-B6TNHZQ6.js",
         "./rosen.html",
-        "./scripts-HZRDXI63.js",
+        "./scripts-S3ITWUQQ.js",
         "./shared/js/ngsw-worker.js",
-        "./styles-3SXDGS4P.css"
+        "./styles-R6BRGRNK.css"
       ],
       "patterns": []
     },
@@ -59,7 +59,8 @@
         "./media/fa-brands-400-WVWUIHCX.woff2",
         "./media/fa-regular-400-I5DJMINO.woff2",
         "./media/fa-solid-900-C5F6UWGT.woff2",
-        "./media/fa-v4compatibility-EXH5IDFW.woff2"
+        "./media/fa-v4compatibility-EXH5IDFW.woff2",
+        "./media/runes-RL26QNQT.png"
       ],
       "patterns": []
     }
@@ -83,8 +84,8 @@
     "./assets/rosen-watchers.html": "40657d404800e7e3a22694e7c2ba6044e7ad3b24",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "f4244ce565824210bf28a0d6810308dc6c0242d7",
-    "./main-J36VBDLD.js": "dc0e28236c63659e6daea31d4a901998fd7e5934",
+    "./index.html": "b347a351a5adf47194247a3f24f2770e4bab16cf",
+    "./main-NXQUPB6O.js": "0dbd62262a85d245076cd51505a09e8f5490655f",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -96,11 +97,12 @@
     "./media/fa-regular-400-I5DJMINO.woff2": "5d19c7ada8e2e23fe7949606abf45c72bd842801",
     "./media/fa-solid-900-C5F6UWGT.woff2": "f5f3d18d4b9d3e7f339fbdcc8ad1975657665f91",
     "./media/fa-v4compatibility-EXH5IDFW.woff2": "e346f8b0d6fa5ce68c1d5a41f66355578361449e",
+    "./media/runes-RL26QNQT.png": "9c109d077d6f1b5043a640c80ff04f85a8a06bdf",
     "./polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
     "./rosen.html": "fdd96211de1f83e4e064b109ca06d9906235943c",
-    "./scripts-HZRDXI63.js": "0f2a3ae3f420488f802b91015c7ce9f672a3e64b",
+    "./scripts-S3ITWUQQ.js": "b7af4692daf0b954fcc560d32c51d760a3d59c68",
     "./shared/js/ngsw-worker.js": "a424955690d990a196a465b83c45e92f8d69727c",
-    "./styles-3SXDGS4P.css": "e84f4889a2a4354dd00e08f8450f2dcb37cc67e9"
+    "./styles-R6BRGRNK.css": "b86aa96a7fac3e82cbfb7a505c67cec987e1a7e3"
   },
   "navigationUrls": [
     {

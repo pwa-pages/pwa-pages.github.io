@@ -86,8 +86,9 @@ li:last-child {
   margin-right: var(--medium-width);
 }
 
-.watcherscontainer div {
-  color: rgb(110, 102, 102) !important;
+.upcomingwatcher {
+  font-size: 1.3vmax;
+  font-style: italic;
 }
 
 .linkcontainer {
@@ -252,6 +253,14 @@ a {
 .watchersdispl.Bitcoin,
 .chainType.Bitcoin {
   background-image: url('./assets/images/bitcoin.png');
+  filter: brightness(0.8);
+}
+
+.statdetaildispl.Runes,
+.mainaddressdispl.Runes,
+.watchersdispl.Runes,
+.chainType.Runes {
+  background-image: url('./assets/images/runes.png');
   filter: brightness(0.8);
 }
 

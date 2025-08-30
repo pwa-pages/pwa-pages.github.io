@@ -2,7 +2,6 @@ import { Injectable, Signal, signal } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { HttpDownloadService } from './http.download.service';
 import { Observable } from 'rxjs';
-import { ChainType } from '../../service/ts/models/chaintype';
 import { WatcherInfo } from '../../service/ts/models/watcher.info';
 import { Token } from '../../service/ts/models/token';
 import { PriceService } from './price.service';
@@ -50,6 +49,9 @@ export class WatchersStats {
   providedIn: 'root',
 })
 export class WatchersDataService {
+  isChainTypeActive(chainType: ChainType): boolean {
+    return rewardAddresses[chainType] !== null;
+  }
   readonly watcherUrl =
     'https://' +
     rs_ErgoExplorerHost +
@@ -78,6 +80,12 @@ export class WatchersDataService {
 
   getPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
     const address = permitAddresses[chainType];
+    if (address === null) {
+      return new Observable<Token | undefined>((subscriber) => {
+        subscriber.next(undefined);
+        subscriber.complete();
+      });
+    }
     return this.downloadPermitInfo(address, this.rsnToken, null);
   }
 
@@ -226,11 +234,26 @@ export class WatchersDataService {
 
   getTriggerPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
     const address = permitTriggerAddresses[chainType];
+    if (address === null) {
+      return new Observable<Token | undefined>((subscriber) => {
+        subscriber.next(undefined);
+        subscriber.complete();
+      });
+    }
+
     return this.downloadPermitInfo(address, null, 'rspv2' + chainType + 'RWT');
   }
 
   getBulkPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
     const address = permitBulkAddresses[chainType];
+
+    if (address === null) {
+      return new Observable<Token | undefined>((subscriber) => {
+        subscriber.next(undefined);
+        subscriber.complete();
+      });
+    }
+
     return this.downloadPermitInfo(address, null, 'rspv2' + chainType + 'RWT');
   }
 

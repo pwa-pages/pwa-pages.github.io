@@ -38,6 +38,8 @@
     @for (chainType of getChainTypes(); track chainType) {
     <div class="{{ chainType }} watchersdispl"></div>
     <div>{{ chainType }}</div>
+    @if (isChainTypeActive(chainType)) {
+
     <div>{{ watchersStats.chainWatcherCount[chainType] }}</div>
     <div>
       {{ watchersStats.chainPermitCount[chainType] }} ({{ watchersStats.activePermitCount[chainType]
@@ -45,7 +47,13 @@
     </div>
     <div>{{ watchersStats.chainLockedRSN[chainType] | number: '1.0-0' }}</div>
     <div>{{ watchersStats.chainLockedERG[chainType] | number: '1.0-0' }}</div>
-    }
+    } @else {
+
+    <div class="upcomingwatcher">Upcoming...</div>
+    <div class="upcomingwatcher">-</div>
+    <div class="upcomingwatcher">-</div>
+    <div class="upcomingwatcher">-</div>
+    } }
     <div class="watchersdispl"></div>
     <div>&nbsp;</div>
     <div>&nbsp;</div>

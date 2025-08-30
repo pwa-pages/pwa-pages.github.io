@@ -21,26 +21,13 @@ export class ChainDataService {
     string,
     { chainType: ChainType | null; charts: Record<number, number> }
   > = {};
-  private chainChart: Record<ChainType, { chart: number }> = {
-    [ChainType.Bitcoin]: {
-      chart: 0,
+  private chainChart: Record<ChainType, { chart: number }> = Object.values(ChainType).reduce(
+    (acc, chainType) => {
+      acc[chainType as ChainType] = { chart: 0 };
+      return acc;
     },
-    [ChainType.Cardano]: {
-      chart: 0,
-    },
-    [ChainType.Ergo]: {
-      chart: 0,
-    },
-    [ChainType.Ethereum]: {
-      chart: 0,
-    },
-    [ChainType.Binance]: {
-      chart: 0,
-    },
-    [ChainType.Doge]: {
-      chart: 0,
-    },
-  };
+    {} as Record<ChainType, { chart: number }>,
+  );
   busyCounter = 0;
 
   constructor(

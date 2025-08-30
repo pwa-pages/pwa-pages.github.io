@@ -11,7 +11,6 @@ import {
 import { EventType } from '../service/event.service';
 import { WatchersDataService, WatchersStats } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { ChainType } from '../../service/ts/models/chaintype';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
@@ -65,6 +64,10 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
   getChainTypes(): ChainType[] {
     return Object.values(ChainType);
+  }
+
+  isChainTypeActive(chainType: ChainType): boolean {
+    return this.watchersDataService.isChainTypeActive(chainType);
   }
 
   getWatcherAmounts() {
