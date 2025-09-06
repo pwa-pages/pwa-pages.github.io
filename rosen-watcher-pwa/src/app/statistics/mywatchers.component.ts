@@ -9,7 +9,7 @@ import {
   Output,
 } from '@angular/core';
 import { EventType } from '../service/event.service';
-import { WatchersDataService, WatchersStats } from '../service/watchers.data.service';
+import { MyWatchersStats, WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,12 +17,12 @@ import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
 
 @Component({
-  selector: 'app-watchers',
-  templateUrl: './watchers.html',
+  selector: 'app-mywatchers',
+  templateUrl: './mywatchers.html',
   standalone: true,
   imports: [CommonModule, FormsModule],
 })
-export class WatchersComponent extends BaseWatcherComponent implements OnInit {
+export class MyWatchersComponent extends BaseWatcherComponent implements OnInit {
   private _renderHtml = true;
 
   @Input()
@@ -38,9 +38,13 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     return this._renderHtml;
   }
 
-  @Output() notifyWatchersStatsChanged = new EventEmitter<WatchersStats>();
+  selectTab(): void {
+    this.navigationService.navigate('/watchers');
+  }
 
-  watchersStats: WatchersStats = new WatchersStats();
+  @Output() notifyWatchersStatsChanged = new EventEmitter<MyWatchersStats>();
+
+  myWatchersStats: MyWatchersStats = new MyWatchersStats();
   selectedCurrency = '';
 
   constructor(
@@ -51,12 +55,12 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   ) {
     super(injector);
 
-    const watcherStats = this.watchersDataService.getWatcherStats();
+    const myWatcherStats = this.watchersDataService.getMyWatcherStats();
 
     effect(() => {
-      this.watchersStats = watcherStats();
+      this.myWatchersStats = myWatcherStats();
       console.log('Sending watchers stats changed event');
-      this.eventService.sendEventWithData(EventType.WatchersStatsChanged, this.watchersStats);
+      this.eventService.sendEventWithData(EventType.WatchersStatsChanged, this.myWatchersStats);
     });
   }
 
@@ -70,14 +74,6 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
   isChainTypeActive(chainType: ChainType): boolean {
     return this.watchersDataService.isChainTypeActive(chainType);
-  }
-
-  getWatcherAmounts() {
-    return this.watchersStats.watchersAmountsPerCurrency[this.selectedCurrency as Currency];
-  }
-
-  selectTab(): void {
-    this.navigationService.navigate('/mywatchers');
   }
 
   override async ngOnInit(): Promise<void> {

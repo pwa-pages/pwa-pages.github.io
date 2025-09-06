@@ -92,8 +92,9 @@ export class ChainPerformanceComponent extends BaseWatcherComponent implements O
         map((watcherInfo) => {
           Object.values(ChainType).forEach((c) => {
             const amount =
-              watcherInfo.tokens.find((token: Token) => token.name === 'rspv2' + c + 'AWC')
-                ?.amount ?? 0;
+              watcherInfo.tokens.find(
+                (token: Token) => token.name === chainTypeWatcherIdentifier[c],
+              )?.amount ?? 0;
             this.chainWatcherCount[c] = amount;
           });
           this.updateChart();

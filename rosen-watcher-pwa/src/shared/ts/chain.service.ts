@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 // chainService.ts
 
 // Define the ChainType enum if it's not already available
@@ -12,11 +13,15 @@ enum ChainType {
   Runes = 'Runes',
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const chainTypeTokens = Object.fromEntries(
   Object.values(ChainType).map((chain) => [chain, `rspv2${chain}RWT`]),
 );
 
-console.log(chainTypeTokens);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const chainTypeWatcherIdentifier = Object.fromEntries(
+  Object.values(ChainType).map((chain) => [chain, `rspv2${chain}AWC`]),
+);
 
 const rewardsCardanoAddress =
   '2Eit2LFRqu2Mo33z3pYTJRHNCPYS33MrU9QgeNcRsF9359pYMahqnLvKsHwwH72C6WDSZRj7G7WC5heVyUEawcSLSx821iJXT4xWf2F5fjVWDUskGdVdyYY5RBJnp3dfYC7iPoRNeopAFQWFwEbTieow347UhRyqvo2LntFpXzomvGwVTfq9YXS8Z1GGW5mUEioD5xC17Sz72NLbQrskSx7QZAxQTbMGh6vwM9J4q7NzRmQeHmWaHLpUHMU4Jdd5ccKumMvAY8d5C8RxB4iATySLY2N1wY84qNsWNaqkNofbUebf6LgmU9HTKAmU3nDoBfX7mhCjH8kXDhZeYdRsuLVFEYu83TkpwgHAYGmUoemxWAeA2BKMx8CBAy9jxbCyUjdnk9i7sLxuejrwLLh8W4tP81YkESjZ8BV65BhzPdvCaiX8vBSorgFfnvGKVzwfhhsSDwLY1GUwLTMLwTUTjSzEjsMX9hzsEEEmhxLsekabLmK3HZ1jssLrFryNuE59uS51hazJsi3gsT8SBk1J9YV6Dq6xto28nLqrMqK6raqLcAm2iU8hBtqdoSXqWzsrZHpqc2uLGhY52ee4k9TpFBvN1RovYUtY6KS4FncT4UgnbEFkzsnWYKX3CDn16tJs5CyZ97gKcvUonZ5EqTwabzni14CcQsTtKtEAqj1odvSyfJ94NnEjuiVPC3VmZbQvveN3bQ';
@@ -64,6 +69,20 @@ const permitTriggerAddresses: Record<ChainType, string | null> = {
     '5ivrmzxYa3qBuYZ3teFTEJP1ziojbVZAYdZF528CNfT5tiycZoiqXfZEqgud81sBrXGyGoanY95RS1xwRSzc4nSGhvhg9Awr23q8vde4k7PWrErq42DeCwborsxAwKm1YrWJEwD8KZiKmSMR9jCD3pTxfsvoq4yMJeh4bscJKRj9iuy79tzWT3NU4L1vrVNjQd9ksz8V2mUeU7EXouDTHxAM5Vci3HgeC2CBqY23J3mpXryfb3UPha7a4zf2eF7Tv5viA7ayrGgu582W2ZttnLFHQTRn3gnTU715qzjk7NMer98y528FxXNZsjSFs72tZm4kL6zMthigXX1yNBtr5vXmYKcHUyAeRWuX2CK8jAFWYF4cJeceCN5E2KjoTK47Ge7q8B9MNZBVU83HPGzjVkqjvFDQsDZyt7hyCRhguwKibwyw1Y76ceNXrhzwPgukP6PsCWyipqSMVTAxB3QNR46mGi1v2S3MNKR9bThJU98yQntABweyLuqHVmALaU5s971p9SPi25gVnLsFD2FQnczLpHR2g8iJ2PcUZageyVyCxKbX3EvUoyQTymeaQuSwNgySKAs67YgUPFGcmXD33Fbs7vQvkrDbqUVprE2igGNZvCmStypiqZA6ijDzbaTX1XwFAehFT39WyGQ9NXzCtYn35fj95NLkDWugvEmqL5to8JFbCcHbV13WCJaVgvcerLKU922nuM54QXYNoSQHYdCypp3PXwaWBbsemt1cbH9mGM5JnYuhAm2gKctu7rUwCQ9P6qx7k4nC6ycUWLPsYeaYt23RXxF9cx31A9nUqSW4n4j46j3fVTkBX47C7X2TFF2VgHFJky4d3etKp5EQodYs2caNLgmmACErMCtJ1GuamHCfSEg3iLyLaPAmtRM9HFUVCsMEL3GwLzqEasH3fy9dpUrAh8FqAHPT16gAx7ePEPU8k9obwUyYqkxMBuyaMonoy37GejLXzpzM9DTacEuNCBKw9hVHnDCB5Zxkhuj5kkaH3794qur5GCF3XKFnWNuKf35DBwVeEq3SMMsWmcBB6ZqfJJxa4vCLS6aEhtDxnSxw1TS8T9bvu91dXLH6HoAfK5vnoGHKP387yTuJmcbacFtvBoT6EWDS6DvXQx9FptRgojeF9T1ZjCChE6igPL9WhWPvvCEm6BMR2Jtsxw16JJzqMW33W5CBJstoi8oSKE2yrw7i2hxsyY6UPDWZUe4Cex2tSfWSzSS3tXo5ahVMfoVHxUmmKJoE6St16U58ETVipwqU6WLJT6BGYboueetYfbzL37FPgQEruWWNT',
   [ChainType.Runes]: null,
 };
+
+/*
+
+"assets": [
+            {
+              "tokenId": "33477693d6be5bbd3a4cd786fbff5e6444449c191ab08e681aaaa87fc192772c",
+              "index": 0,
+              "amount": 21318786,
+              "name": "rspv2BinanceRWT",
+              "decimals": 3,
+              "type": "EIP-004"
+            }
+          ],
+          */
 
 const permitBulkAddresses: Record<ChainType, string | null> = {
   [ChainType.Bitcoin]:

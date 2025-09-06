@@ -7,18 +7,32 @@
 </div>
 } @if (isHtmlRenderEnabled()) {
 <div class="watchersmaincontainer main-content">
+  <div class="watcherstab">
+    <a tabindex="0" class="tab" [class.active]="true">All watchers</a>
+    <a
+      tabindex="0"
+      class="tab"
+      [class.active]="false"
+      (click)="selectTab()"
+      (keypress)="selectTab()"
+    >
+      My watchers
+    </a>
+
+    <div class="currency">
+      <label for="currencySelect">Currency:</label>
+      <select id="currencySelect" [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
+        <option value="EUR">Euro</option>
+        <option value="USD">US Dollar</option>
+        <option value="ERG">Ergo</option>
+        <option value="RSN">Rosen</option>
+      </select>
+    </div>
+  </div>
+
   <div class="watcherscontainer">
     <div class="currencyrow">
       <div class="watcherrequirements">Watcher requirements:</div>
-      <div class="currency">
-        <label for="currencySelect">Currency:</label>
-        <select id="currencySelect" [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
-          <option value="EUR">Euro</option>
-          <option value="USD">US Dollar</option>
-          <option value="ERG">Ergo</option>
-          <option value="RSN">Rosen</option>
-        </select>
-      </div>
     </div>
     <div class="watchervaluerow collateralvalues">
       Watcher collateral: {{watchersStats.watcherCollateralRSN | number: '1.0-0'}} RSN +

@@ -407,13 +407,14 @@ button:active {
 
 .currency,
 .currency select {
-  color: #555;
   font-size: 1.3vmax;
   display: inline-block;
+  color: grey;
 }
 
 .currencyrow {
   padding-right: 0 !important;
+  padding-top: 1vmax;
 }
 
 .collateralvalues {

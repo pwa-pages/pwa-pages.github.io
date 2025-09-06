@@ -1,0 +1,69 @@
+@if (isHtmlRenderEnabled() ? !isElementsActive : false) {
+<div class="headercontainer">
+  <div class="headerblock">
+    Number of permits:
+    <div class="header">{{ myWatchersStats.totalPermitCount }}-</div>
+  </div>
+</div>
+} @if (isHtmlRenderEnabled()) {
+<div class="watchersmaincontainer main-content">
+  <div class="watcherstab">
+    <a
+      tabindex="0"
+      class="tab"
+      [class.active]="false"
+      (click)="selectTab()"
+      (keypress)="selectTab()"
+    >
+      All watchers
+    </a>
+    <a tabindex="0" class="tab" [class.active]="true">My watchers</a>
+  </div>
+  <div class="watcherscontainer">
+    <div class="fullrow">Coming soon... permits and active permits for your watchers</div>
+    <!--
+    <div class="watcherheader first"></div>
+    <div class="watcherheader">Chain</div>
+    <div class="watcherheader">Address</div>
+    <div class="watcherheader">Permits</div>
+    <div class="watcherheader">Active permits</div>
+    @for (chainType of getChainTypes(); track chainType) {
+    <div class="{{ chainType }} watchersdispl"></div>
+    <div>{{ chainType }}</div>
+    @if (isChainTypeActive(chainType)) {
+
+    <div></div>
+    <div>
+
+    </div>
+    <div></div>
+    <div></div>
+    } @else {
+
+    <div class="upcomingwatcher">Upcoming...</div>
+    <div class="upcomingwatcher">-</div>
+    <div class="upcomingwatcher">-</div>
+    <div class="upcomingwatcher">-</div>
+    } }
+    <div class="watchersdispl"></div>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div class="watchersdispl"></div>
+    <div>Total</div>
+    <div>{{myWatchersStats.totalWatcherCount}}</div>
+    <div>{{myWatchersStats.totalPermitCount}} ({{myWatchersStats.totalActivePermitCount}})</div>
+    <div class="watchersdispl">&nbsp;</div>
+    <div class="fivecolumns">&nbsp;</div>
+    <div class="watchersdispl"></div>
+-->
+  </div>
+</div>
+}
+<div class="watchers-readme watchersmaincontainer">
+  Want this on your own page? Check
+  <a href="https://pwa-pages.github.io/rosen-watcher-storybook/">Documentation and code examples</a>
+  <br />
+</div>

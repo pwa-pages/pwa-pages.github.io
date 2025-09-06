@@ -5,6 +5,7 @@ const routes: Routes = [
   { path: 'performance', component: PerformanceComponent },
   { path: 'chainperformance', component: ChainPerformanceComponent },
   { path: 'watchers', component: WatchersComponent },
+  { path: 'mywatchers', component: MyWatchersComponent },
   { path: '**', component: StatisticsComponent },
 ];
 
@@ -33,6 +34,7 @@ import {
 } from './app/service/service.worker.service';
 import { initializeDataService, ChainDataService } from './app/service/chain.data.service';
 import { ChainPerformanceComponent } from './app/statistics/chain.performance.component';
+import { MyWatchersComponent } from './app/statistics/mywatchers.component';
 
 function getScriptFileName(): string {
   const scripts = Array.from(document.querySelectorAll('script')); // Convert NodeList to an array

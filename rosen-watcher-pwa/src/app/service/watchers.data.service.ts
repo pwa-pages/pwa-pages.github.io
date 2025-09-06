@@ -45,6 +45,14 @@ export class WatchersStats {
   ) as Record<Currency, WatchersAmounts>;
 }
 
+export class MyWatchersStats {
+  activePermitCount = createChainNumber();
+  permitCount = createChainNumber();
+  totalActivePermitCount: number | undefined;
+  totalPermitCount: number | undefined;
+  totalWatcherCount: number | undefined;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -70,6 +78,10 @@ export class WatchersDataService {
 
   getWatcherStats(): Signal<WatchersStats> {
     return this.watchersStatsSignal;
+  }
+
+  getMyWatcherStats(): Signal<MyWatchersStats> {
+    return signal<MyWatchersStats>(new MyWatchersStats());
   }
 
   getWatchersInfo(): Observable<WatcherInfo> {
@@ -241,7 +253,7 @@ export class WatchersDataService {
       });
     }
 
-    return this.downloadPermitInfo(address, null, 'rspv2' + chainType + 'RWT');
+    return this.downloadPermitInfo(address, null, chainTypeTokens[chainType]);
   }
 
   getBulkPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
@@ -254,7 +266,7 @@ export class WatchersDataService {
       });
     }
 
-    return this.downloadPermitInfo(address, null, 'rspv2' + chainType + 'RWT');
+    return this.downloadPermitInfo(address, null, chainTypeTokens[chainType]);
   }
 
   download() {
@@ -281,8 +293,9 @@ export class WatchersDataService {
         map((watcherInfo) => {
           Object.values(ChainType).forEach((c) => {
             const amount =
-              watcherInfo.tokens.find((token: Token) => token.name === 'rspv2' + c + 'AWC')
-                ?.amount ?? 0;
+              watcherInfo.tokens.find(
+                (token: Token) => token.name === chainTypeWatcherIdentifier[c],
+              )?.amount ?? 0;
             this.watchersStats.chainWatcherCount[c] = amount;
             this.setLockedAmounts(c);
           });

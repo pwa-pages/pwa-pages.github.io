@@ -84,6 +84,32 @@ app-performance-chart {
   background: white;
   z-index: 100;
 }
+.watcherstab {
+  font-size: 1.6vmax;
+  border-left: 0px !important;
+  padding-left: 0px !important;
+  border-bottom: 0.2vh solid #ccc;
+  grid-column: span 6;
+  min-width: 70%;
+}
+.watcherstab .tab {
+  height: 1.6vmax;
+}
+
+.currency {
+  padding: 0.3vmax 1vmax;
+}
+
+.watcherstab .tab {
+  padding: 0.3vmax 1vmax!;
+
+  border: 0.1vh solid transparent;
+  border-radius: 0.5vh 0.5vh 0 0;
+  margin-right: 1vmax;
+  transition: background-color 0.3s;
+  height: 1.7vmax;
+  display: inline-block;
+}
 
 .tab {
   padding: 1vh 2vh;
@@ -94,6 +120,10 @@ app-performance-chart {
   transition: background-color 0.3s;
   height: 2vh;
   display: inline-block;
+}
+
+.watcherstab a.tab {
+  font-size: 1.6vmax;
 }
 
 a.tab {
