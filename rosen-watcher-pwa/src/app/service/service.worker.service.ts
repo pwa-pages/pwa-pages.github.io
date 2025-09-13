@@ -43,6 +43,7 @@ export class ServiceWorkerService {
     this.eventService.subscribeToAllEvents((eventType, eventData) => {
       if (
         eventType == EventType.PerformanceScreenLoaded ||
+        eventType == EventType.MyWatchersScreenLoaded ||
         eventType == EventType.StatisticsScreenLoaded ||
         eventType == EventType.RequestInputsDownload
       ) {

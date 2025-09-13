@@ -97,11 +97,11 @@ app-performance-chart {
 }
 
 .currency {
-  padding: 0.3vmax 1vmax;
+  padding: 1vmax 1vmax;
 }
 
 .watcherstab .tab {
-  padding: 0.3vmax 1vmax!;
+  padding: 1vmax 1vmax !important;
 
   border: 0.1vh solid transparent;
   border-radius: 0.5vh 0.5vh 0 0;

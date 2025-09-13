@@ -226,13 +226,17 @@ a {
   filter: brightness(0.8);
 }
 
+.watcherscontainer.mywatcher {
+  grid-template-columns: 3vmax auto auto auto auto !important;
+}
+
 .watcherscontainer {
   font-size: 1.6vmax;
   margin-top: var(--small-medium-height);
   float: left;
   border-radius: 3vmax;
   display: grid;
-  grid-template-columns: 3vmax 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 3vmax auto auto auto auto auto;
 }
 
 .fivecolumns {

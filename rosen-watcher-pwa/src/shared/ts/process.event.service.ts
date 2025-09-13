@@ -30,12 +30,23 @@ class ProcessEventService {
       chartService,
       this.eventSender,
     );
+    const myWatcherDataService: MyWatcherDataService = new MyWatcherDataService(
+      db,
+      this.eventSender,
+    );
     const chainPerformanceDataService: ChainPerformanceDataService =
       new ChainPerformanceDataService(db, this.eventSender);
     const downloadService: DownloadService<DbInput> = new DownloadService<DbInput>(
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
       rewardDataService,
+      this.eventSender,
+      db,
+    );
+    const downloadMyWatchersService: DownloadService<PermitTx> = new DownloadService<PermitTx>(
+      rs_FullDownloadsBatchSize,
+      rs_InitialNDownloads,
+      myWatcherDataService,
       this.eventSender,
       db,
     );
@@ -49,9 +60,11 @@ class ProcessEventService {
     return {
       dataService: rewardDataService,
       chainPerformanceDataService: chainPerformanceDataService,
+      myWatcherDataService: myWatcherDataService,
       downloadService,
       chartService,
       downloadPerfService: downloadPerfService,
+      downloadMyWatchersService: downloadMyWatchersService,
     };
   }
 
@@ -59,20 +72,25 @@ class ProcessEventService {
     if (
       event.type === 'StatisticsScreenLoaded' ||
       event.type === 'PerformanceScreenLoaded' ||
+      event.type === 'MyWatchersScreenLoaded' ||
       event.type === 'RequestInputsDownload'
     ) {
       const {
         dataService,
         downloadService,
         downloadPerfService,
+        downloadMyWatchersService,
         chartService,
         chainPerformanceDataService,
+        myWatcherDataService,
       }: {
         dataService: RewardDataService;
         downloadService: DownloadService<DbInput>;
         downloadPerfService: DownloadService<PerfTx>;
+        downloadMyWatchersService: DownloadService<PermitTx>;
         chartService: ChartService;
         chainPerformanceDataService: ChainPerformanceDataService;
+        myWatcherDataService: MyWatcherDataService;
       } = await this.initServices();
 
       if (event.type === 'RequestInputsDownload') {
@@ -112,6 +130,22 @@ class ProcessEventService {
           });
 
           await downloadService.downloadForAddresses();
+        } catch (error) {
+          console.error('Error initializing IndexedDB or downloading addresses:', error);
+        }
+      } else if (event.type === 'MyWatchersScreenLoaded') {
+        console.log(
+          'Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain',
+        );
+
+        try {
+          const permits = await myWatcherDataService.getAdressPermits();
+          this.eventSender.sendEvent({
+            type: 'PermitsChanged',
+            data: permits,
+          });
+
+          await downloadMyWatchersService.downloadForChainPermitAddresses();
         } catch (error) {
           console.error('Error initializing IndexedDB or downloading addresses:', error);
         }

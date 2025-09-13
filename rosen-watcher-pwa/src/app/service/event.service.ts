@@ -13,6 +13,7 @@ export enum EventType {
   SwipeDeActivated = 'SwipeDeActivated',
   SwipeVertical = 'SwipeVertical',
   StatisticsScreenLoaded = 'StatisticsScreenLoaded',
+  MyWatchersScreenLoaded = 'MyWatchersScreenLoaded',
   RequestInputsDownload = 'RequestInputsDownload',
   WatchersScreenLoaded = 'WatchersScreenLoaded',
   SettingsScreenLoaded = 'SettingsScreenLoaded',
@@ -24,6 +25,8 @@ export enum EventType {
   ChainPerformanceChartsChanged = 'ChainPerformanceChartsChanged',
   PerformanceChartsChanged = 'PerformanceChartsChanged',
   StatisticsChartChanged = 'StatisticsChartChanged',
+  PermitsChanged = 'PermitsChanged',
+  RefreshPermits = 'RefreshPermits',
 }
 
 export type EventData = string | Input | object;
@@ -50,6 +53,8 @@ export class EventService {
       [EventType.SwipeDeActivated]: new Subject<EventData>(),
       [EventType.SwipeVertical]: new Subject<EventData>(),
       [EventType.StatisticsScreenLoaded]: new Subject<EventData>(),
+      [EventType.MyWatchersScreenLoaded]: new Subject<EventData>(),
+      [EventType.PermitsChanged]: new Subject<EventData>(),
       [EventType.PerformanceScreenLoaded]: new Subject<EventData>(),
       [EventType.RequestInputsDownload]: new Subject<EventData>(),
       [EventType.AddressChartChanged]: new Subject<EventData>(),
@@ -61,6 +66,7 @@ export class EventService {
       [EventType.ChainPerformanceChartsChanged]: new Subject<EventData>(),
       [EventType.PerformanceChartsChanged]: new Subject<EventData>(),
       [EventType.StatisticsChartChanged]: new Subject<EventData>(),
+      [EventType.RefreshPermits]: new Subject<EventData>(),
     };
     return this.eventSubscriptions;
   }

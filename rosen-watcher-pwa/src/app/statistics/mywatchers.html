@@ -1,8 +1,8 @@
 @if (isHtmlRenderEnabled() ? !isElementsActive : false) {
 <div class="headercontainer">
   <div class="headerblock">
-    Number of permits:
-    <div class="header">{{ myWatchersStats.totalPermitCount }}-</div>
+    Number of watchers
+    <div class="header">{{myWatcherStats.length}}</div>
   </div>
 </div>
 } @if (isHtmlRenderEnabled()) {
@@ -19,8 +19,23 @@
     </a>
     <a tabindex="0" class="tab" [class.active]="true">My watchers</a>
   </div>
-  <div class="watcherscontainer">
-    <div class="fullrow">Coming soon... permits and active permits for your watchers</div>
+  <div class="watcherscontainer mywatcher">
+    <div class="watcherheader first"></div>
+    <div class="watcherheader">Chain</div>
+    <div class="watcherheader">Address</div>
+    <div class="watcherheader">Permits</div>
+    <div class="watcherheader">Active permits</div>
+
+    @for (stat of myWatcherStats; track stat) {
+    <div class="{{ stat.chainType }} watchersdispl"></div>
+    <div>{{ stat.chainType }}</div>
+
+    <div>{{ stat.address?.smallAddressForDisplay }}</div>
+
+    <div>{{ stat.permitCount}}</div>
+    <div class="upcomingwatcher"><i>Upcoming...</i></div>
+    }
+
     <!--
     <div class="watcherheader first"></div>
     <div class="watcherheader">Chain</div>

@@ -1,20 +1,12 @@
-import {
-  Component,
-  effect,
-  EventEmitter,
-  Inject,
-  Injector,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Inject, Injector, Input, OnInit, Output } from '@angular/core';
 import { EventType } from '../service/event.service';
-import { MyWatchersStats, WatchersDataService } from '../service/watchers.data.service';
+import { WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
+import { MyWatchersStats } from '../service/watchers.models';
 
 @Component({
   selector: 'app-mywatchers',
@@ -24,6 +16,7 @@ import { NavigationService } from '../service/navigation.service';
 })
 export class MyWatchersComponent extends BaseWatcherComponent implements OnInit {
   private _renderHtml = true;
+  public myWatcherStats: MyWatchersStats[] = [];
 
   @Input()
   set renderHtml(value: string | boolean) {
@@ -44,7 +37,6 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
 
   @Output() notifyWatchersStatsChanged = new EventEmitter<MyWatchersStats>();
 
-  myWatchersStats: MyWatchersStats = new MyWatchersStats();
   selectedCurrency = '';
 
   constructor(
@@ -54,14 +46,6 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
     @Inject(IS_ELEMENTS_ACTIVE) public isElementsActive: boolean,
   ) {
     super(injector);
-
-    const myWatcherStats = this.watchersDataService.getMyWatcherStats();
-
-    effect(() => {
-      this.myWatchersStats = myWatcherStats();
-      console.log('Sending watchers stats changed event');
-      this.eventService.sendEventWithData(EventType.WatchersStatsChanged, this.myWatchersStats);
-    });
   }
 
   onCurrencyChange(): void {
@@ -81,7 +65,12 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
 
     this.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
     this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
-    this.watchersDataService.download();
-    this.eventService.sendEvent(EventType.WatchersScreenLoaded);
+    this.eventService.sendEvent(EventType.MyWatchersScreenLoaded);
+
+    await this.subscribeToEvent<Input[]>(EventType.RefreshPermits, async () => {
+      this.myWatcherStats = Object.entries(this.watchersDataService.getMyWatcherStats()).map(
+        ([key, value]) => ({ key, ...value }),
+      );
+    });
   }
 }

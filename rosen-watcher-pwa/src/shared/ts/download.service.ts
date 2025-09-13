@@ -92,6 +92,26 @@ class DownloadService<T> {
     }
   }
 
+  async downloadForChainPermitAddresses(): Promise<void> {
+    try {
+      let addresses: string[] = [];
+
+      Object.entries(permitAddresses).forEach(([, address]) => {
+        if (address != null) {
+          addresses.push(address);
+        }
+      });
+
+      const downloadPromises: Promise<void>[] = addresses.map(async (address) => {
+        await this.downloadForAddress(address);
+      });
+
+      await Promise.all(downloadPromises);
+    } catch (e) {
+      console.error('Error downloading for addresses:', e);
+    }
+  }
+
   // Busy Counter
   private increaseBusyCounter(address: string): void {
     if (this.busyCounter === 0) {

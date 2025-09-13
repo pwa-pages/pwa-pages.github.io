@@ -28,6 +28,9 @@ export class NavigationComponent implements OnInit {
     await this.eventService.subscribeToEvent(EventType.StatisticsScreenLoaded, () => {
       this.visible = true;
     });
+    await this.eventService.subscribeToEvent(EventType.MyWatchersScreenLoaded, () => {
+      this.visible = true;
+    });
     await this.eventService.subscribeToEvent(EventType.WatchersScreenLoaded, () => {
       this.visible = true;
     });

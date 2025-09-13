@@ -3,13 +3,13 @@ import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { WatchersComponent } from '../statistics/watchers.component';
 import { ChainPerformanceComponent } from '../statistics/chain.performance.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { WatchersStats } from '../service/watchers.data.service';
 import { EventType } from '../service/event.service';
 import { ChainChartPerformance, ChartPerformance } from '../../service/ts/models/chart.performance';
 import { StatisticsChartComponent } from './statistics.chart.component';
 import { CommonModule } from '@angular/common';
 import { PerformanceChartComponent } from './performance.chart.component';
 import { BaseEventAwareComponent } from '../baseeventawarecomponent';
+import { WatchersStats } from '../service/watchers.models';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({

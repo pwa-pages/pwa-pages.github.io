@@ -19,22 +19,27 @@ class ProcessEventService {
         const db = await this.initIndexedDB();
         const chartService = new ChartService();
         const rewardDataService = new RewardDataService(db, chartService, this.eventSender);
+        const myWatcherDataService = new MyWatcherDataService(db, this.eventSender);
         const chainPerformanceDataService = new ChainPerformanceDataService(db, this.eventSender);
         const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, this.eventSender, db);
+        const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, myWatcherDataService, this.eventSender, db);
         const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, this.eventSender, db);
         return {
             dataService: rewardDataService,
             chainPerformanceDataService: chainPerformanceDataService,
+            myWatcherDataService: myWatcherDataService,
             downloadService,
             chartService,
             downloadPerfService: downloadPerfService,
+            downloadMyWatchersService: downloadMyWatchersService,
         };
     }
     async processEvent(event) {
         if (event.type === 'StatisticsScreenLoaded' ||
             event.type === 'PerformanceScreenLoaded' ||
+            event.type === 'MyWatchersScreenLoaded' ||
             event.type === 'RequestInputsDownload') {
-            const { dataService, downloadService, downloadPerfService, chartService, chainPerformanceDataService, } = await this.initServices();
+            const { dataService, downloadService, downloadPerfService, downloadMyWatchersService, chartService, chainPerformanceDataService, myWatcherDataService, } = await this.initServices();
             if (event.type === 'RequestInputsDownload') {
                 console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
                     event.data);
@@ -64,6 +69,20 @@ class ProcessEventService {
                         data: inputs,
                     });
                     await downloadService.downloadForAddresses();
+                }
+                catch (error) {
+                    console.error('Error initializing IndexedDB or downloading addresses:', error);
+                }
+            }
+            else if (event.type === 'MyWatchersScreenLoaded') {
+                console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
+                try {
+                    const permits = await myWatcherDataService.getAdressPermits();
+                    this.eventSender.sendEvent({
+                        type: 'PermitsChanged',
+                        data: permits,
+                    });
+                    await downloadMyWatchersService.downloadForChainPermitAddresses();
                 }
                 catch (error) {
                     console.error('Error initializing IndexedDB or downloading addresses:', error);

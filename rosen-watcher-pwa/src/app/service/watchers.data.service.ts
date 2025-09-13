@@ -5,53 +5,9 @@ import { Observable } from 'rxjs';
 import { WatcherInfo } from '../../service/ts/models/watcher.info';
 import { Token } from '../../service/ts/models/token';
 import { PriceService } from './price.service';
-
-export function createChainNumber(): Record<ChainType, number | undefined> {
-  return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as Record<
-    ChainType,
-    number | undefined
-  >;
-}
-
-export class WatchersAmounts {
-  ergCollateral: number | undefined;
-  permitValue: number | undefined;
-  rsnCollateral: number | undefined;
-  totalLocked: number | undefined;
-  totalLockedERG: number | undefined;
-  totalLockedRSN: number | undefined;
-  watcherValue: number | undefined;
-}
-
-export class WatchersStats {
-  activePermitCount = createChainNumber();
-  bulkPermitCount = createChainNumber();
-  chainLockedERG = createChainNumber();
-  chainLockedRSN = createChainNumber();
-  chainPermitCount = createChainNumber();
-  chainWatcherCount = createChainNumber();
-  permitCost = rs_PermitCost;
-  totalActivePermitCount: number | undefined;
-  totalLockedERG: number | undefined;
-  totalLockedRSN: number | undefined;
-  totalPermitCount: number | undefined;
-  totalWatcherCount: number | undefined;
-  triggerPermitCount = createChainNumber();
-  watcherCollateralERG = rs_WatcherCollateralERG;
-  watcherCollateralRSN = rs_WatcherCollateralRSN;
-
-  watchersAmountsPerCurrency: Record<Currency, WatchersAmounts> = Object.fromEntries(
-    Object.values(Currency).map((currency) => [currency, new WatchersAmounts()]),
-  ) as Record<Currency, WatchersAmounts>;
-}
-
-export class MyWatchersStats {
-  activePermitCount = createChainNumber();
-  permitCount = createChainNumber();
-  totalActivePermitCount: number | undefined;
-  totalPermitCount: number | undefined;
-  totalWatcherCount: number | undefined;
-}
+import { MyWatchersStats, WatchersStats } from './watchers.models';
+import { EventService, EventType } from './event.service';
+import { Address } from '../../service/ts/models/address';
 
 @Injectable({
   providedIn: 'root',
@@ -68,20 +24,56 @@ export class WatchersDataService {
   readonly rsnToken = '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';
   readonly watchersStatsSignal = signal<WatchersStats>(new WatchersStats());
   readonly watchersStats = new WatchersStats();
+  readonly myWatcherStats: MyWatchersStats[] = [];
 
   busyCounter = 0;
 
   constructor(
     private downloadService: HttpDownloadService,
     private priceService: PriceService,
-  ) {}
+    private eventService: EventService,
+  ) {
+    this.eventService.subscribeToEvent(EventType.PermitsChanged, (permits: PermitInfo[]) => {
+      this.myWatcherStats.length = 0;
+
+      let myWatcherStats: MyWatchersStats[] = [];
+      permits.forEach((permit: PermitInfo) => {
+        let permitCount = Math.floor((permit.lockedRSN - rs_WatcherCollateralRSN) / rs_PermitCost);
+
+        if (permitCount < 0) {
+          permitCount = 0;
+        }
+
+        if (permit.address) {
+          myWatcherStats.push({
+            activePermitCount: 0,
+            permitCount: permitCount,
+            wid: permit.wid,
+            chainType: permit.chainType,
+            address: new Address(permit.address, permit.chainType),
+          });
+        }
+      });
+
+      let entries = Object.values(ChainType);
+
+      entries.forEach((chainType) => {
+        const stats = myWatcherStats.filter((ws) => ws.chainType === chainType);
+        stats.forEach((stat) => {
+          this.myWatcherStats.push(stat);
+        });
+      });
+
+      this.eventService.sendEvent(EventType.RefreshPermits);
+    });
+  }
 
   getWatcherStats(): Signal<WatchersStats> {
     return this.watchersStatsSignal;
   }
 
-  getMyWatcherStats(): Signal<MyWatchersStats> {
-    return signal<MyWatchersStats>(new MyWatchersStats());
+  getMyWatcherStats(): MyWatchersStats[] {
+    return this.myWatcherStats;
   }
 
   getWatchersInfo(): Observable<WatcherInfo> {

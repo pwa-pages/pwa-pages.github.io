@@ -55,6 +55,23 @@ class DownloadService {
             console.error('Error downloading for addresses:', e);
         }
     }
+    async downloadForChainPermitAddresses() {
+        try {
+            let addresses = [];
+            Object.entries(permitAddresses).forEach(([, address]) => {
+                if (address != null) {
+                    addresses.push(address);
+                }
+            });
+            const downloadPromises = addresses.map(async (address) => {
+                await this.downloadForAddress(address);
+            });
+            await Promise.all(downloadPromises);
+        }
+        catch (e) {
+            console.error('Error downloading for addresses:', e);
+        }
+    }
     // Busy Counter
     increaseBusyCounter(address) {
         if (this.busyCounter === 0) {

@@ -63,6 +63,11 @@ export class NavigationService {
       return;
     }
 
+    if (url.startsWith('/mywatchers')) {
+      this.currentNavigationIndex = 2;
+      return;
+    }
+
     let index = this.navigationItems.findIndex((item) => url.startsWith(item.route));
     if (index == -1) {
       index = 0;
@@ -72,6 +77,13 @@ export class NavigationService {
   }
 
   public getCurrentNavigationItem(): NavigationItem {
+    if (this.currentNavigationIndex == 2) {
+      const watchersScreen = localStorage.getItem('watchersScreen');
+      if (watchersScreen) {
+        return { route: watchersScreen };
+      }
+    }
+
     return this.navigationItems[this.currentNavigationIndex];
   }
 
@@ -97,6 +109,10 @@ export class NavigationService {
       !this.router.url.startsWith('/chainperformance')
     ) {
       this.swapPerformanceItems();
+    }
+
+    if (to.endsWith('watchers')) {
+      localStorage.setItem('watchersScreen', to);
     }
 
     localStorage.setItem('performanceScreen', this.navigationItems[1].route);

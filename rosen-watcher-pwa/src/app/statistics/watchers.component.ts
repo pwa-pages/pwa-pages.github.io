@@ -9,12 +9,13 @@ import {
   Output,
 } from '@angular/core';
 import { EventType } from '../service/event.service';
-import { WatchersDataService, WatchersStats } from '../service/watchers.data.service';
+import { WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
+import { WatchersStats } from '../service/watchers.models';
 
 @Component({
   selector: 'app-watchers',

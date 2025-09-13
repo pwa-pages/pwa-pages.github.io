@@ -8,6 +8,25 @@ interface Asset {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface PermitTx {
+  id: string;
+  date: Date;
+  boxId: string;
+  assets: Asset[];
+  address: string;
+  chainType?: string;
+  wid: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface PermitInfo {
+  lockedRSN: number;
+  activeLockedRSN: number;
+  address: string;
+  wid: string;
+  chainType: ChainType;
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface DbInput {
   outputAddress: string;
   inputDate: Date;
@@ -29,6 +48,8 @@ interface Input {
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Output {
+  boxId: string;
+  outputDate: Date;
   assets: Asset[];
   address: string;
 }
