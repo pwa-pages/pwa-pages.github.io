@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1757780730479,
+  "timestamp": 1757875146564,
   "appData": {
-    "version": "3.52.0"
+    "version": "3.52.1"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -22,7 +22,7 @@
         "./rosen.html",
         "./scripts-MFYTLRGR.js",
         "./shared/js/ngsw-worker.js",
-        "./styles-F6HJZT6U.css"
+        "./styles-NOSDAYE2.css"
       ],
       "patterns": []
     },
@@ -84,7 +84,7 @@
     "./assets/rosen-watchers.html": "40657d404800e7e3a22694e7c2ba6044e7ad3b24",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "27c541b64b4db0d3dd769bb43da5920457ccb6e0",
+    "./index.html": "bf13aa3926363cc7661eaa93259c6f42e61706d2",
     "./main-A6DCKKCF.js": "1c00640c197632e25d2e886cb6997e415f906f11",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
@@ -102,7 +102,7 @@
     "./rosen.html": "fdd96211de1f83e4e064b109ca06d9906235943c",
     "./scripts-MFYTLRGR.js": "6cced95c94807fa211660fe382450857b55722b9",
     "./shared/js/ngsw-worker.js": "a424955690d990a196a465b83c45e92f8d69727c",
-    "./styles-F6HJZT6U.css": "f2622d3cadb65d8cf51b506dfb8d500c61c6bdd3"
+    "./styles-NOSDAYE2.css": "b8cbde03ebf33c80f16e79f83076e6012fa6d47b"
   },
   "navigationUrls": [
     {
