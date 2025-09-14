@@ -6,6 +6,7 @@ class DownloadService {
     busyCounter = 0;
     downloadFullSize = rs_FullDownloadsBatchSize;
     downloadInitialSize = rs_InitialNDownloads;
+    addressesDownloadActive = false;
     //private static addressDownloadDateMap = new Map<string, Date>();
     constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, db) {
         this.dataService = dataService;
@@ -44,6 +45,10 @@ class DownloadService {
         return result;
     }
     async downloadForAddresses() {
+        if (this.addressesDownloadActive)
+            return;
+        this.addressesDownloadActive = true;
+        console.log('Start downloading for all addresses');
         try {
             const addresses = await this.dataService.getData(rs_AddressDataStoreName);
             const downloadPromises = addresses.map(async (addressObj) => {
@@ -53,6 +58,10 @@ class DownloadService {
         }
         catch (e) {
             console.error('Error downloading for addresses:', e);
+        }
+        finally {
+            this.addressesDownloadActive = false;
+            console.log('End downloading for all addresses');
         }
     }
     async downloadForChainPermitAddresses() {

@@ -7,6 +7,16 @@ interface EventSender {
   sendEvent<T>(event: EventPayload<T>): Promise<void>;
 }
 
+interface Services {
+  dataService: RewardDataService;
+  chainPerformanceDataService: ChainPerformanceDataService;
+  myWatcherDataService: MyWatcherDataService;
+  downloadService: DownloadService<DbInput>;
+  chartService: ChartService;
+  downloadPerfService: DownloadService<PerfTx>;
+  downloadMyWatchersService: DownloadService<PermitTx>;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ServiceWorkerEventSender implements EventSender {
   async sendEvent<T>(event: EventPayload<T>): Promise<void> {
@@ -21,8 +31,12 @@ class ServiceWorkerEventSender implements EventSender {
 }
 
 class ProcessEventService {
+  private services: Services | null = null;
   constructor(private eventSender: EventSender) {}
+
   private async initServices() {
+    if (this.services) return this.services;
+
     const db: IDBDatabase = await this.initIndexedDB();
     const chartService: ChartService = new ChartService();
     const rewardDataService: RewardDataService = new RewardDataService(
@@ -57,7 +71,8 @@ class ProcessEventService {
       this.eventSender,
       db,
     );
-    return {
+
+    this.services = {
       dataService: rewardDataService,
       chainPerformanceDataService: chainPerformanceDataService,
       myWatcherDataService: myWatcherDataService,
@@ -65,7 +80,8 @@ class ProcessEventService {
       chartService,
       downloadPerfService: downloadPerfService,
       downloadMyWatchersService: downloadMyWatchersService,
-    };
+    } as Services;
+    return this.services;
   }
 
   public async processEvent(event: EventPayload<object>) {
@@ -83,15 +99,7 @@ class ProcessEventService {
         chartService,
         chainPerformanceDataService,
         myWatcherDataService,
-      }: {
-        dataService: RewardDataService;
-        downloadService: DownloadService<DbInput>;
-        downloadPerfService: DownloadService<PerfTx>;
-        downloadMyWatchersService: DownloadService<PermitTx>;
-        chartService: ChartService;
-        chainPerformanceDataService: ChainPerformanceDataService;
-        myWatcherDataService: MyWatcherDataService;
-      } = await this.initServices();
+      }: Services = await this.initServices();
 
       if (event.type === 'RequestInputsDownload') {
         console.log(

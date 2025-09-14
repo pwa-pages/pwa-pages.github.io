@@ -12,10 +12,13 @@ class ServiceWorkerEventSender {
 }
 class ProcessEventService {
     eventSender;
+    services = null;
     constructor(eventSender) {
         this.eventSender = eventSender;
     }
     async initServices() {
+        if (this.services)
+            return this.services;
         const db = await this.initIndexedDB();
         const chartService = new ChartService();
         const rewardDataService = new RewardDataService(db, chartService, this.eventSender);
@@ -24,7 +27,7 @@ class ProcessEventService {
         const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, this.eventSender, db);
         const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, myWatcherDataService, this.eventSender, db);
         const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, this.eventSender, db);
-        return {
+        this.services = {
             dataService: rewardDataService,
             chainPerformanceDataService: chainPerformanceDataService,
             myWatcherDataService: myWatcherDataService,
@@ -33,6 +36,7 @@ class ProcessEventService {
             downloadPerfService: downloadPerfService,
             downloadMyWatchersService: downloadMyWatchersService,
         };
+        return this.services;
     }
     async processEvent(event) {
         if (event.type === 'StatisticsScreenLoaded' ||
