@@ -35,7 +35,7 @@ class ProcessEventService {
   constructor(private eventSender: EventSender) {}
 
   private async initServices() {
-    if (this.services) return this.services;
+    //if (this.services) return this.services;
 
     const db: IDBDatabase = await this.initIndexedDB();
     const chartService: ChartService = new ChartService();

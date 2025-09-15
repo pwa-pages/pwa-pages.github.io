@@ -17,8 +17,7 @@ class ProcessEventService {
         this.eventSender = eventSender;
     }
     async initServices() {
-        if (this.services)
-            return this.services;
+        //if (this.services) return this.services;
         const db = await this.initIndexedDB();
         const chartService = new ChartService();
         const rewardDataService = new RewardDataService(db, chartService, this.eventSender);
