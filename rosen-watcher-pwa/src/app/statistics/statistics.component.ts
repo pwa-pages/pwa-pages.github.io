@@ -173,8 +173,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     await this.subscribeToEvent<string>(EventType.VersionUpdated, async (v) => {
       this.version = v;
     });
-
-    await this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
   }
 
   title = 'rosen-watcher-pwa';

@@ -92,6 +92,7 @@ export class BaseWatcherComponent extends BaseEventAwareComponent implements OnI
       if (this.addresses.length == 0) {
         this.noAddresses = true;
       }
+      await this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
       return false;
     }
   }
