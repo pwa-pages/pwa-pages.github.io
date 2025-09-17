@@ -17,6 +17,7 @@ import { MyWatchersStats } from '../service/watchers.models';
 export class MyWatchersComponent extends BaseWatcherComponent implements OnInit {
   private _renderHtml = true;
   public myWatcherStats: MyWatchersStats[] = [];
+  public processedChainTypes: Partial<Record<ChainType, boolean>> = {};
 
   @Input()
   set renderHtml(value: string | boolean) {
@@ -71,6 +72,17 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
       this.myWatcherStats = Object.entries(this.watchersDataService.getMyWatcherStats()).map(
         ([key, value]) => ({ key, ...value }),
       );
+
+      for (const stat of this.myWatcherStats) {
+        if (stat.chainType && !this.processedChainTypes[stat.chainType]) {
+          console.log('Chaintype not processed ' + stat.chainType);
+          await this.eventService.sendEventWithData(EventType.RequestAddressPermits, {
+            chainType: stat.chainType,
+          });
+          console.log('Chaintype processed ' + stat.chainType);
+          this.processedChainTypes[stat.chainType] = true;
+        }
+      }
     });
   }
 }

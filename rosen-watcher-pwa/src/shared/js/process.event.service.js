@@ -41,7 +41,8 @@ class ProcessEventService {
         if (event.type === 'StatisticsScreenLoaded' ||
             event.type === 'PerformanceScreenLoaded' ||
             event.type === 'MyWatchersScreenLoaded' ||
-            event.type === 'RequestInputsDownload') {
+            event.type === 'RequestInputsDownload' ||
+            event.type === 'RequestAddressPermits') {
             const { dataService, downloadService, downloadPerfService, downloadMyWatchersService, chartService, chainPerformanceDataService, myWatcherDataService, } = await this.initServices();
             if (event.type === 'RequestInputsDownload') {
                 console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
@@ -90,6 +91,24 @@ class ProcessEventService {
                 catch (error) {
                     console.error('Error initializing IndexedDB or downloading addresses:', error);
                 }
+            }
+            else if (event.type === 'RequestAddressPermits') {
+                const chaintype = event.data?.chainType;
+                console.log('Rosen service worker received RequestAddressPermits for ' +
+                    chaintype +
+                    ', initiating syncing of data by downloading from blockchain');
+                /*
+                try {
+                  const permits = await myWatcherDataService.getAdressPermits();
+                  this.eventSender.sendEvent({
+                    type: 'PermitsChanged',
+                    data: permits,
+                  });
+        
+                  await downloadMyWatchersService.downloadForChainPermitAddresses();
+                } catch (error) {
+                  console.error('Error initializing IndexedDB or downloading addresses:', error);
+                }*/
             }
             else if (event.type === 'PerformanceScreenLoaded') {
                 console.log('Rosen service worker received PerformanceScreenLoaded');
