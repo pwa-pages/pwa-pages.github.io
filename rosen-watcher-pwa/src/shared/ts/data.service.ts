@@ -16,6 +16,7 @@ interface PermitTx {
   address: string;
   chainType?: string;
   wid: string;
+  transactionId: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -56,11 +57,18 @@ interface Output {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 abstract class DataService<T> {
   constructor(public db: IDBDatabase) {}
+
   abstract addData(
     address: string,
     transactions: TransactionItem[],
     db: IDBDatabase,
   ): Promise<void>;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async purgeData(_db: IDBDatabase): Promise<void> {
+    // Empty implementation
+  }
+
   abstract getDataType(): string;
   getMaxDownloadDateDifference(): number {
     return 3155760000000;

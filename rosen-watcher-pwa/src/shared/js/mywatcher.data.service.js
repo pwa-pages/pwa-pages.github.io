@@ -2,6 +2,7 @@
 class MyWatcherDataService extends DataService {
     db;
     eventSender;
+    activePermitsDataService;
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId) {
@@ -21,10 +22,11 @@ class MyWatcherDataService extends DataService {
         }
         return null;
     }
-    constructor(db, eventSender) {
+    constructor(db, eventSender, activePermitsDataService) {
         super(db);
         this.db = db;
         this.eventSender = eventSender;
+        this.activePermitsDataService = activePermitsDataService;
     }
     createUniqueId(boxId, transactionId, address) {
         const str = `${transactionId}_${boxId}_${address}`;
@@ -97,6 +99,13 @@ class MyWatcherDataService extends DataService {
             }
         }
         const addresses = await this.getData(rs_AddressDataStoreName);
+        let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits();
+        for (const activePermit of addressActivePermits) {
+            const info = permitInfo.find((p) => p.address === activePermit.address);
+            if (info) {
+                info.activeLockedRSN += rs_PermitCost;
+            }
+        }
         return permitInfo.filter((info) => addresses.some((addr) => addr.address === info.address));
     }
     async addData(address, transactions, db) {
@@ -132,6 +141,7 @@ class MyWatcherDataService extends DataService {
                             assets: input.assets || [],
                             wid: wid ?? '',
                             chainType: getChainTypeForPermitAddress(address),
+                            transactionId: item.id,
                         };
                         if (PermitTx.assets.length > 0) {
                             tempData.push(PermitTx);
@@ -158,6 +168,7 @@ class MyWatcherDataService extends DataService {
                             assets: output.assets || [],
                             wid: wid ?? '',
                             chainType: getChainTypeForPermitAddress(address),
+                            transactionId: item.id,
                         };
                         if (PermitTx.assets.length > 0) {
                             tempData.push(PermitTx);
@@ -219,6 +230,7 @@ class MyWatcherDataService extends DataService {
                     wid: permitTx.wid,
                     boxId: permitTx.boxId,
                     chainType: permitTx.chainType ?? getChainTypeForPermitAddress(permitTx.address),
+                    transactionId: permitTx.transactionId,
                 });
             });
             console.log('done retrieving permits from database ' + permits.length + ' permits');

@@ -55,7 +55,8 @@
               "src/shared/js/chart.service.js",
               "src/shared/js/download.service.js",
               "src/shared/js/process.event.service.js",
-              "src/shared/js/mywatcher.data.service.js"
+              "src/shared/js/mywatcher.data.service.js",
+              "src/shared/js/activepermits.data.service.js"
             ]
           },
           "configurations": {
@@ -145,7 +146,8 @@
               "src/shared/js/chart.service.js",
               "src/shared/js/download.service.js",
               "src/shared/js/process.event.service.js",
-              "src/shared/js/mywatcher.data.service.js"
+              "src/shared/js/mywatcher.data.service.js",
+              "src/shared/js/activepermits.data.service.js"
             ],
             "optimization": {
               "scripts": true,

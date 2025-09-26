@@ -11,10 +11,12 @@ interface Services {
   dataService: RewardDataService;
   chainPerformanceDataService: ChainPerformanceDataService;
   myWatcherDataService: MyWatcherDataService;
+  activePermitsDataService: ActivePermitsDataService;
   downloadService: DownloadService<DbInput>;
   chartService: ChartService;
   downloadPerfService: DownloadService<PerfTx>;
   downloadMyWatchersService: DownloadService<PermitTx>;
+  downloadActivePermitsService: DownloadService<PermitTx>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -44,9 +46,12 @@ class ProcessEventService {
       chartService,
       this.eventSender,
     );
+
+    const activepermitsDataService: ActivePermitsDataService = new ActivePermitsDataService(db);
     const myWatcherDataService: MyWatcherDataService = new MyWatcherDataService(
       db,
       this.eventSender,
+      activepermitsDataService,
     );
     const chainPerformanceDataService: ChainPerformanceDataService =
       new ChainPerformanceDataService(db, this.eventSender);
@@ -61,6 +66,13 @@ class ProcessEventService {
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
       myWatcherDataService,
+      this.eventSender,
+      db,
+    );
+    const downloadActivePermitsService: DownloadService<PermitTx> = new DownloadService<PermitTx>(
+      rs_FullDownloadsBatchSize / 4,
+      rs_InitialNDownloads,
+      activepermitsDataService,
       this.eventSender,
       db,
     );
@@ -80,6 +92,8 @@ class ProcessEventService {
       chartService,
       downloadPerfService: downloadPerfService,
       downloadMyWatchersService: downloadMyWatchersService,
+      downloadActivePermitsService: downloadActivePermitsService,
+      activePermitsDataService: activepermitsDataService,
     } as Services;
     return this.services;
   }
@@ -97,9 +111,11 @@ class ProcessEventService {
         downloadService,
         downloadPerfService,
         downloadMyWatchersService,
+        downloadActivePermitsService,
         chartService,
         chainPerformanceDataService,
         myWatcherDataService,
+        activePermitsDataService,
       }: Services = await this.initServices();
 
       if (event.type === 'RequestInputsDownload') {
@@ -165,18 +181,32 @@ class ProcessEventService {
             chaintype +
             ', initiating syncing of data by downloading from blockchain',
         );
-        /*
+
         try {
-          const permits = await myWatcherDataService.getAdressPermits();
+          let permits = await myWatcherDataService.getAdressPermits();
           this.eventSender.sendEvent({
             type: 'PermitsChanged',
             data: permits,
           });
 
-          await downloadMyWatchersService.downloadForChainPermitAddresses();
+          await downloadActivePermitsService.downloadForActivePermitAddresses(chaintype!);
+
+          permits = await myWatcherDataService.getAdressPermits();
+          this.eventSender.sendEvent({
+            type: 'PermitsChanged',
+            data: permits,
+          });
+
+          await activePermitsDataService.downloadOpenBoxes(chaintype!);
+
+          permits = await myWatcherDataService.getAdressPermits();
+          this.eventSender.sendEvent({
+            type: 'PermitsChanged',
+            data: permits,
+          });
         } catch (error) {
           console.error('Error initializing IndexedDB or downloading addresses:', error);
-        }*/
+        }
       } else if (event.type === 'PerformanceScreenLoaded') {
         console.log('Rosen service worker received PerformanceScreenLoaded');
 

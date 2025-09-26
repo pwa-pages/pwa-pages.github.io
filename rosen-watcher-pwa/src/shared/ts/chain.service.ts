@@ -55,20 +55,6 @@ const permitTriggerAddresses: Record<ChainType, string | null> = {
   [ChainType.Runes]: null,
 };
 
-/*
-
-"assets": [
-            {
-              "tokenId": "33477693d6be5bbd3a4cd786fbff5e6444449c191ab08e681aaaa87fc192772c",
-              "index": 0,
-              "amount": 21318786,
-              "name": "rspv2BinanceRWT",
-              "decimals": 3,
-              "type": "EIP-004"
-            }
-          ],
-          */
-
 const permitBulkAddresses: Record<ChainType, string | null> = {
   [ChainType.Bitcoin]:
     'ZsPNMsGz8D8y11MAneZTVjJndCjgTUrBWezH77jKWr2KXMVRgs4gRkDdTLoUQq8xqtGoESTa7r3zr5E3SxQkE5CM2PaPDSHb5bQWeRtaL9eikJWw95bx4DSjCDcsECpjLxbEfahCHy2sDuXQg6potLhwVVADP5TNUxEDgWPR27x658qcHA54TPRhybb6z67cdmkPrQNXwumoGvoPNnqVcXsdXS71KpQViuk4wXBT156Nd7Tt9b3Dvx827QiLbjJXuajydCDFC6yp2sj5dk7uA5ArNfViybrVQaf71GNGwyh6USgVKBpTurrRBtxeGWNzXi4krd7XbseaU5Crnauk9fj5jEbVH88sPzuD6o4XReNW3odcKDkvqgUh9Vu6b2uGLJsV5wY44Kk3bf8PJmkTc6vQE7Mprkdi2jBfZrzffqoKC6hWLfSZNcUWFV821L43VkJbsaYLukMq1SBJ7y7rsnWcct1U8owQbDpboysHrxfeE84JMTterx8E8sxJqwQRRTxT7M',

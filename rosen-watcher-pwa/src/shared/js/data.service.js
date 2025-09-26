@@ -4,6 +4,10 @@ class DataService {
     constructor(db) {
         this.db = db;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async purgeData(_db) {
+        // Empty implementation
+    }
     getMaxDownloadDateDifference() {
         return 3155760000000;
     }

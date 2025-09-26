@@ -28,6 +28,7 @@ export enum EventType {
   PermitsChanged = 'PermitsChanged',
   RefreshPermits = 'RefreshPermits',
   RequestAddressPermits = 'RequestAddressPermits',
+  AddressPermitsDownloaded = 'AddressPermitsDownloaded',
 }
 
 export type EventData = string | Input | object;
@@ -69,6 +70,7 @@ export class EventService {
       [EventType.StatisticsChartChanged]: new Subject<EventData>(),
       [EventType.RefreshPermits]: new Subject<EventData>(),
       [EventType.RequestAddressPermits]: new Subject<EventData>(),
+      [EventType.AddressPermitsDownloaded]: new Subject<EventData>(),
     };
     return this.eventSubscriptions;
   }

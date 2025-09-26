@@ -1,18 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 31;
+const rs_DbVersion = 33;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';
+const rs_ActivePermitTxStoreName = 'activePermitTxs';
 const rs_DownloadStatusStoreName = 'downloadStatusStore';
+const rs_OpenBoxesStoreName = 'openBoxesStore';
 const rs_AddressDataStoreName = 'addressData';
-const rs_InitialNDownloads = 20;
+const rs_InitialNDownloads = 30;
 const rs_FullDownloadsBatchSize = 400;
 const rs_PerfInitialNDownloads = 10;
 const rs_PerfFullDownloadsBatchSize = 40;
 const rs_StartFrom = new Date('2024-01-01');
 const rs_Input_Key = ['boxId', 'outputAddress'];
 const rs_Permit_Key = 'id';
+const rs_ActivePermit_Key = 'id';
 const rs_PerfTx_Key = 'id';
 const rs_Address_Key = 'address';
 const rs_PermitCost = 3000;
@@ -40,7 +43,9 @@ if (typeof window !== 'undefined') {
     window.rs_InputsStoreName = rs_InputsStoreName;
     window.rs_PerfTxStoreName = rs_PerfTxStoreName;
     window.rs_PermitTxStoreName = rs_PermitTxStoreName;
+    window.rs_ActivePermitTxStoreName = rs_ActivePermitTxStoreName;
     window.rs_DownloadStatusStoreName = rs_DownloadStatusStoreName;
+    window.rs_OpenBoxesStoreName = rs_OpenBoxesStoreName;
     window.rs_AddressDataStoreName = rs_AddressDataStoreName;
     window.rs_InitialNDownloads = rs_InitialNDownloads;
     window.rs_FullDownloadsBatchSize = rs_FullDownloadsBatchSize;
@@ -48,6 +53,7 @@ if (typeof window !== 'undefined') {
     window.rs_Input_Key = rs_Input_Key;
     window.rs_PerfTx_Key = rs_PerfTx_Key;
     window.rs_Permit_Key = rs_Permit_Key;
+    window.rs_ActivePermit_Key = rs_ActivePermit_Key;
     window.rs_Address_Key = rs_Address_Key;
     window.rs_PermitCost = rs_PermitCost;
     window.rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;

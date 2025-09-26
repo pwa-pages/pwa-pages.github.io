@@ -1,18 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 31;
+const rs_DbVersion = 33;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';
+const rs_ActivePermitTxStoreName = 'activePermitTxs';
 const rs_DownloadStatusStoreName = 'downloadStatusStore';
+const rs_OpenBoxesStoreName = 'openBoxesStore';
 const rs_AddressDataStoreName = 'addressData';
-const rs_InitialNDownloads = 20;
+const rs_InitialNDownloads = 30;
 const rs_FullDownloadsBatchSize = 400;
 const rs_PerfInitialNDownloads = 10;
 const rs_PerfFullDownloadsBatchSize = 40;
 const rs_StartFrom: Date = new Date('2024-01-01');
 const rs_Input_Key = ['boxId', 'outputAddress'];
 const rs_Permit_Key = 'id';
+const rs_ActivePermit_Key = 'id';
 const rs_PerfTx_Key = 'id';
 const rs_Address_Key = 'address';
 const rs_PermitCost = 3000;
@@ -48,7 +51,9 @@ if (typeof window !== 'undefined') {
   (window as any).rs_InputsStoreName = rs_InputsStoreName;
   (window as any).rs_PerfTxStoreName = rs_PerfTxStoreName;
   (window as any).rs_PermitTxStoreName = rs_PermitTxStoreName;
+  (window as any).rs_ActivePermitTxStoreName = rs_ActivePermitTxStoreName;
   (window as any).rs_DownloadStatusStoreName = rs_DownloadStatusStoreName;
+  (window as any).rs_OpenBoxesStoreName = rs_OpenBoxesStoreName;
   (window as any).rs_AddressDataStoreName = rs_AddressDataStoreName;
   (window as any).rs_InitialNDownloads = rs_InitialNDownloads;
   (window as any).rs_FullDownloadsBatchSize = rs_FullDownloadsBatchSize;
@@ -56,6 +61,7 @@ if (typeof window !== 'undefined') {
   (window as any).rs_Input_Key = rs_Input_Key;
   (window as any).rs_PerfTx_Key = rs_PerfTx_Key;
   (window as any).rs_Permit_Key = rs_Permit_Key;
+  (window as any).rs_ActivePermit_Key = rs_ActivePermit_Key;
   (window as any).rs_Address_Key = rs_Address_Key;
   (window as any).rs_PermitCost = rs_PermitCost;
   (window as any).rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;

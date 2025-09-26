@@ -33,6 +33,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
   constructor(
     public override db: IDBDatabase,
     private eventSender: EventSender,
+    private activePermitsDataService: ActivePermitsDataService,
   ) {
     super(db);
   }
@@ -123,6 +124,15 @@ class MyWatcherDataService extends DataService<PermitTx> {
 
     const addresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
 
+    let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits();
+
+    for (const activePermit of addressActivePermits) {
+      const info = permitInfo.find((p) => p.address === activePermit.address);
+      if (info) {
+        info.activeLockedRSN += rs_PermitCost;
+      }
+    }
+
     return permitInfo.filter((info) => addresses.some((addr) => addr.address === info.address));
   }
 
@@ -165,6 +175,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
               assets: input.assets || [],
               wid: wid ?? '',
               chainType: getChainTypeForPermitAddress(address) as ChainType,
+              transactionId: item.id,
             };
 
             if (PermitTx.assets.length > 0) {
@@ -195,6 +206,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
               assets: output.assets || [],
               wid: wid ?? '',
               chainType: getChainTypeForPermitAddress(address) as ChainType,
+              transactionId: item.id,
             };
 
             if (PermitTx.assets.length > 0) {
@@ -268,6 +280,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
           boxId: permitTx.boxId,
           chainType:
             (permitTx.chainType as ChainType) ?? getChainTypeForPermitAddress(permitTx.address),
+          transactionId: permitTx.transactionId,
         });
       });
       console.log('done retrieving permits from database ' + permits.length + ' permits');

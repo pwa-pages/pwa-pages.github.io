@@ -72,7 +72,9 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
       this.myWatcherStats = Object.entries(this.watchersDataService.getMyWatcherStats()).map(
         ([key, value]) => ({ key, ...value }),
       );
+    });
 
+    await this.subscribeToEvent<Input[]>(EventType.AddressPermitsDownloaded, async () => {
       for (const stat of this.myWatcherStats) {
         if (stat.chainType && !this.processedChainTypes[stat.chainType]) {
           console.log('Chaintype not processed ' + stat.chainType);

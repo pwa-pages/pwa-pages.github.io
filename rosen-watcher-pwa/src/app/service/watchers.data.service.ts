@@ -39,6 +39,7 @@ export class WatchersDataService {
       let myWatcherStats: MyWatchersStats[] = [];
       permits.forEach((permit: PermitInfo) => {
         let permitCount = Math.floor((permit.lockedRSN - rs_WatcherCollateralRSN) / rs_PermitCost);
+        let activepermitCount = Math.floor(permit.activeLockedRSN / rs_PermitCost);
 
         if (permitCount < 0) {
           permitCount = 0;
@@ -46,7 +47,7 @@ export class WatchersDataService {
 
         if (permit.address) {
           myWatcherStats.push({
-            activePermitCount: 0,
+            activePermitCount: activepermitCount,
             permitCount: permitCount,
             wid: permit.wid,
             chainType: permit.chainType,

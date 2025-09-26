@@ -61,9 +61,26 @@ class DownloadService {
     }
     async downloadForChainPermitAddresses() {
         try {
+            const downloadPromises = Object.entries(permitAddresses)
+                .filter(([, address]) => address != null)
+                .map(async ([chainType, address]) => {
+                await this.downloadForAddress(address);
+                this.eventSender.sendEvent({
+                    type: 'AddressPermitsDownloaded',
+                    data: chainType,
+                });
+            });
+            await Promise.all(downloadPromises);
+        }
+        catch (e) {
+            console.error('Error downloading for addresses:', e);
+        }
+    }
+    async downloadForActivePermitAddresses(chainType) {
+        try {
             let addresses = [];
-            Object.entries(permitAddresses).forEach(([, address]) => {
-                if (address != null) {
+            Object.entries(permitTriggerAddresses).forEach(([key, address]) => {
+                if (key === chainType && address != null) {
                     addresses.push(address);
                 }
             });
@@ -125,6 +142,7 @@ class DownloadService {
         }
         finally {
             this.decreaseBusyCounter(address);
+            this.dataService.purgeData(db);
             console.log(this.busyCounter);
         }
     }

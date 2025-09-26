@@ -37,6 +37,11 @@ export class StorageService {
         }
         db.createObjectStore(rs_PermitTxStoreName, { keyPath: rs_Permit_Key });
 
+        if (db.objectStoreNames.contains(rs_ActivePermitTxStoreName)) {
+          db.deleteObjectStore(rs_ActivePermitTxStoreName);
+        }
+        db.createObjectStore(rs_ActivePermitTxStoreName, { keyPath: rs_ActivePermit_Key });
+
         if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
           db.createObjectStore(rs_AddressDataStoreName, {
             keyPath: rs_Address_Key,
@@ -45,6 +50,12 @@ export class StorageService {
 
         if (!db.objectStoreNames.contains(rs_DownloadStatusStoreName)) {
           db.createObjectStore(rs_DownloadStatusStoreName, {
+            keyPath: rs_Address_Key,
+          });
+        }
+
+        if (!db.objectStoreNames.contains(rs_OpenBoxesStoreName)) {
+          db.createObjectStore(rs_OpenBoxesStoreName, {
             keyPath: rs_Address_Key,
           });
         }
