@@ -120,19 +120,26 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     });
   }
 
-  async getOpenBoxByAddress(address: string, db: IDBDatabase): Promise<OpenBoxes | null> {
-    return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = db.transaction([rs_OpenBoxesStoreName], 'readonly');
-      const objectStore: IDBObjectStore = transaction.objectStore(rs_OpenBoxesStoreName);
+  async getOpenBoxesMap(db: IDBDatabase): Promise<Record<string, OpenBoxes | null> | null> {
+    const openBoxesMap: Record<string, OpenBoxes | null> = {};
 
-      const request: IDBRequest = objectStore.get(address);
+    const transaction: IDBTransaction = db.transaction([rs_OpenBoxesStoreName], 'readonly');
+    const objectStore: IDBObjectStore = transaction.objectStore(rs_OpenBoxesStoreName);
 
-      request.onsuccess = () => {
-        const result: OpenBoxes | undefined = request.result as OpenBoxes | undefined;
-        resolve(result ?? null);
-      };
-      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
-    });
+    for (const [, address] of Object.entries(permitBulkAddresses)) {
+      if (address) {
+        openBoxesMap[address] = await new Promise<OpenBoxes | null>((resolve, reject) => {
+          const request: IDBRequest = objectStore.get(address);
+
+          request.onsuccess = () => {
+            const result: OpenBoxes | undefined = request.result as OpenBoxes | undefined;
+            resolve(result ?? null);
+          };
+          request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
+        });
+      }
+    }
+    return openBoxesMap;
   }
 
   shouldAddInputToDb(address: string): boolean {
@@ -154,12 +161,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     const permits = await this.getWatcherPermits();
     const addresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
 
-    const openBoxesMap: Record<string, OpenBoxes | null> = {};
-    for (const [, address] of Object.entries(permitBulkAddresses)) {
-      if (address) {
-        openBoxesMap[address] = await this.getOpenBoxByAddress(address, this.db);
-      }
-    }
+    const openBoxesMap = await this.getOpenBoxesMap(this.db);
 
     let resolvedBulkPermits = permits.filter((info) =>
       Object.values(permitBulkAddresses).some((address) => address === info.address),
@@ -193,7 +195,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
             );
             await Promise.all(
               txs.map(async (t) => {
-                let openBoxes = openBoxesMap[t.address];
+                let openBoxes = openBoxesMap![t.address];
 
                 if (openBoxes && JSON.stringify(openBoxes.openBoxesJson).indexOf(t.boxId) !== -1) {
                   if (!result.some((r) => r.boxId === t.boxId)) {

@@ -88,17 +88,23 @@ class ActivePermitsDataService extends DataService {
             request.onerror = (event) => reject(event.target.error);
         });
     }
-    async getOpenBoxByAddress(address, db) {
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction([rs_OpenBoxesStoreName], 'readonly');
-            const objectStore = transaction.objectStore(rs_OpenBoxesStoreName);
-            const request = objectStore.get(address);
-            request.onsuccess = () => {
-                const result = request.result;
-                resolve(result ?? null);
-            };
-            request.onerror = (event) => reject(event.target.error);
-        });
+    async getOpenBoxesMap(db) {
+        const openBoxesMap = {};
+        const transaction = db.transaction([rs_OpenBoxesStoreName], 'readonly');
+        const objectStore = transaction.objectStore(rs_OpenBoxesStoreName);
+        for (const [, address] of Object.entries(permitBulkAddresses)) {
+            if (address) {
+                openBoxesMap[address] = await new Promise((resolve, reject) => {
+                    const request = objectStore.get(address);
+                    request.onsuccess = () => {
+                        const result = request.result;
+                        resolve(result ?? null);
+                    };
+                    request.onerror = (event) => reject(event.target.error);
+                });
+            }
+        }
+        return openBoxesMap;
     }
     shouldAddInputToDb(address) {
         return ((address != null && address.length <= 100) ||
@@ -112,12 +118,7 @@ class ActivePermitsDataService extends DataService {
     async getAdressActivePermits() {
         const permits = await this.getWatcherPermits();
         const addresses = await this.getData(rs_AddressDataStoreName);
-        const openBoxesMap = {};
-        for (const [, address] of Object.entries(permitBulkAddresses)) {
-            if (address) {
-                openBoxesMap[address] = await this.getOpenBoxByAddress(address, this.db);
-            }
-        }
+        const openBoxesMap = await this.getOpenBoxesMap(this.db);
         let resolvedBulkPermits = permits.filter((info) => Object.values(permitBulkAddresses).some((address) => address === info.address));
         console.log('Resolved active permits:', resolvedBulkPermits);
         let addressPermits = permits.filter((info) => addresses.some((addr) => addr.address === info.address));
