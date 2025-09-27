@@ -22,6 +22,7 @@ const rs_PermitCost = 3000;
 const rs_WatcherCollateralRSN = 30000;
 const rs_WatcherCollateralERG = 800;
 const rs_ErgoExplorerHost = 'api.ergoplatform.com';
+const rs_ErgoNodeHost = 'node-p2p.ergoplatform.com';
 var Period;
 (function (Period) {
     Period["Day"] = "Day";
@@ -63,4 +64,5 @@ if (typeof window !== 'undefined') {
     window.rs_PerfInitialNDownloads = rs_PerfInitialNDownloads;
     window.rs_PerfFullDownloadsBatchSize = rs_PerfFullDownloadsBatchSize;
     window.rs_ErgoExplorerHost = rs_ErgoExplorerHost;
+    window.rs_ErgoNodeHost = rs_ErgoNodeHost;
 }

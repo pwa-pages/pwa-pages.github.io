@@ -35,6 +35,7 @@ class DownloadService<T> {
     downloadFullSize: number,
     downloadInitialSize: number,
     private dataService: DataService<T>,
+    private myWatcherDataService: MyWatcherDataService,
     private eventSender: EventSender,
     private db: IDBDatabase,
   ) {
@@ -57,25 +58,56 @@ class DownloadService<T> {
     address: string,
     offset = 0,
     limit = 500,
+    useNode: boolean,
   ): Promise<FetchTransactionsResponse> {
-    const url = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
-    console.log(`Downloading from: ${url}`);
+    if (useNode) {
+      const url = `https://${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
+      console.log(`Downloading from: ${url}`);
 
-    const response: FetchTransactionsResponse = await this.fetchTransactions(url);
-    const result: FetchTransactionsResponse = {
-      transactions: response.items,
-      total: response.total,
-      items: [],
-    };
+      const response: Response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: address,
+      });
+      if (!response.ok) throw new Error(`Server returned code: ${response.status}`);
+      const data = (await response.json()) as FetchTransactionsResponse;
 
-    for (const item of response.items) {
-      const inputDate: Date = new Date(item.timestamp);
-      if (inputDate < rs_StartFrom) {
-        return result;
+      const result: FetchTransactionsResponse = {
+        transactions: data.items,
+        total: data.total,
+        items: [],
+      };
+
+      for (const item of data.items) {
+        const inputDate: Date = new Date(item.timestamp);
+        if (inputDate < rs_StartFrom) {
+          return result;
+        }
       }
-    }
 
-    return result;
+      return result;
+    } else {
+      const url = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
+      console.log(`Downloading from: ${url}`);
+
+      const response: FetchTransactionsResponse = await this.fetchTransactions(url);
+      const result: FetchTransactionsResponse = {
+        transactions: response.items,
+        total: response.total,
+        items: [],
+      };
+
+      for (const item of response.items) {
+        const inputDate: Date = new Date(item.timestamp);
+        if (inputDate < rs_StartFrom) {
+          return result;
+        }
+      }
+
+      return result;
+    }
   }
 
   async downloadForAddresses(): Promise<void> {
@@ -86,7 +118,7 @@ class DownloadService<T> {
         await this.dataService.getData<AddressData>(rs_AddressDataStoreName);
 
       const downloadPromises: Promise<void>[] = addresses.map(async (addressObj: AddressData) => {
-        await this.downloadForAddress(addressObj.address);
+        await this.downloadForAddress(addressObj.address, false);
       });
 
       await Promise.all(downloadPromises);
@@ -102,7 +134,7 @@ class DownloadService<T> {
       const downloadPromises: Promise<void>[] = Object.entries(permitAddresses)
         .filter(([, address]) => address != null)
         .map(async ([chainType, address]) => {
-          await this.downloadForAddress(address as string);
+          await this.downloadForAddress(address as string, false);
 
           this.eventSender.sendEvent({
             type: 'AddressPermitsDownloaded',
@@ -127,7 +159,12 @@ class DownloadService<T> {
       });
 
       const downloadPromises: Promise<void>[] = addresses.map(async (address) => {
-        await this.downloadForAddress(address);
+        await this.downloadForAddress(address, true);
+        let permits = await this.myWatcherDataService.getAdressPermits();
+        this.eventSender.sendEvent({
+          type: 'PermitsChanged',
+          data: permits,
+        });
       });
 
       await Promise.all(downloadPromises);
@@ -158,7 +195,12 @@ class DownloadService<T> {
   }
 
   // Download All for Address (recursive)
-  async downloadAllForAddress(address: string, offset: number, db: IDBDatabase): Promise<void> {
+  async downloadAllForAddress(
+    address: string,
+    offset: number,
+    db: IDBDatabase,
+    useNode: boolean,
+  ): Promise<void> {
     this.increaseBusyCounter(address);
     console.log(this.busyCounter);
 
@@ -167,6 +209,7 @@ class DownloadService<T> {
         address,
         offset,
         this.downloadFullSize + 10,
+        useNode,
       );
       console.log(
         `Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`,
@@ -189,7 +232,7 @@ class DownloadService<T> {
         new Date().getTime() -
           new Date(result.transactions[result.transactions.length - 1].timestamp).getTime()
       ) {
-        await this.downloadAllForAddress(address, offset + this.downloadFullSize, db);
+        await this.downloadAllForAddress(address, offset + this.downloadFullSize, db, useNode);
       } else {
         await this.setDownloadStatus(address, 'true', db);
       }
@@ -246,7 +289,7 @@ class DownloadService<T> {
     });
   }
 
-  async downloadForAddress(address: string): Promise<void> {
+  async downloadForAddress(address: string, useNode: boolean): Promise<void> {
     this.increaseBusyCounter(address);
     console.log(this.busyCounter);
 
@@ -255,6 +298,7 @@ class DownloadService<T> {
         address,
         0,
         this.downloadInitialSize,
+        useNode,
       );
       console.log(
         `Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`,
@@ -284,7 +328,7 @@ class DownloadService<T> {
       } else if (itemsz >= this.downloadInitialSize) {
         await this.setDownloadStatus(address, 'false', this.db);
         console.log(`Downloading all tx's for : ${address}`);
-        await this.downloadAllForAddress(address, 0, this.db);
+        await this.downloadAllForAddress(address, 0, this.db, useNode);
       }
     } catch (e) {
       console.error(e);

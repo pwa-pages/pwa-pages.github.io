@@ -23,6 +23,15 @@ const chainTypeWatcherIdentifier = Object.fromEntries(
   Object.values(ChainType).map((chain) => [chain, `rspv2${chain}AWC`]),
 );
 
+const rwtTokenIds: Record<string, ChainType> = {
+  '8a94d71b4a08058327fa8372aa69d95c337536c6577c31c8d994169a041e5fc0': ChainType.Ergo,
+  ddb335d2b4f3764ddeae8411a14bec97f94d0057628bb96f98da9d95e74d02bc: ChainType.Cardano,
+  '30e4392fc439fce9948da124efddb8779fe179eef5a5d6196e249b75ee64defc': ChainType.Bitcoin,
+  f5985c64c1aa8f08569dc77a046f65f92947abaa9ccd530aead033eece23496e: ChainType.Ethereum,
+  '33477693d6be5bbd3a4cd786fbff5e6444449c191ab08e681aaaa87fc192772c': ChainType.Binance,
+  '5d727b722fb72aa02257d987970c68aeda41614518bab9f0d8a21bbc75b7a3b0': ChainType.Doge,
+};
+
 const permitAddresses: Record<ChainType, string | null> = {
   [ChainType.Bitcoin]:
     'NY4PEzZ7VfjtnTN697R7my9uAVkCYb6N71J2RSmJCFSdDqVf9aPvFQqKXujYDBtSA8hxYVUgkGgU9SP2Ss7JDUkHkdGLBqZwH4yDcPyVvbVbcre3o7nR59wiFDVtjzCjfZmVvMVJD9HiW4GKqVuZGTQCKns8tDe3sJoDNTL3VmhzRUPZf9JCN4TNji1ruXf5CxqWtDrCfoxE4xfbRWGmtBMdLMoRdL85V7z1fP5KxroWX5YgZQo28nTCU3WjPuY2YrjqYYGNHXvFZ9G8E85kCcseNtRWqViXGFzmwqHWKaYe4AdJzBbMKzJWYszsbiemNvisPtT2Yj3FjAmAErpW3gMeWyH3WtbipaAu9D31ggpLeLkLTGscJ9HB2oExpGWvv6u9mGdkTJMHYUuZJUGrcJPE3m7ZTEFxwkbeR9oD8nHHgW4SB46kHFbxzNoUksGPZQnxf95J3e5PUnhYgg7mrQLNpq6pphgGukFcHDgAN2rgFmUSDVsuzomhP735SMiveXSPzx6PZeP7CmrEHyXN6mFbBJuY17kvzzix1w9eFwryZDuZqnAANkYhF3TLkLyGZfSC4o9iAGynpivuNMUgbKAuj6D116tKoCq9PHELL8eTefmXNLFuhauQuKRjmWQKj9zYSd7qi6Zf49KX25PnWHkC3REc4abYpjtiQFefT2HkWRwneTCkJ8uMvoHs6kJzLg8NVzH8XwEZhTM2tNSDhBKZaURpYiQcHwLDgv5uFiwhasLAdZi2EJywBYX51NKc6m4MEsTiAJC9jkEydWcwyDzSHN18yEr4rvEgMNkUhLHJokgV2v3BNFhUTJqe58e2QXAmx9MytUDqzg3vwexEpMhueC2roYA27P1mmb85HKEz15a8LnuUT8ZjmG8kDbHuPYFyxcATytVuDrFDzqKBt9X36bocip4ZU4RRY8JcWjJvMcrBCjV3EhDVQ4it8bhoZnn79PsXazvDteua1NEYEJniPnNrRaiKTUWrseEUQ2vVjWy134jMxRbeiARhoj7MDxug2kFP8jRGSsxWt3Qqbv2SezT3xZ8jYxTyQ2CiyJ61CvUQwPtmoY3XKjrgrJKwnSzJRs4egKPYZKoSiSy6UdHMKuNDmys8wYo3Gi2EgVdUYRLLWcHh5Z2H91odSbTW2h5e6pZeY4a45TgihE6ZnZBhHGc75zJjukhPgP1wEp8GrreHA7ejvTEmpwNgj571x5JrvRD5TxWaFuZKBonGexovAK2L5v',
@@ -128,4 +137,5 @@ if (typeof window !== 'undefined') {
   (window as any).permitTriggerAddresses = permitTriggerAddresses;
   (window as any).permitBulkAddresses = permitBulkAddresses;
   (window as any).hotWalletAddress = hotWalletAddress;
+  (window as any).rwtTokenIds = rwtTokenIds;
 }

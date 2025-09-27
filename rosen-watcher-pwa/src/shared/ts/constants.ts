@@ -22,8 +22,9 @@ const rs_PermitCost = 3000;
 const rs_WatcherCollateralRSN = 30000;
 const rs_WatcherCollateralERG = 800;
 const rs_ErgoExplorerHost = 'api.ergoplatform.com';
-//const rs_ErgoExplorerHost = 'api.ergo.aap.cornell.edu';
-
+const rs_ErgoNodeHost = 'node-p2p.ergoplatform.com';
+//const rs_ErgoExplorerHost = 'node-p2p.ergoplatform.com';
+// https://node-p2p.ergoplatform.com/swagger
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface DateNumberPoint {
   x: Date;
@@ -71,4 +72,5 @@ if (typeof window !== 'undefined') {
   (window as any).rs_PerfInitialNDownloads = rs_PerfInitialNDownloads;
   (window as any).rs_PerfFullDownloadsBatchSize = rs_PerfFullDownloadsBatchSize;
   (window as any).rs_ErgoExplorerHost = rs_ErgoExplorerHost;
+  (window as any).rs_ErgoNodeHost = rs_ErgoNodeHost;
 }

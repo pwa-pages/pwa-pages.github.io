@@ -59,12 +59,14 @@ class ProcessEventService {
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
       rewardDataService,
+      myWatcherDataService,
       this.eventSender,
       db,
     );
     const downloadMyWatchersService: DownloadService<PermitTx> = new DownloadService<PermitTx>(
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
+      myWatcherDataService,
       myWatcherDataService,
       this.eventSender,
       db,
@@ -73,6 +75,7 @@ class ProcessEventService {
       rs_FullDownloadsBatchSize / 4,
       rs_InitialNDownloads,
       activepermitsDataService,
+      myWatcherDataService,
       this.eventSender,
       db,
     );
@@ -80,6 +83,7 @@ class ProcessEventService {
       rs_PerfFullDownloadsBatchSize,
       rs_PerfInitialNDownloads,
       chainPerformanceDataService,
+      myWatcherDataService,
       this.eventSender,
       db,
     );
@@ -135,7 +139,7 @@ class ProcessEventService {
           });
 
           if (event.data && typeof event.data === 'string') {
-            await downloadService.downloadForAddress(event.data as unknown as string);
+            await downloadService.downloadForAddress(event.data as unknown as string, false);
           } else {
             await downloadService.downloadForAddresses();
           }
@@ -191,12 +195,6 @@ class ProcessEventService {
 
           await downloadActivePermitsService.downloadForActivePermitAddresses(chaintype!);
 
-          permits = await myWatcherDataService.getAdressPermits();
-          this.eventSender.sendEvent({
-            type: 'PermitsChanged',
-            data: permits,
-          });
-
           await activePermitsDataService.downloadOpenBoxes(chaintype!);
 
           permits = await myWatcherDataService.getAdressPermits();
@@ -219,7 +217,7 @@ class ProcessEventService {
             data: perfTxs,
           });
 
-          downloadPerfService.downloadForAddress(hotWalletAddress);
+          downloadPerfService.downloadForAddress(hotWalletAddress, false);
         } catch (error) {
           console.error('Error initializing IndexedDB or downloading addresses:', error);
         }

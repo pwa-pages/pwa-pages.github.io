@@ -1,14 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService {
     dataService;
+    myWatcherDataService;
     eventSender;
     db;
     busyCounter = 0;
     downloadFullSize = rs_FullDownloadsBatchSize;
     downloadInitialSize = rs_InitialNDownloads;
     //private static addressDownloadDateMap = new Map<string, Date>();
-    constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, db) {
+    constructor(downloadFullSize, downloadInitialSize, dataService, myWatcherDataService, eventSender, db) {
         this.dataService = dataService;
+        this.myWatcherDataService = myWatcherDataService;
         this.eventSender = eventSender;
         this.db = db;
         this.downloadFullSize = downloadFullSize;
@@ -26,29 +28,57 @@ class DownloadService {
             throw error;
         }
     }
-    async downloadTransactions(address, offset = 0, limit = 500) {
-        const url = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
-        console.log(`Downloading from: ${url}`);
-        const response = await this.fetchTransactions(url);
-        const result = {
-            transactions: response.items,
-            total: response.total,
-            items: [],
-        };
-        for (const item of response.items) {
-            const inputDate = new Date(item.timestamp);
-            if (inputDate < rs_StartFrom) {
-                return result;
+    async downloadTransactions(address, offset = 0, limit = 500, useNode) {
+        if (useNode) {
+            const url = `https://${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
+            console.log(`Downloading from: ${url}`);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: address,
+            });
+            if (!response.ok)
+                throw new Error(`Server returned code: ${response.status}`);
+            const data = (await response.json());
+            const result = {
+                transactions: data.items,
+                total: data.total,
+                items: [],
+            };
+            for (const item of data.items) {
+                const inputDate = new Date(item.timestamp);
+                if (inputDate < rs_StartFrom) {
+                    return result;
+                }
             }
+            return result;
         }
-        return result;
+        else {
+            const url = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
+            console.log(`Downloading from: ${url}`);
+            const response = await this.fetchTransactions(url);
+            const result = {
+                transactions: response.items,
+                total: response.total,
+                items: [],
+            };
+            for (const item of response.items) {
+                const inputDate = new Date(item.timestamp);
+                if (inputDate < rs_StartFrom) {
+                    return result;
+                }
+            }
+            return result;
+        }
     }
     async downloadForAddresses() {
         console.log('Start downloading for all addresses');
         try {
             const addresses = await this.dataService.getData(rs_AddressDataStoreName);
             const downloadPromises = addresses.map(async (addressObj) => {
-                await this.downloadForAddress(addressObj.address);
+                await this.downloadForAddress(addressObj.address, false);
             });
             await Promise.all(downloadPromises);
         }
@@ -64,7 +94,7 @@ class DownloadService {
             const downloadPromises = Object.entries(permitAddresses)
                 .filter(([, address]) => address != null)
                 .map(async ([chainType, address]) => {
-                await this.downloadForAddress(address);
+                await this.downloadForAddress(address, false);
                 this.eventSender.sendEvent({
                     type: 'AddressPermitsDownloaded',
                     data: chainType,
@@ -85,7 +115,12 @@ class DownloadService {
                 }
             });
             const downloadPromises = addresses.map(async (address) => {
-                await this.downloadForAddress(address);
+                await this.downloadForAddress(address, true);
+                let permits = await this.myWatcherDataService.getAdressPermits();
+                this.eventSender.sendEvent({
+                    type: 'PermitsChanged',
+                    data: permits,
+                });
             });
             await Promise.all(downloadPromises);
         }
@@ -113,11 +148,11 @@ class DownloadService {
         }
     }
     // Download All for Address (recursive)
-    async downloadAllForAddress(address, offset, db) {
+    async downloadAllForAddress(address, offset, db, useNode) {
         this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
-            const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10);
+            const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10, useNode);
             console.log(`Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`);
             //const t = this.processItems(result.transactions);
             //console.log('permit amount ' + t);
@@ -131,7 +166,7 @@ class DownloadService {
             if (this.dataService.getMaxDownloadDateDifference() >
                 new Date().getTime() -
                     new Date(result.transactions[result.transactions.length - 1].timestamp).getTime()) {
-                await this.downloadAllForAddress(address, offset + this.downloadFullSize, db);
+                await this.downloadAllForAddress(address, offset + this.downloadFullSize, db, useNode);
             }
             else {
                 await this.setDownloadStatus(address, 'true', db);
@@ -183,11 +218,11 @@ class DownloadService {
             request.onerror = (event) => reject(event.target.error);
         });
     }
-    async downloadForAddress(address) {
+    async downloadForAddress(address, useNode) {
         this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
-            const result = await this.downloadTransactions(address, 0, this.downloadInitialSize);
+            const result = await this.downloadTransactions(address, 0, this.downloadInitialSize, useNode);
             console.log(`Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`);
             const itemsz = result.transactions.length;
             let existingData = null;
@@ -209,7 +244,7 @@ class DownloadService {
             else if (itemsz >= this.downloadInitialSize) {
                 await this.setDownloadStatus(address, 'false', this.db);
                 console.log(`Downloading all tx's for : ${address}`);
-                await this.downloadAllForAddress(address, 0, this.db);
+                await this.downloadAllForAddress(address, 0, this.db, useNode);
             }
         }
         catch (e) {

@@ -47,7 +47,7 @@ class ActivePermitsDataService extends DataService {
             const permits = await permitsPromise;
             permits.forEach((permit) => {
                 permit.assets = permit.assets
-                    .filter((asset) => asset.name.startsWith('rspv2'))
+                    .filter((asset) => asset.tokenId != null && asset.tokenId in rwtTokenIds)
                     .map((asset_1) => {
                     return asset_1;
                 });
@@ -100,12 +100,8 @@ class ActivePermitsDataService extends DataService {
             request.onerror = (event) => reject(event.target.error);
         });
     }
-    shouldAddInputToDb(address, assets) {
-        return ((address != null &&
-            address.length <= 100 &&
-            assets.some((asset) => {
-                return asset.name.startsWith('WID-');
-            })) ||
+    shouldAddInputToDb(address) {
+        return ((address != null && address.length <= 100) ||
             Object.values(permitTriggerAddresses).includes(address));
     }
     shouldAddOutputToDb(address) {
@@ -154,14 +150,11 @@ class ActivePermitsDataService extends DataService {
             const tempData = [];
             transactions.forEach((item) => {
                 item.inputs.forEach((input) => {
-                    if (this.shouldAddInputToDb(input.address, input.assets) === false) {
+                    if (this.shouldAddInputToDb(input.address) === false) {
                         return;
                     }
                     input.inputDate = new Date(item.timestamp);
-                    input.assets = input.assets.filter((a) => a.name.startsWith('rspv2') || a.name.startsWith('WID-'));
-                    input.assets.forEach((a) => {
-                        a.tokenId = null;
-                    });
+                    input.assets = input.assets.filter((a) => a.tokenId != null && a.tokenId in rwtTokenIds);
                     const PermitTx = {
                         id: this.createUniqueId(input.boxId, item.id, address),
                         address: input.address,
@@ -179,9 +172,8 @@ class ActivePermitsDataService extends DataService {
                         return;
                     }
                     output.outputDate = new Date(item.timestamp);
-                    output.assets = output.assets.filter((a) => a.name.startsWith('rspv2') || a.name.startsWith('WID-'));
+                    output.assets = output.assets.filter((a) => a.tokenId != null && a.tokenId in rwtTokenIds);
                     output.assets.forEach((a) => {
-                        a.tokenId = null;
                         a.amount = -a.amount;
                     });
                     const PermitTx = {
@@ -208,14 +200,6 @@ class ActivePermitsDataService extends DataService {
             });
             Promise.all(putPromises)
                 .then(async () => {
-                /*
-                const permits = await this.getAdressPermits();
-      
-                this.eventSender.sendEvent({
-                  type: 'PermitsChanged',
-                  data: permits,
-                });
-                */
                 resolve();
             })
                 .catch(reject);

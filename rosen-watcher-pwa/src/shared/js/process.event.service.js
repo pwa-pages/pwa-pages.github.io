@@ -24,10 +24,10 @@ class ProcessEventService {
         const activepermitsDataService = new ActivePermitsDataService(db);
         const myWatcherDataService = new MyWatcherDataService(db, this.eventSender, activepermitsDataService);
         const chainPerformanceDataService = new ChainPerformanceDataService(db, this.eventSender);
-        const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, this.eventSender, db);
-        const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, myWatcherDataService, this.eventSender, db);
-        const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize / 4, rs_InitialNDownloads, activepermitsDataService, this.eventSender, db);
-        const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, this.eventSender, db);
+        const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, myWatcherDataService, this.eventSender, db);
+        const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, myWatcherDataService, myWatcherDataService, this.eventSender, db);
+        const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize / 4, rs_InitialNDownloads, activepermitsDataService, myWatcherDataService, this.eventSender, db);
+        const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, myWatcherDataService, this.eventSender, db);
         this.services = {
             dataService: rewardDataService,
             chainPerformanceDataService: chainPerformanceDataService,
@@ -58,7 +58,7 @@ class ProcessEventService {
                         data: addressCharts,
                     });
                     if (event.data && typeof event.data === 'string') {
-                        await downloadService.downloadForAddress(event.data);
+                        await downloadService.downloadForAddress(event.data, false);
                     }
                     else {
                         await downloadService.downloadForAddresses();
@@ -108,11 +108,6 @@ class ProcessEventService {
                         data: permits,
                     });
                     await downloadActivePermitsService.downloadForActivePermitAddresses(chaintype);
-                    permits = await myWatcherDataService.getAdressPermits();
-                    this.eventSender.sendEvent({
-                        type: 'PermitsChanged',
-                        data: permits,
-                    });
                     await activePermitsDataService.downloadOpenBoxes(chaintype);
                     permits = await myWatcherDataService.getAdressPermits();
                     this.eventSender.sendEvent({
@@ -133,7 +128,7 @@ class ProcessEventService {
                         type: 'PerfChartChanged',
                         data: perfTxs,
                     });
-                    downloadPerfService.downloadForAddress(hotWalletAddress);
+                    downloadPerfService.downloadForAddress(hotWalletAddress, false);
                 }
                 catch (error) {
                     console.error('Error initializing IndexedDB or downloading addresses:', error);
