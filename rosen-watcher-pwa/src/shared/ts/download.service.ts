@@ -118,7 +118,7 @@ class DownloadService<T> {
         await this.dataService.getData<AddressData>(rs_AddressDataStoreName);
 
       const downloadPromises: Promise<void>[] = addresses.map(async (addressObj: AddressData) => {
-        await this.downloadForAddress(addressObj.address, false);
+        await this.downloadForAddress(addressObj.address, true);
       });
 
       await Promise.all(downloadPromises);

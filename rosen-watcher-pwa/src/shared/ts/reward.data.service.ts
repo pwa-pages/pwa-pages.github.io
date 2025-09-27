@@ -41,7 +41,9 @@ class RewardDataService extends DataService<DbInput> {
 
       filteredInputs.forEach((input: DbInput) => {
         input.assets = input.assets
-          .filter((asset: Asset) => asset.name === 'RSN' || asset.name === 'eRSN')
+          .filter(
+            (asset: Asset) => asset.tokenId == rs_RSNTokenId || asset.tokenId == rs_eRSNTokenId,
+          )
           .map((asset_1: Asset) => {
             return asset_1;
           });
@@ -68,9 +70,15 @@ class RewardDataService extends DataService<DbInput> {
           input.outputAddress = address;
           input.inputDate = new Date(item.timestamp);
 
-          input.assets = input.assets.filter((a) => a.name === 'eRSN' || a.name === 'RSN');
-          input.assets.forEach((a) => {
-            a.tokenId = null;
+          input.assets = input.assets.filter(
+            (a) => a.tokenId == rs_RSNTokenId || a.tokenId == rs_eRSNTokenId,
+          );
+
+          input.assets.forEach((asset) => {
+            if (asset.tokenId && rs_TokenIdMap[asset.tokenId]) {
+              asset.name = rs_TokenIdMap[asset.tokenId];
+              asset.decimals = rs_RSNDecimals;
+            }
           });
 
           const dbInput: DbInput = {
