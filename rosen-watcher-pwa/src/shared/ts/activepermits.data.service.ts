@@ -154,6 +154,13 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     const permits = await this.getWatcherPermits();
     const addresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
 
+    const openBoxesMap: Record<string, OpenBoxes | null> = {};
+    for (const [, address] of Object.entries(permitBulkAddresses)) {
+      if (address) {
+        openBoxesMap[address] = await this.getOpenBoxByAddress(address, this.db);
+      }
+    }
+
     let resolvedBulkPermits = permits.filter((info) =>
       Object.values(permitBulkAddresses).some((address) => address === info.address),
     );
@@ -186,7 +193,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
             );
             await Promise.all(
               txs.map(async (t) => {
-                let openBoxes = await this.getOpenBoxByAddress(t.address, this.db);
+                let openBoxes = openBoxesMap[t.address];
 
                 if (openBoxes && JSON.stringify(openBoxes.openBoxesJson).indexOf(t.boxId) !== -1) {
                   if (!result.some((r) => r.boxId === t.boxId)) {
