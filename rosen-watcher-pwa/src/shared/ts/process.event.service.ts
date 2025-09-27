@@ -169,6 +169,7 @@ class ProcessEventService {
 
         try {
           const permits = await myWatcherDataService.getAdressPermits();
+
           this.eventSender.sendEvent({
             type: 'PermitsChanged',
             data: permits,

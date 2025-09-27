@@ -123,7 +123,8 @@ class MyWatcherDataService extends DataService<PermitTx> {
     }
 
     const addresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
-
+    console.log(this.activePermitsDataService);
+    /*
     let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits();
 
     for (const activePermit of addressActivePermits) {
@@ -132,6 +133,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
         info.activeLockedRSN += rs_PermitCost;
       }
     }
+      */
 
     return permitInfo.filter((info) => addresses.some((addr) => addr.address === info.address));
   }
