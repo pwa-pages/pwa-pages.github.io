@@ -139,7 +139,7 @@ class ProcessEventService {
           });
 
           if (event.data && typeof event.data === 'string') {
-            await downloadService.downloadForAddress(event.data as unknown as string, false);
+            await downloadService.downloadForAddress(event.data as unknown as string, true);
           } else {
             await downloadService.downloadForAddresses();
           }

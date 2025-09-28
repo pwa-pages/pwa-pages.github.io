@@ -74,9 +74,9 @@ class ActivePermitsDataService extends DataService {
             const response = await fetch(url);
             if (!response.ok)
                 throw new Error(`Server returned code: ${response.status}`);
-            this.saveOpenBoxes(address, await response.json(), this.db);
+            await this.saveOpenBoxes(address, await response.json(), this.db);
         });
-        return downloadPromises;
+        await Promise.all(downloadPromises);
     }
     async saveOpenBoxes(address, openBoxesJson, db) {
         return new Promise((resolve, reject) => {
