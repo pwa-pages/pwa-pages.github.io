@@ -134,7 +134,7 @@ class DownloadService<T> {
       const downloadPromises: Promise<void>[] = Object.entries(permitAddresses)
         .filter(([, address]) => address != null)
         .map(async ([chainType, address]) => {
-          await this.downloadForAddress(address as string, false);
+          await this.downloadForAddress(address as string, true);
 
           this.eventSender.sendEvent({
             type: 'AddressPermitsDownloaded',

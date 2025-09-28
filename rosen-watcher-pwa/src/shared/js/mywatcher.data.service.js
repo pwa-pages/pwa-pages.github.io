@@ -48,7 +48,7 @@ class MyWatcherDataService extends DataService {
             const permits = await permitsPromise;
             permits.forEach((permit) => {
                 permit.assets = permit.assets
-                    .filter((asset) => asset.name == 'RSN')
+                    .filter((asset) => asset.tokenId == rs_RSNTokenId)
                     .map((asset_1) => {
                     return asset_1;
                 });
@@ -67,7 +67,7 @@ class MyWatcherDataService extends DataService {
         return (address != null &&
             address.length > 0 &&
             address.length <= 100 &&
-            assets.some((asset) => asset.name === 'RSN'));
+            assets.some((asset) => asset.tokenId == rs_RSNTokenId));
     }
     async getAdressPermits() {
         const permits = await this.getWatcherPermits();
@@ -75,8 +75,8 @@ class MyWatcherDataService extends DataService {
         const permitInfo = [];
         for (const permit of permits) {
             const sum = permit.assets.reduce((acc, asset) => {
-                if (asset.name === 'RSN') {
-                    return acc + asset.amount / Math.pow(10, asset.decimals);
+                if (asset.tokenId == rs_RSNTokenId) {
+                    return acc + asset.amount / Math.pow(10, rs_RSNDecimals);
                 }
                 return acc;
             }, 0);
@@ -115,22 +115,19 @@ class MyWatcherDataService extends DataService {
             transactions.forEach((item) => {
                 let iwids = item.inputs
                     .flatMap((input) => input.assets)
-                    .filter((asset) => asset.name.startsWith('WID-'))
-                    .flatMap((a) => a.name);
+                    .filter((asset) => asset.amount == 2 || asset.amount == 3)
+                    .flatMap((a) => a.tokenId);
                 let owids = item.outputs
                     .flatMap((output) => output.assets)
-                    .filter((asset) => asset.name.startsWith('WID-'))
-                    .flatMap((a) => a.name);
+                    .filter((asset) => asset.amount == 2 || asset.amount == 3)
+                    .flatMap((a) => a.tokenId);
                 const allWids = Array.from(new Set([...iwids, ...owids]));
                 item.inputs.forEach((input) => {
                     if (this.shouldAddToDb(input.address, input.assets) === false) {
                         return;
                     }
                     input.inputDate = new Date(item.timestamp);
-                    input.assets = input.assets.filter((a) => a.name == 'RSN' || a.name.startsWith('WID-'));
-                    input.assets.forEach((a) => {
-                        a.tokenId = null;
-                    });
+                    input.assets = input.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.amount == 2 || a.amount == 3);
                     let wid;
                     for (wid of allWids) {
                         const PermitTx = {
@@ -153,9 +150,8 @@ class MyWatcherDataService extends DataService {
                         return;
                     }
                     output.outputDate = new Date(item.timestamp);
-                    output.assets = output.assets.filter((a) => a.name == 'RSN' || a.name.startsWith('WID-'));
+                    output.assets = output.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.amount == 2 || a.amount == 3);
                     output.assets.forEach((a) => {
-                        a.tokenId = null;
                         a.amount = -a.amount;
                     });
                     let wid;

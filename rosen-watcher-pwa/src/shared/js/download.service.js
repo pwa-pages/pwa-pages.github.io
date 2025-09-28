@@ -94,7 +94,7 @@ class DownloadService {
             const downloadPromises = Object.entries(permitAddresses)
                 .filter(([, address]) => address != null)
                 .map(async ([chainType, address]) => {
-                await this.downloadForAddress(address, false);
+                await this.downloadForAddress(address, true);
                 this.eventSender.sendEvent({
                     type: 'AddressPermitsDownloaded',
                     data: chainType,
