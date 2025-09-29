@@ -72,7 +72,7 @@ class ProcessEventService {
       db,
     );
     const downloadActivePermitsService: DownloadService<PermitTx> = new DownloadService<PermitTx>(
-      rs_FullDownloadsBatchSize / 4,
+      rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
       activepermitsDataService,
       myWatcherDataService,

@@ -26,7 +26,7 @@ class ProcessEventService {
         const chainPerformanceDataService = new ChainPerformanceDataService(db, this.eventSender);
         const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, myWatcherDataService, this.eventSender, db);
         const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, myWatcherDataService, myWatcherDataService, this.eventSender, db);
-        const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize / 4, rs_InitialNDownloads, activepermitsDataService, myWatcherDataService, this.eventSender, db);
+        const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, myWatcherDataService, this.eventSender, db);
         const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, myWatcherDataService, this.eventSender, db);
         this.services = {
             dataService: rewardDataService,
