@@ -89,7 +89,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
     );
   }
 
-  async getAdressPermits() {
+  async getAdressPermits(loadActive = true) {
     const permits = await this.getWatcherPermits();
     const widSums: Record<string, number> = {};
 
@@ -126,10 +126,12 @@ class MyWatcherDataService extends DataService<PermitTx> {
 
     let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits();
 
-    for (const activePermit of addressActivePermits) {
-      const info = permitInfo.find((p) => p.address === activePermit.address);
-      if (info) {
-        info.activeLockedRSN += rs_PermitCost;
+    if (loadActive) {
+      for (const activePermit of addressActivePermits) {
+        const info = permitInfo.find((p) => p.address === activePermit.address);
+        if (info) {
+          info.activeLockedRSN += rs_PermitCost;
+        }
       }
     }
 

@@ -2,9 +2,11 @@
 class ActivePermitsDataService extends DataService {
     db;
     async getExistingData(transaction, address) {
+        const dbTransaction = this.db.transaction([rs_ActivePermitTxStoreName], 'readonly');
+        const objectStore = dbTransaction.objectStore(rs_ActivePermitTxStoreName);
         for (const input of transaction.inputs) {
             if (input.boxId) {
-                const data = await this.getDataById(this.createUniqueId(input.boxId, transaction.id, address), this.db);
+                const data = await this.getDataById(this.createUniqueId(input.boxId, transaction.id, address), objectStore);
                 if (data) {
                     return data;
                 }
@@ -12,7 +14,7 @@ class ActivePermitsDataService extends DataService {
         }
         for (const output of transaction.outputs) {
             if (output.boxId) {
-                const data = await this.getDataById(this.createUniqueId(output.boxId, transaction.id, address), this.db);
+                const data = await this.getDataById(this.createUniqueId(output.boxId, transaction.id, address), objectStore);
                 if (data) {
                     return data;
                 }
@@ -248,10 +250,8 @@ class ActivePermitsDataService extends DataService {
         });
     }
     // Get Data by BoxId from IndexedDB
-    async getDataById(id, db) {
+    async getDataById(id, objectStore) {
         return new Promise((resolve, reject) => {
-            const transaction = db.transaction([rs_ActivePermitTxStoreName], 'readonly');
-            const objectStore = transaction.objectStore(rs_ActivePermitTxStoreName);
             const request = objectStore.get(id);
             request.onsuccess = () => {
                 const result = request.result;

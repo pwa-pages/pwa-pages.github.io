@@ -69,7 +69,7 @@ class MyWatcherDataService extends DataService {
             address.length <= 100 &&
             assets.some((asset) => asset.tokenId == rs_RSNTokenId));
     }
-    async getAdressPermits() {
+    async getAdressPermits(loadActive = true) {
         const permits = await this.getWatcherPermits();
         const widSums = {};
         const permitInfo = [];
@@ -100,10 +100,12 @@ class MyWatcherDataService extends DataService {
         }
         const addresses = await this.getData(rs_AddressDataStoreName);
         let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits();
-        for (const activePermit of addressActivePermits) {
-            const info = permitInfo.find((p) => p.address === activePermit.address);
-            if (info) {
-                info.activeLockedRSN += rs_PermitCost;
+        if (loadActive) {
+            for (const activePermit of addressActivePermits) {
+                const info = permitInfo.find((p) => p.address === activePermit.address);
+                if (info) {
+                    info.activeLockedRSN += rs_PermitCost;
+                }
             }
         }
         return permitInfo.filter((info) => addresses.some((addr) => addr.address === info.address));

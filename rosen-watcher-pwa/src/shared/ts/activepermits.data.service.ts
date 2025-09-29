@@ -9,11 +9,17 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     transaction: TransactionItem,
     address: string,
   ): Promise<PermitTx | null> {
+    const dbTransaction: IDBTransaction = this.db.transaction(
+      [rs_ActivePermitTxStoreName],
+      'readonly',
+    );
+    const objectStore: IDBObjectStore = dbTransaction.objectStore(rs_ActivePermitTxStoreName);
+
     for (const input of transaction.inputs) {
       if (input.boxId) {
         const data = await this.getDataById(
           this.createUniqueId(input.boxId, transaction.id, address),
-          this.db,
+          objectStore,
         );
         if (data) {
           return data;
@@ -25,7 +31,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
       if (output.boxId) {
         const data = await this.getDataById(
           this.createUniqueId(output.boxId, transaction.id, address),
-          this.db,
+          objectStore,
         );
         if (data) {
           return data;
@@ -334,10 +340,8 @@ class ActivePermitsDataService extends DataService<PermitTx> {
   }
 
   // Get Data by BoxId from IndexedDB
-  private async getDataById(id: string, db: IDBDatabase): Promise<PermitTx | null> {
+  private async getDataById(id: string, objectStore: IDBObjectStore): Promise<PermitTx | null> {
     return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = db.transaction([rs_ActivePermitTxStoreName], 'readonly');
-      const objectStore: IDBObjectStore = transaction.objectStore(rs_ActivePermitTxStoreName);
       const request: IDBRequest = objectStore.get(id);
 
       request.onsuccess = () => {

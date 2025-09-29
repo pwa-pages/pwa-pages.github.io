@@ -85,7 +85,7 @@ class ProcessEventService {
             else if (event.type === 'MyWatchersScreenLoaded') {
                 console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
                 try {
-                    const permits = await myWatcherDataService.getAdressPermits();
+                    const permits = await myWatcherDataService.getAdressPermits(false);
                     this.eventSender.sendEvent({
                         type: 'PermitsChanged',
                         data: permits,
