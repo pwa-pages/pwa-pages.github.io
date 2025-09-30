@@ -65,6 +65,8 @@ export class WatchersDataService {
         });
       });
 
+      localStorage.setItem('myWatcherStats', JSON.stringify(this.myWatcherStats));
+
       this.eventService.sendEvent(EventType.RefreshPermits);
     });
   }
@@ -74,6 +76,12 @@ export class WatchersDataService {
   }
 
   getMyWatcherStats(): MyWatchersStats[] {
+    if (this.myWatcherStats.length == 0) {
+      const storedStats = localStorage.getItem('myWatcherStats');
+      if (storedStats) {
+        this.myWatcherStats.push(...JSON.parse(storedStats));
+      }
+    }
     return this.myWatcherStats;
   }
 
