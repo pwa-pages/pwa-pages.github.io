@@ -168,7 +168,7 @@ class ProcessEventService {
         );
 
         try {
-          const permits = await myWatcherDataService.getAdressPermits(false);
+          const permits = await myWatcherDataService.getAdressPermits();
 
           this.eventSender.sendEvent({
             type: 'PermitsChanged',
