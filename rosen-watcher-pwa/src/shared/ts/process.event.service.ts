@@ -194,9 +194,15 @@ class ProcessEventService {
             data: permits,
           });
 
-          await downloadActivePermitsService.downloadForActivePermitAddresses(chaintype!);
-
           await activePermitsDataService.downloadOpenBoxes(chaintype!);
+
+          permits = await myWatcherDataService.getAdressPermits();
+          this.eventSender.sendEvent({
+            type: 'PermitsChanged',
+            data: permits,
+          });
+
+          await downloadActivePermitsService.downloadForActivePermitAddresses(chaintype!);
 
           permits = await myWatcherDataService.getAdressPermits();
           this.eventSender.sendEvent({
