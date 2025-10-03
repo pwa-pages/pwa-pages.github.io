@@ -182,6 +182,8 @@ class ActivePermitsDataService extends DataService<PermitTx> {
       transactionIdToPermitsMap[permit.transactionId].push(permit);
     }
 
+    const addresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
+
     const openBoxesMap = await this.getOpenBoxesMap(this.db);
 
     let resolvedBulkPermits = permits.filter((info) =>
@@ -189,9 +191,13 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     );
     console.log('Resolved active permits:', resolvedBulkPermits);
 
+    let addressPermits = permits.filter((info) =>
+      addresses.some((addr) => addr.address === info.address),
+    );
+
     let result = new Array<PermitTx>();
 
-    for (const permit of permits) {
+    for (const permit of addressPermits) {
       let outputs = (transactionIdToPermitsMap[permit.transactionId] || []).filter((o) =>
         Object.values(permitTriggerAddresses).includes(o.address),
       );

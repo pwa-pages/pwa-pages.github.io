@@ -133,11 +133,13 @@ class ActivePermitsDataService extends DataService {
             }
             transactionIdToPermitsMap[permit.transactionId].push(permit);
         }
+        const addresses = await this.getData(rs_AddressDataStoreName);
         const openBoxesMap = await this.getOpenBoxesMap(this.db);
         let resolvedBulkPermits = permits.filter((info) => Object.values(permitBulkAddresses).some((address) => address === info.address));
         console.log('Resolved active permits:', resolvedBulkPermits);
+        let addressPermits = permits.filter((info) => addresses.some((addr) => addr.address === info.address));
         let result = new Array();
-        for (const permit of permits) {
+        for (const permit of addressPermits) {
             let outputs = (transactionIdToPermitsMap[permit.transactionId] || []).filter((o) => Object.values(permitTriggerAddresses).includes(o.address));
             let foundResolved = false;
             for (const output of outputs) {
