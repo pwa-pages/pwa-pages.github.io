@@ -8,6 +8,7 @@ import { PriceService } from './price.service';
 import { MyWatchersStats, WatchersStats } from './watchers.models';
 import { EventService, EventType } from './event.service';
 import { Address } from '../../service/ts/models/address';
+import { ChainDataService } from './chain.data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,7 @@ export class WatchersDataService {
     private downloadService: HttpDownloadService,
     private priceService: PriceService,
     private eventService: EventService,
+    private chainDataService: ChainDataService,
   ) {
     this.eventService.subscribeToEvent(EventType.PermitsChanged, (permits: PermitInfo[]) => {
       this.myWatcherStats.length = 0;
@@ -75,14 +77,17 @@ export class WatchersDataService {
     return this.watchersStatsSignal;
   }
 
-  getMyWatcherStats(): MyWatchersStats[] {
+  async getMyWatcherStats(): Promise<MyWatchersStats[]> {
     if (this.myWatcherStats.length == 0) {
       const storedStats = localStorage.getItem('myWatcherStats');
       if (storedStats) {
         this.myWatcherStats.push(...JSON.parse(storedStats));
       }
     }
-    return this.myWatcherStats;
+    let addresses = await this.chainDataService.getAddresses();
+    return this.myWatcherStats.filter((w) =>
+      addresses.some((a) => a.address === w.address?.address),
+    );
   }
 
   getWatchersInfo(): Observable<WatcherInfo> {

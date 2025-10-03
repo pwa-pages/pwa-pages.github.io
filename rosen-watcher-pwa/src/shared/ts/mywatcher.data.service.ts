@@ -122,8 +122,6 @@ class MyWatcherDataService extends DataService<PermitTx> {
       }
     }
 
-    const addresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
-
     let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits();
 
     if (loadActive) {
@@ -135,7 +133,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
       }
     }
 
-    return permitInfo.filter((info) => addresses.some((addr) => addr.address === info.address));
+    return permitInfo;
   }
 
   async addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void> {

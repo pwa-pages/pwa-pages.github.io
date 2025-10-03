@@ -98,7 +98,6 @@ class MyWatcherDataService extends DataService {
                 });
             }
         }
-        const addresses = await this.getData(rs_AddressDataStoreName);
         let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits();
         if (loadActive) {
             for (const activePermit of addressActivePermits) {
@@ -108,7 +107,7 @@ class MyWatcherDataService extends DataService {
                 }
             }
         }
-        return permitInfo.filter((info) => addresses.some((addr) => addr.address === info.address));
+        return permitInfo;
     }
     async addData(address, transactions, db) {
         return new Promise((resolve, reject) => {

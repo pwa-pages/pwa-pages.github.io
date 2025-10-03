@@ -67,14 +67,14 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
     this.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
     this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
 
-    this.myWatcherStats = Object.entries(this.watchersDataService.getMyWatcherStats()).map(
+    this.myWatcherStats = Object.entries(await this.watchersDataService.getMyWatcherStats()).map(
       ([key, value]) => ({ key, ...value }),
     );
 
     this.eventService.sendEvent(EventType.MyWatchersScreenLoaded);
 
     await this.subscribeToEvent<Input[]>(EventType.RefreshPermits, async () => {
-      this.myWatcherStats = Object.entries(this.watchersDataService.getMyWatcherStats()).map(
+      this.myWatcherStats = Object.entries(await this.watchersDataService.getMyWatcherStats()).map(
         ([key, value]) => ({ key, ...value }),
       );
     });

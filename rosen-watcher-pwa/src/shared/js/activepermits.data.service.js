@@ -119,23 +119,33 @@ class ActivePermitsDataService extends DataService {
     }
     async getAdressActivePermits() {
         const permits = await this.getWatcherPermits();
-        const addresses = await this.getData(rs_AddressDataStoreName);
+        const boxIdToPermitsMap = {};
+        for (const permit of permits) {
+            if (!boxIdToPermitsMap[permit.boxId]) {
+                boxIdToPermitsMap[permit.boxId] = [];
+            }
+            boxIdToPermitsMap[permit.boxId].push(permit);
+        }
+        const transactionIdToPermitsMap = {};
+        for (const permit of permits) {
+            if (!transactionIdToPermitsMap[permit.transactionId]) {
+                transactionIdToPermitsMap[permit.transactionId] = [];
+            }
+            transactionIdToPermitsMap[permit.transactionId].push(permit);
+        }
         const openBoxesMap = await this.getOpenBoxesMap(this.db);
         let resolvedBulkPermits = permits.filter((info) => Object.values(permitBulkAddresses).some((address) => address === info.address));
         console.log('Resolved active permits:', resolvedBulkPermits);
-        let addressPermits = permits.filter((info) => addresses.some((addr) => addr.address === info.address));
         let result = new Array();
-        for (const permit of addressPermits) {
-            let outputs = permits.filter((o) => o.transactionId === permit.transactionId &&
-                Object.values(permitTriggerAddresses).some((address) => address === o.address));
+        for (const permit of permits) {
+            let outputs = (transactionIdToPermitsMap[permit.transactionId] || []).filter((o) => Object.values(permitTriggerAddresses).includes(o.address));
             let foundResolved = false;
             for (const output of outputs) {
-                let cnt = permits.filter((p) => p.boxId === output.boxId);
+                let cnt = boxIdToPermitsMap[output.boxId] || [];
                 if (cnt.length >= 2) {
                     foundResolved = true;
                     for (const p of cnt) {
-                        let txs = permits.filter((t) => t.transactionId === p.transactionId &&
-                            Object.values(permitBulkAddresses).includes(t.address));
+                        let txs = (transactionIdToPermitsMap[p.transactionId] || []).filter((t) => Object.values(permitBulkAddresses).includes(t.address));
                         await Promise.all(txs.map(async (t) => {
                             let openBoxes = openBoxesMap[t.address];
                             if (openBoxes && JSON.stringify(openBoxes.openBoxesJson).indexOf(t.boxId) !== -1) {
