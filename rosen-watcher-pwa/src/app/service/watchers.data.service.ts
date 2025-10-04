@@ -8,7 +8,6 @@ import { PriceService } from './price.service';
 import { WatchersStats } from './watchers.models';
 import { EventService, EventType } from './event.service';
 import { Address } from '../../service/ts/models/address';
-import { ChainDataService } from './chain.data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +32,6 @@ export class WatchersDataService {
     private downloadService: HttpDownloadService,
     private priceService: PriceService,
     private eventService: EventService,
-    private chainDataService: ChainDataService,
   ) {
     this.eventService.subscribeToEvent(EventType.PermitsChanged, (permits: PermitInfo[]) => {
       this.myWatcherStats.length = 0;
@@ -77,8 +75,11 @@ export class WatchersDataService {
     return this.watchersStatsSignal;
   }
 
-  async requestAddressPermits(processedChainTypes: Partial<Record<ChainType, boolean>>) {
-    let myWatcherStats = await this.getMyWatcherStats();
+  async requestAddressPermits(
+    processedChainTypes: Partial<Record<ChainType, boolean>>,
+    addresses: Address[],
+  ) {
+    let myWatcherStats = await this.getMyWatcherStats(addresses);
     for (const stat of myWatcherStats) {
       if (stat.chainType && !processedChainTypes[stat.chainType]) {
         console.log('Chaintype not processed ' + stat.chainType);
@@ -96,14 +97,14 @@ export class WatchersDataService {
     return processedChainTypes;
   }
 
-  async getMyWatcherStats(): Promise<MyWatchersStats[]> {
+  async getMyWatcherStats(addresses: Address[]): Promise<MyWatchersStats[]> {
     if (this.myWatcherStats.length == 0) {
       const storedStats = localStorage.getItem('myWatcherStats');
       if (storedStats) {
         this.myWatcherStats.push(...JSON.parse(storedStats));
       }
     }
-    let addresses = await this.chainDataService.getAddresses();
+
     return this.myWatcherStats.filter((w) =>
       addresses.some((a) => a.address === w.address?.address),
     );

@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
 import { MyWatchersStats } from '../../service/ts/models/watcher.info';
+import { ChainDataService } from '../service/chain.data.service';
 
 @Component({
   selector: 'app-mywatchers',
@@ -44,6 +45,7 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
     injector: Injector,
     private watchersDataService: WatchersDataService,
     private navigationService: NavigationService,
+    private chaindataService: ChainDataService,
     @Inject(IS_ELEMENTS_ACTIVE) public isElementsActive: boolean,
   ) {
     super(injector);
@@ -67,21 +69,24 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
     this.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
     this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
 
-    this.myWatcherStats = Object.entries(await this.watchersDataService.getMyWatcherStats()).map(
-      ([key, value]) => ({ key, ...value }),
-    );
+    this.myWatcherStats = Object.entries(
+      await this.watchersDataService.getMyWatcherStats(await this.chaindataService.getAddresses()),
+    ).map(([key, value]) => ({ key, ...value }));
 
     this.eventService.sendEvent(EventType.MyWatchersScreenLoaded);
 
     await this.subscribeToEvent<Input[]>(EventType.RefreshPermits, async () => {
-      this.myWatcherStats = Object.entries(await this.watchersDataService.getMyWatcherStats()).map(
-        ([key, value]) => ({ key, ...value }),
-      );
+      this.myWatcherStats = Object.entries(
+        await this.watchersDataService.getMyWatcherStats(
+          await this.chaindataService.getAddresses(),
+        ),
+      ).map(([key, value]) => ({ key, ...value }));
     });
 
     await this.subscribeToEvent<Input[]>(EventType.AddressPermitsDownloaded, async () => {
       this.processedChainTypes = await this.watchersDataService.requestAddressPermits(
         this.processedChainTypes,
+        await this.chaindataService.getAddresses(),
       );
     });
   }

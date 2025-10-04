@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1759559017008,
+  "timestamp": 1759569398277,
   "appData": {
-    "version": "3.54.7"
+    "version": "3.54.8"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-RF2TFGN4.js",
+        "./main-E4SJEQLP.js",
         "./manifest.webmanifest",
         "./polyfills-B6TNHZQ6.js",
         "./rosen.html",
@@ -84,8 +84,8 @@
     "./assets/rosen-watchers.html": "40657d404800e7e3a22694e7c2ba6044e7ad3b24",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "2c5922617826c30de9e1a57799e011bdc75279ba",
-    "./main-RF2TFGN4.js": "876ddf7793ada25152c1c76cde68e9efbb7dbb33",
+    "./index.html": "fdd91eaeeafba80850c43a58239e885df12e6c29",
+    "./main-E4SJEQLP.js": "35509b386fb8dc002dee2bd17629da5aefbb5795",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
