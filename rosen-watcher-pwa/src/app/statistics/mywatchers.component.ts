@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
-import { MyWatchersStats } from '../service/watchers.models';
+import { MyWatchersStats } from '../../service/ts/models/watcher.info';
 
 @Component({
   selector: 'app-mywatchers',
@@ -80,16 +80,9 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
     });
 
     await this.subscribeToEvent<Input[]>(EventType.AddressPermitsDownloaded, async () => {
-      for (const stat of this.myWatcherStats) {
-        if (stat.chainType && !this.processedChainTypes[stat.chainType]) {
-          console.log('Chaintype not processed ' + stat.chainType);
-          await this.eventService.sendEventWithData(EventType.RequestAddressPermits, {
-            chainType: stat.chainType,
-          });
-          console.log('Chaintype processed ' + stat.chainType);
-          this.processedChainTypes[stat.chainType] = true;
-        }
-      }
+      this.processedChainTypes = await this.watchersDataService.requestAddressPermits(
+        this.processedChainTypes,
+      );
     });
   }
 }

@@ -1,5 +1,3 @@
-import { Address } from '../../service/ts/models/address';
-
 export function createChainNumber(): Record<ChainType, number | undefined> {
   return Object.fromEntries(Object.values(ChainType).map((key) => [key, undefined])) as Record<
     ChainType,
@@ -37,12 +35,4 @@ export class WatchersStats {
   watchersAmountsPerCurrency: Record<Currency, WatchersAmounts> = Object.fromEntries(
     Object.values(Currency).map((currency) => [currency, new WatchersAmounts()]),
   ) as Record<Currency, WatchersAmounts>;
-}
-
-export class MyWatchersStats {
-  activePermitCount: number | undefined;
-  permitCount: number | undefined;
-  wid: string | undefined;
-  chainType: ChainType | undefined;
-  address: Address | undefined;
 }

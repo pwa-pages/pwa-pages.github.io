@@ -97,7 +97,14 @@ class ProcessEventService {
                 }
             }
             else if (event.type === 'RequestAddressPermits') {
-                const chaintype = event.data?.chainType;
+                const myWatcherStats = event.data?.myWatcherStats;
+                if (!myWatcherStats || myWatcherStats.length === 0) {
+                    throw new Error('No watcher stats provided');
+                }
+                const chaintype = myWatcherStats[0].chainType;
+                if (!myWatcherStats.every((stat) => stat.chainType === chaintype)) {
+                    throw new Error('All watcher stats must have the same chain type');
+                }
                 console.log('Rosen service worker received RequestAddressPermits for ' +
                     chaintype +
                     ', initiating syncing of data by downloading from blockchain');

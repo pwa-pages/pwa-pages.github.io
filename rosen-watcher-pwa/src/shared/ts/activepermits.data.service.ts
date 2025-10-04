@@ -126,20 +126,21 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     });
   }
 
-  async getOpenBoxesMap(db: IDBDatabase): Promise<Record<string, OpenBoxes | null> | null> {
-    const openBoxesMap: Record<string, OpenBoxes | null> = {};
+  async getOpenBoxesMap(db: IDBDatabase): Promise<Record<string, string | null> | null> {
+    const openBoxesMap: Record<string, string | null> = {};
 
     const transaction: IDBTransaction = db.transaction([rs_OpenBoxesStoreName], 'readonly');
     const objectStore: IDBObjectStore = transaction.objectStore(rs_OpenBoxesStoreName);
 
     for (const [, address] of Object.entries(permitBulkAddresses)) {
       if (address) {
-        openBoxesMap[address] = await new Promise<OpenBoxes | null>((resolve, reject) => {
+        openBoxesMap[address] = await new Promise<string | null>((resolve, reject) => {
           const request: IDBRequest = objectStore.get(address);
 
           request.onsuccess = () => {
             const result: OpenBoxes | undefined = request.result as OpenBoxes | undefined;
-            resolve(result ?? null);
+
+            resolve(JSON.stringify(result?.openBoxesJson ?? null));
           };
           request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
         });
@@ -196,6 +197,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     );
 
     let result = new Array<PermitTx>();
+    const boxIdSet = new Set<string>();
 
     for (const permit of addressPermits) {
       let outputs = (transactionIdToPermitsMap[permit.transactionId] || []).filter((o) =>
@@ -216,9 +218,10 @@ class ActivePermitsDataService extends DataService<PermitTx> {
               txs.map(async (t) => {
                 let openBoxes = openBoxesMap![t.address];
 
-                if (openBoxes && JSON.stringify(openBoxes.openBoxesJson).indexOf(t.boxId) !== -1) {
-                  if (!result.some((r) => r.boxId === t.boxId)) {
+                if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
+                  if (!boxIdSet.has(t.boxId)) {
                     result.push(permit);
+                    boxIdSet.add(t.boxId);
                   }
                 }
               }),

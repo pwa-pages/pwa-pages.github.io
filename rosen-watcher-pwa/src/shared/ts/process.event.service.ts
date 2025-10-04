@@ -1,3 +1,13 @@
+interface Address {
+  address: string;
+  Address: string;
+}
+
+interface MyWatchersStats {
+  chainType?: ChainType;
+  address?: Address;
+}
+
 interface EventPayload<T> {
   type: string;
   data?: T;
@@ -180,7 +190,18 @@ class ProcessEventService {
           console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
       } else if (event.type === 'RequestAddressPermits') {
-        const chaintype: string | undefined = (event.data as { chainType?: string })?.chainType;
+        const myWatcherStats: MyWatchersStats[] | undefined = (
+          event.data as { myWatcherStats?: MyWatchersStats[] }
+        )?.myWatcherStats;
+
+        if (!myWatcherStats || myWatcherStats.length === 0) {
+          throw new Error('No watcher stats provided');
+        }
+        const chaintype = myWatcherStats[0].chainType;
+        if (!myWatcherStats.every((stat) => stat.chainType === chaintype)) {
+          throw new Error('All watcher stats must have the same chain type');
+        }
+
         console.log(
           'Rosen service worker received RequestAddressPermits for ' +
             chaintype +

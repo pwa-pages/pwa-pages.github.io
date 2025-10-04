@@ -100,7 +100,7 @@ class ActivePermitsDataService extends DataService {
                     const request = objectStore.get(address);
                     request.onsuccess = () => {
                         const result = request.result;
-                        resolve(result ?? null);
+                        resolve(JSON.stringify(result?.openBoxesJson ?? null));
                     };
                     request.onerror = (event) => reject(event.target.error);
                 });
@@ -139,6 +139,7 @@ class ActivePermitsDataService extends DataService {
         console.log('Resolved active permits:', resolvedBulkPermits);
         let addressPermits = permits.filter((info) => addresses.some((addr) => addr.address === info.address));
         let result = new Array();
+        const boxIdSet = new Set();
         for (const permit of addressPermits) {
             let outputs = (transactionIdToPermitsMap[permit.transactionId] || []).filter((o) => Object.values(permitTriggerAddresses).includes(o.address));
             let foundResolved = false;
@@ -150,9 +151,10 @@ class ActivePermitsDataService extends DataService {
                         let txs = (transactionIdToPermitsMap[p.transactionId] || []).filter((t) => Object.values(permitBulkAddresses).includes(t.address));
                         await Promise.all(txs.map(async (t) => {
                             let openBoxes = openBoxesMap[t.address];
-                            if (openBoxes && JSON.stringify(openBoxes.openBoxesJson).indexOf(t.boxId) !== -1) {
-                                if (!result.some((r) => r.boxId === t.boxId)) {
+                            if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
+                                if (!boxIdSet.has(t.boxId)) {
                                     result.push(permit);
+                                    boxIdSet.add(t.boxId);
                                 }
                             }
                         }));

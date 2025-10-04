@@ -2,10 +2,10 @@ import { Injectable, Signal, signal } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { HttpDownloadService } from './http.download.service';
 import { Observable } from 'rxjs';
-import { WatcherInfo } from '../../service/ts/models/watcher.info';
+import { MyWatchersStats, WatcherInfo } from '../../service/ts/models/watcher.info';
 import { Token } from '../../service/ts/models/token';
 import { PriceService } from './price.service';
-import { MyWatchersStats, WatchersStats } from './watchers.models';
+import { WatchersStats } from './watchers.models';
 import { EventService, EventType } from './event.service';
 import { Address } from '../../service/ts/models/address';
 import { ChainDataService } from './chain.data.service';
@@ -75,6 +75,25 @@ export class WatchersDataService {
 
   getWatcherStats(): Signal<WatchersStats> {
     return this.watchersStatsSignal;
+  }
+
+  async requestAddressPermits(processedChainTypes: Partial<Record<ChainType, boolean>>) {
+    let myWatcherStats = await this.getMyWatcherStats();
+    for (const stat of myWatcherStats) {
+      if (stat.chainType && !processedChainTypes[stat.chainType]) {
+        console.log('Chaintype not processed ' + stat.chainType);
+
+        const watcherStatsOfType = myWatcherStats.filter((s) => stat.chainType === s.chainType);
+
+        await this.eventService.sendEventWithData(EventType.RequestAddressPermits, {
+          myWatcherStats: watcherStatsOfType,
+        });
+        console.log('Chaintype processed ' + stat.chainType);
+        processedChainTypes[stat.chainType] = true;
+      }
+    }
+
+    return processedChainTypes;
   }
 
   async getMyWatcherStats(): Promise<MyWatchersStats[]> {
