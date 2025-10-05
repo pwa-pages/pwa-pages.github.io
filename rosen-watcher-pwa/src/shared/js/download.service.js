@@ -134,19 +134,19 @@ class DownloadService {
         }
     }
     // Busy Counter
-    async increaseBusyCounter(address) {
+    increaseBusyCounter(address) {
         if (this.busyCounter === 0) {
-            await this.eventSender.sendEvent({
+            this.eventSender.sendEvent({
                 type: 'StartFullDownload',
                 data: address,
             });
         }
         this.busyCounter++;
     }
-    async decreaseBusyCounter(address) {
+    decreaseBusyCounter(address) {
         this.busyCounter--;
         if (this.busyCounter === 0) {
-            await this.eventSender.sendEvent({
+            this.eventSender.sendEvent({
                 type: 'EndFullDownload',
                 data: address,
             });

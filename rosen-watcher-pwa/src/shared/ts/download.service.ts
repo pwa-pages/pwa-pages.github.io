@@ -181,9 +181,9 @@ class DownloadService<T> {
   }
 
   // Busy Counter
-  private async increaseBusyCounter(address: string): Promise<void> {
+  private increaseBusyCounter(address: string): void {
     if (this.busyCounter === 0) {
-      await this.eventSender.sendEvent({
+      this.eventSender.sendEvent({
         type: 'StartFullDownload',
         data: address,
       });
@@ -191,10 +191,10 @@ class DownloadService<T> {
     this.busyCounter++;
   }
 
-  private async decreaseBusyCounter(address: string): Promise<void> {
+  private decreaseBusyCounter(address: string): void {
     this.busyCounter--;
     if (this.busyCounter === 0) {
-      await this.eventSender.sendEvent({
+      this.eventSender.sendEvent({
         type: 'EndFullDownload',
         data: address,
       });
