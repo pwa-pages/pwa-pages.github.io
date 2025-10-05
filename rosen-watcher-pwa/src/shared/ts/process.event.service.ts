@@ -132,132 +132,181 @@ class ProcessEventService {
       }: Services = await this.initServices();
 
       if (event.type === 'RequestInputsDownload') {
-        console.log(
-          'Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
-            event.data,
-        );
-
-        try {
-          const addressCharts = await chartService.getAddressCharts(
-            await dataService.getSortedInputs(),
-          );
-
-          this.eventSender.sendEvent({
-            type: 'AddressChartChanged',
-            data: addressCharts,
-          });
-
-          if (event.data && typeof event.data === 'string') {
-            await downloadService.downloadForAddress(event.data as unknown as string, true);
-          } else {
-            await downloadService.downloadForAddresses();
-          }
-        } catch (error) {
-          console.error('Error initializing IndexedDB or downloading addresses:', error);
-        }
+        await this.processRequestInputsDownload(event, chartService, dataService, downloadService);
       } else if (event.type === 'StatisticsScreenLoaded') {
-        console.log(
-          'Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain',
-        );
-
-        try {
-          const inputs = await dataService.getSortedInputs();
-          this.eventSender.sendEvent({
-            type: 'InputsChanged',
-            data: inputs,
-          });
-
-          await downloadService.downloadForAddresses();
-        } catch (error) {
-          console.error('Error initializing IndexedDB or downloading addresses:', error);
-        }
+        await this.processStatisticsScreenLoaded(dataService, downloadService);
       } else if (event.type === 'MyWatchersScreenLoaded') {
-        const myWatcherStats: MyWatchersStats[] | undefined = (
-          event.data as { myWatcherStats?: MyWatchersStats[] }
-        )?.myWatcherStats;
-
-        let addresses = myWatcherStats
-          ?.map((stat) => stat.address?.address)
-          .filter((addr) => addr) as string[];
-
-        console.log(
-          'Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain',
+        await this.processMyWatchersScreenLoaded(
+          event,
+          myWatcherDataService,
+          downloadMyWatchersService,
         );
-
-        try {
-          const permits = await myWatcherDataService.getAdressPermits(addresses);
-
-          this.eventSender.sendEvent({
-            type: 'PermitsChanged',
-            data: permits,
-          });
-
-          await downloadMyWatchersService.downloadForChainPermitAddresses(addresses);
-        } catch (error) {
-          console.error('Error initializing IndexedDB or downloading addresses:', error);
-        }
       } else if (event.type === 'RequestAddressPermits') {
-        let eventData = event.data as { myWatcherStats?: MyWatchersStats[]; chainType?: ChainType };
-
-        if (!eventData.myWatcherStats || eventData.myWatcherStats.length === 0) {
-          throw new Error('No watcher stats provided');
-        }
-
-        console.log(
-          'Rosen service worker received RequestAddressPermits for ' +
-            eventData.chainType +
-            ', initiating syncing of data by downloading from blockchain',
+        await this.processRequestAddressPermits(
+          event,
+          myWatcherDataService,
+          activePermitsDataService,
+          downloadActivePermitsService,
         );
-
-        let addresses = eventData.myWatcherStats
-          ?.map((stat) => stat.address?.address)
-          .filter((addr) => addr) as string[];
-
-        try {
-          let permits = await myWatcherDataService.getAdressPermits(addresses);
-          this.eventSender.sendEvent({
-            type: 'PermitsChanged',
-            data: permits,
-          });
-
-          await activePermitsDataService.downloadOpenBoxes(eventData.chainType!);
-
-          permits = await myWatcherDataService.getAdressPermits(addresses);
-          this.eventSender.sendEvent({
-            type: 'PermitsChanged',
-            data: permits,
-          });
-
-          await downloadActivePermitsService.downloadForActivePermitAddresses(
-            addresses,
-            eventData.chainType!,
-          );
-
-          permits = await myWatcherDataService.getAdressPermits(addresses);
-          this.eventSender.sendEvent({
-            type: 'PermitsChanged',
-            data: permits,
-          });
-        } catch (error) {
-          console.error('Error initializing IndexedDB or downloading addresses:', error);
-        }
       } else if (event.type === 'PerformanceScreenLoaded') {
-        console.log('Rosen service worker received PerformanceScreenLoaded');
-
-        try {
-          console.log('Downloading perftxs.');
-          const perfTxs = await chainPerformanceDataService.getPerfTxs();
-
-          this.eventSender.sendEvent({
-            type: 'PerfChartChanged',
-            data: perfTxs,
-          });
-
-          downloadPerfService.downloadForAddress(hotWalletAddress, false);
-        } catch (error) {
-          console.error('Error initializing IndexedDB or downloading addresses:', error);
-        }
+        await this.processPerformanceScreenLoaded(chainPerformanceDataService, downloadPerfService);
       }
+    }
+  }
+
+  private async processPerformanceScreenLoaded(
+    chainPerformanceDataService: ChainPerformanceDataService,
+    downloadPerfService: DownloadService<PerfTx>,
+  ) {
+    console.log('Rosen service worker received PerformanceScreenLoaded');
+
+    try {
+      console.log('Downloading perftxs.');
+      const perfTxs = await chainPerformanceDataService.getPerfTxs();
+
+      this.eventSender.sendEvent({
+        type: 'PerfChartChanged',
+        data: perfTxs,
+      });
+
+      downloadPerfService.downloadForAddress(hotWalletAddress, false);
+    } catch (error) {
+      console.error('Error initializing IndexedDB or downloading addresses:', error);
+    }
+  }
+
+  private async processRequestAddressPermits(
+    event: EventPayload<object>,
+    myWatcherDataService: MyWatcherDataService,
+    activePermitsDataService: ActivePermitsDataService,
+    downloadActivePermitsService: DownloadService<PermitTx>,
+  ) {
+    let eventData = event.data as { myWatcherStats?: MyWatchersStats[]; chainType?: ChainType };
+
+    if (!eventData.myWatcherStats || eventData.myWatcherStats.length === 0) {
+      throw new Error('No watcher stats provided');
+    }
+
+    console.log(
+      'Rosen service worker received RequestAddressPermits for ' +
+        eventData.chainType +
+        ', initiating syncing of data by downloading from blockchain',
+    );
+
+    let addresses = eventData.myWatcherStats
+      ?.map((stat) => stat.address?.address)
+      .filter((addr) => addr) as string[];
+
+    try {
+      let permits = await myWatcherDataService.getAdressPermits(addresses);
+      this.eventSender.sendEvent({
+        type: 'PermitsChanged',
+        data: permits,
+      });
+
+      await activePermitsDataService.downloadOpenBoxes(eventData.chainType!);
+
+      permits = await myWatcherDataService.getAdressPermits(addresses);
+      this.eventSender.sendEvent({
+        type: 'PermitsChanged',
+        data: permits,
+      });
+
+      await downloadActivePermitsService.downloadForActivePermitAddresses(
+        addresses,
+        eventData.chainType!,
+      );
+
+      permits = await myWatcherDataService.getAdressPermits(addresses);
+      this.eventSender.sendEvent({
+        type: 'PermitsChanged',
+        data: permits,
+      });
+    } catch (error) {
+      console.error('Error initializing IndexedDB or downloading addresses:', error);
+    }
+  }
+
+  private async processMyWatchersScreenLoaded(
+    event: EventPayload<object>,
+    myWatcherDataService: MyWatcherDataService,
+    downloadMyWatchersService: DownloadService<PermitTx>,
+  ) {
+    const myWatcherStats: MyWatchersStats[] | undefined = (
+      event.data as { myWatcherStats?: MyWatchersStats[] }
+    )?.myWatcherStats;
+
+    let addresses = myWatcherStats
+      ?.map((stat) => stat.address?.address)
+      .filter((addr) => addr) as string[];
+
+    console.log(
+      'Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain',
+    );
+
+    try {
+      const permits = await myWatcherDataService.getAdressPermits(addresses);
+
+      this.eventSender.sendEvent({
+        type: 'PermitsChanged',
+        data: permits,
+      });
+
+      await downloadMyWatchersService.downloadForChainPermitAddresses(addresses);
+    } catch (error) {
+      console.error('Error initializing IndexedDB or downloading addresses:', error);
+    }
+  }
+
+  private async processStatisticsScreenLoaded(
+    dataService: RewardDataService,
+    downloadService: DownloadService<DbInput>,
+  ) {
+    console.log(
+      'Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain',
+    );
+
+    try {
+      const inputs = await dataService.getSortedInputs();
+      this.eventSender.sendEvent({
+        type: 'InputsChanged',
+        data: inputs,
+      });
+
+      await downloadService.downloadForAddresses();
+    } catch (error) {
+      console.error('Error initializing IndexedDB or downloading addresses:', error);
+    }
+  }
+
+  private async processRequestInputsDownload(
+    event: EventPayload<object>,
+    chartService: ChartService,
+    dataService: RewardDataService,
+    downloadService: DownloadService<DbInput>,
+  ) {
+    console.log(
+      'Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
+        event.data,
+    );
+
+    try {
+      const addressCharts = await chartService.getAddressCharts(
+        await dataService.getSortedInputs(),
+      );
+
+      this.eventSender.sendEvent({
+        type: 'AddressChartChanged',
+        data: addressCharts,
+      });
+
+      if (event.data && typeof event.data === 'string') {
+        await downloadService.downloadForAddress(event.data as unknown as string, true);
+      } else {
+        await downloadService.downloadForAddresses();
+      }
+    } catch (error) {
+      console.error('Error initializing IndexedDB or downloading addresses:', error);
     }
   }
 
