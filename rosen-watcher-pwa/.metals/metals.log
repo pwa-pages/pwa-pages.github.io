@@ -19339,3 +19339,9 @@ INFO: Unsupported notification method: $/setTrace
 2025.10.05 03:57:39 INFO  Started: Metals version 1.6.2 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.100.0.
 2025.10.05 03:57:40 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
 2025.10.05 03:57:40 WARN  Build server is not auto-connectable.
+2025.10.05 11:05:59 INFO  Shutting down server
+2025.10.05 11:05:59 INFO  shutting down Metals
+2025.10.05 11:05:59 INFO  Exiting server
+2025.10.05 11:06:11 INFO  Started: Metals version 1.6.2 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.100.0.
+2025.10.05 11:06:12 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2025.10.05 11:06:13 WARN  Build server is not auto-connectable.

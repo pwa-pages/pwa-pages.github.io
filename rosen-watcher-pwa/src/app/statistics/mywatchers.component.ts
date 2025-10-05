@@ -73,7 +73,9 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
       await this.watchersDataService.getMyWatcherStats(await this.chaindataService.getAddresses()),
     ).map(([key, value]) => ({ key, ...value }));
 
-    this.eventService.sendEvent(EventType.MyWatchersScreenLoaded);
+    this.eventService.sendEventWithData(EventType.MyWatchersScreenLoaded, {
+      myWatcherStats: this.myWatcherStats,
+    });
 
     await this.subscribeToEvent<Input[]>(EventType.RefreshPermits, async () => {
       this.myWatcherStats = Object.entries(

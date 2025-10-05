@@ -164,9 +164,9 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     );
   }
 
-  async getAdressActivePermits() {
+  async getAdressActivePermits(addresses: string[] | null = null): Promise<PermitTx[]> {
     const permits = await this.getWatcherPermits();
-    const addresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
+    const dbAddresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
 
     const openBoxesMap = await this.getOpenBoxesMap(this.db);
 
@@ -175,9 +175,14 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     );
     console.log('Resolved active permits:', resolvedBulkPermits);
 
-    let addressPermits = permits.filter((info) =>
-      addresses.some((addr) => addr.address === info.address),
-    );
+    let addressPermits = new Array<PermitTx>();
+    if (addresses != null && addresses.length > 0) {
+      addressPermits = permits.filter((info) => addresses.some((addr) => addr === info.address));
+    } else {
+      addressPermits = permits.filter((info) =>
+        dbAddresses.some((addr) => addr.address === info.address),
+      );
+    }
 
     let result = new Array<PermitTx>();
 

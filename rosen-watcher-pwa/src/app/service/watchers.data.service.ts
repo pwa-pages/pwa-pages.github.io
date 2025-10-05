@@ -84,10 +84,9 @@ export class WatchersDataService {
       if (stat.chainType && !processedChainTypes[stat.chainType]) {
         console.log('Chaintype not processed ' + stat.chainType);
 
-        const watcherStatsOfType = myWatcherStats.filter((s) => stat.chainType === s.chainType);
-
         await this.eventService.sendEventWithData(EventType.RequestAddressPermits, {
-          myWatcherStats: watcherStatsOfType,
+          myWatcherStats: myWatcherStats,
+          chainType: stat.chainType,
         });
         console.log('Chaintype processed ' + stat.chainType);
         processedChainTypes[stat.chainType] = true;

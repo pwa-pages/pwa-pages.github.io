@@ -32,7 +32,6 @@ class MyWatcherDataService extends DataService<PermitTx> {
   }
   constructor(
     public override db: IDBDatabase,
-    private eventSender: EventSender,
     private activePermitsDataService: ActivePermitsDataService,
   ) {
     super(db);
@@ -89,7 +88,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
     );
   }
 
-  async getAdressPermits(loadActive = true) {
+  async getAdressPermits(addresses: string[]) {
     const permits = await this.getWatcherPermits();
     const widSums: Record<string, number> = {};
 
@@ -122,14 +121,13 @@ class MyWatcherDataService extends DataService<PermitTx> {
       }
     }
 
-    let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits();
+    let addressActivePermits =
+      await this.activePermitsDataService.getAdressActivePermits(addresses);
 
-    if (loadActive) {
-      for (const activePermit of addressActivePermits) {
-        const info = permitInfo.find((p) => p.address === activePermit.address);
-        if (info) {
-          info.activeLockedRSN += rs_PermitCost;
-        }
+    for (const activePermit of addressActivePermits) {
+      const info = permitInfo.find((p) => p.address === activePermit.address);
+      if (info) {
+        info.activeLockedRSN += rs_PermitCost;
       }
     }
 
@@ -229,12 +227,14 @@ class MyWatcherDataService extends DataService<PermitTx> {
 
       Promise.all(putPromises)
         .then(async () => {
-          const permits = await this.getAdressPermits();
+          /*
+const permits = await this.getAdressPermits();
 
           this.eventSender.sendEvent({
             type: 'PermitsChanged',
             data: permits,
           });
+          */
 
           resolve();
         })

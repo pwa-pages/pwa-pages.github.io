@@ -1,7 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MyWatcherDataService extends DataService {
     db;
-    eventSender;
     activePermitsDataService;
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
@@ -22,10 +21,9 @@ class MyWatcherDataService extends DataService {
         }
         return null;
     }
-    constructor(db, eventSender, activePermitsDataService) {
+    constructor(db, activePermitsDataService) {
         super(db);
         this.db = db;
-        this.eventSender = eventSender;
         this.activePermitsDataService = activePermitsDataService;
     }
     createUniqueId(boxId, transactionId, address) {
@@ -69,7 +67,7 @@ class MyWatcherDataService extends DataService {
             address.length <= 100 &&
             assets.some((asset) => asset.tokenId == rs_RSNTokenId));
     }
-    async getAdressPermits(loadActive = true) {
+    async getAdressPermits(addresses) {
         const permits = await this.getWatcherPermits();
         const widSums = {};
         const permitInfo = [];
@@ -98,13 +96,11 @@ class MyWatcherDataService extends DataService {
                 });
             }
         }
-        let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits();
-        if (loadActive) {
-            for (const activePermit of addressActivePermits) {
-                const info = permitInfo.find((p) => p.address === activePermit.address);
-                if (info) {
-                    info.activeLockedRSN += rs_PermitCost;
-                }
+        let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits(addresses);
+        for (const activePermit of addressActivePermits) {
+            const info = permitInfo.find((p) => p.address === activePermit.address);
+            if (info) {
+                info.activeLockedRSN += rs_PermitCost;
             }
         }
         return permitInfo;
@@ -184,11 +180,14 @@ class MyWatcherDataService extends DataService {
             });
             Promise.all(putPromises)
                 .then(async () => {
-                const permits = await this.getAdressPermits();
+                /*
+      const permits = await this.getAdressPermits();
+      
                 this.eventSender.sendEvent({
-                    type: 'PermitsChanged',
-                    data: permits,
+                  type: 'PermitsChanged',
+                  data: permits,
                 });
+                */
                 resolve();
             })
                 .catch(reject);

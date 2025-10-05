@@ -89,13 +89,18 @@ class DownloadService {
             console.log('End downloading for all addresses');
         }
     }
-    async downloadForChainPermitAddresses() {
+    async downloadForChainPermitAddresses(addresses) {
         try {
             const downloadPromises = Object.entries(permitAddresses)
                 .filter(([, address]) => address != null)
                 .map(async ([chainType, address]) => {
                 await this.downloadForAddress(address, true);
-                this.eventSender.sendEvent({
+                const permits = await this.myWatcherDataService.getAdressPermits(addresses);
+                await this.eventSender.sendEvent({
+                    type: 'PermitsChanged',
+                    data: permits,
+                });
+                await this.eventSender.sendEvent({
                     type: 'AddressPermitsDownloaded',
                     data: chainType,
                 });
@@ -106,7 +111,7 @@ class DownloadService {
             console.error('Error downloading for addresses:', e);
         }
     }
-    async downloadForActivePermitAddresses(chainType) {
+    async downloadForActivePermitAddresses(allAddresses, chainType) {
         try {
             let addresses = [];
             Object.entries(permitTriggerAddresses).forEach(([key, address]) => {
@@ -116,8 +121,8 @@ class DownloadService {
             });
             const downloadPromises = addresses.map(async (address) => {
                 await this.downloadForAddress(address, true);
-                let permits = await this.myWatcherDataService.getAdressPermits();
-                this.eventSender.sendEvent({
+                let permits = await this.myWatcherDataService.getAdressPermits(allAddresses);
+                await this.eventSender.sendEvent({
                     type: 'PermitsChanged',
                     data: permits,
                 });
@@ -129,19 +134,19 @@ class DownloadService {
         }
     }
     // Busy Counter
-    increaseBusyCounter(address) {
+    async increaseBusyCounter(address) {
         if (this.busyCounter === 0) {
-            this.eventSender.sendEvent({
+            await this.eventSender.sendEvent({
                 type: 'StartFullDownload',
                 data: address,
             });
         }
         this.busyCounter++;
     }
-    decreaseBusyCounter(address) {
+    async decreaseBusyCounter(address) {
         this.busyCounter--;
         if (this.busyCounter === 0) {
-            this.eventSender.sendEvent({
+            await this.eventSender.sendEvent({
                 type: 'EndFullDownload',
                 data: address,
             });
