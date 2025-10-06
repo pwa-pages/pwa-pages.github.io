@@ -77,7 +77,7 @@ export class WatchersDataService {
 
   async requestAddressPermits(
     processedChainTypes: Partial<Record<ChainType, boolean>>,
-    addresses: Address[],
+    addresses: string[],
   ) {
     let myWatcherStats = await this.getMyWatcherStats(addresses);
     for (const stat of myWatcherStats) {
@@ -96,7 +96,7 @@ export class WatchersDataService {
     return processedChainTypes;
   }
 
-  async getMyWatcherStats(addresses: Address[]): Promise<MyWatchersStats[]> {
+  async getMyWatcherStats(addresses: string[]): Promise<MyWatchersStats[]> {
     if (this.myWatcherStats.length == 0) {
       const storedStats = localStorage.getItem('myWatcherStats');
       if (storedStats) {
@@ -104,9 +104,7 @@ export class WatchersDataService {
       }
     }
 
-    return this.myWatcherStats.filter((w) =>
-      addresses.some((a) => a.address === w.address?.address),
-    );
+    return this.myWatcherStats.filter((w) => addresses.some((a) => a === w.address?.address));
   }
 
   getWatchersInfo(): Observable<WatcherInfo> {

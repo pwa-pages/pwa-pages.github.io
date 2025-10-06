@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 import { PerformanceChartComponent } from './performance.chart.component';
 import { BaseEventAwareComponent } from '../baseeventawarecomponent';
 import { WatchersStats } from '../service/watchers.models';
+import { MyWatchersComponent } from '../statistics/mywatchers.component';
+import { MyWatchersStats } from '../../service/ts/models/watcher.info';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
@@ -19,6 +21,7 @@ import { WatchersStats } from '../service/watchers.models';
   imports: [
     CommonModule,
     WatchersComponent,
+    MyWatchersComponent,
     ChainPerformanceComponent,
     StatisticsChartComponent,
     PerformanceChartComponent,
@@ -57,6 +60,7 @@ import { WatchersStats } from '../service/watchers.models';
 export class RosenWatcherComponent extends BaseEventAwareComponent {
   private _renderHtml = true;
 
+  @Output() notifyPermitsStatsChanged = new EventEmitter<MyWatchersStats[]>();
   @Output() notifyWatchersStatsChanged = new EventEmitter<WatchersStats>();
   @Output() notifyChainPerformanceChartsChanged = new EventEmitter<
     { chainType: ChainType | null; chart: number }[]
@@ -131,6 +135,11 @@ export class RosenWatcherComponent extends BaseEventAwareComponent {
   set component(value: string) {
     this._component = value;
   }
+
+  public appPermitsActive(): boolean {
+    return this._component === 'permits';
+  }
+
   public appWatchersActive(): boolean {
     return this._component === 'watchers';
   }
@@ -158,6 +167,13 @@ export class RosenWatcherComponent extends BaseEventAwareComponent {
         'Received watchers stats changed event, sending through notifyWatchersStatsChanged',
       );
       this.notifyWatchersStatsChanged.emit(data);
+    });
+
+    this.subscribeToEvent(EventType.PermitsStatsChanged, (data: MyWatchersStats[]) => {
+      console.log(
+        'Received chain permits stats changed event, sending through notifyPermitsStatsChanged',
+      );
+      this.notifyPermitsStatsChanged.emit(data);
     });
 
     this.subscribeToEvent(

@@ -7,6 +7,7 @@
 </div>
 } @if (isHtmlRenderEnabled()) {
 <div class="watchersmaincontainer main-content">
+  @if (!isElementsActive) {
   <div class="watcherstab">
     <a
       tabindex="0"
@@ -19,6 +20,8 @@
     </a>
     <a tabindex="0" class="tab" [class.active]="true">My watchers</a>
   </div>
+  }
+
   <div class="watcherscontainer mywatcher">
     <div class="watcherheader first"></div>
     <div class="watcherheader">Chain</div>

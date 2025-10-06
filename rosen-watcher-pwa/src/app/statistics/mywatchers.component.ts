@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Inject, Injector, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Injector,
+  Input as AngularInput,
+  OnInit,
+  Output,
+  OnChanges,
+} from '@angular/core';
 import { EventType } from '../service/event.service';
 import { WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
@@ -15,12 +24,15 @@ import { ChainDataService } from '../service/chain.data.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
 })
-export class MyWatchersComponent extends BaseWatcherComponent implements OnInit {
+export class MyWatchersComponent extends BaseWatcherComponent implements OnInit, OnChanges {
   private _renderHtml = true;
   public myWatcherStats: MyWatchersStats[] = [];
   public processedChainTypes: Partial<Record<ChainType, boolean>> = {};
+  @AngularInput()
+  filledAddresses: string[] = [];
+  prevFilledAddresses: string[] = [];
 
-  @Input()
+  @AngularInput()
   set renderHtml(value: string | boolean) {
     this._renderHtml = value === false || value === 'false' ? false : true;
   }
@@ -37,7 +49,7 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
     this.navigationService.navigate('/watchers');
   }
 
-  @Output() notifyWatchersStatsChanged = new EventEmitter<MyWatchersStats>();
+  @Output() notifyPermitsStatsChanged = new EventEmitter<MyWatchersStats>();
 
   selectedCurrency = '';
 
@@ -63,32 +75,67 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit 
     return this.watchersDataService.isChainTypeActive(chainType);
   }
 
+  async ngOnChanges(): Promise<void> {
+    if (
+      !this.prevFilledAddresses ||
+      this.filledAddresses.length !== this.prevFilledAddresses.length ||
+      !this.filledAddresses.every((addr, i) => addr === this.prevFilledAddresses![i])
+    ) {
+      this.prevFilledAddresses = [...this.filledAddresses];
+      await this.initializeAddresses();
+    }
+  }
+
+  async initializeAddresses() {
+    if (!this.isElementsActive) {
+      this.myWatcherStats = Object.entries(
+        await this.watchersDataService.getMyWatcherStats(
+          (await this.chaindataService.getAddresses()).map((a) => a.address),
+        ),
+      ).map(([key, value]) => ({ key, ...value }));
+
+      this.eventService.sendEventWithData(EventType.MyWatchersScreenLoaded, {
+        myWatcherStats: this.myWatcherStats,
+      });
+    } else {
+      this.myWatcherStats = Object.entries(
+        await this.watchersDataService.getMyWatcherStats(this.filledAddresses),
+      ).map(([key, value]) => ({ key, ...value }));
+
+      this.eventService.sendEventWithData(EventType.MyWatchersScreenLoaded, {
+        myWatcherStats: this.myWatcherStats,
+      });
+    }
+  }
+
+  private async getAddresses(): Promise<string[]> {
+    if (this.isElementsActive) {
+      return this.filledAddresses;
+    } else {
+      return (await this.chaindataService.getAddresses()).map((a) => a.address);
+    }
+  }
+
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
     this.selectedCurrency = localStorage.getItem('selectedCurrency') as Currency;
     this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
 
-    this.myWatcherStats = Object.entries(
-      await this.watchersDataService.getMyWatcherStats(await this.chaindataService.getAddresses()),
-    ).map(([key, value]) => ({ key, ...value }));
-
-    this.eventService.sendEventWithData(EventType.MyWatchersScreenLoaded, {
-      myWatcherStats: this.myWatcherStats,
-    });
+    await this.initializeAddresses();
 
     await this.subscribeToEvent<Input[]>(EventType.RefreshPermits, async () => {
       this.myWatcherStats = Object.entries(
-        await this.watchersDataService.getMyWatcherStats(
-          await this.chaindataService.getAddresses(),
-        ),
+        await this.watchersDataService.getMyWatcherStats(await this.getAddresses()),
       ).map(([key, value]) => ({ key, ...value }));
+
+      this.eventService.sendEventWithData(EventType.PermitsStatsChanged, this.myWatcherStats);
     });
 
     await this.subscribeToEvent<Input[]>(EventType.AddressPermitsDownloaded, async () => {
       this.processedChainTypes = await this.watchersDataService.requestAddressPermits(
         this.processedChainTypes,
-        await this.chaindataService.getAddresses(),
+        await this.getAddresses(),
       );
     });
   }

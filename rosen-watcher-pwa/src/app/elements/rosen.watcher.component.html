@@ -1,3 +1,10 @@
+<app-mywatchers
+  *ngIf="appPermitsActive() && renderHtml"
+  class="elementsActive"
+  [filledAddresses]="getFilledAddresses()"
+  [renderHtml]="renderHtml"
+></app-mywatchers>
+
 <app-watchers
   *ngIf="appWatchersActive() && renderHtml"
   class="elementsActive"
