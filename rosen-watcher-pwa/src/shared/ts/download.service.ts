@@ -247,7 +247,7 @@ class DownloadService<T> {
       console.error(e);
     } finally {
       this.decreaseBusyCounter(address);
-      this.dataService.purgeData(db);
+
       console.log(this.busyCounter);
     }
   }
@@ -341,6 +341,7 @@ class DownloadService<T> {
       console.error(e);
     } finally {
       this.decreaseBusyCounter(address);
+      this.dataService.purgeData(this.db);
       console.log(this.busyCounter);
     }
   }

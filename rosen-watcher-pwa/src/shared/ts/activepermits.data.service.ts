@@ -328,7 +328,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     let maxDiff = this.getMaxDownloadDateDifference();
     const now = Date.now();
 
-    if (permitTx != null && now - permitTx.date.getMilliseconds() > maxDiff) {
+    if (permitTx != null && now - permitTx.date.getTime() > maxDiff) {
       maxDiff = now - permitTx.date.getTime();
     }
 

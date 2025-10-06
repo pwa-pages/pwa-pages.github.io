@@ -182,7 +182,6 @@ class DownloadService {
         }
         finally {
             this.decreaseBusyCounter(address);
-            this.dataService.purgeData(db);
             console.log(this.busyCounter);
         }
     }
@@ -257,6 +256,7 @@ class DownloadService {
         }
         finally {
             this.decreaseBusyCounter(address);
+            this.dataService.purgeData(this.db);
             console.log(this.busyCounter);
         }
     }
