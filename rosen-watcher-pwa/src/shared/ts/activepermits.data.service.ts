@@ -189,6 +189,14 @@ class ActivePermitsDataService extends DataService<PermitTx> {
       permitsByTxId[permit.transactionId].push(permit);
     }
 
+    const boxIdMap: Record<string, PermitTx[]> = {};
+    for (const permit of permits) {
+      if (!boxIdMap[permit.boxId]) {
+        boxIdMap[permit.boxId] = [];
+      }
+      boxIdMap[permit.boxId].push(permit);
+    }
+
     for (const permit of addressPermits) {
       let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) =>
         Object.values(permitTriggerAddresses).some((address) => address === o.address),
@@ -196,7 +204,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
       let foundResolved = false;
 
       for (const output of outputs) {
-        let cnt = permits.filter((p) => p.boxId === output.boxId);
+        let cnt = boxIdMap[output.boxId] ?? [];
         if (cnt.length >= 2) {
           foundResolved = true;
 
