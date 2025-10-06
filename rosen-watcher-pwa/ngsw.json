@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1759753307706,
+  "timestamp": 1759775111627,
   "appData": {
-    "version": "3.56.0"
+    "version": "3.56.1"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -20,7 +20,7 @@
         "./manifest.webmanifest",
         "./polyfills-B6TNHZQ6.js",
         "./rosen.html",
-        "./scripts-3EJOBQKR.js",
+        "./scripts-3KZYFPRP.js",
         "./shared/js/ngsw-worker.js",
         "./styles-NOSDAYE2.css"
       ],
@@ -86,7 +86,7 @@
     "./assets/rosen-watchers.html": "40657d404800e7e3a22694e7c2ba6044e7ad3b24",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "94d3d433c6dcb706304b72e284e6301483703628",
+    "./index.html": "fbf9321497aafc49fcc8b25bd69179b5ea82b052",
     "./main-SKYU2WRQ.js": "fd2d7ea9da32f4b78729c1fd1e8b127f0211f096",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
@@ -102,7 +102,7 @@
     "./media/runes-RL26QNQT.png": "9c109d077d6f1b5043a640c80ff04f85a8a06bdf",
     "./polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
     "./rosen.html": "fdd96211de1f83e4e064b109ca06d9906235943c",
-    "./scripts-3EJOBQKR.js": "0a17f7915faa29a91da4b44a5223da46318cd4bc",
+    "./scripts-3KZYFPRP.js": "84dd839bb0ae78bfb1c4d5724907b774f9ebb1be",
     "./shared/js/ngsw-worker.js": "a424955690d990a196a465b83c45e92f8d69727c",
     "./styles-NOSDAYE2.css": "b8cbde03ebf33c80f16e79f83076e6012fa6d47b"
   },
