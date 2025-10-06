@@ -170,11 +170,6 @@ class ActivePermitsDataService extends DataService<PermitTx> {
 
     const openBoxesMap = await this.getOpenBoxesMap(this.db);
 
-    let resolvedBulkPermits = permits.filter((info) =>
-      Object.values(permitBulkAddresses).some((address) => address === info.address),
-    );
-    console.log('Resolved active permits:', resolvedBulkPermits);
-
     let addressPermits = new Array<PermitTx>();
     if (addresses != null && addresses.length > 0) {
       addressPermits = permits.filter((info) => addresses.some((addr) => addr === info.address));
@@ -195,10 +190,8 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     }
 
     for (const permit of addressPermits) {
-      let outputs = permits.filter(
-        (o) =>
-          o.transactionId === permit.transactionId &&
-          Object.values(permitTriggerAddresses).some((address) => address === o.address),
+      let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) =>
+        Object.values(permitTriggerAddresses).some((address) => address === o.address),
       );
       let foundResolved = false;
 
