@@ -5,12 +5,14 @@
   </head>
   <body>
     <rosen-watcher-component
-      component="performance"
+      component="permits"
       render-html="true"
       address1="9gWWVhZX1nmzjaKqtmQMvE15gV3u8exUgaZHokwT2he9ru5B5NV"
       address2="9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38"
-      accent-chart-color="#666666"
-      style="height: 300px; width: 500px"
+      address3="9gnew46Ts9wZQWmbMWTebJE1yhqc1FAMXt3qQa8LjW3Uu7D4KnD"
+      address4="9gfq8fd4qkGuGh6t2Z22McguhDA9Af3hiUTQvRWoxc6BiHvoqSU"
+      address5="9hfbeeHNkgsGFXpu86r3KfP1fDdVFeJZvMRt9QTri6ixyQYc1fG"
+      address6="9hSCGaUdvLfz7LS5xrwPGqaJhpHHMXrMRqoMX9ntUugjXAgbELc"
     />
   </body>
 </html>
@@ -18,7 +20,7 @@
 <script>
   const watchersEl = document.querySelector('rosen-watcher-component');
 
-  watchersEl.addEventListener('notifyPerformanceChartsChanged', (event) => {
-    console.log('Performance changed:', JSON.stringify(event.detail));
+  watchersEl.addEventListener('notifyPermitsStatsChanged', (event) => {
+    console.log('Permits stats changed:', JSON.stringify(event.detail));
   });
 </script>
