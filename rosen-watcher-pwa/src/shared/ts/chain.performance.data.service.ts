@@ -34,22 +34,24 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
         const chainTokensCount: Record<string, number> = {};
         const eRSNTotal = item.outputs.reduce((total, output) => {
           output.assets.forEach((asset) => {
-            if (Object.values(chainTypeTokens).includes(asset.name)) {
-              if (!chainTokensCount[asset.name]) {
-                chainTokensCount[asset.name] = 1;
+            if (asset.tokenId != null && asset.tokenId in rwtTokenIds) {
+              if (!chainTokensCount[asset.tokenId]) {
+                chainTokensCount[asset.tokenId] = 1;
               } else {
-                chainTokensCount[asset.name]++;
+                chainTokensCount[asset.tokenId]++;
               }
             }
           });
 
           const assets = output.assets.filter(
-            (a) => a.name === 'eRSN' && Object.values(rewardAddresses).includes(output.address),
+            (a) =>
+              a.tokenId === rs_eRSNTokenId &&
+              Object.values(rewardAddresses).includes(output.address),
           );
 
           return (
             total +
-            assets.reduce((acc, asset) => acc + asset.amount / Math.pow(10, asset.decimals), 0)
+            assets.reduce((acc, asset) => acc + asset.amount / Math.pow(10, rs_RSNDecimals), 0)
           );
         }, 0);
 
@@ -58,9 +60,7 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
           Object.keys(chainTokensCount)[0],
         );
 
-        const chainType = Object.entries(chainTypeTokens).find(
-          ([, value]) => value === maxKey,
-        )?.[0];
+        const chainType = Object.entries(rwtTokenIds).find(([key]) => key === maxKey)?.[1];
 
         const dbPerfTx: PerfTx = {
           id: item.id,

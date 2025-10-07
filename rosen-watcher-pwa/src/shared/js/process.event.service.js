@@ -74,7 +74,7 @@ class ProcessEventService {
                 type: 'PerfChartChanged',
                 data: perfTxs,
             });
-            downloadPerfService.downloadForAddress(hotWalletAddress, false);
+            downloadPerfService.downloadForAddress(hotWalletAddress, true);
         }
         catch (error) {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
