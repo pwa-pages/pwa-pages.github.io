@@ -11,7 +11,7 @@ import { WatcherInfo } from '../../service/ts/models/watcher.info';
 })
 export class HttpDownloadService {
   private activeDownloads: Record<string, boolean> = {};
-  private useNode = true;
+  private useNode = false;
   constructor(
     private http: HttpClient,
     private eventService: EventService,
