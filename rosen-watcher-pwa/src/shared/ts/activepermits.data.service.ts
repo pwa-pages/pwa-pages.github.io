@@ -66,6 +66,15 @@ class ActivePermitsDataService extends DataService<PermitTx> {
   }
 
   private async getWatcherPermits(): Promise<PermitTx[]> {
+    const cacheKey = 'watcherPermitsCache';
+    const cache: Record<string, { data: PermitTx[]; timestamp: number }> =
+      globalThis as unknown as Record<string, { data: PermitTx[]; timestamp: number }>;
+
+    // Check cache
+    if (cache[cacheKey] && cache[cacheKey].data && Date.now() - cache[cacheKey].timestamp < 60000) {
+      return cache[cacheKey].data;
+    }
+
     const permitsPromise = this.getData<PermitTx>(rs_ActivePermitTxStoreName);
 
     console.log('Retrieving watcher active permits');
@@ -82,9 +91,13 @@ class ActivePermitsDataService extends DataService<PermitTx> {
       });
       permits.sort((a, b) => b.date.getTime() - a.date.getTime());
 
-      return await new Promise<PermitTx[]>((resolve) => {
-        resolve(permits);
-      });
+      // Cache result
+      cache[cacheKey] = {
+        data: permits,
+        timestamp: Date.now(),
+      };
+
+      return permits;
     } catch (error) {
       console.error(error);
       return [];
@@ -127,6 +140,18 @@ class ActivePermitsDataService extends DataService<PermitTx> {
   }
 
   async getOpenBoxesMap(db: IDBDatabase): Promise<Record<string, string | null> | null> {
+    const cacheKey = 'openBoxesMapCache';
+    const cache: Record<string, { data: Record<string, string | null>; timestamp: number }> =
+      globalThis as unknown as Record<
+        string,
+        { data: Record<string, string | null>; timestamp: number }
+      >;
+
+    // Check cache
+    if (cache[cacheKey] && cache[cacheKey].data && Date.now() - cache[cacheKey].timestamp < 60000) {
+      return cache[cacheKey].data;
+    }
+
     const openBoxesMap: Record<string, string | null> = {};
 
     const transaction: IDBTransaction = db.transaction([rs_OpenBoxesStoreName], 'readonly');
@@ -139,13 +164,19 @@ class ActivePermitsDataService extends DataService<PermitTx> {
 
           request.onsuccess = () => {
             const result: OpenBoxes | undefined = request.result as OpenBoxes | undefined;
-
             resolve(JSON.stringify(result?.openBoxesJson ?? null));
           };
           request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
         });
       }
     }
+
+    // Cache result
+    cache[cacheKey] = {
+      data: openBoxesMap,
+      timestamp: Date.now(),
+    };
+
     return openBoxesMap;
   }
 
@@ -166,7 +197,6 @@ class ActivePermitsDataService extends DataService<PermitTx> {
 
   async getAdressActivePermits(addresses: string[] | null = null): Promise<PermitTx[]> {
     const permits = await this.getWatcherPermits();
-    const dbAddresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
 
     const openBoxesMap = await this.getOpenBoxesMap(this.db);
 
@@ -174,6 +204,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     if (addresses != null && addresses.length > 0) {
       addressPermits = permits.filter((info) => addresses.some((addr) => addr === info.address));
     } else {
+      const dbAddresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
       addressPermits = permits.filter((info) =>
         dbAddresses.some((addr) => addr.address === info.address),
       );
