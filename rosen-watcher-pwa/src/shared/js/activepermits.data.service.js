@@ -43,12 +43,6 @@ class ActivePermitsDataService extends DataService {
         return 204800000;
     }
     async getWatcherPermits() {
-        const cacheKey = 'watcherPermitsCache';
-        const cache = globalThis;
-        // Check cache
-        if (cache[cacheKey] && cache[cacheKey].data && Date.now() - cache[cacheKey].timestamp < 60000) {
-            return cache[cacheKey].data;
-        }
         const permitsPromise = this.getData(rs_ActivePermitTxStoreName);
         console.log('Retrieving watcher active permits');
         try {
@@ -61,12 +55,9 @@ class ActivePermitsDataService extends DataService {
                 });
             });
             permits.sort((a, b) => b.date.getTime() - a.date.getTime());
-            // Cache result
-            cache[cacheKey] = {
-                data: permits,
-                timestamp: Date.now(),
-            };
-            return permits;
+            return await new Promise((resolve) => {
+                resolve(permits);
+            });
         }
         catch (error) {
             console.error(error);
@@ -100,12 +91,6 @@ class ActivePermitsDataService extends DataService {
         });
     }
     async getOpenBoxesMap(db) {
-        const cacheKey = 'openBoxesMapCache';
-        const cache = globalThis;
-        // Check cache
-        if (cache[cacheKey] && cache[cacheKey].data && Date.now() - cache[cacheKey].timestamp < 60000) {
-            return cache[cacheKey].data;
-        }
         const openBoxesMap = {};
         const transaction = db.transaction([rs_OpenBoxesStoreName], 'readonly');
         const objectStore = transaction.objectStore(rs_OpenBoxesStoreName);
@@ -121,11 +106,6 @@ class ActivePermitsDataService extends DataService {
                 });
             }
         }
-        // Cache result
-        cache[cacheKey] = {
-            data: openBoxesMap,
-            timestamp: Date.now(),
-        };
         return openBoxesMap;
     }
     shouldAddInputToDb(address) {
