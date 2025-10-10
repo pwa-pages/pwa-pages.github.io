@@ -71,27 +71,6 @@ export class WatchersDataService {
     return this.watchersStatsSignal;
   }
 
-  async requestAddressPermits(
-    processedChainTypes: Partial<Record<ChainType, boolean>>,
-    addresses: string[],
-  ) {
-    let myWatcherStats = await this.getMyWatcherStats(addresses);
-    for (const stat of myWatcherStats) {
-      if (stat.chainType && !processedChainTypes[stat.chainType]) {
-        console.log('Chaintype not processed ' + stat.chainType);
-
-        await this.eventService.sendEventWithData(EventType.RequestAddressPermits, {
-          myWatcherStats: myWatcherStats,
-          chainType: stat.chainType,
-        });
-        console.log('Chaintype processed ' + stat.chainType);
-        processedChainTypes[stat.chainType] = true;
-      }
-    }
-
-    return processedChainTypes;
-  }
-
   async getMyWatcherStats(addresses: string[]): Promise<MyWatchersStats[]> {
     if (this.myWatcherStats.length == 0) {
       const storedStats = localStorage.getItem('myWatcherStats');

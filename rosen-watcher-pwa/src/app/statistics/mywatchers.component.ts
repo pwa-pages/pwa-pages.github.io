@@ -88,22 +88,14 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit,
 
   async initializeAddresses() {
     if (!this.isElementsActive) {
-      this.myWatcherStats = Object.entries(
-        await this.watchersDataService.getMyWatcherStats(
-          (await this.chaindataService.getAddresses()).map((a) => a.address),
-        ),
-      ).map(([key, value]) => ({ key, ...value }));
+      let addresses = (await this.chaindataService.getAddresses()).map((a: Address) => a.address);
 
       this.eventService.sendEventWithData(EventType.MyWatchersScreenLoaded, {
-        myWatcherStats: this.myWatcherStats,
+        addresses: addresses,
       });
     } else {
-      this.myWatcherStats = Object.entries(
-        await this.watchersDataService.getMyWatcherStats(this.filledAddresses),
-      ).map(([key, value]) => ({ key, ...value }));
-
       this.eventService.sendEventWithData(EventType.MyWatchersScreenLoaded, {
-        myWatcherStats: this.myWatcherStats,
+        addresses: this.filledAddresses,
       });
     }
   }
@@ -130,13 +122,6 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit,
       ).map(([key, value]) => ({ key, ...value }));
 
       this.eventService.sendEventWithData(EventType.PermitsStatsChanged, this.myWatcherStats);
-    });
-
-    await this.subscribeToEvent<Input[]>(EventType.AddressPermitsDownloaded, async () => {
-      this.processedChainTypes = await this.watchersDataService.requestAddressPermits(
-        this.processedChainTypes,
-        await this.getAddresses(),
-      );
     });
   }
 }

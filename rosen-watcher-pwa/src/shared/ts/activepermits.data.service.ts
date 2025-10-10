@@ -172,11 +172,6 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     let addressPermits = new Array<PermitTx>();
     if (addresses != null && addresses.length > 0) {
       addressPermits = permits.filter((info) => addresses.some((addr) => addr === info.address));
-    } else {
-      const dbAddresses: AddressData[] = await this.getData<AddressData>(rs_AddressDataStoreName);
-      addressPermits = permits.filter((info) =>
-        dbAddresses.some((addr) => addr.address === info.address),
-      );
     }
 
     let result = new Array<PermitTx>();
