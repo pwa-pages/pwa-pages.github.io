@@ -81,33 +81,50 @@ class ProcessEventService {
         console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
         try {
             let permits = await myWatcherDataService.getAdressPermits(addresses);
-            let chainTypes = new Set();
-            for (const permit of Object.values(permits)) {
-                if (permit && permit.chainType && addresses.includes(permit.address)) {
-                    chainTypes.add(permit.chainType);
+            let chainTypes = this.extractChaintTypes(permits, addresses);
+            this.sendPermitsChangedEvent(permits);
+            if (chainTypes.size === 0) {
+                await downloadMyWatchersService.downloadForChainPermitAddresses(addresses);
+                permits = await this.sendPermitChangedEvent(myWatcherDataService, addresses);
+                let chainTypes = this.extractChaintTypes(permits, addresses);
+                await this.processActivePermits(chainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService);
+            }
+            else {
+                await this.processActivePermits(chainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService);
+                await downloadMyWatchersService.downloadForChainPermitAddresses(addresses);
+                await this.sendPermitChangedEvent(myWatcherDataService, addresses);
+                let newChainTypes = this.extractChaintTypes(await myWatcherDataService.getAdressPermits(addresses), addresses);
+                if (newChainTypes.size !== chainTypes.size ||
+                    [...newChainTypes].some((ct) => !chainTypes.has(ct))) {
+                    await this.processActivePermits(newChainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService);
                 }
             }
-            this.sendPermitsChangedEvent(permits);
-            await downloadMyWatchersService.downloadForChainPermitAddresses(addresses);
-            await this.sendPermitChangedEvent(permits, myWatcherDataService, addresses);
-            await this.processActivePermits(chainTypes, activePermitsDataService, permits, myWatcherDataService, addresses, downloadActivePermitsService);
         }
         catch (error) {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
     }
-    async processActivePermits(chainTypes, activePermitsDataService, permits, myWatcherDataService, addresses, downloadActivePermitsService) {
+    extractChaintTypes(permits, addresses) {
+        let chainTypes = new Set();
+        for (const permit of Object.values(permits)) {
+            if (permit && permit.chainType && addresses.includes(permit.address)) {
+                chainTypes.add(permit.chainType);
+            }
+        }
+        return chainTypes;
+    }
+    async processActivePermits(chainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService) {
         await Promise.all(Array.from(chainTypes).map(async (chainType) => {
             await activePermitsDataService.downloadOpenBoxes(chainType);
-            await this.sendPermitChangedEvent(permits, myWatcherDataService, addresses);
+            await this.sendPermitChangedEvent(myWatcherDataService, addresses);
         }));
         await Promise.all(Array.from(chainTypes).map(async (chainType) => {
             await downloadActivePermitsService.downloadForActivePermitAddresses(addresses, chainType);
-            await this.sendPermitChangedEvent(permits, myWatcherDataService, addresses);
+            await this.sendPermitChangedEvent(myWatcherDataService, addresses);
         }));
     }
-    async sendPermitChangedEvent(permits, myWatcherDataService, addresses) {
-        permits = await myWatcherDataService.getAdressPermits(addresses);
+    async sendPermitChangedEvent(myWatcherDataService, addresses) {
+        let permits = await myWatcherDataService.getAdressPermits(addresses);
         this.eventSender.sendEvent({
             type: 'PermitsChanged',
             data: permits,
