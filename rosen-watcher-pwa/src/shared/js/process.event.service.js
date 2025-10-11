@@ -116,8 +116,8 @@ class ProcessEventService {
     async processActivePermits(chainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService) {
         await Promise.all(Array.from(chainTypes).map(async (chainType) => {
             await activePermitsDataService.downloadOpenBoxes(chainType);
-            await this.sendPermitChangedEvent(myWatcherDataService, addresses);
         }));
+        await this.sendPermitChangedEvent(myWatcherDataService, addresses);
         await Promise.all(Array.from(chainTypes).map(async (chainType) => {
             await downloadActivePermitsService.downloadForActivePermitAddresses(addresses, chainType);
             await this.sendPermitChangedEvent(myWatcherDataService, addresses);
