@@ -263,8 +263,6 @@ class ProcessEventService {
     await Promise.all(
       Array.from(chainTypes).map(async (chainType) => {
         await downloadActivePermitsService.downloadForActivePermitAddresses(addresses, chainType!);
-
-        await this.sendPermitChangedEvent(myWatcherDataService, addresses);
       }),
     );
   }
