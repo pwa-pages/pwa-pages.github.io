@@ -120,11 +120,17 @@ class DownloadService {
                 }
             });
             const downloadPromises = addresses.map(async (address) => {
-                await this.downloadForAddress(address, true);
-                let permits = await this.myWatcherDataService.getAdressPermits(allAddresses);
-                await this.eventSender.sendEvent({
-                    type: 'PermitsChanged',
-                    data: permits,
+                await this.downloadForAddress(address, true, async () => {
+                    try {
+                        const permits = await this.myWatcherDataService.getAdressPermits(allAddresses);
+                        await this.eventSender.sendEvent({
+                            type: 'PermitsChanged',
+                            data: permits,
+                        });
+                    }
+                    catch (err) {
+                        console.error('Error in permits callback:', err);
+                    }
                 });
             });
             await Promise.all(downloadPromises);
@@ -153,7 +159,7 @@ class DownloadService {
         }
     }
     // Download All for Address (recursive)
-    async downloadAllForAddress(address, offset, db, useNode) {
+    async downloadAllForAddress(address, offset, db, useNode, callback) {
         this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
@@ -167,6 +173,9 @@ class DownloadService {
                 return;
             }
             await this.dataService.addData(address, result.transactions, db);
+            if (callback) {
+                await callback?.();
+            }
             //await this.dataService.compressInputs();
             if (this.dataService.getMaxDownloadDateDifference() >
                 new Date().getTime() -
@@ -222,7 +231,7 @@ class DownloadService {
             request.onerror = (event) => reject(event.target.error);
         });
     }
-    async downloadForAddress(address, useNode) {
+    async downloadForAddress(address, useNode, callback) {
         this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
@@ -241,6 +250,9 @@ class DownloadService {
             }
             console.log('Add bunch of data');
             await this.dataService.addData(address, result.transactions, this.db);
+            if (callback) {
+                await callback?.();
+            }
             const downloadStatus = (await this.getDownloadStatus(address, this.db))?.status || 'false';
             if (existingData && downloadStatus === 'true') {
                 console.log(`Found existing boxId in db for ${address}, no need to download more.`);
@@ -248,7 +260,7 @@ class DownloadService {
             else if (itemsz >= this.downloadInitialSize) {
                 await this.setDownloadStatus(address, 'false', this.db);
                 console.log(`Downloading all tx's for : ${address}`);
-                await this.downloadAllForAddress(address, 0, this.db, useNode);
+                await this.downloadAllForAddress(address, 0, this.db, useNode, callback);
             }
         }
         catch (e) {

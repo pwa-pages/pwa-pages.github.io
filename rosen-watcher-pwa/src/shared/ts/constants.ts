@@ -26,6 +26,16 @@ const rs_ErgoNodeHost = 'node-p2p.ergoplatform.com';
 //const rs_ErgoExplorerHost = 'node-p2p.ergoplatform.com';
 // https://node-p2p.ergoplatform.com/swagger
 
+/*
+
+https://api.ergoplatform.com/api/v1/docs/
+https://api-p2p.ergoplatform.com/api/v1/docs/
+https://api.ergo.aap.cornell.edu/api/v1/docs/
+https://api.ergobackup.aap.cornell.edu/api/v1/docs/
+https://api.codeutxo.com/api/v1/docs/
+
+*/
+
 const rs_RSNTokenId = '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';
 const rs_eRSNTokenId = 'dede2cf5c1a2966453ffec198a9b97b53d281e548903a905519b3525d59cdc3c';
 

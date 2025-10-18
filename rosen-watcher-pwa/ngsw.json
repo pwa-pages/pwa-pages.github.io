@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1760203893309,
+  "timestamp": 1760767781937,
   "appData": {
-    "version": "3.58.9"
+    "version": "3.59.0"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -20,7 +20,7 @@
         "./manifest.webmanifest",
         "./polyfills-B6TNHZQ6.js",
         "./rosen.html",
-        "./scripts-OENKRJEC.js",
+        "./scripts-ZCA6CDGC.js",
         "./shared/js/ngsw-worker.js",
         "./styles-NOSDAYE2.css"
       ],
@@ -86,7 +86,7 @@
     "./assets/rosen-watchers.html": "40657d404800e7e3a22694e7c2ba6044e7ad3b24",
     "./assets/test.html": "e3237ed2975514677caa4ad390194c48a888a860",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "e2eb57c788931b2fc60688279420c92786543650",
+    "./index.html": "aeb9a3d88e9abdeec4d0824c1897abf3b0a83840",
     "./main-YI5BULUY.js": "f433a9443fa28fee9cfe2b0c711548cbecccec6e",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
@@ -102,7 +102,7 @@
     "./media/runes-RL26QNQT.png": "9c109d077d6f1b5043a640c80ff04f85a8a06bdf",
     "./polyfills-B6TNHZQ6.js": "bf76ac291d7f51c1139b7edcf86b359a30c08c64",
     "./rosen.html": "fdd96211de1f83e4e064b109ca06d9906235943c",
-    "./scripts-OENKRJEC.js": "b18901b72723ab78912dc82375aa5a7e3cca2bd5",
+    "./scripts-ZCA6CDGC.js": "8c2c38cb72384e600743e12be4b8fa9867f5bd01",
     "./shared/js/ngsw-worker.js": "a424955690d990a196a465b83c45e92f8d69727c",
     "./styles-NOSDAYE2.css": "b8cbde03ebf33c80f16e79f83076e6012fa6d47b"
   },
