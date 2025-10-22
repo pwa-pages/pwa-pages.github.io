@@ -4,7 +4,7 @@ import React from 'react';
 import { rosenScriptFile, rosenStyleFile } from '../.storybook/preview';
 
 const baseArgs = {
-  address1: '9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38',
+  address1: '9ehyh2Ti9kBvnodWsafHhzT5557eTwWsKLdvRFhipmLmWAqYhAv',
   address2: '',
   chartTitle: 'Lobster pool rewards',
   chartColor: '#666666',
@@ -71,7 +71,7 @@ export const Primary = {
   name: 'Explore Component',
   args: {
     address1: "",
-    address2: "9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38"
+    address2: "9ehyh2Ti9kBvnodWsafHhzT5557eTwWsKLdvRFhipmLmWAqYhAv"
   },
   parameters: {
     docs: {

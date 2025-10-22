@@ -4,10 +4,10 @@ import React from 'react';
 import { rosenScriptFile, rosenStyleFile } from '../.storybook/preview';
 
 const baseArgs = {
-  address1: '9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38',
-  address2: '9gnew46Ts9wZQWmbMWTebJE1yhqc1FAMXt3qQa8LjW3Uu7D4KnD',
-  address3: '9ehyh2Ti9kBvnodWsafHhzT5557eTwWsKLdvRFhipmLmWAqYhAv',
-  address4: '9htrN7JGgi8bxABJLCCskWqAHpatQqttFUF6GY68yaEbahG5Vx6',
+  address1: '9fMuCRJ9mBok5K43Qb8Ddx3rBnoHbvg82d7wAsBW33CPz9ioLS3',
+  address2: '9fTF3gDacgsi5BhpcgKrGQtGMr93VTkZaH6tZFG8zJAMe44EaGm',
+  address3: '9ha6v36nv7p3mVRsVPnMajGmASbY6Etz4ba3MqfgZy4D2zvvPxg',
+  address4: '9ehyh2Ti9kBvnodWsafHhzT5557eTwWsKLdvRFhipmLmWAqYhAv',
   accentChartColor: '#666666',
 };
 
@@ -66,10 +66,10 @@ function buildSourceCode(args) {
 export const Primary = {
   name: 'Explore Component',
   args: {
-  address1: '9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38',
-  address2: '9gnew46Ts9wZQWmbMWTebJE1yhqc1FAMXt3qQa8LjW3Uu7D4KnD',
-  address3: '9ehyh2Ti9kBvnodWsafHhzT5557eTwWsKLdvRFhipmLmWAqYhAv',
-  address4: '9htrN7JGgi8bxABJLCCskWqAHpatQqttFUF6GY68yaEbahG5Vx6',
+  address1: '9fMuCRJ9mBok5K43Qb8Ddx3rBnoHbvg82d7wAsBW33CPz9ioLS3',
+  address2: '9fTF3gDacgsi5BhpcgKrGQtGMr93VTkZaH6tZFG8zJAMe44EaGm',
+  address3: '9ha6v36nv7p3mVRsVPnMajGmASbY6Etz4ba3MqfgZy4D2zvvPxg',
+  address4: '9ehyh2Ti9kBvnodWsafHhzT5557eTwWsKLdvRFhipmLmWAqYhAv',
   },
   parameters: {
     docs: {
