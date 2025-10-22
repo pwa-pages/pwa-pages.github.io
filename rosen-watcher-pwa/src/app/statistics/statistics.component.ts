@@ -97,9 +97,16 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       this.selectedPeriod,
     );
 
-    this.amounts = this.sortedInputs.map((s) => {
-      return { x: s.inputDate, y: s.amount } as DateNumberPoint;
-    });
+    this.addressesForDisplay = await this.dataService.getAddresses();
+
+    {
+      const addressSet = new Set(this.addressesForDisplay.map((a) => a.address));
+      this.amounts = this.sortedInputs
+        .filter((s) => addressSet.has(s.outputAddress))
+        .map((s) => {
+          return { x: s.inputDate, y: s.amount } as DateNumberPoint;
+        });
+    }
 
     if (this.amounts.length > 0) {
       const total = this.amounts.reduce((sum, item) => sum + item.y, 0);
@@ -107,10 +114,6 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     }
 
     this.detailInputs = this.getDetailInputs(this.detailInputsSize);
-
-    this.addressesForDisplay = await this.dataService.getAddressesForDisplay(
-      this.dataService.rsnInputs,
-    );
   }
 
   filterDateClick() {

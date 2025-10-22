@@ -121,9 +121,18 @@ export class StorageService {
     this.inputsCache = await this.getData<Input>(rs_InputsStoreName);
     return this.inputsCache;
   }
-
   async getAddressData(): Promise<Address[]> {
-    return await this.getData<Address>(rs_AddressDataStoreName);
+    const rawData = await this.getData<{
+      address: string;
+      chainType: ChainType | null;
+      active?: boolean;
+    }>(rs_AddressDataStoreName);
+
+    const addresses: Address[] = rawData.map(
+      (obj) => new Address(obj.address, obj.chainType, obj.active ?? true),
+    );
+
+    return addresses;
   }
 
   private async getData<T>(storeName: string): Promise<T[]> {
