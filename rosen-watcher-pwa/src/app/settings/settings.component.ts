@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ChainDataService } from '../service/chain.data.service';
 import { StorageService } from '../service/storage.service';
 import { Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings.dialog';
 import { MatDialog } from '@angular/material/dialog';
-
 import { Address } from '../../service/ts/models/address';
-import { EventService, EventType } from '../service/event.service';
 
 @Component({
   selector: 'app-settings',
@@ -19,9 +16,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private dataService: ChainDataService,
     private storageService: StorageService,
-    private eventService: EventService,
     public dialog: MatDialog,
   ) {
     this.addresses = [];
@@ -89,18 +84,8 @@ export class SettingsComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    const inputs = await this.dataService.getInputs();
-
-    const dataServiceAddresses = this.dataService.getAddressesFromInputs(inputs);
-    // combine addresses from address store,
-    // but also from input data for backwards compatibility reasons
-
     return this.storageService.getAddressData().then((storageServiceAddresses) => {
       const addressMap = new Map<string, Address>();
-
-      dataServiceAddresses.forEach((address: Address) => {
-        addressMap.set(address.address, address);
-      });
 
       storageServiceAddresses.forEach((address: Address) => {
         if (addressMap.has(address.address)) {
@@ -116,8 +101,6 @@ export class SettingsComponent implements OnInit {
 
       this.addresses = Array.from(addressMap.values());
     });
-
-    this.eventService.sendEvent(EventType.SettingsScreenLoaded);
   }
 
   title = 'settings';
