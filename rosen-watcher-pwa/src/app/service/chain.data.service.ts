@@ -32,13 +32,24 @@ export class ChainDataService {
 
   constructor(
     private storageService: StorageService,
-
     private eventService: EventService,
   ) {}
 
   public async initialize() {
     this.eventService.subscribeToEvent(EventType.InputsChanged, async (i: Input[]) => {
+      let storedAddresses = await this.getAddresses();
+
       this.rsnInputs = i;
+
+      if (storedAddresses && storedAddresses.length > 0) {
+        const activeAddresses = storedAddresses.filter((a) => a.active).map((a) => a.address);
+        if (activeAddresses.length > 0) {
+          this.rsnInputs = this.rsnInputs.filter((input) =>
+            activeAddresses.includes(input.outputAddress),
+          );
+        }
+      }
+
       this.eventService.sendEvent(EventType.RefreshInputs);
     });
 
@@ -55,7 +66,18 @@ export class ChainDataService {
       async (
         a: Record<string, { chainType: ChainType | null; charts: Record<number, number> }>,
       ) => {
-        this.addressCharts = a;
+        let storedAddresses = await this.getAddresses();
+
+        const addressSet = new Set((storedAddresses || []).map((s) => s.address));
+        this.addressCharts = Object.keys(a)
+          .filter((key) => addressSet.has(key))
+          .reduce(
+            (acc, key) => {
+              acc[key] = a[key];
+              return acc;
+            },
+            {} as Record<string, { chainType: ChainType | null; charts: Record<number, number> }>,
+          );
         this.eventService.sendEvent(EventType.RefreshInputs);
       },
     );
