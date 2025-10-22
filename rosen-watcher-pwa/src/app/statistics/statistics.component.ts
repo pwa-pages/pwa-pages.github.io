@@ -97,7 +97,13 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
       this.selectedPeriod,
     );
 
-    this.addressesForDisplay = await this.dataService.getAddresses();
+    this.addressesForDisplay = await this.dataService.getAddressesFromInputs(this.sortedInputs);
+
+    const availableAddresses = await this.dataService.getAddresses();
+    if (availableAddresses && availableAddresses.length) {
+      const availSet = new Set(availableAddresses.map((a) => a.address));
+      this.addressesForDisplay = this.addressesForDisplay.filter((a) => availSet.has(a.address));
+    }
 
     {
       const addressSet = new Set(this.addressesForDisplay.map((a) => a.address));
