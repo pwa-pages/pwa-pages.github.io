@@ -87,7 +87,7 @@ li:last-child {
 }
 
 .upcomingwatcher {
-  font-size: 0.8vmax;
+  font-size: 1.3vmax;
   font-style: italic;
 }
 
@@ -219,7 +219,7 @@ a {
 
 .watchervaluerow {
   margin-bottom: var(--large-font);
-  font-size: 1.1vmax;
+  font-size: 1.6vmax;
 }
 
 .watcherscontainer .watchersdispl {
@@ -231,7 +231,7 @@ a {
 }
 
 .watcherscontainer {
-  font-size: 1.1vmax;
+  font-size: 1.6vmax;
   margin-top: var(--small-medium-height);
   float: left;
   border-radius: 3vmax;
@@ -442,6 +442,7 @@ button:active {
 
 .currencyrow {
   padding-right: 0 !important;
+  padding-top: 1vmax;
 }
 
 .collateralvalues {
