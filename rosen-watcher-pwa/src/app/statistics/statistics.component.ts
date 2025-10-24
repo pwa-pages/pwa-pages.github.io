@@ -92,12 +92,10 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
     this.selectedPeriod =
       this.selectedPeriod ?? (localStorage.getItem('statisticsPeriod') as Period) ?? Period.All;
 
-    this.sortedInputs = DateUtils.filterByPeriod(
-      this.dataService.getSortedInputs(true, null, null) ?? [],
-      this.selectedPeriod,
-    );
+    let sortedInputs = this.dataService.getSortedInputs(true, null, null) ?? [];
+    this.addressesForDisplay = await this.dataService.getAddressesFromInputs(sortedInputs);
 
-    this.addressesForDisplay = await this.dataService.getAddressesFromInputs(this.sortedInputs);
+    this.sortedInputs = DateUtils.filterByPeriod(sortedInputs, this.selectedPeriod);
 
     const availableAddresses = await this.dataService.getAddresses();
     if (availableAddresses && availableAddresses.length) {

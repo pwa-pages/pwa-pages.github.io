@@ -33,9 +33,6 @@
   </div>
 
   <div class="watcherscontainer">
-    <div class="currencyrow">
-      <div class="watcherrequirements">Watcher requirements:</div>
-    </div>
     <div class="watchervaluerow collateralvalues">
       Watcher collateral: {{watchersStats.watcherCollateralRSN | number: '1.0-0'}} RSN +
       {{watchersStats.watcherCollateralERG}} ERG = {{getWatcherAmounts().watcherValue | number:
@@ -44,7 +41,6 @@
       Permit value: {{watchersStats.permitCost | number: '1.0-0'}} RSN =
       {{getWatcherAmounts().permitValue | number: '1.0-0'}} {{this.selectedCurrency}}
     </div>
-    <div class="fullrow">Watchers stats:</div>
     <div class="watcherheader first"></div>
     <div class="watcherheader">Chain</div>
     <div class="watcherheader">Watchers</div>
