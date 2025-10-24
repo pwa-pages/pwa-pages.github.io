@@ -87,7 +87,7 @@ li:last-child {
 }
 
 .upcomingwatcher {
-  font-size: 1.3vmax;
+  font-size: 0.8vmax;
   font-style: italic;
 }
 
@@ -219,7 +219,7 @@ a {
 
 .watchervaluerow {
   margin-bottom: var(--large-font);
-  font-size: 1.6vmax;
+  font-size: 1.1vmax;
 }
 
 .watcherscontainer .watchersdispl {
@@ -231,7 +231,7 @@ a {
 }
 
 .watcherscontainer {
-  font-size: 1.6vmax;
+  font-size: 1.1vmax;
   margin-top: var(--small-medium-height);
   float: left;
   border-radius: 3vmax;
@@ -305,6 +305,30 @@ a {
 .watchersdispl.Doge,
 .chainType.Doge {
   background-image: url('./assets/images/doge.png');
+  filter: brightness(0.8);
+}
+
+.statdetaildispl.Nervos,
+.mainaddressdispl.Nervos,
+.watchersdispl.Nervos,
+.chainType.Nervos {
+  background-image: url('./assets/images/nervos.png');
+  filter: brightness(0.8);
+}
+
+.statdetaildispl.Handshake,
+.mainaddressdispl.Handshake,
+.watchersdispl.Handshake,
+.chainType.Handshake {
+  background-image: url('./assets/images/hns.png');
+  filter: brightness(0.8);
+}
+
+.statdetaildispl.Monero,
+.mainaddressdispl.Monero,
+.watchersdispl.Monero,
+.chainType.Monero {
+  background-image: url('./assets/images/monero.png');
   filter: brightness(0.8);
 }
 
@@ -418,7 +442,6 @@ button:active {
 
 .currencyrow {
   padding-right: 0 !important;
-  padding-top: 1vmax;
 }
 
 .collateralvalues {
