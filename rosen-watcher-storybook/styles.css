@@ -80,6 +80,9 @@ li:last-child {
 .profilemessage a {
   color: rgba(119, 17, 17, 1) !important;
 }
+.statistics-footer .addressescontainer {
+  width: 95%;
+}
 .addressescontainer {
   width: 80%;
 }
@@ -102,8 +105,9 @@ li:last-child {
   margin-left: var(--medium-width);
   margin-right: var(--medium-width);
 }
-.watcherscontainer div {
-  color: rgb(110, 102, 102) !important;
+.upcomingwatcher {
+  font-size: 1.3vmax;
+  font-style: italic;
 }
 .linkcontainer {
   display: inline-flex;
@@ -218,13 +222,16 @@ a {
 .watcherscontainer .watchersdispl {
   filter: brightness(0.8);
 }
+.watcherscontainer.mywatcher {
+  grid-template-columns: 3vmax auto auto auto auto !important;
+}
 .watcherscontainer {
   font-size: 1.6vmax;
   margin-top: var(--small-medium-height);
   float: left;
   border-radius: 3vmax;
   display: grid;
-  grid-template-columns: 3vmax 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 3vmax auto auto auto auto auto;
 }
 .fivecolumns {
   grid-column: span 5;
@@ -243,6 +250,13 @@ a {
 .watchersdispl.Bitcoin,
 .chainType.Bitcoin {
   background-image: url("./media/bitcoin.png");
+  filter: brightness(0.8);
+}
+.statdetaildispl.Runes,
+.mainaddressdispl.Runes,
+.watchersdispl.Runes,
+.chainType.Runes {
+  background-image: url("./media/runes.png");
   filter: brightness(0.8);
 }
 .statdetaildispl.Binance,
@@ -278,6 +292,27 @@ a {
 .watchersdispl.Doge,
 .chainType.Doge {
   background-image: url("./media/doge.png");
+  filter: brightness(0.8);
+}
+.statdetaildispl.Nervos,
+.mainaddressdispl.Nervos,
+.watchersdispl.Nervos,
+.chainType.Nervos {
+  background-image: url("./media/nervos.png");
+  filter: brightness(0.8);
+}
+.statdetaildispl.Handshake,
+.mainaddressdispl.Handshake,
+.watchersdispl.Handshake,
+.chainType.Handshake {
+  background-image: url("./media/hns.png");
+  filter: brightness(0.8);
+}
+.statdetaildispl.Monero,
+.mainaddressdispl.Monero,
+.watchersdispl.Monero,
+.chainType.Monero {
+  background-image: url("./media/monero.png");
   filter: brightness(0.8);
 }
 .noAddresses {
@@ -362,9 +397,9 @@ button:active {
 }
 .currency,
 .currency select {
-  color: #555;
   font-size: 1.3vmax;
   display: inline-block;
+  color: grey;
 }
 .currencyrow {
   padding-right: 0 !important;

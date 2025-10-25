@@ -38381,6 +38381,7 @@ var EventType;
   EventType3["SwipeDeActivated"] = "SwipeDeActivated";
   EventType3["SwipeVertical"] = "SwipeVertical";
   EventType3["StatisticsScreenLoaded"] = "StatisticsScreenLoaded";
+  EventType3["MyWatchersScreenLoaded"] = "MyWatchersScreenLoaded";
   EventType3["RequestInputsDownload"] = "RequestInputsDownload";
   EventType3["WatchersScreenLoaded"] = "WatchersScreenLoaded";
   EventType3["SettingsScreenLoaded"] = "SettingsScreenLoaded";
@@ -38389,9 +38390,13 @@ var EventType;
   EventType3["WindowResized"] = "WindowResized";
   EventType3["VersionUpdated"] = "VersionUpdated";
   EventType3["WatchersStatsChanged"] = "WatchersStatsChanged";
+  EventType3["PermitsStatsChanged"] = "PermitsStatsChanged";
   EventType3["ChainPerformanceChartsChanged"] = "ChainPerformanceChartsChanged";
   EventType3["PerformanceChartsChanged"] = "PerformanceChartsChanged";
   EventType3["StatisticsChartChanged"] = "StatisticsChartChanged";
+  EventType3["PermitsChanged"] = "PermitsChanged";
+  EventType3["RefreshPermits"] = "RefreshPermits";
+  EventType3["AddressPermitsDownloaded"] = "AddressPermitsDownloaded";
 })(EventType || (EventType = {}));
 var _EventService = class _EventService {
   constructor(ngZone) {
@@ -38411,6 +38416,8 @@ var _EventService = class _EventService {
       [EventType.SwipeDeActivated]: new Subject(),
       [EventType.SwipeVertical]: new Subject(),
       [EventType.StatisticsScreenLoaded]: new Subject(),
+      [EventType.MyWatchersScreenLoaded]: new Subject(),
+      [EventType.PermitsChanged]: new Subject(),
       [EventType.PerformanceScreenLoaded]: new Subject(),
       [EventType.RequestInputsDownload]: new Subject(),
       [EventType.AddressChartChanged]: new Subject(),
@@ -38419,9 +38426,12 @@ var _EventService = class _EventService {
       [EventType.SettingsScreenLoaded]: new Subject(),
       [EventType.WindowResized]: new Subject(),
       [EventType.WatchersStatsChanged]: new Subject(),
+      [EventType.PermitsStatsChanged]: new Subject(),
       [EventType.ChainPerformanceChartsChanged]: new Subject(),
       [EventType.PerformanceChartsChanged]: new Subject(),
-      [EventType.StatisticsChartChanged]: new Subject()
+      [EventType.StatisticsChartChanged]: new Subject(),
+      [EventType.RefreshPermits]: new Subject(),
+      [EventType.AddressPermitsDownloaded]: new Subject()
     };
     return this.eventSubscriptions;
   }
@@ -38461,10 +38471,6 @@ var _EventService = class _EventService {
     Object.entries(this.eventSubscriptionsById).forEach(([key, subs]) => {
       console.log(`eventSubscriptionsById[${key}] size: ${subs.length}`);
     });
-    if (this.eventSubscriptionsById[-1]) {
-      this.eventSubscriptionsById[-1].forEach((subscription) => subscription.unsubscribe());
-      delete this.eventSubscriptionsById[-1];
-    }
   }
 };
 _EventService.\u0275fac = function EventService_Factory(__ngFactoryType__) {
@@ -38565,6 +38571,14 @@ var _StorageService = class _StorageService {
           db.deleteObjectStore(rs_PerfTxStoreName);
         }
         db.createObjectStore(rs_PerfTxStoreName, { keyPath: rs_PerfTx_Key });
+        if (db.objectStoreNames.contains(rs_PermitTxStoreName)) {
+          db.deleteObjectStore(rs_PermitTxStoreName);
+        }
+        db.createObjectStore(rs_PermitTxStoreName, { keyPath: rs_Permit_Key });
+        if (db.objectStoreNames.contains(rs_ActivePermitTxStoreName)) {
+          db.deleteObjectStore(rs_ActivePermitTxStoreName);
+        }
+        db.createObjectStore(rs_ActivePermitTxStoreName, { keyPath: rs_ActivePermit_Key });
         if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
           db.createObjectStore(rs_AddressDataStoreName, {
             keyPath: rs_Address_Key
@@ -38572,6 +38586,11 @@ var _StorageService = class _StorageService {
         }
         if (!db.objectStoreNames.contains(rs_DownloadStatusStoreName)) {
           db.createObjectStore(rs_DownloadStatusStoreName, {
+            keyPath: rs_Address_Key
+          });
+        }
+        if (!db.objectStoreNames.contains(rs_OpenBoxesStoreName)) {
+          db.createObjectStore(rs_OpenBoxesStoreName, {
             keyPath: rs_Address_Key
           });
         }
@@ -38627,7 +38646,9 @@ var _StorageService = class _StorageService {
     return this.inputsCache;
   }
   async getAddressData() {
-    return await this.getData(rs_AddressDataStoreName);
+    const rawData = await this.getData(rs_AddressDataStoreName);
+    const addresses = rawData.map((obj) => new Address(obj.address, obj.chainType, obj.active ?? true));
+    return addresses;
   }
   async getData(storeName) {
     const db = await this.getDB();
@@ -38683,31 +38704,22 @@ var _ChainDataService = class _ChainDataService {
     this.eventService = eventService;
     this.rsnInputs = [];
     this.addressCharts = {};
-    this.chainChart = {
-      [ChainType.Bitcoin]: {
-        chart: 0
-      },
-      [ChainType.Cardano]: {
-        chart: 0
-      },
-      [ChainType.Ergo]: {
-        chart: 0
-      },
-      [ChainType.Ethereum]: {
-        chart: 0
-      },
-      [ChainType.Binance]: {
-        chart: 0
-      },
-      [ChainType.Doge]: {
-        chart: 0
-      }
-    };
+    this.chainChart = Object.values(ChainType).reduce((acc, chainType) => {
+      acc[chainType] = { chart: 0 };
+      return acc;
+    }, {});
     this.busyCounter = 0;
   }
   async initialize() {
     this.eventService.subscribeToEvent(EventType.InputsChanged, async (i) => {
+      let storedAddresses = await this.getAddresses();
       this.rsnInputs = i;
+      if (storedAddresses && storedAddresses.length > 0) {
+        const activeAddresses = storedAddresses.filter((a) => a.active).map((a) => a.address);
+        if (activeAddresses.length > 0) {
+          this.rsnInputs = this.rsnInputs.filter((input2) => activeAddresses.includes(input2.outputAddress));
+        }
+      }
       this.eventService.sendEvent(EventType.RefreshInputs);
     });
     this.eventService.subscribeToEvent(EventType.PerfChartChanged, async (a) => {
@@ -38715,7 +38727,12 @@ var _ChainDataService = class _ChainDataService {
       this.eventService.sendEvent(EventType.RefreshInputs);
     });
     this.eventService.subscribeToEvent(EventType.AddressChartChanged, async (a) => {
-      this.addressCharts = a;
+      let storedAddresses = await this.getAddresses();
+      const addressSet = new Set((storedAddresses || []).map((s) => s.address));
+      this.addressCharts = Object.keys(a).filter((key) => addressSet.has(key)).reduce((acc, key) => {
+        acc[key] = a[key];
+        return acc;
+      }, {});
       this.eventService.sendEvent(EventType.RefreshInputs);
     });
   }
@@ -38824,7 +38841,7 @@ var _ServiceWorkerService = class _ServiceWorkerService {
   }
   async initialize() {
     this.eventService.subscribeToAllEvents((eventType, eventData) => {
-      if (eventType == EventType.PerformanceScreenLoaded || eventType == EventType.StatisticsScreenLoaded || eventType == EventType.RequestInputsDownload) {
+      if (eventType == EventType.PerformanceScreenLoaded || eventType == EventType.MyWatchersScreenLoaded || eventType == EventType.StatisticsScreenLoaded || eventType == EventType.RequestInputsDownload) {
         console.log(eventData);
         if (this.avoidServiceWorker) {
           console.log("Avoiding service worker, sending event " + eventType + "to angular worker");
@@ -38935,314 +38952,6 @@ var ServiceWorkerService = _ServiceWorkerService;
     type: Inject,
     args: [IS_ELEMENTS_ACTIVE]
   }] }], null);
-})();
-
-// src/service/ts/models/chaintype.ts
-var ChainType2;
-(function(ChainType3) {
-  ChainType3["Binance"] = "Binance";
-  ChainType3["Bitcoin"] = "Bitcoin";
-  ChainType3["Cardano"] = "Cardano";
-  ChainType3["Ergo"] = "Ergo";
-  ChainType3["Ethereum"] = "Ethereum";
-  ChainType3["Doge"] = "Doge";
-})(ChainType2 || (ChainType2 = {}));
-
-// src/app/service/http.download.service.ts
-var _HttpDownloadService = class _HttpDownloadService {
-  constructor(http, eventService) {
-    this.http = http;
-    this.eventService = eventService;
-    this.activeDownloads = {};
-  }
-  downloadPermitInfo(watcherUrl) {
-    return this.download(watcherUrl + "/api/info");
-  }
-  async download(url) {
-    console.log("Downloading from:", url);
-    return firstValueFrom(this.downloadStream(url));
-  }
-  async initiateDownload() {
-    const numActive = Object.values(this.activeDownloads).filter((value) => value === true).length;
-    if (numActive == 0) {
-      this.eventService.sendEvent(EventType.StartFullDownload);
-    }
-  }
-  async endDownload(url) {
-    if (this.activeDownloads[url]) {
-      this.activeDownloads[url] = false;
-      const numActive = Object.values(this.activeDownloads).filter((value) => value === true).length;
-      if (numActive == 0) {
-        this.eventService.sendEvent(EventType.EndFullDownload);
-      }
-    }
-  }
-  downloadStream(url) {
-    this.initiateDownload();
-    console.log("Attempting to load from cache:", url);
-    this.activeDownloads[url] = true;
-    const cachedData = localStorage.getItem(url);
-    let cacheObservable;
-    if (cachedData) {
-      console.log("Loaded from cache:", url);
-      cacheObservable = of(JSON.parse(cachedData));
-    } else {
-      console.log("No cache available:", url);
-      cacheObservable = EMPTY;
-    }
-    const downloadObservable = this.http.get(url).pipe(map((results) => {
-      console.log("Downloaded from server:", url);
-      localStorage.setItem(url, JSON.stringify(results));
-      this.endDownload(url);
-      return results;
-    }), catchError((error) => {
-      console.log("Download failed:", url);
-      this.endDownload(url);
-      return throwError(error);
-    }));
-    return concat(cacheObservable, downloadObservable);
-  }
-};
-_HttpDownloadService.\u0275fac = function HttpDownloadService_Factory(__ngFactoryType__) {
-  return new (__ngFactoryType__ || _HttpDownloadService)(\u0275\u0275inject(HttpClient), \u0275\u0275inject(EventService));
-};
-_HttpDownloadService.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _HttpDownloadService, factory: _HttpDownloadService.\u0275fac, providedIn: "root" });
-var HttpDownloadService = _HttpDownloadService;
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(HttpDownloadService, [{
-    type: Injectable,
-    args: [{
-      providedIn: "root"
-    }]
-  }], () => [{ type: HttpClient }, { type: EventService }], null);
-})();
-
-// src/app/service/price.service.ts
-var _PriceService = class _PriceService {
-  constructor(downloadService) {
-    this.downloadService = downloadService;
-    this.currencyRates = {};
-  }
-  convert(amount, from3, to2) {
-    return this.getPrices().pipe(map((rates) => {
-      if (rates[from3][to2] || rates[from3][to2] == 0) {
-        return rates[from3][to2] * amount;
-      } else {
-        return rates[from3]["EUR"] / rates[to2]["EUR"] * amount;
-      }
-    }));
-  }
-  getPrices() {
-    const pricesUrl = `https://api.coingecko.com/api/v3/simple/price?ids=rosen-bridge,ergo&vs_currencies=eur,usd`;
-    if (this.currencyRates["ERG"]) {
-      return of(this.currencyRates);
-    }
-    this.currencyRates = {
-      ERG: { EUR: 0, USD: 0 },
-      RSN: { EUR: 0, USD: 0 }
-    };
-    return this.downloadService.downloadStream(pricesUrl).pipe(map((data) => {
-      this.currencyRates["ERG"]["EUR"] = data.ergo.eur;
-      this.currencyRates["ERG"]["USD"] = data.ergo.usd;
-      this.currencyRates["RSN"]["EUR"] = data["rosen-bridge"].eur;
-      this.currencyRates["RSN"]["USD"] = data["rosen-bridge"].usd;
-      return this.currencyRates;
-    }));
-  }
-};
-_PriceService.\u0275fac = function PriceService_Factory(__ngFactoryType__) {
-  return new (__ngFactoryType__ || _PriceService)(\u0275\u0275inject(HttpDownloadService));
-};
-_PriceService.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _PriceService, factory: _PriceService.\u0275fac, providedIn: "root" });
-var PriceService = _PriceService;
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PriceService, [{
-    type: Injectable,
-    args: [{
-      providedIn: "root"
-    }]
-  }], () => [{ type: HttpDownloadService }], null);
-})();
-
-// src/app/service/watchers.data.service.ts
-function createChainNumber() {
-  return Object.fromEntries(Object.values(ChainType2).map((key) => [key, void 0]));
-}
-var WatchersAmounts = class {
-};
-var WatchersStats = class {
-  constructor() {
-    this.activePermitCount = createChainNumber();
-    this.bulkPermitCount = createChainNumber();
-    this.chainLockedERG = createChainNumber();
-    this.chainLockedRSN = createChainNumber();
-    this.chainPermitCount = createChainNumber();
-    this.chainWatcherCount = createChainNumber();
-    this.permitCost = rs_PermitCost;
-    this.triggerPermitCount = createChainNumber();
-    this.watcherCollateralERG = rs_WatcherCollateralERG;
-    this.watcherCollateralRSN = rs_WatcherCollateralRSN;
-    this.watchersAmountsPerCurrency = Object.fromEntries(Object.values(Currency).map((currency) => [currency, new WatchersAmounts()]));
-  }
-};
-var _WatchersDataService = class _WatchersDataService {
-  constructor(downloadService, priceService) {
-    this.downloadService = downloadService;
-    this.priceService = priceService;
-    this.watcherUrl = "https://" + rs_ErgoExplorerHost + "/api/v1/addresses/ChTbcUHgBNqNMVjzV1dvCb2UDrX9nh6rGGcURCFEYXuH5ykKh7Ea3FvpFhHb9AnxXJkgAZ6WASN7Rdn7VMgkFaqP5Z5RWp84cDTmsZkhYrgAVGN7mjeLs8UxqUvRi2ArZbm35Xqk8Y88Uq2MJzmDVHLHzCYRGym8XPxFM4YEVxqzHSKYYDvaMLgKvoskFXKrvceAqEiyih26hjpekCmefiF1VmrPwwShrYYxgHLFCZdigw5JWKV4DmewuR1FH3oNtGoFok859SXeuRbpQfrTjHhGVfDsbXEo3GYP2imAh1APKyLEsG9LcE5WZnJV8eseQnYA8sACLDKZ8Tbpp9KUE7QZNFpnwGnkYx7eybbrCeFDFjTGpsBzaS6fRKrWj2J4Wy3TTyTU1F8iMCrHBF8inZPw9Kg9YEZuJMdXDFNtuaK15u86mF2s2Z5B1vdL5MtZfWThFLnixKds8ABEmGbe8n75Dym5Wv3pkEXQ6XPpaMjUxHfRJB3EfcoFM5nsZHWSTfbFBcHxSRnEiiU67cgJsBUpQn7FvEvqNLiKM4fL3yyykMtQ6RjAS8rhycszphvQa5qFrDHie4vPuTq8/balance/confirmed";
-    this.rsnToken = "8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b";
-    this.watchersStatsSignal = signal(new WatchersStats(), ...ngDevMode ? [{ debugName: "watchersStatsSignal" }] : []);
-    this.watchersStats = new WatchersStats();
-    this.busyCounter = 0;
-  }
-  getWatcherStats() {
-    return this.watchersStatsSignal;
-  }
-  getWatchersInfo() {
-    const result = this.downloadService.downloadStream(this.watcherUrl);
-    return result;
-  }
-  getPermitsInfo(chainType) {
-    const address = permitAddresses[chainType];
-    return this.downloadPermitInfo(address, this.rsnToken, null);
-  }
-  updateTotal(map4) {
-    return Object.values(map4).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
-  }
-  convertCurrencies() {
-    Object.values(Currency).forEach((currency) => {
-      const conversions = [
-        {
-          amount: rs_WatcherCollateralRSN,
-          from: "RSN",
-          callback: (c) => this.watchersStats.watchersAmountsPerCurrency[currency].rsnCollateral = c
-        },
-        {
-          amount: rs_WatcherCollateralERG,
-          from: "ERG",
-          callback: (c) => this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral = c
-        },
-        {
-          amount: rs_PermitCost,
-          from: "RSN",
-          callback: (c) => this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = c
-        },
-        {
-          amount: this.watchersStats.totalLockedERG ?? 0,
-          from: "ERG",
-          callback: (l) => this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedERG = l
-        },
-        {
-          amount: (this.watchersStats.totalLockedRSN ?? 0) + rs_PermitCost * (this.watchersStats.totalPermitCount ?? 0),
-          from: "RSN",
-          callback: (l) => this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedRSN = l
-        }
-      ];
-      conversions.forEach(({ amount, from: from3, callback: callback2 }) => {
-        this.priceService.convert(amount, from3, currency ?? "").subscribe(callback2);
-      });
-    });
-  }
-  updateTotalLocked() {
-    Object.values(Currency).forEach((currency) => {
-      this.watchersStats.watchersAmountsPerCurrency[currency].totalLocked = (this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedERG ?? 0) + (this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedRSN ?? 0);
-    });
-  }
-  getValue(map4, chainType, multiplier) {
-    return (map4[chainType] ?? 0) * multiplier;
-  }
-  setLockedAmounts(chainType) {
-    this.watchersStats.chainLockedRSN[chainType] = this.getValue(this.watchersStats.chainPermitCount, chainType, rs_PermitCost) + this.getValue(this.watchersStats.chainWatcherCount, chainType, rs_WatcherCollateralRSN);
-    this.watchersStats.chainLockedERG[chainType] = this.getValue(this.watchersStats.chainWatcherCount, chainType, rs_WatcherCollateralERG);
-    Object.values(ChainType2).forEach((c) => {
-      this.watchersStats.activePermitCount[c] = (this.watchersStats.bulkPermitCount[c] ?? 0) + (this.watchersStats.triggerPermitCount[c] ?? 0);
-    });
-    this.watchersStats.totalWatcherCount = this.updateTotal(this.watchersStats.chainWatcherCount);
-    this.watchersStats.totalPermitCount = this.updateTotal(this.watchersStats.chainPermitCount);
-    this.watchersStats.totalActivePermitCount = this.updateTotal(this.watchersStats.activePermitCount);
-    this.watchersStats.totalLockedRSN = this.updateTotal(this.watchersStats.chainLockedRSN);
-    this.watchersStats.totalLockedERG = this.updateTotal(this.watchersStats.chainLockedERG);
-    this.currencyUpdate();
-  }
-  currencyUpdate() {
-    Object.values(Currency).forEach((currency) => {
-      this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = 0;
-      this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = 0;
-    });
-    this.convertCurrencies();
-    this.updateTotalLocked();
-    Object.values(Currency).forEach((currency) => {
-      this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = (this.watchersStats.watchersAmountsPerCurrency[currency].rsnCollateral ?? 0) + (this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral ?? 0);
-    });
-    const newStats = JSON.stringify(this.watchersStats);
-    if (JSON.stringify(this.watchersStatsSignal()) !== newStats) {
-      console.log("Settings watchers stats signal");
-      this.watchersStatsSignal.set(JSON.parse(newStats));
-    }
-  }
-  downloadPermitInfo(address, tokenId, tokenName) {
-    const permitsUrl = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/balance/confirmed`;
-    return this.downloadService.downloadStream(permitsUrl).pipe(map((data) => {
-      if (data.tokens) {
-        const tokenData = data.tokens.find((token) => tokenId && token.tokenId === tokenId || tokenName && token.name === tokenName);
-        console.log(permitsUrl);
-        if (tokenData) {
-          tokenData.amount /= rs_PermitCost * Math.pow(10, tokenData.decimals);
-          tokenData.amount = Math.floor(tokenData.amount);
-        }
-      }
-      return data;
-    })).pipe(map((result) => {
-      return result.tokens.find((token) => tokenId && token.tokenId === tokenId || tokenName && token.name === tokenName);
-    }));
-  }
-  getTriggerPermitsInfo(chainType) {
-    const address = permitTriggerAddresses[chainType];
-    return this.downloadPermitInfo(address, null, "rspv2" + chainType + "RWT");
-  }
-  getBulkPermitsInfo(chainType) {
-    const address = permitBulkAddresses[chainType];
-    return this.downloadPermitInfo(address, null, "rspv2" + chainType + "RWT");
-  }
-  download() {
-    Object.values(ChainType2).forEach((c) => {
-      this.getTriggerPermitsInfo(c).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe((amount) => {
-        this.watchersStats.triggerPermitCount[c] = amount;
-        this.setLockedAmounts(c);
-      });
-      this.getBulkPermitsInfo(c).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe((amount) => {
-        this.watchersStats.bulkPermitCount[c] = amount;
-        this.setLockedAmounts(c);
-      });
-    });
-    const watcherInfo$ = this.getWatchersInfo();
-    watcherInfo$.pipe(map((watcherInfo) => {
-      Object.values(ChainType2).forEach((c) => {
-        const amount = watcherInfo.tokens.find((token) => token.name === "rspv2" + c + "AWC")?.amount ?? 0;
-        this.watchersStats.chainWatcherCount[c] = amount;
-        this.setLockedAmounts(c);
-      });
-    })).subscribe();
-    Object.values(ChainType2).forEach((c) => {
-      this.getPermitsInfo(c).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe((amount) => {
-        this.watchersStats.chainPermitCount[c] = amount;
-        this.setLockedAmounts(c);
-      });
-    });
-  }
-};
-_WatchersDataService.\u0275fac = function WatchersDataService_Factory(__ngFactoryType__) {
-  return new (__ngFactoryType__ || _WatchersDataService)(\u0275\u0275inject(HttpDownloadService), \u0275\u0275inject(PriceService));
-};
-_WatchersDataService.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _WatchersDataService, factory: _WatchersDataService.\u0275fac, providedIn: "root" });
-var WatchersDataService = _WatchersDataService;
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(WatchersDataService, [{
-    type: Injectable,
-    args: [{
-      providedIn: "root"
-    }]
-  }], () => [{ type: HttpDownloadService }, { type: PriceService }], null);
 })();
 
 // node_modules/@angular/router/fesm2022/router2.mjs
@@ -53867,6 +53576,7 @@ var _BaseWatcherComponent = class _BaseWatcherComponent extends BaseEventAwareCo
       if (this.addresses.length == 0) {
         this.noAddresses = true;
       }
+      await this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
       return false;
     }
   }
@@ -60707,6 +60417,518 @@ var ReactiveFormsModule = class _ReactiveFormsModule {
   }], null, null);
 })();
 
+// src/app/service/watchers.models.ts
+function createChainNumber() {
+  return Object.fromEntries(Object.values(ChainType).map((key) => [key, void 0]));
+}
+var WatchersAmounts = class {
+};
+var WatchersStats = class {
+  constructor() {
+    this.activePermitCount = createChainNumber();
+    this.bulkPermitCount = createChainNumber();
+    this.chainLockedERG = createChainNumber();
+    this.chainLockedRSN = createChainNumber();
+    this.chainPermitCount = createChainNumber();
+    this.chainWatcherCount = createChainNumber();
+    this.permitCost = rs_PermitCost;
+    this.triggerPermitCount = createChainNumber();
+    this.watcherCollateralERG = rs_WatcherCollateralERG;
+    this.watcherCollateralRSN = rs_WatcherCollateralRSN;
+    this.watchersAmountsPerCurrency = Object.fromEntries(Object.values(Currency).map((currency) => [currency, new WatchersAmounts()]));
+  }
+};
+
+// src/app/service/http.download.service.ts
+var _HttpDownloadService = class _HttpDownloadService {
+  constructor(http, eventService) {
+    this.http = http;
+    this.eventService = eventService;
+    this.activeDownloads = {};
+    this.useNode = false;
+  }
+  downloadPermitInfo(watcherUrl) {
+    return this.download(watcherUrl + "/api/info");
+  }
+  async download(url) {
+    console.log("Downloading from:", url);
+    return firstValueFrom(this.downloadStream(url));
+  }
+  async initiateDownload() {
+    const numActive = Object.values(this.activeDownloads).filter((value) => value === true).length;
+    if (numActive == 0) {
+      this.eventService.sendEvent(EventType.StartFullDownload);
+    }
+  }
+  async endDownload(url) {
+    if (this.activeDownloads[url]) {
+      this.activeDownloads[url] = false;
+      const numActive = Object.values(this.activeDownloads).filter((value) => value === true).length;
+      if (numActive == 0) {
+        this.eventService.sendEvent(EventType.EndFullDownload);
+      }
+    }
+  }
+  downloadBalance(address) {
+    if (!this.useNode) {
+      const url = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/balance/confirmed`;
+      return this.downloadStream(url);
+    } else {
+      const url = `https://${rs_ErgoNodeHost}/blockchain/balance`;
+      let result = this.downloadPostStream(url, address);
+      return result.pipe(map((data) => data.confirmed));
+    }
+  }
+  downloadStream(url) {
+    this.initiateDownload();
+    console.log("Attempting to load from cache:", url);
+    this.activeDownloads[url] = true;
+    const cachedData = localStorage.getItem(url);
+    let cacheObservable;
+    if (cachedData) {
+      console.log("Loaded from cache:", url);
+      cacheObservable = of(JSON.parse(cachedData));
+    } else {
+      console.log("No cache available:", url);
+      cacheObservable = EMPTY;
+    }
+    const downloadObservable = this.http.get(url).pipe(map((results) => {
+      console.log("Downloaded from server:", url);
+      localStorage.setItem(url, JSON.stringify(results));
+      this.endDownload(url);
+      return results;
+    }), catchError((error) => {
+      console.log("Download failed:", url);
+      this.endDownload(url);
+      return throwError(error);
+    }));
+    return concat(cacheObservable, downloadObservable);
+  }
+  downloadPostStream(url, body) {
+    let downloadKey = url + body;
+    this.initiateDownload();
+    console.log("Attempting to load from cache:", downloadKey);
+    this.activeDownloads[downloadKey] = true;
+    const cachedData = localStorage.getItem(downloadKey);
+    let cacheObservable;
+    if (cachedData) {
+      console.log("Loaded from cache:", downloadKey);
+      cacheObservable = of(JSON.parse(cachedData));
+    } else {
+      console.log("No cache available:", downloadKey);
+      cacheObservable = EMPTY;
+    }
+    const downloadObservable = this.http.post(url, body).pipe(map((results) => {
+      console.log("Downloaded from server:", url);
+      localStorage.setItem(downloadKey, JSON.stringify(results));
+      this.endDownload(downloadKey);
+      return results;
+    }), catchError((error) => {
+      console.log("Download failed:", url);
+      this.endDownload(downloadKey);
+      return throwError(error);
+    }));
+    return concat(cacheObservable, downloadObservable);
+  }
+};
+_HttpDownloadService.\u0275fac = function HttpDownloadService_Factory(__ngFactoryType__) {
+  return new (__ngFactoryType__ || _HttpDownloadService)(\u0275\u0275inject(HttpClient), \u0275\u0275inject(EventService));
+};
+_HttpDownloadService.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _HttpDownloadService, factory: _HttpDownloadService.\u0275fac, providedIn: "root" });
+var HttpDownloadService = _HttpDownloadService;
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(HttpDownloadService, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], () => [{ type: HttpClient }, { type: EventService }], null);
+})();
+
+// src/app/service/price.service.ts
+var _PriceService = class _PriceService {
+  constructor(downloadService) {
+    this.downloadService = downloadService;
+    this.currencyRates = {};
+  }
+  convert(amount, from3, to2) {
+    return this.getPrices().pipe(map((rates) => {
+      if (rates[from3][to2] || rates[from3][to2] == 0) {
+        return rates[from3][to2] * amount;
+      } else {
+        return rates[from3]["EUR"] / rates[to2]["EUR"] * amount;
+      }
+    }));
+  }
+  getPrices() {
+    const pricesUrl = `https://api.coingecko.com/api/v3/simple/price?ids=rosen-bridge,ergo&vs_currencies=eur,usd`;
+    if (this.currencyRates["ERG"]) {
+      return of(this.currencyRates);
+    }
+    this.currencyRates = {
+      ERG: { EUR: 0, USD: 0 },
+      RSN: { EUR: 0, USD: 0 }
+    };
+    return this.downloadService.downloadStream(pricesUrl).pipe(map((data) => {
+      this.currencyRates["ERG"]["EUR"] = data.ergo.eur;
+      this.currencyRates["ERG"]["USD"] = data.ergo.usd;
+      this.currencyRates["RSN"]["EUR"] = data["rosen-bridge"].eur;
+      this.currencyRates["RSN"]["USD"] = data["rosen-bridge"].usd;
+      return this.currencyRates;
+    }));
+  }
+};
+_PriceService.\u0275fac = function PriceService_Factory(__ngFactoryType__) {
+  return new (__ngFactoryType__ || _PriceService)(\u0275\u0275inject(HttpDownloadService));
+};
+_PriceService.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _PriceService, factory: _PriceService.\u0275fac, providedIn: "root" });
+var PriceService = _PriceService;
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(PriceService, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], () => [{ type: HttpDownloadService }], null);
+})();
+
+// src/app/service/watchers.data.service.ts
+var _WatchersDataService = class _WatchersDataService {
+  isChainTypeActive(chainType) {
+    return rewardAddresses[chainType] !== null;
+  }
+  constructor(downloadService, priceService, eventService) {
+    this.downloadService = downloadService;
+    this.priceService = priceService;
+    this.eventService = eventService;
+    this.rsnToken = "8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b";
+    this.watchersStatsSignal = signal(new WatchersStats(), ...ngDevMode ? [{ debugName: "watchersStatsSignal" }] : []);
+    this.watchersStats = new WatchersStats();
+    this.myWatcherStats = [];
+    this.busyCounter = 0;
+    this.eventService.subscribeToEvent(EventType.PermitsChanged, (permits) => {
+      this.myWatcherStats.length = 0;
+      let myWatcherStats = [];
+      permits.forEach((permit) => {
+        let permitCount = Math.floor((permit.lockedRSN - rs_WatcherCollateralRSN) / rs_PermitCost);
+        let activepermitCount = Math.floor(permit.activeLockedRSN / rs_PermitCost);
+        if (permitCount < 0) {
+          permitCount = 0;
+        }
+        if (permit.address) {
+          myWatcherStats.push({
+            activePermitCount: activepermitCount,
+            permitCount,
+            wid: permit.wid,
+            chainType: permit.chainType,
+            address: new Address(permit.address, permit.chainType)
+          });
+        }
+      });
+      let entries = Object.values(ChainType);
+      entries.forEach((chainType) => {
+        const stats = myWatcherStats.filter((ws) => ws.chainType === chainType);
+        stats.forEach((stat) => {
+          this.myWatcherStats.push(stat);
+        });
+      });
+      localStorage.setItem("myWatcherStats", JSON.stringify(this.myWatcherStats));
+      this.eventService.sendEvent(EventType.RefreshPermits);
+    });
+  }
+  getWatcherStats() {
+    return this.watchersStatsSignal;
+  }
+  async getMyWatcherStats(addresses) {
+    if (this.myWatcherStats.length == 0) {
+      const storedStats = localStorage.getItem("myWatcherStats");
+      if (storedStats) {
+        this.myWatcherStats.push(...JSON.parse(storedStats));
+      }
+    }
+    return this.myWatcherStats.filter((w) => addresses.some((a) => a === w.address?.address));
+  }
+  getWatchersInfo() {
+    const result = this.downloadService.downloadBalance("ChTbcUHgBNqNMVjzV1dvCb2UDrX9nh6rGGcURCFEYXuH5ykKh7Ea3FvpFhHb9AnxXJkgAZ6WASN7Rdn7VMgkFaqP5Z5RWp84cDTmsZkhYrgAVGN7mjeLs8UxqUvRi2ArZbm35Xqk8Y88Uq2MJzmDVHLHzCYRGym8XPxFM4YEVxqzHSKYYDvaMLgKvoskFXKrvceAqEiyih26hjpekCmefiF1VmrPwwShrYYxgHLFCZdigw5JWKV4DmewuR1FH3oNtGoFok859SXeuRbpQfrTjHhGVfDsbXEo3GYP2imAh1APKyLEsG9LcE5WZnJV8eseQnYA8sACLDKZ8Tbpp9KUE7QZNFpnwGnkYx7eybbrCeFDFjTGpsBzaS6fRKrWj2J4Wy3TTyTU1F8iMCrHBF8inZPw9Kg9YEZuJMdXDFNtuaK15u86mF2s2Z5B1vdL5MtZfWThFLnixKds8ABEmGbe8n75Dym5Wv3pkEXQ6XPpaMjUxHfRJB3EfcoFM5nsZHWSTfbFBcHxSRnEiiU67cgJsBUpQn7FvEvqNLiKM4fL3yyykMtQ6RjAS8rhycszphvQa5qFrDHie4vPuTq8");
+    return result;
+  }
+  getPermitsInfo(chainType) {
+    const address = permitAddresses[chainType];
+    if (address === null) {
+      return new Observable((subscriber) => {
+        subscriber.next(void 0);
+        subscriber.complete();
+      });
+    }
+    return this.downloadPermitInfo(address, this.rsnToken, null);
+  }
+  updateTotal(map4) {
+    return Object.values(map4).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
+  }
+  convertCurrencies() {
+    Object.values(Currency).forEach((currency) => {
+      const conversions = [
+        {
+          amount: rs_WatcherCollateralRSN,
+          from: "RSN",
+          callback: (c) => this.watchersStats.watchersAmountsPerCurrency[currency].rsnCollateral = c
+        },
+        {
+          amount: rs_WatcherCollateralERG,
+          from: "ERG",
+          callback: (c) => this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral = c
+        },
+        {
+          amount: rs_PermitCost,
+          from: "RSN",
+          callback: (c) => this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = c
+        },
+        {
+          amount: this.watchersStats.totalLockedERG ?? 0,
+          from: "ERG",
+          callback: (l) => this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedERG = l
+        },
+        {
+          amount: (this.watchersStats.totalLockedRSN ?? 0) + rs_PermitCost * (this.watchersStats.totalPermitCount ?? 0),
+          from: "RSN",
+          callback: (l) => this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedRSN = l
+        }
+      ];
+      conversions.forEach(({ amount, from: from3, callback: callback2 }) => {
+        this.priceService.convert(amount, from3, currency ?? "").subscribe(callback2);
+      });
+    });
+  }
+  updateTotalLocked() {
+    Object.values(Currency).forEach((currency) => {
+      this.watchersStats.watchersAmountsPerCurrency[currency].totalLocked = (this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedERG ?? 0) + (this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedRSN ?? 0);
+    });
+  }
+  getValue(map4, chainType, multiplier) {
+    return (map4[chainType] ?? 0) * multiplier;
+  }
+  setLockedAmounts(chainType) {
+    this.watchersStats.chainLockedRSN[chainType] = this.getValue(this.watchersStats.chainPermitCount, chainType, rs_PermitCost) + this.getValue(this.watchersStats.chainWatcherCount, chainType, rs_WatcherCollateralRSN);
+    this.watchersStats.chainLockedERG[chainType] = this.getValue(this.watchersStats.chainWatcherCount, chainType, rs_WatcherCollateralERG);
+    Object.values(ChainType).forEach((c) => {
+      this.watchersStats.activePermitCount[c] = (this.watchersStats.bulkPermitCount[c] ?? 0) + (this.watchersStats.triggerPermitCount[c] ?? 0);
+    });
+    this.watchersStats.totalWatcherCount = this.updateTotal(this.watchersStats.chainWatcherCount);
+    this.watchersStats.totalPermitCount = this.updateTotal(this.watchersStats.chainPermitCount);
+    this.watchersStats.totalActivePermitCount = this.updateTotal(this.watchersStats.activePermitCount);
+    this.watchersStats.totalLockedRSN = this.updateTotal(this.watchersStats.chainLockedRSN);
+    this.watchersStats.totalLockedERG = this.updateTotal(this.watchersStats.chainLockedERG);
+    this.currencyUpdate();
+  }
+  currencyUpdate() {
+    Object.values(Currency).forEach((currency) => {
+      this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = 0;
+      this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = 0;
+    });
+    this.convertCurrencies();
+    this.updateTotalLocked();
+    Object.values(Currency).forEach((currency) => {
+      this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = (this.watchersStats.watchersAmountsPerCurrency[currency].rsnCollateral ?? 0) + (this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral ?? 0);
+    });
+    const newStats = JSON.stringify(this.watchersStats);
+    if (JSON.stringify(this.watchersStatsSignal()) !== newStats) {
+      console.log("Settings watchers stats signal");
+      this.watchersStatsSignal.set(JSON.parse(newStats));
+    }
+  }
+  downloadPermitInfo(address, tokenId, tokenName) {
+    return this.downloadService.downloadBalance(address).pipe(map((data) => {
+      if (data.tokens) {
+        const tokenData = data.tokens.find((token) => tokenId && token.tokenId === tokenId || tokenName && token.name === tokenName);
+        if (tokenData) {
+          tokenData.amount /= rs_PermitCost * Math.pow(10, tokenData.decimals);
+          tokenData.amount = Math.floor(tokenData.amount);
+        }
+      }
+      return data;
+    })).pipe(map((result) => {
+      return result.tokens.find((token) => tokenId && token.tokenId === tokenId || tokenName && token.name === tokenName);
+    }));
+  }
+  getTriggerPermitsInfo(chainType) {
+    const address = permitTriggerAddresses[chainType];
+    if (address === null) {
+      return new Observable((subscriber) => {
+        subscriber.next(void 0);
+        subscriber.complete();
+      });
+    }
+    return this.downloadPermitInfo(address, null, chainTypeTokens[chainType]);
+  }
+  getBulkPermitsInfo(chainType) {
+    const address = permitBulkAddresses[chainType];
+    if (address === null) {
+      return new Observable((subscriber) => {
+        subscriber.next(void 0);
+        subscriber.complete();
+      });
+    }
+    return this.downloadPermitInfo(address, null, chainTypeTokens[chainType]);
+  }
+  download() {
+    Object.values(ChainType).forEach((c) => {
+      this.getTriggerPermitsInfo(c).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe((amount) => {
+        this.watchersStats.triggerPermitCount[c] = amount;
+        this.setLockedAmounts(c);
+      });
+      this.getBulkPermitsInfo(c).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe((amount) => {
+        this.watchersStats.bulkPermitCount[c] = amount;
+        this.setLockedAmounts(c);
+      });
+    });
+    const watcherInfo$ = this.getWatchersInfo();
+    watcherInfo$.pipe(map((watcherInfo) => {
+      Object.values(ChainType).forEach((c) => {
+        const amount = watcherInfo.tokens.find((token) => token.name === chainTypeWatcherIdentifier[c])?.amount ?? 0;
+        this.watchersStats.chainWatcherCount[c] = amount;
+        this.setLockedAmounts(c);
+      });
+    })).subscribe();
+    Object.values(ChainType).forEach((c) => {
+      this.getPermitsInfo(c).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe((amount) => {
+        this.watchersStats.chainPermitCount[c] = amount;
+        this.setLockedAmounts(c);
+      });
+    });
+  }
+};
+_WatchersDataService.\u0275fac = function WatchersDataService_Factory(__ngFactoryType__) {
+  return new (__ngFactoryType__ || _WatchersDataService)(\u0275\u0275inject(HttpDownloadService), \u0275\u0275inject(PriceService), \u0275\u0275inject(EventService));
+};
+_WatchersDataService.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _WatchersDataService, factory: _WatchersDataService.\u0275fac, providedIn: "root" });
+var WatchersDataService = _WatchersDataService;
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(WatchersDataService, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], () => [{ type: HttpDownloadService }, { type: PriceService }, { type: EventService }], null);
+})();
+
+// src/app/service/navigation.service.ts
+var _NavigationService = class _NavigationService {
+  constructor(router, eventService) {
+    this.router = router;
+    this.eventService = eventService;
+    this.currentNavigationIndex = 0;
+    this.navigationItems = [];
+    this.latestVersionUpdate = null;
+    this.navigationItems.push({ route: "/statistics" });
+    this.navigationItems.push({ route: "/performance" });
+    this.navigationItems.push({ route: "/watchers" });
+    this.navigationItems.push({ route: "/chainperformance" });
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
+      const url = event.urlAfterRedirects;
+      this.updateCurrentNavigationIndex(url);
+    });
+    this.eventService.subscribeToEvent(EventType.VersionUpdated, (v) => {
+      this.latestVersionUpdate = v;
+    });
+    const performanceItem = localStorage.getItem("performanceScreen");
+    if (performanceItem?.startsWith("/chainperformance")) {
+      this.swapPerformanceItems();
+    }
+  }
+  /*
+  private checkForReload() {
+    if (
+      this.latestVersionUpdate &&
+      localStorage.getItem('versionReload') != this.latestVersionUpdate
+    ) {
+      localStorage.setItem('versionReload', this.latestVersionUpdate);
+      this.latestVersionUpdate = null;
+      console.log('Application has been updated, reloading screen.');
+      setTimeout(() => {
+        console.log('Doing the reload...');
+        window.location.reload();
+      }, 1000);
+    }
+  }*/
+  updateCurrentNavigationIndex(url) {
+    if (url.startsWith("/chainperformance")) {
+      this.currentNavigationIndex = 1;
+      return;
+    }
+    if (url.startsWith("/mywatchers")) {
+      this.currentNavigationIndex = 2;
+      return;
+    }
+    let index2 = this.navigationItems.findIndex((item) => url.startsWith(item.route));
+    if (index2 == -1) {
+      index2 = 0;
+    }
+    this.currentNavigationIndex = index2;
+  }
+  getCurrentNavigationItem() {
+    if (this.currentNavigationIndex == 2) {
+      const watchersScreen = localStorage.getItem("watchersScreen");
+      if (watchersScreen) {
+        return { route: watchersScreen };
+      }
+    }
+    return this.navigationItems[this.currentNavigationIndex];
+  }
+  getNavigationItems() {
+    return this.navigationItems;
+  }
+  getLeftItem() {
+    return this.navigationItems[(this.currentNavigationIndex - 1 + this.navigationItems.length) % 3];
+  }
+  getRightItem() {
+    return this.navigationItems[(this.currentNavigationIndex + 1) % 3];
+  }
+  navigate(to2) {
+    if (to2.startsWith("/performance") && !this.router.url.startsWith("/performance")) {
+      this.swapPerformanceItems();
+    } else if (to2.startsWith("/chainperformance") && !this.router.url.startsWith("/chainperformance")) {
+      this.swapPerformanceItems();
+    }
+    if (to2.endsWith("watchers")) {
+      localStorage.setItem("watchersScreen", to2);
+    }
+    localStorage.setItem("performanceScreen", this.navigationItems[1].route);
+    this.router.navigate([to2]);
+  }
+  swapPerformanceItems() {
+    const t = this.navigationItems[1];
+    this.navigationItems[1] = this.navigationItems[3];
+    this.navigationItems[3] = t;
+  }
+  navigateTo(to2) {
+    this.currentNavigationIndex = to2;
+    return this.getCurrentNavigationItem();
+  }
+  navigateRight() {
+    const l = 3;
+    this.currentNavigationIndex = (this.currentNavigationIndex + 1) % l;
+    return this.getCurrentNavigationItem();
+  }
+  navigateLeft() {
+    const l = 3;
+    this.currentNavigationIndex = (this.currentNavigationIndex - 1 + l) % l;
+    return this.getCurrentNavigationItem();
+  }
+};
+_NavigationService.\u0275fac = function NavigationService_Factory(__ngFactoryType__) {
+  return new (__ngFactoryType__ || _NavigationService)(\u0275\u0275inject(Router), \u0275\u0275inject(EventService));
+};
+_NavigationService.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _NavigationService, factory: _NavigationService.\u0275fac, providedIn: "root" });
+var NavigationService = _NavigationService;
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(NavigationService, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], () => [{ type: Router }, { type: EventService }], null);
+})();
+
 // src/app/statistics/watchers.component.ts
 function WatchersComponent_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
@@ -60722,162 +60944,212 @@ function WatchersComponent_Conditional_0_Template(rf, ctx) {
     \u0275\u0275textInterpolate(ctx_r0.watchersStats.totalWatcherCount);
   }
 }
-function WatchersComponent_Conditional_1_For_39_Template(rf, ctx) {
+function WatchersComponent_Conditional_1_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "div");
-    \u0275\u0275elementStart(1, "div");
-    \u0275\u0275text(2);
+    const _r3 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "a", 20);
+    \u0275\u0275text(1, "All watchers");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "div");
-    \u0275\u0275text(4);
+    \u0275\u0275elementStart(2, "a", 21);
+    \u0275\u0275listener("click", function WatchersComponent_Conditional_1_Conditional_2_Template_a_click_2_listener() {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r0 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r0.selectTab());
+    })("keypress", function WatchersComponent_Conditional_1_Conditional_2_Template_a_keypress_2_listener() {
+      \u0275\u0275restoreView(_r3);
+      const ctx_r0 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r0.selectTab());
+    });
+    \u0275\u0275text(3, " My watchers ");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "div");
-    \u0275\u0275text(6);
+  }
+  if (rf & 2) {
+    \u0275\u0275classProp("active", true);
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("active", false);
+  }
+}
+function WatchersComponent_Conditional_1_For_36_Conditional_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div");
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "div");
+    \u0275\u0275text(3);
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "div");
+    \u0275\u0275text(5);
+    \u0275\u0275pipe(6, "number");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(7, "div");
     \u0275\u0275text(8);
     \u0275\u0275pipe(9, "number");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(10, "div");
-    \u0275\u0275text(11);
-    \u0275\u0275pipe(12, "number");
-    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const chainType_r3 = ctx.$implicit;
+    const chainType_r4 = \u0275\u0275nextContext().$implicit;
     const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275classMap(\u0275\u0275interpolate1("", chainType_r3, " watchersdispl"));
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate(ctx_r0.watchersStats.chainWatcherCount[chainType_r4]);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(chainType_r3);
+    \u0275\u0275textInterpolate2(" ", ctx_r0.watchersStats.chainPermitCount[chainType_r4], " (", ctx_r0.watchersStats.activePermitCount[chainType_r4], ") ");
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(ctx_r0.watchersStats.chainWatcherCount[chainType_r3]);
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate2(" ", ctx_r0.watchersStats.chainPermitCount[chainType_r3], " (", ctx_r0.watchersStats.activePermitCount[chainType_r3], ") ");
-    \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(9, 9, ctx_r0.watchersStats.chainLockedRSN[chainType_r3], "1.0-0"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(6, 5, ctx_r0.watchersStats.chainLockedRSN[chainType_r4], "1.0-0"));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(12, 12, ctx_r0.watchersStats.chainLockedERG[chainType_r3], "1.0-0"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(9, 8, ctx_r0.watchersStats.chainLockedERG[chainType_r4], "1.0-0"));
+  }
+}
+function WatchersComponent_Conditional_1_For_36_Conditional_4_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "div", 22);
+    \u0275\u0275text(1, "Upcoming...");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(2, "div", 22);
+    \u0275\u0275text(3, "-");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(4, "div", 22);
+    \u0275\u0275text(5, "-");
+    \u0275\u0275elementEnd();
+    \u0275\u0275elementStart(6, "div", 22);
+    \u0275\u0275text(7, "-");
+    \u0275\u0275elementEnd();
+  }
+}
+function WatchersComponent_Conditional_1_For_36_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "div");
+    \u0275\u0275elementStart(1, "div");
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd();
+    \u0275\u0275conditionalCreate(3, WatchersComponent_Conditional_1_For_36_Conditional_3_Template, 10, 11)(4, WatchersComponent_Conditional_1_For_36_Conditional_4_Template, 8, 0);
+  }
+  if (rf & 2) {
+    const chainType_r4 = ctx.$implicit;
+    const ctx_r0 = \u0275\u0275nextContext(2);
+    \u0275\u0275classMap(\u0275\u0275interpolate1("", chainType_r4, " watchersdispl"));
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(chainType_r4);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx_r0.isChainTypeActive(chainType_r4) ? 3 : 4);
   }
 }
 function WatchersComponent_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r2 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 1)(1, "div", 6)(2, "div", 7)(3, "div", 8);
-    \u0275\u0275text(4, "Watcher requirements:");
+    \u0275\u0275elementStart(0, "div", 1)(1, "div", 6);
+    \u0275\u0275conditionalCreate(2, WatchersComponent_Conditional_1_Conditional_2_Template, 4, 4);
+    \u0275\u0275elementStart(3, "div", 7)(4, "label", 8);
+    \u0275\u0275text(5, "Currency:");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "div", 9)(6, "label", 10);
-    \u0275\u0275text(7, "Currency:");
-    \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(8, "select", 11);
-    \u0275\u0275twoWayListener("ngModelChange", function WatchersComponent_Conditional_1_Template_select_ngModelChange_8_listener($event) {
+    \u0275\u0275elementStart(6, "select", 9);
+    \u0275\u0275twoWayListener("ngModelChange", function WatchersComponent_Conditional_1_Template_select_ngModelChange_6_listener($event) {
       \u0275\u0275restoreView(_r2);
       const ctx_r0 = \u0275\u0275nextContext();
       \u0275\u0275twoWayBindingSet(ctx_r0.selectedCurrency, $event) || (ctx_r0.selectedCurrency = $event);
       return \u0275\u0275resetView($event);
     });
-    \u0275\u0275listener("change", function WatchersComponent_Conditional_1_Template_select_change_8_listener() {
+    \u0275\u0275listener("change", function WatchersComponent_Conditional_1_Template_select_change_6_listener() {
       \u0275\u0275restoreView(_r2);
       const ctx_r0 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r0.onCurrencyChange());
     });
-    \u0275\u0275elementStart(9, "option", 12);
-    \u0275\u0275text(10, "Euro");
+    \u0275\u0275elementStart(7, "option", 10);
+    \u0275\u0275text(8, "Euro");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(11, "option", 13);
-    \u0275\u0275text(12, "US Dollar");
+    \u0275\u0275elementStart(9, "option", 11);
+    \u0275\u0275text(10, "US Dollar");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(13, "option", 14);
-    \u0275\u0275text(14, "Ergo");
+    \u0275\u0275elementStart(11, "option", 12);
+    \u0275\u0275text(12, "Ergo");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(15, "option", 15);
-    \u0275\u0275text(16, "Rosen");
+    \u0275\u0275elementStart(13, "option", 13);
+    \u0275\u0275text(14, "Rosen");
     \u0275\u0275elementEnd()()()();
-    \u0275\u0275elementStart(17, "div", 16);
-    \u0275\u0275text(18);
+    \u0275\u0275elementStart(15, "div", 14)(16, "div", 15);
+    \u0275\u0275text(17);
+    \u0275\u0275pipe(18, "number");
     \u0275\u0275pipe(19, "number");
-    \u0275\u0275pipe(20, "number");
-    \u0275\u0275element(21, "br");
-    \u0275\u0275text(22);
+    \u0275\u0275element(20, "br");
+    \u0275\u0275text(21);
+    \u0275\u0275pipe(22, "number");
     \u0275\u0275pipe(23, "number");
-    \u0275\u0275pipe(24, "number");
     \u0275\u0275elementEnd();
+    \u0275\u0275element(24, "div", 16);
     \u0275\u0275elementStart(25, "div", 17);
-    \u0275\u0275text(26, "Watchers stats:");
+    \u0275\u0275text(26, "Chain");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(27, "div", 18);
-    \u0275\u0275elementStart(28, "div", 19);
-    \u0275\u0275text(29, "Chain");
+    \u0275\u0275elementStart(27, "div", 17);
+    \u0275\u0275text(28, "Watchers");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(30, "div", 19);
-    \u0275\u0275text(31, "Watchers");
+    \u0275\u0275elementStart(29, "div", 17);
+    \u0275\u0275text(30, "Permits (Active)");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(32, "div", 19);
-    \u0275\u0275text(33, "Permits (Active)");
+    \u0275\u0275elementStart(31, "div", 17);
+    \u0275\u0275text(32, "Locked RSN");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(34, "div", 19);
-    \u0275\u0275text(35, "Locked RSN");
+    \u0275\u0275elementStart(33, "div", 17);
+    \u0275\u0275text(34, "Locked ERG");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(36, "div", 19);
-    \u0275\u0275text(37, "Locked ERG");
+    \u0275\u0275repeaterCreate(35, WatchersComponent_Conditional_1_For_36_Template, 5, 5, null, null, \u0275\u0275repeaterTrackByIdentity);
+    \u0275\u0275element(37, "div", 18);
+    \u0275\u0275elementStart(38, "div");
+    \u0275\u0275text(39, "\xA0");
     \u0275\u0275elementEnd();
-    \u0275\u0275repeaterCreate(38, WatchersComponent_Conditional_1_For_39_Template, 13, 15, null, null, \u0275\u0275repeaterTrackByIdentity);
-    \u0275\u0275element(40, "div", 20);
-    \u0275\u0275elementStart(41, "div");
-    \u0275\u0275text(42, "\xA0");
+    \u0275\u0275elementStart(40, "div");
+    \u0275\u0275text(41, "\xA0");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(43, "div");
-    \u0275\u0275text(44, "\xA0");
+    \u0275\u0275element(42, "div")(43, "div")(44, "div")(45, "div", 18);
+    \u0275\u0275elementStart(46, "div");
+    \u0275\u0275text(47, "Total");
     \u0275\u0275elementEnd();
-    \u0275\u0275element(45, "div")(46, "div")(47, "div")(48, "div", 20);
-    \u0275\u0275elementStart(49, "div");
-    \u0275\u0275text(50, "Total");
+    \u0275\u0275elementStart(48, "div");
+    \u0275\u0275text(49);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(51, "div");
-    \u0275\u0275text(52);
+    \u0275\u0275elementStart(50, "div");
+    \u0275\u0275text(51);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(53, "div");
-    \u0275\u0275text(54);
+    \u0275\u0275elementStart(52, "div");
+    \u0275\u0275text(53);
+    \u0275\u0275pipe(54, "number");
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(55, "div");
     \u0275\u0275text(56);
     \u0275\u0275pipe(57, "number");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(58, "div");
-    \u0275\u0275text(59);
-    \u0275\u0275pipe(60, "number");
+    \u0275\u0275elementStart(58, "div", 18);
+    \u0275\u0275text(59, "\xA0");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(61, "div", 20);
-    \u0275\u0275text(62, "\xA0");
+    \u0275\u0275elementStart(60, "div", 19);
+    \u0275\u0275text(61, "\xA0");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(63, "div", 21);
-    \u0275\u0275text(64, "\xA0");
-    \u0275\u0275elementEnd();
-    \u0275\u0275element(65, "div", 20);
-    \u0275\u0275elementStart(66, "div", 21);
-    \u0275\u0275text(67);
-    \u0275\u0275pipe(68, "number");
+    \u0275\u0275element(62, "div", 18);
+    \u0275\u0275elementStart(63, "div", 19);
+    \u0275\u0275text(64);
+    \u0275\u0275pipe(65, "number");
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275advance(8);
-    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedCurrency);
-    \u0275\u0275advance(10);
-    \u0275\u0275textInterpolate4(" Watcher collateral: ", \u0275\u0275pipeBind2(19, 15, ctx_r0.watchersStats.watcherCollateralRSN, "1.0-0"), " RSN + ", ctx_r0.watchersStats.watcherCollateralERG, " ERG = ", \u0275\u0275pipeBind2(20, 18, ctx_r0.getWatcherAmounts().watcherValue, "1.0-0"), " ", ctx_r0.selectedCurrency, " ");
+    \u0275\u0275advance(2);
+    \u0275\u0275conditional(!ctx_r0.isElementsActive ? 2 : -1);
     \u0275\u0275advance(4);
-    \u0275\u0275textInterpolate3(" Permit value: ", \u0275\u0275pipeBind2(23, 21, ctx_r0.watchersStats.permitCost, "1.0-0"), " RSN = ", \u0275\u0275pipeBind2(24, 24, ctx_r0.getWatcherAmounts().permitValue, "1.0-0"), " ", ctx_r0.selectedCurrency, " ");
-    \u0275\u0275advance(16);
+    \u0275\u0275twoWayProperty("ngModel", ctx_r0.selectedCurrency);
+    \u0275\u0275advance(11);
+    \u0275\u0275textInterpolate4(" Watcher collateral: ", \u0275\u0275pipeBind2(18, 16, ctx_r0.watchersStats.watcherCollateralRSN, "1.0-0"), " RSN + ", ctx_r0.watchersStats.watcherCollateralERG, " ERG = ", \u0275\u0275pipeBind2(19, 19, ctx_r0.getWatcherAmounts().watcherValue, "1.0-0"), " ", ctx_r0.selectedCurrency, " ");
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate3(" Permit value: ", \u0275\u0275pipeBind2(22, 22, ctx_r0.watchersStats.permitCost, "1.0-0"), " RSN = ", \u0275\u0275pipeBind2(23, 25, ctx_r0.getWatcherAmounts().permitValue, "1.0-0"), " ", ctx_r0.selectedCurrency, " ");
+    \u0275\u0275advance(14);
     \u0275\u0275repeater(ctx_r0.getChainTypes());
     \u0275\u0275advance(14);
     \u0275\u0275textInterpolate(ctx_r0.watchersStats.totalWatcherCount);
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate2("", ctx_r0.watchersStats.totalPermitCount, " (", ctx_r0.watchersStats.totalActivePermitCount, ")");
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(57, 27, ctx_r0.watchersStats.totalLockedRSN, "1.0-0"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(54, 28, ctx_r0.watchersStats.totalLockedRSN, "1.0-0"));
     \u0275\u0275advance(3);
-    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(60, 30, ctx_r0.watchersStats.totalLockedERG, "1.0-0"));
+    \u0275\u0275textInterpolate(\u0275\u0275pipeBind2(57, 31, ctx_r0.watchersStats.totalLockedERG, "1.0-0"));
     \u0275\u0275advance(8);
-    \u0275\u0275textInterpolate2(" Total locked: ", \u0275\u0275pipeBind2(68, 33, ctx_r0.getWatcherAmounts().totalLocked, "1.0-0"), " ", ctx_r0.selectedCurrency, " (permits + collateral) ");
+    \u0275\u0275textInterpolate2(" Total locked: ", \u0275\u0275pipeBind2(65, 34, ctx_r0.getWatcherAmounts().totalLocked, "1.0-0"), " ", ctx_r0.selectedCurrency, " (permits + collateral) ");
   }
 }
 var _WatchersComponent = class _WatchersComponent extends BaseWatcherComponent {
@@ -60890,9 +61162,10 @@ var _WatchersComponent = class _WatchersComponent extends BaseWatcherComponent {
   isHtmlRenderEnabled() {
     return this._renderHtml;
   }
-  constructor(injector, watchersDataService, isElementsActive) {
+  constructor(injector, watchersDataService, navigationService, isElementsActive) {
     super(injector);
     this.watchersDataService = watchersDataService;
+    this.navigationService = navigationService;
     this.isElementsActive = isElementsActive;
     this._renderHtml = true;
     this.notifyWatchersStatsChanged = new EventEmitter();
@@ -60909,10 +61182,16 @@ var _WatchersComponent = class _WatchersComponent extends BaseWatcherComponent {
     localStorage.setItem("selectedCurrency", this.selectedCurrency);
   }
   getChainTypes() {
-    return Object.values(ChainType2);
+    return Object.values(ChainType);
+  }
+  isChainTypeActive(chainType) {
+    return this.watchersDataService.isChainTypeActive(chainType);
   }
   getWatcherAmounts() {
     return this.watchersStats.watchersAmountsPerCurrency[this.selectedCurrency];
+  }
+  selectTab() {
+    this.navigationService.navigate("/mywatchers");
   }
   async ngOnInit() {
     super.ngOnInit();
@@ -60923,16 +61202,16 @@ var _WatchersComponent = class _WatchersComponent extends BaseWatcherComponent {
   }
 };
 _WatchersComponent.\u0275fac = function WatchersComponent_Factory(__ngFactoryType__) {
-  return new (__ngFactoryType__ || _WatchersComponent)(\u0275\u0275directiveInject(Injector), \u0275\u0275directiveInject(WatchersDataService), \u0275\u0275directiveInject(IS_ELEMENTS_ACTIVE));
+  return new (__ngFactoryType__ || _WatchersComponent)(\u0275\u0275directiveInject(Injector), \u0275\u0275directiveInject(WatchersDataService), \u0275\u0275directiveInject(NavigationService), \u0275\u0275directiveInject(IS_ELEMENTS_ACTIVE));
 };
-_WatchersComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _WatchersComponent, selectors: [["app-watchers"]], inputs: { renderHtml: "renderHtml" }, outputs: { notifyWatchersStatsChanged: "notifyWatchersStatsChanged" }, features: [\u0275\u0275InheritDefinitionFeature], decls: 7, vars: 2, consts: [[1, "headercontainer"], [1, "watchersmaincontainer", "main-content"], [1, "watchers-readme", "watchersmaincontainer"], ["href", "https://github.com/pwa-pages/pwa-pages.github.io/blob/main/rosen-watcher-pwa/web-component/README.md"], [1, "headerblock"], [1, "header"], [1, "watcherscontainer"], [1, "currencyrow"], [1, "watcherrequirements"], [1, "currency"], ["for", "currencySelect"], ["id", "currencySelect", 3, "ngModelChange", "change", "ngModel"], ["value", "EUR"], ["value", "USD"], ["value", "ERG"], ["value", "RSN"], [1, "watchervaluerow", "collateralvalues"], [1, "fullrow"], [1, "watcherheader", "first"], [1, "watcherheader"], [1, "watchersdispl"], [1, "fivecolumns"]], template: function WatchersComponent_Template(rf, ctx) {
+_WatchersComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _WatchersComponent, selectors: [["app-watchers"]], inputs: { renderHtml: "renderHtml" }, outputs: { notifyWatchersStatsChanged: "notifyWatchersStatsChanged" }, features: [\u0275\u0275InheritDefinitionFeature], decls: 7, vars: 2, consts: [[1, "headercontainer"], [1, "watchersmaincontainer", "main-content"], [1, "watchers-readme", "watchersmaincontainer"], ["href", "https://pwa-pages.github.io/rosen-watcher-storybook/"], [1, "headerblock"], [1, "header"], [1, "watcherstab"], [1, "currency"], ["for", "currencySelect"], ["id", "currencySelect", 3, "ngModelChange", "change", "ngModel"], ["value", "EUR"], ["value", "USD"], ["value", "ERG"], ["value", "RSN"], [1, "watcherscontainer"], [1, "watchervaluerow", "collateralvalues"], [1, "watcherheader", "first"], [1, "watcherheader"], [1, "watchersdispl"], [1, "fivecolumns"], ["tabindex", "0", 1, "tab"], ["tabindex", "0", 1, "tab", 3, "click", "keypress"], [1, "upcomingwatcher"]], template: function WatchersComponent_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275conditionalCreate(0, WatchersComponent_Conditional_0_Template, 5, 1, "div", 0);
-    \u0275\u0275conditionalCreate(1, WatchersComponent_Conditional_1_Template, 69, 36, "div", 1);
+    \u0275\u0275conditionalCreate(1, WatchersComponent_Conditional_1_Template, 66, 37, "div", 1);
     \u0275\u0275elementStart(2, "div", 2);
     \u0275\u0275text(3, " Want this on your own page? Check ");
     \u0275\u0275elementStart(4, "a", 3);
-    \u0275\u0275text(5, " Github README.md ");
+    \u0275\u0275text(5, "Documentation and code examples");
     \u0275\u0275elementEnd();
     \u0275\u0275element(6, "br");
     \u0275\u0275elementEnd();
@@ -60956,19 +61235,32 @@ var WatchersComponent = _WatchersComponent;
 </div>
 } @if (isHtmlRenderEnabled()) {
 <div class="watchersmaincontainer main-content">
-  <div class="watcherscontainer">
-    <div class="currencyrow">
-      <div class="watcherrequirements">Watcher requirements:</div>
-      <div class="currency">
-        <label for="currencySelect">Currency:</label>
-        <select id="currencySelect" [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
-          <option value="EUR">Euro</option>
-          <option value="USD">US Dollar</option>
-          <option value="ERG">Ergo</option>
-          <option value="RSN">Rosen</option>
-        </select>
-      </div>
+  <div class="watcherstab">
+    @if (!isElementsActive) {
+    <a tabindex="0" class="tab" [class.active]="true">All watchers</a>
+    <a
+      tabindex="0"
+      class="tab"
+      [class.active]="false"
+      (click)="selectTab()"
+      (keypress)="selectTab()"
+    >
+      My watchers
+    </a>
+    }
+
+    <div class="currency">
+      <label for="currencySelect">Currency:</label>
+      <select id="currencySelect" [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
+        <option value="EUR">Euro</option>
+        <option value="USD">US Dollar</option>
+        <option value="ERG">Ergo</option>
+        <option value="RSN">Rosen</option>
+      </select>
     </div>
+  </div>
+
+  <div class="watcherscontainer">
     <div class="watchervaluerow collateralvalues">
       Watcher collateral: {{watchersStats.watcherCollateralRSN | number: '1.0-0'}} RSN +
       {{watchersStats.watcherCollateralERG}} ERG = {{getWatcherAmounts().watcherValue | number:
@@ -60977,7 +61269,6 @@ var WatchersComponent = _WatchersComponent;
       Permit value: {{watchersStats.permitCost | number: '1.0-0'}} RSN =
       {{getWatcherAmounts().permitValue | number: '1.0-0'}} {{this.selectedCurrency}}
     </div>
-    <div class="fullrow">Watchers stats:</div>
     <div class="watcherheader first"></div>
     <div class="watcherheader">Chain</div>
     <div class="watcherheader">Watchers</div>
@@ -60987,6 +61278,8 @@ var WatchersComponent = _WatchersComponent;
     @for (chainType of getChainTypes(); track chainType) {
     <div class="{{ chainType }} watchersdispl"></div>
     <div>{{ chainType }}</div>
+    @if (isChainTypeActive(chainType)) {
+
     <div>{{ watchersStats.chainWatcherCount[chainType] }}</div>
     <div>
       {{ watchersStats.chainPermitCount[chainType] }} ({{ watchersStats.activePermitCount[chainType]
@@ -60994,7 +61287,13 @@ var WatchersComponent = _WatchersComponent;
     </div>
     <div>{{ watchersStats.chainLockedRSN[chainType] | number: '1.0-0' }}</div>
     <div>{{ watchersStats.chainLockedERG[chainType] | number: '1.0-0' }}</div>
-    }
+    } @else {
+
+    <div class="upcomingwatcher">Upcoming...</div>
+    <div class="upcomingwatcher">-</div>
+    <div class="upcomingwatcher">-</div>
+    <div class="upcomingwatcher">-</div>
+    } }
     <div class="watchersdispl"></div>
     <div>&nbsp;</div>
     <div>&nbsp;</div>
@@ -61019,15 +61318,11 @@ var WatchersComponent = _WatchersComponent;
 }
 <div class="watchers-readme watchersmaincontainer">
   Want this on your own page? Check
-  <a
-    href="https://github.com/pwa-pages/pwa-pages.github.io/blob/main/rosen-watcher-pwa/web-component/README.md"
-  >
-    Github README.md
-  </a>
+  <a href="https://pwa-pages.github.io/rosen-watcher-storybook/">Documentation and code examples</a>
   <br />
 </div>
 ` }]
-  }], () => [{ type: Injector }, { type: WatchersDataService }, { type: void 0, decorators: [{
+  }], () => [{ type: Injector }, { type: WatchersDataService }, { type: NavigationService }, { type: void 0, decorators: [{
     type: Inject,
     args: [IS_ELEMENTS_ACTIVE]
   }] }], { renderHtml: [{
@@ -61037,7 +61332,7 @@ var WatchersComponent = _WatchersComponent;
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(WatchersComponent, { className: "WatchersComponent", filePath: "src/app/statistics/watchers.component.ts", lineNumber: 25 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(WatchersComponent, { className: "WatchersComponent", filePath: "src/app/statistics/watchers.component.ts", lineNumber: 26 });
 })();
 
 // node_modules/@kurkle/color/dist/color.esm.js
@@ -79613,7 +79908,7 @@ var _ChainChartService = class _ChainChartService {
       }
     });
   }
-  convertPerformanceCharts(performanceCharts, performanceChart) {
+  convertPerformanceCharts(performanceCharts, performanceChart, accentChartColor) {
     const dataSets = this.CreatePerformanceDataSets(performanceCharts);
     if (performanceCharts.length != performanceChart?.data.datasets.length) {
       performanceChart.data.datasets = dataSets;
@@ -79622,6 +79917,23 @@ var _ChainChartService = class _ChainChartService {
         performanceChart.data.datasets[i].data = dataSets[i].data;
       }
     }
+    if (accentChartColor) {
+      if (performanceChart && performanceChart.options && performanceChart.options.scales && performanceChart.options.scales["y"] && performanceChart.options.scales["x"]) {
+        performanceChart.options.scales["y"].grid = __spreadProps(__spreadValues({}, performanceChart.options.scales["y"].grid), {
+          color: accentChartColor
+        });
+        performanceChart.options.scales["y"].ticks = __spreadProps(__spreadValues({}, performanceChart.options.scales["y"].ticks), {
+          color: accentChartColor
+        });
+        performanceChart.options.scales["x"].grid = __spreadProps(__spreadValues({}, performanceChart.options.scales["x"].grid), {
+          color: accentChartColor
+        });
+        performanceChart.options.scales["x"].ticks = __spreadProps(__spreadValues({}, performanceChart.options.scales["x"].ticks), {
+          color: accentChartColor
+        });
+      }
+    }
+    performanceChart.update();
   }
   createDataSet(i) {
     const chartColor = this.chartColors[i % 10];
@@ -79864,111 +80176,6 @@ var ChainChartService = _ChainChartService;
   }], null, null);
 })();
 
-// src/app/service/navigation.service.ts
-var _NavigationService = class _NavigationService {
-  constructor(router, eventService) {
-    this.router = router;
-    this.eventService = eventService;
-    this.currentNavigationIndex = 0;
-    this.navigationItems = [];
-    this.latestVersionUpdate = null;
-    this.navigationItems.push({ route: "/statistics" });
-    this.navigationItems.push({ route: "/performance" });
-    this.navigationItems.push({ route: "/watchers" });
-    this.navigationItems.push({ route: "/chainperformance" });
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
-      const url = event.urlAfterRedirects;
-      this.updateCurrentNavigationIndex(url);
-    });
-    this.eventService.subscribeToEvent(EventType.VersionUpdated, (v) => {
-      this.latestVersionUpdate = v;
-    });
-    const performanceItem = localStorage.getItem("performanceScreen");
-    if (performanceItem?.startsWith("/chainperformance")) {
-      this.swapPerformanceItems();
-    }
-  }
-  /*
-  private checkForReload() {
-    if (
-      this.latestVersionUpdate &&
-      localStorage.getItem('versionReload') != this.latestVersionUpdate
-    ) {
-      localStorage.setItem('versionReload', this.latestVersionUpdate);
-      this.latestVersionUpdate = null;
-      console.log('Application has been updated, reloading screen.');
-      setTimeout(() => {
-        console.log('Doing the reload...');
-        window.location.reload();
-      }, 1000);
-    }
-  }*/
-  updateCurrentNavigationIndex(url) {
-    if (url.startsWith("/chainperformance")) {
-      this.currentNavigationIndex = 1;
-      return;
-    }
-    let index2 = this.navigationItems.findIndex((item) => url.startsWith(item.route));
-    if (index2 == -1) {
-      index2 = 0;
-    }
-    this.currentNavigationIndex = index2;
-  }
-  getCurrentNavigationItem() {
-    return this.navigationItems[this.currentNavigationIndex];
-  }
-  getNavigationItems() {
-    return this.navigationItems;
-  }
-  getLeftItem() {
-    return this.navigationItems[(this.currentNavigationIndex - 1 + this.navigationItems.length) % 3];
-  }
-  getRightItem() {
-    return this.navigationItems[(this.currentNavigationIndex + 1) % 3];
-  }
-  navigate(to2) {
-    if (to2.startsWith("/performance") && !this.router.url.startsWith("/performance")) {
-      this.swapPerformanceItems();
-    } else if (to2.startsWith("/chainperformance") && !this.router.url.startsWith("/chainperformance")) {
-      this.swapPerformanceItems();
-    }
-    localStorage.setItem("performanceScreen", this.navigationItems[1].route);
-    this.router.navigate([to2]);
-  }
-  swapPerformanceItems() {
-    const t = this.navigationItems[1];
-    this.navigationItems[1] = this.navigationItems[3];
-    this.navigationItems[3] = t;
-  }
-  navigateTo(to2) {
-    this.currentNavigationIndex = to2;
-    return this.getCurrentNavigationItem();
-  }
-  navigateRight() {
-    const l = 3;
-    this.currentNavigationIndex = (this.currentNavigationIndex + 1) % l;
-    return this.getCurrentNavigationItem();
-  }
-  navigateLeft() {
-    const l = 3;
-    this.currentNavigationIndex = (this.currentNavigationIndex - 1 + l) % l;
-    return this.getCurrentNavigationItem();
-  }
-};
-_NavigationService.\u0275fac = function NavigationService_Factory(__ngFactoryType__) {
-  return new (__ngFactoryType__ || _NavigationService)(\u0275\u0275inject(Router), \u0275\u0275inject(EventService));
-};
-_NavigationService.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _NavigationService, factory: _NavigationService.\u0275fac, providedIn: "root" });
-var NavigationService = _NavigationService;
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(NavigationService, [{
-    type: Injectable,
-    args: [{
-      providedIn: "root"
-    }]
-  }], () => [{ type: Router }, { type: EventService }], null);
-})();
-
 // src/app/statistics/chain.performance.component.ts
 var _c03 = ["chartCanvas"];
 var _c12 = (a0) => ({ "performancecontainer": true, "main-content": true, "elementsActive": a0 });
@@ -80103,7 +80310,7 @@ var _ChainPerformanceComponent = class _ChainPerformanceComponent extends BaseWa
     const watcherInfo$ = this.watchersDataService.getWatchersInfo();
     watcherInfo$.pipe(map((watcherInfo) => {
       Object.values(ChainType).forEach((c) => {
-        const amount = watcherInfo.tokens.find((token) => token.name === "rspv2" + c + "AWC")?.amount ?? 0;
+        const amount = watcherInfo.tokens.find((token) => token.name === chainTypeWatcherIdentifier[c])?.amount ?? 0;
         this.chainWatcherCount[c] = amount;
       });
       this.updateChart();
@@ -80265,7 +80472,7 @@ var ChainPerformanceComponent = _ChainPerformanceComponent;
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ChainPerformanceComponent, { className: "ChainPerformanceComponent", filePath: "src/app/statistics/chain.performance.component.ts", lineNumber: 22 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(ChainPerformanceComponent, { className: "ChainPerformanceComponent", filePath: "src/app/statistics/chain.performance.component.ts", lineNumber: 23 });
 })();
 
 // node_modules/@angular/material/fesm2022/date-formats-K6TQue-Y.mjs
@@ -90899,6 +91106,7 @@ var _StatisticsChartComponent = class _StatisticsChartComponent extends BaseEven
       this.retrieveData();
       return;
     }
+    this.chartFullTitle = this.chartTitle;
     if (!this.prevFilledAddresses || this.filledAddresses.length !== this.prevFilledAddresses.length || !this.filledAddresses.every((addr, i) => addr === this.prevFilledAddresses[i])) {
       this.prevFilledAddresses = JSON.parse(JSON.stringify(this.filledAddresses));
       this.retrieveData();
@@ -91020,6 +91228,10 @@ var _PerformanceChartComponent = class _PerformanceChartComponent extends BaseEv
       this.prevFilledAddresses = [...this.filledAddresses];
       this.updateCharts();
     }
+    if (this.accentChartColor !== this.prevAccentChartColor) {
+      this.prevAccentChartColor = this.accentChartColor;
+      this.updateCharts();
+    }
   }
   async updateCharts() {
     await this.retrieveData();
@@ -91045,7 +91257,7 @@ var _PerformanceChartComponent = class _PerformanceChartComponent extends BaseEv
     return (await addresses).filter((chart) => this.filledAddresses.includes(chart.address));
   }
   updateChart() {
-    this.chartService.convertPerformanceCharts(this.performanceCharts, this.performanceChart);
+    this.chartService.convertPerformanceCharts(this.performanceCharts, this.performanceChart, this.accentChartColor);
     this.performanceChart?.update();
   }
 };
@@ -91117,37 +91329,258 @@ var PerformanceChartComponent = _PerformanceChartComponent;
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(PerformanceChartComponent, { className: "PerformanceChartComponent", filePath: "src/app/elements/performance.chart.component.ts", lineNumber: 24 });
 })();
 
+// src/app/statistics/mywatchers.component.ts
+function MyWatchersComponent_Conditional_0_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275domElementStart(0, "div", 0)(1, "div", 4);
+    \u0275\u0275text(2, " Number of watchers ");
+    \u0275\u0275domElementStart(3, "div", 5);
+    \u0275\u0275text(4);
+    \u0275\u0275domElementEnd()()();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance(4);
+    \u0275\u0275textInterpolate(ctx_r0.myWatcherStats.length);
+  }
+}
+function MyWatchersComponent_Conditional_1_Conditional_1_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r2 = \u0275\u0275getCurrentView();
+    \u0275\u0275domElementStart(0, "div", 6)(1, "a", 10);
+    \u0275\u0275domListener("click", function MyWatchersComponent_Conditional_1_Conditional_1_Template_a_click_1_listener() {
+      \u0275\u0275restoreView(_r2);
+      const ctx_r0 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r0.selectTab());
+    })("keypress", function MyWatchersComponent_Conditional_1_Conditional_1_Template_a_keypress_1_listener() {
+      \u0275\u0275restoreView(_r2);
+      const ctx_r0 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r0.selectTab());
+    });
+    \u0275\u0275text(2, " All watchers ");
+    \u0275\u0275domElementEnd();
+    \u0275\u0275domElementStart(3, "a", 11);
+    \u0275\u0275text(4, "My watchers");
+    \u0275\u0275domElementEnd()();
+  }
+  if (rf & 2) {
+    \u0275\u0275advance();
+    \u0275\u0275classProp("active", false);
+    \u0275\u0275advance(2);
+    \u0275\u0275classProp("active", true);
+  }
+}
+function MyWatchersComponent_Conditional_1_For_13_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275domElement(0, "div");
+    \u0275\u0275domElementStart(1, "div");
+    \u0275\u0275text(2);
+    \u0275\u0275domElementEnd();
+    \u0275\u0275domElementStart(3, "div");
+    \u0275\u0275text(4);
+    \u0275\u0275domElementEnd();
+    \u0275\u0275domElementStart(5, "div");
+    \u0275\u0275text(6);
+    \u0275\u0275domElementEnd();
+    \u0275\u0275domElementStart(7, "div");
+    \u0275\u0275text(8);
+    \u0275\u0275domElementEnd();
+  }
+  if (rf & 2) {
+    const stat_r3 = ctx.$implicit;
+    \u0275\u0275classMap(\u0275\u0275interpolate1("", stat_r3.chainType, " watchersdispl"));
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(stat_r3.chainType);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(stat_r3.address == null ? null : stat_r3.address.smallAddressForDisplay);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(stat_r3.permitCount);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(stat_r3.activePermitCount);
+  }
+}
+function MyWatchersComponent_Conditional_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275domElementStart(0, "div", 1);
+    \u0275\u0275conditionalCreate(1, MyWatchersComponent_Conditional_1_Conditional_1_Template, 5, 4, "div", 6);
+    \u0275\u0275domElementStart(2, "div", 7);
+    \u0275\u0275domElement(3, "div", 8);
+    \u0275\u0275domElementStart(4, "div", 9);
+    \u0275\u0275text(5, "Chain");
+    \u0275\u0275domElementEnd();
+    \u0275\u0275domElementStart(6, "div", 9);
+    \u0275\u0275text(7, "Address");
+    \u0275\u0275domElementEnd();
+    \u0275\u0275domElementStart(8, "div", 9);
+    \u0275\u0275text(9, "Permits");
+    \u0275\u0275domElementEnd();
+    \u0275\u0275domElementStart(10, "div", 9);
+    \u0275\u0275text(11, "Active permits");
+    \u0275\u0275domElementEnd();
+    \u0275\u0275repeaterCreate(12, MyWatchersComponent_Conditional_1_For_13_Template, 9, 7, null, null, \u0275\u0275repeaterTrackByIdentity);
+    \u0275\u0275domElementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275advance();
+    \u0275\u0275conditional(!ctx_r0.isElementsActive ? 1 : -1);
+    \u0275\u0275advance(11);
+    \u0275\u0275repeater(ctx_r0.myWatcherStats);
+  }
+}
+var _MyWatchersComponent = class _MyWatchersComponent extends BaseWatcherComponent {
+  set renderHtml(value) {
+    this._renderHtml = value === false || value === "false" ? false : true;
+  }
+  get renderHtml() {
+    return this._renderHtml;
+  }
+  isHtmlRenderEnabled() {
+    return this._renderHtml;
+  }
+  selectTab() {
+    this.navigationService.navigate("/watchers");
+  }
+  constructor(injector, watchersDataService, navigationService, chaindataService, isElementsActive) {
+    super(injector);
+    this.watchersDataService = watchersDataService;
+    this.navigationService = navigationService;
+    this.chaindataService = chaindataService;
+    this.isElementsActive = isElementsActive;
+    this._renderHtml = true;
+    this.myWatcherStats = [];
+    this.processedChainTypes = {};
+    this.filledAddresses = [];
+    this.prevFilledAddresses = [];
+    this.notifyPermitsStatsChanged = new EventEmitter();
+    this.selectedCurrency = "";
+  }
+  onCurrencyChange() {
+    localStorage.setItem("selectedCurrency", this.selectedCurrency);
+  }
+  getChainTypes() {
+    return Object.values(ChainType);
+  }
+  isChainTypeActive(chainType) {
+    return this.watchersDataService.isChainTypeActive(chainType);
+  }
+  async ngOnChanges() {
+    if (!this.prevFilledAddresses || this.filledAddresses.length !== this.prevFilledAddresses.length || !this.filledAddresses.every((addr, i) => addr === this.prevFilledAddresses[i])) {
+      this.prevFilledAddresses = [...this.filledAddresses];
+      await this.initializeAddresses();
+    }
+  }
+  async initializeAddresses() {
+    if (!this.isElementsActive) {
+      let addresses = (await this.chaindataService.getAddresses()).map((a) => a.address);
+      this.eventService.sendEventWithData(EventType.MyWatchersScreenLoaded, {
+        addresses
+      });
+    } else {
+      this.eventService.sendEventWithData(EventType.MyWatchersScreenLoaded, {
+        addresses: this.filledAddresses
+      });
+    }
+  }
+  async getAddresses() {
+    if (this.isElementsActive) {
+      return this.filledAddresses;
+    } else {
+      return (await this.chaindataService.getAddresses()).map((a) => a.address);
+    }
+  }
+  async ngOnInit() {
+    super.ngOnInit();
+    this.selectedCurrency = localStorage.getItem("selectedCurrency");
+    this.selectedCurrency = this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
+    await this.initializeAddresses();
+    await this.subscribeToEvent(EventType.RefreshPermits, async () => {
+      this.myWatcherStats = Object.entries(await this.watchersDataService.getMyWatcherStats(await this.getAddresses())).map(([key, value]) => __spreadValues({ key }, value));
+      this.eventService.sendEventWithData(EventType.PermitsStatsChanged, this.myWatcherStats);
+    });
+  }
+};
+_MyWatchersComponent.\u0275fac = function MyWatchersComponent_Factory(__ngFactoryType__) {
+  return new (__ngFactoryType__ || _MyWatchersComponent)(\u0275\u0275directiveInject(Injector), \u0275\u0275directiveInject(WatchersDataService), \u0275\u0275directiveInject(NavigationService), \u0275\u0275directiveInject(ChainDataService), \u0275\u0275directiveInject(IS_ELEMENTS_ACTIVE));
+};
+_MyWatchersComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _MyWatchersComponent, selectors: [["app-mywatchers"]], inputs: { filledAddresses: "filledAddresses", renderHtml: "renderHtml" }, outputs: { notifyPermitsStatsChanged: "notifyPermitsStatsChanged" }, features: [\u0275\u0275InheritDefinitionFeature, \u0275\u0275NgOnChangesFeature], decls: 7, vars: 2, consts: [[1, "headercontainer"], [1, "watchersmaincontainer", "main-content"], [1, "watchers-readme", "watchersmaincontainer"], ["href", "https://pwa-pages.github.io/rosen-watcher-storybook/"], [1, "headerblock"], [1, "header"], [1, "watcherstab"], [1, "watcherscontainer", "mywatcher"], [1, "watcherheader", "first"], [1, "watcherheader"], ["tabindex", "0", 1, "tab", 3, "click", "keypress"], ["tabindex", "0", 1, "tab"]], template: function MyWatchersComponent_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275conditionalCreate(0, MyWatchersComponent_Conditional_0_Template, 5, 1, "div", 0);
+    \u0275\u0275conditionalCreate(1, MyWatchersComponent_Conditional_1_Template, 14, 1, "div", 1);
+    \u0275\u0275domElementStart(2, "div", 2);
+    \u0275\u0275text(3, " Want this on your own page? Check ");
+    \u0275\u0275domElementStart(4, "a", 3);
+    \u0275\u0275text(5, "Documentation and code examples");
+    \u0275\u0275domElementEnd();
+    \u0275\u0275domElement(6, "br");
+    \u0275\u0275domElementEnd();
+  }
+  if (rf & 2) {
+    \u0275\u0275conditional((ctx.isHtmlRenderEnabled() ? !ctx.isElementsActive : false) ? 0 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(ctx.isHtmlRenderEnabled() ? 1 : -1);
+  }
+}, dependencies: [CommonModule, FormsModule], encapsulation: 2 });
+var MyWatchersComponent = _MyWatchersComponent;
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MyWatchersComponent, [{
+    type: Component,
+    args: [{ selector: "app-mywatchers", standalone: true, imports: [CommonModule, FormsModule], template: '@if (isHtmlRenderEnabled() ? !isElementsActive : false) {\n<div class="headercontainer">\n  <div class="headerblock">\n    Number of watchers\n    <div class="header">{{myWatcherStats.length}}</div>\n  </div>\n</div>\n} @if (isHtmlRenderEnabled()) {\n<div class="watchersmaincontainer main-content">\n  @if (!isElementsActive) {\n  <div class="watcherstab">\n    <a\n      tabindex="0"\n      class="tab"\n      [class.active]="false"\n      (click)="selectTab()"\n      (keypress)="selectTab()"\n    >\n      All watchers\n    </a>\n    <a tabindex="0" class="tab" [class.active]="true">My watchers</a>\n  </div>\n  }\n\n  <div class="watcherscontainer mywatcher">\n    <div class="watcherheader first"></div>\n    <div class="watcherheader">Chain</div>\n    <div class="watcherheader">Address</div>\n    <div class="watcherheader">Permits</div>\n    <div class="watcherheader">Active permits</div>\n\n    @for (stat of myWatcherStats; track stat) {\n    <div class="{{ stat.chainType }} watchersdispl"></div>\n    <div>{{ stat.chainType }}</div>\n\n    <div>{{ stat.address?.smallAddressForDisplay }}</div>\n\n    <div>{{ stat.permitCount}}</div>\n    <div>{{ stat.activePermitCount}}</div>\n    }\n  </div>\n</div>\n}\n<div class="watchers-readme watchersmaincontainer">\n  Want this on your own page? Check\n  <a href="https://pwa-pages.github.io/rosen-watcher-storybook/">Documentation and code examples</a>\n  <br />\n</div>\n' }]
+  }], () => [{ type: Injector }, { type: WatchersDataService }, { type: NavigationService }, { type: ChainDataService }, { type: void 0, decorators: [{
+    type: Inject,
+    args: [IS_ELEMENTS_ACTIVE]
+  }] }], { filledAddresses: [{
+    type: Input
+  }], renderHtml: [{
+    type: Input
+  }], notifyPermitsStatsChanged: [{
+    type: Output
+  }] });
+})();
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(MyWatchersComponent, { className: "MyWatchersComponent", filePath: "src/app/statistics/mywatchers.component.ts", lineNumber: 27 });
+})();
+
 // src/app/elements/rosen.watcher.component.ts
-function RosenWatcherComponent_app_watchers_0_Template(rf, ctx) {
+function RosenWatcherComponent_app_mywatchers_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "app-watchers", 2);
+    \u0275\u0275element(0, "app-mywatchers", 3);
+  }
+  if (rf & 2) {
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275property("filledAddresses", ctx_r0.getFilledAddresses())("renderHtml", ctx_r0.renderHtml);
+  }
+}
+function RosenWatcherComponent_app_watchers_1_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275element(0, "app-watchers", 4);
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275property("renderHtml", ctx_r0.renderHtml);
   }
 }
-function RosenWatcherComponent_app_chain_performance_1_Template(rf, ctx) {
+function RosenWatcherComponent_app_chain_performance_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "app-chain-performance", 2);
+    \u0275\u0275element(0, "app-chain-performance", 4);
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275property("renderHtml", ctx_r0.renderHtml);
   }
 }
-function RosenWatcherComponent_app_performance_chart_2_Template(rf, ctx) {
+function RosenWatcherComponent_app_performance_chart_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "app-performance-chart", 3);
+    \u0275\u0275element(0, "app-performance-chart", 5);
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
     \u0275\u0275property("renderHtml", ctx_r0.renderHtml)("period", ctx_r0.period)("chartTitle", ctx_r0.chartTitle)("period", ctx_r0.period)("filledAddresses", ctx_r0.getFilledAddresses())("chartColor", ctx_r0.chartColor)("accentChartColor", ctx_r0.accentChartColor);
   }
 }
-function RosenWatcherComponent_app_statistics_chart_3_Template(rf, ctx) {
+function RosenWatcherComponent_app_statistics_chart_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "app-statistics-chart", 3);
+    \u0275\u0275element(0, "app-statistics-chart", 5);
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
@@ -91180,6 +91613,9 @@ var _RosenWatcherComponent = class _RosenWatcherComponent extends BaseEventAware
   set component(value) {
     this._component = value;
   }
+  appPermitsActive() {
+    return this._component === "permits";
+  }
   appWatchersActive() {
     return this._component === "watchers";
   }
@@ -91197,6 +91633,7 @@ var _RosenWatcherComponent = class _RosenWatcherComponent extends BaseEventAware
     this.injector = injector;
     this.isElementsActive = isElementsActive;
     this._renderHtml = true;
+    this.notifyPermitsStatsChanged = new EventEmitter();
     this.notifyWatchersStatsChanged = new EventEmitter();
     this.notifyChainPerformanceChartsChanged = new EventEmitter();
     this.notifyPerformanceChartsChanged = new EventEmitter();
@@ -91207,6 +91644,10 @@ var _RosenWatcherComponent = class _RosenWatcherComponent extends BaseEventAware
     this.subscribeToEvent(EventType.WatchersStatsChanged, (data) => {
       console.log("Received watchers stats changed event, sending through notifyWatchersStatsChanged");
       this.notifyWatchersStatsChanged.emit(data);
+    });
+    this.subscribeToEvent(EventType.PermitsStatsChanged, (data) => {
+      console.log("Received chain permits stats changed event, sending through notifyPermitsStatsChanged");
+      this.notifyPermitsStatsChanged.emit(data);
     });
     this.subscribeToEvent(EventType.ChainPerformanceChartsChanged, (data) => {
       console.log("Received chain performance changed event, sending through notifyChainPerformanceChartsChanged");
@@ -91225,11 +91666,13 @@ var _RosenWatcherComponent = class _RosenWatcherComponent extends BaseEventAware
 _RosenWatcherComponent.\u0275fac = function RosenWatcherComponent_Factory(__ngFactoryType__) {
   return new (__ngFactoryType__ || _RosenWatcherComponent)(\u0275\u0275directiveInject(Injector), \u0275\u0275directiveInject(IS_ELEMENTS_ACTIVE));
 };
-_RosenWatcherComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RosenWatcherComponent, selectors: [["rosen-watcher-component"]], inputs: { renderHtml: "renderHtml", period: "period", chartTitle: "chartTitle", address1: "address1", address2: "address2", address3: "address3", address4: "address4", address5: "address5", address6: "address6", address7: "address7", address8: "address8", address9: "address9", address10: "address10", address11: "address11", address12: "address12", address13: "address13", address14: "address14", address15: "address15", address16: "address16", address17: "address17", address18: "address18", address19: "address19", address20: "address20", chartColor: "chartColor", accentChartColor: "accentChartColor", component: "component" }, outputs: { notifyWatchersStatsChanged: "notifyWatchersStatsChanged", notifyChainPerformanceChartsChanged: "notifyChainPerformanceChartsChanged", notifyPerformanceChartsChanged: "notifyPerformanceChartsChanged", notifyStatisticsChartChanged: "notifyStatisticsChartChanged" }, features: [\u0275\u0275InheritDefinitionFeature], decls: 4, vars: 4, consts: [["class", "elementsActive", 3, "renderHtml", 4, "ngIf"], ["class", "elementsActive", 3, "renderHtml", "period", "chartTitle", "filledAddresses", "chartColor", "accentChartColor", 4, "ngIf"], [1, "elementsActive", 3, "renderHtml"], [1, "elementsActive", 3, "renderHtml", "period", "chartTitle", "filledAddresses", "chartColor", "accentChartColor"]], template: function RosenWatcherComponent_Template(rf, ctx) {
+_RosenWatcherComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _RosenWatcherComponent, selectors: [["rosen-watcher-component"]], inputs: { renderHtml: "renderHtml", period: "period", chartTitle: "chartTitle", address1: "address1", address2: "address2", address3: "address3", address4: "address4", address5: "address5", address6: "address6", address7: "address7", address8: "address8", address9: "address9", address10: "address10", address11: "address11", address12: "address12", address13: "address13", address14: "address14", address15: "address15", address16: "address16", address17: "address17", address18: "address18", address19: "address19", address20: "address20", chartColor: "chartColor", accentChartColor: "accentChartColor", component: "component" }, outputs: { notifyPermitsStatsChanged: "notifyPermitsStatsChanged", notifyWatchersStatsChanged: "notifyWatchersStatsChanged", notifyChainPerformanceChartsChanged: "notifyChainPerformanceChartsChanged", notifyPerformanceChartsChanged: "notifyPerformanceChartsChanged", notifyStatisticsChartChanged: "notifyStatisticsChartChanged" }, features: [\u0275\u0275InheritDefinitionFeature], decls: 5, vars: 5, consts: [["class", "elementsActive", 3, "filledAddresses", "renderHtml", 4, "ngIf"], ["class", "elementsActive", 3, "renderHtml", 4, "ngIf"], ["class", "elementsActive", 3, "renderHtml", "period", "chartTitle", "filledAddresses", "chartColor", "accentChartColor", 4, "ngIf"], [1, "elementsActive", 3, "filledAddresses", "renderHtml"], [1, "elementsActive", 3, "renderHtml"], [1, "elementsActive", 3, "renderHtml", "period", "chartTitle", "filledAddresses", "chartColor", "accentChartColor"]], template: function RosenWatcherComponent_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, RosenWatcherComponent_app_watchers_0_Template, 1, 1, "app-watchers", 0)(1, RosenWatcherComponent_app_chain_performance_1_Template, 1, 1, "app-chain-performance", 0)(2, RosenWatcherComponent_app_performance_chart_2_Template, 1, 7, "app-performance-chart", 1)(3, RosenWatcherComponent_app_statistics_chart_3_Template, 1, 7, "app-statistics-chart", 1);
+    \u0275\u0275template(0, RosenWatcherComponent_app_mywatchers_0_Template, 1, 2, "app-mywatchers", 0)(1, RosenWatcherComponent_app_watchers_1_Template, 1, 1, "app-watchers", 1)(2, RosenWatcherComponent_app_chain_performance_2_Template, 1, 1, "app-chain-performance", 1)(3, RosenWatcherComponent_app_performance_chart_3_Template, 1, 7, "app-performance-chart", 2)(4, RosenWatcherComponent_app_statistics_chart_4_Template, 1, 7, "app-statistics-chart", 2);
   }
   if (rf & 2) {
+    \u0275\u0275property("ngIf", ctx.appPermitsActive() && ctx.renderHtml);
+    \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx.appWatchersActive() && ctx.renderHtml);
     \u0275\u0275advance();
     \u0275\u0275property("ngIf", ctx.appChainPerformanceActive() && ctx.renderHtml);
@@ -91242,6 +91685,7 @@ _RosenWatcherComponent.\u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
   CommonModule,
   NgIf,
   WatchersComponent,
+  MyWatchersComponent,
   ChainPerformanceComponent,
   StatisticsChartComponent,
   PerformanceChartComponent
@@ -91253,14 +91697,17 @@ var RosenWatcherComponent = _RosenWatcherComponent;
     args: [{ selector: "rosen-watcher-component", standalone: true, imports: [
       CommonModule,
       WatchersComponent,
+      MyWatchersComponent,
       ChainPerformanceComponent,
       StatisticsChartComponent,
       PerformanceChartComponent
-    ], schemas: [CUSTOM_ELEMENTS_SCHEMA], template: '<app-watchers\n  *ngIf="appWatchersActive() && renderHtml"\n  class="elementsActive"\n  [renderHtml]="renderHtml"\n></app-watchers>\n\n<app-chain-performance\n  *ngIf="appChainPerformanceActive() && renderHtml"\n  class="elementsActive"\n  [renderHtml]="renderHtml"\n></app-chain-performance>\n\n<app-performance-chart\n  *ngIf="appPerformanceActive() && renderHtml"\n  class="elementsActive"\n  [renderHtml]="renderHtml"\n  [period]="period"\n  [chartTitle]="chartTitle"\n  [period]="period"\n  [filledAddresses]="getFilledAddresses()"\n  [chartColor]="chartColor"\n  [accentChartColor]="accentChartColor"\n></app-performance-chart>\n\n<app-statistics-chart\n  *ngIf="appStatisticsActive() && renderHtml"\n  class="elementsActive"\n  [renderHtml]="renderHtml"\n  [period]="period"\n  [chartTitle]="chartTitle"\n  [period]="period"\n  [filledAddresses]="getFilledAddresses()"\n  [chartColor]="chartColor"\n  [accentChartColor]="accentChartColor"\n></app-statistics-chart>\n', styles: ["/* angular:styles/component:css;1239f7d1147e3842fc7c629f05476d383353f33a1194f156ea42f522186ba4e0;/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa/src/app/elements/rosen.watcher.component.ts */\n:host ::ng-deep .elementsActive .PerformanceChart,\n:host ::ng-deep .elementsActive .RewardChart,\n:host ::ng-deep .elementsActive app-statistics-chart .chart-container,\n:host ::ng-deep .elementsActive app-statistics-chart .chartcontainer,\n:host ::ng-deep app-performance-chart.elementsActive .chart-container,\n:host ::ng-deep app-performance-chart.elementsActive .chartcontainer,\n:host ::ng-deep app-chain-performance.elementsActive,\n:host ::ng-deep app-statistics-chart.elementsActive,\n:host ::ng-deep app-performance-chart.elementsActive,\n:host ::ng-deep .elementsActive app-reward-chart {\n  width: inherit;\n  height: inherit;\n  display: block;\n}\n:host ::ng-deep .performancecontainer.elementsActive {\n  width: inherit;\n  height: inherit;\n}\n:host ::ng-deep app-chain-performance.elementsActive .chart-container,\n:host ::ng-deep app-chain-performance.elementsActive .PerformanceChart,\n:host ::ng-deep app-performance-chart.elementsActive .chart-container,\n:host ::ng-deep app-performance-chart.elementsActive .PerformanceChart {\n  width: 100%;\n  height: 100%;\n}\n/*# sourceMappingURL=rosen.watcher.component.css.map */\n"] }]
+    ], schemas: [CUSTOM_ELEMENTS_SCHEMA], template: '<app-mywatchers\n  *ngIf="appPermitsActive() && renderHtml"\n  class="elementsActive"\n  [filledAddresses]="getFilledAddresses()"\n  [renderHtml]="renderHtml"\n></app-mywatchers>\n\n<app-watchers\n  *ngIf="appWatchersActive() && renderHtml"\n  class="elementsActive"\n  [renderHtml]="renderHtml"\n></app-watchers>\n\n<app-chain-performance\n  *ngIf="appChainPerformanceActive() && renderHtml"\n  class="elementsActive"\n  [renderHtml]="renderHtml"\n></app-chain-performance>\n\n<app-performance-chart\n  *ngIf="appPerformanceActive() && renderHtml"\n  class="elementsActive"\n  [renderHtml]="renderHtml"\n  [period]="period"\n  [chartTitle]="chartTitle"\n  [period]="period"\n  [filledAddresses]="getFilledAddresses()"\n  [chartColor]="chartColor"\n  [accentChartColor]="accentChartColor"\n></app-performance-chart>\n\n<app-statistics-chart\n  *ngIf="appStatisticsActive() && renderHtml"\n  class="elementsActive"\n  [renderHtml]="renderHtml"\n  [period]="period"\n  [chartTitle]="chartTitle"\n  [period]="period"\n  [filledAddresses]="getFilledAddresses()"\n  [chartColor]="chartColor"\n  [accentChartColor]="accentChartColor"\n></app-statistics-chart>\n', styles: ["/* angular:styles/component:css;1239f7d1147e3842fc7c629f05476d383353f33a1194f156ea42f522186ba4e0;/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa/src/app/elements/rosen.watcher.component.ts */\n:host ::ng-deep .elementsActive .PerformanceChart,\n:host ::ng-deep .elementsActive .RewardChart,\n:host ::ng-deep .elementsActive app-statistics-chart .chart-container,\n:host ::ng-deep .elementsActive app-statistics-chart .chartcontainer,\n:host ::ng-deep app-performance-chart.elementsActive .chart-container,\n:host ::ng-deep app-performance-chart.elementsActive .chartcontainer,\n:host ::ng-deep app-chain-performance.elementsActive,\n:host ::ng-deep app-statistics-chart.elementsActive,\n:host ::ng-deep app-performance-chart.elementsActive,\n:host ::ng-deep .elementsActive app-reward-chart {\n  width: inherit;\n  height: inherit;\n  display: block;\n}\n:host ::ng-deep .performancecontainer.elementsActive {\n  width: inherit;\n  height: inherit;\n}\n:host ::ng-deep app-chain-performance.elementsActive .chart-container,\n:host ::ng-deep app-chain-performance.elementsActive .PerformanceChart,\n:host ::ng-deep app-performance-chart.elementsActive .chart-container,\n:host ::ng-deep app-performance-chart.elementsActive .PerformanceChart {\n  width: 100%;\n  height: 100%;\n}\n/*# sourceMappingURL=rosen.watcher.component.css.map */\n"] }]
   }], () => [{ type: Injector }, { type: void 0, decorators: [{
     type: Inject,
     args: [IS_ELEMENTS_ACTIVE]
-  }] }], { notifyWatchersStatsChanged: [{
+  }] }], { notifyPermitsStatsChanged: [{
+    type: Output
+  }], notifyWatchersStatsChanged: [{
     type: Output
   }], notifyChainPerformanceChartsChanged: [{
     type: Output
@@ -91323,7 +91770,7 @@ var RosenWatcherComponent = _RosenWatcherComponent;
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(RosenWatcherComponent, { className: "RosenWatcherComponent", filePath: "src/app/elements/rosen.watcher.component.ts", lineNumber: 57 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(RosenWatcherComponent, { className: "RosenWatcherComponent", filePath: "src/app/elements/rosen.watcher.component.ts", lineNumber: 60 });
 })();
 
 // src/app/webcomponents/rosen-web-component.ts
