@@ -149,7 +149,14 @@ export class ChainDataService {
   }
 
   getChainChart(): Record<ChainType, { chart: number }> {
-    return this.chainChart;
+    const activeChainTypes = getActiveChainTypes() as ChainType[];
+    const result = {} as Record<ChainType, { chart: number }>;
+    for (const ct of activeChainTypes) {
+      if (this.chainChart[ct]) {
+        result[ct] = this.chainChart[ct];
+      }
+    }
+    return result;
   }
 
   async getAddresses(): Promise<string[]> {

@@ -58,6 +58,7 @@ export class StatisticsChartComponent extends BaseEventAwareComponent implements
       this.filledAddresses.length !== this.prevFilledAddresses.length ||
       !this.filledAddresses.every((addr, i) => addr === this.prevFilledAddresses![i])
     ) {
+      // a bit crap but what can you do
       this.dataService.setAddresses(this.filledAddresses);
       this.prevFilledAddresses = JSON.parse(JSON.stringify(this.filledAddresses));
       this.retrieveData();

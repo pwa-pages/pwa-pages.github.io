@@ -14,6 +14,25 @@ var ChainType;
     ChainType["Handshake"] = "Handshake";
     ChainType["Monero"] = "Monero";
 })(ChainType || (ChainType = {}));
+function getActiveChainTypes() {
+    const active = new Set();
+    const addIfPresent = (map) => {
+        for (const [k, v] of Object.entries(map)) {
+            if (v) {
+                active.add(k);
+            }
+        }
+    };
+    addIfPresent(permitAddresses);
+    addIfPresent(permitTriggerAddresses);
+    addIfPresent(permitBulkAddresses);
+    addIfPresent(rewardAddresses);
+    for (const ct of Object.values(rwtTokenIds)) {
+        if (ct)
+            active.add(ct);
+    }
+    return Array.from(active);
+}
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const chainTypeTokens = Object.fromEntries(Object.values(ChainType).map((chain) => [chain, `rspv2${chain}RWT`]));
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -110,4 +129,5 @@ if (typeof window !== 'undefined') {
     window.permitBulkAddresses = permitBulkAddresses;
     window.hotWalletAddress = hotWalletAddress;
     window.rwtTokenIds = rwtTokenIds;
+    window.getActiveChainTypes = getActiveChainTypes;
 }

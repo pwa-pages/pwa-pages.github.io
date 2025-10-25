@@ -16,6 +16,29 @@ enum ChainType {
   Monero = 'Monero',
 }
 
+function getActiveChainTypes(): ChainType[] {
+  const active = new Set<ChainType>();
+
+  const addIfPresent = (map: Record<string, string | null> | Record<ChainType, string | null>) => {
+    for (const [k, v] of Object.entries(map)) {
+      if (v) {
+        active.add(k as ChainType);
+      }
+    }
+  };
+
+  addIfPresent(permitAddresses);
+  addIfPresent(permitTriggerAddresses);
+  addIfPresent(permitBulkAddresses);
+  addIfPresent(rewardAddresses);
+
+  for (const ct of Object.values(rwtTokenIds)) {
+    if (ct) active.add(ct);
+  }
+
+  return Array.from(active);
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const chainTypeTokens = Object.fromEntries(
   Object.values(ChainType).map((chain) => [chain, `rspv2${chain}RWT`]),
@@ -153,4 +176,5 @@ if (typeof window !== 'undefined') {
   (window as any).permitBulkAddresses = permitBulkAddresses;
   (window as any).hotWalletAddress = hotWalletAddress;
   (window as any).rwtTokenIds = rwtTokenIds;
+  (window as any).getActiveChainTypes = getActiveChainTypes;
 }
