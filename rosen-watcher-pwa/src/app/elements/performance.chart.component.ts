@@ -20,7 +20,6 @@ import { BaseEventAwareComponent } from '../baseeventawarecomponent';
   selector: 'app-performance-chart',
   templateUrl: './performance.chart.html',
   standalone: true,
-  providers: [ChainDataService],
 })
 export class PerformanceChartComponent
   extends BaseEventAwareComponent
