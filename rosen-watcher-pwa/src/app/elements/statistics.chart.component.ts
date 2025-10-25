@@ -12,6 +12,7 @@ import { BaseEventAwareComponent } from '../baseeventawarecomponent';
   templateUrl: './statistics.chart.html',
   standalone: true,
   imports: [RewardChartComponent],
+  providers: [ChainDataService],
 })
 export class StatisticsChartComponent extends BaseEventAwareComponent implements OnInit, OnChanges {
   DateUtils = DateUtils;
