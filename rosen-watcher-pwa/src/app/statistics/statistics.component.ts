@@ -99,7 +99,7 @@ export class StatisticsComponent extends BaseWatcherComponent implements OnInit 
 
     const availableAddresses = await this.dataService.getAddresses();
     if (availableAddresses && availableAddresses.length) {
-      const availSet = new Set(availableAddresses.map((a) => a.address));
+      const availSet = new Set(availableAddresses);
       this.addressesForDisplay = this.addressesForDisplay.filter((a) => availSet.has(a.address));
     }
 

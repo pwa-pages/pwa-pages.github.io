@@ -5,6 +5,7 @@ import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { EventService, EventType } from './event.service';
 import { DateUtils } from '../statistics/date.utils';
+import { AddressService } from './address.service';
 
 export function initializeDataService(dataService: ChainDataService) {
   return (): Promise<void> => {
@@ -33,6 +34,7 @@ export class ChainDataService {
   constructor(
     private storageService: StorageService,
     private eventService: EventService,
+    private addressService: AddressService,
   ) {}
 
   public async initialize() {
@@ -42,10 +44,9 @@ export class ChainDataService {
       this.rsnInputs = i;
 
       if (storedAddresses && storedAddresses.length > 0) {
-        const activeAddresses = storedAddresses.filter((a) => a.active).map((a) => a.address);
-        if (activeAddresses.length > 0) {
+        if (storedAddresses.length > 0) {
           this.rsnInputs = this.rsnInputs.filter((input) =>
-            activeAddresses.includes(input.outputAddress),
+            storedAddresses.includes(input.outputAddress),
           );
         }
       }
@@ -66,9 +67,8 @@ export class ChainDataService {
       async (
         a: Record<string, { chainType: ChainType | null; charts: Record<number, number> }>,
       ) => {
-        let storedAddresses = await this.getAddresses();
-
-        const addressSet = new Set((storedAddresses || []).map((s) => s.address));
+        const addressArray = await this.getAddresses();
+        const addressSet = new Set(addressArray);
         this.addressCharts = Object.keys(a)
           .filter((key) => addressSet.has(key))
           .reduce(
@@ -85,6 +85,10 @@ export class ChainDataService {
 
   async getInputs(): Promise<Input[]> {
     return this.storageService.getInputs();
+  }
+
+  public setAddresses(addresses: string[]): void {
+    this.addressService.setAddresses(addresses);
   }
 
   public getInputsPart(
@@ -148,8 +152,12 @@ export class ChainDataService {
     return this.chainChart;
   }
 
-  async getAddresses(): Promise<Address[]> {
-    return await this.storageService.getAddressData();
+  async getAddresses(): Promise<string[]> {
+    return await this.addressService.getAddresses();
+  }
+
+  async getFullAddresses(): Promise<Address[]> {
+    return this.storageService.getAddressData();
   }
 
   getAddressesForDisplay(inputs: Input[]): Address[] {

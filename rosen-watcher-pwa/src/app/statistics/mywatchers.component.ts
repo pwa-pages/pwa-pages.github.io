@@ -88,7 +88,7 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit,
 
   async initializeAddresses() {
     if (!this.isElementsActive) {
-      let addresses = (await this.chaindataService.getAddresses()).map((a: Address) => a.address);
+      let addresses = await this.chaindataService.getAddresses();
 
       this.eventService.sendEventWithData(EventType.MyWatchersScreenLoaded, {
         addresses: addresses,
@@ -104,7 +104,7 @@ export class MyWatchersComponent extends BaseWatcherComponent implements OnInit,
     if (this.isElementsActive) {
       return this.filledAddresses;
     } else {
-      return (await this.chaindataService.getAddresses()).map((a) => a.address);
+      return await this.chaindataService.getAddresses();
     }
   }
 

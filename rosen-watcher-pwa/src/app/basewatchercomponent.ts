@@ -88,7 +88,7 @@ export class BaseWatcherComponent extends BaseEventAwareComponent implements OnI
       );
       return true;
     } else {
-      this.addresses = await this.dataService.getAddresses();
+      this.addresses = await this.dataService.getFullAddresses();
       if (this.addresses.length == 0) {
         this.noAddresses = true;
       }
