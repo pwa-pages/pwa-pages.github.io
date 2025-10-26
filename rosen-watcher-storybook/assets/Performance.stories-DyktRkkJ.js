@@ -1,4 +1,4 @@
-<h3>Description</h3>
+import{e as i}from"./index-1v6kQ9Nt.js";import{r as l,a as p}from"./iframe-DVmyK91K.js";import"./preload-helper-D9Z9MdNV.js";const r=({backgroundColor:e,accentChartColor:a,address1:d,address2:s,address3:c,address4:h})=>{const t=document.createElement("rosen-watcher-component");return t.setAttribute("component","performance"),t.setAttribute("render-html","true"),t.setAttribute("address1",d),t.setAttribute("address2",s),t.setAttribute("address3",c),t.setAttribute("address4",h),t.setAttribute("accent-chart-color",a),t.setAttribute("style","border:1px solid black; width: 500px; height:300px; display: block;"),t.style.backgroundColor=e,t},m=`<h3>Description</h3>
 
 <p>The performance component can be used to render HTML that shows the amount earned per week for a set of watchers over time,
 similar to <a href="https://pwa-pages.github.io/rosen-watcher-pwa/load.html?page=performance">https://pwa-pages.github.io/rosen-watcher-pwa/load.html?page=performance</a>.
@@ -202,4 +202,40 @@ similar to how it is shown in the HTML part of this component.
       <td>Color used for chart representation if needed.</td>
     </tr>
   </tbody>
-</table>
+</table>`,o={address1:"9fMuCRJ9mBok5K43Qb8Ddx3rBnoHbvg82d7wAsBW33CPz9ioLS3",address2:"9fTF3gDacgsi5BhpcgKrGQtGMr93VTkZaH6tZFG8zJAMe44EaGm",address3:"9ha6v36nv7p3mVRsVPnMajGmASbY6Etz4ba3MqfgZy4D2zvvPxg",address4:"9ehyh2Ti9kBvnodWsafHhzT5557eTwWsKLdvRFhipmLmWAqYhAv",accentChartColor:"#666666"};var g=m.replace(/__SCRIPT_FILE__/g,l).replace(/__STYLE_FILE__/g,p);const T={title:"Components/Performance",tags:["autodocs"],render:e=>r({...e}),argTypes:{backgroundColor:{control:"color"},accentChartColor:{control:"color"},address1:{control:"text"},address2:{control:"text"},address3:{control:"text"},address4:{control:"text"}},args:o,parameters:{docs:{page:()=>i.createElement("div",{dangerouslySetInnerHTML:{__html:g}})}}};function f(e){return`
+
+    <rosen-watcher-component
+      style="display: block; width: 500px; height: 300px; float: left"
+      component="performance"
+      address1="${e.address1||""}"
+      address2="${e.address2||""}"
+      address3="${e.address3||""}"
+      address4="${e.address4||""}"
+      render-html="true"
+      accent-chart-color="${e.accentChartColor||""}"      >
+      
+    </rosen-watcher-component>
+
+  `}const n={name:"Explore Component",args:{address1:"9fMuCRJ9mBok5K43Qb8Ddx3rBnoHbvg82d7wAsBW33CPz9ioLS3",address2:"9fTF3gDacgsi5BhpcgKrGQtGMr93VTkZaH6tZFG8zJAMe44EaGm",address3:"9ha6v36nv7p3mVRsVPnMajGmASbY6Etz4ba3MqfgZy4D2zvvPxg",address4:"9ehyh2Ti9kBvnodWsafHhzT5557eTwWsKLdvRFhipmLmWAqYhAv"},parameters:{docs:{source:{code:f(o)}}},render:e=>r({...e})};n.parameters={...n.parameters,docs:{...n.parameters?.docs,source:{originalSource:`{
+  name: 'Explore Component',
+  args: {
+    address1: '9fMuCRJ9mBok5K43Qb8Ddx3rBnoHbvg82d7wAsBW33CPz9ioLS3',
+    address2: '9fTF3gDacgsi5BhpcgKrGQtGMr93VTkZaH6tZFG8zJAMe44EaGm',
+    address3: '9ha6v36nv7p3mVRsVPnMajGmASbY6Etz4ba3MqfgZy4D2zvvPxg',
+    address4: '9ehyh2Ti9kBvnodWsafHhzT5557eTwWsKLdvRFhipmLmWAqYhAv'
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: buildSourceCode(baseArgs)
+      }
+    }
+  },
+  render: args => {
+    const style = 'display: block; width: 600px; height: 350px; border: 2px solid #666; border-radius: 8px; background: #f9f9f9; padding: 16px;';
+    return createPerformance({
+      ...args,
+      style
+    });
+  }
+}`,...n.parameters?.docs?.source}}};const w=["Primary"];export{n as Primary,w as __namedExportsOrder,T as default};

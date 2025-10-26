@@ -1,4 +1,4 @@
-<h3>Description</h3>
+/* empty css              */import{e as r}from"./index-1v6kQ9Nt.js";import{r as a,a as o}from"./iframe-DVmyK91K.js";import"./preload-helper-D9Z9MdNV.js";const c=({backgroundColor:n})=>{const e=document.createElement("rosen-watcher-component");return e.setAttribute("component","chain-performance"),e.setAttribute("render-html","true"),e.setAttribute("style","border:1px solid black; width: 500px; height:300px; display: block;"),e.style.backgroundColor=n,e},s=`<h3>Description</h3>
 
 <p>The chain-performance component can be used to render HTML with Rosen Bridge chain performance comparison
 similar to <a href="https://pwa-pages.github.io/rosen-watcher-pwa/load.html?page=chainperformance">https://pwa-pages.github.io/rosen-watcher-pwa/load.html?page=chainperformance</a>.<br/>
@@ -151,3 +151,24 @@ and act accordingly.
     </tr>
   </tbody>
 </table>
+`,h={};var i=s.replace(/__SCRIPT_FILE__/g,a).replace(/__STYLE_FILE__/g,o);const u={title:"Components/ChainPerformance",tags:["autodocs"],render:n=>c({...n}),argTypes:{backgroundColor:{control:"color"}},args:h,parameters:{docs:{page:()=>r.createElement("div",{dangerouslySetInnerHTML:{__html:i}})}}};function d(n){return`
+
+    <rosen-watcher-component
+
+      component="chain-performance"
+      render-html="true"
+      >
+      
+    </rosen-watcher-component>
+
+  `}const t={name:"Explore Component",args:{},parameters:{docs:{source:{code:d()}}}};t.parameters={...t.parameters,docs:{...t.parameters?.docs,source:{originalSource:`{
+  name: 'Explore Component',
+  args: {},
+  parameters: {
+    docs: {
+      source: {
+        code: buildSourceCode(baseArgs)
+      }
+    }
+  }
+}`,...t.parameters?.docs?.source}}};const f=["Primary"];export{t as Primary,f as __namedExportsOrder,u as default};

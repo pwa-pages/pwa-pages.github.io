@@ -1,4 +1,4 @@
-<h3>Description</h3>
+/* empty css              */import{e as o}from"./index-1v6kQ9Nt.js";import{r as i,a as c}from"./iframe-DVmyK91K.js";import"./preload-helper-D9Z9MdNV.js";const h=({address1:e,address2:s,address3:d,address4:a})=>{const t=document.createElement("rosen-watcher-component");return t.setAttribute("component","permits"),t.setAttribute("render-html","true"),t.setAttribute("address1",e),t.setAttribute("address2",s),t.setAttribute("address3",d),t.setAttribute("address4",a),t},l=`<h3>Description</h3>
 
 <p>The permits component can be used to render HTML with Rosen Bridge permits stats,
 similar to <a href="https://pwa-pages.github.io/rosen-watcher-pwa/mywatchers">https://pwa-pages.github.io/rosen-watcher-pwa/mywatchers</a>.<br/>
@@ -257,3 +257,33 @@ and act accordingly.
 </table>
 
 <hr />
+`,r={address1:"9gFFEZPoDUAA1jgfoNMN5FMARPUbuRHGB8sS8i6Lm1M9dXAiVx9",address2:"9gyECosVSywUjXPLXAFo8uGKvdUrUGtCzs7ihWPCWaC7HkLvfSd",address3:"9fTbZHMsuBeWYAWsw7Nr61zNSe4i2FLrREhJcFGRkKLmNYVFwqL",address4:"9gSNSXxyDVcn9u7LheeEH4fibbRN3gGycnzbKAYhQ2JKyEEmLVS"};var p=l.replace(/__SCRIPT_FILE__/g,i).replace(/__STYLE_FILE__/g,c);const y={title:"Components/Permits",tags:["autodocs"],render:e=>h({...e}),argTypes:{address1:{control:"text"},address2:{control:"text"},address3:{control:"text"},address4:{control:"text"}},args:r,parameters:{docs:{page:()=>o.createElement("div",{dangerouslySetInnerHTML:{__html:p}})}}};function m(e){return`
+
+    <rosen-watcher-component
+
+      component="permits"
+      render-html="true"
+      address1="${e.address1||""}"
+      address2="${e.address2||""}"
+      address3="${e.address3||""}"
+      address4="${e.address4||""}"
+      >
+      
+    </rosen-watcher-component>
+
+  `}const n={args:{address1:"9gFFEZPoDUAA1jgfoNMN5FMARPUbuRHGB8sS8i6Lm1M9dXAiVx9",address2:"9gyECosVSywUjXPLXAFo8uGKvdUrUGtCzs7ihWPCWaC7HkLvfSd",address3:"9fTbZHMsuBeWYAWsw7Nr61zNSe4i2FLrREhJcFGRkKLmNYVFwqL",address4:"9gSNSXxyDVcn9u7LheeEH4fibbRN3gGycnzbKAYhQ2JKyEEmLVS"},name:"Explore Component",parameters:{docs:{source:{code:m(r)}}}};n.parameters={...n.parameters,docs:{...n.parameters?.docs,source:{originalSource:`{
+  args: {
+    address1: '9gFFEZPoDUAA1jgfoNMN5FMARPUbuRHGB8sS8i6Lm1M9dXAiVx9',
+    address2: '9gyECosVSywUjXPLXAFo8uGKvdUrUGtCzs7ihWPCWaC7HkLvfSd',
+    address3: '9fTbZHMsuBeWYAWsw7Nr61zNSe4i2FLrREhJcFGRkKLmNYVFwqL',
+    address4: '9gSNSXxyDVcn9u7LheeEH4fibbRN3gGycnzbKAYhQ2JKyEEmLVS'
+  },
+  name: 'Explore Component',
+  parameters: {
+    docs: {
+      source: {
+        code: buildSourceCode(baseArgs)
+      }
+    }
+  }
+}`,...n.parameters?.docs?.source}}};const S=["Primary"];export{n as Primary,S as __namedExportsOrder,y as default};
