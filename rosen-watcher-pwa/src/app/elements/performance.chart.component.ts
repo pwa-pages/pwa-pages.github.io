@@ -73,8 +73,6 @@ export class PerformanceChartComponent
       !this.filledAddresses.every((addr, i) => addr === this.prevFilledAddresses![i])
     ) {
       this.prevFilledAddresses = [...this.filledAddresses];
-      // a bit crap but what can you do
-      this.dataService.setAddresses(this.filledAddresses);
       this.updateCharts();
     }
 

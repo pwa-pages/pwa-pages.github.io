@@ -60,7 +60,10 @@ export class PerformanceComponent extends BaseWatcherComponent implements OnInit
     console.log('start retrieving chart from database');
 
     const addressCharts = this.dataService.getAddressCharts();
-    return this.chartService.getPerformanceChart(addressCharts);
+
+    let result = this.chartService.getPerformanceChart(addressCharts);
+    let addresses = await this.dataService.getAddresses();
+    return (await result).filter((chart) => addresses.includes(chart.address));
   }
 
   selectTab(): void {

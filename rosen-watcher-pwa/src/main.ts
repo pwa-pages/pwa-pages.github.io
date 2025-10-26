@@ -46,7 +46,6 @@ function getScriptFileName(): string {
   }
   return 'scripts.js';
 }
-
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(

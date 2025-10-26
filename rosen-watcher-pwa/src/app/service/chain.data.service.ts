@@ -5,7 +5,6 @@ import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { EventService, EventType } from './event.service';
 import { DateUtils } from '../statistics/date.utils';
-import { AddressService } from './address.service';
 
 export function initializeDataService(dataService: ChainDataService) {
   return (): Promise<void> => {
@@ -34,22 +33,11 @@ export class ChainDataService {
   constructor(
     private storageService: StorageService,
     private eventService: EventService,
-    private addressService: AddressService,
   ) {}
 
   public async initialize() {
     this.eventService.subscribeToEvent(EventType.InputsChanged, async (i: Input[]) => {
-      let storedAddresses = await this.getAddresses();
-
       this.rsnInputs = i;
-
-      if (storedAddresses && storedAddresses.length > 0) {
-        if (storedAddresses.length > 0) {
-          this.rsnInputs = this.rsnInputs.filter((input) =>
-            storedAddresses.includes(input.outputAddress),
-          );
-        }
-      }
 
       this.eventService.sendEvent(EventType.RefreshInputs);
     });
@@ -67,17 +55,13 @@ export class ChainDataService {
       async (
         a: Record<string, { chainType: ChainType | null; charts: Record<number, number> }>,
       ) => {
-        const addressArray = await this.getAddresses();
-        const addressSet = new Set(addressArray);
-        this.addressCharts = Object.keys(a)
-          .filter((key) => addressSet.has(key))
-          .reduce(
-            (acc, key) => {
-              acc[key] = a[key];
-              return acc;
-            },
-            {} as Record<string, { chainType: ChainType | null; charts: Record<number, number> }>,
-          );
+        this.addressCharts = Object.keys(a).reduce(
+          (acc, key) => {
+            acc[key] = a[key];
+            return acc;
+          },
+          {} as Record<string, { chainType: ChainType | null; charts: Record<number, number> }>,
+        );
         this.eventService.sendEvent(EventType.RefreshInputs);
       },
     );
@@ -87,8 +71,8 @@ export class ChainDataService {
     return this.storageService.getInputs();
   }
 
-  public setAddresses(addresses: string[]): void {
-    this.addressService.setAddresses(addresses);
+  async getAddresses(): Promise<string[]> {
+    return (await this.storageService.getAddressData()).map((a) => a.address);
   }
 
   public getInputsPart(
@@ -97,7 +81,8 @@ export class ChainDataService {
     toDate: Date | null,
     addresses: Address[] | null,
   ): Input[] {
-    let result = this.getSortedInputs(false, fromDate, toDate);
+    const addressStrings: string[] = addresses ? addresses.map((a) => a.address) : [];
+    let result = this.getSortedInputs(false, addressStrings, fromDate, toDate);
 
     if (result && addresses && addresses.length > 0) {
       const activeAddresses = addresses
@@ -114,7 +99,12 @@ export class ChainDataService {
     return result;
   }
 
-  getSortedInputs(ascending: boolean, fromDate: Date | null, toDate: Date | null): Input[] {
+  getSortedInputs(
+    ascending: boolean,
+    addresses: string[],
+    fromDate: Date | null,
+    toDate: Date | null,
+  ): Input[] {
     this.rsnInputs.sort((a, b) => {
       const aTime = Math.round(a.inputDate.getTime() / 1000) * 1000;
       const bTime = Math.round(b.inputDate.getTime() / 1000) * 1000;
@@ -138,6 +128,8 @@ export class ChainDataService {
         (!toDateUTC || inputDateStripped! <= toDateUTC)
       );
     });
+
+    result = result.filter((input) => addresses.includes(input.outputAddress));
     return result;
   }
 
@@ -157,10 +149,6 @@ export class ChainDataService {
       }
     }
     return result;
-  }
-
-  async getAddresses(): Promise<string[]> {
-    return await this.addressService.getAddresses();
   }
 
   async getFullAddresses(): Promise<Address[]> {

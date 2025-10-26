@@ -19456,3 +19456,31 @@ INFO: Unsupported notification method: $/setTrace
 2025.10.25 22:29:33 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
 2025.10.25 22:29:33 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
 2025.10.25 22:29:34 WARN  Build server is not auto-connectable.
+2025.10.26 07:45:12 INFO  Shutting down server
+2025.10.26 07:45:12 INFO  shutting down Metals
+2025.10.26 07:45:12 INFO  Exiting server
+2025.10.26 18:35:53 INFO  Started: Metals version 1.6.3 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.100.0.
+2025.10.26 18:35:54 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2025.10.26 18:35:54 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2025.10.26 18:35:54 WARN  Build server is not auto-connectable.
+2025.10.26 19:04:54 INFO  Shutting down server
+2025.10.26 19:04:54 INFO  shutting down Metals
+2025.10.26 19:04:54 INFO  Exiting server
+2025.10.26 19:05:00 INFO  Started: Metals version 1.6.3 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.100.0.
+2025.10.26 19:05:02 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2025.10.26 19:05:02 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2025.10.26 19:05:02 WARN  Build server is not auto-connectable.
+2025.10.26 19:22:17 INFO  Shutting down server
+2025.10.26 19:22:17 INFO  shutting down Metals
+2025.10.26 19:22:17 INFO  Exiting server
+2025.10.26 19:42:16 INFO  Started: Metals version 1.6.3 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.100.0.
+2025.10.26 19:42:17 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2025.10.26 19:42:17 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2025.10.26 19:42:17 WARN  Build server is not auto-connectable.
+2025.10.26 20:04:47 INFO  Shutting down server
+2025.10.26 20:04:47 INFO  shutting down Metals
+2025.10.26 20:04:47 INFO  Exiting server
+2025.10.26 22:14:04 INFO  Started: Metals version 1.6.3 in folders '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa' for client Visual Studio Code 1.100.0.
+2025.10.26 22:14:05 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+2025.10.26 22:14:05 WARN  no build tool detected in workspace '/home/pebblerye/pwa/pwa-pages.github.io/rosen-watcher-pwa'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+2025.10.26 22:14:05 WARN  Build server is not auto-connectable.

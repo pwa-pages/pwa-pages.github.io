@@ -1,43 +1,45 @@
+import { createApplication } from '@angular/platform-browser';
 import { createCustomElement } from '@angular/elements';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { withInterceptorsFromDi, provideHttpClient } from '@angular/common/http';
-import 'zone.js';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER } from '@angular/core';
+import { RosenWatcherComponent } from '../elements/rosen.watcher.component';
 import { initializeDataService, ChainDataService } from '../service/chain.data.service';
 import {
   initializeServiceWorkerService,
   ServiceWorkerService,
 } from '../service/service.worker.service';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
-import { RosenWatcherComponent } from '../elements/rosen.watcher.component';
+import 'zone.js';
 
-export const dataServiceInitializer = {
+const dataServiceInitializer = {
   provide: APP_INITIALIZER,
   useFactory: initializeDataService,
   deps: [ChainDataService],
   multi: true,
 };
 
-export const serviceWorkerInitializer = {
+const serviceWorkerInitializer = {
   provide: APP_INITIALIZER,
   useFactory: initializeServiceWorkerService,
   deps: [ServiceWorkerService],
   multi: true,
 };
 
-bootstrapApplication(RosenWatcherComponent, {
-  providers: [
-    provideHttpClient(withInterceptorsFromDi()),
-    dataServiceInitializer,
-    serviceWorkerInitializer,
-    {
-      provide: IS_ELEMENTS_ACTIVE,
-      useValue: true,
-    },
-  ],
-}).then((appRef) => {
-  const element = createCustomElement(RosenWatcherComponent, {
-    injector: appRef.injector,
+(async () => {
+  const app = await createApplication({
+    providers: [
+      provideHttpClient(withInterceptorsFromDi()),
+      dataServiceInitializer,
+      serviceWorkerInitializer,
+      { provide: IS_ELEMENTS_ACTIVE, useValue: true },
+    ],
   });
-  customElements.define('rosen-watcher-component', element as CustomElementConstructor);
-});
+
+  const element = createCustomElement(RosenWatcherComponent, {
+    injector: app.injector,
+  });
+
+  if (!customElements.get('rosen-watcher-component')) {
+    customElements.define('rosen-watcher-component', element);
+  }
+})();
