@@ -1,0 +1,18 @@
+<div class="context-menu" style="display: flex; flex-direction: column">
+  Select address @for (address of addresses; track address; let i = $index; let
+  isLast = $last) {
+  <div>
+    <mat-checkbox [(ngModel)]="address.active" [name]="'checkbox' + i">
+      {{ address.largeAddressForDisplay }}
+    </mat-checkbox>
+  </div>
+  }
+
+  <div>
+    <button (click)="onOk()" style="margin: 10px">Ok</button>
+    &nbsp;
+    <button (click)="onCancel()" cdkFocusInitial style="margin: 10px">
+      Cancel
+    </button>
+  </div>
+</div>

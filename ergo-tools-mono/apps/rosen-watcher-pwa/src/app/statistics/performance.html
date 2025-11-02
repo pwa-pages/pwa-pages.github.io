@@ -1,0 +1,44 @@
+<div class="headercontainer">
+  <div class="headerblock">
+    Performance&nbsp;
+    <div class="header">RSN per week</div>
+  </div>
+</div>
+
+<div class="performancecontainer mywatchers main-content">
+  <div class="performancetab">
+    <a tabindex="0" class="tab" [class.active]="true">My watchers</a>
+    <a
+      tabindex="0"
+      class="tab"
+      [class.active]="false"
+      (click)="selectTab()"
+      (keypress)="selectTab()"
+    >
+      Compare chains
+    </a>
+  </div>
+
+  <div class="addressescontainer">
+    @for (address of performanceCharts; track address; let i = $index; let
+    isLast = $last) {
+    <div class="performancelegend">
+      <div class="chart-legend" [style.background-color]="address.color"></div>
+      <div
+        class="performance-chart-address mainaddressdispl {{address.chainType}}"
+      >
+        - [{{ address.addressForDisplay }}]
+      </div>
+      @if (!isLast) {
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      }
+    </div>
+    }
+  </div>
+
+  <div class="chartcontainer">
+    <div class="chart-container">
+      <canvas #chartCanvas class="PerformanceChart"></canvas>
+    </div>
+  </div>
+</div>

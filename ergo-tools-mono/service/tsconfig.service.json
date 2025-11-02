@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "outDir": "./src/lib/js",
+    "types": [],
+    "verbatimModuleSyntax": false,
+    "esModuleInterop": false,
+    "noEmitHelpers": true,
+    "rootDir": "./src/lib/",
+    "target": "ESNext",
+    "module": "None", 
+    "skipLibCheck": true,
+    "lib": [
+      "ESNext",
+      "dom",
+      "webworker"
+    ]
+  },
+  "include": [
+    "**/shared/ts/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}

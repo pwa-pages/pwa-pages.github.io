@@ -1,0 +1,24 @@
+<div class="watcherscreen settings">
+  <button (click)="addaddress()">Add Address</button>
+  <br />
+  <br />
+  <br />
+
+  <div class="settingscontainer watchergrid container addressdispl">
+    @for (address of addresses; track trackByFn(address, i); let i = $index) {
+    <div class="watcheritem first-column">{{ address.address }}</div>
+    <div class="watcheritem">
+      <button (click)="editaddress(i)">Edit</button>
+    </div>
+    <div class="watcheritem">
+      <button (click)="deleteaddress(i)">Delete</button>
+    </div>
+    }
+  </div>
+
+  <div class="container">
+    <button (click)="save()">Save</button>
+    &nbsp;
+    <button (click)="cancel()">Cancel</button>
+  </div>
+</div>

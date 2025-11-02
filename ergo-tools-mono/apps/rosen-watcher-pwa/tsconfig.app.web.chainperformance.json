@@ -1,0 +1,17 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "include": [
+    "src/**/*.d.ts",
+    "src/app/service/*.ts",
+    "src/app/settings/*.ts",
+    "src/app/statistics/*.ts",
+    "src/app/webcomponents/chain-performance-web-component.ts",
+    "src/app/*.ts",
+    "src/shared/**/*.ts",
+  ]
+}
