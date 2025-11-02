@@ -1,0 +1,140 @@
+{
+  "configVersion": 1,
+  "timestamp": 1762068143792,
+  "appData": {
+    "version": "3.60.6"
+  },
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/favicon.ico",
+        "/index.html",
+        "/main-CCJDP24J.js",
+        "/manifest.webmanifest",
+        "/polyfills-5CFQRCPP.js",
+        "/rosen.html",
+        "/scripts-FLNGNQQI.js",
+        "/styles-D7TONG5W.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/README.md",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-512x512_bk.png",
+        "/assets/icons/icon-512x512_bk2.png",
+        "/assets/images/binance.png",
+        "/assets/images/bitcoin.png",
+        "/assets/images/cardano.png",
+        "/assets/images/doge.png",
+        "/assets/images/ergo.png",
+        "/assets/images/ethereum.png",
+        "/assets/images/hns.png",
+        "/assets/images/monero.png",
+        "/assets/images/nervos.png",
+        "/assets/images/runes.png",
+        "/assets/rosen-chain-performance.html",
+        "/assets/rosen-multiple.html",
+        "/assets/rosen-performance.html",
+        "/assets/rosen-permits.html",
+        "/assets/rosen-statistics.html",
+        "/assets/rosen-watchers.html",
+        "/assets/test.html",
+        "/media/binance-WGS5R7MY.png",
+        "/media/bitcoin-R7IFWMJM.png",
+        "/media/cardano-LICXQYGO.png",
+        "/media/doge-EJN2VXCZ.png",
+        "/media/ergo-4FSUZRBU.png",
+        "/media/ethereum-RCUEGTAU.png",
+        "/media/fa-brands-400-E7XUCEPO.woff2",
+        "/media/fa-regular-400-LBQEIAJB.woff2",
+        "/media/fa-solid-900-XY6737PV.woff2",
+        "/media/fa-v4compatibility-RGK6JUWD.woff2",
+        "/media/hns-DEOT7GMZ.png",
+        "/media/monero-XLGQOUTA.png",
+        "/media/nervos-QKVOH6WM.png",
+        "/media/runes-RL26QNQT.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/README.md": "62ed3650bead164c839266bd88c83f81a0c80147",
+    "/assets/icons/icon-512x512.png": "70bcb04083de346145fa5a506812f23b0ed80772",
+    "/assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
+    "/assets/icons/icon-512x512_bk2.png": "bc9f886184d64802571f0d7878d64e7b15f9f1ea",
+    "/assets/images/binance.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
+    "/assets/images/bitcoin.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
+    "/assets/images/cardano.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
+    "/assets/images/doge.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
+    "/assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
+    "/assets/images/ethereum.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
+    "/assets/images/hns.png": "395835361c167881e8f9c9d7132cb43740db9549",
+    "/assets/images/monero.png": "e0eb65245e00fd0c85985d38258a9f3b50cd7329",
+    "/assets/images/nervos.png": "c498927d32356b930c348cd8bc71fc5c3b24c3ac",
+    "/assets/images/runes.png": "9c109d077d6f1b5043a640c80ff04f85a8a06bdf",
+    "/assets/rosen-chain-performance.html": "a78669741fc769f3842da3a9bb2224cb0cf4a4b9",
+    "/assets/rosen-multiple.html": "765f201a00f0186a5162f06affead9fc04d864e2",
+    "/assets/rosen-performance.html": "34cc73fac078788856f7c07ae807fadf7ae8865c",
+    "/assets/rosen-permits.html": "45a3437e7bf14b317e49cc28781be2a271fa6535",
+    "/assets/rosen-statistics.html": "f1efbb87db6e79a840fd2a321bd6ef7c1d52a4a4",
+    "/assets/rosen-watchers.html": "61235d2d68e1a1bb8f19fa33390f9f320436be24",
+    "/assets/test.html": "7be1e51ec537c8242b37e42fdc4fa46c88a77508",
+    "/favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
+    "/index.html": "dd2a1a2ccaee09d31c20fb7119e5a1bc14365b74",
+    "/main-CCJDP24J.js": "5347c8a078a528222c8f3e71e1f54da446196d54",
+    "/manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
+    "/media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
+    "/media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
+    "/media/cardano-LICXQYGO.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
+    "/media/doge-EJN2VXCZ.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
+    "/media/ergo-4FSUZRBU.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
+    "/media/ethereum-RCUEGTAU.png": "f000365daa1d43019dd306e4b2f36b9941342aa3",
+    "/media/fa-brands-400-E7XUCEPO.woff2": "ed94030ca212e1857a6014496e7a6a43e64789e4",
+    "/media/fa-regular-400-LBQEIAJB.woff2": "a1e663df38f3616e677a2ffd0c20cc58c87b7703",
+    "/media/fa-solid-900-XY6737PV.woff2": "49c2d746beabbaa5b1a58d660b217feb34272636",
+    "/media/fa-v4compatibility-RGK6JUWD.woff2": "ed95837812146abe9cb9293922f80205785e8c6b",
+    "/media/hns-DEOT7GMZ.png": "395835361c167881e8f9c9d7132cb43740db9549",
+    "/media/monero-XLGQOUTA.png": "e0eb65245e00fd0c85985d38258a9f3b50cd7329",
+    "/media/nervos-QKVOH6WM.png": "c498927d32356b930c348cd8bc71fc5c3b24c3ac",
+    "/media/runes-RL26QNQT.png": "9c109d077d6f1b5043a640c80ff04f85a8a06bdf",
+    "/polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
+    "/rosen.html": "d7161a40ae648d11c75098244147e693537693b8",
+    "/scripts-FLNGNQQI.js": "4af5fc11c7e3df0dc71eecdfbdf4ff6cc2984aa0",
+    "/styles-D7TONG5W.css": "3ef8c21ba3436dddd47cbc5587bdbc8b7781a0ce"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
