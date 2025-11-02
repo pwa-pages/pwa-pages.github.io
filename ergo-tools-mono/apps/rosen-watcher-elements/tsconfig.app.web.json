@@ -1,0 +1,18 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "include": [
+    "../rosen-watcher-pwa/src/**/*.d.ts",
+    "../rosen-watcher-pwa/src/app/service/*.ts",
+    "../rosen-watcher-pwa/src/app/settings/*.ts",
+    "../rosen-watcher-pwa/src/app/statistics/*.ts",
+    "../rosen-watcher-pwa/src/app/webcomponents/*.ts",
+    "../rosen-watcher-pwa/src/app/*.ts",
+    "../rosen-watcher-elements/src/main.ts",
+    "../../service/src/lib/*.ts",
+  ]
+}

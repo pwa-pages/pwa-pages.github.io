@@ -1,0 +1,85 @@
+{
+  "name": "rosen-watcher-elements",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "generators": {},
+  "sourceRoot": "apps/rosen-watcher-elements/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "options": {
+        "allowedCommonJsDependencies": ["qrcode"],
+        "outputPath": "dist/apps/rosen-watcher-elements",
+        "index": "apps/rosen-watcher-elements/src/index.html",
+        "browser": "apps/rosen-watcher-pwa/src/app/webcomponents/rosen-web-component.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/rosen-watcher-elements/tsconfig.app.web.json",
+        "assets": [
+          "apps/rosen-watcher-elements/src/assets"
+        ],
+        "styles": [
+          "apps/rosen-watcher-pwa/src/styles.css",
+          "apps/rosen-watcher-pwa/src/variables_elements.css"
+          
+        ],
+        "scripts": [
+          "dist/service/src/lib/rosen-download-worker.js",
+          "dist/service/src/lib/rosen-db-worker.js",
+          "dist/service/src/lib/chain.service.js",
+          "dist/service/src/lib/constants.js",
+          "dist/service/src/lib/data.service.js",
+          "dist/service/src/lib/chain.performance.data.service.js",
+          "dist/service/src/lib/reward.data.service.js",
+          "dist/service/src/lib/chart.service.js",
+          "dist/service/src/lib/download.service.js",
+          "dist/service/src/lib/process.event.service.js",
+          "dist/service/src/lib/mywatcher.data.service.js",
+          "dist/service/src/lib/activepermits.data.service.js"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2500kb",
+              "maximumError": "3mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production",
+      "outputs": ["{options.outputPath}"]
+    },
+    "serve": {
+      "executor": "@angular/build:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "rosen-watcher-elements:build:production"
+        },
+        "development": {
+          "buildTarget": "rosen-watcher-elements:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular/build:extract-i18n",
+      "options": {
+        "buildTarget": "rosen-watcher-elements:build"
+      }
+    }
+  }
+}
