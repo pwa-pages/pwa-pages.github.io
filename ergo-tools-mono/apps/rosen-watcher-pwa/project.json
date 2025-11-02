@@ -36,6 +36,7 @@
           "apps/rosen-watcher-pwa/src/styles_theme-colors.scss"
         ],
         "scripts": [
+          "apps/rosen-watcher-pwa/src/rosen-ngsw-worker.js",
           "dist/service/src/lib/rosen-download-worker.js",
           "dist/service/src/lib/rosen-db-worker.js",
           "dist/service/src/lib/chain.service.js",
