@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="{{styles.css}}" media="all" onload="this.media='all'" />
+    <script src="rosen-watcher-components.js" type="module"></script>
+  </head>
+  <body>
+    <rosen-watcher-component
+      component="performance"
+      render-html="true"
+      address1="9gWWVhZX1nmzjaKqtmQMvE15gV3u8exUgaZHokwT2he9ru5B5NV"
+      address2="9f6pDdMhgYrHoCcQmGVuSzSx7nWaRwVPKASvEeKUeWTmvTVRZ38"
+      accent-chart-color="#666666"
+      style="height: 300px; width: 500px"
+    ></rosen-watcher-component>
+    <!-- important tag needs to be closed in xhtml way otherwise multiple components won't load-->
+  </body>
+</html>
+
+<script>
+  const watchersEl = document.querySelector('rosen-watcher-component');
+
+  watchersEl.addEventListener('notifyPerformanceChartsChanged', (event) => {
+    console.log('Performance changed:', JSON.stringify(event.detail));
+  });
+</script>

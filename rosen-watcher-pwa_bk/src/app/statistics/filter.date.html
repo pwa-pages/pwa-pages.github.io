@@ -1,0 +1,23 @@
+<div class="context-menu date-selection" style="display: flex; flex-direction: column">
+  <div style="display: flex; gap: 1rem">
+    <mat-form-field appearance="fill">
+      <mat-label>From date</mat-label>
+      <input matInput [matDatepicker]="fromPicker" [(ngModel)]="fromDate" />
+      <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+      <mat-datepicker #fromPicker panelClass="datepicker-panel"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>To date</mat-label>
+      <input matInput [matDatepicker]="toPicker" [(ngModel)]="toDate" />
+      <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+      <mat-datepicker #toPicker panelClass="datepicker-panel"></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button (click)="onOk()" style="margin: 10px">Ok</button>
+    &nbsp;
+    <button (click)="onCancel()" cdkFocusInitial style="margin: 10px">Cancel</button>
+  </div>
+</div>

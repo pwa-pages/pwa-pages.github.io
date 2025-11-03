@@ -1,0 +1,223 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "rosen-watcher-pwa": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "allowedCommonJsDependencies": [
+              "qrcode"
+            ],
+            "outputPath": "dist/rosen-watcher-pwa",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/rosen.html",
+              "src/load.html",
+              "src/manifest.webmanifest",
+              "src/shared/js/ngsw-worker.js"
+            ],
+            "styles": [
+              "src/variables.css",
+              "src/styles.css",
+              "src/navigation.css",
+              "src/header.css",
+              "src/settings.css",
+              "src/stats.css",
+              "src/app/basewatchercomponent.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "src/mat-theme.scss",
+              "src/styles_theme-colors.scss"
+            ],
+            "scripts": [
+              "src/rosen-ngsw-worker.js",
+              "src/shared/js/rosen-download-worker.js",
+              "src/shared/js/rosen-db-worker.js",
+              "src/shared/js/chain.service.js",
+              "src/shared/js/constants.js",
+              "src/shared/js/data.service.js",
+              "src/shared/js/chain.performance.data.service.js",
+              "src/shared/js/reward.data.service.js",
+              "src/shared/js/chart.service.js",
+              "src/shared/js/download.service.js",
+              "src/shared/js/process.event.service.js",
+              "src/shared/js/mywatcher.data.service.js",
+              "src/shared/js/activepermits.data.service.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2500kb",
+                  "maximumError": "3mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all",
+              "serviceWorker": "ngsw-config.json"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "serviceWorker": "ngsw-config.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "rosen-watcher-pwa:build:production"
+            },
+            "development": {
+              "buildTarget": "rosen-watcher-pwa:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n",
+          "options": {
+            "buildTarget": "rosen-watcher-pwa:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "rosen-web-component": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": {
+              "base": "dist/rosen-web-component"
+            },
+            "index": "src/index.html",
+            "tsConfig": "tsconfig.app.web.json",
+            "assets": [
+              "src/assets"
+            ],
+            "styles": [
+              "src/variables_elements.css",
+              "src/styles.css"
+            ],
+            "scripts": [
+              "src/shared/js/rosen-download-worker.js",
+              "src/shared/js/rosen-db-worker.js",
+              "src/shared/js/chain.service.js",
+              "src/shared/js/constants.js",
+              "src/shared/js/data.service.js",
+              "src/shared/js/chain.performance.data.service.js",
+              "src/shared/js/reward.data.service.js",
+              "src/shared/js/chart.service.js",
+              "src/shared/js/download.service.js",
+              "src/shared/js/process.event.service.js",
+              "src/shared/js/mywatcher.data.service.js",
+              "src/shared/js/activepermits.data.service.js"
+            ],
+            "optimization": {
+              "scripts": true,
+              "styles": true,
+              "fonts": true
+            },
+            "fileReplacements": [],
+            "serviceWorker": false,
+            "sourceMap": false,
+            "namedChunks": false,
+            "extractLicenses": false,
+            "browser": "src/app/webcomponents/rosen-web-component.ts"
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": false
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "rosen-chain-performance:build:production"
+            },
+            "development": {
+              "buildTarget": "rosen-chain-performance:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    }
+  }
+}

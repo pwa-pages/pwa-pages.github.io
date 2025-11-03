@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="styles-XMGVVYJE.css" media="all" onload="this.media='all'" />
+    <script src="rosen-watcher-components.3.60.5.js" type="module"></script>
+  </head>
+
+  <body>
+    <rosen-watcher-component
+      style="display: block; width: 500px; height: 300px"
+      component="chain-performance"
+      render-html="true"
+    ></rosen-watcher-component>
+    <!-- important tag needs to be closed in xhtml way otherwise multiple components won't load-->
+  </body>
+</html>
+
+<script>
+  const watchersEl = document.querySelector('rosen-watcher-component');
+
+  watchersEl.addEventListener('notifyChainPerformanceChartsChanged', (event) => {
+    console.log('Chain performance charts changed:', JSON.stringify(event.detail));
+  });
+</script>

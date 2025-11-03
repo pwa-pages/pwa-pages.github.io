@@ -1,0 +1,21 @@
+<div class="performancecontainer main-content elementsActive">
+  <div class="addressescontainer">
+    @for (address of performanceCharts; track address; let i = $index; let isLast = $last) {
+    <div class="performancelegend">
+      <div class="chart-legend" [style.background-color]="address.color"></div>
+      <div class="performance-chart-address mainaddressdispl {{address.chainType}}">
+        - [{{ address.addressForDisplay }}]
+      </div>
+      @if (!isLast) {
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      }
+    </div>
+    }
+  </div>
+
+  <div class="chartcontainer" [style.display]="isHtmlRenderEnabled() ? null : 'none'">
+    <div class="chart-container">
+      <canvas #performanceChartCanvas class="PerformanceChart"></canvas>
+    </div>
+  </div>
+</div>
