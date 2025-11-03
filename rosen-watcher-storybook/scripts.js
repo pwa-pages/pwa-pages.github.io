@@ -1,3 +1,4 @@
+"use strict";
 const processEventServiceSingleton = (() => {
   console.log("Initializing ProcessEventService singleton factory");
   let instance = null;
@@ -18,10 +19,12 @@ self.addEventListener("message", async (event) => {
     type: data.type
   });
 });
+"use strict";
 self.addEventListener("message", async (event) => {
   const data = event.data;
   console.log(`Rosen service worker received event of type ${data.type}`);
 });
+"use strict";
 var ChainType;
 (function(ChainType2) {
   ChainType2["Ergo"] = "Ergo";
@@ -35,6 +38,25 @@ var ChainType;
   ChainType2["Handshake"] = "Handshake";
   ChainType2["Monero"] = "Monero";
 })(ChainType || (ChainType = {}));
+function getActiveChainTypes() {
+  const active = /* @__PURE__ */ new Set();
+  const addIfPresent = (map) => {
+    for (const [k, v] of Object.entries(map)) {
+      if (v) {
+        active.add(k);
+      }
+    }
+  };
+  addIfPresent(permitAddresses);
+  addIfPresent(permitTriggerAddresses);
+  addIfPresent(permitBulkAddresses);
+  addIfPresent(rewardAddresses);
+  for (const ct of Object.values(rwtTokenIds)) {
+    if (ct)
+      active.add(ct);
+  }
+  return Array.from(active);
+}
 const chainTypeTokens = Object.fromEntries(Object.values(ChainType).map((chain) => [chain, `rspv2${chain}RWT`]));
 const chainTypeWatcherIdentifier = Object.fromEntries(Object.values(ChainType).map((chain) => [chain, `rspv2${chain}AWC`]));
 const rwtTokenIds = {
@@ -124,7 +146,9 @@ if (typeof window !== "undefined") {
   window.permitBulkAddresses = permitBulkAddresses;
   window.hotWalletAddress = hotWalletAddress;
   window.rwtTokenIds = rwtTokenIds;
+  window.getActiveChainTypes = getActiveChainTypes;
 }
+"use strict";
 const rs_DbName = "rosenDatabase_1.1.5";
 const rs_DbVersion = 38;
 const rs_InputsStoreName = "inputBoxes";
@@ -203,8 +227,8 @@ if (typeof window !== "undefined") {
   window.rs_TokenIdMap = rs_TokenIdMap;
   window.rs_RSNDecimals = rs_RSNDecimals;
 }
+"use strict";
 class DataService {
-  db;
   constructor(db) {
     this.db = db;
   }
@@ -245,9 +269,8 @@ class DataService {
     });
   }
 }
+"use strict";
 class ChainPerformanceDataService extends DataService {
-  db;
-  eventSender;
   async getExistingData(transaction) {
     return new Promise((resolve, reject) => {
       const dbTtransaction = this.db.transaction([rs_PerfTxStoreName], "readonly");
@@ -324,7 +347,10 @@ class ChainPerformanceDataService extends DataService {
         }
         return acc;
       }, {});
-      return Object.fromEntries(Object.values(ChainType).map((chain) => [chain, result[chain] || { chart: 0 }]));
+      return Object.fromEntries(Object.values(ChainType).map((chain) => [
+        chain,
+        result[chain] || { chart: 0 }
+      ]));
     } catch (error) {
       console.error(error);
       return {};
@@ -342,10 +368,8 @@ class ChainPerformanceDataService extends DataService {
     return "performance_chart";
   }
 }
+"use strict";
 class RewardDataService extends DataService {
-  db;
-  chartService;
-  eventSender;
   async getExistingData(transaction, address) {
     for (const input of transaction.inputs) {
       if (input.boxId && getChainType(input.address)) {
@@ -487,6 +511,7 @@ class RewardDataService extends DataService {
     }
   }
 }
+"use strict";
 class ChartService {
   async getAddressCharts(inputs) {
     const addressCharts = {};
@@ -538,20 +563,17 @@ class ChartService {
     return inputs;
   }
 }
+"use strict";
 class DownloadService {
-  dataService;
-  myWatcherDataService;
-  eventSender;
-  db;
-  busyCounter = 0;
-  downloadFullSize = rs_FullDownloadsBatchSize;
-  downloadInitialSize = rs_InitialNDownloads;
   //private static addressDownloadDateMap = new Map<string, Date>();
   constructor(downloadFullSize, downloadInitialSize, dataService, myWatcherDataService, eventSender, db) {
     this.dataService = dataService;
     this.myWatcherDataService = myWatcherDataService;
     this.eventSender = eventSender;
     this.db = db;
+    this.busyCounter = 0;
+    this.downloadFullSize = rs_FullDownloadsBatchSize;
+    this.downloadInitialSize = rs_InitialNDownloads;
     this.downloadFullSize = downloadFullSize;
     this.downloadInitialSize = downloadInitialSize;
   }
@@ -791,6 +813,7 @@ class DownloadService {
     }
   }
 }
+"use strict";
 class ServiceWorkerEventSender {
   async sendEvent(event) {
     const clientsList = await self.clients.matchAll({
@@ -803,10 +826,9 @@ class ServiceWorkerEventSender {
   }
 }
 class ProcessEventService {
-  eventSender;
-  services = null;
   constructor(eventSender) {
     this.eventSender = eventSender;
+    this.services = null;
   }
   async initServices() {
     const db = await this.initIndexedDB();
@@ -966,9 +988,8 @@ class ProcessEventService {
 if (typeof window !== "undefined") {
   window.ProcessEventService = ProcessEventService;
 }
+"use strict";
 class MyWatcherDataService extends DataService {
-  db;
-  activePermitsDataService;
   async getExistingData(transaction, address) {
     for (const input of transaction.inputs) {
       if (input.boxId) {
@@ -1181,8 +1202,8 @@ class MyWatcherDataService extends DataService {
     }
   }
 }
+"use strict";
 class ActivePermitsDataService extends DataService {
-  db;
   async getExistingData(transaction, address) {
     const dbTransaction = this.db.transaction([rs_ActivePermitTxStoreName], "readonly");
     const objectStore = dbTransaction.objectStore(rs_ActivePermitTxStoreName);
@@ -1263,7 +1284,10 @@ class ActivePermitsDataService extends DataService {
     return new Promise((resolve, reject) => {
       const transaction = db.transaction([rs_OpenBoxesStoreName], "readwrite");
       const objectStore = transaction.objectStore(rs_OpenBoxesStoreName);
-      const boxes = { address, openBoxesJson };
+      const boxes = {
+        address,
+        openBoxesJson
+      };
       const request = objectStore.put(boxes);
       request.onsuccess = () => resolve();
       request.onerror = (event) => reject(event.target.error);
