@@ -1,6 +1,11 @@
 <html>
   <head>
-    <link rel="stylesheet" href="{{styles.css}}" media="all" onload="this.media='all'" />
+    <link
+      rel="stylesheet"
+      href="{{styles.css}}"
+      media="all"
+      onload="this.media='all'"
+    />
     <script src="rosen-watcher-components.js" type="module"></script>
   </head>
 
@@ -17,7 +22,13 @@
 <script>
   const watchersEl = document.querySelector('rosen-watcher-component');
 
-  watchersEl.addEventListener('notifyChainPerformanceChartsChanged', (event) => {
-    console.log('Chain performance charts changed:', JSON.stringify(event.detail));
-  });
+  watchersEl.addEventListener(
+    'notifyChainPerformanceChartsChanged',
+    (event) => {
+      console.log(
+        'Chain performance charts changed:',
+        JSON.stringify(event.detail),
+      );
+    },
+  );
 </script>

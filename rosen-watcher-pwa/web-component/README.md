@@ -1,6 +1,5 @@
 <h1>🔧 Rosen watcher Web Component Library</h1>
 
-
 <p>This project contains a growing collection of reusable, standalone web components built with <strong>Angular Elements</strong>. These components are framework-agnostic and work in any HTML/JavaScript environment — no Angular required in the host app.
 </p>
 <p>
@@ -11,7 +10,6 @@ Some people showed interest in using this functionality on their site,
 having this exposed as a javascript component seems to be an easy way of integrating.
 If there are issues, please send them to <a href="https://t.me/rosenbridge_erg">https://t.me/rosenbridge_erg</a> to @Pebblerye.
 </p>
-
 
 <hr />
 
@@ -366,7 +364,6 @@ and act accordingly.
 As mentioned above a full usage example can be found at <br/>
 <a href = "https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html">https://pwa-pages.github.io/rosen-watcher-pwa/web-component/rosen-watchers.html</a>
 This page always contains the latest versions of javascript and css, download those and use the component similarly as in the html.
-
 
 <hr />
 
