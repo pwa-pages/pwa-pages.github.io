@@ -7,13 +7,15 @@ nx build rosen-watcher-elements --configuration production
 ./prep_web_component.sh
 
 
-mv web-component/* ../ergo-tools-mono-app/web-component/
+rm -rf ../rosen-watcher-pwa/web-component/
+mv web-component/ ../rosen-watcher-pwa/
+
 ./clean.sh
-cp -R dist/apps/rosen-watcher-pwa/browser/* ../ergo-tools-mono-app
+cp -R dist/apps/rosen-watcher-pwa/browser/* ../rosen-watcher-pwa
 
 npm install
 nx build service
-nx build rosen-watcher-pwa --configuration development
-nx build rosen-watcher-elements --configuration development
+nx build rosen-watcher-pwa --configuration production
+nx build rosen-watcher-elements --configuration production
 
 
