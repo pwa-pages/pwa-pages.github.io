@@ -1,7 +1,0 @@
-> nx run service:build
-
-Compiling TypeScript files for project "service"...
-Done compiling TypeScript files for project "service".
-
-[2m../dist/service/README.md[22m
-[1m[33mPackage type is set to "commonjs" but "esm" format is included. Going to use "cjs" format instead. You can change the package type to "module" or remove type in the package.json file.[39m[22m
