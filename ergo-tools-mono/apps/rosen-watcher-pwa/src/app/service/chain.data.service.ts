@@ -5,7 +5,6 @@ import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { EventService, EventType } from './event.service';
 import { DateUtils } from '../statistics/date.utils';
-
 export function initializeDataService(dataService: ChainDataService) {
   return (): Promise<void> => {
     return dataService.initialize();

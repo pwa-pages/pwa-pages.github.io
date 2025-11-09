@@ -15,7 +15,17 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
+    },
+    "@nx/esbuild:esbuild": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
+  },
+  "implicitDependencies": {
+    "watcherstats": ["service"],
+    "rosen-watcher-pwa": ["service"],
+    "rosen-watcher-elements": ["rosen-watcher-pwa"]
   },
   "release": {
     "version": {

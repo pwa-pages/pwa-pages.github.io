@@ -324,6 +324,15 @@ a {
   filter: brightness(0.8);
 }
 
+
+.statdetaildispl.Firo,
+.mainaddressdispl.Firo,
+.watchersdispl.Firo,
+.chainType.Firo {
+  background-image: url('./assets/images/firo.png');
+  filter: brightness(0.8);
+}
+
 .statdetaildispl.Monero,
 .mainaddressdispl.Monero,
 .watchersdispl.Monero,

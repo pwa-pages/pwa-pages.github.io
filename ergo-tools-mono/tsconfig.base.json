@@ -26,7 +26,8 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "@ergo-tools/service": ["service/src/index.ts"]
+      "@ergo-tools/service": ["service/src/"]
+
     }
   },
   "angularCompilerOptions": {

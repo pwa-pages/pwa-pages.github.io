@@ -1,8 +1,9 @@
 ./clean.sh
 npm install
-nx build service
-nx build rosen-watcher-pwa --configuration production
-nx build rosen-watcher-elements --configuration production
+#nx build service
+#nx build rosen-watcher-pwa --configuration production
+#nx build rosen-watcher-elements --configuration production
+nx run-many --target=build --all --configuration=production --parallel=false
 
 ./prep_web_component.sh
 
@@ -14,8 +15,8 @@ mv web-component/ ../rosen-watcher-pwa/
 cp -R dist/apps/rosen-watcher-pwa/browser/* ../rosen-watcher-pwa
 
 npm install
-nx build service
-nx build rosen-watcher-pwa --configuration production
-nx build rosen-watcher-elements --configuration production
-
+#nx build service
+#nx build rosen-watcher-pwa --configuration production
+#nx build rosen-watcher-elements --configuration production
+nx run-many --target=build --all --configuration=production --parallel=false
 

@@ -270,7 +270,7 @@ export class ChainChartService {
   public async getPerformanceChart(
     addressCharts: Record<
       string,
-      { chainType: ChainType | null; charts: Record<number, number> }
+      { chainType: string | null; charts: Record<number, number> }
     >,
   ): Promise<ChartPerformance[]> {
     let performanceChart: ChartPerformance[] = [];
@@ -316,14 +316,14 @@ export class ChainChartService {
 
   createStatisticsChart(
     canvasElement: HTMLCanvasElement,
-    rewardsChart: DateNumberPoint[],
+    rewardsChart: ChartPoint[],
     nDataSets: number,
     tensions: number[],
     chartTitle: string,
     chartColor?: string,
     accentChartColor?: string,
   ): LineChart {
-    const dataSets: ChartDataset<'line', DateNumberPoint[]>[] = [];
+    const dataSets: ChartDataset<'line', ChartPoint[]>[] = [];
     for (let i = 0; i < nDataSets; i++) {
       let cColor = accentChartColor ?? 'rgba(138, 128, 128)';
       if (i > 0) {
@@ -343,7 +343,7 @@ export class ChainChartService {
       });
     }
 
-    return new Chart<'line', DateNumberPoint[]>(canvasElement, {
+    return new Chart<'line', ChartPoint[]>(canvasElement, {
       type: 'line',
       data: {
         datasets: dataSets,
@@ -415,11 +415,11 @@ export class ChainChartService {
       if (i > 0) {
         cColor = this.chartColors[i - 1];
       }
-      (dataset as ChartDataset<'line', DateNumberPoint[]>).borderColor = cColor;
+      (dataset as ChartDataset<'line', ChartPoint[]>).borderColor = cColor;
       (
-        dataset as ChartDataset<'line', DateNumberPoint[]>
+        dataset as ChartDataset<'line', ChartPoint[]>
       ).pointBackgroundColor = cColor;
-      (dataset as ChartDataset<'line', DateNumberPoint[]>).backgroundColor =
+      (dataset as ChartDataset<'line', ChartPoint[]>).backgroundColor =
         accentChartColor ?? 'rgba(0, 0, 0, 0.1)';
     });
 
@@ -474,9 +474,9 @@ export class ChainChartService {
   }
 
   calculateTriangleArea(
-    p1: DateNumberPoint,
-    p2: DateNumberPoint,
-    p3: DateNumberPoint,
+    p1: ChartPoint,
+    p2: ChartPoint,
+    p3: ChartPoint,
   ): number {
     return Math.abs(
       (p1.x.getTime() * (p2.y - p3.y) +
@@ -487,10 +487,10 @@ export class ChainChartService {
   }
 
   reduceChartData(
-    data: DateNumberPoint[],
+    data: ChartPoint[],
     targetPoints: number,
     adaptExtremes: boolean,
-  ): DateNumberPoint[] {
+  ): ChartPoint[] {
     if (data.length == 0) {
       return [];
     }
@@ -531,7 +531,7 @@ export class ChainChartService {
     const maxTimeX = Math.max(...timeValuesX);
     const timeRangeX = maxTimeX - minTimeX;
 
-    const newPoints: DateNumberPoint[] = [];
+    const newPoints: ChartPoint[] = [];
 
     newPoints[0] = points[0];
     const valuesY = points.map((p) => p.y);

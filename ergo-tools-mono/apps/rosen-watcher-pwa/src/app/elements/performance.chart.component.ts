@@ -15,6 +15,7 @@ import { ChainChartService } from '../service/chain.chart.service';
 import { EventType } from '../service/event.service';
 import { ChainDataService } from '../service/chain.data.service';
 import { BaseEventAwareComponent } from '../baseeventawarecomponent';
+import { ChartPoint } from '../../service/ts/models/chart.point';
 
 @Component({
   selector: 'app-performance-chart',
@@ -52,7 +53,7 @@ export class PerformanceChartComponent
   isHtmlRenderEnabled(): boolean {
     return this._renderHtml;
   }
-  amounts: DateNumberPoint[] = [];
+  amounts: ChartPoint[] = [];
 
   constructor(
     protected override injector: Injector,

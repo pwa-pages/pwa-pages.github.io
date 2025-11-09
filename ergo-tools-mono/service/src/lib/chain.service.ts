@@ -13,8 +13,11 @@ enum ChainType {
   Runes = 'Runes',
   Nervos = 'Nervos',
   Handshake = 'Handshake',
+  Firo = 'Firo',
   Monero = 'Monero',
 }
+
+
 
 function getActiveChainTypes(): ChainType[] {
   const active = new Set<ChainType>();
@@ -83,6 +86,7 @@ const permitAddresses: Record<ChainType, string | null> = {
   [ChainType.Nervos]: null,
   [ChainType.Handshake]: null,
   [ChainType.Monero]: null,
+  [ChainType.Firo]: null,
 };
 
 const permitTriggerAddresses: Record<ChainType, string | null> = {
@@ -102,6 +106,7 @@ const permitTriggerAddresses: Record<ChainType, string | null> = {
   [ChainType.Nervos]: null,
   [ChainType.Handshake]: null,
   [ChainType.Monero]: null,
+  [ChainType.Firo]: null,
 };
 
 const permitBulkAddresses: Record<ChainType, string | null> = {
@@ -121,6 +126,7 @@ const permitBulkAddresses: Record<ChainType, string | null> = {
   [ChainType.Nervos]: null,
   [ChainType.Handshake]: null,
   [ChainType.Monero]: null,
+  [ChainType.Firo]: null,
 };
 
 const rewardAddresses: Record<ChainType, string | null> = {
@@ -140,6 +146,7 @@ const rewardAddresses: Record<ChainType, string | null> = {
   [ChainType.Nervos]: null,
   [ChainType.Handshake]: null,
   [ChainType.Monero]: null,
+  [ChainType.Firo]: null,
 };
 
 const hotWalletAddress =

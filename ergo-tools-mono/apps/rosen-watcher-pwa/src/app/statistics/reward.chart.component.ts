@@ -12,6 +12,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { ChainChartService, LineChart } from '../service/chain.chart.service';
 import { EventService, EventType } from '../service/event.service';
+import { ChartPoint } from '../../service/ts/models/chart.point';
 
 @Component({
   selector: 'app-reward-chart',
@@ -29,8 +30,8 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
   chart: LineChart | null = null;
 
   @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
-  @Input() rewardsChart: DateNumberPoint[] = [];
-  accumulatedRewardsChart: DateNumberPoint[] = [];
+  @Input() rewardsChart: ChartPoint[] = [];
+  accumulatedRewardsChart: ChartPoint[] = [];
   @Input() chartTitle? = 'Total Rewards Earned (RSN)';
   @Input() chartColor?: string;
   @Input() accentChartColor?: string;
@@ -90,7 +91,7 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
     this.chart.update();
   }
 
-  private setupRewardChart(amounts: DateNumberPoint[]) {
+  private setupRewardChart(amounts: ChartPoint[]) {
     if (
       this.rewardsChart.length !== 0 &&
       this.previousLength !== 0 &&
@@ -107,7 +108,7 @@ export class RewardChartComponent implements OnChanges, AfterViewInit {
     let accumulatedAmount = 0;
     this.accumulatedRewardsChart = amounts.map((s) => {
       accumulatedAmount += s.y;
-      return { x: s.x, y: accumulatedAmount } as DateNumberPoint;
+      return { x: s.x, y: accumulatedAmount } as ChartPoint;
     });
   }
 

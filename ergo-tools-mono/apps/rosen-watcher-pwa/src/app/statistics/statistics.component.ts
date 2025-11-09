@@ -20,6 +20,7 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { DateUtils } from './date.utils';
 import { CsvUtils } from './csv.utils';
 import { RewardChartComponent } from './reward.chart.component';
+import { ChartPoint } from '../../service/ts/models/chart.point';
 
 @Component({
   selector: 'app-statistics',
@@ -56,7 +57,7 @@ export class StatisticsComponent
   filterDateActive = false;
   fromDate: Date | null = null;
   toDate: Date | null = null;
-  amounts: DateNumberPoint[] = [];
+  amounts: ChartPoint[] = [];
   filterAddressActive = false;
 
   constructor(
@@ -129,7 +130,7 @@ export class StatisticsComponent
       this.amounts = this.sortedInputs
         .filter((s) => addressSet.has(s.outputAddress))
         .map((s) => {
-          return { x: s.inputDate, y: s.amount } as DateNumberPoint;
+          return { x: s.inputDate, y: s.amount } as ChartPoint;
         });
     }
 

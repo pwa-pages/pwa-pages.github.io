@@ -12,6 +12,7 @@ import { DateUtils } from '../statistics/date.utils';
 import { RewardChartComponent } from '../statistics/reward.chart.component';
 import { ChainDataService } from '../service/chain.data.service';
 import { BaseEventAwareComponent } from '../baseeventawarecomponent';
+import { ChartPoint } from '../../service/ts/models/chart.point';
 
 @Component({
   selector: 'app-statistics-chart',
@@ -39,7 +40,7 @@ export class StatisticsChartComponent
   @AngularInput()
   accentChartColor?: string;
 
-  amounts: DateNumberPoint[] = [];
+  amounts: ChartPoint[] = [];
 
   constructor(
     protected override injector: Injector,
@@ -93,7 +94,7 @@ export class StatisticsChartComponent
     this.amounts = this.sortedInputs
       .filter((s) => this.filledAddresses.includes(s.outputAddress))
       .map((s) => {
-        return { x: s.inputDate, y: s.amount } as DateNumberPoint;
+        return { x: s.inputDate, y: s.amount } as ChartPoint;
       });
 
     this.eventService.sendEventWithData(

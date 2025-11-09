@@ -4,7 +4,7 @@ export class ChartPerformance {
   address: string;
   addressForDisplay: string;
   chart: ChartPoint[];
-  chainType: ChainType | null;
+  chainType: string | null;
   color: string;
 
   constructor(
@@ -12,7 +12,7 @@ export class ChartPerformance {
     addressForDisplay: string,
     chart: ChartPoint[],
     color: string,
-    chainType: ChainType | null,
+    chainType: string | null,
   ) {
     this.address = address;
     this.addressForDisplay = addressForDisplay;

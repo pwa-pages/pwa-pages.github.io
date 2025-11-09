@@ -14,7 +14,7 @@
         "index": "apps/rosen-watcher-pwa/src/index.html",
         "browser": "apps/rosen-watcher-pwa/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/rosen-watcher-pwa/tsconfig.app.json",
+        "tsConfig": "apps/rosen-watcher-pwa/tsconfig.json",
         "assets": [
           "apps/rosen-watcher-pwa/src/favicon.ico",
           "apps/rosen-watcher-pwa/src/assets",
@@ -73,7 +73,8 @@
           "optimization": false,
           "extractLicenses": false,
           "sourceMap": true,
-          "serviceWorker": "apps/rosen-watcher-pwa/ngsw-config.json"
+          "serviceWorker": "apps/rosen-watcher-pwa/ngsw-config.json",
+          "baseHref": "./"
         }
       },
       "defaultConfiguration": "production",

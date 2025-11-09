@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { Address } from '../../service/ts/models/address';
 import { Location } from '@angular/common';
 import { EventService, EventType } from './event.service';
-
 export interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;

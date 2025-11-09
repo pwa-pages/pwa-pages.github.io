@@ -22,6 +22,7 @@ import { BaseEventAwareComponent } from '../baseeventawarecomponent';
 import { WatchersStats } from '../service/watchers.models';
 import { MyWatchersComponent } from '../statistics/mywatchers.component';
 import { MyWatchersStats } from '../../service/ts/models/watcher.info';
+import { ChartPoint } from '../../service/ts/models/chart.point';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
@@ -79,7 +80,7 @@ export class RosenWatcherComponent extends BaseEventAwareComponent {
     ChartPerformance[]
   >();
   @Output() notifyStatisticsChartChanged = new EventEmitter<
-    DateNumberPoint[]
+    ChartPoint[]
   >();
 
   @Input()
@@ -225,7 +226,7 @@ export class RosenWatcherComponent extends BaseEventAwareComponent {
 
     this.subscribeToEvent(
       EventType.StatisticsChartChanged,
-      (data: DateNumberPoint[]) => {
+      (data: ChartPoint[]) => {
         console.log(
           'Received statistics chart changed event, sending through notifyStatisticsChartChanged',
         );
