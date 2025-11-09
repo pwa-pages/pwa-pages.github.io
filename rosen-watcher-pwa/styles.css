@@ -308,6 +308,13 @@ a {
   background-image: url("./media/hns.png");
   filter: brightness(0.8);
 }
+.statdetaildispl.Firo,
+.mainaddressdispl.Firo,
+.watchersdispl.Firo,
+.chainType.Firo {
+  background-image: url("./media/firo.png");
+  filter: brightness(0.8);
+}
 .statdetaildispl.Monero,
 .mainaddressdispl.Monero,
 .watchersdispl.Monero,
