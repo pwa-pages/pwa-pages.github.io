@@ -1,6 +1,7 @@
 export declare function getAllChainTypes(): string[];
 export declare function getActivatedChainTypes(): string[];
 export declare function getChainTypeForAddress(address?: string): string | null | undefined;
+export declare function getRewardAddressForChainType(chainType: string): string | null | undefined;
 export interface IProcessEventService {
     processEvent(event: EvtPayload<object>): Promise<void>;
 }

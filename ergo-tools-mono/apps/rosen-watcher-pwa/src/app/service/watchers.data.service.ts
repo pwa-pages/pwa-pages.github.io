@@ -11,13 +11,14 @@ import { PriceService } from './price.service';
 import { WatchersStats } from './watchers.models';
 import { EventService, EventType } from './event.service';
 import { Address } from '../../service/ts/models/address';
+import { ChainTypeHelper } from '../imports/imports';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WatchersDataService {
-  isChainTypeActive(chainType: ChainType): boolean {
-    return rewardAddresses[chainType] !== null;
+  isChainTypeActive(chainType: string): boolean {
+    return ChainTypeHelper.getRewardAddress(chainType) !== null;
   }
 
   readonly rsnToken =
@@ -132,33 +133,33 @@ export class WatchersDataService {
           amount: rs_WatcherCollateralRSN,
           from: 'RSN',
           callback: (c: number) =>
-            (this.watchersStats.watchersAmountsPerCurrency[
-              currency
-            ].rsnCollateral = c),
+          (this.watchersStats.watchersAmountsPerCurrency[
+            currency
+          ].rsnCollateral = c),
         },
         {
           amount: rs_WatcherCollateralERG,
           from: 'ERG',
           callback: (c: number) =>
-            (this.watchersStats.watchersAmountsPerCurrency[
-              currency
-            ].ergCollateral = c),
+          (this.watchersStats.watchersAmountsPerCurrency[
+            currency
+          ].ergCollateral = c),
         },
         {
           amount: rs_PermitCost,
           from: 'RSN',
           callback: (c: number) =>
-            (this.watchersStats.watchersAmountsPerCurrency[
-              currency
-            ].permitValue = c),
+          (this.watchersStats.watchersAmountsPerCurrency[
+            currency
+          ].permitValue = c),
         },
         {
           amount: this.watchersStats.totalLockedERG ?? 0,
           from: 'ERG',
           callback: (l: number) =>
-            (this.watchersStats.watchersAmountsPerCurrency[
-              currency
-            ].totalLockedERG = l),
+          (this.watchersStats.watchersAmountsPerCurrency[
+            currency
+          ].totalLockedERG = l),
         },
         {
           amount:
@@ -166,9 +167,9 @@ export class WatchersDataService {
             rs_PermitCost * (this.watchersStats.totalPermitCount ?? 0),
           from: 'RSN',
           callback: (l: number) =>
-            (this.watchersStats.watchersAmountsPerCurrency[
-              currency
-            ].totalLockedRSN = l),
+          (this.watchersStats.watchersAmountsPerCurrency[
+            currency
+          ].totalLockedRSN = l),
         },
       ];
 

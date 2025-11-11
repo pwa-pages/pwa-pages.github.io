@@ -9,6 +9,9 @@ export function getActivatedChainTypes() {
 export function getChainTypeForAddress(address) {
     return getChainType(address);
 }
+export function getRewardAddressForChainType(chainType) {
+    return rewardAddresses[chainType];
+}
 export function createProcessEvtService(eventSender) {
     return new ProcessEventService(eventSender);
 }

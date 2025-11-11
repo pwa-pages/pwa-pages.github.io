@@ -1,8 +1,9 @@
 // @ts-nocheck
-import { EvtPayload, EvtSender, getActivatedChainTypes } from '@ergo-tools/service';
+import { CurrencyEnum, EvtPayload, EvtSender, getActivatedChainTypes, getRewardAddressForChainType } from '@ergo-tools/service';
 import { getAllChainTypes } from '@ergo-tools/service';
 import { getChainTypeForAddress } from '@ergo-tools/service';
 import { createProcessEvtService } from '@ergo-tools/service';
+
 
 export class ChainTypeHelper {
     static getActiveChainTypes(): string[] {
@@ -17,7 +18,14 @@ export class ChainTypeHelper {
         return getChainTypeForAddress(address);
     }
 
-    
+    static getChainType(address: string): string | null | undefined {
+        return getChainTypeForAddress(address);
+    }
+
+    static getRewardAddress(chainType: string): string | null | undefined {
+        return getRewardAddressForChainType(chainType)
+    }
+
 }
 
 export const createProcessEventService = createProcessEvtService;

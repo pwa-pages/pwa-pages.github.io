@@ -1,10 +1,8 @@
-
 export function getAllChainTypes(): string[] {
   const raw = Object.values(ChainType) as (string | number)[];
   const unique = Array.from(new Set(raw));
   return unique.filter(v => typeof v === 'string' || typeof v === 'number') as ChainType[];
 }
-
 
 export function getActivatedChainTypes(): string[] {
   return getActiveChainTypes();
@@ -14,6 +12,9 @@ export function getChainTypeForAddress(address?: string): string | null | undefi
   return getChainType(address);
 }
 
+export function getRewardAddressForChainType(chainType: string): string | null | undefined {
+  return rewardAddresses[chainType as ChainType];
+}
 
 export interface IProcessEventService {
   processEvent(event: EvtPayload<object>): Promise<void>;
@@ -27,9 +28,6 @@ export function createProcessEvtService(eventSender: EvtSender): IProcessEventSe
     eventSender
   );
 }
-
-
-
 export class ErgConstants {
   static rs_ErgoExplorerHost: string = rs_ErgoExplorerHost;
   static rs_ErgoNodeHost: string = rs_ErgoNodeHost;
