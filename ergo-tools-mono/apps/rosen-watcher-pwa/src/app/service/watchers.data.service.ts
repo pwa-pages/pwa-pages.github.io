@@ -18,7 +18,7 @@ import { ChainTypeHelper } from '../imports/imports';
 })
 export class WatchersDataService {
   isChainTypeActive(chainType: string): boolean {
-    return ChainTypeHelper.getRewardAddress(chainType) !== null;
+    return ChainTypeHelper.isChainTypeActive(chainType);
   }
 
   readonly rsnToken =

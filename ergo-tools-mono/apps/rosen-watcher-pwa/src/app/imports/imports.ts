@@ -6,6 +6,11 @@ import { createProcessEvtService } from '@ergo-tools/service';
 
 
 export class ChainTypeHelper {
+
+    static isChainTypeActive(chainType: string): bool {
+        return getActivatedChainTypes().includes(chainType);
+    }
+
     static getActiveChainTypes(): string[] {
         return getActivatedChainTypes();
     }
