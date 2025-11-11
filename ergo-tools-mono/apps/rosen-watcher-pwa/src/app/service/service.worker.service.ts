@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { EventData, EventService, EventType } from './event.service';
 import { HttpClient } from '@angular/common/http';
 import { IS_ELEMENTS_ACTIVE } from './tokens';
+import { createProcessEventService, EventPayload, EventSender } from '../imports/imports';
 
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {
@@ -10,7 +11,7 @@ interface ServiceWorkerMessage {
   payload?: object;
 }
 
-class AngularEventSender implements EventSender {
+class DirectEventSender implements EventSender {
   constructor(private eventService: EventService) {}
 
   async sendEvent<T>(event: EventPayload<T>): Promise<void> {
@@ -60,9 +61,9 @@ export class ServiceWorkerService {
               eventType +
               'to angular worker',
           );
-          const processEventService = new ProcessEventService(
-            new AngularEventSender(this.eventService),
-          );
+          
+          const processEventService = createProcessEventService(new DirectEventSender(this.eventService));
+          
 
           processEventService.processEvent({
             data: eventData as object | undefined,

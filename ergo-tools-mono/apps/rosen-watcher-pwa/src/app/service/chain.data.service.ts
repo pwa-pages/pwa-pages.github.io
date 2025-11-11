@@ -5,6 +5,8 @@ import { Input } from '../../service/ts/models/input';
 import { Address } from '../../service/ts/models/address';
 import { EventService, EventType } from './event.service';
 import { DateUtils } from '../statistics/date.utils';
+import { ChainTypeHelper } from '../imports/imports';
+
 export function initializeDataService(dataService: ChainDataService) {
   return (): Promise<void> => {
     return dataService.initialize();
@@ -18,23 +20,22 @@ export class ChainDataService {
   public rsnInputs: Input[] = [];
   private addressCharts: Record<
     string,
-    { chainType: ChainType | null; charts: Record<number, number> }
+    { chainType: string | null; charts: Record<number, number> }
   > = {};
-  private chainChart: Record<ChainType, { chart: number }> = Object.values(
-    ChainType,
-  ).reduce(
-    (acc, chainType) => {
-      acc[chainType as ChainType] = { chart: 0 };
-      return acc;
-    },
-    {} as Record<ChainType, { chart: number }>,
-  );
+  private chainChart: Record<string, { chart: number }> =
+    ChainTypeHelper.getAllChainTypes().reduce(
+      (acc, chainType) => {
+        acc[chainType] = { chart: 0 };
+        return acc;
+      },
+      {} as Record<string, { chart: number }>,
+    );
   busyCounter = 0;
 
   constructor(
     private storageService: StorageService,
     private eventService: EventService,
-  ) {}
+  ) { }
 
   public async initialize() {
     this.eventService.subscribeToEvent(
@@ -49,7 +50,7 @@ export class ChainDataService {
     this.eventService.subscribeToEvent(
       EventType.PerfChartChanged,
       async (
-        a: Record<string, { chainType: ChainType | null; chart: number }>,
+        a: Record<string, { chainType: string | null; chart: number }>,
       ) => {
         this.chainChart = a;
         this.eventService.sendEvent(EventType.RefreshInputs);
@@ -61,7 +62,7 @@ export class ChainDataService {
       async (
         a: Record<
           string,
-          { chainType: ChainType | null; charts: Record<number, number> }
+          { chainType: string | null; charts: Record<number, number> }
         >,
       ) => {
         this.addressCharts = Object.keys(a).reduce(
@@ -71,7 +72,7 @@ export class ChainDataService {
           },
           {} as Record<
             string,
-            { chainType: ChainType | null; charts: Record<number, number> }
+            { chainType: string | null; charts: Record<number, number> }
           >,
         );
         this.eventService.sendEvent(EventType.RefreshInputs);
@@ -151,14 +152,14 @@ export class ChainDataService {
 
   getAddressCharts(): Record<
     string,
-    { chainType: ChainType | null; charts: Record<number, number> }
+    { chainType: string | null; charts: Record<number, number> }
   > {
     return this.addressCharts;
   }
 
-  getChainChart(): Record<ChainType, { chart: number }> {
-    const activeChainTypes = getActiveChainTypes() as ChainType[];
-    const result = {} as Record<ChainType, { chart: number }>;
+  getChainChart(): Record<string, { chart: number }> {
+    const activeChainTypes = ChainTypeHelper.getActiveChainTypes() as string[];
+    const result = {} as Record<string, { chart: number }>;
     for (const ct of activeChainTypes) {
       if (this.chainChart[ct]) {
         result[ct] = this.chainChart[ct];

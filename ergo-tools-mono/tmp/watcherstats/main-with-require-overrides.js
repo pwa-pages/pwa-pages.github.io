@@ -9,7 +9,7 @@ const path = require('path');
 const fs = require('fs');
 const originalResolveFilename = Module._resolveFilename;
 const distPath = __dirname;
-const manifest = [{"module":"@ergo-tools/service","pattern":"service/src/"}];
+const manifest = [{"module":"@ergo-tools/service","exactMatch":"service/src/exports.js","pattern":"service/src/exports"}];
 
 Module._resolveFilename = function(request, parent) {
   let found;

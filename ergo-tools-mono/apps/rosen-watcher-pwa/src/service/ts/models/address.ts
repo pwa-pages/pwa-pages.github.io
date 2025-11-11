@@ -2,13 +2,13 @@ export class Address {
   address: string;
   Address: string;
   active = true;
-  chainType: ChainType | null | undefined;
+  chainType: string | null | undefined;
   smallAddressForDisplay: string;
   largeAddressForDisplay: string;
 
   constructor(
     address: string,
-    chainType: ChainType | null | undefined,
+    chainType: string | null | undefined,
     active = true,
   ) {
     this.address = address;
