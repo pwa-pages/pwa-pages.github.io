@@ -1,7 +1,9 @@
-export function createChainNumber(): Record<ChainType, number | undefined> {
+import { ChainTypeHelper } from "../imports/imports";
+
+export function createChainNumber(): Record<string, number | undefined> {
   return Object.fromEntries(
-    Object.values(ChainType).map((key) => [key, undefined]),
-  ) as Record<ChainType, number | undefined>;
+    ChainTypeHelper.getAllChainTypes().map((key) => [key, undefined]),
+  ) as Record<string, number | undefined>;
 }
 
 export class WatchersAmounts {
@@ -31,11 +33,11 @@ export class WatchersStats {
   watcherCollateralERG = rs_WatcherCollateralERG;
   watcherCollateralRSN = rs_WatcherCollateralRSN;
 
-  watchersAmountsPerCurrency: Record<Currency, WatchersAmounts> =
+  watchersAmountsPerCurrency: Record<string, WatchersAmounts> =
     Object.fromEntries(
       Object.values(Currency).map((currency) => [
         currency,
         new WatchersAmounts(),
       ]),
-    ) as Record<Currency, WatchersAmounts>;
+    ) as Record<string, WatchersAmounts>;
 }

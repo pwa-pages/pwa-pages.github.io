@@ -11,7 +11,16 @@ import { PriceService } from './price.service';
 import { WatchersStats } from './watchers.models';
 import { EventService, EventType } from './event.service';
 import { Address } from '../../service/ts/models/address';
-import { ChainTypeHelper } from '../imports/imports';
+import { ChainTypeHelper, getCurrencies } from '../imports/imports';
+import { ErgSettings, getAllChainTypes } from '@ergo-tools/service';
+
+interface PermitInfo {
+  lockedRSN: number;
+  activeLockedRSN: number;
+  address: string;
+  wid: string;
+  chainType: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -42,10 +51,10 @@ export class WatchersDataService {
         let myWatcherStats: MyWatchersStats[] = [];
         permits.forEach((permit: PermitInfo) => {
           let permitCount = Math.floor(
-            (permit.lockedRSN - rs_WatcherCollateralRSN) / rs_PermitCost,
+            (permit.lockedRSN - ErgSettings.rs_WatcherCollateralRSN()) / ErgSettings.rs_PermitCost(),
           );
           let activepermitCount = Math.floor(
-            permit.activeLockedRSN / rs_PermitCost,
+            permit.activeLockedRSN / ErgSettings.rs_PermitCost(),
           );
 
           if (permitCount < 0) {
@@ -63,7 +72,7 @@ export class WatchersDataService {
           }
         });
 
-        let entries = Object.values(ChainType);
+        let entries = getAllChainTypes();
 
         entries.forEach((chainType) => {
           const stats = myWatcherStats.filter(
@@ -109,8 +118,8 @@ export class WatchersDataService {
     return result;
   }
 
-  getPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
-    const address = permitAddresses[chainType];
+  getPermitsInfo(chainType: string): Observable<Token | undefined> {
+    const address = ChainTypeHelper.getPermitAddresses()[chainType];
     if (address === null) {
       return new Observable<Token | undefined>((subscriber) => {
         subscriber.next(undefined);
@@ -121,16 +130,16 @@ export class WatchersDataService {
   }
 
   private updateTotal(
-    map: Record<ChainType, number | undefined>,
+    map: Record<string, number | undefined>,
   ): number | undefined {
     return Object.values(map).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
   }
 
   private convertCurrencies(): void {
-    Object.values(Currency).forEach((currency) => {
+    getCurrencies().forEach((currency) => {
       const conversions = [
         {
-          amount: rs_WatcherCollateralRSN,
+          amount: ErgSettings.rs_WatcherCollateralRSN(),
           from: 'RSN',
           callback: (c: number) =>
           (this.watchersStats.watchersAmountsPerCurrency[
@@ -138,7 +147,7 @@ export class WatchersDataService {
           ].rsnCollateral = c),
         },
         {
-          amount: rs_WatcherCollateralERG,
+          amount: ErgSettings.rs_WatcherCollateralERG(),
           from: 'ERG',
           callback: (c: number) =>
           (this.watchersStats.watchersAmountsPerCurrency[
@@ -146,7 +155,7 @@ export class WatchersDataService {
           ].ergCollateral = c),
         },
         {
-          amount: rs_PermitCost,
+          amount: ErgSettings.rs_PermitCost(),
           from: 'RSN',
           callback: (c: number) =>
           (this.watchersStats.watchersAmountsPerCurrency[
@@ -164,7 +173,7 @@ export class WatchersDataService {
         {
           amount:
             (this.watchersStats.totalLockedRSN ?? 0) +
-            rs_PermitCost * (this.watchersStats.totalPermitCount ?? 0),
+            ErgSettings.rs_PermitCost() * (this.watchersStats.totalPermitCount ?? 0),
           from: 'RSN',
           callback: (l: number) =>
           (this.watchersStats.watchersAmountsPerCurrency[
@@ -182,7 +191,7 @@ export class WatchersDataService {
   }
 
   private updateTotalLocked(): void {
-    Object.values(Currency).forEach((currency) => {
+    getCurrencies().forEach((currency) => {
       this.watchersStats.watchersAmountsPerCurrency[currency].totalLocked =
         (this.watchersStats.watchersAmountsPerCurrency[currency]
           .totalLockedERG ?? 0) +
@@ -191,33 +200,33 @@ export class WatchersDataService {
     });
   }
   private getValue(
-    map: Record<ChainType, number | undefined>,
-    chainType: ChainType,
+    map: Record<string, number | undefined>,
+    chainType: string,
     multiplier: number,
   ): number {
     return (map[chainType] ?? 0) * multiplier;
   }
 
-  setLockedAmounts(chainType: ChainType): void {
+  setLockedAmounts(chainType: string): void {
     this.watchersStats.chainLockedRSN[chainType] =
       this.getValue(
         this.watchersStats.chainPermitCount,
         chainType,
-        rs_PermitCost,
+        ErgSettings.rs_PermitCost(),
       ) +
       this.getValue(
         this.watchersStats.chainWatcherCount,
         chainType,
-        rs_WatcherCollateralRSN,
+        ErgSettings.rs_WatcherCollateralRSN(),
       );
 
     this.watchersStats.chainLockedERG[chainType] = this.getValue(
       this.watchersStats.chainWatcherCount,
       chainType,
-      rs_WatcherCollateralERG,
+      ErgSettings.rs_WatcherCollateralERG(),
     );
 
-    Object.values(ChainType).forEach((c) => {
+    getAllChainTypes().forEach((c) => {
       this.watchersStats.activePermitCount[c] =
         (this.watchersStats.bulkPermitCount[c] ?? 0) +
         (this.watchersStats.triggerPermitCount[c] ?? 0);
@@ -243,7 +252,7 @@ export class WatchersDataService {
   }
 
   currencyUpdate(): void {
-    Object.values(Currency).forEach((currency) => {
+    getCurrencies().forEach((currency) => {
       this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = 0;
       this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = 0;
     });
@@ -251,7 +260,7 @@ export class WatchersDataService {
     this.convertCurrencies();
     this.updateTotalLocked();
 
-    Object.values(Currency).forEach((currency) => {
+    getCurrencies().forEach((currency) => {
       this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue =
         (this.watchersStats.watchersAmountsPerCurrency[currency]
           .rsnCollateral ?? 0) +
@@ -284,7 +293,7 @@ export class WatchersDataService {
 
             if (tokenData) {
               tokenData.amount /=
-                rs_PermitCost * Math.pow(10, tokenData.decimals);
+                ErgSettings.rs_PermitCost() * Math.pow(10, tokenData.decimals);
               tokenData.amount = Math.floor(tokenData.amount);
             }
           }
@@ -302,8 +311,8 @@ export class WatchersDataService {
       );
   }
 
-  getTriggerPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
-    const address = permitTriggerAddresses[chainType];
+  getTriggerPermitsInfo(chainType: string): Observable<Token | undefined> {
+    const address = ChainTypeHelper.getPermitTriggerAddresses()[chainType];
     if (address === null) {
       return new Observable<Token | undefined>((subscriber) => {
         subscriber.next(undefined);
@@ -311,11 +320,11 @@ export class WatchersDataService {
       });
     }
 
-    return this.downloadPermitInfo(address, null, chainTypeTokens[chainType]);
+    return this.downloadPermitInfo(address, null, ChainTypeHelper.getChainTypeTokens()[chainType]);
   }
 
-  getBulkPermitsInfo(chainType: ChainType): Observable<Token | undefined> {
-    const address = permitBulkAddresses[chainType];
+  getBulkPermitsInfo(chainType: string): Observable<Token | undefined> {
+    const address = ChainTypeHelper.getPermitBulkAddresses()[chainType];
 
     if (address === null) {
       return new Observable<Token | undefined>((subscriber) => {
@@ -324,11 +333,11 @@ export class WatchersDataService {
       });
     }
 
-    return this.downloadPermitInfo(address, null, chainTypeTokens[chainType]);
+    return this.downloadPermitInfo(address, null, ChainTypeHelper.getChainTypeTokens()[chainType]);
   }
 
   download() {
-    Object.values(ChainType).forEach((c) => {
+    ChainTypeHelper.getAllChainTypes().forEach((c) => {
       this.getTriggerPermitsInfo(c)
         .pipe(map((permitsInfo) => permitsInfo?.amount))
         .subscribe((amount) => {
@@ -349,10 +358,10 @@ export class WatchersDataService {
     watcherInfo$
       .pipe(
         map((watcherInfo) => {
-          Object.values(ChainType).forEach((c) => {
+          ChainTypeHelper.getAllChainTypes().forEach((c) => {
             const amount =
               watcherInfo.tokens.find(
-                (token: Token) => token.name === chainTypeWatcherIdentifier[c],
+                (token: Token) => token.name === ChainTypeHelper.getChainTypeWatcherIdentifiers()[c],
               )?.amount ?? 0;
             this.watchersStats.chainWatcherCount[c] = amount;
             this.setLockedAmounts(c);
@@ -361,7 +370,7 @@ export class WatchersDataService {
       )
       .subscribe();
 
-    Object.values(ChainType).forEach((c) => {
+    ChainTypeHelper.getAllChainTypes().forEach((c) => {
       this.getPermitsInfo(c)
         .pipe(map((permitsInfo) => permitsInfo?.amount))
         .subscribe((amount) => {

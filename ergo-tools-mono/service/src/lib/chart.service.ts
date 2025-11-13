@@ -47,7 +47,7 @@ class ChartService {
     return addressCharts;
   }
 
-  async getAmountsByDate(inputs: Input[], period: Period) {
+  async getAmountsByDate(inputs: Input[], period: string) {
     const reducedInputs = this.reduceData(inputs, period);
 
     const amounts = reducedInputs.map((s) => {
@@ -57,20 +57,20 @@ class ChartService {
     return amounts;
   }
 
-  private reduceData(inputs: Input[], period: Period): Input[] {
+  private reduceData(inputs: Input[], period: string): Input[] {
     const date = new Date();
 
     switch (period) {
-      case Period.Day:
+      case 'Day':
         date.setDate(date.getDate() - 1);
         break;
-      case Period.Week:
+      case 'Week':
         date.setDate(date.getDate() - 7);
         break;
-      case Period.Month:
+      case 'Month':
         date.setMonth(date.getMonth() - 1);
         break;
-      case Period.Year:
+      case 'Year':
         date.setFullYear(date.getFullYear() - 1);
         break;
       default:

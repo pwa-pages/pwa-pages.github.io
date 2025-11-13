@@ -74,7 +74,7 @@ export class RosenWatcherComponent extends BaseEventAwareComponent {
   @Output() notifyPermitsStatsChanged = new EventEmitter<MyWatchersStats[]>();
   @Output() notifyWatchersStatsChanged = new EventEmitter<WatchersStats>();
   @Output() notifyChainPerformanceChartsChanged = new EventEmitter<
-    { chainType: ChainType | null; chart: number }[]
+    { chainType: string | null; chart: number }[]
   >();
   @Output() notifyPerformanceChartsChanged = new EventEmitter<
     ChartPerformance[]
@@ -96,7 +96,7 @@ export class RosenWatcherComponent extends BaseEventAwareComponent {
     return this._renderHtml;
   }
 
-  @Input() period?: Period;
+  @Input() period?: string;
   @Input() chartTitle?: string;
 
   @Input() address1?: string;

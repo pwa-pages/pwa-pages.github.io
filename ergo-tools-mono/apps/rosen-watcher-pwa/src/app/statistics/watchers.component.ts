@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
 import { WatchersStats } from '../service/watchers.models';
+import { ChainTypeHelper } from '../imports/imports';
 
 @Component({
   selector: 'app-watchers',
@@ -68,17 +69,17 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     localStorage.setItem('selectedCurrency', this.selectedCurrency as string);
   }
 
-  getChainTypes(): ChainType[] {
-    return Object.values(ChainType);
+  getChainTypes(): string[] {
+    return ChainTypeHelper.getAllChainTypes();
   }
 
-  isChainTypeActive(chainType: ChainType): boolean {
+  isChainTypeActive(chainType: string): boolean {
     return this.watchersDataService.isChainTypeActive(chainType);
   }
 
   getWatcherAmounts() {
     return this.watchersStats.watchersAmountsPerCurrency[
-      this.selectedCurrency as Currency
+      this.selectedCurrency as string
     ];
   }
 
@@ -91,9 +92,9 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
     this.selectedCurrency = localStorage.getItem(
       'selectedCurrency',
-    ) as Currency;
+    ) as string;
     this.selectedCurrency =
-      this.selectedCurrency == null ? Currency.EUR : this.selectedCurrency;
+      this.selectedCurrency == null ? 'EUR' : this.selectedCurrency;
     this.watchersDataService.download();
     this.eventService.sendEvent(EventType.WatchersScreenLoaded);
   }

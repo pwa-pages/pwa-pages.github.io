@@ -3,6 +3,6 @@ declare class ChartService {
         chainType: ChainType | null;
         charts: Record<number, number>;
     }>>;
-    getAmountsByDate(inputs: Input[], period: Period): Promise<DateNumberPoint[]>;
+    getAmountsByDate(inputs: Input[], period: string): Promise<DateNumberPoint[]>;
     private reduceData;
 }

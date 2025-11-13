@@ -9,6 +9,6 @@ export class MyWatchersStats {
   activePermitCount: number | undefined;
   permitCount: number | undefined;
   wid: string | undefined;
-  chainType: ChainType | undefined;
+  chainType: string | undefined;
   address: Address | undefined;
 }

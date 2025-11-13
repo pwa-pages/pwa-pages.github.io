@@ -27,8 +27,8 @@ export class StatisticsChartComponent
   DateUtils = DateUtils;
   sortedInputs: Input[];
   detailInputs: Input[];
-  @AngularInput() period?: Period;
-  previousPeriod?: Period;
+  @AngularInput() period?: string;
+  previousPeriod?: string;
   @AngularInput() chartTitle?: string;
   chartFullTitle?: string;
   downloadInProgress: Record<string, boolean> = {};
@@ -88,7 +88,7 @@ export class StatisticsChartComponent
         null,
         null,
       ) ?? [],
-      this.period || Period.All,
+      this.period || 'All',
     );
 
     this.amounts = this.sortedInputs

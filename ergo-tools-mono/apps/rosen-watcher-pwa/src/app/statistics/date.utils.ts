@@ -49,20 +49,20 @@ export class DateUtils {
     );
   }
 
-  public static filterByPeriod(inputs: Input[], period: Period): Input[] {
+  public static filterByPeriod(inputs: Input[], period: string): Input[] {
     const date = new Date();
 
     switch (period) {
-      case Period.Day:
+      case 'Day':
         date.setDate(date.getDate() - 1);
         break;
-      case Period.Week:
+      case 'Week':
         date.setDate(date.getDate() - 7);
         break;
-      case Period.Month:
+      case 'Month':
         date.setMonth(date.getMonth() - 1);
         break;
-      case Period.Year:
+      case 'Year':
         date.setFullYear(date.getFullYear() - 1);
         break;
       default:

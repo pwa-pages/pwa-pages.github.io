@@ -49,7 +49,7 @@ export class StatisticsComponent
   window: HTMLElement = document.body;
   detailInputsSize = 100;
   version: string | null;
-  selectedPeriod: Period | null;
+  selectedPeriod: string | null;
   addressesForDisplay: Address[];
   shareSupport = false;
 
@@ -101,8 +101,8 @@ export class StatisticsComponent
   async retrieveData(): Promise<void> {
     this.selectedPeriod =
       this.selectedPeriod ??
-      (localStorage.getItem('statisticsPeriod') as Period) ??
-      Period.All;
+      (localStorage.getItem('statisticsPeriod') as string) ??
+      'All';
 
     const availableAddresses = await this.dataService.getAddresses();
     let sortedInputs =
@@ -190,7 +190,7 @@ export class StatisticsComponent
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    this.selectedPeriod = localStorage.getItem('statisticsPeriod') as Period;
+    this.selectedPeriod = localStorage.getItem('statisticsPeriod') as string;
     this.SetupRoute();
     this.shareSupport = navigator.share != null && navigator.share != undefined;
 

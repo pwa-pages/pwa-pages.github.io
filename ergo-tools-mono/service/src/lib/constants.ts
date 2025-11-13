@@ -69,35 +69,38 @@ enum Currency {
   RSN = 'RSN',
 }
 
+
+
 if (typeof window !== 'undefined') {
-  (window as any).rs_DbName = rs_DbName;
-  (window as any).rs_DbVersion = rs_DbVersion;
-  (window as any).rs_InputsStoreName = rs_InputsStoreName;
-  (window as any).rs_PerfTxStoreName = rs_PerfTxStoreName;
-  (window as any).rs_PermitTxStoreName = rs_PermitTxStoreName;
-  (window as any).rs_ActivePermitTxStoreName = rs_ActivePermitTxStoreName;
-  (window as any).rs_DownloadStatusStoreName = rs_DownloadStatusStoreName;
-  (window as any).rs_OpenBoxesStoreName = rs_OpenBoxesStoreName;
-  (window as any).rs_AddressDataStoreName = rs_AddressDataStoreName;
-  (window as any).rs_InitialNDownloads = rs_InitialNDownloads;
-  (window as any).rs_FullDownloadsBatchSize = rs_FullDownloadsBatchSize;
-  (window as any).rs_StartFrom = rs_StartFrom;
-  (window as any).rs_Input_Key = rs_Input_Key;
-  (window as any).rs_PerfTx_Key = rs_PerfTx_Key;
-  (window as any).rs_Permit_Key = rs_Permit_Key;
-  (window as any).rs_ActivePermit_Key = rs_ActivePermit_Key;
-  (window as any).rs_Address_Key = rs_Address_Key;
-  (window as any).rs_PermitCost = rs_PermitCost;
-  (window as any).rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
-  (window as any).rs_WatcherCollateralERG = rs_WatcherCollateralERG;
-  (window as any).Period = Period;
+  (globalThis as any).rs_DbName = rs_DbName;
+  (globalThis as any).rs_DbVersion = rs_DbVersion;
+  (globalThis as any).rs_InputsStoreName = rs_InputsStoreName;
+  (globalThis as any).rs_PerfTxStoreName = rs_PerfTxStoreName;
+  (globalThis as any).rs_PermitTxStoreName = rs_PermitTxStoreName;
+  (globalThis as any).rs_ActivePermitTxStoreName = rs_ActivePermitTxStoreName;
+  (globalThis as any).rs_DownloadStatusStoreName = rs_DownloadStatusStoreName;
+  (globalThis as any).rs_OpenBoxesStoreName = rs_OpenBoxesStoreName;
+  (globalThis as any).rs_AddressDataStoreName = rs_AddressDataStoreName;
+  (globalThis as any).rs_InitialNDownloads = rs_InitialNDownloads;
+  (globalThis as any).rs_FullDownloadsBatchSize = rs_FullDownloadsBatchSize;
+  (globalThis as any).rs_StartFrom = rs_StartFrom;
+  (globalThis as any).rs_Input_Key = rs_Input_Key;
+  (globalThis as any).rs_PerfTx_Key = rs_PerfTx_Key;
+  (globalThis as any).rs_Permit_Key = rs_Permit_Key;
+  (globalThis as any).rs_ActivePermit_Key = rs_ActivePermit_Key;
+  (globalThis as any).rs_Address_Key = rs_Address_Key;
+  (globalThis as any).rs_PermitCost = rs_PermitCost;
+  (globalThis as any).rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
+  (globalThis as any).rs_WatcherCollateralERG = rs_WatcherCollateralERG;
+  (globalThis as any).rs_PerfInitialNDownloads = rs_PerfInitialNDownloads;
+  (globalThis as any).rs_PerfFullDownloadsBatchSize = rs_PerfFullDownloadsBatchSize;
+  (globalThis as any).rs_ErgoExplorerHost = rs_ErgoExplorerHost;
+  (globalThis as any).rs_ErgoNodeHost = rs_ErgoNodeHost;
+  (globalThis as any).rs_RSNTokenId = rs_RSNTokenId;
+  (globalThis as any).rs_eRSNTokenId = rs_eRSNTokenId;
+  (globalThis as any).rs_TokenIdMap = rs_TokenIdMap;
+  (globalThis as any).rs_RSNDecimals = rs_RSNDecimals;
+
+    (window as any).Period = Period;
   (window as any).Currency = Currency;
-  (window as any).rs_PerfInitialNDownloads = rs_PerfInitialNDownloads;
-  (window as any).rs_PerfFullDownloadsBatchSize = rs_PerfFullDownloadsBatchSize;
-  (window as any).rs_ErgoExplorerHost = rs_ErgoExplorerHost;
-  (window as any).rs_ErgoNodeHost = rs_ErgoNodeHost;
-  (window as any).rs_RSNTokenId = rs_RSNTokenId;
-  (window as any).rs_eRSNTokenId = rs_eRSNTokenId;
-  (window as any).rs_TokenIdMap = rs_TokenIdMap;
-  (window as any).rs_RSNDecimals = rs_RSNDecimals;
 }
