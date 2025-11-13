@@ -2,7 +2,7 @@
 document.body.insertAdjacentHTML('beforeend', '<rosen-watcher-component></rosen-watcher-component>');
 
 const script = document.createElement('script');
-script.src = './rosen-watcher-components.3.72.4.js'; 
+script.src = './rosen-watcher-components.3.73.2.js'; 
 script.type = 'module';    
 script.async = false;
 document.body.appendChild(script);
