@@ -88,7 +88,7 @@ const permitAddresses = {
   [ChainType.Ethereum]: "NY4PEzZ7Vfju59RSazdQK92s7PaLrnCh5D9yZBZx7fptQjQZ7Ra2Xiz1PFusrkij3YamVoqXNqoUzazpjnzwmX4zKvPwWGLdqk1RXvp82m7Km2nwtvL2d6tVVCfgiVzA392JszEtNDh9hNXn6wk8eXjXwUg1q1w4UJi6XzmscSH6iZ1BR6ghCp5fyrZBeUfnvbPsfgHmmoVQzmDJ5E9KjmCg53detrDH29gyZUKyqjC5ddnCKG5cvVmoZ7D2ix9KFa9RuLcpVTxnVnuoJnHL1yoGog11TB3eT5hRyiUzeBU688pMb1xyUaCw8bjh5wSsBRAWQnDiAaGuj6zsJEnKeMW94XLeaTASw4K2bwyWHr4BVN9XNSeopFoj6mXPrD2ZhGgPV4HeQp1qEQ2pemMiSecXYkghfnk1t8hnfDNMfXoyKXxEmN8Cf1p7M8pqtgo7H9uUi6xsfotsB2uHVSoT21nzERYMaej9YuYwgC2iUzrzeZNFu7LbMqBErDgHn4wfgppRnF6axDca7QJGNv3q7E2q1DGRpzmTXPfr9FeFxki9geAwsTAy1KTqU2u6TY2wcRC3GzQz83x6LatZLhf9HZnVWZ3SRWQ5AmKUfxhHVxVC9Hwiraqb7ciZBsrnXHWmFaHHHYxafZwoLUBqxeWnHNM211MUwJ2rD9pvrqREfYs4CKYJNDxe5nezL11TnsLyt6p6XkKgHXvvqnk9HQ27pMbpNVX33Y8iQpznFvL2YBCn6Dw9hBDgb8thcYkkAXyLRZskEmhXQFL9evXTstNoeJVJp7NAo7dejZRaKHzTvZnZpkybJGks44qFbGSuSXGegN1V1HWyYGnGSgEJm3yrapNC5tdTvHWXVDxjw1G2TwqKL8D4HZVsyWsu8PEErsaf593jscXKTRn2uqvdhp29rJKGV4v2Cfd8DDXzwhmVxcVFyUiXg9JDe8fCi2rxmFai7a6P6vTJrUkJRtKYBt5RUY3uzKXpX4J4fBWMHmnM2yTSgdaXb9MYULmsbWitqpxiTWh1iMQdXNHxU1A2hHvsqogqEhrG9bGmMU1m1EFSFAPocv3KUf5bPYUWmVUFaxa2MLmE4fs1EC3kCJz8434NrxD1YVA1iosiv5f2tDM8E3w15VRik2a3R1Y6C1D9uHAAT1XK1A27dnx6e586eghm5BuvCY9Di89bdYH5KX3sg4NzWAAJYd5DLZbtdXxzRrKiKwMcPjskhwyQRcv3qstVzPDfJdE8Ej",
   [ChainType.Binance]: "NY4PEzZ7VfjvyhUfALrnVnmbCo79cESCRMoD4m6TNTRdUnGR3B7EM3KRKxPh6BmdAsdArGV8DgAanEjs4QLYzYTBPGexkgMBPaRwAMSuVAG5rtzuN5qNmyAZsfdrR3cnBuspTqRkBQFp1oczXkCVNFdjpPwAFYLZgnnJFJVnZbp5TQSECTioxM1oJSKm7LBnEbPNrVWFqcShvqAjoyie7Bd471mNEq8y3mEeV7FH3AQCm4fKQgyfwYkRBC4jvFjWDaMshpFbV325g7n5rcyRsbXJ8EGMC2pKVGEbkx2JCgX4ba5dxx1uGibiHnuHiTNXLmrbEJ6BFtBFZB69Ye7U1C23uBEEvTRLteSbKzKAaGv7UbhVtvcgX91muR3sy7jXTW5FszKWej7knHLWJhbUf47fCVvmbXWEx6rHu3fj5hEqQyfVuER3J54yQAtP9ertP9hQX6GQ7mXfyUwmxTYiJS4GxLzeWZGwfSfRUDe6GN7qurja8kVeMrTwdo835yt4XUcemLK53TCkTLe61Bev6NtiUCSuNrhddXcdfMzqk1DWZCXhkcm51pnGmbmAntwC6AF7rL2LHtHi4et2edKAJHkYUp6t9a8Q57eL6fX3Q4JSfDrjfgn4x2fJaF1APdwbBVKoJyhDUkmV6xAaANYZifq54eFg1qBh54F6mu61U3Df5sZqsepzQJNYp6Y95afLuHGmG97mxhmmRsecKbamu4p6P3TPZEs5eYfHspVf85GNh2BztxxYn5hSsR9c8VRJjBhHR1qGHzX4mbRKWn2D41L7AHPnapSQyHCAPdhSbaAV3b6eLqLvc9QrFBAdnsHqN4NauYDPZc6sSrFuLEwNKFbjefc7pBDnA2pfTUUVqCTFuuaM8VmLKFxG2oVsi1k8GD5moSzQbEphVfWTjE9kTZR35oArptsctXGXRT6MXToom6m4cj465Xs9nsRY8t7FgSHsxetJafgogRjo8NRpgFkBpRgf69QuZbqYkrFMTsoDRkLYCLTF4XZwYzu3tqrzLkSZPKDzK1x7pySFdB56vAstU8HPHLqtzduvHt8Gvrkh1mAYQ1cEphCF1jfs5vZUDifLQYnZ2JiJeMdFZu8RhssWvwU2oL6wqx4Ey2iRaSrLSadYnWx47QvGZeZ8M5gupYMNiL7tTkpCjMjbuetqGcpQrtiwuBJ25DqfnWeLN2K6LS49Fb7GjW6Y3fMgdDYVhh7MFpLiyHMcC7wzdBJSMEcE1VNvo2",
   [ChainType.Doge]: "NY4PEzZ7VfjpDKVcQkzdi4CLcgbMvUX53reQKShv8wRAJ8cRsEi4zV8VwevNM5JPxi5UA77685CKHAQAEkE5HUX2jv5HoMoaZFqcYNBQmHxLA86pS3fHDhg6GvJ8SHssoUZX4uGcgEcRt118Bz8bR8sVAGC23UcafXEwmhfCRfrijjPxDx9ZLHN14uuCU9Gv8Upta65PkzbE3oTD3XDuq7RicN59bz8o6eHef9MfxZetNXrgGTkCJJVJrQ5ahqPLmCzkwv5iXLvRjebbPcen8FxPJ7RDE9rG5BW4uuyroqH6nsNcQKRDnvvnrt5PjghRfss4EswpEJXoxxf7VxYUxx2KgHy8W865bjV5Gvmd9nLPnRStwDV7t7HP2U98fMH3Qdp8PS2Vew5edCjjZTiu2k5kB8frNwSdhGvu91TpAhen474RoxWeoZErNRPpkBH3MN4vHo7EZYiJPjsYtLctVEDWZkvFuaFCYQbuF73JqT7673erYxjRu5o3bCHMgNLYPYuriHLyWtpAJvkFa2Xir54tNfMFyEcvPEWYWaB7J8JsBa8E1b6v9x3VsDyNrU3bGXz52Ax7dG5ziTX1DG2bZuRvGSejjeP8GVgUXTBvRARs8t4wKwdicHkZVie2zGBR5w6Ajo1wK8hNHi2ANYSX5VEFEAFgjwo8DNMUTXbyreeKTcJgcntoc1CbNaiDUvJEyRYaAS7mncPsAiuMjTiFUAzRU5gWdtgRTrkVfi638QrvsvKQgKNPxvGBQpEWtSnmDfRhFifDT716wZ22rca55i9V2ArmDRVZG966MSTYNewX96iwndT8PDhhR4xfysMrTdQMPBzFXGoaAyV54rZ37G1JHQjKQLdMXLP67wjqFMNDRjBUsUYpBYVgj4XpvA1nik8UDqGW5zHoEszpjFJNCSzoexM1zLk8q5vk73dfQ3zaME7tTjp7rdAH3tPtWVkrFSWyDe3rw4zZpSHE2iqH8dDvTVuS1QYsJ6G3iqE8nQbg9FipofqTEjihP9ojvcXgKa9ASce5JNsRKHUSeYkAtDs561sZyf5uY626GcsvMYKGHjEjxCYJUYfrDTFz8v14dNAzVAiYQS7M32otTzKeXhB6ZNSRsErvMfrjgW6Rc7joCL1umHo8c3n3nqxLjZqxnzTgBAXnUNDY2g6LLdVRbj41hxTmvVkwV8MV5N1tvTAALAiagxDKu5bWsfTYFHbiiA7tLxqhsUvATorTzU7nrN1hjpQT3i",
-  [ChainType.Runes]: null,
+  [ChainType.Runes]: "NY4PEzZ7Vfjp4L3K8LAKgrXaevRJNJDddHuZ2FcRv9FeWQcLP58p1JLoCk4zzVGBa19a7ozPRiC9xF5bvSWpLofsEEhZFaFY7NtsinQv7foN52JJpGqdxYws76BkTPCKScdfAahJfmx9dobR43MqQoegvmVx7D4yS9K8SLQLPdrehd3wAuqpK1ZfC8wAMXGixXZDkuKEQfQn2UBuMzzY8s3dcPeomgLq6aKRMzNn8FkxMqsuV8hTsot37rUMJLu3LAbMAvqinCBD2wLiZFvfY9qCUqwWzZK6AwF1qoScYvbhx2rZuiogfKapSKTqaA48KWCQrfgfSmzgsjahEWohvPVhZ1dP1CwBrCM25iPUFsWZ2KFrCGxU8NA3kT5F26QbrxUS2Ay8WNFpFTTkdM92RR6jpoZRkwwdLVXZpNVqcFdjnENj6XCqE6Gmbm7MkaaNwnPPqw2oqXg92THYshruGZUWMLm95ogrQE2vFhRGaPfNuQSLDF54A8pMsJjbysQYTHF1vUEs8uaGDBQUuKMsiy2g1cKLfQcUNyms2dEwta4pQm2s7M8jwQQ14YjcUQ2Es8AQihj7GRzwtC84eHQK3BqFSVCX8MpaqUL8DTbuBoj5TgQKqZtMWHEMuXdJNm46TooiQgdSB2svop2q1xGS8Q5xjLVf7dVtMy1x9AKs6ZRharW9THaZjkeCRsnhdWFvnLSor8zBkdr24v3aygf6X56kkXQznRGbBx36tmFNLV9c23zBw4hUHYGV7aAPY7xeN7DuwzgtR7UtsUQVdSVp1BymTgYhmRFV3MhWm1XG3XXoh79Tmi5ca8oChVZiMXe32auJSsJoFSmqnnTmh5xFgXPJFJ41iPtrj6UbQSQdTF6tzEY3b9DpCFBYfbHkTec7Zop3ETw1zRqnMxrAg2gsGdeFAS6Dqodi2XT8EonYw5Mft6DSZeXTAjNnwXuuEU98yRZXzG45vkdGRXg94mKhdEsmeRDB5GjYwf9yd3JujfJLNAyCzGcbjkFgYYpz4ZHpQDugGKBfZDTDP3cxjKL15SAVQx9rcL5vv8uv9wmxE5PQk321SNDKowJa4o1dxLfb7YWyqJjbKxUjt8WpHtMR9RsEMy5pphNPuZ9o6RqvGKoDdPTvG1pJxUB5qHAVdhVS63oyajwT2zmVLtXBk6eFrFvUziiYuX3sdondfaPcH2f4RgivRCSC78JLQz9NgTtLE9nssi5n4p2HDCTFBbfnuxHrNbXvR3",
   [ChainType.Nervos]: null,
   [ChainType.Handshake]: null,
   [ChainType.Monero]: null,
@@ -214,36 +214,36 @@ var Currency;
   Currency2["RSN"] = "RSN";
 })(Currency || (Currency = {}));
 if (typeof window !== "undefined") {
-  window.rs_DbName = rs_DbName;
-  window.rs_DbVersion = rs_DbVersion;
-  window.rs_InputsStoreName = rs_InputsStoreName;
-  window.rs_PerfTxStoreName = rs_PerfTxStoreName;
-  window.rs_PermitTxStoreName = rs_PermitTxStoreName;
-  window.rs_ActivePermitTxStoreName = rs_ActivePermitTxStoreName;
-  window.rs_DownloadStatusStoreName = rs_DownloadStatusStoreName;
-  window.rs_OpenBoxesStoreName = rs_OpenBoxesStoreName;
-  window.rs_AddressDataStoreName = rs_AddressDataStoreName;
-  window.rs_InitialNDownloads = rs_InitialNDownloads;
-  window.rs_FullDownloadsBatchSize = rs_FullDownloadsBatchSize;
-  window.rs_StartFrom = rs_StartFrom;
-  window.rs_Input_Key = rs_Input_Key;
-  window.rs_PerfTx_Key = rs_PerfTx_Key;
-  window.rs_Permit_Key = rs_Permit_Key;
-  window.rs_ActivePermit_Key = rs_ActivePermit_Key;
-  window.rs_Address_Key = rs_Address_Key;
-  window.rs_PermitCost = rs_PermitCost;
-  window.rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
-  window.rs_WatcherCollateralERG = rs_WatcherCollateralERG;
+  globalThis.rs_DbName = rs_DbName;
+  globalThis.rs_DbVersion = rs_DbVersion;
+  globalThis.rs_InputsStoreName = rs_InputsStoreName;
+  globalThis.rs_PerfTxStoreName = rs_PerfTxStoreName;
+  globalThis.rs_PermitTxStoreName = rs_PermitTxStoreName;
+  globalThis.rs_ActivePermitTxStoreName = rs_ActivePermitTxStoreName;
+  globalThis.rs_DownloadStatusStoreName = rs_DownloadStatusStoreName;
+  globalThis.rs_OpenBoxesStoreName = rs_OpenBoxesStoreName;
+  globalThis.rs_AddressDataStoreName = rs_AddressDataStoreName;
+  globalThis.rs_InitialNDownloads = rs_InitialNDownloads;
+  globalThis.rs_FullDownloadsBatchSize = rs_FullDownloadsBatchSize;
+  globalThis.rs_StartFrom = rs_StartFrom;
+  globalThis.rs_Input_Key = rs_Input_Key;
+  globalThis.rs_PerfTx_Key = rs_PerfTx_Key;
+  globalThis.rs_Permit_Key = rs_Permit_Key;
+  globalThis.rs_ActivePermit_Key = rs_ActivePermit_Key;
+  globalThis.rs_Address_Key = rs_Address_Key;
+  globalThis.rs_PermitCost = rs_PermitCost;
+  globalThis.rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
+  globalThis.rs_WatcherCollateralERG = rs_WatcherCollateralERG;
+  globalThis.rs_PerfInitialNDownloads = rs_PerfInitialNDownloads;
+  globalThis.rs_PerfFullDownloadsBatchSize = rs_PerfFullDownloadsBatchSize;
+  globalThis.rs_ErgoExplorerHost = rs_ErgoExplorerHost;
+  globalThis.rs_ErgoNodeHost = rs_ErgoNodeHost;
+  globalThis.rs_RSNTokenId = rs_RSNTokenId;
+  globalThis.rs_eRSNTokenId = rs_eRSNTokenId;
+  globalThis.rs_TokenIdMap = rs_TokenIdMap;
+  globalThis.rs_RSNDecimals = rs_RSNDecimals;
   window.Period = Period;
   window.Currency = Currency;
-  window.rs_PerfInitialNDownloads = rs_PerfInitialNDownloads;
-  window.rs_PerfFullDownloadsBatchSize = rs_PerfFullDownloadsBatchSize;
-  window.rs_ErgoExplorerHost = rs_ErgoExplorerHost;
-  window.rs_ErgoNodeHost = rs_ErgoNodeHost;
-  window.rs_RSNTokenId = rs_RSNTokenId;
-  window.rs_eRSNTokenId = rs_eRSNTokenId;
-  window.rs_TokenIdMap = rs_TokenIdMap;
-  window.rs_RSNDecimals = rs_RSNDecimals;
 }
 "use strict";
 class DataService {
@@ -562,16 +562,16 @@ class ChartService {
   reduceData(inputs, period) {
     const date = /* @__PURE__ */ new Date();
     switch (period) {
-      case Period.Day:
+      case "Day":
         date.setDate(date.getDate() - 1);
         break;
-      case Period.Week:
+      case "Week":
         date.setDate(date.getDate() - 7);
         break;
-      case Period.Month:
+      case "Month":
         date.setMonth(date.getMonth() - 1);
         break;
-      case Period.Year:
+      case "Year":
         date.setFullYear(date.getFullYear() - 1);
         break;
       default:
