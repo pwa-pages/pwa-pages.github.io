@@ -190,5 +190,8 @@ class ProcessEventService {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 if (typeof window !== 'undefined') {
     window.ProcessEventService = ProcessEventService;
+    globalThis.CreateProcessEventService = (eventSender) => {
+        return new ProcessEventService(eventSender);
+    };
 }
 //# sourceMappingURL=process.event.service.js.map

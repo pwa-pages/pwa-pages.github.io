@@ -31,7 +31,7 @@ export function getRewardAddressForChainType(chainType) {
     return rewardAddresses[chainType];
 }
 export function createProcessEvtService(eventSender) {
-    return new ProcessEventService(eventSender);
+    return globalThis.CreateProcessEventService(eventSender);
 }
 export class ErgSettings {
     static rs_ErgoExplorerHost() {

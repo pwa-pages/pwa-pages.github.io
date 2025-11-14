@@ -50,10 +50,10 @@ export type EvtPayload<T> = EventPayload<T>;
 export type EvtSender = EventSender;
 
 export function createProcessEvtService(eventSender: EvtSender): IProcessEventService {
-  return new ProcessEventService(
-    eventSender
-  );
+  return (globalThis as any).CreateProcessEventService(eventSender);
 }
+
+
 export class ErgSettings {
   static rs_ErgoExplorerHost(): string {
     return (globalThis as any).rs_ErgoExplorerHost;

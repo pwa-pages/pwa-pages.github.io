@@ -406,4 +406,9 @@ class ProcessEventService {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 if (typeof window !== 'undefined') {
   (window as any).ProcessEventService = ProcessEventService;
+  (globalThis as any).CreateProcessEventService = (
+    eventSender: EventSender,
+  ): ProcessEventService => {
+    return new ProcessEventService(eventSender);
+  };
 }
