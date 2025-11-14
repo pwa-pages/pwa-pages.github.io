@@ -46,8 +46,14 @@ export interface IProcessEventService {
   processEvent(event: EvtPayload<object>): Promise<void>;
 }
 
-export type EvtPayload<T> = EventPayload<T>;
-export type EvtSender = EventSender;
+export interface EvtPayload<T> {
+  type: string;
+  data?: T;
+}
+
+export interface EvtSender {
+  sendEvent<T>(event: EventPayload<T>): Promise<void>;
+}
 
 export function createProcessEvtService(eventSender: EvtSender): IProcessEventService {
   return (globalThis as any).CreateProcessEventService(eventSender);
@@ -61,7 +67,7 @@ export class ErgSettings {
   static rs_ErgoNodeHost(): string {
     return (globalThis as any).rs_ErgoNodeHost;
   }
-  static rs_DbName(): string {
+  static rs_dbName(): string {
     return (globalThis as any).rs_DbName;
   }
   static rs_DbVersion(): number {

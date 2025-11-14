@@ -40,7 +40,7 @@ export class ErgSettings {
     static rs_ErgoNodeHost() {
         return globalThis.rs_ErgoNodeHost;
     }
-    static rs_DbName() {
+    static rs_dbName() {
         return globalThis.rs_DbName;
     }
     static rs_DbVersion() {

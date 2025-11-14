@@ -18,7 +18,7 @@ export class StorageService {
 
 
     this.dbPromise = new Promise((resolve, reject) => {
-      const request = window.indexedDB.open(ErgSettings.rs_DbName(), ErgSettings.rs_DbVersion());
+      const request = window.indexedDB.open(ErgSettings.rs_dbName(), ErgSettings.rs_DbVersion());
 
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;

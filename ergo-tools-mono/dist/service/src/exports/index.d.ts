@@ -11,13 +11,18 @@ export declare function getRewardAddressForChainType(chainType: string): string 
 export interface IProcessEventService {
     processEvent(event: EvtPayload<object>): Promise<void>;
 }
-export type EvtPayload<T> = EventPayload<T>;
-export type EvtSender = EventSender;
+export interface EvtPayload<T> {
+    type: string;
+    data?: T;
+}
+export interface EvtSender {
+    sendEvent<T>(event: EventPayload<T>): Promise<void>;
+}
 export declare function createProcessEvtService(eventSender: EvtSender): IProcessEventService;
 export declare class ErgSettings {
     static rs_ErgoExplorerHost(): string;
     static rs_ErgoNodeHost(): string;
-    static rs_DbName(): string;
+    static rs_dbName(): string;
     static rs_DbVersion(): number;
     static rs_InputsStoreName(): string;
     static rs_PerfTxStoreName(): string;
