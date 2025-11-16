@@ -140,8 +140,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
 
   async addData(
     address: string,
-    transactions: TransactionItem[],
-    db: IDBDatabase,
+    transactions: TransactionItem[]
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       // Create a temporary array to hold PermitTx items before bulk insertion
@@ -222,7 +221,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
         });
       });
 
-      const transaction: IDBTransaction = db.transaction(
+      const transaction: IDBTransaction = this.db.transaction(
         [rs_PermitTxStoreName],
         'readwrite',
       );

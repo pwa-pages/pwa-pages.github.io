@@ -21,23 +21,17 @@ interface DownloadStatus {
 }
 declare class DownloadService<T> {
     private dataService;
-    private myWatcherDataService;
     private eventSender;
-    private db;
+    private downloadStatusIndexedDbService;
     private busyCounter;
     private downloadFullSize;
     private downloadInitialSize;
-    constructor(downloadFullSize: number, downloadInitialSize: number, dataService: DataService<T>, myWatcherDataService: MyWatcherDataService, eventSender: EventSender, db: IDBDatabase);
+    constructor(downloadFullSize: number, downloadInitialSize: number, dataService: DataService<T>, eventSender: EventSender, downloadStatusIndexedDbService: DownloadStatusIndexedDbService<T>);
     fetchTransactions(url: string): Promise<FetchTransactionsResponse>;
     downloadTransactions(address: string, offset: number | undefined, limit: number | undefined, useNode: boolean): Promise<FetchTransactionsResponse>;
     downloadForAddresses(): Promise<void>;
-    downloadForChainPermitAddresses(addresses: string[]): Promise<void>;
-    downloadForActivePermitAddresses(allAddresses: string[], chainType: string): Promise<void>;
     private increaseBusyCounter;
     private decreaseBusyCounter;
-    downloadAllForAddress(address: string, offset: number, db: IDBDatabase, useNode: boolean, callback?: () => Promise<void>): Promise<void>;
-    getDownloadStatus(address: string, db: IDBDatabase): Promise<DownloadStatus>;
-    setDownloadStatus(address: string, status: string, db: IDBDatabase): Promise<void>;
-    saveDownloadStatus(downloadStatus: DownloadStatus, db: IDBDatabase): Promise<void>;
+    downloadAllForAddress(address: string, offset: number, useNode: boolean, callback?: () => Promise<void>): Promise<void>;
     downloadForAddress(address: string, useNode: boolean, callback?: () => Promise<void>): Promise<void>;
 }

@@ -169,7 +169,7 @@ class ActivePermitsDataService extends DataService {
         }
         return result;
     }
-    async addData(address, transactions, db) {
+    async addData(address, transactions) {
         return new Promise((resolve, reject) => {
             // Create a temporary array to hold PermitTx items before bulk insertion
             const tempData = [];
@@ -214,7 +214,7 @@ class ActivePermitsDataService extends DataService {
                     tempData.push(PermitTx);
                 });
             });
-            const transaction = db.transaction([rs_ActivePermitTxStoreName], 'readwrite');
+            const transaction = this.db.transaction([rs_ActivePermitTxStoreName], 'readwrite');
             const objectStore = transaction.objectStore(rs_ActivePermitTxStoreName);
             const putPromises = tempData.map((PermitTx) => {
                 return new Promise((putResolve, putReject) => {
@@ -230,7 +230,7 @@ class ActivePermitsDataService extends DataService {
                 .catch(reject);
         });
     }
-    async purgeData(db) {
+    async purgeData() {
         let permitTxs = await this.getData(rs_ActivePermitTxStoreName);
         permitTxs = (await permitTxs).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         let permitTx = null;
@@ -246,7 +246,7 @@ class ActivePermitsDataService extends DataService {
             maxDiff = now - permitTx.date.getTime();
         }
         return new Promise((resolve, reject) => {
-            const transaction = db.transaction([rs_ActivePermitTxStoreName], 'readwrite');
+            const transaction = this.db.transaction([rs_ActivePermitTxStoreName], 'readwrite');
             const objectStore = transaction.objectStore(rs_ActivePermitTxStoreName);
             const request = objectStore.openCursor();
             request.onsuccess = (event) => {

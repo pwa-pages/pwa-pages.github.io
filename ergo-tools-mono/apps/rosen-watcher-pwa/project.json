@@ -48,7 +48,8 @@
           "dist/service/src/lib/download.service.js",
           "dist/service/src/lib/process.event.service.js",
           "dist/service/src/lib/mywatcher.data.service.js",
-          "dist/service/src/lib/activepermits.data.service.js"
+          "dist/service/src/lib/activepermits.data.service.js",
+          "dist/service/src/lib/download.status.indexeddb.service.js"
         ]
       },
       "configurations": {

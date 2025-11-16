@@ -1,34 +1,32 @@
 export function getAllChainTypes() {
-    const raw = Object.values(ChainType);
-    const unique = Array.from(new Set(raw));
-    return unique.filter(v => typeof v === 'string' || typeof v === 'number');
+    return globalThis.getChainTypes();
 }
 export function getCurrencyValues() {
-    return Object.values(Currency);
+    return globalThis.currencies;
 }
 export function getPermitAddressesByChainType() {
-    return permitAddresses;
+    return globalThis.permitAddresses;
 }
 export function getPermitBulkAddressesByChainType() {
-    return permitBulkAddresses;
+    return globalThis.permitBulkAddresses;
 }
 export function getPermitTriggerAddressesByChainType() {
-    return permitTriggerAddresses;
+    return globalThis.permitTriggerAddresses;
 }
 export function getChainTypeTokensByChainType() {
-    return chainTypeTokens;
+    return globalThis.chainTypeTokens;
 }
 export function getChainTypeWatcherIdentifiersByChainType() {
-    return chainTypeWatcherIdentifier;
+    return globalThis.chainTypeWatcherIdentifier;
 }
 export function getActivatedChainTypes() {
-    return getActiveChainTypes();
+    return globalThis.getActiveChainTypes();
 }
 export function getChainTypeForAddress(address) {
-    return getChainType(address);
+    return globalThis.getChainType(address);
 }
 export function getRewardAddressForChainType(chainType) {
-    return rewardAddresses[chainType];
+    return globalThis.rewardAddresses[chainType];
 }
 export function createProcessEvtService(eventSender) {
     return globalThis.CreateProcessEventService(eventSender);

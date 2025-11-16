@@ -31,7 +31,7 @@ export class MyWatchersComponent
 {
   private _renderHtml = true;
   public myWatcherStats: MyWatchersStats[] = [];
-  public processedChainTypes: Partial<Record<ChainType, boolean>> = {};
+  public processedChainTypes: Partial<Record<string, boolean>> = {};
   @AngularInput()
   filledAddresses: string[] = [];
   prevFilledAddresses: string[] = [];
@@ -125,7 +125,7 @@ export class MyWatchersComponent
 
     await this.initializeAddresses();
 
-    await this.subscribeToEvent<Input[]>(EventType.RefreshPermits, async () => {
+    await this.subscribeToEvent<unknown[]>(EventType.RefreshPermits, async () => {
       this.myWatcherStats = Object.entries(
         await this.watchersDataService.getMyWatcherStats(
           await this.getAddresses(),

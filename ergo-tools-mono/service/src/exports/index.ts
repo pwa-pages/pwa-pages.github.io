@@ -1,45 +1,43 @@
 
 
 export function getAllChainTypes(): string[] {
-  const raw = Object.values(ChainType) as (string | number)[];
-  const unique = Array.from(new Set(raw));
-  return unique.filter(v => typeof v === 'string' || typeof v === 'number') as ChainType[];
+  return (globalThis as any).getChainTypes();
 }
 
-export function getCurrencyValues(): Currency[] {
-  return Object.values(Currency);
+export function getCurrencyValues(): string[] {
+  return (globalThis as any).currencies;
 }
 
 export function getPermitAddressesByChainType(): Record<string, string | null> {
-  return permitAddresses;
+  return (globalThis as any).permitAddresses;
 }
 
 export function getPermitBulkAddressesByChainType(): Record<string, string | null> {
-  return permitBulkAddresses;
+  return (globalThis as any).permitBulkAddresses;
 }
 
 export function getPermitTriggerAddressesByChainType(): Record<string, string | null> {
-  return permitTriggerAddresses;
+  return (globalThis as any).permitTriggerAddresses;
 }
 
 export function getChainTypeTokensByChainType(): Record<string, string | null> {
-  return chainTypeTokens;
+  return (globalThis as any).chainTypeTokens;
 }
 
 export function getChainTypeWatcherIdentifiersByChainType(): Record<string, string | null> {
-  return chainTypeWatcherIdentifier;
+  return (globalThis as any).chainTypeWatcherIdentifier;
 }
 
 export function getActivatedChainTypes(): string[] {
-  return getActiveChainTypes();
+  return (globalThis as any).getActiveChainTypes();
 }
 
 export function getChainTypeForAddress(address?: string): string | null | undefined {
-  return getChainType(address);
+  return (globalThis as any).getChainType(address);
 }
 
 export function getRewardAddressForChainType(chainType: string): string | null | undefined {
-  return (rewardAddresses as Record<string, string | null | undefined>)[chainType];
+  return ((globalThis as any).rewardAddresses as Record<string, string | null | undefined>)[chainType];
 }
 
 export interface IProcessEventService {
@@ -52,7 +50,7 @@ export interface EvtPayload<T> {
 }
 
 export interface EvtSender {
-  sendEvent<T>(event: EventPayload<T>): Promise<void>;
+  sendEvent<T>(event: EvtPayload<T>): Promise<void>;
 }
 
 export function createProcessEvtService(eventSender: EvtSender): IProcessEventService {

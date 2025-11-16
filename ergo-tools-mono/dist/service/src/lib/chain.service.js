@@ -16,6 +16,9 @@ var ChainType;
     ChainType["Firo"] = "Firo";
     ChainType["Monero"] = "Monero";
 })(ChainType || (ChainType = {}));
+function getChainTypes() {
+    return Object.values(ChainType);
+}
 function getActiveChainTypes() {
     const active = new Set();
     const addIfPresent = (map) => {
@@ -126,15 +129,18 @@ function getChainTypeForPermitAddress(address) {
     return null;
 }
 if (typeof window !== 'undefined') {
-    window.ChainType = ChainType;
-    window.getChainType = getChainType;
-    window.getChainTypeForPermitAddress = getChainTypeForPermitAddress;
-    window.permitAddresses = permitAddresses;
-    window.rewardAddresses = rewardAddresses;
-    window.permitTriggerAddresses = permitTriggerAddresses;
-    window.permitBulkAddresses = permitBulkAddresses;
-    window.hotWalletAddress = hotWalletAddress;
-    window.rwtTokenIds = rwtTokenIds;
-    window.getActiveChainTypes = getActiveChainTypes;
+    globalThis.ChainType = ChainType;
+    globalThis.getChainType = getChainType;
+    globalThis.getChainTypeForPermitAddress = getChainTypeForPermitAddress;
+    globalThis.permitAddresses = permitAddresses;
+    globalThis.rewardAddresses = rewardAddresses;
+    globalThis.permitTriggerAddresses = permitTriggerAddresses;
+    globalThis.permitBulkAddresses = permitBulkAddresses;
+    globalThis.hotWalletAddress = hotWalletAddress;
+    globalThis.rwtTokenIds = rwtTokenIds;
+    globalThis.getActiveChainTypes = getActiveChainTypes;
+    globalThis.chainTypeWatcherIdentifier = chainTypeWatcherIdentifier;
+    globalThis.chainTypeTokens = chainTypeTokens;
+    globalThis.getChainTypes = getChainTypes;
 }
 //# sourceMappingURL=chain.service.js.map

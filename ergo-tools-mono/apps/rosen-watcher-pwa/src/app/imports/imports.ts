@@ -23,10 +23,6 @@ export class ChainTypeHelper {
         return getChainTypeForAddress(address);
     }
 
-    static getChainType(address: string): string | null | undefined {
-        return getChainTypeForAddress(address);
-    }
-
     static getRewardAddress(chainType: string): string | null | undefined {
         return getRewardAddressForChainType(chainType)
     }

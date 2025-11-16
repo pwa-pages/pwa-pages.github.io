@@ -1,5 +1,5 @@
 export declare function getAllChainTypes(): string[];
-export declare function getCurrencyValues(): Currency[];
+export declare function getCurrencyValues(): string[];
 export declare function getPermitAddressesByChainType(): Record<string, string | null>;
 export declare function getPermitBulkAddressesByChainType(): Record<string, string | null>;
 export declare function getPermitTriggerAddressesByChainType(): Record<string, string | null>;
@@ -16,7 +16,7 @@ export interface EvtPayload<T> {
     data?: T;
 }
 export interface EvtSender {
-    sendEvent<T>(event: EventPayload<T>): Promise<void>;
+    sendEvent<T>(event: EvtPayload<T>): Promise<void>;
 }
 export declare function createProcessEvtService(eventSender: EvtSender): IProcessEventService;
 export declare class ErgSettings {

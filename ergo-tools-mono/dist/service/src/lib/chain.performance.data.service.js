@@ -13,7 +13,7 @@ class ChainPerformanceDataService extends DataService {
             request.onerror = (event) => reject(event.target.error);
         });
     }
-    async addData(_address, transactions, db) {
+    async addData(_address, transactions) {
         return new Promise((resolve, reject) => {
             const tempData = [];
             transactions.forEach((item) => {
@@ -44,7 +44,7 @@ class ChainPerformanceDataService extends DataService {
                 };
                 tempData.push(dbPerfTx);
             });
-            const transaction = db.transaction([rs_PerfTxStoreName], 'readwrite');
+            const transaction = this.db.transaction([rs_PerfTxStoreName], 'readwrite');
             const objectStore = transaction.objectStore(rs_PerfTxStoreName);
             const putPromises = tempData.map((dbPerfTx) => {
                 return new Promise((putResolve, putReject) => {

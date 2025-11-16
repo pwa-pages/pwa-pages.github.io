@@ -5,7 +5,7 @@ class DataService {
         this.db = db;
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async purgeData(_db) {
+    async purgeData() {
         // Empty implementation
     }
     getMaxDownloadDateDifference() {

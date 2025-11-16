@@ -44,7 +44,7 @@ class RewardDataService extends DataService {
             return [];
         }
     }
-    async addData(address, transactions, db) {
+    async addData(address, transactions) {
         return new Promise((resolve, reject) => {
             // Create a temporary array to hold DbInput items before bulk insertion
             const tempData = [];
@@ -72,7 +72,7 @@ class RewardDataService extends DataService {
                     }
                 });
             });
-            const transaction = db.transaction([rs_InputsStoreName], 'readwrite');
+            const transaction = this.db.transaction([rs_InputsStoreName], 'readwrite');
             const objectStore = transaction.objectStore(rs_InputsStoreName);
             const putPromises = tempData.map((dbInput) => {
                 return new Promise((putResolve, putReject) => {

@@ -86,6 +86,7 @@ if (typeof window !== 'undefined') {
     globalThis.rs_eRSNTokenId = rs_eRSNTokenId;
     globalThis.rs_TokenIdMap = rs_TokenIdMap;
     globalThis.rs_RSNDecimals = rs_RSNDecimals;
+    globalThis.currencies = Object.values(Currency);
     window.Period = Period;
     window.Currency = Currency;
 }

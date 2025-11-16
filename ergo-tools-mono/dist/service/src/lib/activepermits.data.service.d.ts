@@ -16,8 +16,8 @@ declare class ActivePermitsDataService extends DataService<PermitTx> {
     shouldAddInputToDb(address: string): boolean;
     shouldAddOutputToDb(address: string): boolean;
     getAdressActivePermits(addresses?: string[] | null): Promise<PermitTx[]>;
-    addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void>;
-    purgeData(db: IDBDatabase): Promise<void>;
+    addData(address: string, transactions: TransactionItem[]): Promise<void>;
+    purgeData(): Promise<void>;
     private getDataById;
     getSortedPermits(): Promise<PermitTx[]>;
 }

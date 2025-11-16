@@ -11,6 +11,7 @@ declare enum ChainType {
     Firo = "Firo",
     Monero = "Monero"
 }
+declare function getChainTypes(): string[];
 declare function getActiveChainTypes(): ChainType[];
 declare const chainTypeTokens: {
     [k: string]: string;

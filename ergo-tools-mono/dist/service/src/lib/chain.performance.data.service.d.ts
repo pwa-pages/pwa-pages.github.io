@@ -9,7 +9,7 @@ declare class ChainPerformanceDataService extends DataService<PerfTx> {
     db: IDBDatabase;
     private eventSender;
     getExistingData(transaction: TransactionItem): Promise<PerfTx | null>;
-    addData(_address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void>;
+    addData(_address: string, transactions: TransactionItem[]): Promise<void>;
     getPerfTxs(): Promise<Record<ChainType, {
         chart: number;
     }>>;

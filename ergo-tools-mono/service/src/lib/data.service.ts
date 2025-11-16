@@ -60,12 +60,11 @@ abstract class DataService<T> {
 
   abstract addData(
     address: string,
-    transactions: TransactionItem[],
-    db: IDBDatabase,
+    transactions: TransactionItem[]
   ): Promise<void>;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async purgeData(_db: IDBDatabase): Promise<void> {
+  async purgeData(): Promise<void> {
     // Empty implementation
   }
 

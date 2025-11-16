@@ -64,8 +64,7 @@ class RewardDataService extends DataService<DbInput> {
 
   async addData(
     address: string,
-    transactions: TransactionItem[],
-    db: IDBDatabase,
+    transactions: TransactionItem[]
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       // Create a temporary array to hold DbInput items before bulk insertion
@@ -102,7 +101,7 @@ class RewardDataService extends DataService<DbInput> {
         });
       });
 
-      const transaction: IDBTransaction = db.transaction(
+      const transaction: IDBTransaction = this.db.transaction(
         [rs_InputsStoreName],
         'readwrite',
       );

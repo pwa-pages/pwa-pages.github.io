@@ -6,7 +6,7 @@ declare class RewardDataService extends DataService<DbInput> {
     constructor(db: IDBDatabase, chartService: ChartService, eventSender: EventSender);
     getDataType(): string;
     private getWatcherInputs;
-    addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void>;
+    addData(address: string, transactions: TransactionItem[]): Promise<void>;
     private getDataByBoxId;
     getSortedInputs(): Promise<Input[]>;
 }

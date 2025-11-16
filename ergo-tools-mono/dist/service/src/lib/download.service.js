@@ -2,11 +2,10 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService {
     //private static addressDownloadDateMap = new Map<string, Date>();
-    constructor(downloadFullSize, downloadInitialSize, dataService, myWatcherDataService, eventSender, db) {
+    constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusIndexedDbService) {
         this.dataService = dataService;
-        this.myWatcherDataService = myWatcherDataService;
         this.eventSender = eventSender;
-        this.db = db;
+        this.downloadStatusIndexedDbService = downloadStatusIndexedDbService;
         this.busyCounter = 0;
         this.downloadFullSize = rs_FullDownloadsBatchSize;
         this.downloadInitialSize = rs_InitialNDownloads;
@@ -86,56 +85,6 @@ class DownloadService {
             console.log('End downloading for all addresses');
         }
     }
-    async downloadForChainPermitAddresses(addresses) {
-        try {
-            const downloadPromises = Object.entries(permitAddresses)
-                .filter(([, address]) => address != null)
-                .map(async ([chainType, address]) => {
-                await this.downloadForAddress(address, true);
-                const permits = await this.myWatcherDataService.getAdressPermits(addresses);
-                await this.eventSender.sendEvent({
-                    type: 'PermitsChanged',
-                    data: permits,
-                });
-                await this.eventSender.sendEvent({
-                    type: 'AddressPermitsDownloaded',
-                    data: chainType,
-                });
-            });
-            await Promise.all(downloadPromises);
-        }
-        catch (e) {
-            console.error('Error downloading for addresses:', e);
-        }
-    }
-    async downloadForActivePermitAddresses(allAddresses, chainType) {
-        try {
-            let addresses = [];
-            Object.entries(permitTriggerAddresses).forEach(([key, address]) => {
-                if (key === chainType && address != null) {
-                    addresses.push(address);
-                }
-            });
-            const downloadPromises = addresses.map(async (address) => {
-                await this.downloadForAddress(address, true, async () => {
-                    try {
-                        const permits = await this.myWatcherDataService.getAdressPermits(allAddresses);
-                        await this.eventSender.sendEvent({
-                            type: 'PermitsChanged',
-                            data: permits,
-                        });
-                    }
-                    catch (err) {
-                        console.error('Error in permits callback:', err);
-                    }
-                });
-            });
-            await Promise.all(downloadPromises);
-        }
-        catch (e) {
-            console.error('Error downloading for addresses:', e);
-        }
-    }
     // Busy Counter
     increaseBusyCounter(address) {
         if (this.busyCounter === 0) {
@@ -156,7 +105,7 @@ class DownloadService {
         }
     }
     // Download All for Address (recursive)
-    async downloadAllForAddress(address, offset, db, useNode, callback) {
+    async downloadAllForAddress(address, offset, useNode, callback) {
         this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
@@ -167,11 +116,11 @@ class DownloadService {
             if (!result.transactions ||
                 result.transactions.length === 0 ||
                 offset > 100000) {
-                await this.setDownloadStatus(address, 'true', db);
+                await this.downloadStatusIndexedDbService.setDownloadStatus(address, 'true');
                 console.log(this.busyCounter);
                 return;
             }
-            await this.dataService.addData(address, result.transactions, db);
+            await this.dataService.addData(address, result.transactions);
             if (callback) {
                 await callback?.();
             }
@@ -179,10 +128,10 @@ class DownloadService {
             if (this.dataService.getMaxDownloadDateDifference() >
                 new Date().getTime() -
                     new Date(result.transactions[result.transactions.length - 1].timestamp).getTime()) {
-                await this.downloadAllForAddress(address, offset + this.downloadFullSize, db, useNode);
+                await this.downloadAllForAddress(address, offset + this.downloadFullSize, useNode);
             }
             else {
-                await this.setDownloadStatus(address, 'true', db);
+                await this.downloadStatusIndexedDbService.setDownloadStatus(address, 'true');
             }
         }
         catch (e) {
@@ -192,43 +141,6 @@ class DownloadService {
             this.decreaseBusyCounter(address);
             console.log(this.busyCounter);
         }
-    }
-    // Get Download Status for Address from IndexedDB
-    async getDownloadStatus(address, db) {
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction([rs_DownloadStatusStoreName], 'readonly');
-            const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
-            const request = objectStore.get(address + '_' + this.dataService.getDataType());
-            request.onsuccess = () => resolve(request.result);
-            request.onerror = (event) => reject(event.target.error);
-        });
-    }
-    // Set Download Status for Address in IndexedDB
-    async setDownloadStatus(address, status, db) {
-        let dbStatus = await this.getDownloadStatus(address, db);
-        if (!dbStatus) {
-            dbStatus = {
-                address: address + '_' + this.dataService.getDataType(),
-                Address: address,
-                status: status,
-                lastDownloadDate: undefined,
-            };
-        }
-        else {
-            dbStatus.status = status;
-            dbStatus.address = address + '_' + this.dataService.getDataType();
-            dbStatus.Address = address;
-        }
-        await this.saveDownloadStatus(dbStatus, db);
-    }
-    async saveDownloadStatus(downloadStatus, db) {
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction([rs_DownloadStatusStoreName], 'readwrite');
-            const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
-            const request = objectStore.put(downloadStatus);
-            request.onsuccess = () => resolve();
-            request.onerror = (event) => reject(event.target.error);
-        });
     }
     async downloadForAddress(address, useNode, callback) {
         this.increaseBusyCounter(address);
@@ -248,18 +160,18 @@ class DownloadService {
                 }
             }
             console.log('Add bunch of data');
-            await this.dataService.addData(address, result.transactions, this.db);
+            await this.dataService.addData(address, result.transactions);
             if (callback) {
                 await callback?.();
             }
-            const downloadStatus = (await this.getDownloadStatus(address, this.db))?.status || 'false';
+            const downloadStatus = (await this.downloadStatusIndexedDbService.getDownloadStatus(address))?.status || 'false';
             if (existingData && downloadStatus === 'true') {
                 console.log(`Found existing boxId in db for ${address}, no need to download more.`);
             }
             else if (itemsz >= this.downloadInitialSize) {
-                await this.setDownloadStatus(address, 'false', this.db);
+                await this.downloadStatusIndexedDbService.setDownloadStatus(address, 'false');
                 console.log(`Downloading all tx's for : ${address}`);
-                await this.downloadAllForAddress(address, 0, this.db, useNode, callback);
+                await this.downloadAllForAddress(address, 0, useNode, callback);
             }
         }
         catch (e) {
@@ -267,7 +179,7 @@ class DownloadService {
         }
         finally {
             this.decreaseBusyCounter(address);
-            this.dataService.purgeData(this.db);
+            this.dataService.purgeData();
             console.log(this.busyCounter);
         }
     }

@@ -100,6 +100,7 @@ if (typeof window !== 'undefined') {
   (globalThis as any).rs_eRSNTokenId = rs_eRSNTokenId;
   (globalThis as any).rs_TokenIdMap = rs_TokenIdMap;
   (globalThis as any).rs_RSNDecimals = rs_RSNDecimals;
+  (globalThis as any).currencies = Object.values(Currency);
 
     (window as any).Period = Period;
   (window as any).Currency = Currency;

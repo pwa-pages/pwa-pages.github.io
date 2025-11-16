@@ -50,8 +50,8 @@ interface Output {
 declare abstract class DataService<T> {
     db: IDBDatabase;
     constructor(db: IDBDatabase);
-    abstract addData(address: string, transactions: TransactionItem[], db: IDBDatabase): Promise<void>;
-    purgeData(_db: IDBDatabase): Promise<void>;
+    abstract addData(address: string, transactions: TransactionItem[]): Promise<void>;
+    purgeData(): Promise<void>;
     abstract getDataType(): string;
     getMaxDownloadDateDifference(): number;
     abstract getExistingData(transaction: TransactionItem, address: string): Promise<T | null>;

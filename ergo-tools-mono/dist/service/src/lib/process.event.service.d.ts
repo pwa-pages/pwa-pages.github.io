@@ -37,9 +37,11 @@ declare class ProcessEventService {
     private processMyWatchersScreenLoaded;
     private extractChaintTypes;
     private processActivePermits;
+    downloadForChainPermitAddresses(addresses: string[], downloadMyWatchersService: DownloadService<PermitTx>, myWatcherDataService: MyWatcherDataService): Promise<void>;
     private sendPermitChangedEvent;
     private sendPermitsChangedEvent;
     private processStatisticsScreenLoaded;
+    downloadForActivePermitAddresses(allAddresses: string[], chainType: string, downloadActivePermitsService: DownloadService<PermitTx>, myWatcherDataService: MyWatcherDataService): Promise<void>;
     private processRequestInputsDownload;
     private initIndexedDB;
 }

@@ -17,7 +17,9 @@ enum ChainType {
   Monero = 'Monero',
 }
 
-
+function getChainTypes(): string[] {
+  return Object.values(ChainType)
+}
 
 function getActiveChainTypes(): ChainType[] {
   const active = new Set<ChainType>();
@@ -185,14 +187,18 @@ function getChainTypeForPermitAddress(
 }
 
 if (typeof window !== 'undefined') {
-  (window as any).ChainType = ChainType;
-  (window as any).getChainType = getChainType;
-  (window as any).getChainTypeForPermitAddress = getChainTypeForPermitAddress;
-  (window as any).permitAddresses = permitAddresses;
-  (window as any).rewardAddresses = rewardAddresses;
-  (window as any).permitTriggerAddresses = permitTriggerAddresses;
-  (window as any).permitBulkAddresses = permitBulkAddresses;
-  (window as any).hotWalletAddress = hotWalletAddress;
-  (window as any).rwtTokenIds = rwtTokenIds;
-  (window as any).getActiveChainTypes = getActiveChainTypes;
+  (globalThis as any).ChainType = ChainType;
+  (globalThis as any).getChainType = getChainType;
+  (globalThis as any).getChainTypeForPermitAddress = getChainTypeForPermitAddress;
+  (globalThis as any).permitAddresses = permitAddresses;
+  (globalThis as any).rewardAddresses = rewardAddresses;
+  (globalThis as any).permitTriggerAddresses = permitTriggerAddresses;
+  (globalThis as any).permitBulkAddresses = permitBulkAddresses;
+  (globalThis as any).hotWalletAddress = hotWalletAddress;
+  (globalThis as any).rwtTokenIds = rwtTokenIds;
+  (globalThis as any).getActiveChainTypes = getActiveChainTypes;
+  (globalThis as any).chainTypeWatcherIdentifier = chainTypeWatcherIdentifier;
+  (globalThis as any).chainTypeTokens = chainTypeTokens;
+  (globalThis as any).getChainTypes = getChainTypes;
+  
 }

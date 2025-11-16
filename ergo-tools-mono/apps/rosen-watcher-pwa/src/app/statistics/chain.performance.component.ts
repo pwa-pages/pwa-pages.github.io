@@ -21,6 +21,8 @@ import { Token } from '../../service/ts/models/token';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { CommonModule } from '@angular/common';
 import { createChainNumber } from '../service/watchers.models';
+import { getAllChainTypes } from '@ergo-tools/service';
+import { ChainTypeHelper } from '../imports/imports';
 
 @Component({
   selector: 'app-chain-performance',
@@ -104,10 +106,10 @@ export class ChainPerformanceComponent
     watcherInfo$
       .pipe(
         map((watcherInfo) => {
-          Object.values(ChainType).forEach((c) => {
+          getAllChainTypes().forEach((c) => {
             const amount =
               watcherInfo.tokens.find(
-                (token: Token) => token.name === chainTypeWatcherIdentifier[c],
+                (token: Token) => token.name === ChainTypeHelper.getChainTypeWatcherIdentifiers()[c],
               )?.amount ?? 0;
             this.chainWatcherCount[c] = amount;
           });
@@ -127,7 +129,7 @@ export class ChainPerformanceComponent
         this.chartService.chartColors[
           index % this.chartService.chartColors.length
         ],
-      chainType: chainType as ChainType,
+      chainType: chainType as string,
       chart: value.chart,
       index: index,
       address: '',

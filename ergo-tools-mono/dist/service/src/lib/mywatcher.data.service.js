@@ -104,7 +104,7 @@ class MyWatcherDataService extends DataService {
         }
         return permitInfo;
     }
-    async addData(address, transactions, db) {
+    async addData(address, transactions) {
         return new Promise((resolve, reject) => {
             // Create a temporary array to hold PermitTx items before bulk insertion
             const tempData = [];
@@ -168,7 +168,7 @@ class MyWatcherDataService extends DataService {
                     }
                 });
             });
-            const transaction = db.transaction([rs_PermitTxStoreName], 'readwrite');
+            const transaction = this.db.transaction([rs_PermitTxStoreName], 'readwrite');
             const objectStore = transaction.objectStore(rs_PermitTxStoreName);
             const putPromises = tempData.map((PermitTx) => {
                 return new Promise((putResolve, putReject) => {

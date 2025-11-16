@@ -32,7 +32,6 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
   override async addData(
     _address: string,
     transactions: TransactionItem[],
-    db: IDBDatabase,
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       const tempData: PerfTx[] = [];
@@ -84,7 +83,7 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
         tempData.push(dbPerfTx);
       });
 
-      const transaction: IDBTransaction = db.transaction(
+      const transaction: IDBTransaction = this.db.transaction(
         [rs_PerfTxStoreName],
         'readwrite',
       );

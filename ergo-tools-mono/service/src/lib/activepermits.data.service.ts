@@ -276,8 +276,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
 
   async addData(
     address: string,
-    transactions: TransactionItem[],
-    db: IDBDatabase,
+    transactions: TransactionItem[]
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       // Create a temporary array to hold PermitTx items before bulk insertion
@@ -336,7 +335,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
         });
       });
 
-      const transaction: IDBTransaction = db.transaction(
+      const transaction: IDBTransaction = this.db.transaction(
         [rs_ActivePermitTxStoreName],
         'readwrite',
       );
@@ -361,7 +360,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     });
   }
 
-  override async purgeData(db: IDBDatabase): Promise<void> {
+  override async purgeData(): Promise<void> {
     let permitTxs = await this.getData<PermitTx>(rs_ActivePermitTxStoreName);
     permitTxs = (await permitTxs).sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
@@ -383,7 +382,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     }
 
     return new Promise<void>((resolve, reject) => {
-      const transaction = db.transaction(
+      const transaction = this.db.transaction(
         [rs_ActivePermitTxStoreName],
         'readwrite',
       );

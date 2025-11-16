@@ -9,7 +9,7 @@ export class Input {
   address: string;
   accumulatedAmount?: number;
   amount?: number;
-  chainType?: ChainType | null;
+  chainType?: string | null;
 
   constructor(
     inputDate: Date,
@@ -20,7 +20,7 @@ export class Input {
     boxId: string,
     accumulatedAmount?: number,
     amount?: number,
-    chainType?: ChainType | null,
+    chainType?: string | null,
   ) {
     this.outputAddress = outputAddress;
     this.inputDate = inputDate;

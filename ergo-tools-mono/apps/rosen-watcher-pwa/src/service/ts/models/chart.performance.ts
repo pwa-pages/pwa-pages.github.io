@@ -26,7 +26,7 @@ export class ChainChartPerformance {
   address: string;
   addressForDisplay: string;
   chart: number;
-  chainType: ChainType | null;
+  chainType: string | null;
   color: string;
 
   constructor(
@@ -34,7 +34,7 @@ export class ChainChartPerformance {
     addressForDisplay: string,
     chart: number,
     color: string,
-    chainType: ChainType | null,
+    chainType: string | null,
   ) {
     this.address = address;
     this.addressForDisplay = addressForDisplay;
