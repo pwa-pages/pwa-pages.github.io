@@ -186,9 +186,9 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     return openBoxesMap;
   }
 
-  shouldAddInputToDb(address: string): boolean {
+  shouldAddInputToDb(address: string, assets: Asset[]): boolean {
     return (
-      (address != null && address.length <= 100) ||
+      (address != null && address.length <= 100 && assets.length > 0) ||
       Object.values(permitTriggerAddresses).includes(address)
     );
   }
@@ -284,7 +284,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
 
       transactions.forEach((item: TransactionItem) => {
         item.inputs.forEach((input: Input) => {
-          if (this.shouldAddInputToDb(input.address) === false) {
+          if (this.shouldAddInputToDb(input.address, input.assets) === false) {
             return;
           }
           input.inputDate = new Date(item.timestamp);

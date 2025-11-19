@@ -13,7 +13,7 @@ declare class ActivePermitsDataService extends DataService<PermitTx> {
     downloadOpenBoxes(chainType: string): Promise<void>;
     saveOpenBoxes(address: string, openBoxesJson: string, db: IDBDatabase): Promise<void>;
     getOpenBoxesMap(db: IDBDatabase): Promise<Record<string, string | null> | null>;
-    shouldAddInputToDb(address: string): boolean;
+    shouldAddInputToDb(address: string, assets: Asset[]): boolean;
     shouldAddOutputToDb(address: string): boolean;
     getAdressActivePermits(addresses?: string[] | null): Promise<PermitTx[]>;
     addData(address: string, transactions: TransactionItem[]): Promise<void>;
