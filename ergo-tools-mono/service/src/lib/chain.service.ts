@@ -69,6 +69,9 @@ const rwtTokenIds: Record<string, ChainType> = {
     ChainType.Binance,
   '5d727b722fb72aa02257d987970c68aeda41614518bab9f0d8a21bbc75b7a3b0':
     ChainType.Doge,
+  '8bde33c8654ddb525b4db4842dd959e592c3847eabe40383af09a76be36379c4':
+    ChainType.Runes,
+    
 };
 
 const permitAddresses: Record<ChainType, string | null> = {
