@@ -1,6 +1,6 @@
 network: ergo
 api:
-  apiKeyHash: '#APIKEY#'
+  apiKeyHash: '#API_KEY#'
 ergo:
   type: node
   initialHeight: #ERGO_HEIGHT#

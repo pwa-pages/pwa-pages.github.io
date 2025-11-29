@@ -1,4 +1,4 @@
-network: ethereum
+network: bitcoin-runes
 api:
   apiKeyHash: '#API_KEY#'
 ergo:
@@ -7,16 +7,23 @@ ergo:
   mnemonic: "#MNEMONIC#"
   node:
     url: http://host.docker.internal:9053
-ethereum:
+bitcoin:
   type: rpc
   rpc:
-    url: http://host.docker.internal:8545
+    timeout: 100
+    url: 'http://host.docker.internal:8332'
+    username: 'pebblerye'
+    password: 'pebblerye'
   initial:
-    height: #ETH_HEIGHT#
-observation:
-  confirmation: 100
-  validThreshold: 7200
+    height: #BTC_HEIGHT#
+bitcoinRunes:
+  type: ordiscan
+  ordiscan:
+    apiKey: #ORDI_API_KEY#
 healthCheck:
   permit:
    warnCommitmentCount: 1 # amount of permits left before giving a warning
    criticalCommitmentCount: 0 # amount of permits left it is critical
+observation:
+  confirmation: 2
+  validThreshold: 72
