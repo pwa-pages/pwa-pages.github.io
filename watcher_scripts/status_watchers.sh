@@ -1,6 +1,6 @@
 output=""
 
-for port in 3031 3032 3034 3035 3036 3039; do
+for port in 3031 3032 3033 3034 3035 3036 3039; do
     # Make request
     response=$(curl -s -w "%{http_code}" -o response.json "http://localhost:${port}/api/health/status")
     curl_exit_status=$?

@@ -93,8 +93,9 @@ BEGIN {
             (numeric_amount > 10000000 && (token == "SUGAR" || token == "rsSUGAR")) ||
             (numeric_amount > 5 && (token == "ETH" || token == "rsETH")) ||
             (numeric_amount > 100 && (token == "BNB" || token == "rsBNB")) ||
+            (numeric_amount > 250000 && (token == "DOGE" || token == "rsDOGE")) ||
             (numeric_amount > 200000 && (token == "RSN" || token == "rsRSN")) ||
-            (numeric_amount > 40000000 && (token == "PALM" || token == "rsPALM")) ||
+            (numeric_amount > 5000000 && (token == "PALM" || token == "rsPALM")) ||
             (numeric_amount > 100000000000 && (token == "GIF" || token == "rsGIF")) ||
             (numeric_amount > 0.49999 && (token == "BTC" || token == "rsBTC"))) {
             # Trigger the appropriate script based on token type
@@ -117,6 +118,11 @@ BEGIN {
                 # Trigger for high-value BTC transactions
                print "High-value BTC transaction detected for " token " " numeric_amount  > "/dev/stderr"
                system("trigger.sh btc")
+            }
+            if (first_part == "bitcoin-runes") {
+                # Trigger for high-value RUNES transactions
+               print "High-value RUNES transaction detected for " token " " numeric_amount  > "/dev/stderr"
+               system("trigger.sh runes")
             }
             if (first_part == "binance") {
                 # Trigger for high-value BSC transactions
