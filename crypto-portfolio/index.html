@@ -574,7 +574,7 @@
 					tsyms = ltsyms;
 					params = lparams;
 					fsym = params["fsym"];
-					url = "https://min-api.cryptocompare.com/data/price?fsym=" + fsym + "&tsyms=" + tsyms;
+					url = "https://api.coingecko.com/api/v3/simple/price?vs_currencies=" + fsym + "&ids=" + tsyms;
 				}
 				if (params.fsym) {
 					delete params.fsym;
