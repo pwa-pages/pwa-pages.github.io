@@ -24,8 +24,8 @@ function retrieveStock(c, coins, url, price, prices, id, portfolios) {
 
                     for (let [key, value] of Object.entries(coins)) {
 
-                        parsedPrice = parsedPrice + Number(value) / Number(a[key]);
-                        parsedPrices[key] = Number(value) / Number(a[key]);
+                        parsedPrice = parsedPrice + Number(value) / Number(Object.values(a[key])[0]);
+                        parsedPrices[key] = Number(value) / Number(Object.values(a[key])[0]);
 
                     }
 
