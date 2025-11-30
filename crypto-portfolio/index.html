@@ -1,3 +1,4 @@
+
 <html>
 
 <head>
@@ -110,7 +111,7 @@
 		}
 
 
-
+		
 		function swipe(swipedir, touchsurface) {
 			var portfolioindex = 0;
 
@@ -206,7 +207,7 @@
 					}, 25);
 
 
-
+					
 
 					setTimeout(function () {
 
@@ -234,7 +235,7 @@
 					}, 25);
 
 
-
+					
 
 					setTimeout(function () {
 
@@ -609,7 +610,7 @@
 			}
 		}
 
-		function mapCryptoSymbol(symbol) {
+		function mapCryptoSymbol(symbol){
 
 			switch (symbol) {
 				case 'ergo':
@@ -628,7 +629,7 @@
 		}
 
 
-
+		
 
 		function setHtmlValue(key, cnt, sp, fsym, el, vel, txt, d) {
 
@@ -761,27 +762,8 @@
 
 		var nframe = 0;
 
-		function formatNumber(number, ndigits) {
-			function formatNumber(number, ndigits) {
-				if (number == null || isNaN(number) || !isFinite(number)) return String(number);
-				var n = Number(number);
-				var s = n.toPrecision(ndigits);
-
-
-				if (s.toLowerCase().indexOf('e') !== -1) {
-					var exp = Math.floor(Math.log10(Math.abs(n)));
-					var decimals = Math.max(0, ndigits - 1 - exp);
-
-					if (decimals > 20) decimals = 20;
-					s = n.toFixed(decimals);
-				}
-
-
-				s = s.replace(/(\.\d*?)0+$/, '$1');
-				s = s.replace(/\.$/, '');
-
-				return s;
-			}
+		function formatNumber(number, ndigits){
+			return number.toPrecision(ndigits);
 
 		}
 
@@ -1398,8 +1380,7 @@
 <body onkeydown="current()">
 
 
-	<div class="swipe_left icon" ontouchend="swipe('right', document.body)" onclick="swipe('right', document.body)">
-	</div>
+	<div class="swipe_left icon" ontouchend="swipe('right', document.body)" onclick="swipe('right', document.body)"></div>
 	<div class="swipe_right icon" ontouchend="swipe('left', document.body)" onclick="swipe('left', document.body)">
 	</div>
 
