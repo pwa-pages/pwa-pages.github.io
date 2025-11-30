@@ -638,7 +638,7 @@
 
 
 			if (key && vel && cnt) {
-				vel.innerText = "(1 " + mapCryptoSymbol(key).toUpperCase() + " = " + (sp / cnt).toPrecision(ndigits) + " " + fsym + ")";
+				vel.innerText = "1 " + mapCryptoSymbol(key).toUpperCase() + " = " + (sp / cnt).toPrecision(ndigits) + " " + fsym;
 			}
 			if (!d || d == 0) {
 				el.innerText = txt;
@@ -844,7 +844,7 @@
 			fsym = url.match(rx)[1];
 			var el = document.getElementsByClassName("valuetext")[0];
 
-			setHtmlValue(null, null, sp, fsym, el, null, ' ' + fsym, dp['total']);
+			setHtmlValue(null, null, sp, fsym, el, null, ' ' + String(fsym).toUpperCase(), dp['total']);
 
 
 
@@ -1481,39 +1481,39 @@
 
 
 			<div class="keytext keytext0" style="font-size: 4vw; float: left; width: 30%;"></div>
-			<div class="valuetext0" style="font-size: 4vw; float: left; width: 30%;"></div>
+			<div class="valuetext0" style="font-size: 4vw; float: left; width: 25%;"></div>
 			<div class="valuetext0_0" style="font-size: 3vw; float: left;"></div>
 			<br />
 			<div class="keytext keytext1" style="font-size: 4vw; float: left; width: 30%;"></div>
-			<div class="valuetext1" style="font-size: 4vw; float: left; width: 30%;"></div>
+			<div class="valuetext1" style="font-size: 4vw; float: left; width: 25%;"></div>
 			<div class="valuetext1_0" style="font-size: 3vw; float: left;"></div>
 			<br />
 			<div class="keytext keytext2" style="font-size: 4vw; float: left; width: 30%;"></div>
-			<div class="valuetext2" style="font-size: 4vw; float: left; width: 30%;"></div>
+			<div class="valuetext2" style="font-size: 4vw; float: left; width: 25%;"></div>
 			<div class="valuetext2_0" style="font-size: 3vw; float: left;"></div>
 			<br />
 			<div class="keytext keytext3" style="font-size: 4vw; float: left; width: 30%;"></div>
-			<div class="valuetext3" style="font-size: 4vw; float: left; width: 30%;"></div>
+			<div class="valuetext3" style="font-size: 4vw; float: left; width: 25%;"></div>
 			<div class="valuetext3_0" style="font-size: 3vw; float: left;"></div>
 			<br />
 			<div class="keytext keytext4" style="font-size: 4vw; float: left; width: 30%;"></div>
-			<div class="valuetext4" style="font-size: 4vw; float: left; width: 30%;"></div>
+			<div class="valuetext4" style="font-size: 4vw; float: left; width: 25%;"></div>
 			<div class="valuetext4_0" style="font-size: 3vw; float: left;"></div>
 			<br />
 			<div class="keytext keytext5" style="font-size: 4vw; float: left; width: 30%;"></div>
-			<div class="valuetext5" style="font-size: 4vw; float: left; width: 30%;"></div>
+			<div class="valuetext5" style="font-size: 4vw; float: left; width: 25%;"></div>
 			<div class="valuetext5_0" style="font-size: 3vw; float: left;"></div>
 			<br />
 			<div class="keytext keytext6" style="font-size: 4vw; float: left; width: 30%;"></div>
-			<div class="valuetext6" style="font-size: 4vw; float: left; width: 30%;"></div>
+			<div class="valuetext6" style="font-size: 4vw; float: left; width: 25%;"></div>
 			<div class="valuetext6_0" style="font-size: 3vw; float: left;"></div>
 			<br />
 			<div class="keytext keytext7" style="font-size: 4vw; float: left; width: 30%;"></div>
-			<div class="valuetext7" style="font-size: 4vw; float: left; width: 30%;"></div>
+			<div class="valuetext7" style="font-size: 4vw; float: left; width: 25%;"></div>
 			<div class="valuetext7_0" style="font-size: 3vw; float: left;"></div>
 			<br />
 			<div class="keytext keytext8" style="font-size: 4vw; float: left; width: 30%;"></div>
-			<div class="valuetext8" style="font-size: 4vw; float: left; width: 30%;"></div>
+			<div class="valuetext8" style="font-size: 4vw; float: left; width: 25%;"></div>
 			<div class="valuetext8_0" style="font-size: 3vw; float: left;"></div>
 			<br />
 		</div>
