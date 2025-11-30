@@ -638,7 +638,7 @@
 
 
 			if (key && vel && cnt) {
-				vel.innerText = "(1 " + mapCryptoSymbol(key) + " = " + (sp / cnt).toPrecision(ndigits) + " " + fsym + ")";
+				vel.innerText = "(1 " + mapCryptoSymbol(key).toUpperCase() + " = " + (sp / cnt).toPrecision(ndigits) + " " + fsym + ")";
 			}
 			if (!d || d == 0) {
 				el.innerText = txt;
@@ -872,7 +872,7 @@
 
 
 
-					setHtmlValue(key, params[key], sp, fsym, el, vel, sp + ' ' + fsym, dp[key]);
+					setHtmlValue(key, params[key], sp, String(fsym).toUpperCase(), el, vel, sp + ' ' + String(fsym).toUpperCase(), dp[key]);
 
 
 					i++;
