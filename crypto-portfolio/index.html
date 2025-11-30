@@ -576,12 +576,12 @@
 					fsym = params["fsym"];
 					url = "https://api.coingecko.com/api/v3/simple/price?vs_currencies=" + fsym + "&ids=" + tsyms;
 				}
-				if (params.fsym) {
+				if (params && params.fsym) {
 					delete params.fsym;
 				}
 
 				var portfolio = lparams.portfolio;
-				if (params.portfolio) {
+				if (params && params.portfolio) {
 					delete params.portfolio;
 				}
 				if (navigator.serviceWorker.controller && !rs) {
