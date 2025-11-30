@@ -804,7 +804,7 @@
 
 
 			sp = sp.toPrecision(ndigits);
-			var rx = new RegExp("[?&]fsym=([^&]+).*$");
+			var rx = new RegExp("[?&]vs_currencies=([^&]+).*$");
 			fsym = url.match(rx)[1];
 			var el = document.getElementsByClassName("valuetext")[0];
 
