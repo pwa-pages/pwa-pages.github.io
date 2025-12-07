@@ -1371,7 +1371,14 @@ class ActivePermitsDataService extends DataService {
         result.push(permit);
       }
     }
-    return result;
+    const seen = /* @__PURE__ */ new Set();
+    const filteredResult = result.filter((r) => {
+      if (seen.has(r.transactionId))
+        return false;
+      seen.add(r.transactionId);
+      return true;
+    });
+    return filteredResult;
   }
   async addData(address, transactions) {
     return new Promise((resolve, reject) => {
