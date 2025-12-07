@@ -269,6 +269,7 @@ if (typeof window !== "undefined") {
 class DataService {
   constructor(db) {
     this.db = db;
+    this.storageService = new StorageService(db);
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async purgeData() {
@@ -308,65 +309,89 @@ class DataService {
   }
 }
 "use strict";
-class ChainPerformanceDataService extends DataService {
-  async getExistingData(transaction) {
+class StorageService {
+  constructor(db) {
+    this.db = db;
+  }
+  async getData(storeName) {
     return new Promise((resolve, reject) => {
-      const dbTtransaction = this.db.transaction([rs_PerfTxStoreName], "readonly");
-      const objectStore = dbTtransaction.objectStore(rs_PerfTxStoreName);
-      const request = objectStore.get(transaction.id);
+      const transaction = this.db.transaction([storeName], "readonly");
+      const objectStore = transaction.objectStore(storeName);
+      const request = objectStore.getAll();
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = (event) => reject(event.target.error);
+    });
+  }
+  async getDataById(storeName, id) {
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction([storeName], "readonly");
+      const objectStore = transaction.objectStore(storeName);
+      const request = objectStore.get(id);
       request.onsuccess = () => {
         const result = request.result;
-        resolve(result);
+        if (!result) {
+          resolve(null);
+        } else {
+          resolve(result);
+        }
       };
       request.onerror = (event) => reject(event.target.error);
     });
   }
-  async addData(_address, transactions) {
+  async addData(storeName, data) {
     return new Promise((resolve, reject) => {
-      const tempData = [];
-      transactions.forEach((item) => {
-        const chainTokensCount = {};
-        const eRSNTotal = item.outputs.reduce((total, output) => {
-          output.assets.forEach((asset) => {
-            if (asset.tokenId != null && asset.tokenId in rwtTokenIds) {
-              if (!chainTokensCount[asset.tokenId]) {
-                chainTokensCount[asset.tokenId] = 1;
-              } else {
-                chainTokensCount[asset.tokenId]++;
-              }
-            }
-          });
-          const assets = output.assets.filter((a) => a.tokenId === rs_eRSNTokenId && Object.values(rewardAddresses).includes(output.address));
-          return total + assets.reduce((acc, asset) => acc + asset.amount / Math.pow(10, rs_RSNDecimals), 0);
-        }, 0);
-        const maxKey = Object.entries(chainTokensCount).reduce((max, [key, value]) => value > chainTokensCount[max] ? key : max, Object.keys(chainTokensCount)[0]);
-        const chainType = Object.entries(rwtTokenIds).find(([key]) => key === maxKey)?.[1];
-        const dbPerfTx = {
-          id: item.id,
-          timestamp: item.timestamp,
-          amount: eRSNTotal,
-          chainType
-        };
-        tempData.push(dbPerfTx);
-      });
-      const transaction = this.db.transaction([rs_PerfTxStoreName], "readwrite");
-      const objectStore = transaction.objectStore(rs_PerfTxStoreName);
-      const putPromises = tempData.map((dbPerfTx) => {
+      const transaction = this.db.transaction([storeName], "readwrite");
+      const objectStore = transaction.objectStore(storeName);
+      const putPromises = data.map((t) => {
         return new Promise((putResolve, putReject) => {
-          console.log("Trying to add dbPerfTx to db with id " + dbPerfTx.id);
-          const request = objectStore.put(dbPerfTx);
+          const request = objectStore.put(t);
           request.onsuccess = () => putResolve();
           request.onerror = (event) => putReject(event.target.error);
         });
       });
       Promise.all(putPromises).then(async () => {
-        const perfTxs = await this.getPerfTxs();
-        this.eventSender.sendEvent({
-          type: "PerfChartChanged",
-          data: perfTxs
-        });
         resolve();
       }).catch(reject);
+    });
+  }
+}
+"use strict";
+class ChainPerformanceDataService extends DataService {
+  async getExistingData(transaction) {
+    return await this.storageService.getDataById(rs_PerfTxStoreName, transaction.id);
+  }
+  async addData(_address, transactions) {
+    const tempData = [];
+    transactions.forEach((item) => {
+      const chainTokensCount = {};
+      const eRSNTotal = item.outputs.reduce((total, output) => {
+        output.assets.forEach((asset) => {
+          if (asset.tokenId != null && asset.tokenId in rwtTokenIds) {
+            if (!chainTokensCount[asset.tokenId]) {
+              chainTokensCount[asset.tokenId] = 1;
+            } else {
+              chainTokensCount[asset.tokenId]++;
+            }
+          }
+        });
+        const assets = output.assets.filter((a) => a.tokenId === rs_eRSNTokenId && Object.values(rewardAddresses).includes(output.address));
+        return total + assets.reduce((acc, asset) => acc + asset.amount / Math.pow(10, rs_RSNDecimals), 0);
+      }, 0);
+      const maxKey = Object.entries(chainTokensCount).reduce((max, [key, value]) => value > chainTokensCount[max] ? key : max, Object.keys(chainTokensCount)[0]);
+      const chainType = Object.entries(rwtTokenIds).find(([key]) => key === maxKey)?.[1];
+      const dbPerfTx = {
+        id: item.id,
+        timestamp: item.timestamp,
+        amount: eRSNTotal,
+        chainType
+      };
+      tempData.push(dbPerfTx);
+    });
+    await this.storageService.addData(rs_PerfTxStoreName, tempData);
+    const perfTxs = await this.getPerfTxs();
+    this.eventSender.sendEvent({
+      type: "PerfChartChanged",
+      data: perfTxs
     });
   }
   async getPerfTxs() {
@@ -411,7 +436,7 @@ class RewardDataService extends DataService {
   async getExistingData(transaction, address) {
     for (const input of transaction.inputs) {
       if (input.boxId && getChainType(input.address)) {
-        const data = await this.getDataByBoxId(input.boxId, address, this.db);
+        const data = await this.getDataByBoxId(input.boxId, address);
         if (data) {
           return data;
         }
@@ -449,73 +474,47 @@ class RewardDataService extends DataService {
     }
   }
   async addData(address, transactions) {
-    return new Promise((resolve, reject) => {
-      const tempData = [];
-      transactions.forEach((item) => {
-        item.inputs.forEach((input) => {
-          input.outputAddress = address;
-          input.inputDate = new Date(item.timestamp);
-          input.assets = input.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.tokenId == rs_eRSNTokenId);
-          input.assets.forEach((asset) => {
-            if (asset.tokenId && rs_TokenIdMap[asset.tokenId]) {
-              asset.name = rs_TokenIdMap[asset.tokenId];
-              asset.decimals = rs_RSNDecimals;
-            }
-          });
-          const dbInput = {
-            outputAddress: input.outputAddress,
-            inputDate: input.inputDate,
-            boxId: input.boxId,
-            assets: input.assets || [],
-            chainType: getChainType(input.address)
-          };
-          if (dbInput.chainType && dbInput.assets.length > 0) {
-            tempData.push(dbInput);
+    const tempData = [];
+    transactions.forEach((item) => {
+      item.inputs.forEach((input) => {
+        input.outputAddress = address;
+        input.inputDate = new Date(item.timestamp);
+        input.assets = input.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.tokenId == rs_eRSNTokenId);
+        input.assets.forEach((asset) => {
+          if (asset.tokenId && rs_TokenIdMap[asset.tokenId]) {
+            asset.name = rs_TokenIdMap[asset.tokenId];
+            asset.decimals = rs_RSNDecimals;
           }
         });
+        const dbInput = {
+          outputAddress: input.outputAddress,
+          inputDate: input.inputDate,
+          boxId: input.boxId,
+          assets: input.assets || [],
+          chainType: getChainType(input.address)
+        };
+        if (dbInput.chainType && dbInput.assets.length > 0) {
+          tempData.push(dbInput);
+        }
       });
-      const transaction = this.db.transaction([rs_InputsStoreName], "readwrite");
-      const objectStore = transaction.objectStore(rs_InputsStoreName);
-      const putPromises = tempData.map((dbInput) => {
-        return new Promise((putResolve, putReject) => {
-          const request = objectStore.put(dbInput);
-          request.onsuccess = () => putResolve();
-          request.onerror = (event) => putReject(event.target.error);
-        });
-      });
-      Promise.all(putPromises).then(async () => {
-        const inputs = await this.getSortedInputs();
-        this.eventSender.sendEvent({
-          type: "InputsChanged",
-          data: inputs
-        });
-        this.eventSender.sendEvent({
-          type: "AddressChartChanged",
-          data: await this.chartService.getAddressCharts(inputs)
-        });
-        resolve();
-      }).catch(reject);
+    });
+    await this.storageService.addData(rs_InputsStoreName, tempData);
+    const inputs = await this.getSortedInputs();
+    this.eventSender.sendEvent({
+      type: "InputsChanged",
+      data: inputs
+    });
+    this.eventSender.sendEvent({
+      type: "AddressChartChanged",
+      data: await this.chartService.getAddressCharts(inputs)
     });
   }
   // Get Data by BoxId from IndexedDB
-  async getDataByBoxId(boxId, addressId, db) {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([rs_InputsStoreName], "readonly");
-      const objectStore = transaction.objectStore(rs_InputsStoreName);
-      const request = objectStore.get([
-        boxId,
-        addressId
-      ]);
-      request.onsuccess = () => {
-        const result = request.result;
-        if (!result || result.outputAddress !== addressId) {
-          resolve(null);
-        } else {
-          resolve(result);
-        }
-      };
-      request.onerror = (event) => reject(event.target.error);
-    });
+  async getDataByBoxId(boxId, addressId) {
+    return await this.storageService.getDataById(rs_InputsStoreName, [
+      boxId,
+      addressId
+    ]);
   }
   async getSortedInputs() {
     const inputsPromise = await this.getWatcherInputs();
@@ -1213,11 +1212,9 @@ class MyWatcherDataService extends DataService {
 "use strict";
 class ActivePermitsDataService extends DataService {
   async getExistingData(transaction, address) {
-    const dbTransaction = this.db.transaction([rs_ActivePermitTxStoreName], "readonly");
-    const objectStore = dbTransaction.objectStore(rs_ActivePermitTxStoreName);
     for (const input of transaction.inputs) {
       if (input.boxId) {
-        const data = await this.getDataById(this.createUniqueId(input.boxId, transaction.id, address), objectStore);
+        const data = await this.storageService.getDataById(rs_ActivePermitTxStoreName, this.createUniqueId(input.boxId, transaction.id, address));
         if (data) {
           return data;
         }
@@ -1225,7 +1222,7 @@ class ActivePermitsDataService extends DataService {
     }
     for (const output of transaction.outputs) {
       if (output.boxId) {
-        const data = await this.getDataById(this.createUniqueId(output.boxId, transaction.id, address), objectStore);
+        const data = await this.storageService.getDataById(rs_ActivePermitTxStoreName, this.createUniqueId(output.boxId, transaction.id, address));
         if (data) {
           return data;
         }
@@ -1284,22 +1281,16 @@ class ActivePermitsDataService extends DataService {
       const response = await fetch(url);
       if (!response.ok)
         throw new Error(`Server returned code: ${response.status}`);
-      await this.saveOpenBoxes(address, await response.json(), this.db);
+      await this.saveOpenBoxes(address, await response.json());
     });
     await Promise.all(downloadPromises);
   }
-  async saveOpenBoxes(address, openBoxesJson, db) {
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([rs_OpenBoxesStoreName], "readwrite");
-      const objectStore = transaction.objectStore(rs_OpenBoxesStoreName);
-      const boxes = {
-        address,
-        openBoxesJson
-      };
-      const request = objectStore.put(boxes);
-      request.onsuccess = () => resolve();
-      request.onerror = (event) => reject(event.target.error);
-    });
+  async saveOpenBoxes(address, openBoxesJson) {
+    const boxes = {
+      address,
+      openBoxesJson
+    };
+    await this.storageService.addData(rs_OpenBoxesStoreName, boxes);
   }
   async getOpenBoxesMap(db) {
     const openBoxesMap = {};
@@ -1466,21 +1457,6 @@ class ActivePermitsDataService extends DataService {
           cursor.continue();
         } else {
           resolve();
-        }
-      };
-      request.onerror = (event) => reject(event.target.error);
-    });
-  }
-  // Get Data by BoxId from IndexedDB
-  async getDataById(id, objectStore) {
-    return new Promise((resolve, reject) => {
-      const request = objectStore.get(id);
-      request.onsuccess = () => {
-        const result = request.result;
-        if (!result || result.id !== id) {
-          resolve(null);
-        } else {
-          resolve(result);
         }
       };
       request.onerror = (event) => reject(event.target.error);
