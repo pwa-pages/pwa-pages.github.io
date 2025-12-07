@@ -3,6 +3,7 @@
 class DataService {
     constructor(db) {
         this.db = db;
+        this.storageService = new StorageService(db);
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async purgeData() {

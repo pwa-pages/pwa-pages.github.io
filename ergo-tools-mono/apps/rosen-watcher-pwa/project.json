@@ -42,6 +42,7 @@
           "dist/service/src/lib/chain.service.js",
           "dist/service/src/lib/constants.js",
           "dist/service/src/lib/data.service.js",
+          "dist/service/src/lib/storage.service.js",
           "dist/service/src/lib/chain.performance.data.service.js",
           "dist/service/src/lib/reward.data.service.js",
           "dist/service/src/lib/chart.service.js",

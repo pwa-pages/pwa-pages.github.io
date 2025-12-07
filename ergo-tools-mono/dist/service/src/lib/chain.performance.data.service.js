@@ -2,68 +2,43 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ChainPerformanceDataService extends DataService {
     async getExistingData(transaction) {
-        return new Promise((resolve, reject) => {
-            const dbTtransaction = this.db.transaction([rs_PerfTxStoreName], 'readonly');
-            const objectStore = dbTtransaction.objectStore(rs_PerfTxStoreName);
-            const request = objectStore.get(transaction.id);
-            request.onsuccess = () => {
-                const result = request.result;
-                resolve(result);
-            };
-            request.onerror = (event) => reject(event.target.error);
-        });
+        return await this.storageService.getDataById(rs_PerfTxStoreName, transaction.id);
     }
     async addData(_address, transactions) {
-        return new Promise((resolve, reject) => {
-            const tempData = [];
-            transactions.forEach((item) => {
-                const chainTokensCount = {};
-                const eRSNTotal = item.outputs.reduce((total, output) => {
-                    output.assets.forEach((asset) => {
-                        if (asset.tokenId != null && asset.tokenId in rwtTokenIds) {
-                            if (!chainTokensCount[asset.tokenId]) {
-                                chainTokensCount[asset.tokenId] = 1;
-                            }
-                            else {
-                                chainTokensCount[asset.tokenId]++;
-                            }
+        const tempData = [];
+        transactions.forEach((item) => {
+            const chainTokensCount = {};
+            const eRSNTotal = item.outputs.reduce((total, output) => {
+                output.assets.forEach((asset) => {
+                    if (asset.tokenId != null && asset.tokenId in rwtTokenIds) {
+                        if (!chainTokensCount[asset.tokenId]) {
+                            chainTokensCount[asset.tokenId] = 1;
                         }
-                    });
-                    const assets = output.assets.filter((a) => a.tokenId === rs_eRSNTokenId &&
-                        Object.values(rewardAddresses).includes(output.address));
-                    return (total +
-                        assets.reduce((acc, asset) => acc + asset.amount / Math.pow(10, rs_RSNDecimals), 0));
-                }, 0);
-                const maxKey = Object.entries(chainTokensCount).reduce((max, [key, value]) => (value > chainTokensCount[max] ? key : max), Object.keys(chainTokensCount)[0]);
-                const chainType = Object.entries(rwtTokenIds).find(([key]) => key === maxKey)?.[1];
-                const dbPerfTx = {
-                    id: item.id,
-                    timestamp: item.timestamp,
-                    amount: eRSNTotal,
-                    chainType: chainType,
-                };
-                tempData.push(dbPerfTx);
-            });
-            const transaction = this.db.transaction([rs_PerfTxStoreName], 'readwrite');
-            const objectStore = transaction.objectStore(rs_PerfTxStoreName);
-            const putPromises = tempData.map((dbPerfTx) => {
-                return new Promise((putResolve, putReject) => {
-                    console.log('Trying to add dbPerfTx to db with id ' + dbPerfTx.id);
-                    const request = objectStore.put(dbPerfTx);
-                    request.onsuccess = () => putResolve();
-                    request.onerror = (event) => putReject(event.target.error);
+                        else {
+                            chainTokensCount[asset.tokenId]++;
+                        }
+                    }
                 });
-            });
-            Promise.all(putPromises)
-                .then(async () => {
-                const perfTxs = await this.getPerfTxs();
-                this.eventSender.sendEvent({
-                    type: 'PerfChartChanged',
-                    data: perfTxs,
-                });
-                resolve();
-            })
-                .catch(reject);
+                const assets = output.assets.filter((a) => a.tokenId === rs_eRSNTokenId &&
+                    Object.values(rewardAddresses).includes(output.address));
+                return (total +
+                    assets.reduce((acc, asset) => acc + asset.amount / Math.pow(10, rs_RSNDecimals), 0));
+            }, 0);
+            const maxKey = Object.entries(chainTokensCount).reduce((max, [key, value]) => (value > chainTokensCount[max] ? key : max), Object.keys(chainTokensCount)[0]);
+            const chainType = Object.entries(rwtTokenIds).find(([key]) => key === maxKey)?.[1];
+            const dbPerfTx = {
+                id: item.id,
+                timestamp: item.timestamp,
+                amount: eRSNTotal,
+                chainType: chainType,
+            };
+            tempData.push(dbPerfTx);
+        });
+        await this.storageService.addData(rs_PerfTxStoreName, tempData);
+        const perfTxs = await this.getPerfTxs();
+        this.eventSender.sendEvent({
+            type: 'PerfChartChanged',
+            data: perfTxs,
         });
     }
     async getPerfTxs() {

@@ -31,8 +31,8 @@ export class WatchersStats {
   totalPermitCount: number | undefined;
   totalWatcherCount: number | undefined;
   triggerPermitCount = createChainNumber();
-  watcherCollateralERG = ErgSettings.rs_WatcherCollateralERG();
-  watcherCollateralRSN = ErgSettings.rs_WatcherCollateralRSN();
+  watcherCollateralERG = ErgSettings.rs_WatcherCollateralERG('Ergo');
+  watcherCollateralRSN = ErgSettings.rs_WatcherCollateralRSN('Ergo');
 
   watchersAmountsPerCurrency: Record<string, WatchersAmounts> =
     Object.fromEntries(

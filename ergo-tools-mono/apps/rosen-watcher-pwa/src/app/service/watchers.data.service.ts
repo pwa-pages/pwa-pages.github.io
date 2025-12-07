@@ -51,7 +51,7 @@ export class WatchersDataService {
         let myWatcherStats: MyWatchersStats[] = [];
         permits.forEach((permit: PermitInfo) => {
           let permitCount = Math.floor(
-            (permit.lockedRSN - ErgSettings.rs_WatcherCollateralRSN()) / ErgSettings.rs_PermitCost(),
+            (permit.lockedRSN - ErgSettings.rs_WatcherCollateralRSN(permit.chainType)) / ErgSettings.rs_PermitCost(),
           );
           let activepermitCount = Math.floor(
             permit.activeLockedRSN / ErgSettings.rs_PermitCost(),
@@ -139,7 +139,7 @@ export class WatchersDataService {
     getCurrencies().forEach((currency) => {
       const conversions = [
         {
-          amount: ErgSettings.rs_WatcherCollateralRSN(),
+          amount: ErgSettings.rs_WatcherCollateralRSN('Ergo'),
           from: 'RSN',
           callback: (c: number) =>
           (this.watchersStats.watchersAmountsPerCurrency[
@@ -147,7 +147,7 @@ export class WatchersDataService {
           ].rsnCollateral = c),
         },
         {
-          amount: ErgSettings.rs_WatcherCollateralERG(),
+          amount: ErgSettings.rs_WatcherCollateralERG('Ergo'),
           from: 'ERG',
           callback: (c: number) =>
           (this.watchersStats.watchersAmountsPerCurrency[
@@ -217,13 +217,13 @@ export class WatchersDataService {
       this.getValue(
         this.watchersStats.chainWatcherCount,
         chainType,
-        ErgSettings.rs_WatcherCollateralRSN(),
+        ErgSettings.rs_WatcherCollateralRSN(chainType)
       );
 
     this.watchersStats.chainLockedERG[chainType] = this.getValue(
       this.watchersStats.chainWatcherCount,
       chainType,
-      ErgSettings.rs_WatcherCollateralERG(),
+      ErgSettings.rs_WatcherCollateralERG(chainType),
     );
 
     getAllChainTypes().forEach((c) => {

@@ -42,8 +42,8 @@ export declare class ErgSettings {
     static rs_PerfTx_Key(): string;
     static rs_Address_Key(): string;
     static rs_PermitCost(): number;
-    static rs_WatcherCollateralRSN(): number;
-    static rs_WatcherCollateralERG(): number;
+    static rs_WatcherCollateralRSN(chainType: string): number;
+    static rs_WatcherCollateralERG(chainType: string): number;
     static rs_RSNTokenId(): string;
     static rs_eRSNTokenId(): string;
     static rs_TokenIdMap(): Record<string, string>;

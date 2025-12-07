@@ -270,8 +270,15 @@ class ActivePermitsDataService extends DataService<PermitTx> {
         result.push(permit);
       }
     }
+    
 
-    return result;
+    const seen = new Set<string>();
+    const filteredResult = result.filter((r: PermitTx) => {
+      if (seen.has(r.transactionId)) return false;
+      seen.add(r.transactionId);
+      return true;
+    });
+    return filteredResult;
   }
 
   async addData(

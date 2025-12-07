@@ -98,11 +98,11 @@ export class ErgSettings {
     static rs_PermitCost() {
         return globalThis.rs_PermitCost;
     }
-    static rs_WatcherCollateralRSN() {
-        return globalThis.rs_WatcherCollateralRSN;
+    static rs_WatcherCollateralRSN(chainType) {
+        return globalThis.rs_WatcherCollateralRSN(chainType);
     }
-    static rs_WatcherCollateralERG() {
-        return globalThis.rs_WatcherCollateralERG;
+    static rs_WatcherCollateralERG(chainType) {
+        return globalThis.rs_WatcherCollateralERG(chainType);
     }
     static rs_RSNTokenId() {
         return globalThis.rs_RSNTokenId;

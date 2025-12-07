@@ -19,8 +19,36 @@ const rs_ActivePermit_Key = 'id';
 const rs_PerfTx_Key = 'id';
 const rs_Address_Key = 'address';
 const rs_PermitCost = 3000;
-const rs_WatcherCollateralRSN = 30000;
-const rs_WatcherCollateralERG = 800;
+
+
+
+
+const rs_WatcherCollateralRSN = (
+  chainType: string
+): number => {
+
+  if (chainType === ChainType.Runes) {
+    return 50000;
+  }
+  else {
+    return 30000;
+  }
+};
+
+
+const rs_WatcherCollateralERG = (
+  chainType: string
+): number => {
+  if (chainType === ChainType.Runes) {
+    return 10;
+  }
+  else {
+    return 800;
+  }
+};
+
+
+
 const rs_ErgoExplorerHost = 'api.ergoplatform.com';
 const rs_ErgoNodeHost = 'node-p2p.ergoplatform.com';
 //const rs_ErgoNodeHost = 'localhost:9053';
@@ -104,6 +132,6 @@ if (typeof window !== 'undefined') {
   (globalThis as any).rs_RSNDecimals = rs_RSNDecimals;
   (globalThis as any).currencies = Object.values(Currency);
 
-    (window as any).Period = Period;
+  (window as any).Period = Period;
   (window as any).Currency = Currency;
 }
