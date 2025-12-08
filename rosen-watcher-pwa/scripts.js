@@ -354,6 +354,21 @@ class StorageService {
       }).catch(reject);
     });
   }
+  async deleteData(storeName, keys) {
+    const keysArray = Array.isArray(keys) ? keys : [keys];
+    return new Promise((resolve, reject) => {
+      const transaction = this.db.transaction([storeName], "readwrite");
+      const objectStore = transaction.objectStore(storeName);
+      const deletePromises = keysArray.map((key) => {
+        return new Promise((delResolve, delReject) => {
+          const request = objectStore.delete(key);
+          request.onsuccess = () => delResolve();
+          request.onerror = (event) => delReject(event.target.error);
+        });
+      });
+      Promise.all(deletePromises).then(() => resolve()).catch(reject);
+    });
+  }
 }
 "use strict";
 class ChainPerformanceDataService extends DataService {
@@ -1290,7 +1305,7 @@ class ActivePermitsDataService extends DataService {
       address,
       openBoxesJson
     };
-    await this.storageService.addData(rs_OpenBoxesStoreName, boxes);
+    await this.storageService.addData(rs_OpenBoxesStoreName, [boxes]);
   }
   async getOpenBoxesMap(db) {
     const openBoxesMap = {};
@@ -1443,24 +1458,13 @@ class ActivePermitsDataService extends DataService {
     if (permitTx != null && now - permitTx.date.getTime() > maxDiff) {
       maxDiff = now - permitTx.date.getTime();
     }
-    return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction([rs_ActivePermitTxStoreName], "readwrite");
-      const objectStore = transaction.objectStore(rs_ActivePermitTxStoreName);
-      const request = objectStore.openCursor();
-      request.onsuccess = (event) => {
-        const cursor = event.target.result;
-        if (cursor) {
-          const permitTx2 = cursor.value;
-          if (permitTx2.date && now - new Date(permitTx2.date).getTime() > maxDiff) {
-            cursor.delete();
-          }
-          cursor.continue();
-        } else {
-          resolve();
-        }
-      };
-      request.onerror = (event) => reject(event.target.error);
-    });
+    var purgePermitTxs = [];
+    for (const permitTx2 of permitTxs) {
+      if (permitTx2.date && now - new Date(permitTx2.date).getTime() > maxDiff) {
+        purgePermitTxs.push(permitTx2);
+      }
+    }
+    await this.storageService.deleteData(rs_ActivePermitTxStoreName, purgePermitTxs.map((pt) => pt.id));
   }
   async getSortedPermits() {
     const permitsPromise = await this.getWatcherPermits();
