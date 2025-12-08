@@ -1,6 +1,6 @@
 network: cardano
 api:
-  apiKeyHash: '#API_KEY#'
+  apiKeyHash: '#API_KEY'
 ergo:
   type: node
   initialHeight: #ERGO_HEIGHT#
@@ -21,3 +21,6 @@ healthCheck:
   permit:
    warnCommitmentCount: 1 # amount of permits left before giving a warning
    criticalCommitmentCount: 0 # amount of permits left it is critical
+observation:
+  confirmation: 25
+  validThreshold: 12960
