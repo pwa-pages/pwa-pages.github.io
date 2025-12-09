@@ -9,19 +9,11 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     transaction: TransactionItem,
     address: string,
   ): Promise<PermitTx | null> {
-    const dbTransaction: IDBTransaction = this.db.transaction(
-      [rs_ActivePermitTxStoreName],
-      'readonly',
-    );
-    const objectStore: IDBObjectStore = dbTransaction.objectStore(
-      rs_ActivePermitTxStoreName,
-    );
 
     for (const input of transaction.inputs) {
       if (input.boxId) {
-        const data = await this.getDataById(
-          this.createUniqueId(input.boxId, transaction.id, address),
-          objectStore,
+        const data = await this.storageService.getDataById(
+          rs_ActivePermitTxStoreName, this.createUniqueId(input.boxId, transaction.id, address)
         );
         if (data) {
           return data;
@@ -31,9 +23,8 @@ class ActivePermitsDataService extends DataService<PermitTx> {
 
     for (const output of transaction.outputs) {
       if (output.boxId) {
-        const data = await this.getDataById(
-          this.createUniqueId(output.boxId, transaction.id, address),
-          objectStore,
+        const data = await this.storageService.getDataById(
+          rs_ActivePermitTxStoreName, this.createUniqueId(output.boxId, transaction.id, address)
         );
         if (data) {
           return data;
@@ -72,7 +63,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
   }
 
   private async getWatcherPermits(): Promise<PermitTx[]> {
-    const permitsPromise = this.getData<PermitTx>(rs_ActivePermitTxStoreName);
+    const permitsPromise = this.storageService.getData<PermitTx>(rs_ActivePermitTxStoreName);
 
     console.log('Retrieving watcher active permits');
 
@@ -118,7 +109,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
       if (!response.ok)
         throw new Error(`Server returned code: ${response.status}`);
 
-      await this.saveOpenBoxes(address, await response.json(), this.db);
+      await this.saveOpenBoxes(address, await response.json());
     });
 
     await Promise.all(downloadPromises);
@@ -126,61 +117,38 @@ class ActivePermitsDataService extends DataService<PermitTx> {
 
   async saveOpenBoxes(
     address: string,
-    openBoxesJson: string,
-    db: IDBDatabase,
+    openBoxesJson: string
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = db.transaction(
-        [rs_OpenBoxesStoreName],
-        'readwrite',
-      );
-      const objectStore: IDBObjectStore = transaction.objectStore(
-        rs_OpenBoxesStoreName,
-      );
 
-      const boxes: OpenBoxes = {
-        address: address,
-        openBoxesJson: openBoxesJson,
-      };
 
-      const request: IDBRequest = objectStore.put(boxes);
+    const boxes: OpenBoxes = {
+      address: address,
+      openBoxesJson: openBoxesJson,
+    };
 
-      request.onsuccess = () => resolve();
-      request.onerror = (event: Event) =>
-        reject((event.target as IDBRequest).error);
-    });
+    await this.storageService.addData<unknown>(rs_OpenBoxesStoreName, [boxes] as unknown[]);
   }
 
   async getOpenBoxesMap(
-    db: IDBDatabase,
   ): Promise<Record<string, string | null> | null> {
     const openBoxesMap: Record<string, string | null> = {};
 
-    const transaction: IDBTransaction = db.transaction(
-      [rs_OpenBoxesStoreName],
-      'readonly',
-    );
-    const objectStore: IDBObjectStore = transaction.objectStore(
-      rs_OpenBoxesStoreName,
-    );
 
+    const boxes = this.storageService.getData<OpenBoxes>(rs_OpenBoxesStoreName);
     for (const [, address] of Object.entries(permitBulkAddresses)) {
       if (address) {
-        openBoxesMap[address] = await new Promise<string | null>(
-          (resolve, reject) => {
-            const request: IDBRequest = objectStore.get(address);
 
-            request.onsuccess = () => {
-              const result: OpenBoxes | undefined = request.result as
-                | OpenBoxes
-                | undefined;
 
-              resolve(JSON.stringify(result?.openBoxesJson ?? null));
-            };
-            request.onerror = (event: Event) =>
-              reject((event.target as IDBRequest).error);
-          },
-        );
+         var json = (await boxes).filter(ob => ob.address === address);
+
+         if (json.length != 0) {
+          openBoxesMap[address] = JSON.stringify(json);
+         }
+        else{
+          openBoxesMap[address] = null;
+        }
+        
+
       }
     }
     return openBoxesMap;
@@ -206,7 +174,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
   ): Promise<PermitTx[]> {
     const permits = await this.getWatcherPermits();
 
-    const openBoxesMap = await this.getOpenBoxesMap(this.db);
+    const openBoxesMap = await this.getOpenBoxesMap();
 
     let addressPermits = new Array<PermitTx>();
     if (addresses != null && addresses.length > 0) {
@@ -270,7 +238,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
         result.push(permit);
       }
     }
-    
+
 
     const seen = new Set<string>();
     const filteredResult = result.filter((r: PermitTx) => {
@@ -285,8 +253,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     address: string,
     transactions: TransactionItem[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      // Create a temporary array to hold PermitTx items before bulk insertion
+    
       const tempData: PermitTx[] = [];
 
       transactions.forEach((item: TransactionItem) => {
@@ -342,33 +309,11 @@ class ActivePermitsDataService extends DataService<PermitTx> {
         });
       });
 
-      const transaction: IDBTransaction = this.db.transaction(
-        [rs_ActivePermitTxStoreName],
-        'readwrite',
-      );
-      const objectStore: IDBObjectStore = transaction.objectStore(
-        rs_ActivePermitTxStoreName,
-      );
-
-      const putPromises = tempData.map((PermitTx: PermitTx) => {
-        return new Promise<void>((putResolve, putReject) => {
-          const request: IDBRequest = objectStore.put(PermitTx);
-          request.onsuccess = () => putResolve();
-          request.onerror = (event: Event) =>
-            putReject((event.target as IDBRequest).error);
-        });
-      });
-
-      Promise.all(putPromises)
-        .then(async () => {
-          resolve();
-        })
-        .catch(reject);
-    });
+      await this.storageService.addData(rs_ActivePermitTxStoreName, tempData);
   }
 
   override async purgeData(): Promise<void> {
-    let permitTxs = await this.getData<PermitTx>(rs_ActivePermitTxStoreName);
+    let permitTxs = await this.storageService.getData<PermitTx>(rs_ActivePermitTxStoreName);
     permitTxs = (await permitTxs).sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
@@ -388,58 +333,20 @@ class ActivePermitsDataService extends DataService<PermitTx> {
       maxDiff = now - permitTx.date.getTime();
     }
 
-    return new Promise<void>((resolve, reject) => {
-      const transaction = this.db.transaction(
-        [rs_ActivePermitTxStoreName],
-        'readwrite',
-      );
-      const objectStore = transaction.objectStore(rs_ActivePermitTxStoreName);
+    var purgePermitTxs = [];
+    for (const permitTx of permitTxs) {
+      if (
+        permitTx.date &&
+        now - new Date(permitTx.date).getTime() > maxDiff
+      ) {
+        purgePermitTxs.push(permitTx);
+      }
+    }
 
-      const request = objectStore.openCursor();
-      request.onsuccess = (event: Event) => {
-        const cursor = (event.target as IDBRequest)
-          .result as IDBCursorWithValue | null;
-        if (cursor) {
-          const permitTx = cursor.value as PermitTx;
-          if (
-            permitTx.date &&
-            now - new Date(permitTx.date).getTime() > maxDiff
-          ) {
-            cursor.delete();
-          }
-          cursor.continue();
-        } else {
-          resolve();
-        }
-      };
-      request.onerror = (event: Event) =>
-        reject((event.target as IDBRequest).error);
-    });
+    await this.storageService.deleteData(rs_ActivePermitTxStoreName, purgePermitTxs.map(pt => pt.id));
+   
   }
 
-  // Get Data by BoxId from IndexedDB
-  private async getDataById(
-    id: string,
-    objectStore: IDBObjectStore,
-  ): Promise<PermitTx | null> {
-    return new Promise((resolve, reject) => {
-      const request: IDBRequest = objectStore.get(id);
-
-      request.onsuccess = () => {
-        const result: PermitTx | undefined = request.result as
-          | PermitTx
-          | undefined;
-        if (!result || result.id !== id) {
-          resolve(null);
-        } else {
-          resolve(result);
-        }
-      };
-
-      request.onerror = (event: Event) =>
-        reject((event.target as IDBRequest).error);
-    });
-  }
 
   async getSortedPermits(): Promise<PermitTx[]> {
     const permitsPromise = await this.getWatcherPermits();

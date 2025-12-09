@@ -79,7 +79,7 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
 
   }
   public async getPerfTxs(): Promise<Record<ChainType, { chart: number }>> {
-    const perfTxsPromise = this.getData<PerfTx>(rs_PerfTxStoreName);
+    const perfTxsPromise = this.storageService.getData<PerfTx>(rs_PerfTxStoreName);
 
     console.log('Retrieving PerfTxs');
 

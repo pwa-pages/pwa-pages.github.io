@@ -4,7 +4,7 @@ class MyWatcherDataService extends DataService {
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId) {
-                const data = await this.getDataById(this.createUniqueId(input.boxId, transaction.id, address), this.db);
+                const data = await this.storageService.getDataById(rs_PermitTxStoreName, this.createUniqueId(input.boxId, transaction.id, address));
                 if (data) {
                     return data;
                 }
@@ -12,7 +12,7 @@ class MyWatcherDataService extends DataService {
         }
         for (const output of transaction.outputs) {
             if (output.boxId) {
-                const data = await this.getDataById(this.createUniqueId(output.boxId, transaction.id, address), this.db);
+                const data = await this.storageService.getDataById(rs_PermitTxStoreName, this.createUniqueId(output.boxId, transaction.id, address));
                 if (data) {
                     return data;
                 }
@@ -39,7 +39,7 @@ class MyWatcherDataService extends DataService {
         return 'permit';
     }
     async getWatcherPermits() {
-        const permitsPromise = this.getData(rs_PermitTxStoreName);
+        const permitsPromise = this.storageService.getData(rs_PermitTxStoreName);
         console.log('Retrieving watcher permits and such');
         try {
             const permits = await permitsPromise;
@@ -105,110 +105,68 @@ class MyWatcherDataService extends DataService {
         return permitInfo;
     }
     async addData(address, transactions) {
-        return new Promise((resolve, reject) => {
-            // Create a temporary array to hold PermitTx items before bulk insertion
-            const tempData = [];
-            transactions.forEach((item) => {
-                let iwids = item.inputs
-                    .flatMap((input) => input.assets)
-                    .filter((asset) => asset.amount == 2 || asset.amount == 3)
-                    .flatMap((a) => a.tokenId);
-                let owids = item.outputs
-                    .flatMap((output) => output.assets)
-                    .filter((asset) => asset.amount == 2 || asset.amount == 3)
-                    .flatMap((a) => a.tokenId);
-                const allWids = Array.from(new Set([...iwids, ...owids]));
-                item.inputs.forEach((input) => {
-                    if (this.shouldAddToDb(input.address, input.assets) === false) {
-                        return;
-                    }
-                    input.inputDate = new Date(item.timestamp);
-                    input.assets = input.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.amount == 2 || a.amount == 3);
-                    let wid;
-                    for (wid of allWids) {
-                        const PermitTx = {
-                            id: this.createUniqueId(input.boxId, item.id, address),
-                            address: input.address,
-                            date: input.inputDate,
-                            boxId: input.boxId,
-                            assets: input.assets || [],
-                            wid: wid ?? '',
-                            chainType: getChainTypeForPermitAddress(address),
-                            transactionId: item.id,
-                        };
-                        if (PermitTx.assets.length > 0) {
-                            tempData.push(PermitTx);
-                        }
-                    }
-                });
-                item.outputs.forEach((output) => {
-                    if (this.shouldAddToDb(output.address, output.assets) === false) {
-                        return;
-                    }
-                    output.outputDate = new Date(item.timestamp);
-                    output.assets = output.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.amount == 2 || a.amount == 3);
-                    output.assets.forEach((a) => {
-                        a.amount = -a.amount;
-                    });
-                    let wid;
-                    for (wid of allWids) {
-                        const PermitTx = {
-                            id: this.createUniqueId(output.boxId, item.id, address),
-                            address: output.address,
-                            date: output.outputDate,
-                            boxId: output.boxId,
-                            assets: output.assets || [],
-                            wid: wid ?? '',
-                            chainType: getChainTypeForPermitAddress(address),
-                            transactionId: item.id,
-                        };
-                        if (PermitTx.assets.length > 0) {
-                            tempData.push(PermitTx);
-                        }
-                    }
-                });
-            });
-            const transaction = this.db.transaction([rs_PermitTxStoreName], 'readwrite');
-            const objectStore = transaction.objectStore(rs_PermitTxStoreName);
-            const putPromises = tempData.map((PermitTx) => {
-                return new Promise((putResolve, putReject) => {
-                    const request = objectStore.put(PermitTx);
-                    request.onsuccess = () => putResolve();
-                    request.onerror = (event) => putReject(event.target.error);
-                });
-            });
-            Promise.all(putPromises)
-                .then(async () => {
-                /*
-      const permits = await this.getAdressPermits();
-      
-                this.eventSender.sendEvent({
-                  type: 'PermitsChanged',
-                  data: permits,
-                });
-                */
-                resolve();
-            })
-                .catch(reject);
-        });
-    }
-    // Get Data by BoxId from IndexedDB
-    async getDataById(id, db) {
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction([rs_PermitTxStoreName], 'readonly');
-            const objectStore = transaction.objectStore(rs_PermitTxStoreName);
-            const request = objectStore.get(id);
-            request.onsuccess = () => {
-                const result = request.result;
-                if (!result || result.id !== id) {
-                    resolve(null);
+        const tempData = [];
+        transactions.forEach((item) => {
+            let iwids = item.inputs
+                .flatMap((input) => input.assets)
+                .filter((asset) => asset.amount == 2 || asset.amount == 3)
+                .flatMap((a) => a.tokenId);
+            let owids = item.outputs
+                .flatMap((output) => output.assets)
+                .filter((asset) => asset.amount == 2 || asset.amount == 3)
+                .flatMap((a) => a.tokenId);
+            const allWids = Array.from(new Set([...iwids, ...owids]));
+            item.inputs.forEach((input) => {
+                if (this.shouldAddToDb(input.address, input.assets) === false) {
+                    return;
                 }
-                else {
-                    resolve(result);
+                input.inputDate = new Date(item.timestamp);
+                input.assets = input.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.amount == 2 || a.amount == 3);
+                let wid;
+                for (wid of allWids) {
+                    const PermitTx = {
+                        id: this.createUniqueId(input.boxId, item.id, address),
+                        address: input.address,
+                        date: input.inputDate,
+                        boxId: input.boxId,
+                        assets: input.assets || [],
+                        wid: wid ?? '',
+                        chainType: getChainTypeForPermitAddress(address),
+                        transactionId: item.id,
+                    };
+                    if (PermitTx.assets.length > 0) {
+                        tempData.push(PermitTx);
+                    }
                 }
-            };
-            request.onerror = (event) => reject(event.target.error);
+            });
+            item.outputs.forEach((output) => {
+                if (this.shouldAddToDb(output.address, output.assets) === false) {
+                    return;
+                }
+                output.outputDate = new Date(item.timestamp);
+                output.assets = output.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.amount == 2 || a.amount == 3);
+                output.assets.forEach((a) => {
+                    a.amount = -a.amount;
+                });
+                let wid;
+                for (wid of allWids) {
+                    const PermitTx = {
+                        id: this.createUniqueId(output.boxId, item.id, address),
+                        address: output.address,
+                        date: output.outputDate,
+                        boxId: output.boxId,
+                        assets: output.assets || [],
+                        wid: wid ?? '',
+                        chainType: getChainTypeForPermitAddress(address),
+                        transactionId: item.id,
+                    };
+                    if (PermitTx.assets.length > 0) {
+                        tempData.push(PermitTx);
+                    }
+                }
+            });
         });
+        await this.storageService.addData(rs_PermitTxStoreName, tempData);
     }
     async getSortedPermits() {
         const permitsPromise = await this.getWatcherPermits();

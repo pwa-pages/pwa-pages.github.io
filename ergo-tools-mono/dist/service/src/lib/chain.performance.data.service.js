@@ -42,7 +42,7 @@ class ChainPerformanceDataService extends DataService {
         });
     }
     async getPerfTxs() {
-        const perfTxsPromise = this.getData(rs_PerfTxStoreName);
+        const perfTxsPromise = this.storageService.getData(rs_PerfTxStoreName);
         console.log('Retrieving PerfTxs');
         try {
             let perfTxs = await perfTxsPromise;

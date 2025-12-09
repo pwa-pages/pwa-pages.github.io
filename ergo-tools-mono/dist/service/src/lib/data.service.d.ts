@@ -56,6 +56,4 @@ declare abstract class DataService<T> {
     abstract getDataType(): string;
     getMaxDownloadDateDifference(): number;
     abstract getExistingData(transaction: TransactionItem, address: string): Promise<T | null>;
-    getData<T>(storeName: string): Promise<T[]>;
-    getDataWithCursor<T>(storeName: string, filterFn?: (item: T) => boolean): Promise<T[]>;
 }

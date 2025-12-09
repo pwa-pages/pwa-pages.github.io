@@ -2,11 +2,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ActivePermitsDataService extends DataService {
     async getExistingData(transaction, address) {
-        const dbTransaction = this.db.transaction([rs_ActivePermitTxStoreName], 'readonly');
-        const objectStore = dbTransaction.objectStore(rs_ActivePermitTxStoreName);
         for (const input of transaction.inputs) {
             if (input.boxId) {
-                const data = await this.getDataById(this.createUniqueId(input.boxId, transaction.id, address), objectStore);
+                const data = await this.storageService.getDataById(rs_ActivePermitTxStoreName, this.createUniqueId(input.boxId, transaction.id, address));
                 if (data) {
                     return data;
                 }
@@ -14,7 +12,7 @@ class ActivePermitsDataService extends DataService {
         }
         for (const output of transaction.outputs) {
             if (output.boxId) {
-                const data = await this.getDataById(this.createUniqueId(output.boxId, transaction.id, address), objectStore);
+                const data = await this.storageService.getDataById(rs_ActivePermitTxStoreName, this.createUniqueId(output.boxId, transaction.id, address));
                 if (data) {
                     return data;
                 }
@@ -43,7 +41,7 @@ class ActivePermitsDataService extends DataService {
         return 204800000;
     }
     async getWatcherPermits() {
-        const permitsPromise = this.getData(rs_ActivePermitTxStoreName);
+        const permitsPromise = this.storageService.getData(rs_ActivePermitTxStoreName);
         console.log('Retrieving watcher active permits');
         try {
             const permits = await permitsPromise;
@@ -77,37 +75,29 @@ class ActivePermitsDataService extends DataService {
             const response = await fetch(url);
             if (!response.ok)
                 throw new Error(`Server returned code: ${response.status}`);
-            await this.saveOpenBoxes(address, await response.json(), this.db);
+            await this.saveOpenBoxes(address, await response.json());
         });
         await Promise.all(downloadPromises);
     }
-    async saveOpenBoxes(address, openBoxesJson, db) {
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction([rs_OpenBoxesStoreName], 'readwrite');
-            const objectStore = transaction.objectStore(rs_OpenBoxesStoreName);
-            const boxes = {
-                address: address,
-                openBoxesJson: openBoxesJson,
-            };
-            const request = objectStore.put(boxes);
-            request.onsuccess = () => resolve();
-            request.onerror = (event) => reject(event.target.error);
-        });
+    async saveOpenBoxes(address, openBoxesJson) {
+        const boxes = {
+            address: address,
+            openBoxesJson: openBoxesJson,
+        };
+        await this.storageService.addData(rs_OpenBoxesStoreName, [boxes]);
     }
-    async getOpenBoxesMap(db) {
+    async getOpenBoxesMap() {
         const openBoxesMap = {};
-        const transaction = db.transaction([rs_OpenBoxesStoreName], 'readonly');
-        const objectStore = transaction.objectStore(rs_OpenBoxesStoreName);
+        const boxes = this.storageService.getData(rs_OpenBoxesStoreName);
         for (const [, address] of Object.entries(permitBulkAddresses)) {
             if (address) {
-                openBoxesMap[address] = await new Promise((resolve, reject) => {
-                    const request = objectStore.get(address);
-                    request.onsuccess = () => {
-                        const result = request.result;
-                        resolve(JSON.stringify(result?.openBoxesJson ?? null));
-                    };
-                    request.onerror = (event) => reject(event.target.error);
-                });
+                var json = (await boxes).filter(ob => ob.address === address);
+                if (json.length != 0) {
+                    openBoxesMap[address] = JSON.stringify(json);
+                }
+                else {
+                    openBoxesMap[address] = null;
+                }
             }
         }
         return openBoxesMap;
@@ -123,7 +113,7 @@ class ActivePermitsDataService extends DataService {
     }
     async getAdressActivePermits(addresses = null) {
         const permits = await this.getWatcherPermits();
-        const openBoxesMap = await this.getOpenBoxesMap(this.db);
+        const openBoxesMap = await this.getOpenBoxesMap();
         let addressPermits = new Array();
         if (addresses != null && addresses.length > 0) {
             addressPermits = permits.filter((info) => addresses.some((addr) => addr === info.address));
@@ -177,68 +167,52 @@ class ActivePermitsDataService extends DataService {
         return filteredResult;
     }
     async addData(address, transactions) {
-        return new Promise((resolve, reject) => {
-            // Create a temporary array to hold PermitTx items before bulk insertion
-            const tempData = [];
-            transactions.forEach((item) => {
-                item.inputs.forEach((input) => {
-                    if (this.shouldAddInputToDb(input.address, input.assets) === false) {
-                        return;
-                    }
-                    input.inputDate = new Date(item.timestamp);
-                    input.assets = input.assets.filter((a) => a.tokenId != null && a.tokenId in rwtTokenIds);
-                    const PermitTx = {
-                        id: this.createUniqueId(input.boxId, item.id, address),
-                        address: input.address,
-                        date: input.inputDate,
-                        boxId: input.boxId,
-                        assets: input.assets || [],
-                        wid: '',
-                        chainType: getChainTypeForPermitAddress(address),
-                        transactionId: item.id,
-                    };
-                    tempData.push(PermitTx);
-                });
-                item.outputs.forEach((output) => {
-                    if (this.shouldAddOutputToDb(output.address) === false) {
-                        return;
-                    }
-                    output.outputDate = new Date(item.timestamp);
-                    output.assets = output.assets.filter((a) => a.tokenId != null && a.tokenId in rwtTokenIds);
-                    output.assets.forEach((a) => {
-                        a.amount = -a.amount;
-                    });
-                    const PermitTx = {
-                        id: this.createUniqueId(output.boxId, item.id, address),
-                        address: output.address,
-                        date: output.outputDate,
-                        boxId: output.boxId,
-                        assets: output.assets || [],
-                        wid: '',
-                        chainType: getChainTypeForPermitAddress(address),
-                        transactionId: item.id,
-                    };
-                    tempData.push(PermitTx);
-                });
+        const tempData = [];
+        transactions.forEach((item) => {
+            item.inputs.forEach((input) => {
+                if (this.shouldAddInputToDb(input.address, input.assets) === false) {
+                    return;
+                }
+                input.inputDate = new Date(item.timestamp);
+                input.assets = input.assets.filter((a) => a.tokenId != null && a.tokenId in rwtTokenIds);
+                const PermitTx = {
+                    id: this.createUniqueId(input.boxId, item.id, address),
+                    address: input.address,
+                    date: input.inputDate,
+                    boxId: input.boxId,
+                    assets: input.assets || [],
+                    wid: '',
+                    chainType: getChainTypeForPermitAddress(address),
+                    transactionId: item.id,
+                };
+                tempData.push(PermitTx);
             });
-            const transaction = this.db.transaction([rs_ActivePermitTxStoreName], 'readwrite');
-            const objectStore = transaction.objectStore(rs_ActivePermitTxStoreName);
-            const putPromises = tempData.map((PermitTx) => {
-                return new Promise((putResolve, putReject) => {
-                    const request = objectStore.put(PermitTx);
-                    request.onsuccess = () => putResolve();
-                    request.onerror = (event) => putReject(event.target.error);
+            item.outputs.forEach((output) => {
+                if (this.shouldAddOutputToDb(output.address) === false) {
+                    return;
+                }
+                output.outputDate = new Date(item.timestamp);
+                output.assets = output.assets.filter((a) => a.tokenId != null && a.tokenId in rwtTokenIds);
+                output.assets.forEach((a) => {
+                    a.amount = -a.amount;
                 });
+                const PermitTx = {
+                    id: this.createUniqueId(output.boxId, item.id, address),
+                    address: output.address,
+                    date: output.outputDate,
+                    boxId: output.boxId,
+                    assets: output.assets || [],
+                    wid: '',
+                    chainType: getChainTypeForPermitAddress(address),
+                    transactionId: item.id,
+                };
+                tempData.push(PermitTx);
             });
-            Promise.all(putPromises)
-                .then(async () => {
-                resolve();
-            })
-                .catch(reject);
         });
+        await this.storageService.addData(rs_ActivePermitTxStoreName, tempData);
     }
     async purgeData() {
-        let permitTxs = await this.getData(rs_ActivePermitTxStoreName);
+        let permitTxs = await this.storageService.getData(rs_ActivePermitTxStoreName);
         permitTxs = (await permitTxs).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         let permitTx = null;
         if (permitTxs.length >= rs_FullDownloadsBatchSize) {
@@ -252,43 +226,14 @@ class ActivePermitsDataService extends DataService {
         if (permitTx != null && now - permitTx.date.getTime() > maxDiff) {
             maxDiff = now - permitTx.date.getTime();
         }
-        return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction([rs_ActivePermitTxStoreName], 'readwrite');
-            const objectStore = transaction.objectStore(rs_ActivePermitTxStoreName);
-            const request = objectStore.openCursor();
-            request.onsuccess = (event) => {
-                const cursor = event.target
-                    .result;
-                if (cursor) {
-                    const permitTx = cursor.value;
-                    if (permitTx.date &&
-                        now - new Date(permitTx.date).getTime() > maxDiff) {
-                        cursor.delete();
-                    }
-                    cursor.continue();
-                }
-                else {
-                    resolve();
-                }
-            };
-            request.onerror = (event) => reject(event.target.error);
-        });
-    }
-    // Get Data by BoxId from IndexedDB
-    async getDataById(id, objectStore) {
-        return new Promise((resolve, reject) => {
-            const request = objectStore.get(id);
-            request.onsuccess = () => {
-                const result = request.result;
-                if (!result || result.id !== id) {
-                    resolve(null);
-                }
-                else {
-                    resolve(result);
-                }
-            };
-            request.onerror = (event) => reject(event.target.error);
-        });
+        var purgePermitTxs = [];
+        for (const permitTx of permitTxs) {
+            if (permitTx.date &&
+                now - new Date(permitTx.date).getTime() > maxDiff) {
+                purgePermitTxs.push(permitTx);
+            }
+        }
+        await this.storageService.deleteData(rs_ActivePermitTxStoreName, purgePermitTxs.map(pt => pt.id));
     }
     async getSortedPermits() {
         const permitsPromise = await this.getWatcherPermits();

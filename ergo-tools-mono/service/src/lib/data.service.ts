@@ -81,44 +81,4 @@ abstract class DataService<T> {
     address: string,
   ): Promise<T | null>;
 
-  async getData<T>(storeName: string): Promise<T[]> {
-    return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = this.db.transaction(
-        [storeName],
-        'readonly',
-      );
-      const objectStore: IDBObjectStore = transaction.objectStore(storeName);
-      const request: IDBRequest = objectStore.getAll();
-
-      request.onsuccess = () => resolve(request.result as T[]);
-      request.onerror = (event: Event) =>
-        reject((event.target as IDBRequest).error);
-    });
-  }
-  async getDataWithCursor<T>(
-    storeName: string,
-    filterFn?: (item: T) => boolean,
-  ): Promise<T[]> {
-    return new Promise((resolve, reject) => {
-      const results: T[] = [];
-      const transaction = this.db.transaction([storeName], 'readonly');
-      const objectStore = transaction.objectStore(storeName);
-      const request = objectStore.openCursor();
-
-      request.onsuccess = (event) => {
-        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
-        if (cursor) {
-          const value = cursor.value as T;
-          if (!filterFn || filterFn(value)) {
-            results.push(value);
-          }
-          cursor.continue();
-        } else {
-          resolve(results);
-        }
-      };
-
-      request.onerror = (event) => reject((event.target as IDBRequest).error);
-    });
-  }
 }

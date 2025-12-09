@@ -6,7 +6,7 @@ class RewardDataService extends DataService<DbInput> {
   ): Promise<DbInput | null> {
     for (const input of transaction.inputs) {
       if (input.boxId && getChainType(input.address)) {
-        const data = await this.getDataByBoxId(input.boxId, address, this.db);
+        const data = await this.getDataByBoxId(input.boxId, address);
         if (data) {
           return data;
         }
@@ -28,7 +28,7 @@ class RewardDataService extends DataService<DbInput> {
   }
 
   private async getWatcherInputs(): Promise<DbInput[]> {
-    const inputsPromise = this.getData<DbInput>(rs_InputsStoreName);
+    const inputsPromise = this.storageService.getData<DbInput>(rs_InputsStoreName);
 
     console.log('Retrieving watcher inputs and such');
 
@@ -66,109 +66,70 @@ class RewardDataService extends DataService<DbInput> {
     address: string,
     transactions: TransactionItem[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      // Create a temporary array to hold DbInput items before bulk insertion
-      const tempData: DbInput[] = [];
 
-      // Populate tempData with processed inputs
-      transactions.forEach((item: TransactionItem) => {
-        item.inputs.forEach((input: Input) => {
-          input.outputAddress = address;
-          input.inputDate = new Date(item.timestamp);
+    const tempData: DbInput[] = [];
 
-          input.assets = input.assets.filter(
-            (a) => a.tokenId == rs_RSNTokenId || a.tokenId == rs_eRSNTokenId,
-          );
+    // Populate tempData with processed inputs
+    transactions.forEach((item: TransactionItem) => {
+      item.inputs.forEach((input: Input) => {
+        input.outputAddress = address;
+        input.inputDate = new Date(item.timestamp);
 
-          input.assets.forEach((asset) => {
-            if (asset.tokenId && rs_TokenIdMap[asset.tokenId]) {
-              asset.name = rs_TokenIdMap[asset.tokenId];
-              asset.decimals = rs_RSNDecimals;
-            }
-          });
+        input.assets = input.assets.filter(
+          (a) => a.tokenId == rs_RSNTokenId || a.tokenId == rs_eRSNTokenId,
+        );
 
-          const dbInput: DbInput = {
-            outputAddress: input.outputAddress,
-            inputDate: input.inputDate,
-            boxId: input.boxId,
-            assets: input.assets || [],
-            chainType: getChainType(input.address) as ChainType,
-          };
-
-          if (dbInput.chainType && dbInput.assets.length > 0) {
-            tempData.push(dbInput);
+        input.assets.forEach((asset) => {
+          if (asset.tokenId && rs_TokenIdMap[asset.tokenId]) {
+            asset.name = rs_TokenIdMap[asset.tokenId];
+            asset.decimals = rs_RSNDecimals;
           }
         });
+
+        const dbInput: DbInput = {
+          outputAddress: input.outputAddress,
+          inputDate: input.inputDate,
+          boxId: input.boxId,
+          assets: input.assets || [],
+          chainType: getChainType(input.address) as ChainType,
+        };
+
+        if (dbInput.chainType && dbInput.assets.length > 0) {
+          tempData.push(dbInput);
+        }
       });
-
-      const transaction: IDBTransaction = this.db.transaction(
-        [rs_InputsStoreName],
-        'readwrite',
-      );
-      const objectStore: IDBObjectStore =
-        transaction.objectStore(rs_InputsStoreName);
-
-      const putPromises = tempData.map((dbInput: DbInput) => {
-        return new Promise<void>((putResolve, putReject) => {
-          const request: IDBRequest = objectStore.put(dbInput);
-          request.onsuccess = () => putResolve();
-          request.onerror = (event: Event) =>
-            putReject((event.target as IDBRequest).error);
-        });
-      });
-
-      Promise.all(putPromises)
-        .then(async () => {
-          const inputs = await this.getSortedInputs();
-
-          this.eventSender.sendEvent({
-            type: 'InputsChanged',
-            data: inputs,
-          });
-
-          this.eventSender.sendEvent({
-            type: 'AddressChartChanged',
-            data: await this.chartService.getAddressCharts(inputs),
-          });
-
-          resolve();
-        })
-        .catch(reject);
     });
+
+    await this.storageService.addData(
+      rs_InputsStoreName,
+      tempData
+    );
+
+    const inputs = await this.getSortedInputs();
+
+    this.eventSender.sendEvent({
+      type: 'InputsChanged',
+      data: inputs,
+    });
+
+    this.eventSender.sendEvent({
+      type: 'AddressChartChanged',
+      data: await this.chartService.getAddressCharts(inputs),
+    });
+
   }
 
   // Get Data by BoxId from IndexedDB
   private async getDataByBoxId(
     boxId: string,
-    addressId: string,
-    db: IDBDatabase,
+    addressId: string
   ): Promise<DbInput | null> {
-    return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = db.transaction(
-        [rs_InputsStoreName],
-        'readonly',
-      );
-      const objectStore: IDBObjectStore =
-        transaction.objectStore(rs_InputsStoreName);
-      const request: IDBRequest = objectStore.get([
-        boxId,
-        addressId,
-      ]); /* ?? objectStore.get([boxId.slice(0, 12), addressId])*/
-
-      request.onsuccess = () => {
-        const result: DbInput | undefined = request.result as
-          | DbInput
-          | undefined;
-        if (!result || result.outputAddress !== addressId) {
-          resolve(null);
-        } else {
-          resolve(result);
-        }
-      };
-
-      request.onerror = (event: Event) =>
-        reject((event.target as IDBRequest).error);
-    });
+    return await this.storageService.getDataById(
+      rs_InputsStoreName, [
+      boxId,
+      addressId,
+    ]
+    );
   }
 
   async getSortedInputs(): Promise<Input[]> {

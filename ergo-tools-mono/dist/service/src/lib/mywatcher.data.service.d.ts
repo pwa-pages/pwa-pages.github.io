@@ -9,6 +9,5 @@ declare class MyWatcherDataService extends DataService<PermitTx> {
     shouldAddToDb(address: string, assets: Asset[]): boolean;
     getAdressPermits(addresses: string[]): Promise<PermitInfo[]>;
     addData(address: string, transactions: TransactionItem[]): Promise<void>;
-    private getDataById;
     getSortedPermits(): Promise<PermitTx[]>;
 }

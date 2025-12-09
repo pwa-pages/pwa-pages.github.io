@@ -72,7 +72,7 @@ class DownloadService {
     async downloadForAddresses() {
         console.log('Start downloading for all addresses');
         try {
-            const addresses = await this.dataService.getData(rs_AddressDataStoreName);
+            const addresses = await this.dataService.storageService.getData(rs_AddressDataStoreName);
             const downloadPromises = addresses.map(async (addressObj) => {
                 await this.downloadForAddress(addressObj.address, true);
             });

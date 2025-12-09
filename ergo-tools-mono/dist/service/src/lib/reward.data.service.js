@@ -4,7 +4,7 @@ class RewardDataService extends DataService {
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId && getChainType(input.address)) {
-                const data = await this.getDataByBoxId(input.boxId, address, this.db);
+                const data = await this.getDataByBoxId(input.boxId, address);
                 if (data) {
                     return data;
                 }
@@ -22,7 +22,7 @@ class RewardDataService extends DataService {
         return 'reward';
     }
     async getWatcherInputs() {
-        const inputsPromise = this.getData(rs_InputsStoreName);
+        const inputsPromise = this.storageService.getData(rs_InputsStoreName);
         console.log('Retrieving watcher inputs and such');
         try {
             const inputs = await inputsPromise;
@@ -45,78 +45,48 @@ class RewardDataService extends DataService {
         }
     }
     async addData(address, transactions) {
-        return new Promise((resolve, reject) => {
-            // Create a temporary array to hold DbInput items before bulk insertion
-            const tempData = [];
-            // Populate tempData with processed inputs
-            transactions.forEach((item) => {
-                item.inputs.forEach((input) => {
-                    input.outputAddress = address;
-                    input.inputDate = new Date(item.timestamp);
-                    input.assets = input.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.tokenId == rs_eRSNTokenId);
-                    input.assets.forEach((asset) => {
-                        if (asset.tokenId && rs_TokenIdMap[asset.tokenId]) {
-                            asset.name = rs_TokenIdMap[asset.tokenId];
-                            asset.decimals = rs_RSNDecimals;
-                        }
-                    });
-                    const dbInput = {
-                        outputAddress: input.outputAddress,
-                        inputDate: input.inputDate,
-                        boxId: input.boxId,
-                        assets: input.assets || [],
-                        chainType: getChainType(input.address),
-                    };
-                    if (dbInput.chainType && dbInput.assets.length > 0) {
-                        tempData.push(dbInput);
+        const tempData = [];
+        // Populate tempData with processed inputs
+        transactions.forEach((item) => {
+            item.inputs.forEach((input) => {
+                input.outputAddress = address;
+                input.inputDate = new Date(item.timestamp);
+                input.assets = input.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.tokenId == rs_eRSNTokenId);
+                input.assets.forEach((asset) => {
+                    if (asset.tokenId && rs_TokenIdMap[asset.tokenId]) {
+                        asset.name = rs_TokenIdMap[asset.tokenId];
+                        asset.decimals = rs_RSNDecimals;
                     }
                 });
+                const dbInput = {
+                    outputAddress: input.outputAddress,
+                    inputDate: input.inputDate,
+                    boxId: input.boxId,
+                    assets: input.assets || [],
+                    chainType: getChainType(input.address),
+                };
+                if (dbInput.chainType && dbInput.assets.length > 0) {
+                    tempData.push(dbInput);
+                }
             });
-            const transaction = this.db.transaction([rs_InputsStoreName], 'readwrite');
-            const objectStore = transaction.objectStore(rs_InputsStoreName);
-            const putPromises = tempData.map((dbInput) => {
-                return new Promise((putResolve, putReject) => {
-                    const request = objectStore.put(dbInput);
-                    request.onsuccess = () => putResolve();
-                    request.onerror = (event) => putReject(event.target.error);
-                });
-            });
-            Promise.all(putPromises)
-                .then(async () => {
-                const inputs = await this.getSortedInputs();
-                this.eventSender.sendEvent({
-                    type: 'InputsChanged',
-                    data: inputs,
-                });
-                this.eventSender.sendEvent({
-                    type: 'AddressChartChanged',
-                    data: await this.chartService.getAddressCharts(inputs),
-                });
-                resolve();
-            })
-                .catch(reject);
+        });
+        await this.storageService.addData(rs_InputsStoreName, tempData);
+        const inputs = await this.getSortedInputs();
+        this.eventSender.sendEvent({
+            type: 'InputsChanged',
+            data: inputs,
+        });
+        this.eventSender.sendEvent({
+            type: 'AddressChartChanged',
+            data: await this.chartService.getAddressCharts(inputs),
         });
     }
     // Get Data by BoxId from IndexedDB
-    async getDataByBoxId(boxId, addressId, db) {
-        return new Promise((resolve, reject) => {
-            const transaction = db.transaction([rs_InputsStoreName], 'readonly');
-            const objectStore = transaction.objectStore(rs_InputsStoreName);
-            const request = objectStore.get([
-                boxId,
-                addressId,
-            ]); /* ?? objectStore.get([boxId.slice(0, 12), addressId])*/
-            request.onsuccess = () => {
-                const result = request.result;
-                if (!result || result.outputAddress !== addressId) {
-                    resolve(null);
-                }
-                else {
-                    resolve(result);
-                }
-            };
-            request.onerror = (event) => reject(event.target.error);
-        });
+    async getDataByBoxId(boxId, addressId) {
+        return await this.storageService.getDataById(rs_InputsStoreName, [
+            boxId,
+            addressId,
+        ]);
     }
     async getSortedInputs() {
         const inputsPromise = await this.getWatcherInputs();
