@@ -1,15 +1,16 @@
-type StoreCache = {
-    all?: any[];
-    byId?: Map<IDBValidKey | IDBKeyRange, any>;
+type StoreCache<T> = {
+    byId: Map<IDBValidKey, T>;
+    hydrated: boolean;
 };
-declare const GLOBAL_CACHE_KEY = "__StorageServiceCache_v1__";
+declare const GLOBAL_CACHE_KEY = "__StorageServiceCache_v2__";
 declare class StorageService<T> {
     db: IDBDatabase;
     private cacheMap;
     constructor(db: IDBDatabase);
     private getStoreCache;
-    getData<S = unknown>(storeName: string): Promise<T[] | S[]>;
-    getDataById(storeName: string, id: IDBValidKey | IDBKeyRange): Promise<T | null>;
-    addData<S = unknown>(storeName: string, data: T[] | S[]): Promise<void>;
-    deleteData(storeName: string, keys: IDBValidKey | IDBKeyRange | Array<IDBValidKey | IDBKeyRange>): Promise<void>;
+    private getKey;
+    getData<S>(storeName: string): Promise<T[] | S[]>;
+    getDataById(storeName: string, id: IDBValidKey): Promise<T | null>;
+    addData<S = T>(storeName: string, data: S[]): Promise<void>;
+    deleteData(storeName: string, keys: IDBValidKey | IDBValidKey[]): Promise<void>;
 }

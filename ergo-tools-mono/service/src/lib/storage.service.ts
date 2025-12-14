@@ -1,162 +1,167 @@
-type StoreCache = {
-  all?: any[];
-  byId?: Map<IDBValidKey | IDBKeyRange, any>;
+type StoreCache<T> = {
+  byId: Map<IDBValidKey, T>;
+  hydrated: boolean;
 };
 
-const GLOBAL_CACHE_KEY = '__StorageServiceCache_v1__';
+const GLOBAL_CACHE_KEY = '__StorageServiceCache_v2__';
 
 class StorageService<T> {
-  private cacheMap: Map<string, StoreCache>;
+  private cacheMap: Map<string, StoreCache<T>>;
 
   constructor(public db: IDBDatabase) {
     const globalAny = globalThis as any;
+
     if (!globalAny[GLOBAL_CACHE_KEY]) {
-      // WeakMap keyed by IDBDatabase so caches are GC-able when DB is gone
-      globalAny[GLOBAL_CACHE_KEY] = new WeakMap<IDBDatabase, Map<string, StoreCache>>();
+      globalAny[GLOBAL_CACHE_KEY] =
+        new WeakMap<IDBDatabase, Map<string, StoreCache<T>>>();
     }
-    const dbWeakMap: WeakMap<IDBDatabase, Map<string, StoreCache>> = globalAny[GLOBAL_CACHE_KEY];
+
+    const dbWeakMap: WeakMap<IDBDatabase, Map<string, StoreCache<T>>> =
+      globalAny[GLOBAL_CACHE_KEY];
+
     let m = dbWeakMap.get(db);
     if (!m) {
-      m = new Map<string, StoreCache>();
+      m = new Map();
       dbWeakMap.set(db, m);
     }
+
     this.cacheMap = m;
   }
 
-  private getStoreCache(storeName: string): StoreCache {
+  /* ------------------ INTERNAL ------------------ */
+
+  private getStoreCache(storeName: string): StoreCache<T> {
     let sc = this.cacheMap.get(storeName);
     if (!sc) {
-      sc = { byId: new Map() };
+      sc = {
+        byId: new Map<IDBValidKey, T>(),
+        hydrated: false,
+      };
       this.cacheMap.set(storeName, sc);
     }
     return sc;
   }
 
-  async getData<S = unknown>(storeName: string): Promise<T[] | S[]> {
+  private getKey(keyPath: any, item: T): IDBValidKey | undefined {
+    if (Array.isArray(keyPath)) {
+      const key = keyPath.map(kp => (item as any)[kp]);
+      return key.every(k => k !== undefined) ? key : undefined;
+    }
+    return (item as any)[keyPath];
+  }
+
+  /* ------------------ READ ALL ------------------ */
+
+  async getData<S>(storeName: string): Promise<T[] | S[]> {
     const storeCache = this.getStoreCache(storeName);
-    if (storeCache.all) {
-      // return a shallow copy to reduce accidental external mutation
-      return Promise.resolve(storeCache.all.slice() as T[] | S[]);
+
+    if (storeCache.hydrated) {
+      return Array.from(storeCache.byId.values()) as T[] | S[];
     }
 
     return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = this.db.transaction([storeName], 'readonly');
-      const objectStore: IDBObjectStore = transaction.objectStore(storeName);
-      const request: IDBRequest = objectStore.getAll();
+      const tx = this.db.transaction([storeName], 'readonly');
+      const store = tx.objectStore(storeName);
+      const request = store.getAll();
 
       request.onsuccess = () => {
-        const result = request.result as T[] | S[];
-        // cache the results
-        storeCache.all = result.slice();
-        // populate byId if possible (when keyPath is available)
-        try {
-          const keyPath = (objectStore as any).keyPath;
-          if (keyPath != null) {
-            storeCache.byId = storeCache.byId || new Map();
-            for (const item of result) {
-              let key: any;
-              if (Array.isArray(keyPath)) {
-                key = keyPath.map((kp: string) => (item as any)[kp]);
-              } else {
-                key = (item as any)[keyPath];
-              }
-              // only set if key is usable
-              if (key !== undefined) {
-                storeCache.byId.set(key, item);
-              }
-            }
-          }
-        } catch {
-          // ignore caching by id if any error occurs
+        const result = request.result as T[];
+        const keyPath = store.keyPath as any;
+
+        storeCache.byId.clear();
+
+        // Stores without keyPath cannot be cached safely
+        if (keyPath == null) {
+          storeCache.hydrated = true;
+          resolve(result as T[] | S[]);
+          return;
         }
-        resolve(result);
+
+        for (const item of result) {
+          const key = this.getKey(keyPath, item);
+          if (key !== undefined) {
+            storeCache.byId.set(key, item);
+          }
+        }
+
+        const dbSize = result.length;
+        const cacheSize = storeCache.byId.size;
+
+        console.log(
+            `Error cache sizes store "${storeName}" cache size = ${cacheSize}, db size = ${dbSize}`
+          );
+
+        storeCache.hydrated = true;
+        resolve(result as T[] | S[]);
       };
 
-      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
+      request.onerror = e =>
+        reject((e.target as IDBRequest).error);
     });
   }
 
-  public async getDataById(
+  /* ------------------ READ BY ID ------------------ */
+
+  async getDataById(
     storeName: string,
-    id: IDBValidKey | IDBKeyRange
+    id: IDBValidKey
   ): Promise<T | null> {
     const storeCache = this.getStoreCache(storeName);
-    if (storeCache.byId && storeCache.byId.has(id)) {
-      return Promise.resolve((storeCache.byId.get(id) as T) ?? null);
+
+    if (storeCache.byId.has(id)) {
+      return storeCache.byId.get(id)!;
     }
 
     return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = this.db.transaction([storeName], 'readonly');
-      const objectStore: IDBObjectStore = transaction.objectStore(storeName);
-      const request: IDBRequest = objectStore.get(id);
+      const tx = this.db.transaction([storeName], 'readonly');
+      const store = tx.objectStore(storeName);
+      const request = store.get(id);
 
       request.onsuccess = () => {
-        const result: T | undefined = request.result as T | undefined;
+        const result = request.result as T | undefined;
         if (!result) {
           resolve(null);
           return;
         }
 
-        // cache by id
-        try {
-          storeCache.byId = storeCache.byId || new Map();
-          storeCache.byId.set(id, result);
+        const keyPath = store.keyPath as any;
+        const key = keyPath ? this.getKey(keyPath, result) : id;
 
-          // if we have a cached "all" and can determine the keyPath, update the cached array
-          const keyPath = (objectStore as any).keyPath;
-          if (storeCache.all && keyPath != null) {
-            // determine key for result using keyPath
-            let itemKey: any;
-            if (Array.isArray(keyPath)) {
-              itemKey = keyPath.map((kp: string) => (result as any)[kp]);
-            } else {
-              itemKey = (result as any)[keyPath];
-            }
-            // replace existing entry with same key, otherwise push
-            if (itemKey !== undefined) {
-              const idx = storeCache.all.findIndex((it) => {
-                try {
-                  if (Array.isArray(keyPath)) {
-                    return JSON.stringify(keyPath.map((kp: string) => (it as any)[kp])) === JSON.stringify(itemKey);
-                  } else {
-                    return (it as any)[keyPath] === itemKey;
-                  }
-                } catch {
-                  return false;
-                }
-              });
-              if (idx >= 0) storeCache.all[idx] = result;
-              else storeCache.all.push(result);
-            }
+        if (key !== undefined) {
+          if (storeCache.hydrated && !storeCache.byId.has(key)) {
+            storeCache.hydrated = false;
           }
-        } catch {
-          // ignore cache updates on any error
+          storeCache.byId.set(key, result);
         }
 
-        resolve(result ?? null);
+        resolve(result);
       };
 
-      request.onerror = (event: Event) => reject((event.target as IDBRequest).error);
+      request.onerror = e =>
+        reject((e.target as IDBRequest).error);
     });
   }
 
-  async addData<S = unknown>(storeName: string, data: T[] | S[]): Promise<void> {
-    // Invalidate cache for this store to keep things simple and safe
+  /* ------------------ WRITE ------------------ */
+
+  async addData<S = T>(storeName: string, data: S[]): Promise<void> {
     this.cacheMap.delete(storeName);
 
     return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = this.db.transaction([storeName], 'readwrite');
-      const objectStore: IDBObjectStore = transaction.objectStore(storeName);
+      const tx = this.db.transaction([storeName], 'readwrite');
+      const store = tx.objectStore(storeName);
 
-      const putPromises = data.map((t: T | S) => {
-        return new Promise<void>((putResolve, putReject) => {
-          const request: IDBRequest = objectStore.put(t);
-          request.onsuccess = () => putResolve();
-          request.onerror = (event: Event) => putReject((event.target as IDBRequest).error);
-        });
-      });
-
-      Promise.all(putPromises)
+      Promise.all(
+        data.map(
+          item =>
+            new Promise<void>((res, rej) => {
+              const req = store.put(item);
+              req.onsuccess = () => res();
+              req.onerror = e =>
+                rej((e.target as IDBRequest).error);
+            })
+        )
+      )
         .then(() => resolve())
         .catch(reject);
     });
@@ -164,26 +169,26 @@ class StorageService<T> {
 
   async deleteData(
     storeName: string,
-    keys: IDBValidKey | IDBKeyRange | Array<IDBValidKey | IDBKeyRange>
+    keys: IDBValidKey | IDBValidKey[]
   ): Promise<void> {
-    // Invalidate cache for this store to keep things simple and safe
     this.cacheMap.delete(storeName);
-
-    const keysArray = Array.isArray(keys) ? keys : [keys];
+    const arr = Array.isArray(keys) ? keys : [keys];
 
     return new Promise((resolve, reject) => {
-      const transaction: IDBTransaction = this.db.transaction([storeName], 'readwrite');
-      const objectStore: IDBObjectStore = transaction.objectStore(storeName);
+      const tx = this.db.transaction([storeName], 'readwrite');
+      const store = tx.objectStore(storeName);
 
-      const deletePromises = keysArray.map((key) => {
-        return new Promise<void>((delResolve, delReject) => {
-          const request: IDBRequest = objectStore.delete(key);
-          request.onsuccess = () => delResolve();
-          request.onerror = (event: Event) => delReject((event.target as IDBRequest).error);
-        });
-      });
-
-      Promise.all(deletePromises)
+      Promise.all(
+        arr.map(
+          key =>
+            new Promise<void>((res, rej) => {
+              const req = store.delete(key);
+              req.onsuccess = () => res();
+              req.onerror = e =>
+                rej((e.target as IDBRequest).error);
+            })
+        )
+      )
         .then(() => resolve())
         .catch(reject);
     });
