@@ -1,8 +1,6 @@
 type StoreCache<T> = {
     byId: Map<IDBValidKey, T>;
-    hydrated: boolean;
 };
-declare const GLOBAL_CACHE_KEY = "__StorageServiceCache_v2__";
 declare class StorageService<T> {
     db: IDBDatabase;
     private cacheMap;

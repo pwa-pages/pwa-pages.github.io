@@ -1,42 +1,18 @@
 type StoreCache<T> = {
   byId: Map<IDBValidKey, T>;
-  hydrated: boolean;
 };
 
-const GLOBAL_CACHE_KEY = '__StorageServiceCache_v2__';
-
 class StorageService<T> {
-  private cacheMap: Map<string, StoreCache<T>>;
+  private cacheMap: Map<string, StoreCache<T>> = new Map();
 
-  constructor(public db: IDBDatabase) {
-    const globalAny = globalThis as any;
-
-    if (!globalAny[GLOBAL_CACHE_KEY]) {
-      globalAny[GLOBAL_CACHE_KEY] =
-        new WeakMap<IDBDatabase, Map<string, StoreCache<T>>>();
-    }
-
-    const dbWeakMap: WeakMap<IDBDatabase, Map<string, StoreCache<T>>> =
-      globalAny[GLOBAL_CACHE_KEY];
-
-    let m = dbWeakMap.get(db);
-    if (!m) {
-      m = new Map();
-      dbWeakMap.set(db, m);
-    }
-
-    this.cacheMap = m;
-  }
+  constructor(public db: IDBDatabase) {}
 
   /* ------------------ INTERNAL ------------------ */
 
   private getStoreCache(storeName: string): StoreCache<T> {
     let sc = this.cacheMap.get(storeName);
     if (!sc) {
-      sc = {
-        byId: new Map<IDBValidKey, T>(),
-        hydrated: false,
-      };
+      sc = { byId: new Map<IDBValidKey, T>() };
       this.cacheMap.set(storeName, sc);
     }
     return sc;
@@ -55,7 +31,7 @@ class StorageService<T> {
   async getData<S>(storeName: string): Promise<T[] | S[]> {
     const storeCache = this.getStoreCache(storeName);
 
-    if (storeCache.hydrated) {
+    if (storeCache.byId.size > 0) {
       return Array.from(storeCache.byId.values()) as T[] | S[];
     }
 
@@ -69,29 +45,15 @@ class StorageService<T> {
         const keyPath = store.keyPath as any;
 
         storeCache.byId.clear();
-
-        // Stores without keyPath cannot be cached safely
-        if (keyPath == null) {
-          storeCache.hydrated = true;
-          resolve(result as T[] | S[]);
-          return;
-        }
-
-        for (const item of result) {
-          const key = this.getKey(keyPath, item);
-          if (key !== undefined) {
-            storeCache.byId.set(key, item);
+        if (keyPath != null) {
+          for (const item of result) {
+            const key = this.getKey(keyPath, item);
+            if (key !== undefined) {
+              storeCache.byId.set(key, item);
+            }
           }
         }
 
-        const dbSize = result.length;
-        const cacheSize = storeCache.byId.size;
-
-        console.log(
-            `Error cache sizes store "${storeName}" cache size = ${cacheSize}, db size = ${dbSize}`
-          );
-
-        storeCache.hydrated = true;
         resolve(result as T[] | S[]);
       };
 
@@ -102,10 +64,7 @@ class StorageService<T> {
 
   /* ------------------ READ BY ID ------------------ */
 
-  async getDataById(
-    storeName: string,
-    id: IDBValidKey
-  ): Promise<T | null> {
+  async getDataById(storeName: string, id: IDBValidKey): Promise<T | null> {
     const storeCache = this.getStoreCache(storeName);
 
     if (storeCache.byId.has(id)) {
@@ -128,9 +87,6 @@ class StorageService<T> {
         const key = keyPath ? this.getKey(keyPath, result) : id;
 
         if (key !== undefined) {
-          if (storeCache.hydrated && !storeCache.byId.has(key)) {
-            storeCache.hydrated = false;
-          }
           storeCache.byId.set(key, result);
         }
 
@@ -145,7 +101,8 @@ class StorageService<T> {
   /* ------------------ WRITE ------------------ */
 
   async addData<S = T>(storeName: string, data: S[]): Promise<void> {
-    this.cacheMap.delete(storeName);
+    const storeCache = this.getStoreCache(storeName);
+    storeCache.byId.clear();
 
     return new Promise((resolve, reject) => {
       const tx = this.db.transaction([storeName], 'readwrite');
@@ -167,11 +124,10 @@ class StorageService<T> {
     });
   }
 
-  async deleteData(
-    storeName: string,
-    keys: IDBValidKey | IDBValidKey[]
-  ): Promise<void> {
-    this.cacheMap.delete(storeName);
+  async deleteData(storeName: string, keys: IDBValidKey | IDBValidKey[]): Promise<void> {
+    const storeCache = this.getStoreCache(storeName);
+    storeCache.byId.clear();
+
     const arr = Array.isArray(keys) ? keys : [keys];
 
     return new Promise((resolve, reject) => {

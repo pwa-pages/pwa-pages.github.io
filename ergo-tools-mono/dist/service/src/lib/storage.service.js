@@ -1,29 +1,14 @@
 "use strict";
-const GLOBAL_CACHE_KEY = '__StorageServiceCache_v2__';
 class StorageService {
     constructor(db) {
         this.db = db;
-        const globalAny = globalThis;
-        if (!globalAny[GLOBAL_CACHE_KEY]) {
-            globalAny[GLOBAL_CACHE_KEY] =
-                new WeakMap();
-        }
-        const dbWeakMap = globalAny[GLOBAL_CACHE_KEY];
-        let m = dbWeakMap.get(db);
-        if (!m) {
-            m = new Map();
-            dbWeakMap.set(db, m);
-        }
-        this.cacheMap = m;
+        this.cacheMap = new Map();
     }
     /* ------------------ INTERNAL ------------------ */
     getStoreCache(storeName) {
         let sc = this.cacheMap.get(storeName);
         if (!sc) {
-            sc = {
-                byId: new Map(),
-                hydrated: false,
-            };
+            sc = { byId: new Map() };
             this.cacheMap.set(storeName, sc);
         }
         return sc;
@@ -38,7 +23,7 @@ class StorageService {
     /* ------------------ READ ALL ------------------ */
     async getData(storeName) {
         const storeCache = this.getStoreCache(storeName);
-        if (storeCache.hydrated) {
+        if (storeCache.byId.size > 0) {
             return Array.from(storeCache.byId.values());
         }
         return new Promise((resolve, reject) => {
@@ -49,22 +34,14 @@ class StorageService {
                 const result = request.result;
                 const keyPath = store.keyPath;
                 storeCache.byId.clear();
-                // Stores without keyPath cannot be cached safely
-                if (keyPath == null) {
-                    storeCache.hydrated = true;
-                    resolve(result);
-                    return;
-                }
-                for (const item of result) {
-                    const key = this.getKey(keyPath, item);
-                    if (key !== undefined) {
-                        storeCache.byId.set(key, item);
+                if (keyPath != null) {
+                    for (const item of result) {
+                        const key = this.getKey(keyPath, item);
+                        if (key !== undefined) {
+                            storeCache.byId.set(key, item);
+                        }
                     }
                 }
-                const dbSize = result.length;
-                const cacheSize = storeCache.byId.size;
-                console.log(`Error cache sizes store "${storeName}" cache size = ${cacheSize}, db size = ${dbSize}`);
-                storeCache.hydrated = true;
                 resolve(result);
             };
             request.onerror = e => reject(e.target.error);
@@ -89,9 +66,6 @@ class StorageService {
                 const keyPath = store.keyPath;
                 const key = keyPath ? this.getKey(keyPath, result) : id;
                 if (key !== undefined) {
-                    if (storeCache.hydrated && !storeCache.byId.has(key)) {
-                        storeCache.hydrated = false;
-                    }
                     storeCache.byId.set(key, result);
                 }
                 resolve(result);
@@ -101,7 +75,8 @@ class StorageService {
     }
     /* ------------------ WRITE ------------------ */
     async addData(storeName, data) {
-        this.cacheMap.delete(storeName);
+        const storeCache = this.getStoreCache(storeName);
+        storeCache.byId.clear();
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction([storeName], 'readwrite');
             const store = tx.objectStore(storeName);
@@ -115,7 +90,8 @@ class StorageService {
         });
     }
     async deleteData(storeName, keys) {
-        this.cacheMap.delete(storeName);
+        const storeCache = this.getStoreCache(storeName);
+        storeCache.byId.clear();
         const arr = Array.isArray(keys) ? keys : [keys];
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction([storeName], 'readwrite');
