@@ -38,11 +38,15 @@ class StorageService<T> {
 
     if (key === undefined) return undefined;
 
-    if (Array.isArray(key)) return JSON.stringify(key);
+    if (Array.isArray(key)) {
+      return ([] as any[]).concat(key).join('|');
+    }
+
     if (key instanceof Date) return key.getTime();
 
     return key;
   }
+
 
   /* ------------------ READ ALL ------------------ */
 

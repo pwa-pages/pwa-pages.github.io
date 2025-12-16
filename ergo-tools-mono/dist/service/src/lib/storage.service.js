@@ -33,8 +33,9 @@ class StorageService {
         }
         if (key === undefined)
             return undefined;
-        if (Array.isArray(key))
-            return JSON.stringify(key);
+        if (Array.isArray(key)) {
+            return [].concat(key).join('|');
+        }
         if (key instanceof Date)
             return key.getTime();
         return key;
