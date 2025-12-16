@@ -280,84 +280,131 @@ class DataService {
 }
 "use strict";
 class StorageService {
+  // Use globalThis for shared cache across all instances
+  static getCacheMap() {
+    if (!globalThis.__storageCacheMap) {
+      globalThis.__storageCacheMap = /* @__PURE__ */ new Map();
+    }
+    return globalThis.__storageCacheMap;
+  }
   constructor(db) {
     this.db = db;
-    this.cacheMap = /* @__PURE__ */ new Map();
   }
+  /* ------------------ INTERNAL ------------------ */
   getStoreCache(storeName) {
-    let sc = this.cacheMap.get(storeName);
+    const cacheMap = StorageService.getCacheMap();
+    let sc = cacheMap.get(storeName);
     if (!sc) {
-      sc = { byId: /* @__PURE__ */ new Map(), loaded: false };
-      this.cacheMap.set(storeName, sc);
+      sc = { byId: /* @__PURE__ */ new Map() };
+      cacheMap.set(storeName, sc);
     }
     return sc;
   }
   getKey(keyPath, item) {
+    let key;
     if (Array.isArray(keyPath)) {
-      const key = keyPath.map((kp) => item[kp]);
-      return key.every((k) => k !== void 0) ? key : void 0;
+      const parts = keyPath.map((kp) => item[kp]);
+      if (parts.some((p) => p === void 0))
+        return void 0;
+      key = parts;
+    } else {
+      key = item[keyPath];
     }
-    return item[keyPath];
+    if (key === void 0)
+      return void 0;
+    if (Array.isArray(key))
+      return JSON.stringify(key);
+    if (key instanceof Date)
+      return key.getTime();
+    return key;
   }
-  // Load cache from DB if not loaded
-  async ensureCache(storeName) {
-    const storeCache = this.getStoreCache(storeName);
-    if (!storeCache.loaded) {
-      const tx = this.db.transaction([storeName], "readonly");
-      const store = tx.objectStore(storeName);
-      const allItems = await new Promise((resolve, reject) => {
-        const req = store.getAll();
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
-      });
-      const keyPath = store.keyPath;
-      for (const item of allItems) {
-        const key = keyPath ? this.getKey(keyPath, item) : void 0;
-        if (key !== void 0)
-          storeCache.byId.set(key, item);
-      }
-      storeCache.loaded = true;
-    }
-    return storeCache;
-  }
+  /* ------------------ READ ALL ------------------ */
   async getData(storeName) {
-    const storeCache = await this.ensureCache(storeName);
-    return Array.from(storeCache.byId.values());
-  }
-  async getDataById(storeName, id) {
-    const storeCache = await this.ensureCache(storeName);
-    return storeCache.byId.get(id) ?? null;
-  }
-  async addData(storeName, data) {
-    const storeCache = await this.ensureCache(storeName);
-    const tx = this.db.transaction([storeName], "readwrite");
-    const store = tx.objectStore(storeName);
-    for (const item of data) {
-      const keyPath = store.keyPath;
-      const key = keyPath ? this.getKey(keyPath, item) : void 0;
-      if (key !== void 0)
-        storeCache.byId.set(key, item);
-      store.put(item);
+    const storeCache = this.getStoreCache(storeName);
+    if (storeCache.byId.size > 0) {
+      return Array.from(storeCache.byId.values());
     }
     return new Promise((resolve, reject) => {
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => reject(tx.error);
-      tx.onabort = () => reject(tx.error);
+      const tx = this.db.transaction([storeName], "readonly");
+      const store = tx.objectStore(storeName);
+      const request = store.getAll();
+      request.onsuccess = () => {
+        const result = request.result;
+        const keyPath = store.keyPath;
+        storeCache.byId.clear();
+        if (keyPath != null) {
+          for (const item of result) {
+            const key = this.getKey(keyPath, item);
+            if (key !== void 0) {
+              storeCache.byId.set(key, item);
+            }
+          }
+        }
+        resolve(result);
+      };
+      request.onerror = (e) => reject(e.target.error);
+    });
+  }
+  /* ------------------ READ BY ID ------------------ */
+  async getDataById(storeName, id) {
+    const storeCache = this.getStoreCache(storeName);
+    if (storeCache.byId.has(id)) {
+      return storeCache.byId.get(id);
+    }
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction([storeName], "readonly");
+      const store = tx.objectStore(storeName);
+      const request = store.get(id);
+      request.onsuccess = () => {
+        const result = request.result;
+        if (!result) {
+          resolve(null);
+          return;
+        }
+        const keyPath = store.keyPath;
+        const key = keyPath ? this.getKey(keyPath, result) : id;
+        if (key !== void 0) {
+          storeCache.byId.set(key, result);
+        }
+        resolve(result);
+      };
+      request.onerror = (e) => reject(e.target.error);
+    });
+  }
+  /* ------------------ WRITE ------------------ */
+  async addData(storeName, data) {
+    const storeCache = this.getStoreCache(storeName);
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction([storeName], "readwrite");
+      const store = tx.objectStore(storeName);
+      const keyPath = store.keyPath;
+      Promise.all(data.map((item) => new Promise((res, rej) => {
+        const req = store.put(item);
+        req.onsuccess = () => {
+          res();
+          const key = this.getKey(keyPath, item);
+          if (key !== void 0) {
+            storeCache.byId.set(key, item);
+          }
+        };
+        req.onerror = (e) => rej(e.target.error);
+      }))).then(() => resolve()).catch(reject);
     });
   }
   async deleteData(storeName, keys) {
-    const storeCache = await this.ensureCache(storeName);
+    const storeCache = this.getStoreCache(storeName);
     const arr = Array.isArray(keys) ? keys : [keys];
-    for (const key of arr)
-      storeCache.byId.delete(key);
-    const tx = this.db.transaction([storeName], "readwrite");
-    const store = tx.objectStore(storeName);
-    for (const key of arr)
-      store.delete(key);
     return new Promise((resolve, reject) => {
-      tx.oncomplete = () => resolve();
-      tx.onerror = () => reject(tx.error);
-      tx.onabort = () => reject(tx.error);
+      const tx = this.db.transaction([storeName], "readwrite");
+      const store = tx.objectStore(storeName);
+      Promise.all(arr.map((key) => new Promise((res, rej) => {
+        const req = store.delete(key);
+        req.onsuccess = () => {
+          storeCache.byId.delete(key);
+          res();
+        };
+        req.onerror = (e) => rej(e.target.error);
+      }))).then(() => resolve()).catch(reject);
     });
   }
 }
