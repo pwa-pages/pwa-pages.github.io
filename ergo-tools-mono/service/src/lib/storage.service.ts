@@ -3,27 +3,45 @@ type StoreCache<T> = {
 };
 
 class StorageService<T> {
-  private cacheMap: Map<string, StoreCache<T>> = new Map();
+  // Use globalThis for shared cache across all instances
+  private static getCacheMap<T>(): Map<string, StoreCache<T>> {
+    if (!(globalThis as any).__storageCacheMap) {
+      (globalThis as any).__storageCacheMap = new Map<string, StoreCache<T>>();
+    }
+    return (globalThis as any).__storageCacheMap;
+  }
 
-  constructor(public db: IDBDatabase) {}
+  constructor(public db: IDBDatabase) { }
 
   /* ------------------ INTERNAL ------------------ */
 
-  private getStoreCache(storeName: string): StoreCache<T> {
-    let sc = this.cacheMap.get(storeName);
+  private getStoreCache<S>(storeName: string): StoreCache<T | S> {
+    const cacheMap = StorageService.getCacheMap<T | S>();
+    let sc = cacheMap.get(storeName);
     if (!sc) {
-      sc = { byId: new Map<IDBValidKey, T>() };
-      this.cacheMap.set(storeName, sc);
+      sc = { byId: new Map<IDBValidKey, T | S>() };
+      cacheMap.set(storeName, sc);
     }
     return sc;
   }
 
-  private getKey(keyPath: any, item: T): IDBValidKey | undefined {
+  private getKey<S>(keyPath: any, item: T | S): IDBValidKey | undefined {
+    let key: IDBValidKey | undefined;
+
     if (Array.isArray(keyPath)) {
-      const key = keyPath.map(kp => (item as any)[kp]);
-      return key.every(k => k !== undefined) ? key : undefined;
+      const parts = keyPath.map(kp => (item as any)[kp]);
+      if (parts.some(p => p === undefined)) return undefined;
+      key = parts;
+    } else {
+      key = (item as any)[keyPath];
     }
-    return (item as any)[keyPath];
+
+    if (key === undefined) return undefined;
+
+    if (Array.isArray(key)) return JSON.stringify(key);
+    if (key instanceof Date) return key.getTime();
+
+    return key;
   }
 
   /* ------------------ READ ALL ------------------ */
@@ -57,15 +75,14 @@ class StorageService<T> {
         resolve(result as T[] | S[]);
       };
 
-      request.onerror = e =>
-        reject((e.target as IDBRequest).error);
+      request.onerror = e => reject((e.target as IDBRequest).error);
     });
   }
 
   /* ------------------ READ BY ID ------------------ */
 
   async getDataById(storeName: string, id: IDBValidKey): Promise<T | null> {
-    const storeCache = this.getStoreCache(storeName);
+    const storeCache = this.getStoreCache<T>(storeName);
 
     if (storeCache.byId.has(id)) {
       return storeCache.byId.get(id)!;
@@ -93,8 +110,7 @@ class StorageService<T> {
         resolve(result);
       };
 
-      request.onerror = e =>
-        reject((e.target as IDBRequest).error);
+      request.onerror = e => reject((e.target as IDBRequest).error);
     });
   }
 
@@ -102,20 +118,25 @@ class StorageService<T> {
 
   async addData<S = T>(storeName: string, data: S[]): Promise<void> {
     const storeCache = this.getStoreCache(storeName);
-    storeCache.byId.clear();
 
     return new Promise((resolve, reject) => {
       const tx = this.db.transaction([storeName], 'readwrite');
       const store = tx.objectStore(storeName);
+      const keyPath = store.keyPath as any;
 
       Promise.all(
         data.map(
           item =>
             new Promise<void>((res, rej) => {
               const req = store.put(item);
-              req.onsuccess = () => res();
-              req.onerror = e =>
-                rej((e.target as IDBRequest).error);
+              req.onsuccess = () => {
+                res();
+                const key = this.getKey<S>(keyPath, item);
+                if (key !== undefined) {
+                  storeCache.byId.set(key, item);
+                }
+              };
+              req.onerror = e => rej((e.target as IDBRequest).error);
             })
         )
       )
@@ -126,8 +147,6 @@ class StorageService<T> {
 
   async deleteData(storeName: string, keys: IDBValidKey | IDBValidKey[]): Promise<void> {
     const storeCache = this.getStoreCache(storeName);
-    storeCache.byId.clear();
-
     const arr = Array.isArray(keys) ? keys : [keys];
 
     return new Promise((resolve, reject) => {
@@ -139,9 +158,11 @@ class StorageService<T> {
           key =>
             new Promise<void>((res, rej) => {
               const req = store.delete(key);
-              req.onsuccess = () => res();
-              req.onerror = e =>
-                rej((e.target as IDBRequest).error);
+              req.onsuccess = () => {
+                storeCache.byId.delete(key);
+                res();
+              };
+              req.onerror = e => rej((e.target as IDBRequest).error);
             })
         )
       )
@@ -150,3 +171,4 @@ class StorageService<T> {
     });
   }
 }
+

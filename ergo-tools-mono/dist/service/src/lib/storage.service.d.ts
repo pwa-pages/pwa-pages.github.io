@@ -3,7 +3,7 @@ type StoreCache<T> = {
 };
 declare class StorageService<T> {
     db: IDBDatabase;
-    private cacheMap;
+    private static getCacheMap;
     constructor(db: IDBDatabase);
     private getStoreCache;
     private getKey;

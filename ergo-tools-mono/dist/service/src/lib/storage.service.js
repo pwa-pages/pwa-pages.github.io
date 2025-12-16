@@ -1,24 +1,43 @@
 "use strict";
 class StorageService {
+    // Use globalThis for shared cache across all instances
+    static getCacheMap() {
+        if (!globalThis.__storageCacheMap) {
+            globalThis.__storageCacheMap = new Map();
+        }
+        return globalThis.__storageCacheMap;
+    }
     constructor(db) {
         this.db = db;
-        this.cacheMap = new Map();
     }
     /* ------------------ INTERNAL ------------------ */
     getStoreCache(storeName) {
-        let sc = this.cacheMap.get(storeName);
+        const cacheMap = StorageService.getCacheMap();
+        let sc = cacheMap.get(storeName);
         if (!sc) {
             sc = { byId: new Map() };
-            this.cacheMap.set(storeName, sc);
+            cacheMap.set(storeName, sc);
         }
         return sc;
     }
     getKey(keyPath, item) {
+        let key;
         if (Array.isArray(keyPath)) {
-            const key = keyPath.map(kp => item[kp]);
-            return key.every(k => k !== undefined) ? key : undefined;
+            const parts = keyPath.map(kp => item[kp]);
+            if (parts.some(p => p === undefined))
+                return undefined;
+            key = parts;
         }
-        return item[keyPath];
+        else {
+            key = item[keyPath];
+        }
+        if (key === undefined)
+            return undefined;
+        if (Array.isArray(key))
+            return JSON.stringify(key);
+        if (key instanceof Date)
+            return key.getTime();
+        return key;
     }
     /* ------------------ READ ALL ------------------ */
     async getData(storeName) {
@@ -76,13 +95,19 @@ class StorageService {
     /* ------------------ WRITE ------------------ */
     async addData(storeName, data) {
         const storeCache = this.getStoreCache(storeName);
-        storeCache.byId.clear();
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction([storeName], 'readwrite');
             const store = tx.objectStore(storeName);
+            const keyPath = store.keyPath;
             Promise.all(data.map(item => new Promise((res, rej) => {
                 const req = store.put(item);
-                req.onsuccess = () => res();
+                req.onsuccess = () => {
+                    res();
+                    const key = this.getKey(keyPath, item);
+                    if (key !== undefined) {
+                        storeCache.byId.set(key, item);
+                    }
+                };
                 req.onerror = e => rej(e.target.error);
             })))
                 .then(() => resolve())
@@ -91,14 +116,16 @@ class StorageService {
     }
     async deleteData(storeName, keys) {
         const storeCache = this.getStoreCache(storeName);
-        storeCache.byId.clear();
         const arr = Array.isArray(keys) ? keys : [keys];
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction([storeName], 'readwrite');
             const store = tx.objectStore(storeName);
             Promise.all(arr.map(key => new Promise((res, rej) => {
                 const req = store.delete(key);
-                req.onsuccess = () => res();
+                req.onsuccess = () => {
+                    storeCache.byId.delete(key);
+                    res();
+                };
                 req.onerror = e => rej(e.target.error);
             })))
                 .then(() => resolve())
