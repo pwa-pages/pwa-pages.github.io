@@ -58,6 +58,9 @@ class StorageService<T> {
     }
 
     return new Promise((resolve, reject) => {
+      const start = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+      const label = `StorageService:getData(${storeName})`;
+
       const tx = this.db.transaction([storeName], 'readonly');
       const store = tx.objectStore(storeName);
       const request = store.getAll();
@@ -75,6 +78,10 @@ class StorageService<T> {
             }
           }
         }
+
+        const end = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+        const duration = Math.round(end - start);
+        console.log(`${label} - loaded ${result.length} items into cache in ${duration}ms`);
 
         resolve(result as T[] | S[]);
       };
