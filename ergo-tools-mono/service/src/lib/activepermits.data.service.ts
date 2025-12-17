@@ -139,15 +139,15 @@ class ActivePermitsDataService extends DataService<PermitTx> {
       if (address) {
 
 
-         var json = (await boxes).filter(ob => ob.address === address);
+        var json = (await boxes).filter(ob => ob.address === address);
 
-         if (json.length != 0) {
+        if (json.length != 0) {
           openBoxesMap[address] = JSON.stringify(json);
-         }
-        else{
+        }
+        else {
           openBoxesMap[address] = null;
         }
-        
+
 
       }
     }
@@ -253,63 +253,74 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     address: string,
     transactions: TransactionItem[]
   ): Promise<void> {
-    
-      const tempData: PermitTx[] = [];
 
-      transactions.forEach((item: TransactionItem) => {
-        item.inputs.forEach((input: Input) => {
-          if (this.shouldAddInputToDb(input.address, input.assets) === false) {
-            return;
-          }
-          input.inputDate = new Date(item.timestamp);
+    const tempData: PermitTx[] = [];
+    const now = Date.now();
+    let maxDiff = this.getMaxDownloadDateDifference();
 
-          input.assets = input.assets.filter(
-            (a) => a.tokenId != null && a.tokenId in rwtTokenIds,
-          );
+    transactions.forEach((item: TransactionItem) => {
+      item.inputs.forEach((input: Input) => {
+        if (this.shouldAddInputToDb(input.address, input.assets) === false) {
+          return;
+        }
+        input.inputDate = new Date(item.timestamp);
 
-          const PermitTx: PermitTx = {
-            id: this.createUniqueId(input.boxId, item.id, address),
-            address: input.address,
-            date: input.inputDate,
-            boxId: input.boxId,
-            assets: input.assets || [],
-            wid: '',
-            chainType: getChainTypeForPermitAddress(address) as ChainType,
-            transactionId: item.id,
-          };
+        input.assets = input.assets.filter(
+          (a) => a.tokenId != null && a.tokenId in rwtTokenIds,
+        );
 
-          tempData.push(PermitTx);
-        });
+        const permitTx: PermitTx = {
+          id: this.createUniqueId(input.boxId, item.id, address),
+          address: input.address,
+          date: input.inputDate,
+          boxId: input.boxId,
+          assets: input.assets || [],
+          wid: '',
+          chainType: getChainTypeForPermitAddress(address) as ChainType,
+          transactionId: item.id,
+        };
 
-        item.outputs.forEach((output: Output) => {
-          if (this.shouldAddOutputToDb(output.address) === false) {
-            return;
-          }
-          output.outputDate = new Date(item.timestamp);
-
-          output.assets = output.assets.filter(
-            (a) => a.tokenId != null && a.tokenId in rwtTokenIds,
-          );
-          output.assets.forEach((a) => {
-            a.amount = -a.amount;
-          });
-
-          const PermitTx: PermitTx = {
-            id: this.createUniqueId(output.boxId, item.id, address),
-            address: output.address,
-            date: output.outputDate,
-            boxId: output.boxId,
-            assets: output.assets || [],
-            wid: '',
-            chainType: getChainTypeForPermitAddress(address) as ChainType,
-            transactionId: item.id,
-          };
-
-          tempData.push(PermitTx);
-        });
+        if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {
+          tempData.push(permitTx);
+        }
       });
 
-      await this.storageService.addData(rs_ActivePermitTxStoreName, tempData);
+      item.outputs.forEach((output: Output) => {
+        if (this.shouldAddOutputToDb(output.address) === false) {
+          return;
+        }
+        output.outputDate = new Date(item.timestamp);
+
+        output.assets = output.assets.filter(
+          (a) => a.tokenId != null && a.tokenId in rwtTokenIds,
+        );
+        output.assets.forEach((a) => {
+          a.amount = -a.amount;
+        });
+
+        const permitTx: PermitTx = {
+          id: this.createUniqueId(output.boxId, item.id, address),
+          address: output.address,
+          date: output.outputDate,
+          boxId: output.boxId,
+          assets: output.assets || [],
+          wid: '',
+          chainType: getChainTypeForPermitAddress(address) as ChainType,
+          transactionId: item.id,
+        };
+
+        
+
+
+        if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {
+          tempData.push(permitTx);
+        }
+
+
+      });
+    });
+
+    await this.storageService.addData(rs_ActivePermitTxStoreName, tempData);
   }
 
   override async purgeData(): Promise<void> {
@@ -344,7 +355,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     }
 
     await this.storageService.deleteData(rs_ActivePermitTxStoreName, purgePermitTxs.map(pt => pt.id));
-   
+
   }
 
 

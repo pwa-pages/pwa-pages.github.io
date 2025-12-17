@@ -168,6 +168,8 @@ class ActivePermitsDataService extends DataService {
     }
     async addData(address, transactions) {
         const tempData = [];
+        const now = Date.now();
+        let maxDiff = this.getMaxDownloadDateDifference();
         transactions.forEach((item) => {
             item.inputs.forEach((input) => {
                 if (this.shouldAddInputToDb(input.address, input.assets) === false) {
@@ -175,7 +177,7 @@ class ActivePermitsDataService extends DataService {
                 }
                 input.inputDate = new Date(item.timestamp);
                 input.assets = input.assets.filter((a) => a.tokenId != null && a.tokenId in rwtTokenIds);
-                const PermitTx = {
+                const permitTx = {
                     id: this.createUniqueId(input.boxId, item.id, address),
                     address: input.address,
                     date: input.inputDate,
@@ -185,7 +187,9 @@ class ActivePermitsDataService extends DataService {
                     chainType: getChainTypeForPermitAddress(address),
                     transactionId: item.id,
                 };
-                tempData.push(PermitTx);
+                if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {
+                    tempData.push(permitTx);
+                }
             });
             item.outputs.forEach((output) => {
                 if (this.shouldAddOutputToDb(output.address) === false) {
@@ -196,7 +200,7 @@ class ActivePermitsDataService extends DataService {
                 output.assets.forEach((a) => {
                     a.amount = -a.amount;
                 });
-                const PermitTx = {
+                const permitTx = {
                     id: this.createUniqueId(output.boxId, item.id, address),
                     address: output.address,
                     date: output.outputDate,
@@ -206,7 +210,9 @@ class ActivePermitsDataService extends DataService {
                     chainType: getChainTypeForPermitAddress(address),
                     transactionId: item.id,
                 };
-                tempData.push(PermitTx);
+                if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {
+                    tempData.push(permitTx);
+                }
             });
         });
         await this.storageService.addData(rs_ActivePermitTxStoreName, tempData);

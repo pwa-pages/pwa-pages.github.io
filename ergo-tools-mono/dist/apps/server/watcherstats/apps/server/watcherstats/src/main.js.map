@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../../../apps/server/watcherstats/src/main.ts"],
+  "sourcesContent": ["\nconsole.log('Hello World');\n\n"],
+  "mappings": ";AACA,QAAQ,IAAI,aAAa;",
+  "names": []
+}

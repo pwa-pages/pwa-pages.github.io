@@ -42,3 +42,4 @@ function isFile(s) {
   }
 }
 module.exports = require("./apps/server/watcherstats/src/main.js");
+//# sourceMappingURL=main.js.map
