@@ -56,9 +56,9 @@ interface Output {
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 abstract class DataService<T> {
-  public storageService: StorageService<T>;
+  public storageService: IStorageService<T>;
   constructor(public db: IDBDatabase) {
-    this.storageService = new StorageService<T>(db);
+    this.storageService = new IDBDatabaseStorageService<T>(db);
   }
 
   abstract addData(

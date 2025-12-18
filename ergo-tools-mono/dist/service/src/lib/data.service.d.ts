@@ -49,7 +49,7 @@ interface Output {
 }
 declare abstract class DataService<T> {
     db: IDBDatabase;
-    storageService: StorageService<T>;
+    storageService: IStorageService<T>;
     constructor(db: IDBDatabase);
     abstract addData(address: string, transactions: TransactionItem[]): Promise<void>;
     purgeData(): Promise<void>;

@@ -30,6 +30,12 @@ interface DateNumberPoint {
     x: Date;
     y: number;
 }
+interface IStorageService<T> {
+    getData<S = T>(storeName: string): Promise<T[] | S[]>;
+    getDataById(storeName: string, id: IDBValidKey): Promise<T | null>;
+    addData<S = T>(storeName: string, data: S[]): Promise<void>;
+    deleteData(storeName: string, keys: IDBValidKey | IDBValidKey[]): Promise<void>;
+}
 declare enum Period {
     Day = "Day",
     Week = "Week",

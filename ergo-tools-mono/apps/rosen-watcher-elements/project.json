@@ -29,7 +29,6 @@
           "dist/service/src/lib/chain.service.js",
           "dist/service/src/lib/constants.js",
           "dist/service/src/lib/data.service.js",
-          "dist/service/src/lib/storage.service.js",
           "dist/service/src/lib/chain.performance.data.service.js",
           "dist/service/src/lib/reward.data.service.js",
           "dist/service/src/lib/chart.service.js",
@@ -37,7 +36,9 @@
           "dist/service/src/lib/process.event.service.js",
           "dist/service/src/lib/mywatcher.data.service.js",
           "dist/service/src/lib/activepermits.data.service.js",
-          "dist/service/src/lib/download.status.indexeddb.service.js"
+          "dist/service/src/lib/download.status.indexeddb.service.js",
+          "dist/service/src/lib/i-db-databasestorage.service.js",
+          "dist/service/src/lib/memory.storage.service.js"
         ]
       },
       "configurations": {
