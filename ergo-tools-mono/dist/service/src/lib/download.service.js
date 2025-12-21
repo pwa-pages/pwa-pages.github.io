@@ -116,7 +116,7 @@ class DownloadService {
             if (!result.transactions ||
                 result.transactions.length === 0 ||
                 offset > 100000) {
-                await this.downloadStatusIndexedDbService.setDownloadStatus(address, 'true');
+                await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
                 console.log(this.busyCounter);
                 return;
             }
@@ -131,7 +131,7 @@ class DownloadService {
                 await this.downloadAllForAddress(address, offset + this.downloadFullSize, useNode);
             }
             else {
-                await this.downloadStatusIndexedDbService.setDownloadStatus(address, 'true');
+                await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
             }
         }
         catch (e) {
@@ -164,12 +164,12 @@ class DownloadService {
             if (callback) {
                 await callback?.();
             }
-            const downloadStatus = (await this.downloadStatusIndexedDbService.getDownloadStatus(address))?.status || 'false';
+            const downloadStatus = (await this.downloadStatusIndexedDbService?.getDownloadStatus(address))?.status || 'false';
             if (existingData && downloadStatus === 'true') {
                 console.log(`Found existing boxId in db for ${address}, no need to download more.`);
             }
             else if (itemsz >= this.downloadInitialSize) {
-                await this.downloadStatusIndexedDbService.setDownloadStatus(address, 'false');
+                await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'false');
                 console.log(`Downloading all tx's for : ${address}`);
                 await this.downloadAllForAddress(address, 0, useNode, callback);
             }
@@ -184,4 +184,21 @@ class DownloadService {
         }
     }
 }
+if (typeof window !== 'undefined') {
+    window.DownloadService = DownloadService;
+    globalThis.CreateDownloadService = (eventSender, storageService) => {
+        const activepermitsDataService = new ActivePermitsDataService(storageService);
+        return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, eventSender, null);
+    };
+}
+/*
+const downloadActivePermitsService: DownloadService<PermitTx> =
+      new DownloadService<PermitTx>(
+        rs_FullDownloadsBatchSize,
+        rs_InitialNDownloads,
+        activepermitsDataService,
+        this.eventSender,
+        downloadStatusIndexedDbActivePermitsDataService,
+      );
+*/ 
 //# sourceMappingURL=download.service.js.map

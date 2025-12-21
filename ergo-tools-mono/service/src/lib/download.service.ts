@@ -36,7 +36,7 @@ class DownloadService<T> {
     downloadInitialSize: number,
     private dataService: DataService<T>,
     private eventSender: EventSender,
-    private downloadStatusIndexedDbService: DownloadStatusIndexedDbService<T>,
+    private downloadStatusIndexedDbService: DownloadStatusIndexedDbService<T> | null,
   ) {
     this.downloadFullSize = downloadFullSize;
     this.downloadInitialSize = downloadInitialSize;
@@ -185,7 +185,7 @@ class DownloadService<T> {
         result.transactions.length === 0 ||
         offset > 100000
       ) {
-        await this.downloadStatusIndexedDbService.setDownloadStatus(address, 'true');
+        await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
         console.log(this.busyCounter);
         return;
       }
@@ -210,7 +210,7 @@ class DownloadService<T> {
           useNode,
         );
       } else {
-        await this.downloadStatusIndexedDbService.setDownloadStatus(address, 'true');
+        await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
       }
     } catch (e) {
       console.error(e);
@@ -267,13 +267,13 @@ class DownloadService<T> {
       }
 
       const downloadStatus: string =
-        (await this.downloadStatusIndexedDbService.getDownloadStatus(address))?.status || 'false';
+        (await this.downloadStatusIndexedDbService?.getDownloadStatus(address))?.status || 'false';
       if (existingData && downloadStatus === 'true') {
         console.log(
           `Found existing boxId in db for ${address}, no need to download more.`,
         );
       } else if (itemsz >= this.downloadInitialSize) {
-        await this.downloadStatusIndexedDbService.setDownloadStatus(address, 'false');
+        await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'false');
         console.log(`Downloading all tx's for : ${address}`);
         await this.downloadAllForAddress(
           address,
@@ -290,4 +290,41 @@ class DownloadService<T> {
       console.log(this.busyCounter);
     }
   }
+
+
+  
 }
+
+
+if (typeof window !== 'undefined') {
+  (window as any).DownloadService = DownloadService;
+  (globalThis as any).CreateDownloadService = (
+    eventSender: EventSender, storageService: IStorageService<PermitTx>,
+  ): DownloadService<PermitTx> => {
+
+    const activepermitsDataService: ActivePermitsDataService =
+      new ActivePermitsDataService(storageService);
+
+    return new DownloadService<PermitTx>(
+        rs_FullDownloadsBatchSize,
+        rs_InitialNDownloads,
+        activepermitsDataService,
+        eventSender,
+        null,
+      );
+
+  };
+}
+
+
+
+/*
+const downloadActivePermitsService: DownloadService<PermitTx> =
+      new DownloadService<PermitTx>(
+        rs_FullDownloadsBatchSize,
+        rs_InitialNDownloads,
+        activepermitsDataService,
+        this.eventSender,
+        downloadStatusIndexedDbActivePermitsDataService,
+      );
+*/

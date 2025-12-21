@@ -26,7 +26,7 @@ declare class DownloadService<T> {
     private busyCounter;
     private downloadFullSize;
     private downloadInitialSize;
-    constructor(downloadFullSize: number, downloadInitialSize: number, dataService: DataService<T>, eventSender: EventSender, downloadStatusIndexedDbService: DownloadStatusIndexedDbService<T>);
+    constructor(downloadFullSize: number, downloadInitialSize: number, dataService: DataService<T>, eventSender: EventSender, downloadStatusIndexedDbService: DownloadStatusIndexedDbService<T> | null);
     fetchTransactions(url: string): Promise<FetchTransactionsResponse>;
     downloadTransactions(address: string, offset: number | undefined, limit: number | undefined, useNode: boolean): Promise<FetchTransactionsResponse>;
     downloadForAddresses(): Promise<void>;

@@ -48,9 +48,9 @@ interface Output {
     address: string;
 }
 declare abstract class DataService<T> {
-    db: IDBDatabase;
     storageService: IStorageService<T>;
-    constructor(db: IDBDatabase);
+    db?: IDBDatabase;
+    constructor(dbOrStorage: IDBDatabase | IStorageService<T>);
     abstract addData(address: string, transactions: TransactionItem[]): Promise<void>;
     purgeData(): Promise<void>;
     abstract getDataType(): string;

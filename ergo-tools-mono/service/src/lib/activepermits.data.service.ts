@@ -34,7 +34,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
 
     return null;
   }
-  constructor(public override db: IDBDatabase) {
+  constructor(db: IDBDatabase | IStorageService<PermitTx>) {
     super(db);
   }
   createUniqueId(

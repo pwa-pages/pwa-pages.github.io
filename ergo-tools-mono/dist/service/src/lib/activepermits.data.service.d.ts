@@ -3,9 +3,8 @@ interface OpenBoxes {
     openBoxesJson: string;
 }
 declare class ActivePermitsDataService extends DataService<PermitTx> {
-    db: IDBDatabase;
     getExistingData(transaction: TransactionItem, address: string): Promise<PermitTx | null>;
-    constructor(db: IDBDatabase);
+    constructor(db: IDBDatabase | IStorageService<PermitTx>);
     createUniqueId(boxId: string, transactionId: string, address: string): string;
     getDataType(): string;
     getMaxDownloadDateDifference(): number;

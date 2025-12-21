@@ -22,7 +22,6 @@ class ActivePermitsDataService extends DataService {
     }
     constructor(db) {
         super(db);
-        this.db = db;
     }
     createUniqueId(boxId, transactionId, address) {
         const str = `${transactionId}_${boxId}_${address}`;
