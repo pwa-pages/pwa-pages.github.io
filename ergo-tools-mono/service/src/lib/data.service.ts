@@ -15,7 +15,6 @@ interface MyWatchersStats {
 }
 
 interface TransactionItem {
-  outputCreatedAt: string | number | Date;
   timestamp: string;
   inputs: Input[];
   outputs: Output[];
@@ -62,9 +61,7 @@ interface OpenBoxes {
 }
 
 interface Asset {
-  id: string;
   name: string;
-  quantity: number;
   amount: number;
   decimals: number;
   tokenId: string | null;

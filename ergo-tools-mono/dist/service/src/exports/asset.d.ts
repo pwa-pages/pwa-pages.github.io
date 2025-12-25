@@ -3,5 +3,6 @@ export declare class Asset {
     name: string;
     decimals: number;
     type: string;
-    constructor(amount: number, name: string, decimals: number, type: string);
+    tokenId: string | null;
+    constructor(amount: number, name: string, decimals: number, type: string, tokenId: string | null);
 }
