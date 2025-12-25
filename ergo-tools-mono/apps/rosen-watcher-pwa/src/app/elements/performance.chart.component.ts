@@ -9,13 +9,13 @@ import {
 } from '@angular/core';
 import 'chartjs-adapter-date-fns';
 import { DateUtils } from '../statistics/date.utils';
-import { ChartPerformance } from '../../service/ts/models/chart.performance';
+import { ChartPerformance } from '@ergo-tools/service';
 import { Chart } from 'chart.js';
 import { ChainChartService } from '../service/chain.chart.service';
 import { EventType } from '../service/event.service';
 import { ChainDataService } from '../service/chain.data.service';
 import { BaseEventAwareComponent } from '../baseeventawarecomponent';
-import { ChartPoint } from '../../service/ts/models/chart.point';
+import { ChartPoint } from '@ergo-tools/service';
 
 @Component({
   selector: 'app-performance-chart',

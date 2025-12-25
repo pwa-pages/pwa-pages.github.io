@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 
-import { Input } from '../../service/ts/models/input';
-import { Address } from '../../service/ts/models/address';
+import { Input } from '@ergo-tools/service';
+import { Address } from '@ergo-tools/service';
 import { EventService, EventType } from './event.service';
 import { DateUtils } from '../statistics/date.utils';
 import { ChainTypeHelper } from '../imports/imports';

@@ -1,3 +1,66 @@
+interface MessageEventData {
+  type: string;
+  data: string;
+}
+
+interface Address {
+  address: string;
+  Address: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface MyWatchersStats {
+  chainType?: ChainType;
+  address?: Address;
+}
+
+interface TransactionItem {
+  outputCreatedAt: string | number | Date;
+  timestamp: string;
+  inputs: Input[];
+  outputs: Output[];
+  id: string;
+}
+
+interface FetchTransactionsResponse {
+  transactions: TransactionItem[];
+  items: TransactionItem[];
+  total: number;
+}
+
+interface DownloadStatus {
+  address: string;
+  Address: string;
+  status: string;
+  lastDownloadDate: Date | undefined;
+}
+
+interface FetchTransactionsResponse {
+  transactions: TransactionItem[];
+  items: TransactionItem[];
+  total: number;
+}
+
+interface DownloadStatus {
+  address: string;
+  Address: string;
+  status: string;
+  lastDownloadDate: Date | undefined;
+}
+
+interface PerfTx {
+  id: string;
+  timestamp: string;
+  chainType?: string;
+  amount: number;
+  decimals?: number;
+}
+
+interface OpenBoxes {
+  address: string;
+  openBoxesJson: string;
+}
+
 interface Asset {
   id: string;
   name: string;

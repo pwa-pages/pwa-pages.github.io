@@ -1,13 +1,4 @@
-interface Address {
-  address: string;
-  Address: string;
-}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface MyWatchersStats {
-  chainType?: ChainType;
-  address?: Address;
-}
 
 interface EventPayload<T> {
   type: string;

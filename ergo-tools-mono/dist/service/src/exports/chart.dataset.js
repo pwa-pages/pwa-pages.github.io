@@ -1,14 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ChainPerfChartDataSet = exports.ChartDataSet = void 0;
-class ChartDataSet {
-    label;
-    data;
-    backgroundColor;
-    pointBackgroundColor;
-    borderColor;
-    borderWidth;
-    borderSkipped;
+export class ChartDataSet {
     constructor(chartColor) {
         this.label = '';
         this.data = [];
@@ -19,15 +9,7 @@ class ChartDataSet {
         this.borderSkipped = false;
     }
 }
-exports.ChartDataSet = ChartDataSet;
-class ChainPerfChartDataSet {
-    label;
-    data;
-    backgroundColor;
-    pointBackgroundColor;
-    borderColor;
-    borderWidth;
-    borderSkipped;
+export class ChainPerfChartDataSet {
     constructor(chartColor) {
         this.label = '';
         this.data = [];
@@ -38,4 +20,4 @@ class ChainPerfChartDataSet {
         this.borderSkipped = false;
     }
 }
-exports.ChainPerfChartDataSet = ChainPerfChartDataSet;
+//# sourceMappingURL=chart.dataset.js.map

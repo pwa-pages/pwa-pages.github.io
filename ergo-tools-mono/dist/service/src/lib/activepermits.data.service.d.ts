@@ -1,7 +1,3 @@
-interface OpenBoxes {
-    address: string;
-    openBoxesJson: string;
-}
 declare class ActivePermitsDataService extends DataService<PermitTx> {
     getExistingData(transaction: TransactionItem, address: string): Promise<PermitTx | null>;
     constructor(db: IDBDatabase | IStorageService<PermitTx>);

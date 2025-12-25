@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { QRDialogComponent } from '../statistics/qrdialog.component';
 import { Router } from '@angular/router';
-import { Address } from '../../service/ts/models/address';
+import { Address } from '@ergo-tools/service';
 import { Location } from '@angular/common';
 import { EventService, EventType } from './event.service';
 export interface BeforeInstallPromptEvent extends Event {

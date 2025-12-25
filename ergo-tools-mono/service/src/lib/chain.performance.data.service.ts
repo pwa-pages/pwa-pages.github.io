@@ -1,10 +1,4 @@
-interface PerfTx {
-  id: string;
-  timestamp: string;
-  chainType?: string;
-  amount: number;
-  decimals?: number;
-}
+
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ChainPerformanceDataService extends DataService<PerfTx> {

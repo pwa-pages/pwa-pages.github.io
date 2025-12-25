@@ -2,7 +2,7 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { EventData, EventType } from './service/event.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ChainService } from './service/chain.service';
-import { Address } from '../service/ts/models/address';
+import { Address } from '@ergo-tools/service';
 import { StorageService } from './service/storage.service';
 import { ChainDataService } from './service/chain.data.service';
 import { BrowserService } from './service/browser.service';

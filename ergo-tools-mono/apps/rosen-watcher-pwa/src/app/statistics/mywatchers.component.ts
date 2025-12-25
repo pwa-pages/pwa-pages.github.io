@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
-import { MyWatchersStats } from '../../service/ts/models/watcher.info';
+import { MyWatchersStats } from '@ergo-tools/service';
 import { ChainDataService } from '../service/chain.data.service';
 import { ChainTypeHelper } from '../imports/imports';
 

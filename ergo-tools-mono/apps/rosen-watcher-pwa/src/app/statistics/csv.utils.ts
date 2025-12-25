@@ -1,5 +1,5 @@
 // src/app/helpers/math-helper.ts
-import { Input } from '../../service/ts/models/input';
+import { Input } from '@ergo-tools/service';
 
 export class CsvUtils {
   public static csvExportInputs(inputs: Input[]) {

@@ -8,7 +8,7 @@ import {
 import { EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainChartService } from '../service/chain.chart.service';
-import { ChartPerformance } from '../../service/ts/models/chart.performance';
+import { ChartPerformance } from '@ergo-tools/service';
 import { Chart } from 'chart.js';
 
 import { NavigationService } from '../service/navigation.service';

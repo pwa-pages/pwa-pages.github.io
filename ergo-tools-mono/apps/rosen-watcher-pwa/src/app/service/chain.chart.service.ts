@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import Chart, { ChartDataset, TooltipItem } from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
-import { ChartPerformance } from '../../service/ts/models/chart.performance';
-import { ChartPoint } from '../../service/ts/models/chart.point';
-import { ChartDataSet } from '../../service/ts/models/chart.dataset';
+import { ChartPerformance } from '@ergo-tools/service';
+import { ChartPoint } from '@ergo-tools/service';
+import { ChartDataSet } from '@ergo-tools/service';
 
 export type LineChart = Chart<
   'line',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Input } from '../../service/ts/models/input';
-import { Address } from '../../service/ts/models/address';
+import { Input } from '@ergo-tools/service';
+import { Address } from '@ergo-tools/service';
 import { ErgSettings } from '@ergo-tools/service';
 
 @Injectable({

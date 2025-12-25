@@ -1,12 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Token = void 0;
-class Token {
-    tokenId;
-    amount;
-    decimals;
-    name;
-    tokenType;
+export class Token {
     constructor(tokenId, amount, decimals, name, tokenType) {
         this.tokenId = tokenId;
         this.amount = amount;
@@ -15,4 +7,4 @@ class Token {
         this.tokenType = tokenType;
     }
 }
-exports.Token = Token;
+//# sourceMappingURL=token.js.map

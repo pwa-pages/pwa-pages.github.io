@@ -1,7 +1,4 @@
-interface MessageEventData {
-  type: string;
-  data: string;
-}
+
 
 // Define the singleton at module scope
 const processEventServiceSingleton = (() => {

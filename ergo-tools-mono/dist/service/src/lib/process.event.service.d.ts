@@ -1,11 +1,3 @@
-interface Address {
-    address: string;
-    Address: string;
-}
-interface MyWatchersStats {
-    chainType?: ChainType;
-    address?: Address;
-}
 interface EventPayload<T> {
     type: string;
     data?: T;

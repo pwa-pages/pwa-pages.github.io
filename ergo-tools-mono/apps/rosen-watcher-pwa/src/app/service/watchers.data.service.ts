@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 import {
   MyWatchersStats,
   WatcherInfo,
-} from '../../service/ts/models/watcher.info';
-import { Token } from '../../service/ts/models/token';
+} from '@ergo-tools/service';
+import { Token } from '@ergo-tools/service';
 import { PriceService } from './price.service';
 import { WatchersStats } from './watchers.models';
 import { EventService, EventType } from './event.service';
-import { Address } from '../../service/ts/models/address';
+import { Address } from '@ergo-tools/service';
 import { ChainTypeHelper, getCurrencies } from '../imports/imports';
 import { ErgSettings, getAllChainTypes } from '@ergo-tools/service';
 

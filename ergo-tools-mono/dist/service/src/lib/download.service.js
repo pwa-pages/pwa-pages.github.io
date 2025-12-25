@@ -186,19 +186,9 @@ class DownloadService {
 }
 if (typeof window !== 'undefined') {
     window.DownloadService = DownloadService;
-    globalThis.CreateDownloadService = (eventSender, storageService) => {
+    globalThis.CreateActivePermitsDownloadService = (eventSender, storageService) => {
         const activepermitsDataService = new ActivePermitsDataService(storageService);
         return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, eventSender, null);
     };
 }
-/*
-const downloadActivePermitsService: DownloadService<PermitTx> =
-      new DownloadService<PermitTx>(
-        rs_FullDownloadsBatchSize,
-        rs_InitialNDownloads,
-        activepermitsDataService,
-        this.eventSender,
-        downloadStatusIndexedDbActivePermitsDataService,
-      );
-*/ 
 //# sourceMappingURL=download.service.js.map

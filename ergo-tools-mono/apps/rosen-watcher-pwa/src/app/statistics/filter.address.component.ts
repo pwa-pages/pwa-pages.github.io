@@ -10,7 +10,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
-import { Address } from '../../service/ts/models/address';
+import { Address } from '@ergo-tools/service';
 
 @Component({
   selector: 'app-filter-address',

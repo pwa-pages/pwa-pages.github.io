@@ -14,15 +14,15 @@ import { EventType } from '../service/event.service';
 import {
   ChainChartPerformance,
   ChartPerformance,
-} from '../../service/ts/models/chart.performance';
+} from '@ergo-tools/service';
 import { StatisticsChartComponent } from './statistics.chart.component';
 import { CommonModule } from '@angular/common';
 import { PerformanceChartComponent } from './performance.chart.component';
 import { BaseEventAwareComponent } from '../baseeventawarecomponent';
 import { WatchersStats } from '../service/watchers.models';
 import { MyWatchersComponent } from '../statistics/mywatchers.component';
-import { MyWatchersStats } from '../../service/ts/models/watcher.info';
-import { ChartPoint } from '../../service/ts/models/chart.point';
+import { MyWatchersStats } from '@ergo-tools/service';
+import { ChartPoint } from '@ergo-tools/service';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({

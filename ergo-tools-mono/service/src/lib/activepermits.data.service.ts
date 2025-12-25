@@ -1,7 +1,4 @@
-interface OpenBoxes {
-  address: string;
-  openBoxesJson: string;
-}
+
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ActivePermitsDataService extends DataService<PermitTx> {

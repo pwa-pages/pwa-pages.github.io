@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { Input } from '../../service/ts/models/input';
+import { Input } from '@ergo-tools/service';
 import { NgZone } from '@angular/core';
 
 export enum EventType {

@@ -1,3 +1,13 @@
+export * from './address';
+export * from './asset';
+export * from './chainperf.chart.point';
+export * from './chart.dataset';
+export * from './chart.performance';
+export * from './chart.point';
+export * from './input'
+export * from './token';
+export * from './transaction';
+export * from './watcher.info';
 
 
 export function getAllChainTypes(): string[] {
@@ -145,3 +155,53 @@ export class ErgSettings {
   }
 }
 
+
+/*
+export interface IDownloadService<T> {
+  fetchTransactions(url: string): Promise<FetchTransactionsResponse>;
+  downloadTransactions(
+    address: string,
+    offset?: number,
+    limit?: number,
+    useNode?: boolean,
+  ): Promise<FetchTransactionsResponse>;
+  downloadForAddresses(): Promise<void>;
+  downloadAllForAddress(
+    address: string,
+    offset: number,
+    useNode: boolean,
+    callback?: () => Promise<void>,
+  ): Promise<void>;
+  downloadForAddress(
+    address: string,
+    useNode: boolean,
+    callback?: () => Promise<void>,
+  ): Promise<void>;
+}
+
+export function GetActivePermitsDownloadServiceInstance(): string[] {
+  return (globalThis as any).getActiveChainTypes();
+}
+
+
+if (typeof window !== 'undefined') {
+  (window as any).DownloadService = DownloadService;
+  (globalThis as any).CreateActivePermitsDownloadService = (
+    eventSender: EventSender, storageService: IStorageService<PermitTx>,
+  ): DownloadService<PermitTx> => {
+
+    const activepermitsDataService: ActivePermitsDataService =
+      new ActivePermitsDataService(storageService);
+
+    return new DownloadService<PermitTx>(
+        rs_FullDownloadsBatchSize,
+        rs_InitialNDownloads,
+        activepermitsDataService,
+        eventSender,
+        null,
+      );
+
+  };
+}
+
+*/

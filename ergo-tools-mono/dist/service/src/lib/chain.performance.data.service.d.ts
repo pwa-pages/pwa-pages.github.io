@@ -1,10 +1,3 @@
-interface PerfTx {
-    id: string;
-    timestamp: string;
-    chainType?: string;
-    amount: number;
-    decimals?: number;
-}
 declare class ChainPerformanceDataService extends DataService<PerfTx> {
     db: IDBDatabase;
     private eventSender;

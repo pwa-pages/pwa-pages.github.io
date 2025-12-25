@@ -3,7 +3,7 @@ import { StorageService } from '../service/storage.service';
 import { Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings.dialog';
 import { MatDialog } from '@angular/material/dialog';
-import { Address } from '../../service/ts/models/address';
+import { Address } from '@ergo-tools/service';
 
 @Component({
   selector: 'app-settings',

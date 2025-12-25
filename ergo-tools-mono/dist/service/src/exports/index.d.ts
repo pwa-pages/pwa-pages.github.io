@@ -1,3 +1,13 @@
+export * from './address';
+export * from './asset';
+export * from './chainperf.chart.point';
+export * from './chart.dataset';
+export * from './chart.performance';
+export * from './chart.point';
+export * from './input';
+export * from './token';
+export * from './transaction';
+export * from './watcher.info';
 export declare function getAllChainTypes(): string[];
 export declare function getCurrencyValues(): string[];
 export declare function getPermitAddressesByChainType(): Record<string, string | null>;

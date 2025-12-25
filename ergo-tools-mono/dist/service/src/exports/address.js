@@ -1,14 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Address = void 0;
-class Address {
-    address;
-    Address;
-    active = true;
-    chainType;
-    smallAddressForDisplay;
-    largeAddressForDisplay;
+export class Address {
     constructor(address, chainType, active = true) {
+        this.active = true;
         this.address = address;
         this.Address = address;
         this.smallAddressForDisplay = address.substring(0, 6) + '...';
@@ -20,4 +12,4 @@ class Address {
         this.active = active;
     }
 }
-exports.Address = Address;
+//# sourceMappingURL=address.js.map

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { EventService, EventType } from './event.service';
-import { WatcherInfo } from '../../service/ts/models/watcher.info';
+import { WatcherInfo } from '@ergo-tools/service';
 import { ErgSettings } from '@ergo-tools/service';
 
 @Injectable({

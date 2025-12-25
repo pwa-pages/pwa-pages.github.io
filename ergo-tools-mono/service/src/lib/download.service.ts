@@ -1,27 +1,4 @@
-interface AddressData {
-  address: string;
-}
 
-interface TransactionItem {
-  outputCreatedAt: string | number | Date;
-  timestamp: string;
-  inputs: Input[];
-  outputs: Output[];
-  id: string;
-}
-
-interface FetchTransactionsResponse {
-  transactions: TransactionItem[];
-  items: TransactionItem[];
-  total: number;
-}
-
-interface DownloadStatus {
-  address: string;
-  Address: string;
-  status: string;
-  lastDownloadDate: Date | undefined;
-}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService<T> {
@@ -116,11 +93,11 @@ class DownloadService<T> {
     console.log('Start downloading for all addresses');
 
     try {
-      const addresses: AddressData[] =
-        await this.dataService.storageService.getData<AddressData>(rs_AddressDataStoreName) as AddressData[];
+      const addresses: Address[] =
+        await this.dataService.storageService.getData<Address>(rs_AddressDataStoreName) as Address[];
 
       const downloadPromises: Promise<void>[] = addresses.map(
-        async (addressObj: AddressData) => {
+        async (addressObj: Address) => {
           await this.downloadForAddress(addressObj.address, true);
         },
       );
@@ -298,7 +275,7 @@ class DownloadService<T> {
 
 if (typeof window !== 'undefined') {
   (window as any).DownloadService = DownloadService;
-  (globalThis as any).CreateDownloadService = (
+  (globalThis as any).CreateActivePermitsDownloadService = (
     eventSender: EventSender, storageService: IStorageService<PermitTx>,
   ): DownloadService<PermitTx> => {
 
@@ -318,13 +295,3 @@ if (typeof window !== 'undefined') {
 
 
 
-/*
-const downloadActivePermitsService: DownloadService<PermitTx> =
-      new DownloadService<PermitTx>(
-        rs_FullDownloadsBatchSize,
-        rs_InitialNDownloads,
-        activepermitsDataService,
-        this.eventSender,
-        downloadStatusIndexedDbActivePermitsDataService,
-      );
-*/
