@@ -157,22 +157,9 @@ export class ErgSettings {
 }
 
 
-/*
-export interface IDownloadService<T> {
-  fetchTransactions(url: string): Promise<FetchTransactionsResponse>;
-  downloadTransactions(
-    address: string,
-    offset?: number,
-    limit?: number,
-    useNode?: boolean,
-  ): Promise<FetchTransactionsResponse>;
-  downloadForAddresses(): Promise<void>;
-  downloadAllForAddress(
-    address: string,
-    offset: number,
-    useNode: boolean,
-    callback?: () => Promise<void>,
-  ): Promise<void>;
+
+
+export interface IDownloadService {
   downloadForAddress(
     address: string,
     useNode: boolean,
@@ -180,29 +167,8 @@ export interface IDownloadService<T> {
   ): Promise<void>;
 }
 
-export function GetActivePermitsDownloadServiceInstance(): string[] {
-  return (globalThis as any).getActiveChainTypes();
+export function GetDownloadService(): IDownloadService{
+  return (globalThis as any).CreateActivePermitsDownloadService(null);
 }
 
 
-if (typeof window !== 'undefined') {
-  (window as any).DownloadService = DownloadService;
-  (globalThis as any).CreateActivePermitsDownloadService = (
-    eventSender: EventSender, storageService: IStorageService<PermitTx>,
-  ): DownloadService<PermitTx> => {
-
-    const activepermitsDataService: ActivePermitsDataService =
-      new ActivePermitsDataService(storageService);
-
-    return new DownloadService<PermitTx>(
-        rs_FullDownloadsBatchSize,
-        rs_InitialNDownloads,
-        activepermitsDataService,
-        eventSender,
-        null,
-      );
-
-  };
-}
-
-*/

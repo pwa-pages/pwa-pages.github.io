@@ -1,6 +1,9 @@
 {
   "name": "watcherstats",
   "version": "0.0.1",
+  "dependencies": {
+    "tslib": "2.8.1"
+  },
   "main": "./main.js",
   "type": "commonjs"
 }

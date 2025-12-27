@@ -276,9 +276,10 @@ class DownloadService<T> {
 if (typeof window !== 'undefined') {
   (window as any).DownloadService = DownloadService;
   (globalThis as any).CreateActivePermitsDownloadService = (
-    eventSender: EventSender, storageService: IStorageService<PermitTx>,
+    eventSender: EventSender
   ): DownloadService<PermitTx> => {
 
+    var storageService = new MemoryStorageService<PermitTx>();
     const activepermitsDataService: ActivePermitsDataService =
       new ActivePermitsDataService(storageService);
 

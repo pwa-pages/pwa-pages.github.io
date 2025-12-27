@@ -2,8 +2,13 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "module": "es2020",
-    "types": ["node"]
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "types": ["node"],
+    "paths": {
+      "@ergo-tools/service": ["../../../dist/service/commonjs/src/exports"]
+
+    }
   },
   "include": ["src/**/*.ts"]
 }

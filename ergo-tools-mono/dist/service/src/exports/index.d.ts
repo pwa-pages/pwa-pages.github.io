@@ -60,3 +60,7 @@ export declare class ErgSettings {
     static rs_TokenIdMap(): Record<string, string>;
     static rs_RSNDecimals(): number;
 }
+export interface IDownloadService {
+    downloadForAddress(address: string, useNode: boolean, callback?: () => Promise<void>): Promise<void>;
+}
+export declare function GetDownloadService(): IDownloadService;

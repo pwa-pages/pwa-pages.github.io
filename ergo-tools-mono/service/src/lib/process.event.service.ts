@@ -25,7 +25,7 @@ interface Services {
 class ServiceWorkerEventSender implements EventSender {
   async sendEvent<T>(event: EventPayload<T>): Promise<void> {
     const clientsList = await (
-      self as unknown as ServiceWorkerGlobalScope
+      self as any
     ).clients.matchAll({
       type: 'window',
       includeUncontrolled: true,

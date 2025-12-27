@@ -3,7 +3,7 @@ npm install
 #nx build service
 #nx build rosen-watcher-pwa --configuration production
 #nx build rosen-watcher-elements --configuration production
-nx run-many --target=build --all --configuration=production --parallel=false
+nx run-many --target=build,build-common --all --configuration=production --parallel=false
 
 ./prep_web_component.sh
 
@@ -18,5 +18,5 @@ npm install
 #nx build service
 #nx build rosen-watcher-pwa --configuration production
 #nx build rosen-watcher-elements --configuration production
-nx run-many --target=build --all --configuration=production --parallel=false
+nx run-many --target=build,build-common --all --configuration=production --parallel=false
 

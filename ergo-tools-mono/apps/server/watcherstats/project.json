@@ -12,7 +12,7 @@
         "platform": "node",
         "outputPath": "dist/apps/server/watcherstats",
         "format": ["cjs"],
-        "bundle": false,
+        "bundle": true,
         "main": "apps/server/watcherstats/src/main.ts",
         "tsConfig": "apps/server/watcherstats/tsconfig.app.json",
         "assets": ["apps/server/watcherstats/src/assets"],

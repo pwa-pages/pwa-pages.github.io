@@ -1,1 +1,1 @@
-npx ts-node apps/server/watcherstats/src/main.ts
+node dist/apps/server/watcherstats/main.js

@@ -4,19 +4,16 @@
     "types": [],
     "verbatimModuleSyntax": false,
     "esModuleInterop": false,
-    "noEmitHelpers": true,
+    "noEmitHelpers": false,  
+    "importHelpers": false,  
     "rootDir": "./src/lib/",
     "target": "ESNext",
-    "module": "None", 
-    "skipLibCheck": true,
-    "lib": [
-      "ESNext",
-      "dom",
-      "webworker"
-    ]
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "skipLibCheck": true
   },
   "include": [
-    "**/shared/ts/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",

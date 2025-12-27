@@ -1,14 +1,16 @@
-"use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService {
+    dataService;
+    eventSender;
+    downloadStatusIndexedDbService;
+    busyCounter = 0;
+    downloadFullSize = rs_FullDownloadsBatchSize;
+    downloadInitialSize = rs_InitialNDownloads;
     //private static addressDownloadDateMap = new Map<string, Date>();
     constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusIndexedDbService) {
         this.dataService = dataService;
         this.eventSender = eventSender;
         this.downloadStatusIndexedDbService = downloadStatusIndexedDbService;
-        this.busyCounter = 0;
-        this.downloadFullSize = rs_FullDownloadsBatchSize;
-        this.downloadInitialSize = rs_InitialNDownloads;
         this.downloadFullSize = downloadFullSize;
         this.downloadInitialSize = downloadInitialSize;
     }
@@ -192,4 +194,3 @@ if (typeof window !== 'undefined') {
         return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, eventSender, null);
     };
 }
-//# sourceMappingURL=download.service.js.map

@@ -4,7 +4,16 @@
   "sourceRoot": "service/src",
   "projectType": "library",
   "targets": {
-    "build": {
+    "build-common": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/service/commonjs",
+        "main": "service/src/index.ts",
+        "tsConfig": "service/tsconfig.common-js.json",
+        "assets": ["service/*.md"]
+      }
+    },"build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {

@@ -1,48 +1,77 @@
-export * from './address';
-export * from './asset';
-export * from './chainperf.chart.point';
-export * from './chart.dataset';
-export * from './chart.performance';
-export * from './chart.point';
-export * from './input';
-export * from './output';
-export * from './token';
-export * from './transaction';
-export * from './watcher.info';
-export function getAllChainTypes() {
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ErgSettings = void 0;
+exports.getAllChainTypes = getAllChainTypes;
+exports.getCurrencyValues = getCurrencyValues;
+exports.getPermitAddressesByChainType = getPermitAddressesByChainType;
+exports.getPermitBulkAddressesByChainType = getPermitBulkAddressesByChainType;
+exports.getPermitTriggerAddressesByChainType = getPermitTriggerAddressesByChainType;
+exports.getChainTypeTokensByChainType = getChainTypeTokensByChainType;
+exports.getChainTypeWatcherIdentifiersByChainType = getChainTypeWatcherIdentifiersByChainType;
+exports.getActivatedChainTypes = getActivatedChainTypes;
+exports.getChainTypeForAddress = getChainTypeForAddress;
+exports.getRewardAddressForChainType = getRewardAddressForChainType;
+exports.createProcessEvtService = createProcessEvtService;
+exports.GetDownloadService = GetDownloadService;
+__exportStar(require("./address"), exports);
+__exportStar(require("./asset"), exports);
+__exportStar(require("./chainperf.chart.point"), exports);
+__exportStar(require("./chart.dataset"), exports);
+__exportStar(require("./chart.performance"), exports);
+__exportStar(require("./chart.point"), exports);
+__exportStar(require("./input"), exports);
+__exportStar(require("./output"), exports);
+__exportStar(require("./token"), exports);
+__exportStar(require("./transaction"), exports);
+__exportStar(require("./watcher.info"), exports);
+function getAllChainTypes() {
     return globalThis.getChainTypes();
 }
-export function getCurrencyValues() {
+function getCurrencyValues() {
     return globalThis.currencies;
 }
-export function getPermitAddressesByChainType() {
+function getPermitAddressesByChainType() {
     return globalThis.permitAddresses;
 }
-export function getPermitBulkAddressesByChainType() {
+function getPermitBulkAddressesByChainType() {
     return globalThis.permitBulkAddresses;
 }
-export function getPermitTriggerAddressesByChainType() {
+function getPermitTriggerAddressesByChainType() {
     return globalThis.permitTriggerAddresses;
 }
-export function getChainTypeTokensByChainType() {
+function getChainTypeTokensByChainType() {
     return globalThis.chainTypeTokens;
 }
-export function getChainTypeWatcherIdentifiersByChainType() {
+function getChainTypeWatcherIdentifiersByChainType() {
     return globalThis.chainTypeWatcherIdentifier;
 }
-export function getActivatedChainTypes() {
+function getActivatedChainTypes() {
     return globalThis.getActiveChainTypes();
 }
-export function getChainTypeForAddress(address) {
+function getChainTypeForAddress(address) {
     return globalThis.getChainType(address);
 }
-export function getRewardAddressForChainType(chainType) {
+function getRewardAddressForChainType(chainType) {
     return globalThis.rewardAddresses[chainType];
 }
-export function createProcessEvtService(eventSender) {
+function createProcessEvtService(eventSender) {
     return globalThis.CreateProcessEventService(eventSender);
 }
-export class ErgSettings {
+class ErgSettings {
     static rs_ErgoExplorerHost() {
         return globalThis.rs_ErgoExplorerHost;
     }
@@ -128,7 +157,7 @@ export class ErgSettings {
         return globalThis.rs_RSNDecimals;
     }
 }
-export function GetDownloadService() {
+exports.ErgSettings = ErgSettings;
+function GetDownloadService() {
     return globalThis.CreateActivePermitsDownloadService(null);
 }
-//# sourceMappingURL=index.js.map
