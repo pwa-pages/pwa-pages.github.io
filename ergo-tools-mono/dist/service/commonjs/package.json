@@ -1,5 +1,6 @@
 {
   "name": "@ergo-tools/service",
+  "sideEffects": true,
   "version": "0.0.1",
   "type": "commonjs",
   "main": "./src/exports/index.js",

@@ -188,9 +188,9 @@ class DownloadService {
 }
 if (typeof window !== 'undefined') {
     window.DownloadService = DownloadService;
-    globalThis.CreateActivePermitsDownloadService = (eventSender) => {
-        var storageService = new MemoryStorageService();
-        const activepermitsDataService = new ActivePermitsDataService(storageService);
-        return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, eventSender, null);
-    };
 }
+globalThis.CreateActivePermitsDownloadService = (eventSender) => {
+    var storageService = new MemoryStorageService();
+    const activepermitsDataService = new ActivePermitsDataService(storageService);
+    return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, eventSender, null);
+};

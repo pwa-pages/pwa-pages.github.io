@@ -275,7 +275,9 @@ class DownloadService<T> {
 
 if (typeof window !== 'undefined') {
   (window as any).DownloadService = DownloadService;
-  (globalThis as any).CreateActivePermitsDownloadService = (
+}
+
+(globalThis as any).CreateActivePermitsDownloadService = (
     eventSender: EventSender
   ): DownloadService<PermitTx> => {
 
@@ -292,7 +294,6 @@ if (typeof window !== 'undefined') {
       );
 
   };
-}
 
 
 
