@@ -72,11 +72,11 @@ class RewardDataService extends DataService {
         });
         await this.storageService.addData(rs_InputsStoreName, tempData);
         const inputs = await this.getSortedInputs();
-        this.eventSender.sendEvent({
+        this.eventSender?.sendEvent({
             type: 'InputsChanged',
             data: inputs,
         });
-        this.eventSender.sendEvent({
+        this.eventSender?.sendEvent({
             type: 'AddressChartChanged',
             data: await this.chartService.getAddressCharts(inputs),
         });

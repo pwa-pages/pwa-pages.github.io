@@ -10,12 +10,14 @@ const processEventServiceSingleton = (() => {
         return instance;
     };
 })();
-self.addEventListener('message', async (event) => {
-    const processEventService = processEventServiceSingleton();
-    const data = event.data;
-    console.log(`Rosen service worker received event of type ${data.type}`);
-    processEventService.processEvent({
-        data: data.data,
-        type: data.type,
+if (typeof self !== 'undefined') {
+    self.addEventListener('message', async (event) => {
+        const processEventService = processEventServiceSingleton();
+        const data = event.data;
+        console.log(`Rosen service worker received event of type ${data.type}`);
+        processEventService.processEvent({
+            data: data.data,
+            type: data.type,
+        });
     });
-});
+}

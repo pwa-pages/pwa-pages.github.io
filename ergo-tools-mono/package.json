@@ -10,6 +10,7 @@
     "test": "nx test",
     "format": "prettier --write 'apps/rosen-watcher-pwa/src/**/*.{ts,css,html}'",
     "ts:custom": "tsc -p tsconfig.service.json"
+
   },
   "private": true,
   "dependencies": {

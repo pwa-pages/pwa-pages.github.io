@@ -13,6 +13,9 @@ const processEventServiceSingleton = (() => {
   };
 })();
 
+if (typeof self !== 'undefined'){
+
+
 self.addEventListener('message', async (event: MessageEvent) => {
   const processEventService = processEventServiceSingleton();
   const data: MessageEventData = event.data;
@@ -23,3 +26,4 @@ self.addEventListener('message', async (event: MessageEvent) => {
     type: data.type,
   });
 });
+}

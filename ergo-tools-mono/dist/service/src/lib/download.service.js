@@ -88,7 +88,7 @@ class DownloadService {
     // Busy Counter
     increaseBusyCounter(address) {
         if (this.busyCounter === 0) {
-            this.eventSender.sendEvent({
+            this.eventSender?.sendEvent({
                 type: 'StartFullDownload',
                 data: address,
             });
@@ -98,7 +98,7 @@ class DownloadService {
     decreaseBusyCounter(address) {
         this.busyCounter--;
         if (this.busyCounter === 0) {
-            this.eventSender.sendEvent({
+            this.eventSender?.sendEvent({
                 type: 'EndFullDownload',
                 data: address,
             });

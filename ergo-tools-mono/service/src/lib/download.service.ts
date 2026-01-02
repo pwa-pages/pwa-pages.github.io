@@ -115,7 +115,7 @@ class DownloadService<T> {
   // Busy Counter
   private increaseBusyCounter(address: string): void {
     if (this.busyCounter === 0) {
-      this.eventSender.sendEvent({
+      this.eventSender?.sendEvent({
         type: 'StartFullDownload',
         data: address,
       });
@@ -126,7 +126,7 @@ class DownloadService<T> {
   private decreaseBusyCounter(address: string): void {
     this.busyCounter--;
     if (this.busyCounter === 0) {
-      this.eventSender.sendEvent({
+      this.eventSender?.sendEvent({
         type: 'EndFullDownload',
         data: address,
       });

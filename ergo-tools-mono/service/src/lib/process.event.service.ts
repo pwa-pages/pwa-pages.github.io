@@ -169,7 +169,7 @@ class ProcessEventService {
       console.log('Downloading perftxs.');
       const perfTxs = await chainPerformanceDataService.getPerfTxs();
 
-      this.eventSender.sendEvent({
+      this.eventSender?.sendEvent({
         type: 'PerfChartChanged',
         data: perfTxs,
       });
@@ -304,12 +304,12 @@ class ProcessEventService {
           const permits =
             await myWatcherDataService.getAdressPermits(addresses);
 
-          await this.eventSender.sendEvent({
+          await this.eventSender?.sendEvent({
             type: 'PermitsChanged',
             data: permits,
           });
 
-          await this.eventSender.sendEvent({
+          await this.eventSender?.sendEvent({
             type: 'AddressPermitsDownloaded',
             data: chainType,
           });
@@ -328,7 +328,7 @@ class ProcessEventService {
   ) {
     let permits = await myWatcherDataService.getAdressPermits(addresses);
 
-    this.eventSender.sendEvent({
+    this.eventSender?.sendEvent({
       type: 'PermitsChanged',
       data: permits,
     });
@@ -336,7 +336,7 @@ class ProcessEventService {
   }
 
   private sendPermitsChangedEvent(permits: PermitInfo[]) {
-    this.eventSender.sendEvent({
+    this.eventSender?.sendEvent({
       type: 'PermitsChanged',
       data: permits,
     });
@@ -352,7 +352,7 @@ class ProcessEventService {
 
     try {
       const inputs = await dataService.getSortedInputs();
-      this.eventSender.sendEvent({
+      this.eventSender?.sendEvent({
         type: 'InputsChanged',
         data: inputs,
       });
@@ -389,7 +389,7 @@ class ProcessEventService {
               const permits =
                 await myWatcherDataService.getAdressPermits(allAddresses);
 
-              await this.eventSender.sendEvent({
+              await this.eventSender?.sendEvent({
                 type: 'PermitsChanged',
                 data: permits,
               });
@@ -422,7 +422,7 @@ class ProcessEventService {
         await dataService.getSortedInputs(),
       );
 
-      this.eventSender.sendEvent({
+      this.eventSender?.sendEvent({
         type: 'AddressChartChanged',
         data: addressCharts,
       });

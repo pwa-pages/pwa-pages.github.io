@@ -10,7 +10,6 @@ export * from './token';
 export * from './transaction';
 export * from './watcher.info';
 
-
 export function getAllChainTypes(): string[] {
   return (globalThis as any).getChainTypes();
 }

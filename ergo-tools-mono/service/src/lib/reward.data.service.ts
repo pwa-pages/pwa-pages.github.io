@@ -107,12 +107,12 @@ class RewardDataService extends DataService<DbInput> {
 
     const inputs = await this.getSortedInputs();
 
-    this.eventSender.sendEvent({
+    this.eventSender?.sendEvent({
       type: 'InputsChanged',
       data: inputs,
     });
 
-    this.eventSender.sendEvent({
+    this.eventSender?.sendEvent({
       type: 'AddressChartChanged',
       data: await this.chartService.getAddressCharts(inputs),
     });
