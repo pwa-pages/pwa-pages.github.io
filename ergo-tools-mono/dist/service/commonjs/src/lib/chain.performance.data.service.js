@@ -2,6 +2,9 @@
 class ChainPerformanceDataService extends DataService {
     db;
     eventSender;
+    getData() {
+        return this.storageService.getData(rs_PerfTxStoreName);
+    }
     async getExistingData(transaction) {
         return await this.storageService.getDataById(rs_PerfTxStoreName, transaction.id);
     }

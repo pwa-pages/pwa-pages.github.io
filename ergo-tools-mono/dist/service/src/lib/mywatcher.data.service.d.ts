@@ -1,6 +1,7 @@
 declare class MyWatcherDataService extends DataService<PermitTx> {
     db: IDBDatabase;
     private activePermitsDataService;
+    getData(): Promise<PermitTx[] | null>;
     getExistingData(transaction: TransactionItem, address: string): Promise<PermitTx | null>;
     constructor(db: IDBDatabase, activePermitsDataService: ActivePermitsDataService);
     createUniqueId(boxId: string, transactionId: string, address: string): string;

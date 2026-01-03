@@ -1,6 +1,9 @@
 "use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class RewardDataService extends DataService {
+    getData() {
+        return this.storageService.getData(rs_InputsStoreName);
+    }
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId && getChainType(input.address)) {

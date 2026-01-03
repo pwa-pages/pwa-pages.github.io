@@ -2,6 +2,9 @@
 class MyWatcherDataService extends DataService {
     db;
     activePermitsDataService;
+    getData() {
+        return this.storageService.getData(rs_PermitTxStoreName);
+    }
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId) {

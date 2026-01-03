@@ -28,7 +28,7 @@ class DownloadService {
     }
     async downloadTransactions(address, offset = 0, limit = 500, useNode) {
         if (useNode) {
-            const url = `https://${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
+            const url = `${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
             console.log(`Downloading from: ${url}`);
             const response = await fetch(url, {
                 method: 'POST',
@@ -174,6 +174,7 @@ class DownloadService {
                 await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'false');
                 console.log(`Downloading all tx's for : ${address}`);
                 await this.downloadAllForAddress(address, 0, useNode, callback);
+                return this.dataService.getData();
             }
         }
         catch (e) {
@@ -184,6 +185,7 @@ class DownloadService {
             this.dataService.purgeData();
             console.log(this.busyCounter);
         }
+        return null;
     }
 }
 if (typeof window !== 'undefined') {
@@ -191,6 +193,6 @@ if (typeof window !== 'undefined') {
 }
 globalThis.CreateActivePermitsDownloadService = (eventSender) => {
     var storageService = new MemoryStorageService();
-    const activepermitsDataService = new ActivePermitsDataService(storageService);
+    const activepermitsDataService = new ActivePermitsDataService(storageService /*, Number.MAX_SAFE_INTEGER*/);
     return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, eventSender, null);
 };

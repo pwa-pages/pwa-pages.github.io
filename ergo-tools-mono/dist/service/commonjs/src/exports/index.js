@@ -34,6 +34,7 @@ __exportStar(require("./chart.dataset"), exports);
 __exportStar(require("./chart.performance"), exports);
 __exportStar(require("./chart.point"), exports);
 __exportStar(require("./input"), exports);
+__exportStar(require("./permit.tx"), exports);
 __exportStar(require("./output"), exports);
 __exportStar(require("./token"), exports);
 __exportStar(require("./transaction"), exports);

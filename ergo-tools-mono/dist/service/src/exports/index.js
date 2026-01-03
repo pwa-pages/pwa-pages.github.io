@@ -5,6 +5,7 @@ export * from './chart.dataset';
 export * from './chart.performance';
 export * from './chart.point';
 export * from './input';
+export * from './permit.tx';
 export * from './output';
 export * from './token';
 export * from './transaction';

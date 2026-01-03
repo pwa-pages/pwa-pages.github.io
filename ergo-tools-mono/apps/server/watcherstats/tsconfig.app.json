@@ -2,13 +2,14 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "module": "commonjs",
     "moduleResolution": "node",
     "types": ["node"],
     "paths": {
-      "@ergo-tools/service": ["../../../dist/service/commonjs/src/exports"]
+      "@ergo-tools/service": ["../../../service/src/exports"]
 
-    }
+    },
+    "target": "ESNext",
+    "module": "ES2022"
   },
   "include": ["src/**/*.ts"]
 }

@@ -1,5 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class RewardDataService extends DataService<DbInput> {
+  override getData(): Promise<DbInput[] | null> {
+    return this.storageService.getData<DbInput>(rs_InputsStoreName);
+  }
+
   override async getExistingData(
     transaction: TransactionItem,
     address: string,

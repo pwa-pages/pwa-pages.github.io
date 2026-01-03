@@ -3,6 +3,9 @@ class RewardDataService extends DataService {
     db;
     chartService;
     eventSender;
+    getData() {
+        return this.storageService.getData(rs_InputsStoreName);
+    }
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId && getChainType(input.address)) {

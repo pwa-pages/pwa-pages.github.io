@@ -5,6 +5,7 @@ export * from './chart.dataset';
 export * from './chart.performance';
 export * from './chart.point';
 export * from './input'
+export * from './permit.tx'
 export * from './output'
 export * from './token';
 export * from './transaction';
@@ -159,15 +160,16 @@ export class ErgSettings {
 
 
 export interface IDownloadService {
-  downloadForAddress(
+  downloadForAddress<T>(
     address: string,
     useNode: boolean,
-    callback?: () => Promise<void>,
-  ): Promise<void>;
+    callback?: () => Promise<T>,
+  ): Promise<T[]>;
 }
 
 export function GetDownloadService(): IDownloadService{
   return (globalThis as any).CreateActivePermitsDownloadService(null);
 }
+
 
 

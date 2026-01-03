@@ -1,5 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MyWatcherDataService extends DataService<PermitTx> {
+  override getData(): Promise<PermitTx[] | null> {
+    return this.storageService.getData<PermitTx>(rs_PermitTxStoreName);
+  }
   override async getExistingData(
     transaction: TransactionItem,
     address: string,

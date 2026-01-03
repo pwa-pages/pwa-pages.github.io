@@ -2,6 +2,9 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ChainPerformanceDataService extends DataService<PerfTx> {
+  override getData(): Promise<PerfTx[] | null> {
+    return this.storageService.getData<PerfTx>(rs_PerfTxStoreName);
+  }
   override async getExistingData(
     transaction: TransactionItem,
   ): Promise<PerfTx | null> {

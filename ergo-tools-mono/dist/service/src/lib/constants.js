@@ -37,7 +37,7 @@ const rs_WatcherCollateralERG = (chainType) => {
     }
 };
 const rs_ErgoExplorerHost = 'api.ergoplatform.com';
-const rs_ErgoNodeHost = 'node-p2p.ergoplatform.com';
+const rs_ErgoNodeHost = 'https://node-p2p.ergoplatform.com';
 //const rs_ErgoNodeHost = 'localhost:9053';
 //const rs_ErgoExplorerHost = 'node-p2p.ergoplatform.com';
 // https://node-p2p.ergoplatform.com/swagger

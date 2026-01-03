@@ -1,6 +1,8 @@
 declare class ActivePermitsDataService extends DataService<PermitTx> {
+    private maxDownloadDateDifference;
+    getData(): Promise<PermitTx[] | null>;
     getExistingData(transaction: TransactionItem, address: string): Promise<PermitTx | null>;
-    constructor(db: IDBDatabase | IStorageService<PermitTx>);
+    constructor(db: IDBDatabase | IStorageService<PermitTx>, maxDownloadDateDifference?: number);
     createUniqueId(boxId: string, transactionId: string, address: string): string;
     getDataType(): string;
     getMaxDownloadDateDifference(): number;

@@ -1,3 +1,4 @@
+import { Asset } from './asset';
 export interface PermitTx {
   id: string;
   date: Date;

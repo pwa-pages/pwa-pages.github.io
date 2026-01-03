@@ -1,5 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ActivePermitsDataService extends DataService {
+    maxDownloadDateDifference;
+    getData() {
+        return this.storageService.getData(rs_ActivePermitTxStoreName);
+    }
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId) {
@@ -19,8 +23,9 @@ class ActivePermitsDataService extends DataService {
         }
         return null;
     }
-    constructor(db) {
+    constructor(db, maxDownloadDateDifference = 204800000) {
         super(db);
+        this.maxDownloadDateDifference = maxDownloadDateDifference;
     }
     createUniqueId(boxId, transactionId, address) {
         const str = `${transactionId}_${boxId}_${address}`;
@@ -36,7 +41,7 @@ class ActivePermitsDataService extends DataService {
         return 'activepermit';
     }
     getMaxDownloadDateDifference() {
-        return 204800000;
+        return this.maxDownloadDateDifference;
     }
     async getWatcherPermits() {
         const permitsPromise = this.storageService.getData(rs_ActivePermitTxStoreName);

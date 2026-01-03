@@ -5,6 +5,7 @@ export * from './chart.dataset';
 export * from './chart.performance';
 export * from './chart.point';
 export * from './input';
+export * from './permit.tx';
 export * from './output';
 export * from './token';
 export * from './transaction';
@@ -61,6 +62,6 @@ export declare class ErgSettings {
     static rs_RSNDecimals(): number;
 }
 export interface IDownloadService {
-    downloadForAddress(address: string, useNode: boolean, callback?: () => Promise<void>): Promise<void>;
+    downloadForAddress<T>(address: string, useNode: boolean, callback?: () => Promise<T>): Promise<T[]>;
 }
 export declare function GetDownloadService(): IDownloadService;

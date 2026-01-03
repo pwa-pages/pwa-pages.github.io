@@ -12,5 +12,5 @@ declare class DownloadService<T> {
     private increaseBusyCounter;
     private decreaseBusyCounter;
     downloadAllForAddress(address: string, offset: number, useNode: boolean, callback?: () => Promise<void>): Promise<void>;
-    downloadForAddress(address: string, useNode: boolean, callback?: () => Promise<void>): Promise<void>;
+    downloadForAddress(address: string, useNode: boolean, callback?: () => Promise<void>): Promise<T[] | null>;
 }

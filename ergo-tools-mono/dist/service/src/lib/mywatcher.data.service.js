@@ -1,6 +1,9 @@
 "use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class MyWatcherDataService extends DataService {
+    getData() {
+        return this.storageService.getData(rs_PermitTxStoreName);
+    }
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId) {

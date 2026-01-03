@@ -105,4 +105,5 @@ declare abstract class DataService<T> {
     abstract getDataType(): string;
     getMaxDownloadDateDifference(): number;
     abstract getExistingData(transaction: TransactionItem, address: string): Promise<T | null>;
+    abstract getData(): Promise<T[] | null>;
 }

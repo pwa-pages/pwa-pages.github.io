@@ -38,7 +38,7 @@ class DownloadService<T> {
     useNode: boolean,
   ): Promise<FetchTransactionsResponse> {
     if (useNode) {
-      const url = `https://${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
+      const url = `${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
       console.log(`Downloading from: ${url}`);
 
       const response: Response = await fetch(url, {
@@ -202,7 +202,7 @@ class DownloadService<T> {
     address: string,
     useNode: boolean,
     callback?: () => Promise<void>,
-  ): Promise<void> {
+  ): Promise<T[] | null> {
     this.increaseBusyCounter(address);
     console.log(this.busyCounter);
 
@@ -258,6 +258,7 @@ class DownloadService<T> {
           useNode,
           callback,
         );
+        return this.dataService.getData();
       }
     } catch (e) {
       console.error(e);
@@ -266,10 +267,11 @@ class DownloadService<T> {
       this.dataService.purgeData();
       console.log(this.busyCounter);
     }
+    return null;
   }
 
 
-  
+
 }
 
 
@@ -278,22 +280,22 @@ if (typeof window !== 'undefined') {
 }
 
 (globalThis as any).CreateActivePermitsDownloadService = (
-    eventSender: EventSender
-  ): DownloadService<PermitTx> => {
+  eventSender: EventSender
+): DownloadService<PermitTx> => {
 
-    var storageService = new MemoryStorageService<PermitTx>();
-    const activepermitsDataService: ActivePermitsDataService =
-      new ActivePermitsDataService(storageService);
+  var storageService = new MemoryStorageService<PermitTx>();
+  const activepermitsDataService: ActivePermitsDataService =
+    new ActivePermitsDataService(storageService/*, Number.MAX_SAFE_INTEGER*/);
 
-    return new DownloadService<PermitTx>(
-        rs_FullDownloadsBatchSize,
-        rs_InitialNDownloads,
-        activepermitsDataService,
-        eventSender,
-        null,
-      );
+  return new DownloadService<PermitTx>(
+    rs_FullDownloadsBatchSize,
+    rs_InitialNDownloads,
+    activepermitsDataService,
+    eventSender,
+    null,
+  );
 
-  };
+};
 
 
 

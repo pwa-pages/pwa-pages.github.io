@@ -148,4 +148,7 @@ abstract class DataService<T> {
     address: string,
   ): Promise<T | null>;
 
+  abstract getData(
+  ): Promise<T[] | null>;
+
 }

@@ -2,6 +2,9 @@
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ActivePermitsDataService extends DataService<PermitTx> {
+  override getData(): Promise<PermitTx[] | null> {
+    return this.storageService.getData<PermitTx>(rs_ActivePermitTxStoreName);
+  }
   override async getExistingData(
     transaction: TransactionItem,
     address: string,
@@ -31,7 +34,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
 
     return null;
   }
-  constructor(db: IDBDatabase | IStorageService<PermitTx>) {
+  constructor(db: IDBDatabase | IStorageService<PermitTx>, private maxDownloadDateDifference: number = 204800000) {
     super(db);
   }
   createUniqueId(
@@ -56,7 +59,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
   }
 
   override getMaxDownloadDateDifference(): number {
-    return 204800000;
+    return this.maxDownloadDateDifference;
   }
 
   private async getWatcherPermits(): Promise<PermitTx[]> {
