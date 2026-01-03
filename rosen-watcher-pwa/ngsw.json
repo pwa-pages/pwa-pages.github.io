@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1767360100584,
+  "timestamp": 1767411337667,
   "appData": {
-    "version": "3.84.9"
+    "version": "3.85.0"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-OS3IBSXO.js",
+        "./main-VULDWTOR.js",
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./rosen.html",
-        "./scripts-AHMX3OBX.js",
+        "./scripts-75FOV4Q2.js",
         "./styles-35HEJGED.css"
       ],
       "patterns": []
@@ -99,8 +99,8 @@
     "./assets/rosen-watchers.html": "61235d2d68e1a1bb8f19fa33390f9f320436be24",
     "./assets/test.html": "7be1e51ec537c8242b37e42fdc4fa46c88a77508",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "8fd9326f7097cf5ae2bc8170fcecd6aa9618415e",
-    "./main-OS3IBSXO.js": "a784e9358f829cdc64be2d21068662964684f727",
+    "./index.html": "b0cade6b4da96bb81a93c7f69d1d8e75ca3e57b1",
+    "./main-VULDWTOR.js": "2a8359f37c9130131331275df6d4bb830621fb15",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./media/bitcoin-R7IFWMJM.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
@@ -119,7 +119,7 @@
     "./media/runes-YRKWHLRH.png": "ea5ce402d8db6c0bd0a138cc93745770bda962bc",
     "./polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
     "./rosen.html": "d7161a40ae648d11c75098244147e693537693b8",
-    "./scripts-AHMX3OBX.js": "21b61b20b713a49859561b36e9477934b20109b3",
+    "./scripts-75FOV4Q2.js": "b5ff5da822748fcb753c3fd2be87a7f7315fcbcd",
     "./styles-35HEJGED.css": "f1344e0b64ea182b74c48fc908e7ec79d57a0ad2"
   },
   "navigationUrls": [
