@@ -99,7 +99,7 @@ class MyWatcherDataService extends DataService {
                 });
             }
         }
-        let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits(addresses);
+        let addressActivePermits = await this.activePermitsDataService.getAdressPermits(true, null, null, addresses);
         for (const activePermit of addressActivePermits) {
             const info = permitInfo.find((p) => p.address === activePermit.address);
             if (info) {

@@ -12,7 +12,7 @@ declare class ActivePermitsDataService extends DataService<PermitTx> {
     getOpenBoxesMap(): Promise<Record<string, string | null> | null>;
     shouldAddInputToDb(address: string, assets: Asset[]): boolean;
     shouldAddOutputToDb(address: string): boolean;
-    getAdressActivePermits(addresses?: string[] | null): Promise<PermitTx[]>;
+    getAdressPermits(activeOnly: boolean, month: number | null, year: number | null, addresses?: string[] | null): Promise<PermitTx[]>;
     addData(address: string, transactions: TransactionItem[]): Promise<void>;
     purgeData(): Promise<void>;
     getSortedPermits(): Promise<PermitTx[]>;

@@ -129,7 +129,7 @@ export class ErgSettings {
         return globalThis.rs_RSNDecimals;
     }
 }
-export function GetDownloadService() {
-    return globalThis.CreateActivePermitsDownloadService(null);
+export function GetDownloadService(maxDownloadDateDifference) {
+    return globalThis.CreateActivePermitsDownloadService(maxDownloadDateDifference, null);
 }
 //# sourceMappingURL=index.js.map

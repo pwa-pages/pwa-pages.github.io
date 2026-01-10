@@ -1,3 +1,5 @@
+import { PermitTx } from './permit.tx';
+
 export * from './address';
 export * from './asset';
 export * from './chainperf.chart.point';
@@ -156,19 +158,26 @@ export class ErgSettings {
   }
 }
 
+export interface ActivePermitsDataService {
+  getAdressPermits(
+    activeOnly: boolean,
+    month: number,
+    year: number
+  ): Promise<PermitTx[]>
+}
 
 
-
-export interface IDownloadService {
+export interface IDownloadService<SERVICE> {
   downloadForAddress<T>(
     address: string,
     useNode: boolean,
     callback?: () => Promise<T>,
   ): Promise<T[]>;
+  getDataService(): SERVICE;
 }
 
-export function GetDownloadService(): IDownloadService{
-  return (globalThis as any).CreateActivePermitsDownloadService(null);
+export function GetDownloadService<SERVICE> (maxDownloadDateDifference: number): IDownloadService<SERVICE>{
+  return (globalThis as any).CreateActivePermitsDownloadService(maxDownloadDateDifference, null);
 }
 
 

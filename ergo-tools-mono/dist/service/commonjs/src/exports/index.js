@@ -159,6 +159,6 @@ class ErgSettings {
     }
 }
 exports.ErgSettings = ErgSettings;
-function GetDownloadService() {
-    return globalThis.CreateActivePermitsDownloadService(null);
+function GetDownloadService(maxDownloadDateDifference) {
+    return globalThis.CreateActivePermitsDownloadService(maxDownloadDateDifference, null);
 }

@@ -19,6 +19,10 @@ class DownloadService<T> {
     this.downloadInitialSize = downloadInitialSize;
   }
 
+  public getDataService(): DataService<T> {
+    return this.dataService;
+  }
+
   async fetchTransactions(url: string): Promise<FetchTransactionsResponse> {
     try {
       const response: Response = await fetch(url);
@@ -280,12 +284,13 @@ if (typeof window !== 'undefined') {
 }
 
 (globalThis as any).CreateActivePermitsDownloadService = (
+  maxDownloadDateDifference: number,
   eventSender: EventSender
 ): DownloadService<PermitTx> => {
 
   var storageService = new MemoryStorageService<PermitTx>();
   const activepermitsDataService: ActivePermitsDataService =
-    new ActivePermitsDataService(storageService/*, Number.MAX_SAFE_INTEGER*/);
+    new ActivePermitsDataService(storageService, maxDownloadDateDifference);
 
   return new DownloadService<PermitTx>(
     rs_FullDownloadsBatchSize,

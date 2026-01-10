@@ -14,6 +14,9 @@ class DownloadService {
         this.downloadFullSize = downloadFullSize;
         this.downloadInitialSize = downloadInitialSize;
     }
+    getDataService() {
+        return this.dataService;
+    }
     async fetchTransactions(url) {
         try {
             const response = await fetch(url);
@@ -191,8 +194,8 @@ class DownloadService {
 if (typeof window !== 'undefined') {
     window.DownloadService = DownloadService;
 }
-globalThis.CreateActivePermitsDownloadService = (eventSender) => {
+globalThis.CreateActivePermitsDownloadService = (maxDownloadDateDifference, eventSender) => {
     var storageService = new MemoryStorageService();
-    const activepermitsDataService = new ActivePermitsDataService(storageService /*, Number.MAX_SAFE_INTEGER*/);
+    const activepermitsDataService = new ActivePermitsDataService(storageService, maxDownloadDateDifference);
     return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, eventSender, null);
 };

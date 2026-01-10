@@ -114,12 +114,15 @@ class ActivePermitsDataService extends DataService {
             Object.values(permitTriggerAddresses).includes(address) ||
             Object.values(rewardAddresses).includes(address));
     }
-    async getAdressActivePermits(addresses = null) {
+    async getAdressPermits(activeOnly, month, year, addresses = null) {
         const permits = await this.getWatcherPermits();
         const openBoxesMap = await this.getOpenBoxesMap();
         let addressPermits = new Array();
         if (addresses != null && addresses.length > 0) {
             addressPermits = permits.filter((info) => addresses.some((addr) => addr === info.address));
+        }
+        if (activeOnly === false) {
+            addressPermits = permits;
         }
         let result = new Array();
         const permitsByTxId = {};
@@ -143,16 +146,34 @@ class ActivePermitsDataService extends DataService {
                 let cnt = boxIdMap[output.boxId] ?? [];
                 if (cnt.length >= 2) {
                     foundResolved = true;
-                    for (const p of cnt) {
-                        let txs = permitsByTxId[p.transactionId]?.filter((t) => Object.values(permitBulkAddresses).includes(t.address)) ?? [];
-                        await Promise.all(txs.map(async (t) => {
-                            let openBoxes = openBoxesMap[t.address];
-                            if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
-                                if (!result.some((r) => r.boxId === t.boxId)) {
+                    if (activeOnly) {
+                        for (const p of cnt) {
+                            let txs = permitsByTxId[p.transactionId]?.filter((t) => Object.values(permitBulkAddresses).includes(t.address)) ?? [];
+                            await Promise.all(txs.map(async (t) => {
+                                let openBoxes = openBoxesMap[t.address];
+                                if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
+                                    if (!result.some((r) => r.boxId === t.boxId)) {
+                                        result.push(permit);
+                                    }
+                                }
+                            }));
+                        }
+                    }
+                    else {
+                        for (const p of cnt) {
+                            let txs = permitsByTxId[p.transactionId]?.filter((t) => Object.values(permitBulkAddresses).includes(t.address)) ?? [];
+                            await Promise.all(txs.map(async (t) => {
+                                const d0 = new Date(t.date);
+                                if (month != null && year != null) {
+                                    if (d0.getFullYear() === year && d0.getMonth() + 1 === month) {
+                                        result.push(permit);
+                                    }
+                                }
+                                else {
                                     result.push(permit);
                                 }
-                            }
-                        }));
+                            }));
+                        }
                     }
                 }
             }
