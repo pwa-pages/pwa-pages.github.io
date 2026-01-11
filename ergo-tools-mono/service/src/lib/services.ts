@@ -8,7 +8,7 @@ import './data.service';
 import './download.status.indexeddb.service';
 import './i-db-databasestorage.service';
 import './memory.storage.service';
-import './mywatcher.data.service' ;
+import './watcher.data.service' ;
 import './process.event.service';
 import './reward.data.service';
 import './rosen-db-worker';

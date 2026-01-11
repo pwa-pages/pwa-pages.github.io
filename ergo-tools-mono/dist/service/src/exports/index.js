@@ -6,6 +6,7 @@ export * from './chart.performance';
 export * from './chart.point';
 export * from './input';
 export * from './permit.tx';
+export * from './permit.info';
 export * from './output';
 export * from './token';
 export * from './transaction';
@@ -128,6 +129,9 @@ export class ErgSettings {
     static rs_RSNDecimals() {
         return globalThis.rs_RSNDecimals;
     }
+}
+export function GetWatcherDataService(activePermitsDataService) {
+    return globalThis.GetWatcherDataService(activePermitsDataService);
 }
 export function GetDownloadService(maxDownloadDateDifference) {
     return globalThis.CreateActivePermitsDownloadService(maxDownloadDateDifference, null);

@@ -11,7 +11,7 @@ cat dist/service/commonjs/src/lib/rosen-download-worker.js >> tmp.js
 cat dist/service/commonjs/src/lib/chart.service.js >> tmp.js
 cat dist/service/commonjs/src/lib/memory.storage.service.js >> tmp.js
 cat dist/service/commonjs/src/lib/constants.js >> tmp.js
-cat dist/service/commonjs/src/lib/mywatcher.data.service.js  >> tmp.js            
+cat dist/service/commonjs/src/lib/watcher.data.service.js  >> tmp.js            
 cat dist/service/commonjs/src/lib/process.event.service.js >> tmp.js  
 cat dist/apps/server/watcherstats/main.js >> tmp.js  
 mv tmp.js dist/apps/server/watcherstats/main.js

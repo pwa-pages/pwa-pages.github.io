@@ -3,7 +3,7 @@ class DataService {
     storageService;
     db;
     constructor(dbOrStorage) {
-        if (dbOrStorage.transaction !== undefined) {
+        if (dbOrStorage?.transaction !== undefined) {
             this.db = dbOrStorage;
             this.storageService = new IDBDatabaseStorageService(this.db);
         }
@@ -135,7 +135,7 @@ class ActivePermitsDataService extends DataService {
             Object.values(permitTriggerAddresses).includes(address) ||
             Object.values(rewardAddresses).includes(address));
     }
-    async getAdressPermits(activeOnly, month, year, addresses = null) {
+    async getAdressPermits(activeOnly, frommonth, fromyear, tomonth, toyear, addresses = null) {
         const permits = await this.getWatcherPermits();
         const openBoxesMap = await this.getOpenBoxesMap();
         let addressPermits = new Array();
@@ -160,6 +160,7 @@ class ActivePermitsDataService extends DataService {
             }
             boxIdMap[permit.boxId].push(permit);
         }
+        var permitBulkAddressSet = new Set(Object.values(permitBulkAddresses));
         for (const permit of addressPermits) {
             let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) => Object.values(permitTriggerAddresses).some((address) => address === o.address));
             let foundResolved = false;
@@ -169,31 +170,32 @@ class ActivePermitsDataService extends DataService {
                     foundResolved = true;
                     if (activeOnly) {
                         for (const p of cnt) {
-                            let txs = permitsByTxId[p.transactionId]?.filter((t) => Object.values(permitBulkAddresses).includes(t.address)) ?? [];
-                            await Promise.all(txs.map(async (t) => {
+                            let txs = permitsByTxId[p.transactionId]?.filter((t) => permitBulkAddressSet.has(t.address)) ?? [];
+                            txs.map(async (t) => {
                                 let openBoxes = openBoxesMap[t.address];
                                 if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
                                     if (!result.some((r) => r.boxId === t.boxId)) {
                                         result.push(permit);
                                     }
                                 }
-                            }));
+                            });
                         }
                     }
                     else {
                         for (const p of cnt) {
-                            let txs = permitsByTxId[p.transactionId]?.filter((t) => Object.values(permitBulkAddresses).includes(t.address)) ?? [];
-                            await Promise.all(txs.map(async (t) => {
+                            let txs = permitsByTxId[p.transactionId]?.filter((t) => permitBulkAddressSet.has(t.address)) ?? [];
+                            txs.map(t => {
                                 const d0 = new Date(t.date);
-                                if (month != null && year != null) {
-                                    if (d0.getFullYear() === year && d0.getMonth() + 1 === month) {
+                                if (frommonth != null && fromyear != null && tomonth != null && toyear != null) {
+                                    if (d0.getFullYear() >= fromyear && d0.getMonth() + 1 >= frommonth &&
+                                        d0.getFullYear() <= toyear && d0.getMonth() + 1 <= tomonth) {
                                         result.push(permit);
                                     }
                                 }
                                 else {
                                     result.push(permit);
                                 }
-                            }));
+                            });
                         }
                     }
                 }
@@ -316,6 +318,9 @@ class ActivePermitsDataService extends DataService {
         }
     }
 }
+globalThis.GetWatcherDataService = (activePermitsDataService) => {
+    return new WatcherDataService(activePermitsDataService);
+};
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService {
     dataService;
@@ -1243,8 +1248,7 @@ if (typeof window !== 'undefined') {
     window.Currency = Currency;
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class MyWatcherDataService extends DataService {
-    db;
+class WatcherDataService extends DataService {
     activePermitsDataService;
     getData() {
         return this.storageService.getData(rs_PermitTxStoreName);
@@ -1268,9 +1272,8 @@ class MyWatcherDataService extends DataService {
         }
         return null;
     }
-    constructor(db, activePermitsDataService) {
-        super(db);
-        this.db = db;
+    constructor(activePermitsDataService) {
+        super(activePermitsDataService.storageService);
         this.activePermitsDataService = activePermitsDataService;
     }
     createUniqueId(boxId, transactionId, address) {
@@ -1343,7 +1346,7 @@ class MyWatcherDataService extends DataService {
                 });
             }
         }
-        let addressActivePermits = await this.activePermitsDataService.getAdressPermits(true, null, null, addresses);
+        let addressActivePermits = await this.activePermitsDataService.getAdressPermits(true, null, null, null, null, addresses);
         for (const activePermit of addressActivePermits) {
             const info = permitInfo.find((p) => p.address === activePermit.address);
             if (info) {
@@ -1470,20 +1473,20 @@ class ProcessEventService {
         const chartService = new ChartService();
         const rewardDataService = new RewardDataService(db, chartService, this.eventSender);
         const activepermitsDataService = new ActivePermitsDataService(db);
-        const myWatcherDataService = new MyWatcherDataService(db, activepermitsDataService);
+        const watcherDataService = new WatcherDataService(activepermitsDataService);
         const chainPerformanceDataService = new ChainPerformanceDataService(db, this.eventSender);
         const downloadStatusIndexedDbRewardDataService = new DownloadStatusIndexedDbService(rewardDataService, db);
-        const downloadStatusIndexedDbMyWatcherDataService = new DownloadStatusIndexedDbService(myWatcherDataService, db);
+        const downloadStatusIndexedDbWatcherDataService = new DownloadStatusIndexedDbService(watcherDataService, db);
         const downloadStatusIndexedDbActivePermitsDataService = new DownloadStatusIndexedDbService(activepermitsDataService, db);
         const downloadStatusIndexedDbChainPerformanceDataService = new DownloadStatusIndexedDbService(chainPerformanceDataService, db);
         const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, this.eventSender, downloadStatusIndexedDbRewardDataService);
-        const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, myWatcherDataService, this.eventSender, downloadStatusIndexedDbMyWatcherDataService);
+        const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, watcherDataService, this.eventSender, downloadStatusIndexedDbWatcherDataService);
         const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, this.eventSender, downloadStatusIndexedDbActivePermitsDataService);
         const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, this.eventSender, downloadStatusIndexedDbChainPerformanceDataService);
         this.services = {
             dataService: rewardDataService,
             chainPerformanceDataService: chainPerformanceDataService,
-            myWatcherDataService: myWatcherDataService,
+            watcherDataService,
             downloadService,
             chartService,
             downloadPerfService: downloadPerfService,
@@ -1498,7 +1501,7 @@ class ProcessEventService {
             event.type === 'PerformanceScreenLoaded' ||
             event.type === 'MyWatchersScreenLoaded' ||
             event.type === 'RequestInputsDownload') {
-            const { dataService, downloadService, downloadPerfService, downloadMyWatchersService, downloadActivePermitsService, chartService, chainPerformanceDataService, myWatcherDataService, activePermitsDataService, } = await this.initServices();
+            const { dataService, downloadService, downloadPerfService, downloadMyWatchersService, downloadActivePermitsService, chartService, chainPerformanceDataService, watcherDataService, activePermitsDataService, } = await this.initServices();
             if (event.type === 'RequestInputsDownload') {
                 await this.processRequestInputsDownload(event, chartService, dataService, downloadService);
             }
@@ -1506,7 +1509,7 @@ class ProcessEventService {
                 await this.processStatisticsScreenLoaded(dataService, downloadService);
             }
             else if (event.type === 'MyWatchersScreenLoaded') {
-                await this.processMyWatchersScreenLoaded(event, myWatcherDataService, downloadMyWatchersService, activePermitsDataService, downloadActivePermitsService);
+                await this.processMyWatchersScreenLoaded(event, watcherDataService, downloadMyWatchersService, activePermitsDataService, downloadActivePermitsService);
             }
             else if (event.type === 'PerformanceScreenLoaded') {
                 await this.processPerformanceScreenLoaded(chainPerformanceDataService, downloadPerfService);
@@ -1528,28 +1531,28 @@ class ProcessEventService {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
     }
-    async processMyWatchersScreenLoaded(event, myWatcherDataService, downloadMyWatchersService, activePermitsDataService, downloadActivePermitsService) {
+    async processMyWatchersScreenLoaded(event, watcherDataService, downloadMyWatchersService, activePermitsDataService, downloadActivePermitsService) {
         const addresses = event.data
             .addresses;
         console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
         try {
-            let permits = await myWatcherDataService.getAdressPermits(addresses);
+            let permits = await watcherDataService.getAdressPermits(addresses);
             let chainTypes = this.extractChaintTypes(permits, addresses);
             this.sendPermitsChangedEvent(permits);
             if (chainTypes.size === 0) {
-                await this.downloadForChainPermitAddresses(addresses, downloadMyWatchersService, myWatcherDataService);
-                permits = await this.sendPermitChangedEvent(myWatcherDataService, addresses);
+                await this.downloadForChainPermitAddresses(addresses, downloadMyWatchersService, watcherDataService);
+                permits = await this.sendPermitChangedEvent(watcherDataService, addresses);
                 let chainTypes = this.extractChaintTypes(permits, addresses);
-                await this.processActivePermits(chainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService);
+                await this.processActivePermits(chainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService);
             }
             else {
-                await this.processActivePermits(chainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService);
-                await this.downloadForChainPermitAddresses(addresses, downloadMyWatchersService, myWatcherDataService);
-                await this.sendPermitChangedEvent(myWatcherDataService, addresses);
-                let newChainTypes = this.extractChaintTypes(await myWatcherDataService.getAdressPermits(addresses), addresses);
+                await this.processActivePermits(chainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService);
+                await this.downloadForChainPermitAddresses(addresses, downloadMyWatchersService, watcherDataService);
+                await this.sendPermitChangedEvent(watcherDataService, addresses);
+                let newChainTypes = this.extractChaintTypes(await watcherDataService.getAdressPermits(addresses), addresses);
                 if (newChainTypes.size !== chainTypes.size ||
                     [...newChainTypes].some((ct) => !chainTypes.has(ct))) {
-                    await this.processActivePermits(newChainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService);
+                    await this.processActivePermits(newChainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService);
                 }
             }
         }
@@ -1566,22 +1569,22 @@ class ProcessEventService {
         }
         return chainTypes;
     }
-    async processActivePermits(chainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService) {
+    async processActivePermits(chainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService) {
         await Promise.all(Array.from(chainTypes).map(async (chainType) => {
             await activePermitsDataService.downloadOpenBoxes(chainType);
         }));
-        await this.sendPermitChangedEvent(myWatcherDataService, addresses);
+        await this.sendPermitChangedEvent(watcherDataService, addresses);
         await Promise.all(Array.from(chainTypes).map(async (chainType) => {
-            await this.downloadForActivePermitAddresses(addresses, chainType, downloadActivePermitsService, myWatcherDataService);
+            await this.downloadForActivePermitAddresses(addresses, chainType, downloadActivePermitsService, watcherDataService);
         }));
     }
-    async downloadForChainPermitAddresses(addresses, downloadMyWatchersService, myWatcherDataService) {
+    async downloadForChainPermitAddresses(addresses, downloadMyWatchersService, watcherDataService) {
         try {
             const downloadPromises = Object.entries(permitAddresses)
                 .filter(([, address]) => address != null)
                 .map(async ([chainType, address]) => {
                 await downloadMyWatchersService.downloadForAddress(address, true);
-                const permits = await myWatcherDataService.getAdressPermits(addresses);
+                const permits = await watcherDataService.getAdressPermits(addresses);
                 await this.eventSender?.sendEvent({
                     type: 'PermitsChanged',
                     data: permits,
@@ -1597,8 +1600,8 @@ class ProcessEventService {
             console.error('Error downloading for addresses:', e);
         }
     }
-    async sendPermitChangedEvent(myWatcherDataService, addresses) {
-        let permits = await myWatcherDataService.getAdressPermits(addresses);
+    async sendPermitChangedEvent(watcherDataService, addresses) {
+        let permits = await watcherDataService.getAdressPermits(addresses);
         this.eventSender?.sendEvent({
             type: 'PermitsChanged',
             data: permits,
@@ -1625,7 +1628,7 @@ class ProcessEventService {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
     }
-    async downloadForActivePermitAddresses(allAddresses, chainType, downloadActivePermitsService, myWatcherDataService) {
+    async downloadForActivePermitAddresses(allAddresses, chainType, downloadActivePermitsService, watcherDataService) {
         try {
             let addresses = [];
             Object.entries(permitTriggerAddresses).forEach(([key, address]) => {
@@ -1636,7 +1639,7 @@ class ProcessEventService {
             const downloadPromises = addresses.map(async (address) => {
                 await downloadActivePermitsService.downloadForAddress(address, true, async () => {
                     try {
-                        const permits = await myWatcherDataService.getAdressPermits(allAddresses);
+                        const permits = await watcherDataService.getAdressPermits(allAddresses);
                         await this.eventSender?.sendEvent({
                             type: 'PermitsChanged',
                             data: permits,
@@ -1697,18 +1700,28 @@ if (typeof window !== 'undefined') {
     };
 }
 // service/src/exports/index.ts
+function GetWatcherDataService(activePermitsDataService) {
+  return globalThis.GetWatcherDataService(activePermitsDataService);
+}
 function GetDownloadService(maxDownloadDateDifference) {
   return globalThis.CreateActivePermitsDownloadService(maxDownloadDateDifference, null);
 }
 
 // apps/server/watcherstats/src/main.ts
 async function main() {
-  var downloadService = GetDownloadService(12048e5);
+  var frommonth = 1;
+  var fromyear = 2026;
+  var tomonth = 1;
+  var toyear = 2026;
+  const now = /* @__PURE__ */ new Date();
+  const startOfYear = new Date(fromyear, frommonth - 1, 1);
+  var diff = now.getTime() - startOfYear.getTime() + 2 * 24 * 60 * 60 * 1e3;
+  var downloadService = GetDownloadService(diff);
   await downloadService.downloadForAddress(
-    "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",
+    "5ivrmzxYZZfH2wJRvogecZo1YYXm32CoKnSZdtwxbjNoogRakUFe56VrrcULZtCkvAzM2MNRMxPYSfZc2rB6tkLKLCirG14JPDMfqBoWMhyzzQLVsDukZupema1i8SvYUuoaiPL5rTyQmqgF3ftPbvM2dHY623B3KsKRTNDhkoMoRmKLzenNWqjXpkANpyc3TCkDuvBypXfbWVN55F2ZZUs8L3XkvaJKcb74GY7whJB8Zg31VgpmVW4uVEuqpcvPk5FYNiTdRakyYTUVFnAdCR6ZDjagBYMr3ks2uHMhQdjmoKmmwCocVm4SGZsA8rU8zj6zrEgpepLT5UPD9sZQWtvSi6C82fPEW9pvNXr4T3sFx2xNRv8meyNUhopUfiRzVoWfx6Q4ArqU3dnmRtN8pxkDfTZr7oGrzAFAb3DRhBUPhhfWY2USAw7LMqMAuW65pdUFcGnczQH3B6V4kALNaoGMD7ixKtkdMkrAPHkJmxKzeMEd6Y49PnHWxFkQbXwqGELjDppqmdbKceyrtjUp3JwcZ5qN7YcLg1yXhFUiWAHhnAwGkHsTHivXADhV81sDBVqM1GUB3piyt6gkJ5My3SaRRTsokrnJLoGL23GwjEfTzDsvXCoXww3MQcwUUCXehQConnMxYsK7HHGV4wf8kbctrFd2ekPkeHm5ksjagEVzKMraZJgrRSRWEHdYmUGkU6tLGZTUF4Xe4MkdzXC3sRtif4iUnZg6Tnt3DEx2i5fmPD4xasYkusc6thd77x5x7MZXMdkxuo9BWTG9iiYAaE4aLQ5yEbrYeVY85DCVFAKXTsiwUH1De3rDhRZfFfQRuDqiYomDFumxofAa9k89yLeCSRyQpAH55BXLqvppusJyDwYJKd5itao8z3Qi2Fsvt7oL77fDnbotPwp7EkFbQZdGi7aUU1SdyfhxNwx6dYcFe2zpj6Spj7zb98FR2HahXwXnqqZjuym7RjN55bqPt2FufJ7CwdgQmiBMid7E1sAVMxBZyAeNbhHEqRJCajpUyGXswJjQJ9S1u9c4rRHzdntMtr2RXDtdgrt6b69GpZgZNeAX3QG9W9kQK4SAHE2BULEmNSBZHHitrRYdx97AsDLFfLpzfsPa82ew9oBy3PacMAF2WP48yxQrAzSA2p5idB5QFbYoECBBLsCyApG37AMuPrr24JrWmZLqR5XEPYnKojYrMcciwkn3L6jRpC5c1D9KrsTGk5dGtqBji1FE9XAVxuVpdddJjBSjphPx2UWtvJnwcxB8CoRSsVDF8RoyPcVwMmSfL5arDGJxBUzVu",
     true
   );
-  var permits = await downloadService.getDataService().getAdressPermits(false, 12, 2025);
+  var permits = await downloadService.getDataService().getAdressPermits(false, frommonth, fromyear, tomonth, toyear);
   const byAddress = permits.reduce((map, p) => {
     const addr = p.address || "";
     const d = p.date ? new Date(p.date) : null;
@@ -1736,23 +1749,7 @@ async function main() {
     latest: e.latest ? e.latest.toISOString() : null
   })).sort((a, b) => b.totalPermits - a.totalPermits || a.address.localeCompare(b.address));
   console.log("totalsPerAddress:", totalsPerAddress);
-  const targetAddresses = [
-    "9gtEhGzsj4xenbiqr4U8QoDKoZf6W8UXVhQy4f9yDARJXoeFuMv",
-    "9ef3cfT2nfYNtEiDtCiwhGZQUZH7uSTsw2Cab13bryybGqNukBw"
-  ];
-  for (const addr of targetAddresses) {
-    const total = totalsPerAddress.find((t) => t.address === addr);
-    console.log(`Totals for ${addr}:`, total ?? "not found");
-    const addrPermits = permits.filter((p) => p.address === addr);
-    console.log(`Permits for ${addr} (count=${addrPermits.length}):`);
-    addrPermits.forEach((p, i) => {
-      console.log({
-        index: i + 1,
-        id: p.id ?? p.txId ?? null,
-        date: p.date ?? null,
-        assetsCount: Array.isArray(p.assets) ? p.assets.length : 0
-      });
-    });
-  }
+  var watcherDataService = GetWatcherDataService(downloadService.getDataService());
+  console.log(await watcherDataService.getAdressPermits());
 }
 main().catch(console.error);

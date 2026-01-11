@@ -10,7 +10,7 @@ require("./data.service");
 require("./download.status.indexeddb.service");
 require("./i-db-databasestorage.service");
 require("./memory.storage.service");
-require("./mywatcher.data.service");
+require("./watcher.data.service");
 require("./process.event.service");
 require("./reward.data.service");
 require("./rosen-db-worker");

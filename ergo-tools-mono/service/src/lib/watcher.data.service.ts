@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class MyWatcherDataService extends DataService<PermitTx> {
+class WatcherDataService extends DataService<PermitTx> {
   override getData(): Promise<PermitTx[] | null> {
     return this.storageService.getData<PermitTx>(rs_PermitTxStoreName);
   }
@@ -33,10 +33,9 @@ class MyWatcherDataService extends DataService<PermitTx> {
     return null;
   }
   constructor(
-    public override db: IDBDatabase,
     private activePermitsDataService: ActivePermitsDataService,
   ) {
-    super(db);
+    super(activePermitsDataService.storageService);
   }
   createUniqueId(
     boxId: string,
@@ -94,7 +93,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
     );
   }
 
-  async getAdressPermits(addresses: string[]) {
+ public async getAdressPermits(addresses: string[] | null) {
     const permits = await this.getWatcherPermits();
     const widSums: Record<string, number> = {};
 
@@ -128,7 +127,7 @@ class MyWatcherDataService extends DataService<PermitTx> {
     }
 
     let addressActivePermits =
-      await this.activePermitsDataService.getAdressPermits(true, null, null, addresses);
+      await this.activePermitsDataService.getAdressPermits(true, null, null, null, null, addresses);
 
     for (const activePermit of addressActivePermits) {
       const info = permitInfo.find((p) => p.address === activePermit.address);

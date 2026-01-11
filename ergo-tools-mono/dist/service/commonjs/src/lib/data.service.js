@@ -3,7 +3,7 @@ class DataService {
     storageService;
     db;
     constructor(dbOrStorage) {
-        if (dbOrStorage.transaction !== undefined) {
+        if (dbOrStorage?.transaction !== undefined) {
             this.db = dbOrStorage;
             this.storageService = new IDBDatabaseStorageService(this.db);
         }

@@ -1,7 +1,6 @@
+"use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class MyWatcherDataService extends DataService {
-    db;
-    activePermitsDataService;
+class WatcherDataService extends DataService {
     getData() {
         return this.storageService.getData(rs_PermitTxStoreName);
     }
@@ -24,9 +23,8 @@ class MyWatcherDataService extends DataService {
         }
         return null;
     }
-    constructor(db, activePermitsDataService) {
-        super(db);
-        this.db = db;
+    constructor(activePermitsDataService) {
+        super(activePermitsDataService.storageService);
         this.activePermitsDataService = activePermitsDataService;
     }
     createUniqueId(boxId, transactionId, address) {
@@ -99,7 +97,7 @@ class MyWatcherDataService extends DataService {
                 });
             }
         }
-        let addressActivePermits = await this.activePermitsDataService.getAdressPermits(true, null, null, addresses);
+        let addressActivePermits = await this.activePermitsDataService.getAdressPermits(true, null, null, null, null, addresses);
         for (const activePermit of addressActivePermits) {
             const info = permitInfo.find((p) => p.address === activePermit.address);
             if (info) {
@@ -202,3 +200,4 @@ class MyWatcherDataService extends DataService {
         }
     }
 }
+//# sourceMappingURL=watcher.data.service.js.map

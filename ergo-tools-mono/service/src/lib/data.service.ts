@@ -120,7 +120,7 @@ abstract class DataService<T> {
   public db?: IDBDatabase;
   constructor(dbOrStorage: IDBDatabase | IStorageService<T>) {
     
-    if ((dbOrStorage as IDBDatabase).transaction !== undefined) {
+    if ((dbOrStorage as IDBDatabase)?.transaction !== undefined) {
       this.db = dbOrStorage as IDBDatabase;
       this.storageService = new IDBDatabaseStorageService<T>(this.db);
     } else {

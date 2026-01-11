@@ -1,4 +1,5 @@
 import { PermitTx } from './permit.tx';
+import { PermitInfo } from './permit.info';
 
 export * from './address';
 export * from './asset';
@@ -8,6 +9,7 @@ export * from './chart.performance';
 export * from './chart.point';
 export * from './input'
 export * from './permit.tx'
+export * from './permit.info'
 export * from './output'
 export * from './token';
 export * from './transaction';
@@ -161,9 +163,16 @@ export class ErgSettings {
 export interface ActivePermitsDataService {
   getAdressPermits(
     activeOnly: boolean,
-    month: number,
-    year: number
+    frommonth: number,
+    fromyear: number,
+    tomonth: number,
+    toyear: number
   ): Promise<PermitTx[]>
+}
+
+export interface WatcherDataService {
+  getAdressPermits(
+  ): Promise<PermitInfo[]>
 }
 
 
@@ -174,6 +183,10 @@ export interface IDownloadService<SERVICE> {
     callback?: () => Promise<T>,
   ): Promise<T[]>;
   getDataService(): SERVICE;
+}
+
+export function GetWatcherDataService (activePermitsDataService : ActivePermitsDataService): WatcherDataService{
+  return (globalThis as any).GetWatcherDataService(activePermitsDataService );
 }
 
 export function GetDownloadService<SERVICE> (maxDownloadDateDifference: number): IDownloadService<SERVICE>{

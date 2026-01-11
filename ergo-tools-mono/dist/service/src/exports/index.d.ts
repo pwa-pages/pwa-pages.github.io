@@ -1,4 +1,5 @@
 import { PermitTx } from './permit.tx';
+import { PermitInfo } from './permit.info';
 export * from './address';
 export * from './asset';
 export * from './chainperf.chart.point';
@@ -7,6 +8,7 @@ export * from './chart.performance';
 export * from './chart.point';
 export * from './input';
 export * from './permit.tx';
+export * from './permit.info';
 export * from './output';
 export * from './token';
 export * from './transaction';
@@ -63,10 +65,14 @@ export declare class ErgSettings {
     static rs_RSNDecimals(): number;
 }
 export interface ActivePermitsDataService {
-    getAdressPermits(activeOnly: boolean, month: number, year: number): Promise<PermitTx[]>;
+    getAdressPermits(activeOnly: boolean, frommonth: number, fromyear: number, tomonth: number, toyear: number): Promise<PermitTx[]>;
+}
+export interface WatcherDataService {
+    getAdressPermits(): Promise<PermitInfo[]>;
 }
 export interface IDownloadService<SERVICE> {
     downloadForAddress<T>(address: string, useNode: boolean, callback?: () => Promise<T>): Promise<T[]>;
     getDataService(): SERVICE;
 }
+export declare function GetWatcherDataService(activePermitsDataService: ActivePermitsDataService): WatcherDataService;
 export declare function GetDownloadService<SERVICE>(maxDownloadDateDifference: number): IDownloadService<SERVICE>;

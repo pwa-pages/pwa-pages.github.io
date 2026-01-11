@@ -170,7 +170,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
   }
 
   public async getAdressPermits(
-    activeOnly: boolean, month: number | null, year: number | null, addresses: string[] | null = null,
+    activeOnly: boolean, frommonth: number | null, fromyear: number | null, tomonth: number | null, toyear: number | null, addresses: string[] | null = null,
   ): Promise<PermitTx[]> {
     const permits = await this.getWatcherPermits();
 
@@ -209,7 +209,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
       boxIdMap[permit.boxId].push(permit);
     }
 
-    
+    var permitBulkAddressSet = new Set(Object.values(permitBulkAddresses));
     for (const permit of addressPermits) {
       let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) =>
         Object.values(permitTriggerAddresses).some(
@@ -217,7 +217,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
         ),
       );
       let foundResolved = false;
-      
+
       for (const output of outputs) {
         let cnt = boxIdMap[output.boxId] ?? [];
         if (cnt.length >= 2) {
@@ -227,19 +227,19 @@ class ActivePermitsDataService extends DataService<PermitTx> {
             for (const p of cnt) {
               let txs =
                 permitsByTxId[p.transactionId]?.filter((t) =>
-                  Object.values(permitBulkAddresses).includes(t.address),
+                  permitBulkAddressSet.has(t.address),
                 ) ?? [];
-              await Promise.all(
-                txs.map(async (t) => {
-                  let openBoxes = openBoxesMap![t.address];
 
-                  if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
-                    if (!result.some((r) => r.boxId === t.boxId)) {
-                      result.push(permit);
-                    }
+              txs.map(async (t) => {
+                let openBoxes = openBoxesMap![t.address];
+
+                if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
+                  if (!result.some((r) => r.boxId === t.boxId)) {
+                    result.push(permit);
                   }
-                }),
-              );
+                }
+              });
+
             }
           }
           else {
@@ -247,20 +247,21 @@ class ActivePermitsDataService extends DataService<PermitTx> {
             for (const p of cnt) {
               let txs =
                 permitsByTxId[p.transactionId]?.filter((t) =>
-                  Object.values(permitBulkAddresses).includes(t.address),
+                  permitBulkAddressSet.has(t.address),
                 ) ?? [];
-              await Promise.all(
-                txs.map(async (t) => {
-                  const d0 = new Date(t.date);
-                  if (month != null && year != null) {
-                    if (d0.getFullYear() === year && d0.getMonth() + 1 === month) {
-                      result.push(permit);
-                    }
-                  } else {
+
+              txs.map(t => {
+                const d0 = new Date(t.date);
+                if (frommonth != null && fromyear != null && tomonth != null && toyear != null) {
+                  if (d0.getFullYear() >= fromyear && d0.getMonth() + 1 >= frommonth &&
+                    d0.getFullYear() <= toyear && d0.getMonth() + 1 <= tomonth) {
                     result.push(permit);
                   }
-                }),
-              );
+                } else {
+                  result.push(permit);
+                }
+              });
+
             }
 
 
@@ -275,7 +276,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
       }
     }
 
-    
+
 
 
     const seen = new Set<string>();
@@ -431,3 +432,11 @@ class ActivePermitsDataService extends DataService<PermitTx> {
     }
   }
 }
+
+(globalThis as any).GetWatcherDataService = (
+  activePermitsDataService: ActivePermitsDataService
+): WatcherDataService => {
+
+  return new WatcherDataService(activePermitsDataService);
+
+};

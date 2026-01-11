@@ -114,7 +114,7 @@ class ActivePermitsDataService extends DataService {
             Object.values(permitTriggerAddresses).includes(address) ||
             Object.values(rewardAddresses).includes(address));
     }
-    async getAdressPermits(activeOnly, month, year, addresses = null) {
+    async getAdressPermits(activeOnly, frommonth, fromyear, tomonth, toyear, addresses = null) {
         const permits = await this.getWatcherPermits();
         const openBoxesMap = await this.getOpenBoxesMap();
         let addressPermits = new Array();
@@ -139,6 +139,7 @@ class ActivePermitsDataService extends DataService {
             }
             boxIdMap[permit.boxId].push(permit);
         }
+        var permitBulkAddressSet = new Set(Object.values(permitBulkAddresses));
         for (const permit of addressPermits) {
             let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) => Object.values(permitTriggerAddresses).some((address) => address === o.address));
             let foundResolved = false;
@@ -148,31 +149,32 @@ class ActivePermitsDataService extends DataService {
                     foundResolved = true;
                     if (activeOnly) {
                         for (const p of cnt) {
-                            let txs = permitsByTxId[p.transactionId]?.filter((t) => Object.values(permitBulkAddresses).includes(t.address)) ?? [];
-                            await Promise.all(txs.map(async (t) => {
+                            let txs = permitsByTxId[p.transactionId]?.filter((t) => permitBulkAddressSet.has(t.address)) ?? [];
+                            txs.map(async (t) => {
                                 let openBoxes = openBoxesMap[t.address];
                                 if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
                                     if (!result.some((r) => r.boxId === t.boxId)) {
                                         result.push(permit);
                                     }
                                 }
-                            }));
+                            });
                         }
                     }
                     else {
                         for (const p of cnt) {
-                            let txs = permitsByTxId[p.transactionId]?.filter((t) => Object.values(permitBulkAddresses).includes(t.address)) ?? [];
-                            await Promise.all(txs.map(async (t) => {
+                            let txs = permitsByTxId[p.transactionId]?.filter((t) => permitBulkAddressSet.has(t.address)) ?? [];
+                            txs.map(t => {
                                 const d0 = new Date(t.date);
-                                if (month != null && year != null) {
-                                    if (d0.getFullYear() === year && d0.getMonth() + 1 === month) {
+                                if (frommonth != null && fromyear != null && tomonth != null && toyear != null) {
+                                    if (d0.getFullYear() >= fromyear && d0.getMonth() + 1 >= frommonth &&
+                                        d0.getFullYear() <= toyear && d0.getMonth() + 1 <= tomonth) {
                                         result.push(permit);
                                     }
                                 }
                                 else {
                                     result.push(permit);
                                 }
-                            }));
+                            });
                         }
                     }
                 }
@@ -295,4 +297,7 @@ class ActivePermitsDataService extends DataService {
         }
     }
 }
+globalThis.GetWatcherDataService = (activePermitsDataService) => {
+    return new WatcherDataService(activePermitsDataService);
+};
 //# sourceMappingURL=activepermits.data.service.js.map

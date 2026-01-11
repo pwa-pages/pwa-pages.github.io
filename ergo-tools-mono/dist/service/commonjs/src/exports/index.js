@@ -26,6 +26,7 @@ exports.getActivatedChainTypes = getActivatedChainTypes;
 exports.getChainTypeForAddress = getChainTypeForAddress;
 exports.getRewardAddressForChainType = getRewardAddressForChainType;
 exports.createProcessEvtService = createProcessEvtService;
+exports.GetWatcherDataService = GetWatcherDataService;
 exports.GetDownloadService = GetDownloadService;
 __exportStar(require("./address"), exports);
 __exportStar(require("./asset"), exports);
@@ -35,6 +36,7 @@ __exportStar(require("./chart.performance"), exports);
 __exportStar(require("./chart.point"), exports);
 __exportStar(require("./input"), exports);
 __exportStar(require("./permit.tx"), exports);
+__exportStar(require("./permit.info"), exports);
 __exportStar(require("./output"), exports);
 __exportStar(require("./token"), exports);
 __exportStar(require("./transaction"), exports);
@@ -159,6 +161,9 @@ class ErgSettings {
     }
 }
 exports.ErgSettings = ErgSettings;
+function GetWatcherDataService(activePermitsDataService) {
+    return globalThis.GetWatcherDataService(activePermitsDataService);
+}
 function GetDownloadService(maxDownloadDateDifference) {
     return globalThis.CreateActivePermitsDownloadService(maxDownloadDateDifference, null);
 }

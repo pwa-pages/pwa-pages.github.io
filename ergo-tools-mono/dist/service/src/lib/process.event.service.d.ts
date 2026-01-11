@@ -8,7 +8,7 @@ interface EventSender {
 interface Services {
     dataService: RewardDataService;
     chainPerformanceDataService: ChainPerformanceDataService;
-    myWatcherDataService: MyWatcherDataService;
+    watcherDataService: WatcherDataService;
     activePermitsDataService: ActivePermitsDataService;
     downloadService: DownloadService<DbInput>;
     chartService: ChartService;
@@ -29,11 +29,11 @@ declare class ProcessEventService {
     private processMyWatchersScreenLoaded;
     private extractChaintTypes;
     private processActivePermits;
-    downloadForChainPermitAddresses(addresses: string[], downloadMyWatchersService: DownloadService<PermitTx>, myWatcherDataService: MyWatcherDataService): Promise<void>;
+    downloadForChainPermitAddresses(addresses: string[], downloadMyWatchersService: DownloadService<PermitTx>, watcherDataService: WatcherDataService): Promise<void>;
     private sendPermitChangedEvent;
     private sendPermitsChangedEvent;
     private processStatisticsScreenLoaded;
-    downloadForActivePermitAddresses(allAddresses: string[], chainType: string, downloadActivePermitsService: DownloadService<PermitTx>, myWatcherDataService: MyWatcherDataService): Promise<void>;
+    downloadForActivePermitAddresses(allAddresses: string[], chainType: string, downloadActivePermitsService: DownloadService<PermitTx>, watcherDataService: WatcherDataService): Promise<void>;
     private processRequestInputsDownload;
     private initIndexedDB;
 }

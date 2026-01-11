@@ -34,7 +34,7 @@
           "dist/service/src/lib/chart.service.js",
           "dist/service/src/lib/download.service.js",
           "dist/service/src/lib/process.event.service.js",
-          "dist/service/src/lib/mywatcher.data.service.js",
+          "dist/service/src/lib/watcher.data.service.js",
           "dist/service/src/lib/activepermits.data.service.js",
           "dist/service/src/lib/download.status.indexeddb.service.js",
           "dist/service/src/lib/i-db-databasestorage.service.js",
