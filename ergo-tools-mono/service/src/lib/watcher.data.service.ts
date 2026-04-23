@@ -30,6 +30,7 @@ class WatcherDataService extends DataService<PermitTx> {
       }
     }
 
+
     return null;
   }
   constructor(

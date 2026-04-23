@@ -192,9 +192,4 @@ class DownloadService {
 if (typeof window !== 'undefined') {
     window.DownloadService = DownloadService;
 }
-globalThis.CreateActivePermitsDownloadService = (maxDownloadDateDifference, eventSender) => {
-    var storageService = new MemoryStorageService();
-    const activepermitsDataService = new ActivePermitsDataService(storageService, maxDownloadDateDifference);
-    return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, eventSender, null);
-};
 //# sourceMappingURL=download.service.js.map

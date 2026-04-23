@@ -133,7 +133,10 @@ export class ErgSettings {
 export function GetWatcherDataService(activePermitsDataService) {
     return globalThis.GetWatcherDataService(activePermitsDataService);
 }
-export function GetDownloadService(maxDownloadDateDifference) {
+export function GetActivePermitsDownloadService(maxDownloadDateDifference) {
     return globalThis.CreateActivePermitsDownloadService(maxDownloadDateDifference, null);
+}
+export function GetWatcherDownloadService() {
+    return globalThis.CreateWatcherDownloadService(null);
 }
 //# sourceMappingURL=index.js.map

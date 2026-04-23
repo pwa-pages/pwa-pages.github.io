@@ -1,6 +1,7 @@
 cat dist/service/commonjs/src/lib/data.service.js > tmp.js
 cat dist/service/commonjs/src/lib/activepermits.data.service.js >> tmp.js
 cat dist/service/commonjs/src/lib/download.service.js >> tmp.js
+cat dist/service/commonjs/src/lib/service.factory.js >> tmp.js
 cat dist/service/commonjs/src/lib/reward.data.service.js >> tmp.js
 cat dist/service/commonjs/src/lib/chain.performance.data.service.js >> tmp.js
 cat dist/service/commonjs/src/lib/download.status.indexeddb.service.js >> tmp.js

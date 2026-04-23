@@ -75,4 +75,5 @@ export interface IDownloadService<SERVICE> {
     getDataService(): SERVICE;
 }
 export declare function GetWatcherDataService(activePermitsDataService: ActivePermitsDataService): WatcherDataService;
-export declare function GetDownloadService<SERVICE>(maxDownloadDateDifference: number): IDownloadService<SERVICE>;
+export declare function GetActivePermitsDownloadService(maxDownloadDateDifference: number): IDownloadService<ActivePermitsDataService>;
+export declare function GetWatcherDownloadService(): IDownloadService<WatcherDataService>;

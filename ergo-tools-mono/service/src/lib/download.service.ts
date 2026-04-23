@@ -282,25 +282,3 @@ class DownloadService<T> {
 if (typeof window !== 'undefined') {
   (window as any).DownloadService = DownloadService;
 }
-
-(globalThis as any).CreateActivePermitsDownloadService = (
-  maxDownloadDateDifference: number,
-  eventSender: EventSender
-): DownloadService<PermitTx> => {
-
-  var storageService = new MemoryStorageService<PermitTx>();
-  const activepermitsDataService: ActivePermitsDataService =
-    new ActivePermitsDataService(storageService, maxDownloadDateDifference);
-
-  return new DownloadService<PermitTx>(
-    rs_FullDownloadsBatchSize,
-    rs_InitialNDownloads,
-    activepermitsDataService,
-    eventSender,
-    null,
-  );
-
-};
-
-
-

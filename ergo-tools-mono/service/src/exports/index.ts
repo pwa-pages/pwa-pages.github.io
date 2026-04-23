@@ -170,6 +170,7 @@ export interface ActivePermitsDataService {
   ): Promise<PermitTx[]>
 }
 
+
 export interface WatcherDataService {
   getAdressPermits(
   ): Promise<PermitInfo[]>
@@ -189,9 +190,12 @@ export function GetWatcherDataService (activePermitsDataService : ActivePermitsD
   return (globalThis as any).GetWatcherDataService(activePermitsDataService );
 }
 
-export function GetDownloadService<SERVICE> (maxDownloadDateDifference: number): IDownloadService<SERVICE>{
+export function GetActivePermitsDownloadService (maxDownloadDateDifference: number): IDownloadService<ActivePermitsDataService>{
   return (globalThis as any).CreateActivePermitsDownloadService(maxDownloadDateDifference, null);
 }
 
+export function GetWatcherDownloadService (): IDownloadService<WatcherDataService>{
+  return (globalThis as any).CreateWatcherDownloadService(null);
+}
 
 

@@ -166,8 +166,9 @@ class ActivePermitsDataService extends DataService {
                             txs.map(t => {
                                 const d0 = new Date(t.date);
                                 if (frommonth != null && fromyear != null && tomonth != null && toyear != null) {
-                                    if (d0.getFullYear() >= fromyear && d0.getMonth() + 1 >= frommonth &&
-                                        d0.getFullYear() <= toyear && d0.getMonth() + 1 <= tomonth) {
+                                    if ((d0.getFullYear() > fromyear || (d0.getMonth() + 1 >= frommonth && d0.getFullYear() == fromyear))
+                                        &&
+                                            (d0.getFullYear() < toyear || (d0.getMonth() + 1 <= tomonth && d0.getFullYear() == toyear))) {
                                         result.push(permit);
                                     }
                                 }

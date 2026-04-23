@@ -186,8 +186,11 @@ export class ChainDataService {
     const addresses: Address[] = [];
 
     const existingAddresses = new Set(addresses.map((a) => a.address));
+    
+    var rinputs = inputs.slice().reverse();
 
-    inputs.forEach((input: Input) => {
+
+    rinputs.forEach((input: Input) => {
       if (!existingAddresses.has(input.outputAddress)) {
         const newAddress = new Address(
           input.outputAddress,
