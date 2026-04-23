@@ -23,20 +23,24 @@ const processEventServiceSingleton = (() => {
     return instance;
   };
 })();
-self.addEventListener("message", async (event) => {
-  const processEventService = processEventServiceSingleton();
-  const data = event.data;
-  console.log(`Rosen service worker received event of type ${data.type}`);
-  processEventService.processEvent({
-    data: data.data,
-    type: data.type
+if (typeof self !== "undefined") {
+  self.addEventListener("message", async (event) => {
+    const processEventService = processEventServiceSingleton();
+    const data = event.data;
+    console.log(`Rosen service worker received event of type ${data.type}`);
+    processEventService.processEvent({
+      data: data.data,
+      type: data.type
+    });
   });
-});
+}
 "use strict";
-self.addEventListener("message", async (event) => {
-  const data = event.data;
-  console.log(`Rosen service worker received event of type ${data.type}`);
-});
+if (typeof self !== "undefined") {
+  self.addEventListener("message", async (event) => {
+    const data = event.data;
+    console.log(`Rosen service worker received event of type ${data.type}`);
+  });
+}
 "use strict";
 var ChainType;
 (function(ChainType2) {
@@ -209,7 +213,7 @@ const rs_WatcherCollateralERG = (chainType) => {
   }
 };
 const rs_ErgoExplorerHost = "api.ergoplatform.com";
-const rs_ErgoNodeHost = "node-p2p.ergoplatform.com";
+const rs_ErgoNodeHost = "https://node-p2p.ergoplatform.com";
 const rs_RSNTokenId = "8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b";
 const rs_eRSNTokenId = "dede2cf5c1a2966453ffec198a9b97b53d281e548903a905519b3525d59cdc3c";
 const rs_TokenIdMap = {
@@ -267,9 +271,13 @@ if (typeof window !== "undefined") {
 }
 "use strict";
 class DataService {
-  constructor(db) {
-    this.db = db;
-    this.storageService = new StorageService(db);
+  constructor(dbOrStorage) {
+    if (dbOrStorage?.transaction !== void 0) {
+      this.db = dbOrStorage;
+      this.storageService = new IDBDatabaseStorageService(this.db);
+    } else {
+      this.storageService = dbOrStorage;
+    }
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async purgeData() {
@@ -279,68 +287,10 @@ class DataService {
   }
 }
 "use strict";
-class StorageService {
-  constructor(db) {
-    this.db = db;
-  }
-  /* ------------------ READ ALL ------------------ */
-  async getData(storeName) {
-    return new Promise((resolve, reject) => {
-      const start = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
-      const label = `StorageService:getData(${storeName})`;
-      const tx = this.db.transaction([storeName], "readonly");
-      const store = tx.objectStore(storeName);
-      const request = store.getAll();
-      request.onsuccess = () => {
-        const result = request.result;
-        const end = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
-        const duration = Math.round(end - start);
-        console.log(`${label} - loaded ${result.length} items in ${duration}ms`);
-        resolve(result);
-      };
-      request.onerror = (e) => reject(e.target.error);
-    });
-  }
-  /* ------------------ READ BY ID ------------------ */
-  async getDataById(storeName, id) {
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction([storeName], "readonly");
-      const store = tx.objectStore(storeName);
-      const request = store.get(id);
-      request.onsuccess = () => {
-        const result = request.result;
-        resolve(result ?? null);
-      };
-      request.onerror = (e) => reject(e.target.error);
-    });
-  }
-  /* ------------------ WRITE ------------------ */
-  async addData(storeName, data) {
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction([storeName], "readwrite");
-      const store = tx.objectStore(storeName);
-      Promise.all(data.map((item) => new Promise((res, rej) => {
-        const req = store.put(item);
-        req.onsuccess = () => res();
-        req.onerror = (e) => rej(e.target.error);
-      }))).then(() => resolve()).catch(reject);
-    });
-  }
-  async deleteData(storeName, keys) {
-    const arr = Array.isArray(keys) ? keys : [keys];
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction([storeName], "readwrite");
-      const store = tx.objectStore(storeName);
-      Promise.all(arr.map((key) => new Promise((res, rej) => {
-        const req = store.delete(key);
-        req.onsuccess = () => res();
-        req.onerror = (e) => rej(e.target.error);
-      }))).then(() => resolve()).catch(reject);
-    });
-  }
-}
-"use strict";
 class ChainPerformanceDataService extends DataService {
+  getData() {
+    return this.storageService.getData(rs_PerfTxStoreName);
+  }
   async getExistingData(transaction) {
     return await this.storageService.getDataById(rs_PerfTxStoreName, transaction.id);
   }
@@ -373,7 +323,7 @@ class ChainPerformanceDataService extends DataService {
     });
     await this.storageService.addData(rs_PerfTxStoreName, tempData);
     const perfTxs = await this.getPerfTxs();
-    this.eventSender.sendEvent({
+    this.eventSender?.sendEvent({
       type: "PerfChartChanged",
       data: perfTxs
     });
@@ -417,6 +367,9 @@ class ChainPerformanceDataService extends DataService {
 }
 "use strict";
 class RewardDataService extends DataService {
+  getData() {
+    return this.storageService.getData(rs_InputsStoreName);
+  }
   async getExistingData(transaction, address) {
     for (const input of transaction.inputs) {
       if (input.boxId && getChainType(input.address)) {
@@ -484,11 +437,11 @@ class RewardDataService extends DataService {
     });
     await this.storageService.addData(rs_InputsStoreName, tempData);
     const inputs = await this.getSortedInputs();
-    this.eventSender.sendEvent({
+    this.eventSender?.sendEvent({
       type: "InputsChanged",
       data: inputs
     });
-    this.eventSender.sendEvent({
+    this.eventSender?.sendEvent({
       type: "AddressChartChanged",
       data: await this.chartService.getAddressCharts(inputs)
     });
@@ -597,6 +550,9 @@ class DownloadService {
     this.downloadFullSize = downloadFullSize;
     this.downloadInitialSize = downloadInitialSize;
   }
+  getDataService() {
+    return this.dataService;
+  }
   async fetchTransactions(url) {
     try {
       const response = await fetch(url);
@@ -610,7 +566,7 @@ class DownloadService {
   }
   async downloadTransactions(address, offset = 0, limit = 500, useNode) {
     if (useNode) {
-      const url = `https://${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
+      const url = `${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
       console.log(`Downloading from: ${url}`);
       const response = await fetch(url, {
         method: "POST",
@@ -669,7 +625,7 @@ class DownloadService {
   // Busy Counter
   increaseBusyCounter(address) {
     if (this.busyCounter === 0) {
-      this.eventSender.sendEvent({
+      this.eventSender?.sendEvent({
         type: "StartFullDownload",
         data: address
       });
@@ -679,7 +635,7 @@ class DownloadService {
   decreaseBusyCounter(address) {
     this.busyCounter--;
     if (this.busyCounter === 0) {
-      this.eventSender.sendEvent({
+      this.eventSender?.sendEvent({
         type: "EndFullDownload",
         data: address
       });
@@ -693,7 +649,7 @@ class DownloadService {
       const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10, useNode);
       console.log(`Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`);
       if (!result.transactions || result.transactions.length === 0 || offset > 1e5) {
-        await this.downloadStatusIndexedDbService.setDownloadStatus(address, "true");
+        await this.downloadStatusIndexedDbService?.setDownloadStatus(address, "true");
         console.log(this.busyCounter);
         return;
       }
@@ -704,7 +660,7 @@ class DownloadService {
       if (this.dataService.getMaxDownloadDateDifference() > (/* @__PURE__ */ new Date()).getTime() - new Date(result.transactions[result.transactions.length - 1].timestamp).getTime()) {
         await this.downloadAllForAddress(address, offset + this.downloadFullSize, useNode);
       } else {
-        await this.downloadStatusIndexedDbService.setDownloadStatus(address, "true");
+        await this.downloadStatusIndexedDbService?.setDownloadStatus(address, "true");
       }
     } catch (e) {
       console.error(e);
@@ -735,13 +691,14 @@ class DownloadService {
       if (callback) {
         await callback?.();
       }
-      const downloadStatus = (await this.downloadStatusIndexedDbService.getDownloadStatus(address))?.status || "false";
+      const downloadStatus = (await this.downloadStatusIndexedDbService?.getDownloadStatus(address))?.status || "false";
       if (existingData && downloadStatus === "true") {
         console.log(`Found existing boxId in db for ${address}, no need to download more.`);
       } else if (itemsz >= this.downloadInitialSize) {
-        await this.downloadStatusIndexedDbService.setDownloadStatus(address, "false");
+        await this.downloadStatusIndexedDbService?.setDownloadStatus(address, "false");
         console.log(`Downloading all tx's for : ${address}`);
         await this.downloadAllForAddress(address, 0, useNode, callback);
+        return this.dataService.getData();
       }
     } catch (e) {
       console.error(e);
@@ -750,7 +707,11 @@ class DownloadService {
       this.dataService.purgeData();
       console.log(this.busyCounter);
     }
+    return null;
   }
+}
+if (typeof window !== "undefined") {
+  window.DownloadService = DownloadService;
 }
 "use strict";
 class ServiceWorkerEventSender {
@@ -774,20 +735,20 @@ class ProcessEventService {
     const chartService = new ChartService();
     const rewardDataService = new RewardDataService(db, chartService, this.eventSender);
     const activepermitsDataService = new ActivePermitsDataService(db);
-    const myWatcherDataService = new MyWatcherDataService(db, activepermitsDataService);
+    const watcherDataService = new WatcherDataService(activepermitsDataService);
     const chainPerformanceDataService = new ChainPerformanceDataService(db, this.eventSender);
     const downloadStatusIndexedDbRewardDataService = new DownloadStatusIndexedDbService(rewardDataService, db);
-    const downloadStatusIndexedDbMyWatcherDataService = new DownloadStatusIndexedDbService(myWatcherDataService, db);
+    const downloadStatusIndexedDbWatcherDataService = new DownloadStatusIndexedDbService(watcherDataService, db);
     const downloadStatusIndexedDbActivePermitsDataService = new DownloadStatusIndexedDbService(activepermitsDataService, db);
     const downloadStatusIndexedDbChainPerformanceDataService = new DownloadStatusIndexedDbService(chainPerformanceDataService, db);
     const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, this.eventSender, downloadStatusIndexedDbRewardDataService);
-    const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, myWatcherDataService, this.eventSender, downloadStatusIndexedDbMyWatcherDataService);
+    const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, watcherDataService, this.eventSender, downloadStatusIndexedDbWatcherDataService);
     const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, this.eventSender, downloadStatusIndexedDbActivePermitsDataService);
     const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, this.eventSender, downloadStatusIndexedDbChainPerformanceDataService);
     this.services = {
       dataService: rewardDataService,
       chainPerformanceDataService,
-      myWatcherDataService,
+      watcherDataService,
       downloadService,
       chartService,
       downloadPerfService,
@@ -799,13 +760,13 @@ class ProcessEventService {
   }
   async processEvent(event) {
     if (event.type === "StatisticsScreenLoaded" || event.type === "PerformanceScreenLoaded" || event.type === "MyWatchersScreenLoaded" || event.type === "RequestInputsDownload") {
-      const { dataService, downloadService, downloadPerfService, downloadMyWatchersService, downloadActivePermitsService, chartService, chainPerformanceDataService, myWatcherDataService, activePermitsDataService } = await this.initServices();
+      const { dataService, downloadService, downloadPerfService, downloadMyWatchersService, downloadActivePermitsService, chartService, chainPerformanceDataService, watcherDataService, activePermitsDataService } = await this.initServices();
       if (event.type === "RequestInputsDownload") {
         await this.processRequestInputsDownload(event, chartService, dataService, downloadService);
       } else if (event.type === "StatisticsScreenLoaded") {
         await this.processStatisticsScreenLoaded(dataService, downloadService);
       } else if (event.type === "MyWatchersScreenLoaded") {
-        await this.processMyWatchersScreenLoaded(event, myWatcherDataService, downloadMyWatchersService, activePermitsDataService, downloadActivePermitsService);
+        await this.processMyWatchersScreenLoaded(event, watcherDataService, downloadMyWatchersService, activePermitsDataService, downloadActivePermitsService);
       } else if (event.type === "PerformanceScreenLoaded") {
         await this.processPerformanceScreenLoaded(chainPerformanceDataService, downloadPerfService);
       }
@@ -816,7 +777,7 @@ class ProcessEventService {
     try {
       console.log("Downloading perftxs.");
       const perfTxs = await chainPerformanceDataService.getPerfTxs();
-      this.eventSender.sendEvent({
+      this.eventSender?.sendEvent({
         type: "PerfChartChanged",
         data: perfTxs
       });
@@ -825,25 +786,25 @@ class ProcessEventService {
       console.error("Error initializing IndexedDB or downloading addresses:", error);
     }
   }
-  async processMyWatchersScreenLoaded(event, myWatcherDataService, downloadMyWatchersService, activePermitsDataService, downloadActivePermitsService) {
+  async processMyWatchersScreenLoaded(event, watcherDataService, downloadMyWatchersService, activePermitsDataService, downloadActivePermitsService) {
     const addresses = event.data.addresses;
     console.log("Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain");
     try {
-      let permits = await myWatcherDataService.getAdressPermits(addresses);
+      let permits = await watcherDataService.getAdressPermits(addresses);
       let chainTypes = this.extractChaintTypes(permits, addresses);
       this.sendPermitsChangedEvent(permits);
       if (chainTypes.size === 0) {
-        await this.downloadForChainPermitAddresses(addresses, downloadMyWatchersService, myWatcherDataService);
-        permits = await this.sendPermitChangedEvent(myWatcherDataService, addresses);
+        await this.downloadForChainPermitAddresses(addresses, downloadMyWatchersService, watcherDataService);
+        permits = await this.sendPermitChangedEvent(watcherDataService, addresses);
         let chainTypes2 = this.extractChaintTypes(permits, addresses);
-        await this.processActivePermits(chainTypes2, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService);
+        await this.processActivePermits(chainTypes2, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService);
       } else {
-        await this.processActivePermits(chainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService);
-        await this.downloadForChainPermitAddresses(addresses, downloadMyWatchersService, myWatcherDataService);
-        await this.sendPermitChangedEvent(myWatcherDataService, addresses);
-        let newChainTypes = this.extractChaintTypes(await myWatcherDataService.getAdressPermits(addresses), addresses);
+        await this.processActivePermits(chainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService);
+        await this.downloadForChainPermitAddresses(addresses, downloadMyWatchersService, watcherDataService);
+        await this.sendPermitChangedEvent(watcherDataService, addresses);
+        let newChainTypes = this.extractChaintTypes(await watcherDataService.getAdressPermits(addresses), addresses);
         if (newChainTypes.size !== chainTypes.size || [...newChainTypes].some((ct) => !chainTypes.has(ct))) {
-          await this.processActivePermits(newChainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService);
+          await this.processActivePermits(newChainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService);
         }
       }
     } catch (error) {
@@ -859,25 +820,25 @@ class ProcessEventService {
     }
     return chainTypes;
   }
-  async processActivePermits(chainTypes, activePermitsDataService, myWatcherDataService, addresses, downloadActivePermitsService) {
+  async processActivePermits(chainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService) {
     await Promise.all(Array.from(chainTypes).map(async (chainType) => {
       await activePermitsDataService.downloadOpenBoxes(chainType);
     }));
-    await this.sendPermitChangedEvent(myWatcherDataService, addresses);
+    await this.sendPermitChangedEvent(watcherDataService, addresses);
     await Promise.all(Array.from(chainTypes).map(async (chainType) => {
-      await this.downloadForActivePermitAddresses(addresses, chainType, downloadActivePermitsService, myWatcherDataService);
+      await this.downloadForActivePermitAddresses(addresses, chainType, downloadActivePermitsService, watcherDataService);
     }));
   }
-  async downloadForChainPermitAddresses(addresses, downloadMyWatchersService, myWatcherDataService) {
+  async downloadForChainPermitAddresses(addresses, downloadMyWatchersService, watcherDataService) {
     try {
       const downloadPromises = Object.entries(permitAddresses).filter(([, address]) => address != null).map(async ([chainType, address]) => {
         await downloadMyWatchersService.downloadForAddress(address, true);
-        const permits = await myWatcherDataService.getAdressPermits(addresses);
-        await this.eventSender.sendEvent({
+        const permits = await watcherDataService.getAdressPermits(addresses);
+        await this.eventSender?.sendEvent({
           type: "PermitsChanged",
           data: permits
         });
-        await this.eventSender.sendEvent({
+        await this.eventSender?.sendEvent({
           type: "AddressPermitsDownloaded",
           data: chainType
         });
@@ -887,16 +848,16 @@ class ProcessEventService {
       console.error("Error downloading for addresses:", e);
     }
   }
-  async sendPermitChangedEvent(myWatcherDataService, addresses) {
-    let permits = await myWatcherDataService.getAdressPermits(addresses);
-    this.eventSender.sendEvent({
+  async sendPermitChangedEvent(watcherDataService, addresses) {
+    let permits = await watcherDataService.getAdressPermits(addresses);
+    this.eventSender?.sendEvent({
       type: "PermitsChanged",
       data: permits
     });
     return permits;
   }
   sendPermitsChangedEvent(permits) {
-    this.eventSender.sendEvent({
+    this.eventSender?.sendEvent({
       type: "PermitsChanged",
       data: permits
     });
@@ -905,7 +866,7 @@ class ProcessEventService {
     console.log("Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain");
     try {
       const inputs = await dataService.getSortedInputs();
-      this.eventSender.sendEvent({
+      this.eventSender?.sendEvent({
         type: "InputsChanged",
         data: inputs
       });
@@ -914,7 +875,7 @@ class ProcessEventService {
       console.error("Error initializing IndexedDB or downloading addresses:", error);
     }
   }
-  async downloadForActivePermitAddresses(allAddresses, chainType, downloadActivePermitsService, myWatcherDataService) {
+  async downloadForActivePermitAddresses(allAddresses, chainType, downloadActivePermitsService, watcherDataService) {
     try {
       let addresses = [];
       Object.entries(permitTriggerAddresses).forEach(([key, address]) => {
@@ -925,8 +886,8 @@ class ProcessEventService {
       const downloadPromises = addresses.map(async (address) => {
         await downloadActivePermitsService.downloadForAddress(address, true, async () => {
           try {
-            const permits = await myWatcherDataService.getAdressPermits(allAddresses);
-            await this.eventSender.sendEvent({
+            const permits = await watcherDataService.getAdressPermits(allAddresses);
+            await this.eventSender?.sendEvent({
               type: "PermitsChanged",
               data: permits
             });
@@ -944,7 +905,7 @@ class ProcessEventService {
     console.log("Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: " + event.data);
     try {
       const addressCharts = await chartService.getAddressCharts(await dataService.getSortedInputs());
-      this.eventSender.sendEvent({
+      this.eventSender?.sendEvent({
         type: "AddressChartChanged",
         data: addressCharts
       });
@@ -980,7 +941,10 @@ if (typeof window !== "undefined") {
   };
 }
 "use strict";
-class MyWatcherDataService extends DataService {
+class WatcherDataService extends DataService {
+  getData() {
+    return this.storageService.getData(rs_PermitTxStoreName);
+  }
   async getExistingData(transaction, address) {
     for (const input of transaction.inputs) {
       if (input.boxId) {
@@ -1000,9 +964,8 @@ class MyWatcherDataService extends DataService {
     }
     return null;
   }
-  constructor(db, activePermitsDataService) {
-    super(db);
-    this.db = db;
+  constructor(activePermitsDataService) {
+    super(activePermitsDataService.storageService);
     this.activePermitsDataService = activePermitsDataService;
   }
   createUniqueId(boxId, transactionId, address) {
@@ -1068,7 +1031,7 @@ class MyWatcherDataService extends DataService {
         });
       }
     }
-    let addressActivePermits = await this.activePermitsDataService.getAdressActivePermits(addresses);
+    let addressActivePermits = await this.activePermitsDataService.getAdressPermits(true, null, null, null, null, addresses);
     for (const activePermit of addressActivePermits) {
       const info = permitInfo.find((p) => p.address === activePermit.address);
       if (info) {
@@ -1165,6 +1128,9 @@ class MyWatcherDataService extends DataService {
 }
 "use strict";
 class ActivePermitsDataService extends DataService {
+  getData() {
+    return this.storageService.getData(rs_ActivePermitTxStoreName);
+  }
   async getExistingData(transaction, address) {
     for (const input of transaction.inputs) {
       if (input.boxId) {
@@ -1184,9 +1150,9 @@ class ActivePermitsDataService extends DataService {
     }
     return null;
   }
-  constructor(db) {
+  constructor(db, maxDownloadDateDifference = 2048e5) {
     super(db);
-    this.db = db;
+    this.maxDownloadDateDifference = maxDownloadDateDifference;
   }
   createUniqueId(boxId, transactionId, address) {
     const str = `${transactionId}_${boxId}_${address}`;
@@ -1202,7 +1168,7 @@ class ActivePermitsDataService extends DataService {
     return "activepermit";
   }
   getMaxDownloadDateDifference() {
-    return 2048e5;
+    return this.maxDownloadDateDifference;
   }
   async getWatcherPermits() {
     const permitsPromise = this.storageService.getData(rs_ActivePermitTxStoreName);
@@ -1267,12 +1233,15 @@ class ActivePermitsDataService extends DataService {
   shouldAddOutputToDb(address) {
     return Object.values(permitBulkAddresses).includes(address) || Object.values(permitTriggerAddresses).includes(address) || Object.values(rewardAddresses).includes(address);
   }
-  async getAdressActivePermits(addresses = null) {
+  async getAdressPermits(activeOnly, frommonth, fromyear, tomonth, toyear, addresses = null) {
     const permits = await this.getWatcherPermits();
     const openBoxesMap = await this.getOpenBoxesMap();
     let addressPermits = new Array();
     if (addresses != null && addresses.length > 0) {
       addressPermits = permits.filter((info) => addresses.some((addr) => addr === info.address));
+    }
+    if (activeOnly === false) {
+      addressPermits = permits;
     }
     let result = new Array();
     const permitsByTxId = {};
@@ -1289,6 +1258,7 @@ class ActivePermitsDataService extends DataService {
       }
       boxIdMap[permit.boxId].push(permit);
     }
+    var permitBulkAddressSet = new Set(Object.values(permitBulkAddresses));
     for (const permit of addressPermits) {
       let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) => Object.values(permitTriggerAddresses).some((address) => address === o.address));
       let foundResolved = false;
@@ -1296,16 +1266,32 @@ class ActivePermitsDataService extends DataService {
         let cnt = boxIdMap[output.boxId] ?? [];
         if (cnt.length >= 2) {
           foundResolved = true;
-          for (const p of cnt) {
-            let txs = permitsByTxId[p.transactionId]?.filter((t) => Object.values(permitBulkAddresses).includes(t.address)) ?? [];
-            await Promise.all(txs.map(async (t) => {
-              let openBoxes = openBoxesMap[t.address];
-              if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
-                if (!result.some((r) => r.boxId === t.boxId)) {
+          if (activeOnly) {
+            for (const p of cnt) {
+              let txs = permitsByTxId[p.transactionId]?.filter((t) => permitBulkAddressSet.has(t.address)) ?? [];
+              txs.map(async (t) => {
+                let openBoxes = openBoxesMap[t.address];
+                if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
+                  if (!result.some((r) => r.boxId === t.boxId)) {
+                    result.push(permit);
+                  }
+                }
+              });
+            }
+          } else {
+            for (const p of cnt) {
+              let txs = permitsByTxId[p.transactionId]?.filter((t) => permitBulkAddressSet.has(t.address)) ?? [];
+              txs.map((t) => {
+                const d0 = new Date(t.date);
+                if (frommonth != null && fromyear != null && tomonth != null && toyear != null) {
+                  if ((d0.getFullYear() > fromyear || d0.getMonth() + 1 >= frommonth && d0.getFullYear() == fromyear) && (d0.getFullYear() < toyear || d0.getMonth() + 1 <= tomonth && d0.getFullYear() == toyear)) {
+                    result.push(permit);
+                  }
+                } else {
                   result.push(permit);
                 }
-              }
-            }));
+              });
+            }
           }
         }
       }
@@ -1423,6 +1409,67 @@ class ActivePermitsDataService extends DataService {
     }
   }
 }
+globalThis.GetWatcherDataService = (activePermitsDataService) => {
+  return new WatcherDataService(activePermitsDataService);
+};
+"use strict";
+class IDBDatabaseStorageService {
+  constructor(db) {
+    this.db = db;
+  }
+  async getData(storeName) {
+    return new Promise((resolve, reject) => {
+      const start = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+      const label = `StorageService:getData(${storeName})`;
+      const tx = this.db.transaction([storeName], "readonly");
+      const store = tx.objectStore(storeName);
+      const request = store.getAll();
+      request.onsuccess = () => {
+        const result = request.result;
+        const end = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+        const duration = Math.round(end - start);
+        console.log(`${label} - loaded ${result.length} items in ${duration}ms`);
+        resolve(result);
+      };
+      request.onerror = (e) => reject(e.target.error);
+    });
+  }
+  async getDataById(storeName, id) {
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction([storeName], "readonly");
+      const store = tx.objectStore(storeName);
+      const request = store.get(id);
+      request.onsuccess = () => {
+        const result = request.result;
+        resolve(result ?? null);
+      };
+      request.onerror = (e) => reject(e.target.error);
+    });
+  }
+  async addData(storeName, data) {
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction([storeName], "readwrite");
+      const store = tx.objectStore(storeName);
+      Promise.all(data.map((item) => new Promise((res, rej) => {
+        const req = store.put(item);
+        req.onsuccess = () => res();
+        req.onerror = (e) => rej(e.target.error);
+      }))).then(() => resolve()).catch(reject);
+    });
+  }
+  async deleteData(storeName, keys) {
+    const arr = Array.isArray(keys) ? keys : [keys];
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction([storeName], "readwrite");
+      const store = tx.objectStore(storeName);
+      Promise.all(arr.map((key) => new Promise((res, rej) => {
+        const req = store.delete(key);
+        req.onsuccess = () => res();
+        req.onerror = (e) => rej(e.target.error);
+      }))).then(() => resolve()).catch(reject);
+    });
+  }
+}
 "use strict";
 class DownloadStatusIndexedDbService {
   //private static addressDownloadDateMap = new Map<string, Date>();
@@ -1464,6 +1511,63 @@ class DownloadStatusIndexedDbService {
       const request = objectStore.put(downloadStatus);
       request.onsuccess = () => resolve();
       request.onerror = (event) => reject(event.target.error);
+    });
+  }
+}
+"use strict";
+class MemoryStorageService {
+  getMemoryStore() {
+    const g = globalThis;
+    if (!g.__storageServiceStore) {
+      g.__storageServiceStore = {};
+    }
+    return g.__storageServiceStore;
+  }
+  generateKey(storeName, key) {
+    if (Array.isArray(key)) {
+      return storeName + ":" + key.map((k) => String(k)).join(",");
+    }
+    return storeName + ":" + String(key);
+  }
+  async getData(storeName) {
+    return new Promise((resolve) => {
+      const start = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+      const store = this.getMemoryStore();
+      const prefix = storeName + ":";
+      const result = Object.keys(store).filter((key) => key.startsWith(prefix)).map((key) => store[key]);
+      const end = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+      const duration = Math.round(end - start);
+      console.log(`StorageService:getData(${storeName}) - loaded ${result.length} items in ${duration}ms`);
+      resolve(result);
+    });
+  }
+  async getDataById(storeName, id) {
+    return new Promise((resolve) => {
+      const key = this.generateKey(storeName, id);
+      const store = this.getMemoryStore();
+      resolve(store[key] ?? null);
+    });
+  }
+  async addData(storeName, data) {
+    return new Promise((resolve) => {
+      const store = this.getMemoryStore();
+      data.forEach((item) => {
+        const id = item.id ?? Math.random().toString(36).slice(2);
+        const key = this.generateKey(storeName, id);
+        store[key] = item;
+      });
+      resolve();
+    });
+  }
+  async deleteData(storeName, keys) {
+    const arr = Array.isArray(keys) ? keys : [keys];
+    return new Promise((resolve) => {
+      const store = this.getMemoryStore();
+      arr.forEach((key) => {
+        const storageKey = this.generateKey(storeName, key);
+        delete store[storageKey];
+      });
+      resolve();
     });
   }
 }
