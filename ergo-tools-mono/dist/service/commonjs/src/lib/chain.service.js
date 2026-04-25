@@ -1,4 +1,3 @@
-"use strict";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // chainService.ts
 // Define the ChainType enum if it's not already available
@@ -151,4 +150,3 @@ if (typeof window !== 'undefined') {
     globalThis.chainTypeTokens = chainTypeTokens;
     globalThis.getChainTypes = getChainTypes;
 }
-//# sourceMappingURL=chain.service.js.map

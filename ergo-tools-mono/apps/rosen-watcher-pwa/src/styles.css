@@ -252,6 +252,15 @@ a {
   width: var(--watchers-width);
   flex-direction: column !important;
 }
+
+.statdetaildispl.Base,
+.mainaddressdispl.Base,
+.watchersdispl.Base,
+.chainType.Base {
+  background-image: url('./assets/images/base.png');
+  filter: brightness(0.8);
+}
+
 .statdetaildispl.Bitcoin,
 .mainaddressdispl.Bitcoin,
 .watchersdispl.Bitcoin,

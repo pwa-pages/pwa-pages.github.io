@@ -9,6 +9,7 @@ declare enum ChainType {
     Nervos = "Nervos",
     Handshake = "Handshake",
     Firo = "Firo",
+    Base = "Base",
     Monero = "Monero"
 }
 declare function getChainTypes(): string[];
