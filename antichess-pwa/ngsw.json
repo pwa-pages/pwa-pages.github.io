@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1777823450212,
+  "timestamp": 1777824028894,
   "appData": {
-    "version": "1.0.1"
+    "version": "1.0.2"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-J77ZEFRD.js",
+        "./main-AKABYUJQ.js",
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./scripts-QOGIEEJF.js",
@@ -52,8 +52,8 @@
     "./assets/icons/icon-512x512.png": "aa3c1ddb749e145228c3731ff40ddf2e6fab53d2",
     "./assets/images/antichess_king.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "ef5a0a108ba81e2e5c30de6f84e4ec8796b24be9",
-    "./main-J77ZEFRD.js": "5c3e24597f8f3c8661f3477a1c6f72289f7569df",
+    "./index.html": "2a84f0482f559e54b4a6fe07b9edb30ee493ada9",
+    "./main-AKABYUJQ.js": "f4222e80990d543d8fb7b7166403b041a7d3fe3b",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./media/fa-brands-400-AHOAZHCU.woff2": "e48612cd49700246d0cc0d2d1943ed8b9d157316",
