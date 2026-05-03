@@ -1,2 +1,1 @@
-#nx run antichess-pwa:serve:production
-nx run antichess-pwa:serve:development
+nx serve antichess-pwa

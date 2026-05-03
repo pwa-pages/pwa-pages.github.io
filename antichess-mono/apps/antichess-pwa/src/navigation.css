@@ -37,7 +37,7 @@
   
   border-top: 1px solid black;
   border-bottom: 1px solid black;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 
   grid-template-columns: auto auto;
   z-index: 10000;

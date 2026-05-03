@@ -1,8 +1,9 @@
 .header{
-  width:18rem;
+  width:17rem;
   background: #ccc;
   border: 5px solid #ccc;           /* nice subtle border */
     border-radius: 0 0 12px 12px;     /* TL TR BR BL */
+    margin-left:15vw;
 }
 
 .headerblock {
@@ -17,9 +18,10 @@
   background: transparent;
   border-radius: 1vh;
 
-  display: flex;
+  
   justify-content: center; /* horizontal center */
   align-items: center;    
+  width: 100vw;
 
 }
 
@@ -52,7 +54,7 @@
 }
 
 .headercontainer {
-  justify-content: center;
+  
   position: fixed;
   
   padding-left: .1vw;
