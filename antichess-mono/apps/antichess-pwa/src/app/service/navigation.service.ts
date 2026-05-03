@@ -63,17 +63,7 @@ export class NavigationService {
   }*/
 
   private updateCurrentNavigationIndex(url: string): void {
-    if (url.startsWith('/chainperformance')) {
-      this.currentNavigationIndex = 1;
-      return;
-    }
-
-    if (url.startsWith('/mywatchers')) {
-      this.currentNavigationIndex = 2;
-      return;
-    }
-
-    let index = this.navigationItems.findIndex((item) =>
+     let index = this.navigationItems.findIndex((item) =>
       url.startsWith(item.route),
     );
     if (index == -1) {

@@ -30,7 +30,7 @@ export class AntichessComponent extends BaseWatcherComponent implements OnInit {
 
 
   selectTab(): void {
-    this.navigationService.navigate('/mywatchers');
+    this.navigationService.navigate('/antichess');
   }
 
   override async ngOnInit(): Promise<void> {
