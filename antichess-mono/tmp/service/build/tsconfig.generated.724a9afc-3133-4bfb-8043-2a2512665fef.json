@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@antichess/service": [
+        "/home/pebblerye/pwa/pwa-pages.github.io/antichess-mono/service/src/exports"
+      ]
+    }
+  },
+  "extends": "../../../service/tsconfig.lib.json"
+}

@@ -1,0 +1,84 @@
+{
+  "configVersion": 1,
+  "timestamp": 1777796302324,
+  "appData": {
+    "version": "1.0.0"
+  },
+  "index": "./index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "./favicon.ico",
+        "./index.html",
+        "./main-JIVM45OF.js",
+        "./manifest.webmanifest",
+        "./polyfills-5CFQRCPP.js",
+        "./scripts-QOGIEEJF.js",
+        "./styles-3B4PM7N6.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "./assets/README.md",
+        "./assets/icons/icon-512x512.png",
+        "./assets/images/antichess_king.png",
+        "./media/antichess_king-N6DHRERR.png",
+        "./media/fa-brands-400-AHOAZHCU.woff2",
+        "./media/fa-regular-400-VRZYIBIZ.woff2",
+        "./media/fa-solid-900-MDEYK55F.woff2",
+        "./media/fa-v4compatibility-ETEVP6IB.woff2"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "./assets/README.md": "d6cb6df4d9d59a31425cd8a7b7fae6848b31ea72",
+    "./assets/icons/icon-512x512.png": "aa3c1ddb749e145228c3731ff40ddf2e6fab53d2",
+    "./assets/images/antichess_king.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
+    "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
+    "./index.html": "b518a53921b854972e90626cfe2dbf859484c0a0",
+    "./main-JIVM45OF.js": "8f82dd449a2bfac5c6be26acd32587c9138a2af7",
+    "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
+    "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
+    "./media/fa-brands-400-AHOAZHCU.woff2": "e48612cd49700246d0cc0d2d1943ed8b9d157316",
+    "./media/fa-regular-400-VRZYIBIZ.woff2": "708f3ca10d101babf966040b50be3bf239456384",
+    "./media/fa-solid-900-MDEYK55F.woff2": "79f2a488fd9c1e1f01943a196f5abf53821e04d7",
+    "./media/fa-v4compatibility-ETEVP6IB.woff2": "48baec990161d24f6b770e803c9c14cfe2d07da5",
+    "./polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
+    "./scripts-QOGIEEJF.js": "e83470118bc518ad047b5e89e17f95abc3afe41d",
+    "./styles-3B4PM7N6.css": "bb60dc230ce128fb1c685cf694a1519e4ea3b9bb"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

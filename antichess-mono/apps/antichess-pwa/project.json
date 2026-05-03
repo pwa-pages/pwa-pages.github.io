@@ -1,0 +1,88 @@
+{
+  "name": "antichess-pwa",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "generators": {},
+  "sourceRoot": "apps/antichess-pwa/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "options": {
+        "allowedCommonJsDependencies": ["qrcode"],
+        "outputPath": "dist/apps/antichess-pwa",
+        "index": "apps/antichess-pwa/src/index.html",
+        "browser": "apps/antichess-pwa/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/antichess-pwa/tsconfig.json",
+        "assets": [
+          "apps/antichess-pwa/src/favicon.ico",
+          "apps/antichess-pwa/src/assets",
+          "apps/antichess-pwa/src/rosen.html",
+          "apps/antichess-pwa/src/load.html",
+          "apps/antichess-pwa/src/manifest.webmanifest",
+          "apps/antichess-pwa/src/ngsw-worker.js"
+        ],
+        "styles": [
+          "apps/antichess-pwa/src/variables.css",
+          "apps/antichess-pwa/src/styles.css",
+          "apps/antichess-pwa/src/navigation.css",
+          "apps/antichess-pwa/src/header.css",
+          "apps/antichess-pwa/src/app/basewatchercomponent.css",
+          "node_modules/@fortawesome/fontawesome-free/css/all.css",
+          "apps/antichess-pwa/src/mat-theme.scss",
+          "apps/antichess-pwa/src/styles_theme-colors.scss"
+        ],
+        "scripts": [
+          "apps/antichess-pwa/src/antichess-ngsw-worker.js"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2500kb",
+              "maximumError": "3mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all",
+          "serviceWorker": "apps/antichess-pwa/ngsw-config.json",
+          "baseHref": "./"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "serviceWorker": "apps/antichess-pwa/ngsw-config.json",
+          "baseHref": "./"
+        }
+      },
+      "defaultConfiguration": "production",
+      "outputs": ["{options.outputPath}"]
+    },
+    "serve": {
+      "executor": "@angular/build:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "antichess-pwa:build:production"
+        },
+        "development": {
+          "buildTarget": "antichess-pwa:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular/build:extract-i18n",
+      "options": {
+        "buildTarget": "antichess-pwa:build"
+      }
+    }
+  }
+}
