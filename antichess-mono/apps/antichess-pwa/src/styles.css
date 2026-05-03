@@ -14,7 +14,7 @@ html {
   top: 0;
   left: 0;
   position: relative;
-  padding-left: 10vw
+  
 }
 
 h1 {
@@ -389,7 +389,7 @@ button:active {
 }
 
 .main-content:not(.elementsActive .main-content) {
-  padding-top: var(--main-content-padding);
+
 }
 
 .elementsActive .addressescontainer {
@@ -500,4 +500,16 @@ button:active {
   flex-grow: 1;
   min-height: 0;
   overflow: auto;
+}
+.main-content{
+    display: grid;
+  grid-template-columns: 1fr 4fr; /* 2 equal columns */
+  gap: 10px;
+}
+
+.right-content{
+  border-left:0.5rem solid rgba(200, 200, 200);
+  padding-left:0.5rem;
+  padding-top: 3rem;
+  
 }

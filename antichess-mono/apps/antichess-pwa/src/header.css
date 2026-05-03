@@ -1,12 +1,8 @@
-.header {
-  font-size: 4vh;
-  font-weight: bold;
-  color: #333;
-  animation: fadeIn 1s ease-in-out forwards;
-
-  border-bottom-right-radius: 1vh;
-  border-bottom-left-radius: 1vh;
-  background: rgba(138, 128, 128);
+.header{
+  width:10rem;
+  background: #ccc;
+  border: 5px solid #ccc;           /* nice subtle border */
+    border-radius: 0 0 12px 12px;     /* TL TR BR BL */
 }
 
 .headerblock {
@@ -20,19 +16,24 @@
   justify-content: center;
   background: transparent;
   border-radius: 1vh;
-  
-  height: 100vh;
+
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;    
+
 }
 
 .headerbox{
-      float: left;
+      
     width: 20vw;
     height: 20vw;
     background-size: 20vw;
     clear: none;
-    margin-left: -10vw;;
+    
     background-image: url('./assets/images/antichess_king.png');
     background-repeat: no-repeat;
+
+    
 }
 
 .headertext {
@@ -47,20 +48,19 @@
   background: transparent;
   border-radius: 1vh;
   padding-left: 2rem;
-  height: 100vh;
+  
 }
 
 .headercontainer {
   justify-content: center;
   position: fixed;
-  padding-top: 1vh;
   
   padding-left: .1vw;
   padding-right: 1vw;
-  margin-left: -10vw;
+  
   
   width: 98vw;
-  height: 100vh;
+  
   z-index: 200;
   background-image: url('./assets/images/antichess_king.png');
   background-size: 0;
