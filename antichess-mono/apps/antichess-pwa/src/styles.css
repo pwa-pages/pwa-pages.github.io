@@ -509,6 +509,7 @@ button:active {
   padding-left:0.5rem;
   padding-top: 3rem;
   padding-bottom:20rem;
+  padding-right: 1rem;
   
 }
 
@@ -547,4 +548,8 @@ article.event-card > *:nth-child(odd) {
 article.event-card > *:nth-child(even) {
   background-color: #eeeeee;
   padding:1rem;
+}
+
+.lead{
+  
 }
