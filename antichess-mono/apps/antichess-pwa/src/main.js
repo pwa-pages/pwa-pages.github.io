@@ -45,7 +45,7 @@ function getScriptFileName() {
 (0, platform_browser_1.bootstrapApplication)(app_component_1.AppComponent, {
     providers: [
         (0, core_2.importProvidersFrom)(platform_browser_1.BrowserModule, common_1.CommonModule, input_1.MatInputModule, form_field_1.MatFormFieldModule, dialog_1.MatDialogModule, forms_1.FormsModule, 
-        //ServiceWorkerModule.register('./rosen-ngsw-worker.js', {
+        
         service_worker_1.ServiceWorkerModule.register('./' + getScriptFileName(), {
             registrationStrategy: 'registerWhenStable:30000',
         }), angular_fontawesome_1.FontAwesomeModule),

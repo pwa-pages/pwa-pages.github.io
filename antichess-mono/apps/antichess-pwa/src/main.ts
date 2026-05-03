@@ -54,7 +54,7 @@ bootstrapApplication(AppComponent, {
       MatFormFieldModule,
       MatDialogModule,
       FormsModule,
-      //ServiceWorkerModule.register('./rosen-ngsw-worker.js', {
+      
       ServiceWorkerModule.register('./' + getScriptFileName(), {
         registrationStrategy: 'registerWhenStable:30000',
       }),

@@ -75,8 +75,8 @@ export class BrowserService {
     console.log('share url: ' + url);
 
     navigator.share({
-      title: 'Rosen Watcher',
-      text: 'Rosen Watcher',
+      title: 'King of antichess',
+      text: 'King of antichess',
       url: url,
     });
   }
