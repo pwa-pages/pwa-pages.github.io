@@ -147,16 +147,24 @@ export class NavigationComponent implements OnInit {
   isAntichessActive(): boolean {
     return this.navigationService.currentNavigationIndex == 2;
   }
+  isPlayersActive(): boolean {
+    return this.navigationService.currentNavigationIndex == 3;
+  }
 
-  navRewards(): void {
+
+  navMain(): void {
     this.navigate(0);
   }
 
-  navWatchers(): void {
+  navAntichess(): void {
     this.navigate(2);
   }
 
-  navPerformance(): void {
+  navPlayers(): void {
+    this.navigate(3);
+  }
+
+  navEvents(): void {
     this.navigate(1);
   }
 

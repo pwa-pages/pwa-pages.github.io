@@ -11,7 +11,7 @@
 } @if (isVisible()) {
 <div class="navbar">
   <div [ngClass]="{ 'navbuttons': true, 'active': IsMainActive() }">
-    <a tabindex="0" (click)="navRewards()" (keypress)="navRewards()">
+    <a tabindex="0" (click)="navMain()" (keypress)="navMain()">
       <div class="nav-icon">
         <div class="fas fa-home"></div>
         <div>Main</div>
@@ -19,7 +19,7 @@
     </a>
   </div>
   <div [ngClass]="{ 'navbuttons': true, 'active': isEventsActive() }">
-    <a tabindex="0" (click)="navPerformance()" (keypress)="navPerformance()">
+    <a tabindex="0" (click)="navEvents()" (keypress)="navEvents()">
       <div class="nav-icon">
         <div class="fas fa-calendar"></div>
         <div>Events</div>
@@ -27,10 +27,18 @@
     </a>
   </div>
   <div [ngClass]="{ 'navbuttons': true, 'active': isAntichessActive() }">
-    <a tabindex="0" (click)="navWatchers()" (keypress)="navWatchers()">
+    <a tabindex="0" (click)="navAntichess()" (keypress)="navAntichess()">
       <div class="nav-icon">
         <div class="fas fa-graduation-cap"></div>
-        <div>Antichess</div>
+        <div>Academy</div>
+      </div>
+    </a>
+  </div>
+  <div [ngClass]="{ 'navbuttons': true, 'active': isPlayersActive() }">
+    <a tabindex="0" (click)="navPlayers()" (keypress)="navPlayers()">
+      <div class="nav-icon">
+        <div class="fas fa-user-group"></div>
+        <div>Players</div>
       </div>
     </a>
   </div>

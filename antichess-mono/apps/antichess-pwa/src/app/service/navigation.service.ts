@@ -19,6 +19,7 @@ export class NavigationService {
     this.navigationItems.push({ route: '/main' });
     this.navigationItems.push({ route: '/events' });
     this.navigationItems.push({ route: '/antichess' });
+    this.navigationItems.push({ route: '/players' });
     
 
     this.router.events
@@ -36,31 +37,12 @@ export class NavigationService {
       EventType.VersionUpdated,
       (v) => {
         this.latestVersionUpdate = v;
-        //this.checkForReload();
+        
       },
     );
 
-    const performanceItem = localStorage.getItem('performanceScreen');
-    if (performanceItem?.startsWith('/chainperformance')) {
-      this.swapPerformanceItems();
-    }
-  }
 
-  /*
-  private checkForReload() {
-    if (
-      this.latestVersionUpdate &&
-      localStorage.getItem('versionReload') != this.latestVersionUpdate
-    ) {
-      localStorage.setItem('versionReload', this.latestVersionUpdate);
-      this.latestVersionUpdate = null;
-      console.log('Application has been updated, reloading screen.');
-      setTimeout(() => {
-        console.log('Doing the reload...');
-        window.location.reload();
-      }, 1000);
-    }
-  }*/
+  }
 
   private updateCurrentNavigationIndex(url: string): void {
      let index = this.navigationItems.findIndex((item) =>
@@ -74,12 +56,6 @@ export class NavigationService {
   }
 
   public getCurrentNavigationItem(): NavigationItem {
-    if (this.currentNavigationIndex == 2) {
-      const watchersScreen = localStorage.getItem('watchersScreen');
-      if (watchersScreen) {
-        return { route: watchersScreen };
-      }
-    }
 
     return this.navigationItems[this.currentNavigationIndex];
   }
@@ -90,12 +66,12 @@ export class NavigationService {
 
   public getLeftItem(): NavigationItem {
     return this.navigationItems[
-      (this.currentNavigationIndex - 1 + this.navigationItems.length) % 3
+      (this.currentNavigationIndex - 1 + this.navigationItems.length) % 4
     ];
   }
 
   public getRightItem(): NavigationItem {
-    return this.navigationItems[(this.currentNavigationIndex + 1) % 3];
+    return this.navigationItems[(this.currentNavigationIndex + 1) % 4];
   }
 
   public navigate(to: string): void {
@@ -111,11 +87,6 @@ export class NavigationService {
       this.swapPerformanceItems();
     }
 
-    if (to.endsWith('watchers')) {
-      localStorage.setItem('watchersScreen', to);
-    }
-
-    localStorage.setItem('performanceScreen', this.navigationItems[1].route);
 
     this.router.navigate([to]);
   }
@@ -132,13 +103,13 @@ export class NavigationService {
   }
 
   public navigateRight(): NavigationItem {
-    const l = 3;
+    const l = 4;
     this.currentNavigationIndex = (this.currentNavigationIndex + 1) % l;
     return this.getCurrentNavigationItem();
   }
 
   public navigateLeft(): NavigationItem {
-    const l = 3;
+    const l = 4;
     this.currentNavigationIndex = (this.currentNavigationIndex - 1 + l) % l;
     return this.getCurrentNavigationItem();
   }
