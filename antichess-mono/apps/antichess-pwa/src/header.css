@@ -24,6 +24,17 @@
   height: 100vh;
 }
 
+.headerbox{
+      float: left;
+    width: 20vw;
+    height: 20vw;
+    background-size: 20vw;
+    clear: none;
+    margin-left: -10vw;;
+    background-image: url('./assets/images/antichess_king.png');
+    background-repeat: no-repeat;
+}
+
 .headertext {
   font-size: 2rem;
   
@@ -46,10 +57,12 @@
   
   padding-left: .1vw;
   padding-right: 1vw;
+  margin-left: -10vw;
   
   width: 98vw;
+  height: 100vh;
   z-index: 200;
   background-image: url('./assets/images/antichess_king.png');
+  background-size: 0;
   background-repeat: no-repeat;
-  background-size: 20vw;
 }

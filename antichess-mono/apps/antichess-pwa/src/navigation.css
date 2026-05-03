@@ -34,10 +34,10 @@
 
   position: fixed;
   bottom: 0;
-  height: 7vh;
+  
   border-top: 1px solid black;
   border-bottom: 1px solid black;
-  font-size: 1.8vh;
+  font-size: 1.5rem;
 
   grid-template-columns: auto auto;
   z-index: 10000;
@@ -61,7 +61,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-top: 0.8vh;
+  padding-top: .45rem;
 }
 
 .nav-icon a {
