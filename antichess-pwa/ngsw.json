@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1777813513259,
+  "timestamp": 1777813904170,
   "appData": {
     "version": "1.0.0"
   },
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-WUXBCAXT.js",
+        "./main-CTP3OGOT.js",
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./scripts-QOGIEEJF.js",
-        "./styles-RRLDKWMU.css"
+        "./styles-EHAUWOVH.css"
       ],
       "patterns": []
     },
@@ -52,8 +52,8 @@
     "./assets/icons/icon-512x512.png": "aa3c1ddb749e145228c3731ff40ddf2e6fab53d2",
     "./assets/images/antichess_king.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "e5f0687aff5e32849d1701800e2c2630dfc1bbd7",
-    "./main-WUXBCAXT.js": "f706ef1fb88bc41254d3f8121ec06617cf8f5ca3",
+    "./index.html": "a631a655b6c4decdfacc8b6a5cac99327a7fad6f",
+    "./main-CTP3OGOT.js": "b9e513d9e3912a4ca9c655b0e1e6c8c2983d0930",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./media/fa-brands-400-AHOAZHCU.woff2": "e48612cd49700246d0cc0d2d1943ed8b9d157316",
@@ -62,7 +62,7 @@
     "./media/fa-v4compatibility-ETEVP6IB.woff2": "48baec990161d24f6b770e803c9c14cfe2d07da5",
     "./polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
     "./scripts-QOGIEEJF.js": "e83470118bc518ad047b5e89e17f95abc3afe41d",
-    "./styles-RRLDKWMU.css": "9cdb46ce8054b4002b7d561017fed09a4141862a"
+    "./styles-EHAUWOVH.css": "dd805dc78d393149aa57a810343b32f3cea19211"
   },
   "navigationUrls": [
     {
