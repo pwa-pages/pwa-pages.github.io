@@ -80,17 +80,8 @@ export class SwipeService {
     }
   }
 
-  public hasVerticalScrollableContainerClass(element: HTMLElement | null) {
-    while (element) {
-      if (
-        element.classList &&
-        element.classList.contains('verticalscrollablecontainer')
-      ) {
-        return true;
-      }
-      element = element.parentElement;
-    }
-    return false;
+  public hasVerticalScrollableContainerClass() {
+    return true;
   }
 
   public registerSwipeDetect() {
@@ -125,7 +116,7 @@ export class SwipeService {
         }
 
         const hasVerticalScrollableParent =
-          this.hasVerticalScrollableContainerClass(e.target as HTMLElement);
+          this.hasVerticalScrollableContainerClass();
 
         const touchobj = e.changedTouches[0];
         distX = touchobj.pageX - startX;

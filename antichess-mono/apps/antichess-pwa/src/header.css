@@ -1,5 +1,5 @@
 .header{
-  width:10rem;
+  width:18rem;
   background: #ccc;
   border: 5px solid #ccc;           /* nice subtle border */
     border-radius: 0 0 12px 12px;     /* TL TR BR BL */
@@ -26,10 +26,10 @@
 .headerbox{
       
     width: 20vw;
-    height: 20vw;
+    height: 100vh;
     background-size: 20vw;
     clear: none;
-    
+    background-position-y: 4rem;
     background-image: url('./assets/images/antichess_king.png');
     background-repeat: no-repeat;
 

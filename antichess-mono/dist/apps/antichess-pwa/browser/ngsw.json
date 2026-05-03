@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1777799925963,
+  "timestamp": 1777813942654,
   "appData": {
     "version": "1.0.0"
   },
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-CGIPPQ7D.js",
+        "./main-CTP3OGOT.js",
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./scripts-QOGIEEJF.js",
-        "./styles-XRAAW4GO.css"
+        "./styles-EHAUWOVH.css"
       ],
       "patterns": []
     },
@@ -33,6 +33,7 @@
       },
       "urls": [
         "./assets/README.md",
+        "./assets/documents/Tournament Booklet 2026.pdf",
         "./assets/icons/icon-512x512.png",
         "./assets/images/antichess_king.png",
         "./media/antichess_king-N6DHRERR.png",
@@ -47,11 +48,12 @@
   "dataGroups": [],
   "hashTable": {
     "./assets/README.md": "d6cb6df4d9d59a31425cd8a7b7fae6848b31ea72",
+    "./assets/documents/Tournament Booklet 2026.pdf": "a52313aa1e58c0dfe29bae3d3d55b5c3329bedaa",
     "./assets/icons/icon-512x512.png": "aa3c1ddb749e145228c3731ff40ddf2e6fab53d2",
     "./assets/images/antichess_king.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "525bb86c9d6f472151f94aefc0143b56e3abfe89",
-    "./main-CGIPPQ7D.js": "0ca1d863b6f7399ba4196ad692ae7bd3a04959b0",
+    "./index.html": "a631a655b6c4decdfacc8b6a5cac99327a7fad6f",
+    "./main-CTP3OGOT.js": "b9e513d9e3912a4ca9c655b0e1e6c8c2983d0930",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./media/fa-brands-400-AHOAZHCU.woff2": "e48612cd49700246d0cc0d2d1943ed8b9d157316",
@@ -60,7 +62,7 @@
     "./media/fa-v4compatibility-ETEVP6IB.woff2": "48baec990161d24f6b770e803c9c14cfe2d07da5",
     "./polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
     "./scripts-QOGIEEJF.js": "e83470118bc518ad047b5e89e17f95abc3afe41d",
-    "./styles-XRAAW4GO.css": "1136aa863bd92979d39f8c771e86bd240ed7ea7f"
+    "./styles-EHAUWOVH.css": "dd805dc78d393149aa57a810343b32f3cea19211"
   },
   "navigationUrls": [
     {
