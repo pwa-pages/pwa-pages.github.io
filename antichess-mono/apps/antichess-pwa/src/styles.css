@@ -501,15 +501,15 @@ button:active {
 .main-content{
     display: grid;
   grid-template-columns: 1fr 4fr; /* 2 equal columns */
-  gap: 10px;
+  
 }
 
 .right-content{
   border-left:0.5rem solid rgba(200, 200, 200);
-  padding-left:2rem;
+  padding-left:1vw;
   padding-top: 4rem;
   padding-bottom:20rem;
-  padding-right: 1rem;
+  padding-right: 1vw;
   
 }
 
@@ -542,12 +542,12 @@ right-content h2 {
 
 article.event-card > *:nth-child(odd) {
   background-color: #ffffff;
-  padding:1rem;
+  padding:.4rem;
 }
 
 article.event-card > *:nth-child(even) {
   background-color: #eeeeee;
-  padding:1rem;
+  padding:.4rem;
 }
 
 .lead{
