@@ -506,7 +506,7 @@ button:active {
 
 .right-content{
   border-left:0.5rem solid rgba(200, 200, 200);
-  padding-left:0.5rem;
+  padding-left:2rem;
   padding-top: 4rem;
   padding-bottom:20rem;
   padding-right: 1rem;
@@ -552,4 +552,8 @@ article.event-card > *:nth-child(even) {
 
 .lead{
   
+}
+
+.players-links, .academy-links {
+  font-size:1.5rem;
 }

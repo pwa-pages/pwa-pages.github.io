@@ -68,3 +68,9 @@
   background-size: 0;
   background-repeat: no-repeat;
 }
+
+
+
+.antichess header {
+    padding-top: 0px !important;
+}
