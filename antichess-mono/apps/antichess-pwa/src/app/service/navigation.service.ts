@@ -9,6 +9,8 @@ import { EventService, EventType } from './event.service';
 export class NavigationService {
   public currentNavigationIndex = 0;
 
+  private readonly STORAGE_KEY = 'antichess.navigation.lastRoutes';
+
   navigationItems: NavigationItem[] = [];
   latestVersionUpdate: string | null = null;
 
@@ -16,100 +18,141 @@ export class NavigationService {
     private router: Router,
     private eventService: EventService,
   ) {
+    
     this.navigationItems.push({ route: '/main' });
     this.navigationItems.push({ route: '/events' });
     this.navigationItems.push({ route: '/antichess' });
     this.navigationItems.push({ route: '/players' });
+
     
+    const saved = this.loadSavedRoutes();
+    Object.keys(saved).forEach((k) => {
+      const idx = Number(k);
+      if (!Number.isNaN(idx) && idx >= 0 && idx < this.navigationItems.length) {
+        this.navigationItems[idx].route = saved[idx];
+      }
+    });
 
     this.router.events
       .pipe(
         filter(
           (event): event is NavigationEnd => event instanceof NavigationEnd,
-        ), // Type guard for NavigationEnd
+        ),
       )
       .subscribe((event) => {
         const url = event.urlAfterRedirects;
+        const index = this.getIndexFromUrl(url);
         this.updateCurrentNavigationIndex(url);
+        this.saveRouteForIndex(index, url);
+        if (index >= 0 && index < this.navigationItems.length) {
+          this.navigationItems[index].route = url;
+        }
       });
 
     this.eventService.subscribeToEvent<string>(
       EventType.VersionUpdated,
       (v) => {
         this.latestVersionUpdate = v;
-        
       },
     );
+  }
 
+  private loadSavedRoutes(): Record<number, string> {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      if (typeof parsed === 'object' && parsed !== null) return parsed;
+    } catch {
+      // ignore parse errors
+    }
+    return {};
+  }
 
+  private saveRouteForIndex(index: number, route: string): void {
+    try {
+      const map = this.loadSavedRoutes();
+      map[index] = route;
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(map));
+    } catch {
+      // ignore
+    }
+  }
+
+  private getSavedRoute(index: number): string | undefined {
+    const map = this.loadSavedRoutes();
+    return map[index];
+  }
+
+  private getRouteForIndex(index: number): string {
+    const saved = this.getSavedRoute(index);
+    if (saved) return saved;
+    if (index >= 0 && index < this.navigationItems.length) {
+      return this.navigationItems[index].route;
+    }
+    return this.navigationItems[0]?.route ?? '/';
+  }
+
+  private getIndexFromUrl(url: string): number {
+    if (url.startsWith('/main')) return 0;
+    if (url.startsWith('/events')) return 1;
+    if (url.startsWith('/antichess')) return 2;
+    if (url.startsWith('/players')) return 3;
+    if (url.startsWith('/rank')) return 3;
+    if (url.startsWith('/titles')) return 3;
+
+    return 0;
   }
 
   private updateCurrentNavigationIndex(url: string): void {
-     let index = this.navigationItems.findIndex((item) =>
-      url.startsWith(item.route),
-    );
-    if (index == -1) {
-      index = 0;
-    }
+    const index = this.getIndexFromUrl(url);
     this.currentNavigationIndex = index;
-    //this.checkForReload();
   }
 
   public getCurrentNavigationItem(): NavigationItem {
-
-    return this.navigationItems[this.currentNavigationIndex];
+    const idx = this.currentNavigationIndex;
+    const route = this.getRouteForIndex(idx);
+    return { route };
   }
 
   public getNavigationItems(): NavigationItem[] {
-    return this.navigationItems;
+    return this.navigationItems.map((_, i) => ({ route: this.getRouteForIndex(i) }));
   }
 
   public getLeftItem(): NavigationItem {
-    return this.navigationItems[
-      (this.currentNavigationIndex - 1 + this.navigationItems.length) % 4
-    ];
+    const l = this.navigationItems.length;
+    const idx = (this.currentNavigationIndex - 1 + l) % l;
+    return { route: this.getRouteForIndex(idx) };
   }
 
   public getRightItem(): NavigationItem {
-    return this.navigationItems[(this.currentNavigationIndex + 1) % 4];
+    const l = this.navigationItems.length;
+    const idx = (this.currentNavigationIndex + 1) % l;
+    return { route: this.getRouteForIndex(idx) };
   }
 
   public navigate(to: string): void {
-    if (
-      to.startsWith('/performance') &&
-      !this.router.url.startsWith('/performance')
-    ) {
-      this.swapPerformanceItems();
-    } else if (
-      to.startsWith('/chainperformance') &&
-      !this.router.url.startsWith('/chainperformance')
-    ) {
-      this.swapPerformanceItems();
-    }
-
-
     this.router.navigate([to]);
   }
 
-  private swapPerformanceItems() {
-    const t = this.navigationItems[1];
-    this.navigationItems[1] = this.navigationItems[3];
-    this.navigationItems[3] = t;
-  }
-
+  
   public navigateTo(to: number): NavigationItem {
+    if (to < 0 || to >= this.navigationItems.length) {
+      to = 0;
+    }
     this.currentNavigationIndex = to;
+    
     return this.getCurrentNavigationItem();
   }
 
   public navigateRight(): NavigationItem {
-    const l = 4;
+    const l = this.navigationItems.length;
     this.currentNavigationIndex = (this.currentNavigationIndex + 1) % l;
     return this.getCurrentNavigationItem();
   }
 
   public navigateLeft(): NavigationItem {
-    const l = 4;
+    const l = this.navigationItems.length;
     this.currentNavigationIndex = (this.currentNavigationIndex - 1 + l) % l;
     return this.getCurrentNavigationItem();
   }

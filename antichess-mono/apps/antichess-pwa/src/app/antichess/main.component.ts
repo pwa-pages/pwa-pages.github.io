@@ -8,6 +8,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import 'chartjs-adapter-date-fns';
 import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
+import { NavigationService } from '../service/navigation.service';
 
 @Component({
   selector: 'app-main',
@@ -31,9 +32,10 @@ export class MainComponent
 
   constructor(
     injector: Injector,
+    navigationService: NavigationService,
     private serviceWorkerService: ServiceWorkerService,
   ) {
-    super(injector);
+    super(injector, navigationService);
     this.selectedTab = 'chart';
     this.version = '';
     this.selectedPeriod = null;

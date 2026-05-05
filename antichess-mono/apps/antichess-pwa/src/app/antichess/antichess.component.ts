@@ -20,9 +20,9 @@ export class AntichessComponent extends BaseWatcherComponent implements OnInit {
 
   constructor(
     injector: Injector,
-    private navigationService: NavigationService
+    navigationService: NavigationService
   ) {
-    super(injector);
+    super(injector, navigationService);
 
 
   }

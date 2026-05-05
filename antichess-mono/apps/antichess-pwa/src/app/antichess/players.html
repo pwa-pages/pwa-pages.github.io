@@ -10,14 +10,14 @@
 
   <div class="headerbox"></div>
   <div class="antichess right-content">
-<!--
+
     <div class="eventstab">
-      <a tabindex="0" class="tab" [class.active]="false">Rank</a>
-      <a tabindex="0" class="tab" [class.active]="true">Titles</a>
-      <a tabindex="0" class="tab" [class.active]="false">Links</a>
+      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('rank')" (keypress)="clickTab('rank')">Rank</a>
+      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('titles')" (keypress)="clickTab('titles')">Titles</a>
+      <a tabindex="0" class="tab" [class.active]="true" (click)="clickTab('players')" (keypress)="clickTab('players')">Links</a>
 
     </div>
--->
+
           <!--
       <a tabindex="0" class="tab" [class.active]="false" (click)="selectTab()" (keypress)="selectTab()">
         Compare chains
@@ -45,7 +45,5 @@
       </ul>
     </div>
 
-    <i style="font-size:1.5rem;color:darkred;border-top:2px dotted black;border-bottom:2px dotted black">************
-      upcoming: payers titles, lichess top players list ************</i>
   </div>
 </div>

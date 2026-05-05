@@ -507,10 +507,10 @@ button:active {
 .right-content{
   border-left:0.5rem solid rgba(200, 200, 200);
   padding-left:1vw;
-  padding-top: 5rem;
+  padding-top: 7rem;
   padding-bottom:20rem;
   padding-right: 1vw;
-  
+  width: 70vw;
 }
 
 .main.right-content {

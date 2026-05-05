@@ -10,12 +10,12 @@ import { FormsModule } from '@angular/forms';
 import { NavigationService } from '../service/navigation.service';
 
 @Component({
-  selector: 'app-players',
-  templateUrl: './players.html',
+  selector: 'app-rank',
+  templateUrl: './rank.html',
   standalone: true,
   imports: [CommonModule, FormsModule],
 })
-export class PlayersComponent extends BaseWatcherComponent implements OnInit {
+export class RankComponent extends BaseWatcherComponent implements OnInit {
 
 
   constructor(
@@ -30,7 +30,7 @@ export class PlayersComponent extends BaseWatcherComponent implements OnInit {
 
 
   selectTab(): void {
-    this.navigationService.navigate('/players');
+    this.navigationService.navigate('/rank');
   }
 
   override async ngOnInit(): Promise<void> {

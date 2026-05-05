@@ -3,6 +3,7 @@ import { EventType } from './service/event.service';
 import { ActivatedRoute } from '@angular/router';
 import { BrowserService } from './service/browser.service';
 import { BaseEventAwareComponent } from './baseeventawarecomponent';
+import { NavigationService } from './service/navigation.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ export class BaseWatcherComponent
   protected browserService: BrowserService;
   protected route: ActivatedRoute | undefined;
 
-  constructor(protected override injector: Injector) {
+  constructor(protected override injector: Injector, protected navigationService: NavigationService) {
     super(injector);
 
     this.browserService = this.injector.get(BrowserService);
@@ -26,6 +27,10 @@ export class BaseWatcherComponent
     } catch {
       this.route = undefined;
     }
+  }
+
+    clickTab(tab: string): void {
+      this.navigationService.navigate(tab);
   }
 
   resetHeight(): void {

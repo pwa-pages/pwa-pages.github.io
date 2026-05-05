@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 
 import { BaseWatcherComponent } from '../basewatchercomponent';
+import { NavigationService } from '../service/navigation.service';
 
 @Component({
   selector: 'app-events',
@@ -22,8 +23,9 @@ export class EventsComponent
 
   constructor(
     injector: Injector,
+    navigationService: NavigationService
   ) {
-    super(injector);
+    super(injector, navigationService);
     this.data = '';
   }
 
