@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationService } from '../service/navigation.service';
 import { HttpDownloadService } from '../service/http.download.service';
-import { firstValueFrom } from 'rxjs';
+import { map } from 'rxjs';
 interface AntichessPerf { rating: number; progress: number; }
 interface AntichessUser {
   id: string;
@@ -54,15 +54,20 @@ export class RankComponent extends BaseWatcherComponent implements OnInit {
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
     try {
-      const result = await firstValueFrom(
-        this.httpDownloadService.downloadStream<AntichessTopResponse>(
-          'https://lichess.org/api/player/top/100/antichess'
+
+      this.httpDownloadService
+        .downloadStream<AntichessTopResponse>('https://lichess.org/api/player/top/100/antichess')
+        .pipe(
+          map((data: AntichessTopResponse) => {
+            this.topAntichessPlayers = data?.users ?? [];
+            console.log('Top antichess players:', this.topAntichessPlayers);
+          })
         )
-      );
+        .subscribe();
 
 
-      this.topAntichessPlayers = result?.users ?? [];
-      console.log('Top antichess players:', this.topAntichessPlayers);
+
+
     } catch (error) {
       console.error('Failed to load antichess top players', error);
       this.topAntichessPlayers = [];
@@ -71,7 +76,7 @@ export class RankComponent extends BaseWatcherComponent implements OnInit {
 
 
 
-    
+
     this.eventService.sendEvent(EventType.AntichessScreenLoaded);
   }
 }
