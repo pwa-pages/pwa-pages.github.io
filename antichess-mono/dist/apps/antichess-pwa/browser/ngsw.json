@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1778019361318,
+  "timestamp": 1778019704063,
   "appData": {
-    "version": "1.11.4"
+    "version": "1.11.5"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -20,7 +20,7 @@
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./scripts-QOGIEEJF.js",
-        "./styles-HMRHKIJ5.css"
+        "./styles-ANVPNYPZ.css"
       ],
       "patterns": []
     },
@@ -54,7 +54,7 @@
     "./assets/images/amsterdam_venue.png": "749dc63fecfe5765269faba4cb320241f37a8205",
     "./assets/images/antichess_king.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "566a8cddb7b353823cc5dfa81a4ec9132b2f8d29",
+    "./index.html": "3431a5d703122c45b444d391499041fd76c9d4f7",
     "./main-LIGPUDFR.js": "b16b219875d50effcdb584d7f641d0bdc720e9dd",
     "./manifest.webmanifest": "d78fac2815cda06ba8c0665c24e188f70981ebda",
     "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
@@ -64,7 +64,7 @@
     "./media/fa-v4compatibility-ETEVP6IB.woff2": "48baec990161d24f6b770e803c9c14cfe2d07da5",
     "./polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
     "./scripts-QOGIEEJF.js": "e83470118bc518ad047b5e89e17f95abc3afe41d",
-    "./styles-HMRHKIJ5.css": "f615196d0ef0b9cd77dd90c32cdf4f7497aac32b"
+    "./styles-ANVPNYPZ.css": "9784c2b95df8893b53027bc3aa1aa725ec80352a"
   },
   "navigationUrls": [
     {

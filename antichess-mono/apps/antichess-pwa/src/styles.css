@@ -729,3 +729,110 @@ a.tab {
   flex-grow: 1;
   overflow: auto;
 }
+
+.rank-results {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Loading placeholder */
+.rank-results .placeholder {
+  
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  background: rgba(138,128,128,0.03);
+  border-radius: 8px;
+}
+
+/* Table wrapper scrolls horizontally on small screens */
+.rank-results .rank-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  
+  overflow: auto;
+  transition: background-color 0.2s;
+  max-width: 30rem;
+}
+
+/* Header */
+.rank-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f7f7f7;
+  color: rgba(80,80,80,0.9);
+  text-align: left;
+  padding: 0.1rem 0.1rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Body rows and cells */
+.rank-table tbody td {
+  padding: 0.2rem 0.2rem;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  color: rgba(60,60,60,0.95);
+}
+
+/* Small first column for rank number */
+.rank-table tbody td:nth-child(1) {
+  
+  font-weight: 700;
+  text-align: left;
+  color: rgba(80,80,80,0.9);
+}
+
+/* Player column: make link layout friendly */
+.rank-table tbody td:nth-child(2) a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Username styling */
+.rank-table .username {
+  font-weight: 700;
+  color: rgba(30,30,30,0.95);
+  word-break: break-all;
+}
+
+
+/* Online indicator (green dot) */
+.rank-table .online-indicator {
+  color: #2ecc71;
+  margin-left: 0.35rem;
+  font-size: 0.8rem;
+  line-height: 1;
+  display: inline-block;
+  transform: translateY(-1px);
+}
+
+/* Rating and delta columns aligned right, monospace for numbers */
+.rank-table tbody td:nth-child(3),
+.rank-table tbody td:nth-child(4) {
+  
+  font-family: "Courier New", Courier, monospace;
+  white-space: nowrap;
+}
+
+/* Hover / zebra */
+.rank-table tbody tr:nth-child(even) {
+  background: rgba(0,0,0,0.01);
+}
+.rank-table tbody tr:hover {
+  background: rgba(138,128,128,0.03);
+}
+
+
+
+/* Optional utility: color progress up/down when classes applied */
+.rank-table .progress-up { color: #16a34a; }   /* green for positive */
+.rank-table .progress-down { color: #dc2626; } /* red for negative */

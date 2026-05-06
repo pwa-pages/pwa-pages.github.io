@@ -97,9 +97,9 @@ export class NavigationService {
     if (url.startsWith('/main')) return 0;
     if (url.startsWith('/events')) return 1;
     if (url.startsWith('/antichess')) return 2;
+    if (url.startsWith('/titles')) return 3;
     if (url.startsWith('/players')) return 3;
     if (url.startsWith('/rank')) return 3;
-    if (url.startsWith('/titles')) return 3;
 
     return 0;
   }
