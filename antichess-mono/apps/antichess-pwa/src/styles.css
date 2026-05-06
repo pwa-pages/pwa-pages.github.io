@@ -510,7 +510,7 @@ button:active {
   padding-top: 7rem;
   padding-bottom:20rem;
   padding-right: 1vw;
-  width: 70vw;
+  width: 75vw;
 }
 
 .main.right-content {
@@ -629,7 +629,7 @@ app-performance-chart {
 }
 
 .anticontainer {
-  margin-left: 5vw;
+  
   margin-right: 5vw;
 }
 
