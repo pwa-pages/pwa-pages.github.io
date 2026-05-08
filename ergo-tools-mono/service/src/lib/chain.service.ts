@@ -59,8 +59,8 @@ const chainTypeTokens = Object.fromEntries(
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const chainTypeWatcherIdentifier = Object.fromEntries(
   Object.values(ChainType).map((chain) =>
-    chain === ChainType.Runes ? [chain, `rspv2BitcoinRunesAWC`] :
-      [chain, `rspv2${chain}AWC`]
+    chain === ChainType.Runes ? [chain, `rspv3BitcoinRunesAWC`] :
+      [chain, `rspv3${chain}AWC`]
   ),
 );
 
