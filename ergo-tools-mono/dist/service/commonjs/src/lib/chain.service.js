@@ -39,8 +39,8 @@ function getActiveChainTypes() {
     return Array.from(active);
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const chainTypeTokens = Object.fromEntries(Object.values(ChainType).map((chain) => chain === ChainType.Runes ? [chain, `rspv2BitcoinRunesRWT`] :
-    [chain, `rspv2${chain}RWT`]));
+const chainTypeTokens = Object.fromEntries(Object.values(ChainType).map((chain) => chain === ChainType.Runes ? [chain, `rspv3BitcoinRunesRWT`] :
+    [chain, `rspv3${chain}RWT`]));
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const chainTypeWatcherIdentifier = Object.fromEntries(Object.values(ChainType).map((chain) => chain === ChainType.Runes ? [chain, `rspv2BitcoinRunesAWC`] :
     [chain, `rspv2${chain}AWC`]));
