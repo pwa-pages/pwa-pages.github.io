@@ -1,5 +1,5 @@
 declare const rs_DbName = "rosenDatabase_1.1.5";
-declare const rs_DbVersion = 38;
+declare const rs_DbVersion = 39;
 declare const rs_InputsStoreName = "inputBoxes";
 declare const rs_PerfTxStoreName = "perfTxs";
 declare const rs_PermitTxStoreName = "permitTxs";
