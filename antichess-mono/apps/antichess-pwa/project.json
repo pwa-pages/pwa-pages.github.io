@@ -18,7 +18,6 @@
         "assets": [
           "apps/antichess-pwa/src/favicon.ico",
           "apps/antichess-pwa/src/assets",
-          "apps/antichess-pwa/src/rosen.html",
           "apps/antichess-pwa/src/load.html",
           "apps/antichess-pwa/src/manifest.webmanifest",
           "apps/antichess-pwa/src/ngsw-worker.js"

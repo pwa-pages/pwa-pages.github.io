@@ -9,7 +9,7 @@ import { NavigationService } from './service/navigation.service';
   selector: 'app-root',
   template: '',
 })
-export class BaseWatcherComponent
+export class BaseComponent
   extends BaseEventAwareComponent
   implements OnInit {
   public busyCounter = 1;
@@ -33,6 +33,10 @@ export class BaseWatcherComponent
       this.navigationService.navigate(tab);
   }
 
+  notifyVisible(): boolean {
+
+    return true;
+  }
   resetHeight(): void {
     document.body.style.height = window.innerHeight + 'px';
     document.documentElement.style.height = window.innerHeight + 'px';

@@ -11,12 +11,12 @@ import { NavigationService } from '../service/navigation.service';
 import { HeaderComponent } from './header.component';
 
 @Component({
-  selector: 'app-players',
-  templateUrl: './players.html',
+  selector: 'app-antichesslinks',
+  templateUrl: './antichesslinks.html',
   standalone: true,
   imports: [CommonModule, FormsModule, HeaderComponent],
 })
-export class PlayersComponent extends BaseComponent implements OnInit {
+export class AntichessLinksComponent extends BaseComponent implements OnInit {
 
 
   constructor(
@@ -31,7 +31,7 @@ export class PlayersComponent extends BaseComponent implements OnInit {
 
 
   selectTab(): void {
-    this.navigationService.navigate('/players');
+    this.navigationService.navigate('/antichesslinks');
   }
 
   override async ngOnInit(): Promise<void> {

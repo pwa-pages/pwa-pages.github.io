@@ -3,31 +3,17 @@ import { Subject, Subscription } from 'rxjs';
 import { NgZone } from '@angular/core';
 
 export enum EventType {
-  StartFullDownload = 'StartFullDownload',
-  EndFullDownload = 'EndFullDownload',
-  RefreshInputs = 'RefreshInputs',
-  InputsChanged = 'InputsChanged',
-  PerfChartChanged = 'PerfChartChanged',
   SwipeActivated = 'SwipeActivated',
   SwipeDeActivated = 'SwipeDeActivated',
   SwipeVertical = 'SwipeVertical',
   MainScreenLoaded = 'MainScreenLoaded',
   MyAntichessScreenLoaded = 'MyAntichessScreenLoaded',
-  RequestInputsDownload = 'RequestInputsDownload',
   AntichessScreenLoaded = 'AntichessScreenLoaded',
-  SettingsScreenLoaded = 'SettingsScreenLoaded',
   EventsScreenLoaded = 'EventsScreenLoaded',
-  AddressChartChanged = 'AddressChartChanged',
   WindowResized = 'WindowResized',
   VersionUpdated = 'VersionUpdated',
-  WatchersStatsChanged = 'WatchersStatsChanged',
-  PermitsStatsChanged = 'PermitsStatsChanged',
-  ChainPerformanceChartsChanged = 'ChainPerformanceChartsChanged',
-  PerformanceChartsChanged = 'PerformanceChartsChanged',
-  StatisticsChartChanged = 'StatisticsChartChanged',
-  PermitsChanged = 'PermitsChanged',
-  RefreshPermits = 'RefreshPermits',
-  AddressPermitsDownloaded = 'AddressPermitsDownloaded',
+  StartFullDownload = 'StartFullDownload',
+  EndFullDownload = 'EndFullDownload',
 }
 
 export type EventData = string | object;
@@ -48,29 +34,15 @@ export class EventService {
     this.eventSubscriptions = {
       [EventType.StartFullDownload]: new Subject<EventData>(),
       [EventType.EndFullDownload]: new Subject<EventData>(),
-      [EventType.RefreshInputs]: new Subject<EventData>(),
-      [EventType.InputsChanged]: new Subject<EventData>(),
-      [EventType.PerfChartChanged]: new Subject<EventData>(),
       [EventType.SwipeActivated]: new Subject<EventData>(),
       [EventType.SwipeDeActivated]: new Subject<EventData>(),
       [EventType.SwipeVertical]: new Subject<EventData>(),
       [EventType.MainScreenLoaded]: new Subject<EventData>(),
       [EventType.MyAntichessScreenLoaded]: new Subject<EventData>(),
-      [EventType.PermitsChanged]: new Subject<EventData>(),
       [EventType.EventsScreenLoaded]: new Subject<EventData>(),
-      [EventType.RequestInputsDownload]: new Subject<EventData>(),
-      [EventType.AddressChartChanged]: new Subject<EventData>(),
       [EventType.VersionUpdated]: new Subject<EventData>(),
       [EventType.AntichessScreenLoaded]: new Subject<EventData>(),
-      [EventType.SettingsScreenLoaded]: new Subject<EventData>(),
-      [EventType.WindowResized]: new Subject<EventData>(),
-      [EventType.WatchersStatsChanged]: new Subject<EventData>(),
-      [EventType.PermitsStatsChanged]: new Subject<EventData>(),
-      [EventType.ChainPerformanceChartsChanged]: new Subject<EventData>(),
-      [EventType.PerformanceChartsChanged]: new Subject<EventData>(),
-      [EventType.StatisticsChartChanged]: new Subject<EventData>(),
-      [EventType.RefreshPermits]: new Subject<EventData>(),
-      [EventType.AddressPermitsDownloaded]: new Subject<EventData>(),
+      [EventType.WindowResized]: new Subject<EventData>()
     };
     return this.eventSubscriptions;
   }

@@ -34,6 +34,7 @@ export function initializeServiceWorkerService(
 })
 export class ServiceWorkerService {
   private avoidServiceWorker = true;
+  private versionUpdating: boolean = false;
 
   constructor(
     private eventService: EventService,
@@ -48,8 +49,7 @@ export class ServiceWorkerService {
       if (
         eventType == EventType.EventsScreenLoaded ||
         eventType == EventType.MyAntichessScreenLoaded ||
-        eventType == EventType.MainScreenLoaded ||
-        eventType == EventType.RequestInputsDownload
+        eventType == EventType.MainScreenLoaded
       ) {
         console.log(eventData);
 
@@ -78,6 +78,9 @@ export class ServiceWorkerService {
     });
   }
 
+  public isVersionUpdating(): boolean {
+    return this.versionUpdating;
+  }
   checkForVersionDiscrepancy(): void {
 
     this.http
@@ -104,6 +107,16 @@ export class ServiceWorkerService {
           } else {
             console.log('sw versions not in sync');
             this.avoidServiceWorker = true;
+
+            var notifiedVersion = localStorage.getItem('antichessServiceVersionNotified');
+            var currentVersion = localStorage.getItem('antichessServiceVersion');
+
+            if (currentVersion && currentVersion != notifiedVersion) {
+              this.versionUpdating = true;
+              localStorage.setItem('antichessServiceVersionNotified', currentVersion);
+            }
+
+
           }
         },
         (error: unknown) => {
@@ -141,6 +154,7 @@ export class ServiceWorkerService {
   listenForServiceWorkerMessages() {
     if (navigator.serviceWorker) {
       navigator.serviceWorker.addEventListener('controllerchange', () => {
+        this.versionUpdating = false;
         console.log(
           'New service worker has taken control. Reloading the page.',
         );
@@ -153,6 +167,7 @@ export class ServiceWorkerService {
         }
         registration.addEventListener('updatefound', () => {
           console.log('updatefound: Service worker installing new version.');
+          this.versionUpdating = false;
         });
       });
 
@@ -179,6 +194,7 @@ export class ServiceWorkerService {
 
   handleServiceWorkerMessage(message: ServiceWorkerMessage) {
     console.log('Handling message from service worker:', message);
+    this.versionUpdating = false;
 
     if ((Object.values(EventType) as string[]).includes(message.type)) {
       if (message.data) {

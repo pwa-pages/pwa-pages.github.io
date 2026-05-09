@@ -4,6 +4,8 @@ const routes: Routes = [
   { path: 'main', component: MainComponent },
   { path: 'events', component: EventsComponent },
   { path: 'antichess', component: AntichessComponent },
+  { path: 'antichessguide', component: AntichessGuideComponent },
+  { path: 'antichesslinks', component: AntichessLinksComponent },
   { path: 'players', component: PlayersComponent },
   { path: 'rank', component: RankComponent },
   { path: 'titles', component: TitlesComponent },
@@ -40,6 +42,8 @@ import { AntichessComponent } from './app/antichess/antichess.component';
 import { PlayersComponent } from './app/antichess/players.component';
 import { RankComponent } from './app/antichess/rank.component';
 import { TitlesComponent } from './app/antichess/titles.component';
+import { AntichessGuideComponent } from './app/antichess/antichessguide.component';
+import { AntichessLinksComponent } from './app/antichess/antichesslinks.component ';
 
 function getScriptFileName(): string {
   const scripts = Array.from(document.querySelectorAll('script')); // Convert NodeList to an array

@@ -3,12 +3,13 @@ import {
   OnInit,
   Injector,} from '@angular/core';
 
-import { BaseWatcherComponent } from '../basewatchercomponent';
+import { BaseComponent } from '../basecomponent';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import 'chartjs-adapter-date-fns';
 import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';
 import { NavigationService } from '../service/navigation.service';
+import { HeaderComponent } from './header.component';
 
 @Component({
   selector: 'app-main',
@@ -17,11 +18,11 @@ import { NavigationService } from '../service/navigation.service';
   imports: [
     RouterLink,
     RouterLinkActive,
-    FormsModule,
+    FormsModule,HeaderComponent
   ],
 })
 export class MainComponent
-  extends BaseWatcherComponent
+  extends BaseComponent
   implements OnInit {
   selectedTab: string;
   window: HTMLElement = document.body;

@@ -4,17 +4,18 @@ import {
   OnInit
 } from '@angular/core';
 
-import { BaseWatcherComponent } from '../basewatchercomponent';
+import { BaseComponent } from '../basecomponent';
 import { NavigationService } from '../service/navigation.service';
+import { HeaderComponent } from './header.component';
 
 @Component({
   selector: 'app-events',
   templateUrl: './events.html',
   standalone: true,
-  imports: [],
+  imports: [HeaderComponent],
 })
 export class EventsComponent
-  extends BaseWatcherComponent
+  extends BaseComponent
   implements OnInit {
   data: string;
 

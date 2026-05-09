@@ -4,12 +4,13 @@ import {
   OnInit,
 } from '@angular/core';
 import { EventType } from '../service/event.service';
-import { BaseWatcherComponent } from '../basewatchercomponent';
+import { BaseComponent } from '../basecomponent';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationService } from '../service/navigation.service';
 import { HttpDownloadService } from '../service/http.download.service';
 import { map } from 'rxjs';
+import { HeaderComponent } from './header.component';
 interface AntichessPerf { rating: number; progress: number; }
 interface AntichessUser {
   id: string;
@@ -26,12 +27,12 @@ interface AntichessTopResponse { users: AntichessUser[] }
   selector: 'app-rank',
   templateUrl: './rank.html',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HeaderComponent],
 })
 
 
 
-export class RankComponent extends BaseWatcherComponent implements OnInit {
+export class RankComponent extends BaseComponent implements OnInit {
 
   topAntichessPlayers: AntichessUser[] = [];
 

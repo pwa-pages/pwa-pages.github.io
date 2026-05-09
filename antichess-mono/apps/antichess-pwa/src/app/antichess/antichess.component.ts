@@ -4,18 +4,19 @@ import {
   OnInit,
 } from '@angular/core';
 import { EventType } from '../service/event.service';
-import { BaseWatcherComponent } from '../basewatchercomponent';
+import { BaseComponent } from '../basecomponent';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationService } from '../service/navigation.service';
+import { HeaderComponent } from './header.component';
 
 @Component({
   selector: 'app-antichess',
   templateUrl: './antichess.html',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HeaderComponent],
 })
-export class AntichessComponent extends BaseWatcherComponent implements OnInit {
+export class AntichessComponent extends BaseComponent implements OnInit {
 
 
   constructor(

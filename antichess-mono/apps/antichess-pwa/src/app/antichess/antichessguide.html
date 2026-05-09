@@ -1,0 +1,52 @@
+<app-header [text]="'Tips'" />
+
+
+
+<div class="anticontainer antichess main-content">
+
+  <div class="headerbox">
+
+
+
+  </div>
+  <div class="antichess right-content">
+
+    <div class="eventstab">
+      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('antichess')"
+        (keypress)="clickTab('antichess')">Rules</a>
+      <a tabindex="0" class="tab" [class.active]="true" (click)="clickTab('antichessguide')"
+        (keypress)="clickTab('antichessguide')">Guide</a>
+      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('antichesslinks')"
+        (keypress)="clickTab('antichesslinks')">Links</a>
+
+    </div>
+
+    <div class="academy-links">
+
+
+      <h3>(Very) quick antichess guide</h3>
+
+
+      <p>New to antichess?. Here are some small tips for starters:</p>
+      <ul>
+        <li>- Keep your king, this is not a hard rule but very useful in many situations.</li>
+        <li>- Have your pieces control squares on the board, this gives you more choice and opponent less which is key
+          in antichess.</li>
+        <li>- Don't give away strong pieces without good reason (king, rook, queen).</li>
+        <li>- Learn about intermediates (see links below, youtube or lichess study).</li>
+        <li>- Queen is strong in opening, but dangerous to have going to endgame.</li>
+        <li>- Knights are in general hard to play with in endgame.</li>
+        <li>- Rooks are in general very good to have in endgame.</li>
+        <li>- Bishops are very dangerous in opening, many forced opening lines are with bishop cleaning up the board.
+        </li>
+        <li>- d3, d4, e4 are instantly losing for white.</li>
+        <li>- Find some opening lines with white or black that are not instantly losing (use analysis engine on lichess
+          or check strong players opening repetoire)</li>
+        <li>- Play in lichess arena tournaments, there are often a diverse range of players which is beneficial for
+          improving.</li>
+      </ul>
+
+
+    </div>
+  </div>
+</div>

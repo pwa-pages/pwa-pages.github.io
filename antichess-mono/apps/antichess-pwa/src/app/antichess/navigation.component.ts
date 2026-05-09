@@ -52,12 +52,6 @@ export class NavigationComponent implements OnInit {
         this.visible = true;
       },
     );
-    await this.eventService.subscribeToEvent(
-      EventType.SettingsScreenLoaded,
-      () => {
-        this.visible = false;
-      },
-    );
 
     await this.eventService.subscribeToEvent(
       EventType.StartFullDownload,
