@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1778355690379,
+  "timestamp": 1778478195394,
   "appData": {
-    "version": "1.14.5"
+    "version": "1.14.7"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-Z2FE54EL.js",
+        "./main-EAOLKWE5.js",
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./scripts-QOGIEEJF.js",
@@ -54,8 +54,8 @@
     "./assets/images/amsterdam_venue.png": "749dc63fecfe5765269faba4cb320241f37a8205",
     "./assets/images/antichess_king.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "83e0855a58d22d80f326a2e7a90524c245a28178",
-    "./main-Z2FE54EL.js": "56a8e293a748c91baba9fe10eabe5253566064db",
+    "./index.html": "c0e2478721cf6ac31022ed8332d7828dad2d2180",
+    "./main-EAOLKWE5.js": "ebf0e2206aced4a9a7e772cdb60e244621cad020",
     "./manifest.webmanifest": "d78fac2815cda06ba8c0665c24e188f70981ebda",
     "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./media/fa-brands-400-AHOAZHCU.woff2": "e48612cd49700246d0cc0d2d1943ed8b9d157316",
