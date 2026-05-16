@@ -29,6 +29,9 @@
           "apps/antichess-pwa/src/header.css",
           "apps/antichess-pwa/src/app/basewatchercomponent.css",
           "node_modules/@fortawesome/fontawesome-free/css/all.css",
+          "node_modules/chessground/assets/chessground.base.css",
+          "node_modules/chessground/assets/chessground.brown.css",
+          "node_modules/chessground/assets/chessground.cburnett.css",
           "apps/antichess-pwa/src/mat-theme.scss",
           "apps/antichess-pwa/src/styles_theme-colors.scss"
         ],
