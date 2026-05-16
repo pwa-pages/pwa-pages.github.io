@@ -858,7 +858,8 @@ a.tab {
   max-width:30rem;
   width: 50vw;
   aspect-ratio: 1;
-  border:1px solid black
+  border:1px solid black;
+   
 }
 
 .boardwithannotation{
@@ -870,6 +871,7 @@ a.tab {
   border: 1px dashed darkgray;
   border-radius: 2rem;
   background: #eeeeee;
+  
 }
 
 .moveannotation{
@@ -877,3 +879,5 @@ a.tab {
   color: rgba(80,70,70,0.9);
   font-style: italic;
 }
+
+coordinates: window.innerWidth > 400

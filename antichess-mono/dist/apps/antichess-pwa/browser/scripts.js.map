@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["angular:script/global:scripts.js"],
-  "sourcesContent": ["if (typeof importScripts === 'function') {\n  importScripts('./ngsw-worker.js');\n\n  self.addEventListener('install', (_) => {\n    console.log(\n      '[Service Worker] Installing new version...calling skipWaiting()',\n    );\n    self.skipWaiting();\n    console.log('[Service Worker] Installing new version...done skipWaiting()');\n  });\n\n  self.addEventListener('activate', (_) => {\n    console.log('[Service Worker] Activated new version!');\n  });\n}\n"],
-  "mappings": "AAAA,IAAI,OAAO,kBAAkB,YAAY;AACvC,gBAAc,kBAAkB;AAEhC,OAAK,iBAAiB,WAAW,CAAC,MAAM;AACtC,YAAQ;AAAA,MACN;AAAA,IACF;AACA,SAAK,YAAY;AACjB,YAAQ,IAAI,8DAA8D;AAAA,EAC5E,CAAC;AAED,OAAK,iBAAiB,YAAY,CAAC,MAAM;AACvC,YAAQ,IAAI,yCAAyC;AAAA,EACvD,CAAC;AACH;",
-  "names": []
-}

@@ -30,7 +30,7 @@ export class ChessBoardComponent implements AfterViewInit, OnChanges {
     this.cg = Chessground(this.board.nativeElement, {
       fen: this.fen,
       orientation: 'white',
-      coordinates: true,
+      coordinates: false,
       movable: {
         free: this.editable,
         color: this.editable ? 'both' : undefined
