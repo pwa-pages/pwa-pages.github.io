@@ -1,10 +1,10 @@
-/* apps/rosen-watcher-pwa/src/variables.css */
+/* apps/antichess-pwa/src/variables.css */
 :root {
   --screen-width: 100vw;
   --screen-height: 100vh;
   --small-font: 1vh;
   --medium-font: 1.8vh;
-  --large-font: 3vh;
+  --large-font: 1.5rem;
   --version-margin: -1.5vh;
   --link-margin: 0.5vh;
   --context-menu-margin: 0.5vh;
@@ -29,7 +29,7 @@
   --versions-width: 89vw;
 }
 
-/* apps/rosen-watcher-pwa/src/styles.css */
+/* apps/antichess-pwa/src/styles.css */
 body {
   padding: 0;
   margin: 0px !important;
@@ -54,22 +54,14 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-li {
-  font-family:
-    "Courier New",
-    Courier,
-    monospace;
-  font-size: var(--small-font);
-}
 li:last-child {
   margin-bottom: 0;
 }
 .addressescontainer,
 .linkcontainer,
 .info-description,
-.performancetab,
+.eventstab,
 .profilemessage {
-  margin-left: var(--medium-width);
 }
 .info-description {
   padding-top: var(--large-height);
@@ -80,7 +72,7 @@ li:last-child {
 .profilemessage a {
   color: rgba(119, 17, 17, 1) !important;
 }
-.statistics-footer .addressescontainer {
+.main-footer .addressescontainer {
   width: 95%;
 }
 .addressescontainer {
@@ -94,14 +86,14 @@ li:last-child {
 .linkcontainer,
 .info-description,
 .profilemessage,
-.watcherscontainer {
+.antichesscontainer {
   font-size: var(--medium-font);
   font-weight: bold;
   color: rgba(138, 128, 128);
   animation: fadeIn 1s ease-in-out forwards;
   flex-wrap: wrap;
 }
-.watcherscontainer {
+.antichesscontainer {
   margin-left: var(--medium-width);
   margin-right: var(--medium-width);
 }
@@ -156,7 +148,7 @@ li:last-child {
 a {
   text-decoration: none;
   cursor: pointer;
-  color: rgba(138, 128, 128);
+  color: #005555;
 }
 .watcheritem.link a {
   color: rgba(80, 70, 70) !important;
@@ -198,13 +190,13 @@ a {
 .mainaddressdispl {
   padding-left: var(--main-address-padding);
 }
-.watcherscontainer > div {
+.antichesscontainer > div {
   padding-left: var(--watchers-padding);
   padding-right: var(--watchers-padding);
   border-left: 0.1vmax solid rgba(138, 128, 128);
   white-space: nowrap;
 }
-.watcherscontainer > div.watcherheader {
+.antichesscontainer > div.watcherheader {
   white-space: inherit;
 }
 .currencyrow,
@@ -219,13 +211,13 @@ a {
   margin-bottom: var(--large-font);
   font-size: 1.6vmax;
 }
-.watcherscontainer .watchersdispl {
+.antichesscontainer .watchersdispl {
   filter: brightness(0.8);
 }
-.watcherscontainer.mywatcher {
+.antichesscontainer.mywatcher {
   grid-template-columns: 3vmax auto auto auto auto !important;
 }
-.watcherscontainer {
+.antichesscontainer {
   font-size: 1.6vmax;
   margin-top: var(--small-medium-height);
   float: left;
@@ -236,7 +228,7 @@ a {
 .fivecolumns {
   grid-column: span 5;
 }
-.watchersmaincontainer {
+.antichessmaincontainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -244,83 +236,6 @@ a {
   flex-direction: row;
   width: var(--watchers-width);
   flex-direction: column !important;
-}
-.statdetaildispl.Bitcoin,
-.mainaddressdispl.Bitcoin,
-.watchersdispl.Bitcoin,
-.chainType.Bitcoin {
-  background-image: url("./media/bitcoin.png");
-  filter: brightness(0.8);
-}
-.statdetaildispl.Runes,
-.mainaddressdispl.Runes,
-.watchersdispl.Runes,
-.chainType.Runes {
-  background-image: url("./media/runes.png");
-  filter: brightness(0.8);
-}
-.statdetaildispl.Binance,
-.mainaddressdispl.Binance,
-.watchersdispl.Binance,
-.chainType.Binance {
-  background-image: url("./media/binance.png");
-  filter: brightness(0.8);
-}
-.statdetaildispl.Cardano,
-.mainaddressdispl.Cardano,
-.watchersdispl.Cardano,
-.chainType.Cardano {
-  background-image: url("./media/cardano.png");
-  filter: brightness(0.8);
-}
-.statdetaildispl.Ergo,
-.mainaddressdispl.Ergo,
-.watchersdispl.Ergo,
-.chainType.Ergo {
-  background-image: url("./media/ergo.png");
-  filter: brightness(0.8);
-}
-.statdetaildispl.Ethereum,
-.mainaddressdispl.Ethereum,
-.watchersdispl.Ethereum,
-.chainType.Ethereum {
-  background-image: url("./media/ethereum.png");
-  filter: brightness(0.8);
-}
-.statdetaildispl.Doge,
-.mainaddressdispl.Doge,
-.watchersdispl.Doge,
-.chainType.Doge {
-  background-image: url("./media/doge.png");
-  filter: brightness(0.8);
-}
-.statdetaildispl.Nervos,
-.mainaddressdispl.Nervos,
-.watchersdispl.Nervos,
-.chainType.Nervos {
-  background-image: url("./media/nervos.png");
-  filter: brightness(0.8);
-}
-.statdetaildispl.Handshake,
-.mainaddressdispl.Handshake,
-.watchersdispl.Handshake,
-.chainType.Handshake {
-  background-image: url("./media/hns.png");
-  filter: brightness(0.8);
-}
-.statdetaildispl.Firo,
-.mainaddressdispl.Firo,
-.watchersdispl.Firo,
-.chainType.Firo {
-  background-image: url("./media/firo.png");
-  filter: brightness(0.8);
-}
-.statdetaildispl.Monero,
-.mainaddressdispl.Monero,
-.watchersdispl.Monero,
-.chainType.Monero {
-  background-image: url("./media/monero.png");
-  filter: brightness(0.8);
 }
 .noAddresses {
   color: green;
@@ -429,7 +344,6 @@ button:active {
   width: var(--versions-width);
 }
 .main-content:not(.elementsActive .main-content) {
-  padding-top: var(--main-content-padding);
 }
 .elementsActive .addressescontainer {
   margin-bottom: 0px !important;
@@ -520,199 +434,61 @@ button:active {
 .statdetaildispl .chainType {
   width: var(--small-medium-height);
 }
-.performancecontainer {
+.anticontainer {
   display: flex;
   flex-direction: column;
 }
-.performancecontainer .chartcontainer {
+.anticontainer .chartcontainer {
   flex-grow: 1;
   min-height: 0;
   overflow: auto;
 }
-
-/* apps/rosen-watcher-pwa/src/navigation.css */
-.navbuttons.menu {
-  right: 5vw;
-  justify-content: right;
-}
-.fa-bars {
-  font-size: 3.5vh;
-  transition: color 0.3s ease;
-}
-.fa-bars:hover {
-}
-.fa-eye,
-.fa-chart-bar,
-.fa-btc {
-  font-size: 3.5vh;
-  transition: color 0.3s ease;
-}
-.fa-eye:hover,
-.fa-chart-bar:hover,
-.fa-btc:hover {
-}
-.navbar a {
-}
-.navbar {
-  width: 100%;
-  left: 0 !important;
-  position: fixed;
-  bottom: 0;
-  height: 7vh;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  font-size: 1.8vh;
-  grid-template-columns: auto auto;
-  z-index: 10000;
-  display: flex;
-  justify-content: space-between;
-  width: 100vw;
-  box-sizing: border-box;
-}
-.navbar > div {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.nav-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding-top: 0.8vh;
-}
-.nav-icon a {
-  text-decoration: none;
-  color: inherit;
-}
-.icon-text .fa-eye {
-}
-.navbuttons {
-  flex: 0 0 auto;
-}
-.navbuttons,
-.navbuttons a {
-  color: white;
-  background-color: rgba(138, 128, 128);
-  width: 100%;
-  height: 100%;
-}
-.navbuttons.active,
-.navbuttons.active a {
-  background-color: white;
-  color: rgba(138, 128, 128);
-}
-.navbuttons.active:hover,
-.navbuttons.active a:hover {
-  background-color: white;
-  color: rgba(138, 128, 128);
-}
-.navbuttons:hover,
-.navbuttons a:hover {
-  color: white;
-  background-color: rgba(138, 128, 128, 0.5);
-}
-.prevPage {
-  position: fixed;
-  bottom: 0vh;
-  left: 5vw;
-  justify-content: left;
-  width: 40vh;
-  height: 5vh;
-  font-size: 3vh;
+.main-content {
   display: grid;
+  grid-template-columns: 1fr 4fr;
 }
-
-/* apps/rosen-watcher-pwa/src/header.css */
-.header {
-  font-size: 4vh;
-  font-weight: bold;
-  color: #333;
-  animation: fadeIn 1s ease-in-out forwards;
-  border-bottom-right-radius: 1vh;
-  border-bottom-left-radius: 1vh;
-  background: rgba(138, 128, 128);
-}
-.headerblock {
-  font-size: 3vh;
-  text-align: center;
-  font-weight: bold;
-  color: #333;
-  animation: fadeIn 1s ease-in-out forwards;
-  width: 40vh;
-  justify-content: center;
-  background: rgba(238, 228, 218);
-  border-radius: 1vh;
-}
-.headerblockfixed {
-  text-align: center;
-  font-weight: bold;
-  color: #333;
-  animation: fadeIn 1s ease-in-out forwards;
-  width: 300px;
-  justify-content: center;
-  padding: 4px;
-  background: rgba(238, 228, 218);
-  border-radius: 1vh;
-}
-.headercontainer {
-  justify-content: center;
-  display: flex;
-  padding-top: 1vh;
+.right-content {
+  border-left: 0.5rem solid rgba(200, 200, 200);
   padding-left: 1vw;
+  padding-top: 7rem;
+  padding-bottom: 20rem;
   padding-right: 1vw;
-  margin-bottom: 1vh;
-  position: fixed;
-  width: 100vw;
-  z-index: 200;
+  width: 75vw;
 }
-
-/* apps/rosen-watcher-pwa/src/settings.css */
-.settingscontainer {
-  grid-template-columns: auto 70px 70px;
-  justify-content: flex-start;
+.main.right-content {
+  min-height: 100vh;
 }
-.settings {
-  font-size: 16px;
-  font-weight: bold;
-  color: rgba(138, 128, 128);
-  font-family:
-    "Courier New",
-    Courier,
-    monospace;
+right-content h2 {
+  font-size: 2.2rem;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+  letter-spacing: 1px;
 }
-.settingsdialog {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  height: 100%;
-  width: 100%;
-  background-color: #f7f7f7;
-  padding-left: 5vw;
+.right-content .lead {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  padding: 10px 5px;
 }
-.addressedit {
-  float: left;
+.right-content .lead br {
+  content: "";
+  display: block;
+  margin: 10px 0;
 }
-.addressinput {
-  width: 350px;
+article.event-card > *:nth-child(odd) {
+  background-color: #ffffff;
+  padding: .4rem;
 }
-.settings {
-  padding-top: 20px;
+article.event-card > *:nth-child(even) {
+  background-color: #eeeeee;
+  padding: .4rem;
 }
-.container input {
-  margin-right: 10px;
-  font-family:
-    "Courier New",
-    Courier,
-    monospace;
-  font-size: 12px;
-  padding: 2px;
-  color: #333;
+.lead {
 }
-
-/* apps/rosen-watcher-pwa/src/stats.css */
+.players-links,
+.academy-links {
+  font-size: 1rem;
+}
 .performancecontainer {
   height: 75% !important;
 }
@@ -769,23 +545,22 @@ app-performance-chart {
 .statdetaildispl .amount {
   width: 20vh;
 }
-.stats-container {
-  margin-left: 5vw;
+.anticontainer {
   margin-right: 5vw;
 }
-.stats-container,
-.performancetab {
-  width: 90vw;
+.anticontainer,
+.eventstab {
+  width: 70vw;
 }
-.stats-container,
-.performancetab {
-  border-bottom: 0.2vh solid #ccc;
+.eventstab {
+  border-bottom: 0.15rem solid #ccc;
   position: fixed;
   background: white;
   z-index: 100;
+  top: 3.5rem;
 }
 .watcherstab {
-  font-size: 1.6vmax;
+  font-size: 1.6rem;
   border-left: 0px !important;
   padding-left: 0px !important;
   border-bottom: 0.2vh solid #ccc;
@@ -793,49 +568,50 @@ app-performance-chart {
   min-width: 70%;
 }
 .watcherstab .tab {
-  height: 1.6vmax;
+  height: 1.6rem;
 }
 .currency {
-  padding-top: 1vmax;
+  padding-top: 1rem;
 }
 .watcherstab .tab {
-  padding: 1vmax 1vmax !important;
+  padding: .1rem .1rem !important;
   border: 0.1vh solid transparent;
   border-radius: 0.5vh 0.5vh 0 0;
-  margin-right: 1vmax;
+  margin-right: 1rem;
   transition: background-color 0.3s;
-  height: 1.7vmax;
+  height: 1.7rem;
   display: inline-block;
 }
 .tab {
-  padding: 1vh 2vh;
+  padding: .3rem 1rem;
   text-decoration: none;
   border: 0.1vh solid transparent;
-  border-radius: 0.5vh 0.5vh 0 0;
+  border-radius: 0.25rem 0.25rem 0 0;
   margin-right: 1vh;
   transition: background-color 0.3s;
-  height: 2vh;
+  height: 1rem;
   display: inline-block;
 }
 .watcherstab a.tab {
   font-size: 1.6vmax;
 }
 a.tab {
-  font-size: 2vh;
+  font-size: 1rem;
+  color: rgba(138, 128, 128);
 }
 .tab:hover {
   background-color: #f0f0f0;
 }
 .tab.active {
   background-color: #fff;
-  border: 0.1vh solid #ccc;
+  border: 0.1rem solid #ccc;
   border-bottom: 0.2vh solid #fff;
   color: rgba(138, 128, 128);
 }
 .tab-content {
-  padding: 2vh;
+  padding: 2rem;
   border: 0.1vh solid #ccc;
-  border-radius: 0 0.5vh 0.5vh 0.5vh;
+  border-radius: 0 0.5rem 0.5rem 0.5rem;
   border-top: none;
 }
 .statistics-footer {
@@ -853,8 +629,271 @@ a.tab {
   flex-grow: 1;
   overflow: auto;
 }
+.rank-results {
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fbfbfb 100%);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  max-width: 100%;
+  overflow: hidden;
+}
+.rank-results .placeholder {
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  background: rgba(138, 128, 128, 0.03);
+  border-radius: 8px;
+}
+.rank-results .rank-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  overflow: auto;
+  transition: background-color 0.2s;
+  max-width: 30rem;
+}
+.rank-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f7f7f7;
+  color: rgba(80, 80, 80, 0.9);
+  text-align: left;
+  padding: 0.1rem 0.1rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.rank-table tbody td {
+  padding: 0.2rem 0.2rem;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  color: rgba(60, 60, 60, 0.95);
+}
+.rank-table tbody td:nth-child(1) {
+  font-weight: 700;
+  text-align: left;
+  color: rgba(80, 80, 80, 0.9);
+}
+.rank-table tbody td:nth-child(2) a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+.rank-table .username {
+  font-weight: 700;
+  color: rgba(30, 30, 30, 0.95);
+  word-break: break-all;
+}
+.rank-table .online-indicator {
+  color: #2ecc71;
+  margin-left: 0.35rem;
+  font-size: 0.8rem;
+  line-height: 1;
+  display: inline-block;
+  transform: translateY(-1px);
+}
+.rank-table tbody td:nth-child(3),
+.rank-table tbody td:nth-child(4) {
+  font-family:
+    "Courier New",
+    Courier,
+    monospace;
+  white-space: nowrap;
+}
+.rank-table tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.01);
+}
+.rank-table tbody tr:hover {
+  background: rgba(138, 128, 128, 0.03);
+}
+.rank-table .progress-up {
+  color: #16a34a;
+}
+.rank-table .progress-down {
+  color: #dc2626;
+}
+.links-grid {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: .5rem;
+}
+.headernotify {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  pointer-events: auto;
+}
+.board {
+  max-width: 30rem;
+  width: 50vw;
+  aspect-ratio: 1;
+}
 
-/* apps/rosen-watcher-pwa/src/app/basewatchercomponent.css */
+/* apps/antichess-pwa/src/navigation.css */
+.navbuttons.menu {
+  right: 5vw;
+  justify-content: right;
+}
+.fa-bars {
+  font-size: 3.5vh;
+  transition: color 0.3s ease;
+}
+.fa-bars:hover {
+}
+.fa-eye,
+.fa-chart-bar,
+.fa-btc {
+  font-size: 3.5vh;
+  transition: color 0.3s ease;
+}
+.fa-eye:hover,
+.fa-chart-bar:hover,
+.fa-btc:hover {
+}
+.navbar a {
+}
+.navbar {
+  width: 100%;
+  left: 0 !important;
+  position: fixed;
+  bottom: 0;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  font-size: 1.25rem;
+  grid-template-columns: auto auto;
+  z-index: 10000;
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  box-sizing: border-box;
+}
+.navbar > div {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.nav-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: .45rem;
+}
+.nav-icon a {
+  text-decoration: none;
+  color: inherit;
+}
+.icon-text .fa-eye {
+}
+.navbuttons {
+  flex: 0 0 auto;
+}
+.navbuttons,
+.navbuttons a {
+  color: white;
+  background-color: rgba(138, 128, 128);
+  width: 100%;
+  height: 100%;
+}
+.navbuttons.active,
+.navbuttons.active a {
+  background-color: white;
+  color: rgba(138, 128, 128);
+}
+.navbuttons.active:hover,
+.navbuttons.active a:hover {
+  background-color: white;
+  color: rgba(138, 128, 128);
+}
+.navbuttons:hover,
+.navbuttons a:hover {
+  color: white;
+  background-color: rgba(138, 128, 128, 0.5);
+}
+.prevPage {
+  position: fixed;
+  bottom: 0vh;
+  left: 5vw;
+  justify-content: left;
+  width: 40vh;
+  height: 5vh;
+  font-size: 3vh;
+  display: grid;
+}
+
+/* apps/antichess-pwa/src/header.css */
+.header {
+  width: 17rem;
+  background: #ccc;
+  border: 5px solid #ccc;
+  border-radius: 0 0 12px 12px;
+  margin-left: 15vw;
+}
+.headerblock {
+  font-size: 2rem;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+  animation: fadeIn 1s ease-in-out forwards;
+  width: 98.8vw;
+  justify-content: center;
+  background: transparent;
+  border-radius: 1vh;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
+.headerbox {
+  width: 20vw;
+  height: 100vh;
+  background-size: 20vw;
+  clear: none;
+  background-position-y: 6rem;
+  background-image: url("./media/antichess_king.png");
+  background-repeat: no-repeat;
+  padding-top: 6rem;
+}
+.headertext {
+  font-size: 2rem;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+  animation: fadeIn 1s ease-in-out forwards;
+  width: 98.8vw;
+  justify-content: center;
+  background: transparent;
+  border-radius: 1vh;
+  padding-left: 2rem;
+}
+.headercontainer {
+  position: fixed;
+  padding-left: .1vw;
+  padding-right: 1vw;
+  width: 98vw;
+  z-index: 200;
+  background-image: url("./media/antichess_king.png");
+  background-size: 0;
+  background-repeat: no-repeat;
+}
+.antichess header {
+  padding-top: 0px !important;
+}
+
+/* apps/antichess-pwa/src/app/basewatchercomponent.css */
 .swipeleft {
   transform: translate(-110vw, 0vw);
   transition: transform 0.25s ease-in;
@@ -890,9 +929,9 @@ a.tab {
 
 /* node_modules/@fortawesome/fontawesome-free/css/all.css */
 /*!
- * Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- * Copyright 2025 Fonticons, Inc.
+ * Copyright 2026 Fonticons, Inc.
  */
 .fa-solid,
 .fa-regular,
@@ -1571,6 +1610,9 @@ a.tab {
 }
 .fa-clapperboard {
   --fa: "\e131";
+}
+.fa-closed-captioning-slash {
+  --fa: "\e135";
 }
 .fa-clover {
   --fa: "\e139";
@@ -2532,6 +2574,9 @@ a.tab {
 .fa-spiral {
   --fa: "\e80a";
 }
+.fa-picture-in-picture {
+  --fa: "\e80b";
+}
 .fa-mobile-vibrate {
   --fa: "\e816";
 }
@@ -2549,6 +2594,42 @@ a.tab {
 }
 .fa-heptagon {
   --fa: "\e820";
+}
+.fa-aquarius {
+  --fa: "\e845";
+}
+.fa-aries {
+  --fa: "\e846";
+}
+.fa-cancer {
+  --fa: "\e847";
+}
+.fa-capricorn {
+  --fa: "\e848";
+}
+.fa-gemini {
+  --fa: "\e849";
+}
+.fa-leo {
+  --fa: "\e84a";
+}
+.fa-libra {
+  --fa: "\e84b";
+}
+.fa-pisces {
+  --fa: "\e84c";
+}
+.fa-sagittarius {
+  --fa: "\e84d";
+}
+.fa-scorpio {
+  --fa: "\e84e";
+}
+.fa-taurus {
+  --fa: "\e84f";
+}
+.fa-virgo {
+  --fa: "\e850";
 }
 .fa-martini-glass-empty {
   --fa: "\f000";
@@ -6525,6 +6606,12 @@ a.tab {
 .fa-vihara {
   --fa: "\f6a7";
 }
+.fa-volume {
+  --fa: "\f6a8";
+}
+.fa-volume-medium {
+  --fa: "\f6a8";
+}
 .fa-volume-xmark {
   --fa: "\f6a9";
 }
@@ -7496,6 +7583,120 @@ a.tab {
 }
 .fa-duolingo {
   --fa: "\e812";
+}
+.fa-supportnow {
+  --fa: "\e833";
+}
+.fa-tor-browser {
+  --fa: "\e838";
+}
+.fa-typescript {
+  --fa: "\e840";
+}
+.fa-square-deskpro {
+  --fa: "\e844";
+}
+.fa-circle-zulip {
+  --fa: "\e851";
+}
+.fa-julia {
+  --fa: "\e852";
+}
+.fa-zulip {
+  --fa: "\e853";
+}
+.fa-unison {
+  --fa: "\e854";
+}
+.fa-board-game-geek {
+  --fa: "\e855";
+}
+.fa-bgg {
+  --fa: "\e855";
+}
+.fa-ko-fi {
+  --fa: "\e856";
+}
+.fa-kubernetes {
+  --fa: "\e857";
+}
+.fa-postgresql {
+  --fa: "\e858";
+}
+.fa-scaleway {
+  --fa: "\e859";
+}
+.fa-venmo {
+  --fa: "\e85a";
+}
+.fa-venmo-v {
+  --fa: "\e85b";
+}
+.fa-unreal-engine {
+  --fa: "\e85c";
+}
+.fa-globaleaks {
+  --fa: "\e85d";
+}
+.fa-solana {
+  --fa: "\e85e";
+}
+.fa-threema {
+  --fa: "\e85f";
+}
+.fa-forgejo {
+  --fa: "\e860";
+}
+.fa-claude {
+  --fa: "\e861";
+}
+.fa-gitee {
+  --fa: "\e863";
+}
+.fa-xmpp {
+  --fa: "\e864";
+}
+.fa-fediverse {
+  --fa: "\e865";
+}
+.fa-tailwind-css {
+  --fa: "\e866";
+}
+.fa-arch-linux {
+  --fa: "\e867";
+}
+.fa-svelte {
+  --fa: "\e868";
+}
+.fa-hugging-face {
+  --fa: "\e869";
+}
+.fa-leetcode {
+  --fa: "\e86a";
+}
+.fa-openstreetmap {
+  --fa: "\e86b";
+}
+.fa-ultralytics {
+  --fa: "\e86d";
+}
+.fa-ultralytics-hub {
+  --fa: "\e86e";
+}
+.fa-ultralytics-yolo {
+  --fa: "\e86f";
+}
+.fa-obsidian {
+  --fa: "\e879";
+}
+.fa-zoom {
+  --fa: "\e87b";
+}
+.fa-vim {
+  --fa: "\e88a";
+}
+.fa-symfonycasts {
+  --fa: "\e8ab";
 }
 .fa-square-twitter {
   --fa: "\f081";
@@ -9044,7 +9245,308 @@ a.tab {
     U+F27A;
 }
 
-/* apps/rosen-watcher-pwa/src/mat-theme.scss */
+/* node_modules/chessground/assets/chessground.base.css */
+.cg-wrap {
+  box-sizing: content-box;
+  position: relative;
+  display: block;
+}
+cg-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: block;
+  top: 0;
+}
+cg-board {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 0;
+  background-size: cover;
+}
+.cg-wrap.manipulable cg-board {
+  cursor: pointer;
+}
+cg-board square {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12.5%;
+  height: 12.5%;
+  pointer-events: none;
+}
+cg-board square.move-dest {
+  pointer-events: auto;
+}
+cg-board square.last-move {
+  will-change: transform;
+}
+.cg-wrap piece {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12.5%;
+  height: 12.5%;
+  background-size: cover;
+  z-index: 2;
+  will-change: transform;
+  pointer-events: none;
+}
+cg-board piece.dragging {
+  cursor: move;
+  z-index: 11 !important;
+}
+piece.anim {
+  z-index: 8;
+}
+piece.fading {
+  z-index: 1;
+  opacity: 0.5;
+}
+.cg-wrap piece.ghost {
+  opacity: 0.3;
+}
+.cg-wrap piece svg {
+  overflow: hidden;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.6;
+}
+.cg-wrap cg-auto-pieces,
+.cg-wrap .cg-shapes,
+.cg-wrap .cg-custom-svgs {
+  overflow: visible;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.cg-wrap cg-auto-pieces {
+  z-index: 2;
+}
+.cg-wrap cg-auto-pieces piece {
+  opacity: 0.3;
+}
+.cg-wrap .cg-shapes {
+  overflow: hidden;
+  opacity: 0.6;
+  z-index: 2;
+}
+.cg-wrap .cg-custom-svgs {
+  z-index: 9;
+}
+.cg-wrap .cg-custom-svgs svg {
+  overflow: visible;
+}
+.cg-wrap coords {
+  position: absolute;
+  display: flex;
+  pointer-events: none;
+  opacity: 0.8;
+  font-family: sans-serif;
+  font-size: 9px;
+}
+.cg-wrap coords.ranks {
+  left: 4px;
+  top: -20px;
+  flex-flow: column-reverse;
+  height: 100%;
+  width: 12px;
+}
+.cg-wrap coords.ranks.black {
+  flex-flow: column;
+}
+.cg-wrap coords.ranks.left {
+  left: -15px;
+  align-items: flex-end;
+}
+.cg-wrap coords.files {
+  bottom: -4px;
+  left: 24px;
+  flex-flow: row;
+  width: 100%;
+  height: 16px;
+  text-transform: uppercase;
+  text-align: center;
+}
+.cg-wrap coords.files.black {
+  flex-flow: row-reverse;
+}
+.cg-wrap coords coord {
+  flex: 1 1 auto;
+}
+.cg-wrap coords.ranks coord {
+  transform: translateY(39%);
+}
+.cg-wrap coords.squares {
+  bottom: 0;
+  left: 0;
+  text-transform: uppercase;
+  text-align: right;
+  flex-flow: column-reverse;
+  height: 100%;
+  width: 12.5%;
+}
+.cg-wrap coords.squares.black {
+  flex-flow: column;
+}
+.cg-wrap coords.squares.left {
+  text-align: left;
+}
+.cg-wrap coords.squares coord {
+  padding: 6% 4%;
+}
+.cg-wrap coords.squares.rank2 {
+  transform: translateX(100%);
+}
+.cg-wrap coords.squares.rank3 {
+  transform: translateX(200%);
+}
+.cg-wrap coords.squares.rank4 {
+  transform: translateX(300%);
+}
+.cg-wrap coords.squares.rank5 {
+  transform: translateX(400%);
+}
+.cg-wrap coords.squares.rank6 {
+  transform: translateX(500%);
+}
+.cg-wrap coords.squares.rank7 {
+  transform: translateX(600%);
+}
+.cg-wrap coords.squares.rank8 {
+  transform: translateX(700%);
+}
+
+/* node_modules/chessground/assets/chessground.brown.css */
+cg-board {
+  background-color: #f0d9b5;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4PSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIgogICAgIHZpZXdCb3g9IjAgMCA4IDgiIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyI+CjxnIGlkPSJhIj4KICA8ZyBpZD0iYiI+CiAgICA8ZyBpZD0iYyI+CiAgICAgIDxnIGlkPSJkIj4KICAgICAgICA8cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBpZD0iZSIgb3BhY2l0eT0iMCIvPgogICAgICAgIDx1c2UgeD0iMSIgeT0iMSIgaHJlZj0iI2UiIHg6aHJlZj0iI2UiLz4KICAgICAgICA8cmVjdCB5PSIxIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBpZD0iZiIgb3BhY2l0eT0iMC4yIi8+CiAgICAgICAgPHVzZSB4PSIxIiB5PSItMSIgaHJlZj0iI2YiIHg6aHJlZj0iI2YiLz4KICAgICAgPC9nPgogICAgICA8dXNlIHg9IjIiIGhyZWY9IiNkIiB4OmhyZWY9IiNkIi8+CiAgICA8L2c+CiAgICA8dXNlIHg9IjQiIGhyZWY9IiNjIiB4OmhyZWY9IiNjIi8+CiAgPC9nPgogIDx1c2UgeT0iMiIgaHJlZj0iI2IiIHg6aHJlZj0iI2IiLz4KPC9nPgo8dXNlIHk9IjQiIGhyZWY9IiNhIiB4OmhyZWY9IiNhIi8+Cjwvc3ZnPg==);
+}
+cg-board square.move-dest {
+  background:
+    radial-gradient(
+      rgba(20, 85, 30, 0.5) 22%,
+      #208530 0,
+      rgba(0, 0, 0, 0.3) 0,
+      rgba(0, 0, 0, 0) 0);
+}
+cg-board square.premove-dest {
+  background:
+    radial-gradient(
+      rgba(20, 30, 85, 0.5) 22%,
+      #203085 0,
+      rgba(0, 0, 0, 0.3) 0,
+      rgba(0, 0, 0, 0) 0);
+}
+cg-board square.oc.move-dest {
+  background:
+    radial-gradient(
+      transparent 0%,
+      transparent 80%,
+      rgba(20, 85, 0, 0.3) 80%);
+}
+cg-board square.oc.premove-dest {
+  background:
+    radial-gradient(
+      transparent 0%,
+      transparent 80%,
+      rgba(20, 30, 85, 0.2) 80%);
+}
+cg-board square.move-dest:hover {
+  background: rgba(20, 85, 30, 0.3);
+}
+cg-board square.premove-dest:hover {
+  background: rgba(20, 30, 85, 0.2);
+}
+cg-board square.last-move {
+  background-color: rgba(155, 199, 0, 0.41);
+}
+cg-board square.selected {
+  background-color: rgba(20, 85, 30, 0.5);
+}
+cg-board square.check {
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255, 0, 0, 1) 0%,
+      rgba(231, 0, 0, 1) 25%,
+      rgba(169, 0, 0, 0) 89%,
+      rgba(158, 0, 0, 0) 100%);
+}
+cg-board square.current-premove {
+  background-color: rgba(20, 30, 85, 0.5);
+}
+.orientation-white .ranks :nth-child(odd),
+.orientation-white .files :nth-child(even),
+.orientation-black .ranks :nth-child(even),
+.orientation-black .files :nth-child(odd),
+coords.squares:nth-of-type(odd) :nth-child(even),
+coords.squares:nth-of-type(even) :nth-child(odd) {
+  color: rgba(72, 72, 72, 0.8);
+}
+.orientation-white .ranks :nth-child(even),
+.orientation-white .files :nth-child(odd),
+.orientation-black .ranks :nth-child(odd),
+.orientation-black .files :nth-child(even),
+coords.squares:nth-of-type(odd) :nth-child(odd),
+coords.squares:nth-of-type(even) :nth-child(even) {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* node_modules/chessground/assets/chessground.cburnett.css */
+.cg-wrap piece.pawn.white {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PHBhdGggZD0iTTIyLjUgOWMtMi4yMSAwLTQgMS43OS00IDQgMCAuODkuMjkgMS43MS43OCAyLjM4QzE3LjMzIDE2LjUgMTYgMTguNTkgMTYgMjFjMCAyLjAzLjk0IDMuODQgMi40MSA1LjAzLTMgMS4wNi03LjQxIDUuNTUtNy40MSAxMy40N2gyM2MwLTcuOTItNC40MS0xMi40MS03LjQxLTEzLjQ3IDEuNDctMS4xOSAyLjQxLTMgMi40MS01LjAzIDAtMi40MS0xLjMzLTQuNS0zLjI4LTUuNjIuNDktLjY3Ljc4LTEuNDkuNzgtMi4zOCAwLTIuMjEtMS43OS00LTQtNHoiIGZpbGw9IiNmZmYiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==);
+}
+.cg-wrap piece.bishop.white {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxnIGZpbGw9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJidXR0Ij48cGF0aCBkPSJNOSAzNmMzLjM5LS45NyAxMC4xMS40MyAxMy41LTIgMy4zOSAyLjQzIDEwLjExIDEuMDMgMTMuNSAyIDAgMCAxLjY1LjU0IDMgMi0uNjguOTctMS42NS45OS0zIC41LTMuMzktLjk3LTEwLjExLjQ2LTEzLjUtMS0zLjM5IDEuNDYtMTAuMTEuMDMtMTMuNSAxLTEuMzU0LjQ5LTIuMzIzLjQ3LTMtLjUgMS4zNTQtMS45NCAzLTIgMy0yeiIvPjxwYXRoIGQ9Ik0xNSAzMmMyLjUgMi41IDEyLjUgMi41IDE1IDAgLjUtMS41IDAtMiAwLTIgMC0yLjUtMi41LTQtMi41LTQgNS41LTEuNSA2LTExLjUtNS0xNS41LTExIDQtMTAuNSAxNC01IDE1LjUgMCAwLTIuNSAxLjUtMi41IDQgMCAwLS41LjUgMCAyeiIvPjxwYXRoIGQ9Ik0yNSA4YTIuNSAyLjUgMCAxIDEtNSAwIDIuNSAyLjUgMCAxIDEgNSAweiIvPjwvZz48cGF0aCBkPSJNMTcuNSAyNmgxME0xNSAzMGgxNW0tNy41LTE0LjV2NU0yMCAxOGg1IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIi8+PC9nPjwvc3ZnPg==);
+}
+.cg-wrap piece.knight.white {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiAxMGMxMC41IDEgMTYuNSA4IDE2IDI5SDE1YzAtOSAxMC02LjUgOC0yMSIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0yNCAxOGMuMzggMi45MS01LjU1IDcuMzctOCA5LTMgMi0yLjgyIDQuMzQtNSA0LTEuMDQyLS45NCAxLjQxLTMuMDQgMC0zLTEgMCAuMTkgMS4yMy0xIDItMSAwLTQuMDAzIDEtNC00IDAtMiA2LTEyIDYtMTJzMS44OS0xLjkgMi0zLjVjLS43My0uOTk0LS41LTItLjUtMyAxLTEgMyAyLjUgMyAyLjVoMnMuNzgtMS45OTIgMi41LTNjMSAwIDEgMyAxIDMiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNOS41IDI1LjVhLjUuNSAwIDEgMS0xIDAgLjUuNSAwIDEgMSAxIDB6bTUuNDMzLTkuNzVhLjUgMS41IDMwIDEgMS0uODY2LS41LjUgMS41IDMwIDEgMSAuODY2LjV6IiBmaWxsPSIjMDAwIi8+PC9nPjwvc3ZnPg==);
+}
+.cg-wrap piece.rook.white {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik05IDM5aDI3di0zSDl2M3ptMy0zdi00aDIxdjRIMTJ6bS0xLTIyVjloNHYyaDVWOWg1djJoNVY5aDR2NSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiLz48cGF0aCBkPSJNMzQgMTRsLTMgM0gxNGwtMy0zIi8+PHBhdGggZD0iTTMxIDE3djEyLjVIMTRWMTciIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIi8+PHBhdGggZD0iTTMxIDI5LjVsMS41IDIuNWgtMjBsMS41LTIuNSIvPjxwYXRoIGQ9Ik0xMSAxNGgyMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIvPjwvZz48L3N2Zz4=);
+}
+.cg-wrap piece.queen.white {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik04IDEyYTIgMiAwIDEgMS00IDAgMiAyIDAgMSAxIDQgMHptMTYuNS00LjVhMiAyIDAgMSAxLTQgMCAyIDIgMCAxIDEgNCAwek00MSAxMmEyIDIgMCAxIDEtNCAwIDIgMiAwIDEgMSA0IDB6TTE2IDguNWEyIDIgMCAxIDEtNCAwIDIgMiAwIDEgMSA0IDB6TTMzIDlhMiAyIDAgMSAxLTQgMCAyIDIgMCAxIDEgNCAweiIvPjxwYXRoIGQ9Ik05IDI2YzguNS0xLjUgMjEtMS41IDI3IDBsMi0xMi03IDExVjExbC01LjUgMTMuNS0zLTE1LTMgMTUtNS41LTE0VjI1TDcgMTRsMiAxMnoiIHN0cm9rZS1saW5lY2FwPSJidXR0Ii8+PHBhdGggZD0iTTkgMjZjMCAyIDEuNSAyIDIuNSA0IDEgMS41IDEgMSAuNSAzLjUtMS41IDEtMS41IDIuNS0xLjUgMi41LTEuNSAxLjUuNSAyLjUuNSAyLjUgNi41IDEgMTYuNSAxIDIzIDAgMCAwIDEuNS0xIDAtMi41IDAgMCAuNS0xLjUtMS0yLjUtLjUtMi41LS41LTIgLjUtMy41IDEtMiAyLjUtMiAyLjUtNC04LjUtMS41LTE4LjUtMS41LTI3IDB6IiBzdHJva2UtbGluZWNhcD0iYnV0dCIvPjxwYXRoIGQ9Ik0xMS41IDMwYzMuNS0xIDE4LjUtMSAyMiAwTTEyIDMzLjVjNi0xIDE1LTEgMjEgMCIgZmlsbD0ibm9uZSIvPjwvZz48L3N2Zz4=);
+}
+.cg-wrap piece.king.white {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMi41IDExLjYzVjZNMjAgOGg1IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIi8+PHBhdGggZD0iTTIyLjUgMjVzNC41LTcuNSAzLTEwLjVjMCAwLTEtMi41LTMtMi41cy0zIDIuNS0zIDIuNWMtMS41IDMgMyAxMC41IDMgMTAuNSIgZmlsbD0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz48cGF0aCBkPSJNMTEuNSAzN2M1LjUgMy41IDE1LjUgMy41IDIxIDB2LTdzOS00LjUgNi0xMC41Yy00LTYuNS0xMy41LTMuNS0xNiA0VjI3di0zLjVjLTMuNS03LjUtMTMtMTAuNS0xNi00LTMgNiA1IDEwIDUgMTBWMzd6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTExLjUgMzBjNS41LTMgMTUuNS0zIDIxIDBtLTIxIDMuNWM1LjUtMyAxNS41LTMgMjEgMG0tMjEgMy41YzUuNS0zIDE1LjUtMyAyMSAwIi8+PC9nPjwvc3ZnPg==);
+}
+.cg-wrap piece.pawn.black {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PHBhdGggZD0iTTIyLjUgOWMtMi4yMSAwLTQgMS43OS00IDQgMCAuODkuMjkgMS43MS43OCAyLjM4QzE3LjMzIDE2LjUgMTYgMTguNTkgMTYgMjFjMCAyLjAzLjk0IDMuODQgMi40MSA1LjAzLTMgMS4wNi03LjQxIDUuNTUtNy40MSAxMy40N2gyM2MwLTcuOTItNC40MS0xMi40MS03LjQxLTEzLjQ3IDEuNDctMS4xOSAyLjQxLTMgMi40MS01LjAzIDAtMi40MS0xLjMzLTQuNS0zLjI4LTUuNjIuNDktLjY3Ljc4LTEuNDkuNzgtMi4zOCAwLTIuMjEtMS43OS00LTQtNHoiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==);
+}
+.cg-wrap piece.bishop.black {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxnIGZpbGw9IiMwMDAiIHN0cm9rZS1saW5lY2FwPSJidXR0Ij48cGF0aCBkPSJNOSAzNmMzLjM5LS45NyAxMC4xMS40MyAxMy41LTIgMy4zOSAyLjQzIDEwLjExIDEuMDMgMTMuNSAyIDAgMCAxLjY1LjU0IDMgMi0uNjguOTctMS42NS45OS0zIC41LTMuMzktLjk3LTEwLjExLjQ2LTEzLjUtMS0zLjM5IDEuNDYtMTAuMTEuMDMtMTMuNSAxLTEuMzU0LjQ5LTIuMzIzLjQ3LTMtLjUgMS4zNTQtMS45NCAzLTIgMy0yeiIvPjxwYXRoIGQ9Ik0xNSAzMmMyLjUgMi41IDEyLjUgMi41IDE1IDAgLjUtMS41IDAtMiAwLTIgMC0yLjUtMi41LTQtMi41LTQgNS41LTEuNSA2LTExLjUtNS0xNS41LTExIDQtMTAuNSAxNC01IDE1LjUgMCAwLTIuNSAxLjUtMi41IDQgMCAwLS41LjUgMCAyeiIvPjxwYXRoIGQ9Ik0yNSA4YTIuNSAyLjUgMCAxIDEtNSAwIDIuNSAyLjUgMCAxIDEgNSAweiIvPjwvZz48cGF0aCBkPSJNMTcuNSAyNmgxME0xNSAzMGgxNW0tNy41LTE0LjV2NU0yMCAxOGg1IiBzdHJva2U9IiNlY2VjZWMiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz48L2c+PC9zdmc+);
+}
+.cg-wrap piece.knight.black {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMiAxMGMxMC41IDEgMTYuNSA4IDE2IDI5SDE1YzAtOSAxMC02LjUgOC0yMSIgZmlsbD0iIzAwMCIvPjxwYXRoIGQ9Ik0yNCAxOGMuMzggMi45MS01LjU1IDcuMzctOCA5LTMgMi0yLjgyIDQuMzQtNSA0LTEuMDQyLS45NCAxLjQxLTMuMDQgMC0zLTEgMCAuMTkgMS4yMy0xIDItMSAwLTQuMDAzIDEtNC00IDAtMiA2LTEyIDYtMTJzMS44OS0xLjkgMi0zLjVjLS43My0uOTk0LS41LTItLjUtMyAxLTEgMyAyLjUgMyAyLjVoMnMuNzgtMS45OTIgMi41LTNjMSAwIDEgMyAxIDMiIGZpbGw9IiMwMDAiLz48cGF0aCBkPSJNOS41IDI1LjVhLjUuNSAwIDEgMS0xIDAgLjUuNSAwIDEgMSAxIDB6bTUuNDMzLTkuNzVhLjUgMS41IDMwIDEgMS0uODY2LS41LjUgMS41IDMwIDEgMSAuODY2LjV6IiBmaWxsPSIjZWNlY2VjIiBzdHJva2U9IiNlY2VjZWMiLz48cGF0aCBkPSJNMjQuNTUgMTAuNGwtLjQ1IDEuNDUuNS4xNWMzLjE1IDEgNS42NSAyLjQ5IDcuOSA2Ljc1UzM1Ljc1IDI5LjA2IDM1LjI1IDM5bC0uMDUuNWgyLjI1bC4wNS0uNWMuNS0xMC4wNi0uODgtMTYuODUtMy4yNS0yMS4zNC0yLjM3LTQuNDktNS43OS02LjY0LTkuMTktNy4xNmwtLjUxLS4xeiIgZmlsbD0iI2VjZWNlYyIgc3Ryb2tlPSJub25lIi8+PC9nPjwvc3ZnPg==);
+}
+.cg-wrap piece.rook.black {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik05IDM5aDI3di0zSDl2M3ptMy41LTdsMS41LTIuNWgxN2wxLjUgMi41aC0yMHptLS41IDR2LTRoMjF2NEgxMnoiIHN0cm9rZS1saW5lY2FwPSJidXR0Ii8+PHBhdGggZD0iTTE0IDI5LjV2LTEzaDE3djEzSDE0eiIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz48cGF0aCBkPSJNMTQgMTYuNUwxMSAxNGgyM2wtMyAyLjVIMTR6TTExIDE0VjloNHYyaDVWOWg1djJoNVY5aDR2NUgxMXoiIHN0cm9rZS1saW5lY2FwPSJidXR0Ii8+PHBhdGggZD0iTTEyIDM1LjVoMjFtLTIwLTRoMTltLTE4LTJoMTdtLTE3LTEzaDE3TTExIDE0aDIzIiBmaWxsPSJub25lIiBzdHJva2U9IiNlY2VjZWMiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIvPjwvZz48L3N2Zz4=);
+}
+.cg-wrap piece.queen.black {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxnIHN0cm9rZT0ibm9uZSI+PGNpcmNsZSBjeD0iNiIgY3k9IjEyIiByPSIyLjc1Ii8+PGNpcmNsZSBjeD0iMTQiIGN5PSI5IiByPSIyLjc1Ii8+PGNpcmNsZSBjeD0iMjIuNSIgY3k9IjgiIHI9IjIuNzUiLz48Y2lyY2xlIGN4PSIzMSIgY3k9IjkiIHI9IjIuNzUiLz48Y2lyY2xlIGN4PSIzOSIgY3k9IjEyIiByPSIyLjc1Ii8+PC9nPjxwYXRoIGQ9Ik05IDI2YzguNS0xLjUgMjEtMS41IDI3IDBsMi41LTEyLjVMMzEgMjVsLS4zLTE0LjEtNS4yIDEzLjYtMy0xNC41LTMgMTQuNS01LjItMTMuNkwxNCAyNSA2LjUgMTMuNSA5IDI2eiIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiLz48cGF0aCBkPSJNOSAyNmMwIDIgMS41IDIgMi41IDQgMSAxLjUgMSAxIC41IDMuNS0xLjUgMS0xLjUgMi41LTEuNSAyLjUtMS41IDEuNS41IDIuNS41IDIuNSA2LjUgMSAxNi41IDEgMjMgMCAwIDAgMS41LTEgMC0yLjUgMCAwIC41LTEuNS0xLTIuNS0uNS0yLjUtLjUtMiAuNS0zLjUgMS0yIDIuNS0yIDIuNS00LTguNS0xLjUtMTguNS0xLjUtMjcgMHoiIHN0cm9rZS1saW5lY2FwPSJidXR0Ii8+PHBhdGggZD0iTTExIDM4LjVhMzUgMzUgMSAwIDAgMjMgMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiLz48cGF0aCBkPSJNMTEgMjlhMzUgMzUgMSAwIDEgMjMgMG0tMjEuNSAyLjVoMjBtLTIxIDNhMzUgMzUgMSAwIDAgMjIgMG0tMjMgM2EzNSAzNSAxIDAgMCAyNCAwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlY2VjZWMiLz48L2c+PC9zdmc+);
+}
+.cg-wrap piece.king.black {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMi41IDExLjYzVjYiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiLz48cGF0aCBkPSJNMjIuNSAyNXM0LjUtNy41IDMtMTAuNWMwIDAtMS0yLjUtMy0yLjVzLTMgMi41LTMgMi41Yy0xLjUgMyAzIDEwLjUgMyAxMC41IiBmaWxsPSIjMDAwIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIvPjxwYXRoIGQ9Ik0xMS41IDM3YzUuNSAzLjUgMTUuNSAzLjUgMjEgMHYtN3M5LTQuNSA2LTEwLjVjLTQtNi41LTEzLjUtMy41LTE2IDRWMjd2LTMuNWMtMy41LTcuNS0xMy0xMC41LTE2LTQtMyA2IDUgMTAgNSAxMFYzN3oiIGZpbGw9IiMwMDAiLz48cGF0aCBkPSJNMjAgOGg1IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIi8+PHBhdGggZD0iTTMyIDI5LjVzOC41LTQgNi4wMy05LjY1QzM0LjE1IDE0IDI1IDE4IDIyLjUgMjQuNWwuMDEgMi4xLS4wMS0yLjFDMjAgMTggOS45MDYgMTQgNi45OTcgMTkuODVjLTIuNDk3IDUuNjUgNC44NTMgOSA0Ljg1MyA5IiBzdHJva2U9IiNlY2VjZWMiLz48cGF0aCBkPSJNMTEuNSAzMGM1LjUtMyAxNS41LTMgMjEgMG0tMjEgMy41YzUuNS0zIDE1LjUtMyAyMSAwbS0yMSAzLjVjNS41LTMgMTUuNS0zIDIxIDAiIHN0cm9rZT0iI2VjZWNlYyIvPjwvZz48L3N2Zz4=);
+}
+
+/* apps/antichess-pwa/src/mat-theme.scss */
 html {
   --mat-sys-background: #fdf8f7;
   --mat-sys-error: #ba1a1a;
@@ -9231,7 +9733,7 @@ html {
   --mat-sys-pressed-state-layer-opacity: 0.12;
 }
 
-/* apps/rosen-watcher-pwa/src/styles_theme-colors.scss */
+/* apps/antichess-pwa/src/styles_theme-colors.scss */
 
 /* angular:styles/global:styles */
 /*# sourceMappingURL=styles.css.map */

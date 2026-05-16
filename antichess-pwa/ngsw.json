@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1778478195394,
+  "timestamp": 1778929439940,
   "appData": {
     "version": "1.14.7"
   },
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-EAOLKWE5.js",
+        "./main-KJHBI7DR.js",
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./scripts-QOGIEEJF.js",
-        "./styles-FBCB2JWW.css"
+        "./styles-OQJYXU5O.css"
       ],
       "patterns": []
     },
@@ -54,8 +54,8 @@
     "./assets/images/amsterdam_venue.png": "749dc63fecfe5765269faba4cb320241f37a8205",
     "./assets/images/antichess_king.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "c0e2478721cf6ac31022ed8332d7828dad2d2180",
-    "./main-EAOLKWE5.js": "ebf0e2206aced4a9a7e772cdb60e244621cad020",
+    "./index.html": "c6f26c7cd0d349949d85b72b802d0e9146eaa1c2",
+    "./main-KJHBI7DR.js": "79fff288434e58e017cf94b0f7623428818ee57b",
     "./manifest.webmanifest": "d78fac2815cda06ba8c0665c24e188f70981ebda",
     "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./media/fa-brands-400-AHOAZHCU.woff2": "e48612cd49700246d0cc0d2d1943ed8b9d157316",
@@ -64,7 +64,7 @@
     "./media/fa-v4compatibility-ETEVP6IB.woff2": "48baec990161d24f6b770e803c9c14cfe2d07da5",
     "./polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
     "./scripts-QOGIEEJF.js": "e83470118bc518ad047b5e89e17f95abc3afe41d",
-    "./styles-FBCB2JWW.css": "5ae7dfeffb52af5cbf86db7e15bce2d8afcac28e"
+    "./styles-OQJYXU5O.css": "5593abe2d249a7be7d1024ee21e2a5c6edc9d8c5"
   },
   "navigationUrls": [
     {
