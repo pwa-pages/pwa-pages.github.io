@@ -21,7 +21,7 @@ export class AntichessGuideComponent extends BaseComponent implements OnInit {
 
   constructor(
     injector: Injector,
-    navigationService: NavigationService
+    navigationService: NavigationService,
   ) {
     super(injector, navigationService);
 

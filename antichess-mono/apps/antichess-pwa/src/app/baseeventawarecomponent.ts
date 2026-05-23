@@ -15,6 +15,7 @@ export class BaseEventAwareComponent implements OnDestroy {
   }
   private static componentCounter = 0;
   public readonly componentId: number;
+  
 
   async subscribeToEvent<T>(
     eventType: EventType,

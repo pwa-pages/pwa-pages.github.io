@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BrowserService } from './service/browser.service';
 import { BaseEventAwareComponent } from './baseeventawarecomponent';
 import { NavigationService } from './service/navigation.service';
+import { ChessBoardOverlayService } from './service/chessboard.overlay.service';
 
 @Component({
   selector: 'app-root',
@@ -17,8 +18,9 @@ export class BaseComponent
   noAddresses = false;
   protected browserService: BrowserService;
   protected route: ActivatedRoute | undefined;
+  protected chessBoardOverlayService: ChessBoardOverlayService;
 
-  constructor(protected override injector: Injector, protected navigationService: NavigationService) {
+  constructor(protected override injector: Injector, protected navigationService: NavigationService) {  
     super(injector);
 
     this.browserService = this.injector.get(BrowserService);
@@ -27,12 +29,17 @@ export class BaseComponent
     } catch {
       this.route = undefined;
     }
+
+    this.chessBoardOverlayService = this.injector.get(ChessBoardOverlayService);
   }
 
-    clickTab(tab: string): void {
-      this.navigationService.navigate(tab);
+  clickTab(tab: string): void {
+    this.navigationService.navigate(tab);
   }
 
+  openChessBoardOverlay(config: string, moveAnnotation?: string, editable?: boolean): void {
+    this.chessBoardOverlayService.open({ config, moveAnnotation, editable });
+  }
   notifyVisible(): boolean {
 
     return true;
@@ -49,7 +56,4 @@ export class BaseComponent
 
     this.resetHeight();
   }
-
-
-
 }

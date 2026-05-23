@@ -867,17 +867,98 @@ a.tab {
   padding: 1rem;
   max-width: 30rem;
   width: 50vw;
-  aspect-ratio: 1;
   border: 1px dashed darkgray;
   border-radius: 2rem;
   background: #eeeeee;
   
 }
-
 .moveannotation{
   font-size:1.2rem;
   color: rgba(80,70,70,0.9);
   font-style: italic;
 }
 
-coordinates: window.innerWidth > 400
+
+/* Visual affordance for links that open content in an overlay */
+.overlaylink {
+  display: inline-flex;              /* inline so it won't force its own line */
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;                    /* don't shrink or grow into awkward wraps */
+  white-space: nowrap;               /* keep the icon and any adjacent text together */
+  vertical-align: middle;            /* align with surrounding text */
+  width: auto;
+  height: auto;
+  margin-left: 0.5rem;
+  border-radius: 0.35rem;
+  color: rgba(0, 85, 85, 0.9);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 160ms, transform 120ms, box-shadow 160ms;
+  outline: none;
+  will-change: transform, box-shadow;
+}
+
+/* small keyboard / focus ring for accessibility */
+.overlaylink:focus {
+  box-shadow: 0 0 0 3px rgba(0, 85, 85, 0.12), 0 2px 6px rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+  background: rgba(0, 85, 85, 0.03);
+}
+
+/* use board.png as the glyph; scaled and centered */
+.overlaylink::before {
+  content: "";
+  display: inline-block;
+  width: 2.0rem;
+  height: 2.0rem;
+  margin: 0;
+  pointer-events: none;
+  background-image: var(--overlay-board-icon, url('./assets//images/boardsnippet.png'));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain; /* scales the poster-style icon without distortion */
+  transform-origin: center;
+  flex: 0 0 auto;               /* keep the pseudo-element from being compressed */
+}
+
+/* optional hover / focus tooltip to clarify behavior */
+.overlaylink::after {
+  content: "Open board";
+  position: absolute;
+  left: calc(100% + 0.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 0.25rem 0.45rem;
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+  will-change: opacity, transform;
+}
+
+/* reveal tooltip on hover / focus for clarity */
+.overlaylink:hover::after,
+.overlaylink:focus::after {
+  opacity: 1;
+  transform: translateY(-50%) translateY(-4px);
+}
+
+/* subtle animation to draw attention without being distracting */
+.overlaylink.pulse {
+  animation: overlay-pulse 2.2s infinite;
+}
+@keyframes overlay-pulse {
+  0%   { transform: translateY(0) scale(1); }
+  50%  { transform: translateY(-2px) scale(1.03); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* ensure the link is keyboard accessible if it contains no visible text */
+.overlaylink[aria-hidden="true"]::after { display: none; }
+
