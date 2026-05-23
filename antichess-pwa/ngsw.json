@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1778930269861,
+  "timestamp": 1779567943599,
   "appData": {
-    "version": "1.14.8"
+    "version": "1.15.1"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-4WQVWD4R.js",
+        "./main-67DNGZPJ.js",
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./scripts-QOGIEEJF.js",
-        "./styles-27QD7CGU.css"
+        "./styles-MODIAYQO.css"
       ],
       "patterns": []
     },
@@ -37,7 +37,10 @@
         "./assets/icons/icon-512x512.png",
         "./assets/images/amsterdam_venue.png",
         "./assets/images/antichess_king.png",
+        "./assets/images/board.png",
+        "./assets/images/boardsnippet.png",
         "./media/antichess_king-N6DHRERR.png",
+        "./media/boardsnippet-NFIR7GSF.png",
         "./media/fa-brands-400-AHOAZHCU.woff2",
         "./media/fa-regular-400-VRZYIBIZ.woff2",
         "./media/fa-solid-900-MDEYK55F.woff2",
@@ -53,18 +56,21 @@
     "./assets/icons/icon-512x512.png": "aa3c1ddb749e145228c3731ff40ddf2e6fab53d2",
     "./assets/images/amsterdam_venue.png": "749dc63fecfe5765269faba4cb320241f37a8205",
     "./assets/images/antichess_king.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
+    "./assets/images/board.png": "1df236bf4f8526998f274b3b1a13804cdce37b70",
+    "./assets/images/boardsnippet.png": "c8a5985a6b73ccc48bb1a427ae95ff4e09530f5d",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "753a2bf3943ef4cfa71ce379ed99e14af74035e2",
-    "./main-4WQVWD4R.js": "96ae1abc8600c852877c60c5ed13df8f0815b499",
+    "./index.html": "6c3c7b772db522bb73d4bed4f487a051b4ebe0a0",
+    "./main-67DNGZPJ.js": "a09c976ea60ad86c44d970b851bcdce1b7b77fcd",
     "./manifest.webmanifest": "d78fac2815cda06ba8c0665c24e188f70981ebda",
     "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
+    "./media/boardsnippet-NFIR7GSF.png": "c8a5985a6b73ccc48bb1a427ae95ff4e09530f5d",
     "./media/fa-brands-400-AHOAZHCU.woff2": "e48612cd49700246d0cc0d2d1943ed8b9d157316",
     "./media/fa-regular-400-VRZYIBIZ.woff2": "708f3ca10d101babf966040b50be3bf239456384",
     "./media/fa-solid-900-MDEYK55F.woff2": "79f2a488fd9c1e1f01943a196f5abf53821e04d7",
     "./media/fa-v4compatibility-ETEVP6IB.woff2": "48baec990161d24f6b770e803c9c14cfe2d07da5",
     "./polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
     "./scripts-QOGIEEJF.js": "e83470118bc518ad047b5e89e17f95abc3afe41d",
-    "./styles-27QD7CGU.css": "241cbf4457ab9069f13ede3c5a1d240d0548778c"
+    "./styles-MODIAYQO.css": "5bc7dfea70a056cee8d63a7782824ab6d5b097b7"
   },
   "navigationUrls": [
     {
