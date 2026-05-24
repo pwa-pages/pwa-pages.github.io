@@ -67,7 +67,7 @@ export class ChessBoardComponent implements AfterViewInit, OnChanges, OnInit {
         enabled: true, visible: true,
         autoShapes: [
           ...this.combineAutoShapes({
-            black: ['c8','e8','d7','e7','a6','b6','c6','d6','a5','b5','c5'],
+            black: ['c8', 'e8', 'd7', 'e7', 'a6', 'b6', 'c6', 'd6', 'a5', 'b5', 'c5'],
             white: [
               'd1', 'g1', 'h1', 'd2', 'e2', 'f2', 'a3', 'b3', 'c3', 'e3', 'f3', 'a4', 'b4', 'c4', 'd4', 'e4', 'f4', 'f5', 'g5', 'f6', 'h6', 'f7', 'f8'
             ]
@@ -85,6 +85,13 @@ export class ChessBoardComponent implements AfterViewInit, OnChanges, OnInit {
       moveAnnotation: 'White to move. White cannot make a move so wins the game.'
     },
 
+    guide_rook: {
+      fen: '8/8/8/3k4/8/8/8/7R w - - 0 1',
+      orientation: 'white', coordinates: false, disableContextMenu: true,
+      moveAnnotation: 'Rooks are good against pawns, and can give mate on its own against a king, one of the reasons people like to keep rooks. (<a href="https://lichess.org/study/fXx4u9R5/vj24sHOb" target="_blank" rel="noopener noreferrer">See on lichess</a>)'
+    }
+    ,
+
     guide_intermediate: {
       fen: '4k1n1/ppp2pp1/4p3/8/6n1/N3P3/PPP1K3/R1B5 w - - 0 3',
       orientation: 'white', coordinates: false, disableContextMenu: true,
@@ -96,7 +103,7 @@ export class ChessBoardComponent implements AfterViewInit, OnChanges, OnInit {
       fen: '4k3/1pp3pp/8/8/8/4P3/2KP4/3Q4 w - - 0 1',
       orientation: 'white', coordinates: false, disableContextMenu: true,
       moveAnnotation: 'Unless whites queen has some substantial space safely covered on the board it may be safe, but often it is not, for example here against normally weak pawns in endgame. (<a href="https://lichess.org/study/fXx4u9R5/mvfkwbvo" target="_blank" rel="noopener noreferrer">See on lichess</a>)'
-    }    
+    }
   }
 
   ngAfterViewInit() {

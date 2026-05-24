@@ -1,14 +1,10 @@
-<app-header [text]="'Tips'" />
+<app-header [text]="'Guide'" />
 
 
 
 <div class="anticontainer antichess main-content">
 
-  <div class="headerbox">
-
-
-
-  </div>
+  
   <div class="antichess right-content">
 
     <div class="eventstab">
@@ -36,20 +32,26 @@
           <li>- Have your pieces control squares on the board, this gives you more choice and opponent less which is key
             in antichess.<a tabindex="0" class="overlaylink" [class.active]="false"
           (click)="openChessBoardOverlay('guide_coverage')" (keypress)="openChessBoardOverlay('guide_coverage')" target="_blank" rel="noopener noreferrer"></a></li>
-          <li>- Don't give away strong pieces without good reason (king, rook, queen).</li>
+          <li>- Don't give away strong pieces without good reason (king, rook, queen). 
+            <a tabindex="0" class="overlaynolink" [class.active]="false"></a>
+          </li>
           <li>- Learn about intermediates (see links below, youtube or lichess study, or click on icon).<a tabindex="0" class="overlaylink" [class.active]="false"
           (click)="openChessBoardOverlay('guide_intermediate')" (keypress)="openChessBoardOverlay('guide_intermediate')" target="_blank" rel="noopener noreferrer"></a></li>
           <li>- Queen is strong in opening, but dangerous to have going to endgame.<a tabindex="0" class="overlaylink" [class.active]="false"
-          (click)="openChessBoardOverlay('guide_queen')" (keypress)="openChessBoardOverlay('guide_queen')" target="_blank" rel="noopener noreferrer"></a></li>
-          <li>- Knights are in general hard to play with in endgame.</li>
-          <li>- Rooks are in general very good to have in endgame.</li>
+          (click)="openChessBoardOverlay('guide_queen')" (keypress)="openChessBoardOverlay('guide_queen')" target="_blank" rel="noopener noreferrer"></a>
+        
+                    <a tabindex="0" class="overlaynolink" [class.active]="false"></a>
+        </li>
+          <li>- Knights are in general hard to play with in endgame.            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
+          <li>- Rooks are in general very good to have in endgame.            <a tabindex="0" class="overlaynolink" [class.active]="false"><a tabindex="0" class="overlaylink" [class.active]="false"
+          (click)="openChessBoardOverlay('guide_rook')" (keypress)="openChessBoardOverlay('guide_rook')" target="_blank" rel="noopener noreferrer"></a></a></li>
           <li>- Bishops are very dangerous in opening, many forced opening lines are with bishop cleaning up the board.
-          </li>
-          <li>- d3, d4, e4 are instantly losing for white.</li>
+                      <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
+          <li>- d3, d4, e4 are instantly losing for white.            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
           <li>- Find some opening lines with white or black that are not instantly losing (use analysis engine on lichess
-            or check strong players opening repetoire)</li>
+            or check strong players opening repetoire)            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
           <li>- Play in lichess arena tournaments, there are often a diverse range of players which is beneficial for
-            improving.</li>
+            improving.            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
         </ul>
 
 

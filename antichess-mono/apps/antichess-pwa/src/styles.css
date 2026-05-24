@@ -631,6 +631,7 @@ app-performance-chart {
 .anticontainer {
   
   margin-right: 5vw;
+  margin-left:20vw;
 }
 
 .anticontainer,
@@ -880,7 +881,7 @@ a.tab {
 
 
 /* Visual affordance for links that open content in an overlay */
-.overlaylink {
+.overlaylink, .overlaynolink {
   display: inline-flex;              /* inline so it won't force its own line */
   align-items: center;
   justify-content: center;
@@ -898,6 +899,7 @@ a.tab {
   transition: background-color 160ms, transform 120ms, box-shadow 160ms;
   outline: none;
   will-change: transform, box-shadow;
+  height:2rem;
 }
 
 /* small keyboard / focus ring for accessibility */
