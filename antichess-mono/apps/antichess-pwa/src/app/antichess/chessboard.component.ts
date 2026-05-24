@@ -103,7 +103,15 @@ export class ChessBoardComponent implements AfterViewInit, OnChanges, OnInit {
       fen: '4k3/1pp3pp/8/8/8/4P3/2KP4/3Q4 w - - 0 1',
       orientation: 'white', coordinates: false, disableContextMenu: true,
       moveAnnotation: 'Unless whites queen has some substantial space safely covered on the board it may be safe, but often it is not, for example here against normally weak pawns in endgame. (<a href="https://lichess.org/study/fXx4u9R5/mvfkwbvo" target="_blank" rel="noopener noreferrer">See on lichess</a>)'
+    },
+
+    guide_bishop: {
+      fen: 'rn1qkbnr/ppp1pppp/8/3p4/6b1/4P3/PPPP1PPP/RNBK1BNR b - - 1 3',
+      orientation: 'white', coordinates: false, disableContextMenu: true,
+      moveAnnotation: 'White has an easy time having its pieces taken by blacks bishop. (<a href="https://lichess.org/study/fXx4u9R5/BBchgJfg" target="_blank" rel="noopener noreferrer">See on lichess</a>)'
     }
+
+    
   }
 
   ngAfterViewInit() {

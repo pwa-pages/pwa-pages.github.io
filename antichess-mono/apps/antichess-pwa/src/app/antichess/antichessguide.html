@@ -43,10 +43,11 @@
                     <a tabindex="0" class="overlaynolink" [class.active]="false"></a>
         </li>
           <li>- Knights are in general hard to play with in endgame.            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
-          <li>- Rooks are in general very good to have in endgame.            <a tabindex="0" class="overlaynolink" [class.active]="false"><a tabindex="0" class="overlaylink" [class.active]="false"
-          (click)="openChessBoardOverlay('guide_rook')" (keypress)="openChessBoardOverlay('guide_rook')" target="_blank" rel="noopener noreferrer"></a></a></li>
+          <li>- Rooks are in general very good to have in endgame.            <a tabindex="0" class="overlaylink" [class.active]="false"
+          (click)="openChessBoardOverlay('guide_rook')" (keypress)="openChessBoardOverlay('guide_rook')" target="_blank" rel="noopener noreferrer"></a></li>
           <li>- Bishops are very dangerous in opening, many forced opening lines are with bishop cleaning up the board.
-                      <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
+                      <a tabindex="0" class="overlaylink" [class.active]="false"
+          (click)="openChessBoardOverlay('guide_bishop')" (keypress)="openChessBoardOverlay('guide_bishop')" target="_blank" rel="noopener noreferrer"></a></li>
           <li>- d3, d4, e4 are instantly losing for white.            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
           <li>- Find some opening lines with white or black that are not instantly losing (use analysis engine on lichess
             or check strong players opening repetoire)            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
