@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1779617837487,
+  "timestamp": 1779639017003,
   "appData": {
-    "version": "1.15.3"
+    "version": "1.15.5"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-VTIXENFH.js",
+        "./main-2LDLLGIS.js",
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./scripts-QOGIEEJF.js",
@@ -59,8 +59,8 @@
     "./assets/images/board.png": "1df236bf4f8526998f274b3b1a13804cdce37b70",
     "./assets/images/boardsnippet.png": "c8a5985a6b73ccc48bb1a427ae95ff4e09530f5d",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "fc55c6880dbf269131599a9c08726bec7e791617",
-    "./main-VTIXENFH.js": "9899c2c51e851af6044136252ae84eecf4909af6",
+    "./index.html": "31f4298647332cf34aa6d64a7ca0f712ae6af54f",
+    "./main-2LDLLGIS.js": "818a2382cbd4d0686e8295bc312ad8bbe3e7d612",
     "./manifest.webmanifest": "d78fac2815cda06ba8c0665c24e188f70981ebda",
     "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
     "./media/boardsnippet-NFIR7GSF.png": "c8a5985a6b73ccc48bb1a427ae95ff4e09530f5d",
