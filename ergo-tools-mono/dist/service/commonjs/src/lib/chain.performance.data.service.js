@@ -30,6 +30,7 @@ class ChainPerformanceDataService extends DataService {
             }, 0);
             const maxKey = Object.entries(chainTokensCount).reduce((max, [key, value]) => (value > chainTokensCount[max] ? key : max), Object.keys(chainTokensCount)[0]);
             const chainType = Object.entries(rwtTokenIds).find(([key]) => key === maxKey)?.[1];
+            console.log("amount of eRSN in transaction: " + eRSNTotal + " item id: " + item.id + " chain type: " + chainType);
             const dbPerfTx = {
                 id: item.id,
                 timestamp: item.timestamp,

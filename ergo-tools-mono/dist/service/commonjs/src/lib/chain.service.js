@@ -42,16 +42,16 @@ function getActiveChainTypes() {
 const chainTypeTokens = Object.fromEntries(Object.values(ChainType).map((chain) => chain === ChainType.Runes ? [chain, `rspv3BitcoinRunesRWT`] :
     [chain, `rspv3${chain}RWT`]));
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const chainTypeWatcherIdentifier = Object.fromEntries(Object.values(ChainType).map((chain) => chain === ChainType.Runes ? [chain, `rspv2BitcoinRunesAWC`] :
-    [chain, `rspv2${chain}AWC`]));
+const chainTypeWatcherIdentifier = Object.fromEntries(Object.values(ChainType).map((chain) => chain === ChainType.Runes ? [chain, `rspv3BitcoinRunesAWC`] :
+    [chain, `rspv3${chain}AWC`]));
 const rwtTokenIds = {
     '73c00e245574b45eca0c06796c40730260f9812fefc0da2dc64576559ac251b5': ChainType.Ergo,
-    'ddb335d2b4f3764ddeae8411a14bec97f94d0057628bb96f98da9d95e74d02bc': ChainType.Cardano,
-    '0c60af62d0a3895eafded7587218a88157b5a0e5075f36596b3ed6d73cdefcf9': ChainType.Bitcoin,
-    'b5148908b9a52352a78c9f8596d376217ed992625deeb6849d6f9ebded024af7': ChainType.Ethereum,
-    '7f764e980d4e754d5383b192927c321df9b116c10748903174a897ffe944aa55': ChainType.Binance,
-    'f925f738bd68ccad506891f8a4e52437cec9ff53a20b1ab51ec07d249f313fe0': ChainType.Doge,
-    '07cdd28a4fae28ea8f186fc2bbadf8698b41f8fc611d640495c186bb4d84c3f5': ChainType.Runes,
+    '0c60af62d0a3895eafded7587218a88157b5a0e5075f36596b3ed6d73cdefcf9': ChainType.Cardano,
+    'b5148908b9a52352a78c9f8596d376217ed992625deeb6849d6f9ebded024af7': ChainType.Bitcoin,
+    '7f764e980d4e754d5383b192927c321df9b116c10748903174a897ffe944aa55': ChainType.Ethereum,
+    'f925f738bd68ccad506891f8a4e52437cec9ff53a20b1ab51ec07d249f313fe0': ChainType.Binance,
+    '07cdd28a4fae28ea8f186fc2bbadf8698b41f8fc611d640495c186bb4d84c3f5': ChainType.Doge,
+    '1ec6e90bc4b453fd51b6606b86c837b241a20efa36229e195f211fbf6f8e9c87': ChainType.Runes,
 };
 const permitAddresses = {
     [ChainType.Bitcoin]: 'NY4PEzZ7VfjxESbhPaCAkoFLZS4NXxXFsfiqzZTycYKaCpHm2QVDJUh9MtA9KbHZivPgGoCpBP8p6qtRQNfT8kH12bCFWjsFZaGFJbFgP6gwGA7s9eJiS2h9HdGL4FCZ1KYS9ADnqp6cFuw4MagrEXbmGyixjb1mMN3JTdLANmfFrPcv68ucpeTvGKvvDbzvLXKzQB8wVyamMYu8PCYq1QNmmHtXZSGdhX5dfajFqo8ubbJZiiTKJzQuw9d69vwUBgqmMLEXUK8MCsfUerPged4eGt1qm8ZvpPT6MxCpaKsVNRCagSVCDVjwCivjZ7owo62oWL4Q5NdWAYxVN3TG9yNy6iviEEX6ENbAjpGCqmZag2qRYmbLGZPf4XxNqKfzQ1wzriqy4M5s5mLqsKs1Bhp9XR1gjUyWvui5BAYM97XWvyRXAv5PFoZqTNJWemKuEY2wub97Ac7asNhhRpLwDMNfdW4vkpYUKXHnJiDvQQGsWEs5Jx2PjwCe9wYTRKM69t6nyfddR7quYMn8SLxVFM22xq49Cr9GHTpLZxcLCQisDmRRspxkYstmBPvuDzcbXYQtAodUKrXhwmCrk39Hir5P3XQ7BHpQP5x5dLu8Vn24jSaPyBJxq6HNBrMBGDJq9JxqQXmy1GReXp5RYi8ZUEEZFdc1R2cBw5aBNCvS2Z9UWBDBPNQW7rpx4VE2MpFNJa2y7VnSBft3cnWtbE8tsDuMpHJnDTDCP55eHJJ5iYsUEfqeHQRbXmi9AhPRaZ1YTbMFGMVu6ub14m68jrzvCpgB2wyPRnNsDi3YMhbtzYQS2uVNKpr8jDJE51bYjeLki9apBtKUhD18JCKNH5R7tWfhi7LDx878Ai2CSppY45GqTTZqNFDSFYjnhtYntQvb3ZAfEgkQXMKegz37hqAvyfNxCD94jksJjyUa8Em1JP8JrMYvEaGBcMWkRvwoUFYSa2sZrekrv9s8jn5TJsQFiWKmLmxKb1cfa9vi2Q3rRBdVEZswAxCka1p6dKjXSpAqRRrfXyEaTtHYfgNH676WnA3cxXkPeURMDf1mM15rUSLCBwtxCDrvFcsAgCdNhRvfAesuS15aUZjYHuLDXFGhSf3vmrr8MDUJQ1mqEmLWJLjwQ1SsU81GnGddHBxS8FqP5r2hFsVwboKNf8FBUQv7JWimMm8aFkgbpcG35tgpL9TB8CmpJZ53VShUVmssxMqSTPs1yxAZXG3ejkBZvV8rmdZAsnjVDv',

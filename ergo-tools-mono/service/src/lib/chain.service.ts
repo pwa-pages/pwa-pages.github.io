@@ -67,17 +67,17 @@ const chainTypeWatcherIdentifier = Object.fromEntries(
 const rwtTokenIds: Record<string, ChainType> = {
   '73c00e245574b45eca0c06796c40730260f9812fefc0da2dc64576559ac251b5':
     ChainType.Ergo,
-  'ddb335d2b4f3764ddeae8411a14bec97f94d0057628bb96f98da9d95e74d02bc':
-    ChainType.Cardano,
   '0c60af62d0a3895eafded7587218a88157b5a0e5075f36596b3ed6d73cdefcf9':
-    ChainType.Bitcoin,
+    ChainType.Cardano,
   'b5148908b9a52352a78c9f8596d376217ed992625deeb6849d6f9ebded024af7':
-    ChainType.Ethereum,
+    ChainType.Bitcoin,
   '7f764e980d4e754d5383b192927c321df9b116c10748903174a897ffe944aa55':
-    ChainType.Binance,
+    ChainType.Ethereum,
   'f925f738bd68ccad506891f8a4e52437cec9ff53a20b1ab51ec07d249f313fe0':
-    ChainType.Doge,
+    ChainType.Binance,
   '07cdd28a4fae28ea8f186fc2bbadf8698b41f8fc611d640495c186bb4d84c3f5':
+    ChainType.Doge,
+  '1ec6e90bc4b453fd51b6606b86c837b241a20efa36229e195f211fbf6f8e9c87':
     ChainType.Runes,
 
 };

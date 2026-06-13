@@ -55,6 +55,9 @@ class ChainPerformanceDataService extends DataService<PerfTx> {
         ([key]) => key === maxKey,
       )?.[1];
 
+      
+      console.log("amount of eRSN in transaction: " + eRSNTotal + " item id: " + item.id + " chain type: " + chainType);
+
       const dbPerfTx: PerfTx = {
         id: item.id,
         timestamp: item.timestamp,
