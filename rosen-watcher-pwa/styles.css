@@ -245,6 +245,13 @@ a {
   width: var(--watchers-width);
   flex-direction: column !important;
 }
+.statdetaildispl.Base,
+.mainaddressdispl.Base,
+.watchersdispl.Base,
+.chainType.Base {
+  background-image: url("./media/base.png");
+  filter: brightness(0.8);
+}
 .statdetaildispl.Bitcoin,
 .mainaddressdispl.Bitcoin,
 .watchersdispl.Bitcoin,
@@ -890,9 +897,9 @@ a.tab {
 
 /* node_modules/@fortawesome/fontawesome-free/css/all.css */
 /*!
- * Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- * Copyright 2025 Fonticons, Inc.
+ * Copyright 2026 Fonticons, Inc.
  */
 .fa-solid,
 .fa-regular,
@@ -1571,6 +1578,9 @@ a.tab {
 }
 .fa-clapperboard {
   --fa: "\e131";
+}
+.fa-closed-captioning-slash {
+  --fa: "\e135";
 }
 .fa-clover {
   --fa: "\e139";
@@ -2532,6 +2542,9 @@ a.tab {
 .fa-spiral {
   --fa: "\e80a";
 }
+.fa-picture-in-picture {
+  --fa: "\e80b";
+}
 .fa-mobile-vibrate {
   --fa: "\e816";
 }
@@ -2549,6 +2562,42 @@ a.tab {
 }
 .fa-heptagon {
   --fa: "\e820";
+}
+.fa-aquarius {
+  --fa: "\e845";
+}
+.fa-aries {
+  --fa: "\e846";
+}
+.fa-cancer {
+  --fa: "\e847";
+}
+.fa-capricorn {
+  --fa: "\e848";
+}
+.fa-gemini {
+  --fa: "\e849";
+}
+.fa-leo {
+  --fa: "\e84a";
+}
+.fa-libra {
+  --fa: "\e84b";
+}
+.fa-pisces {
+  --fa: "\e84c";
+}
+.fa-sagittarius {
+  --fa: "\e84d";
+}
+.fa-scorpio {
+  --fa: "\e84e";
+}
+.fa-taurus {
+  --fa: "\e84f";
+}
+.fa-virgo {
+  --fa: "\e850";
 }
 .fa-martini-glass-empty {
   --fa: "\f000";
@@ -6525,6 +6574,12 @@ a.tab {
 .fa-vihara {
   --fa: "\f6a7";
 }
+.fa-volume {
+  --fa: "\f6a8";
+}
+.fa-volume-medium {
+  --fa: "\f6a8";
+}
 .fa-volume-xmark {
   --fa: "\f6a9";
 }
@@ -7496,6 +7551,120 @@ a.tab {
 }
 .fa-duolingo {
   --fa: "\e812";
+}
+.fa-supportnow {
+  --fa: "\e833";
+}
+.fa-tor-browser {
+  --fa: "\e838";
+}
+.fa-typescript {
+  --fa: "\e840";
+}
+.fa-square-deskpro {
+  --fa: "\e844";
+}
+.fa-circle-zulip {
+  --fa: "\e851";
+}
+.fa-julia {
+  --fa: "\e852";
+}
+.fa-zulip {
+  --fa: "\e853";
+}
+.fa-unison {
+  --fa: "\e854";
+}
+.fa-board-game-geek {
+  --fa: "\e855";
+}
+.fa-bgg {
+  --fa: "\e855";
+}
+.fa-ko-fi {
+  --fa: "\e856";
+}
+.fa-kubernetes {
+  --fa: "\e857";
+}
+.fa-postgresql {
+  --fa: "\e858";
+}
+.fa-scaleway {
+  --fa: "\e859";
+}
+.fa-venmo {
+  --fa: "\e85a";
+}
+.fa-venmo-v {
+  --fa: "\e85b";
+}
+.fa-unreal-engine {
+  --fa: "\e85c";
+}
+.fa-globaleaks {
+  --fa: "\e85d";
+}
+.fa-solana {
+  --fa: "\e85e";
+}
+.fa-threema {
+  --fa: "\e85f";
+}
+.fa-forgejo {
+  --fa: "\e860";
+}
+.fa-claude {
+  --fa: "\e861";
+}
+.fa-gitee {
+  --fa: "\e863";
+}
+.fa-xmpp {
+  --fa: "\e864";
+}
+.fa-fediverse {
+  --fa: "\e865";
+}
+.fa-tailwind-css {
+  --fa: "\e866";
+}
+.fa-arch-linux {
+  --fa: "\e867";
+}
+.fa-svelte {
+  --fa: "\e868";
+}
+.fa-hugging-face {
+  --fa: "\e869";
+}
+.fa-leetcode {
+  --fa: "\e86a";
+}
+.fa-openstreetmap {
+  --fa: "\e86b";
+}
+.fa-ultralytics {
+  --fa: "\e86d";
+}
+.fa-ultralytics-hub {
+  --fa: "\e86e";
+}
+.fa-ultralytics-yolo {
+  --fa: "\e86f";
+}
+.fa-obsidian {
+  --fa: "\e879";
+}
+.fa-zoom {
+  --fa: "\e87b";
+}
+.fa-vim {
+  --fa: "\e88a";
+}
+.fa-symfonycasts {
+  --fa: "\e8ab";
 }
 .fa-square-twitter {
   --fa: "\f081";
