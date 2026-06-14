@@ -133,7 +133,7 @@
         let urlParams = new URLSearchParams(window.location.search);
         let page = urlParams.get('page');
         if (page) {
-          history.pushState(null, '', `./${page}`);
+          history.pushState(null, '', `./#${page}`);
         }
       } catch (error) {
         showErrorMessage(`Error adding assets: ${error.message}`);

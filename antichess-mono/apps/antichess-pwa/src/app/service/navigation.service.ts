@@ -18,18 +18,18 @@ export class NavigationService {
     private router: Router,
     private eventService: EventService,
   ) {
-    
     this.navigationItems.push({ route: '/main' });
     this.navigationItems.push({ route: '/events' });
     this.navigationItems.push({ route: '/antichess' });
     this.navigationItems.push({ route: '/players' });
 
-    
     const saved = this.loadSavedRoutes();
+
     Object.keys(saved).forEach((k) => {
       const idx = Number(k);
+
       if (!Number.isNaN(idx) && idx >= 0 && idx < this.navigationItems.length) {
-        this.navigationItems[idx].route = saved[idx];
+        this.navigationItems[idx].route = this.cleanRoute(saved[idx]);
       }
     });
 
@@ -40,15 +40,21 @@ export class NavigationService {
         ),
       )
       .subscribe((event) => {
-        const url = event.urlAfterRedirects;
+        const url = this.cleanRoute(event.urlAfterRedirects);
         const index = this.getIndexFromUrl(url);
+
         this.updateCurrentNavigationIndex(url);
-        this.saveRouteForIndex(index, url);
+
+
         if (index >= 0 && index < this.navigationItems.length) {
+          this.saveRouteForIndex(index, url);
           this.navigationItems[index].route = url;
         }
-      });
 
+        this.scrollToFragment(url);
+
+
+      });
     this.eventService.subscribeToEvent<string>(
       EventType.VersionUpdated,
       (v) => {
@@ -57,22 +63,82 @@ export class NavigationService {
     );
   }
 
+  private cleanRoute(route: string): string {
+    if (!route) return route;
+
+    try {
+      let result = route;
+
+      while (result.includes('%23') || result.includes('%2523')) {
+        const decoded = decodeURIComponent(result);
+
+        if (decoded === result) {
+          break;
+        }
+
+        result = decoded;
+      }
+
+      return result;
+    } catch {
+      return route;
+    }
+  }
+
+
+  private scrollToFragment(url: string): void {
+    const fragment = this.cleanRoute(url).split('#')[1];
+
+    if (!fragment) return;
+
+    setTimeout(() => {
+      document.getElementById(fragment)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }, 0);
+  }
+
   private loadSavedRoutes(): Record<number, string> {
     try {
       const raw = localStorage.getItem(this.STORAGE_KEY);
       if (!raw) return {};
+
       const parsed = JSON.parse(raw);
-      if (typeof parsed === 'object' && parsed !== null) return parsed;
+
+      if (typeof parsed === 'object' && parsed !== null) {
+        const cleaned: Record<number, string> = {};
+
+        Object.keys(parsed).forEach((k) => {
+          const idx = Number(k);
+          const route = parsed[k];
+
+          if (
+            !Number.isNaN(idx) &&
+            idx >= 0 &&
+            idx < this.navigationItems.length &&
+            typeof route === 'string'
+          ) {
+            cleaned[idx] = this.cleanRoute(route);
+          }
+        });
+
+        return cleaned;
+      }
     } catch {
       // ignore parse errors
     }
+
     return {};
   }
-
   private saveRouteForIndex(index: number, route: string): void {
+    if (index < 0 || index >= this.navigationItems.length) return;
+
     try {
       const map = this.loadSavedRoutes();
-      map[index] = route;
+      // Clean and strip any fragment/hash before saving
+      const cleaned = this.cleanRoute(route).split('#')[0];
+      map[index] = cleaned;
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(map));
     } catch {
       // ignore
@@ -81,25 +147,34 @@ export class NavigationService {
 
   private getSavedRoute(index: number): string | undefined {
     const map = this.loadSavedRoutes();
-    return map[index];
+    const route = map[index];
+
+    return route ? this.cleanRoute(route) : undefined;
   }
 
   private getRouteForIndex(index: number): string {
     const saved = this.getSavedRoute(index);
-    if (saved) return saved;
-    if (index >= 0 && index < this.navigationItems.length) {
-      return this.navigationItems[index].route;
+
+    if (saved) {
+      return this.cleanRoute(saved);
     }
+
+    if (index >= 0 && index < this.navigationItems.length) {
+      return this.cleanRoute(this.navigationItems[index].route);
+    }
+
     return this.navigationItems[0]?.route ?? '/';
   }
 
   private getIndexFromUrl(url: string): number {
-    if (url.startsWith('/main')) return 0;
-    if (url.startsWith('/events')) return 1;
-    if (url.startsWith('/antichess')) return 2;
-    if (url.startsWith('/titles')) return 3;
-    if (url.startsWith('/players')) return 3;
-    if (url.startsWith('/rank')) return 3;
+    const cleanUrl = this.cleanRoute(url);
+
+    if (cleanUrl.startsWith('/main')) return 0;
+    if (cleanUrl.startsWith('/events')) return 1;
+    if (cleanUrl.startsWith('/antichess')) return 2;
+    if (cleanUrl.startsWith('/titles')) return 3;
+    if (cleanUrl.startsWith('/players')) return 3;
+    if (cleanUrl.startsWith('/rank')) return 3;
 
     return 0;
   }
@@ -111,52 +186,66 @@ export class NavigationService {
 
   public getCurrentNavigationItem(): NavigationItem {
     const idx = this.currentNavigationIndex;
-    const route = this.getRouteForIndex(idx);
+    const route = this.cleanRoute(this.getRouteForIndex(idx));
+
     return { route };
   }
 
   public getNavigationItems(): NavigationItem[] {
-    return this.navigationItems.map((_, i) => ({ route: this.getRouteForIndex(i) }));
+    return this.navigationItems.map((_, i) => ({
+      route: this.cleanRoute(this.getRouteForIndex(i)),
+    }));
   }
 
   public getLeftItem(): NavigationItem {
     const l = this.navigationItems.length;
     const idx = (this.currentNavigationIndex - 1 + l) % l;
-    return { route: this.getRouteForIndex(idx) };
+
+    return { route: this.cleanRoute(this.getRouteForIndex(idx)) };
   }
 
   public getRightItem(): NavigationItem {
     const l = this.navigationItems.length;
     const idx = (this.currentNavigationIndex + 1) % l;
-    return { route: this.getRouteForIndex(idx) };
+
+    return { route: this.cleanRoute(this.getRouteForIndex(idx)) };
   }
 
   public navigate(to: string): void {
-    this.router.navigate([to]);
+    const clean = this.cleanRoute(to);
+    const [path, fragment] = clean.split('#');
+
+    this.router.navigate([path], {
+      fragment: fragment || undefined,
+    });
   }
 
-  
   public navigateTo(to: number): NavigationItem {
     if (to < 0 || to >= this.navigationItems.length) {
       to = 0;
     }
+
     this.currentNavigationIndex = to;
-    
+
     return this.getCurrentNavigationItem();
   }
 
   public navigateRight(): NavigationItem {
     const l = this.navigationItems.length;
     this.currentNavigationIndex = (this.currentNavigationIndex + 1) % l;
+
     return this.getCurrentNavigationItem();
   }
 
   public navigateLeft(): NavigationItem {
     const l = this.navigationItems.length;
-    this.currentNavigationIndex = (this.currentNavigationIndex - 1 + l) % l;
+    this.currentNavigationIndex =
+      (this.currentNavigationIndex - 1 + l) % l;
+
     return this.getCurrentNavigationItem();
   }
 }
+
 export class NavigationItem {
   route!: string;
 }

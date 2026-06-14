@@ -30,7 +30,34 @@ export class SwipeService {
   }
 
   async navigate(route: string) {
-    await this.router.navigate([route]);
+    const clean = this.cleanRoute(route);
+    const [path, fragment] = clean.split('#');
+
+    await this.router.navigate([path], {
+      fragment: fragment || undefined,
+    });
+
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }
+
+  private cleanRoute(route: string): string {
+    if (!route) return route;
+
+    try {
+      let result = route;
+
+      while (result.includes('%23') || result.includes('%2523')) {
+        const decoded = decodeURIComponent(result);
+        if (decoded === result) break;
+        result = decoded;
+      }
+
+      return result;
+    } catch {
+      return route;
+    }
   }
 
   getTouchSurface(): HTMLElement {

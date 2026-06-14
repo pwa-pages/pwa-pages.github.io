@@ -7,12 +7,13 @@ import {
 import { BaseComponent } from '../basecomponent';
 import { NavigationService } from '../service/navigation.service';
 import { HeaderComponent } from './header.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-events',
   templateUrl: './events.html',
   standalone: true,
-  imports: [HeaderComponent],
+  imports: [HeaderComponent, RouterLink],
 })
 export class EventsComponent
   extends BaseComponent

@@ -964,3 +964,70 @@ a.tab {
 /* ensure the link is keyboard accessible if it contains no visible text */
 .overlaylink[aria-hidden="true"]::after { display: none; }
 
+/* Event link helpers: distinguish upcoming vs past without icons or strikethrough */
+
+.event-links {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+/* base link appearance */
+.event-link a {
+  display: block;
+  
+  text-decoration: none;
+  transition: transform 140ms ease, box-shadow 180ms ease, background-color 140ms;
+  color: rgba(20,20,20,0.95);
+  background: transparent;
+}
+
+/* Upcoming: stronger color, subtle left accent and lift on hover/focus */
+.event-link.upcoming a {
+  color: rgb(6,78,59);
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(14,165,164,0.06);
+}
+.event-link.upcoming a:hover,
+.event-link.upcoming a:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(14,165,164,0.08);
+}
+
+/* Past: muted, slightly smaller, visually de-emphasised */
+.event-link:not(.upcoming) a {
+  color: rgba(60,60,60,0.65);
+  font-size: .95rem;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.02));
+}
+
+/* Add a textual badge for past items (no icons, no strike) */
+.event-link:not(.upcoming) a::after {
+  content: " · past";
+  color: rgba(60,60,60,0.55);
+  font-size: .85em;
+  margin-left: .5rem;
+}
+
+/* Optional extra de-emphasis if you add .very-old to items */
+.event-link.very-old a {
+  opacity: .6;
+  filter: grayscale(.18);
+}
+
+/* Maintain an accessible focus ring for keyboard users */
+.event-link a:focus {
+  outline: 3px solid rgba(14,165,164,0.12);
+  outline-offset: 3px;
+}
+
+.event-info{
+  padding-top:1rem;
+  padding-bottom:1rem;
+  border-top : 0.1rem dotted rgba(138, 128, 128);
+}
+
+.event-title{
+  color: rgb(6,78,59);
+  font-weight: 700;
+}

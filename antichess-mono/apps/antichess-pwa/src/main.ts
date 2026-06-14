@@ -21,7 +21,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 
-import { provideRouter, Routes, withHashLocation } from '@angular/router';
+import { provideRouter, Routes, withHashLocation, withInMemoryScrolling } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -72,7 +72,10 @@ bootstrapApplication(AppComponent, {
     ),
     DatePipe,
     provideHttpClient(withInterceptorsFromDi()),
-    provideRouter(routes, withHashLocation()),
+    provideRouter(routes, withHashLocation(), withInMemoryScrolling({
+    anchorScrolling: 'enabled',
+    scrollPositionRestoration: 'enabled'
+  })),
     provideAnimations(),
     {
       provide: APP_INITIALIZER,
