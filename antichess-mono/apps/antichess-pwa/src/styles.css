@@ -1003,7 +1003,6 @@ a.tab {
 
 /* Add a textual badge for past items (no icons, no strike) */
 .event-link:not(.upcoming) a::after {
-  content: " · past";
   color: rgba(60,60,60,0.55);
   font-size: .85em;
   margin-left: .5rem;
