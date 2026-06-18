@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1781675335864,
+  "timestamp": 1781808530146,
   "appData": {
-    "version": "1.16.1"
+    "version": "1.16.2"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-RZXDI3SA.js",
+        "./main-DJUZNTDZ.js",
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./scripts-QOGIEEJF.js",
-        "./styles-RQYYXLGR.css"
+        "./styles-33KFPMRE.css"
       ],
       "patterns": []
     },
@@ -40,7 +40,6 @@
         "./assets/images/board.png",
         "./assets/images/boardsnippet.png",
         "./media/antichess_king-N6DHRERR.png",
-        "./media/boardsnippet-NFIR7GSF.png",
         "./media/fa-brands-400-AHOAZHCU.woff2",
         "./media/fa-regular-400-VRZYIBIZ.woff2",
         "./media/fa-solid-900-MDEYK55F.woff2",
@@ -59,18 +58,17 @@
     "./assets/images/board.png": "1df236bf4f8526998f274b3b1a13804cdce37b70",
     "./assets/images/boardsnippet.png": "c8a5985a6b73ccc48bb1a427ae95ff4e09530f5d",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "9da94ca94596bcfcc80b1e7e9290526380fcbab0",
-    "./main-RZXDI3SA.js": "f1487cfbdd811e44ada9f4f346fcc8e54c1d5a45",
+    "./index.html": "f8db110e264376f2d16bbfe82354ba240b24a91c",
+    "./main-DJUZNTDZ.js": "c53778e0c4854e066a82b78f9440da41416a892a",
     "./manifest.webmanifest": "d78fac2815cda06ba8c0665c24e188f70981ebda",
     "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
-    "./media/boardsnippet-NFIR7GSF.png": "c8a5985a6b73ccc48bb1a427ae95ff4e09530f5d",
     "./media/fa-brands-400-AHOAZHCU.woff2": "e48612cd49700246d0cc0d2d1943ed8b9d157316",
     "./media/fa-regular-400-VRZYIBIZ.woff2": "708f3ca10d101babf966040b50be3bf239456384",
     "./media/fa-solid-900-MDEYK55F.woff2": "79f2a488fd9c1e1f01943a196f5abf53821e04d7",
     "./media/fa-v4compatibility-ETEVP6IB.woff2": "48baec990161d24f6b770e803c9c14cfe2d07da5",
     "./polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
     "./scripts-QOGIEEJF.js": "e83470118bc518ad047b5e89e17f95abc3afe41d",
-    "./styles-RQYYXLGR.css": "5d2e5f35021f54116bfe08a9ecc3b296c45341ba"
+    "./styles-33KFPMRE.css": "2e4c6af669b111eba854470bdb460cd7afb52a6d"
   },
   "navigationUrls": [
     {
