@@ -7,11 +7,21 @@
   
   <div class="antichess right-content">
 
-    <div class="eventstab">
-      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('rank')" (keypress)="clickTab('rank')">Rank</a>
-      <a tabindex="0" class="tab" [class.active]="true" (click)="clickTab('titles')" (keypress)="clickTab('titles')">Titles</a>
-      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('players')" (keypress)="clickTab('players')">Links</a>
+    <div class="leftmenu">
+      <a tabindex="0" (click)="clickTab('rank')">
+        <i class="fa-solid fa-medal"></i>
+        <span>Rank</span>
+      </a>
 
+      <a class="active"  tabindex="0" (click)="clickTab('titles')">
+        <i class="fa-solid fa-award"></i>
+        <span>Titles</span>
+      </a>
+
+      <a tabindex="0" (click)="clickTab('players')">
+        <i class="fa-solid fa-users"></i>
+        <span>Players</span>
+      </a>
     </div>
 
 Titles (coming soon )

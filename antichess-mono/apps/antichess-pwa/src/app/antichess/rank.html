@@ -4,52 +4,62 @@
 
 <div class="anticontainer antichess main-content">
 
-  
+
   <div class="antichess right-content">
 
-    <div class="eventstab">
-      <a tabindex="0" class="tab" [class.active]="true" (click)="clickTab('rank')" (keypress)="clickTab('rank')">Rank</a>
-      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('titles')" (keypress)="clickTab('titles')">Titles</a>
-      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('players')" (keypress)="clickTab('players')">Links</a>
+    <div class="leftmenu">
+      <a class="active" tabindex="0" (click)="clickTab('rank')">
+        <i class="fa-solid fa-medal"></i>
+        <span>Rank</span>
+      </a>
 
+      <a tabindex="0" (click)="clickTab('titles')">
+        <i class="fa-solid fa-award"></i>
+        <span>Titles</span>
+      </a>
+
+      <a tabindex="0" (click)="clickTab('players')">
+        <i class="fa-solid fa-users"></i>
+        <span>Players</span>
+      </a>
     </div>
 
-<div class="rank-results">
-  <div *ngIf="!topAntichessPlayers || topAntichessPlayers.length === 0" class="placeholder">
-    Loading top antichess players...
-  </div>
-  <h1>
-    Current top 100 active antichess players on Lichess.
+    <div class="rank-results">
+      <div *ngIf="!topAntichessPlayers || topAntichessPlayers.length === 0" class="placeholder">
+        Loading top antichess players...
+      </div>
+      <h1>
+        Current top 100 active antichess players on Lichess.
 
 
-    
-  </h1>
-  <br/>
-  <table *ngIf="topAntichessPlayers?.length" class="rank-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Player</th>
-        <th>Rating</th>
-        <th>Δ</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let u of topAntichessPlayers; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>
-          <a [href]="'https://lichess.org/@/' + u.username" target="_blank" rel="noopener noreferrer">
-            <span class="username">{{ u.username }}</span>
-            <span *ngIf="u.patron" class="patron-badge" title="Patron">★</span>
-            <span *ngIf="u.online" class="online-indicator" title="Online">●</span>
-          </a>
-        </td>
-        <td>{{ u.perfs?.antichess?.rating ?? '—' }}</td>
-        <td>{{ u.perfs?.antichess?.progress ?? '—' }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+
+      </h1>
+      <br />
+      <table *ngIf="topAntichessPlayers?.length" class="rank-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th>Rating</th>
+            <th>Δ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of topAntichessPlayers; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>
+              <a [href]="'https://lichess.org/@/' + u.username" target="_blank" rel="noopener noreferrer">
+                <span class="username">{{ u.username }}</span>
+                <span *ngIf="u.patron" class="patron-badge" title="Patron">★</span>
+                <span *ngIf="u.online" class="online-indicator" title="Online">●</span>
+              </a>
+            </td>
+            <td>{{ u.perfs?.antichess?.rating ?? '—' }}</td>
+            <td>{{ u.perfs?.antichess?.progress ?? '—' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
   </div>
 </div>
