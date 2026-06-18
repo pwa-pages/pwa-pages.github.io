@@ -7,15 +7,23 @@
   <div class="antichess right-content">
 
 
-    <div class="eventstab">
-      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('antichess')"
-        (keypress)="clickTab('antichess')">Rules</a>
-      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('antichessguide')"
-        (keypress)="clickTab('antichessguide')">Guide</a>
-      <a tabindex="0" class="tab" [class.active]="true" (click)="clickTab('antichesslinks')"
-        (keypress)="clickTab('antichesslinks')">Links</a>
+    <div class="leftmenu">
+      <a tabindex="0" (click)="clickTab('antichess')">
+        <i class="fa-solid fa-scroll"></i>
+        <span>Rules</span>
+      </a>
 
+      <a tabindex="0" (click)="clickTab('antichessguide')">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Guide</span>
+      </a>
+
+      <a class="active" tabindex="0" (click)="clickTab('antichesslinks')">
+        <i class="fa-solid fa-link"></i>
+        <span>Links</span>
+      </a>
     </div>
+
     <div class="academy-links">
 
       <h3>Online resources</h3>

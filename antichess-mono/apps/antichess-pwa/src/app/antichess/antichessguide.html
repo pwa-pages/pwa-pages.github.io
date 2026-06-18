@@ -7,15 +7,23 @@
   
   <div class="antichess right-content">
 
-    <div class="eventstab">
-      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('antichess')"
-        (keypress)="clickTab('antichess')">Rules</a>
-      <a tabindex="0" class="tab" [class.active]="true" (click)="clickTab('antichessguide')"
-        (keypress)="clickTab('antichessguide')">Guide</a>
-      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('antichesslinks')"
-        (keypress)="clickTab('antichesslinks')">Links</a>
+    <div class="leftmenu">
+      <a tabindex="0" (click)="clickTab('antichess')">
+        <i class="fa-solid fa-scroll"></i>
+        <span>Rules</span>
+      </a>
 
+      <a class="active" tabindex="0" (click)="clickTab('antichessguide')">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Guide</span>
+      </a>
+
+      <a tabindex="0" (click)="clickTab('antichesslinks')">
+        <i class="fa-solid fa-link"></i>
+        <span>Links</span>
+      </a>
     </div>
+
 
     <div class="academy-links">
 
@@ -25,33 +33,33 @@
 
         <p>New to antichess?. Here are some small tips for starters (click on icon to see an example):</p>
         <ul>
-          <li>- Keep your king, this is not a hard rule but very useful in many situations. <a tabindex="0"
+          <li>Keep your king, this is not a hard rule but very useful in many situations. <a tabindex="0"
           class="overlaylink" [class.active]="false" (click)="openChessBoardOverlay('guide_king')"
           (keypress)="openChessBoardOverlay('guide_king')" target="_blank" rel="noopener noreferrer"></a>
           </li>
-          <li>- Have your pieces control squares on the board, this gives you more choice and opponent less which is key
+          <li>Have your pieces control squares on the board, this gives you more choice and opponent less which is key
             in antichess.<a tabindex="0" class="overlaylink" [class.active]="false"
           (click)="openChessBoardOverlay('guide_coverage')" (keypress)="openChessBoardOverlay('guide_coverage')" target="_blank" rel="noopener noreferrer"></a></li>
-          <li>- Don't give away strong pieces without good reason (king, rook, queen). 
+          <li>Don't give away strong pieces without good reason (king, rook, queen). 
             <a tabindex="0" class="overlaynolink" [class.active]="false"></a>
           </li>
-          <li>- Learn about intermediates (see links below, youtube or lichess study, or click on icon).<a tabindex="0" class="overlaylink" [class.active]="false"
+          <li>Learn about intermediates (see links below, youtube or lichess study, or click on icon).<a tabindex="0" class="overlaylink" [class.active]="false"
           (click)="openChessBoardOverlay('guide_intermediate')" (keypress)="openChessBoardOverlay('guide_intermediate')" target="_blank" rel="noopener noreferrer"></a></li>
-          <li>- Queen is strong in opening, but dangerous to have going to endgame.<a tabindex="0" class="overlaylink" [class.active]="false"
+          <li>Queen is strong in opening, but dangerous to have going to endgame.<a tabindex="0" class="overlaylink" [class.active]="false"
           (click)="openChessBoardOverlay('guide_queen')" (keypress)="openChessBoardOverlay('guide_queen')" target="_blank" rel="noopener noreferrer"></a>
         
                     <a tabindex="0" class="overlaynolink" [class.active]="false"></a>
         </li>
-          <li>- Knights are in general hard to play with in endgame.            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
-          <li>- Rooks are in general very good to have in endgame.            <a tabindex="0" class="overlaylink" [class.active]="false"
+          <li>Knights are in general hard to play with in endgame.            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
+          <li>Rooks are in general very good to have in endgame.            <a tabindex="0" class="overlaylink" [class.active]="false"
           (click)="openChessBoardOverlay('guide_rook')" (keypress)="openChessBoardOverlay('guide_rook')" target="_blank" rel="noopener noreferrer"></a></li>
-          <li>- Bishops are very dangerous in opening, many forced opening lines are with bishop cleaning up the board.
+          <li>Bishops are very dangerous in opening, many forced opening lines are with bishop cleaning up the board.
                       <a tabindex="0" class="overlaylink" [class.active]="false"
           (click)="openChessBoardOverlay('guide_bishop')" (keypress)="openChessBoardOverlay('guide_bishop')" target="_blank" rel="noopener noreferrer"></a></li>
-          <li>- d3, d4, e4 are instantly losing for white.            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
-          <li>- Find some opening lines with white or black that are not instantly losing (use analysis engine on lichess
+          <li>d3, d4, e4 are instantly losing for white.            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
+          <li>Find some opening lines with white or black that are not instantly losing (use analysis engine on lichess
             or check strong players opening repetoire)            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
-          <li>- Play in lichess arena tournaments, there are often a diverse range of players which is beneficial for
+          <li>Play in lichess arena tournaments, there are often a diverse range of players which is beneficial for
             improving.            <a tabindex="0" class="overlaynolink" [class.active]="false"></a></li>
         </ul>
 

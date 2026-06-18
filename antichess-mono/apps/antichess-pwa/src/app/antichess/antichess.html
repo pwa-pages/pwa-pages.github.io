@@ -1,34 +1,66 @@
 <app-header [text]="'Rules'" />
-
-
 <div class="anticontainer antichess main-content">
 
-  
+
   <div class="antichess right-content">
 
-    <div class="eventstab">
-      <a tabindex="0" class="tab" [class.active]="true" (click)="clickTab('antichess')"
-        (keypress)="clickTab('antichess')">Rules</a>
-      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('antichessguide')"
-        (keypress)="clickTab('antichessguide')">Guide</a>
-      <a tabindex="0" class="tab" [class.active]="false" (click)="clickTab('antichesslinks')"
-        (keypress)="clickTab('antichesslinks')">Links</a>
+    <div class="leftmenu">
+      <a class="active" tabindex="0" (click)="clickTab('antichess')">
+        <i class="fa-solid fa-scroll"></i>
+        <span>Rules</span>
+      </a>
 
+      <a tabindex="0" (click)="clickTab('antichessguide')">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Guide</span>
+      </a>
+
+      <a tabindex="0" (click)="clickTab('antichesslinks')">
+        <i class="fa-solid fa-link"></i>
+        <span>Links</span>
+      </a>
     </div>
 
-    <div class="academy-links">
-      <h3>Rules</h3>
-
-
+    <div>
       <p>The rules of this game are the same as for normal Chess (starting position and piece movement) with the
         following differences:</p>
-      <ul>
-        <li>- No castling is allowed.</li>
-        <li>- A pawn can promote to king.</li>
-        <li>- There is no check or checkmate.</li>
-        <li>- Who loses all pieces including the king or cannot make a legal move, wins the game.</li>
-        <li>- Capturing of the opponent's pieces is mandatory — a player must capture if any capture is available; only
-          if no capture is possible may they make a non‑capturing move.</li>
+      <ul class="academy-links">
+        <li>
+          <div class="rule-icon-box">
+            <i class="fa-solid fa-chess-rook"></i>
+          </div>
+          <span>No castling is allowed.</span>
+        </li>
+
+        <li>
+          <div class="rule-icon-box">
+            <i class="rule-icon fa-solid fa-chess-pawn"></i>
+          </div>
+          <span>A pawn can promote to a king.</span>
+        </li>
+
+        <li>
+          <div class="rule-icon-box">
+            <i class="rule-icon fa-solid fa-circle-xmark"></i>
+          </div>
+          <span>There is no check or checkmate.</span>
+        </li>
+
+        <li>
+          <div class="rule-icon-box">
+            <i class="rule-icon fa-solid fa-crown"></i>
+          </div>
+          <span>Who loses all pieces including the king or cannot make a legal move, wins the game.</span>
+        </li>
+
+        <li>
+          <div class="rule-icon-box">
+            <i class="rule-icon fa-solid fa-crosshairs"></i>
+          </div>
+          <span>Capturing of the opponent's pieces is mandatory — a player must capture if any capture is available;
+            only if no capture is possible may they make a non-capturing move.</span>
+        </li>
+
       </ul>
 
       <br />
