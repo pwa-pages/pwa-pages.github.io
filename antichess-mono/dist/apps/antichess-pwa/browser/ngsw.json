@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1781748627389,
+  "timestamp": 1781765784581,
   "appData": {
     "version": "1.16.1"
   },
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-W5OTC5SY.js",
+        "./main-U3MGGWVJ.js",
         "./manifest.webmanifest",
         "./polyfills-5CFQRCPP.js",
         "./scripts-QOGIEEJF.js",
-        "./styles-XEXBETWR.css"
+        "./styles-TWNZFJED.css"
       ],
       "patterns": []
     },
@@ -40,7 +40,6 @@
         "./assets/images/board.png",
         "./assets/images/boardsnippet.png",
         "./media/antichess_king-N6DHRERR.png",
-        "./media/boardsnippet-NFIR7GSF.png",
         "./media/fa-brands-400-AHOAZHCU.woff2",
         "./media/fa-regular-400-VRZYIBIZ.woff2",
         "./media/fa-solid-900-MDEYK55F.woff2",
@@ -59,18 +58,17 @@
     "./assets/images/board.png": "1df236bf4f8526998f274b3b1a13804cdce37b70",
     "./assets/images/boardsnippet.png": "c8a5985a6b73ccc48bb1a427ae95ff4e09530f5d",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "35fb2f43a9622b6ce8a94c292971a21ea0c89df7",
-    "./main-W5OTC5SY.js": "aa61443ee2fc1318eecc2411410a2bceb4ba46f9",
+    "./index.html": "4340100b96e26f2469ae17cb28928e4df84be696",
+    "./main-U3MGGWVJ.js": "f973c884d700dcce413aac29575bb076a1ab8b74",
     "./manifest.webmanifest": "d78fac2815cda06ba8c0665c24e188f70981ebda",
     "./media/antichess_king-N6DHRERR.png": "d42c9d518565cf1cdeb93a1a744df291950eb18a",
-    "./media/boardsnippet-NFIR7GSF.png": "c8a5985a6b73ccc48bb1a427ae95ff4e09530f5d",
     "./media/fa-brands-400-AHOAZHCU.woff2": "e48612cd49700246d0cc0d2d1943ed8b9d157316",
     "./media/fa-regular-400-VRZYIBIZ.woff2": "708f3ca10d101babf966040b50be3bf239456384",
     "./media/fa-solid-900-MDEYK55F.woff2": "79f2a488fd9c1e1f01943a196f5abf53821e04d7",
     "./media/fa-v4compatibility-ETEVP6IB.woff2": "48baec990161d24f6b770e803c9c14cfe2d07da5",
     "./polyfills-5CFQRCPP.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
     "./scripts-QOGIEEJF.js": "e83470118bc518ad047b5e89e17f95abc3afe41d",
-    "./styles-XEXBETWR.css": "222861b3672924e084f47b2c23067439117e2228"
+    "./styles-TWNZFJED.css": "03613a4a7ef1e4521ebea6f5f5436041b02634c2"
   },
   "navigationUrls": [
     {

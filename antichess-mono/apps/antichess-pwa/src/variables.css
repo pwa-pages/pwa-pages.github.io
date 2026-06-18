@@ -26,5 +26,6 @@
   --watchers-padding: 1.1vw;
   --watchers-width: 100vw;
   --versions-width: 89vw;
-  --leftmenu-width: 15rem;
+  --leftmenu-width: calc(3.2rem + 10vw);
+  --leftmenu-width-with-extra: calc(8.2rem + 10vw);
 }
