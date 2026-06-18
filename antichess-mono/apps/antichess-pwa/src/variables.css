@@ -27,5 +27,6 @@
   --watchers-width: 100vw;
   --versions-width: 89vw;
   --leftmenu-width: calc(3.2rem + 10vw);
+  --leftmenu-width11: calc(3.2rem + 11vw);
   --leftmenu-width-with-extra: calc(8.2rem + 10vw);
 }
