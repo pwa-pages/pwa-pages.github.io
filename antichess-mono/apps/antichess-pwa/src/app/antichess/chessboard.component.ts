@@ -25,6 +25,8 @@ export class ChessBoardComponent implements AfterViewInit, OnChanges, OnInit {
     this.setMoveAnnotation()
   }
   @ViewChild('board', { static: true }) board!: ElementRef
+
+  @Input() closable: boolean = true
   @Input() config: string = 'guide_king'
   private baseDrawable = {
     enabled: true,

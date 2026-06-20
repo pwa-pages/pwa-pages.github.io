@@ -1,6 +1,7 @@
 
 <div class="boardwithannotation">
-  <button class = "closebutton" type="button" (click)="close()" aria-label="Close" title="Close"    >
+  
+  <button class="closebutton" type="button" (click)="close()" aria-label="Close" title="Close" [hidden]="!closable">
     &times;
   </button>
   <div class="moveannotation">
