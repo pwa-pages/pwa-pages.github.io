@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, Input, OnChanges, OnInit } from '@angular/core'
 import { Chessground } from 'chessground'
 import type { Api } from 'chessground/api'
+import { EventService, EventType } from '../service/event.service';
 
 @Component({
   selector: 'app-chessboard',
@@ -9,6 +10,17 @@ import type { Api } from 'chessground/api'
 })
 
 export class ChessBoardComponent implements AfterViewInit, OnChanges, OnInit {
+
+  constructor(
+
+    private eventService: EventService
+  ) {
+
+
+
+  }
+
+
   ngOnInit(): void {
     this.setMoveAnnotation()
   }
@@ -33,6 +45,16 @@ export class ChessBoardComponent implements AfterViewInit, OnChanges, OnInit {
         lineWidth: 10
       }
     }
+  }
+
+
+  public close(): void {
+    this.eventService.sendEvent(EventType.CloseChessBoard);
+  }
+
+
+  ngOnDestroy(): void {
+
   }
 
   public moveAnnotation: string = ''

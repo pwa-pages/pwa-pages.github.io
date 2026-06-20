@@ -21,7 +21,7 @@ export class BaseComponent
   protected chessBoardOverlayService: ChessBoardOverlayService;
   protected sideChessBoardConfig: string = '';
   protected moveAnnotation: string | undefined;
-  protected sideChessBoardVisible = false;
+  protected chessBoardVisible = false;
 
   constructor(protected override injector: Injector, protected navigationService: NavigationService) {  
     super(injector);
@@ -44,10 +44,10 @@ export class BaseComponent
     this.chessBoardOverlayService.open({ config, moveAnnotation, editable });
   }
 
-  openSideChessBoard(config: string, moveAnnotation?: string): void {
+  openChessBoard(config: string, moveAnnotation?: string): void {
     this.sideChessBoardConfig = config;
     this.moveAnnotation = moveAnnotation;
-    this.sideChessBoardVisible = true;
+    this.chessBoardVisible = true;
   }
 
   notifyVisible(): boolean {
@@ -65,5 +65,12 @@ export class BaseComponent
     window.addEventListener('resize', this.resetHeight);
 
     this.resetHeight();
+
+     await this.eventService.subscribeToEvent(
+      EventType.CloseChessBoard,
+      () => {
+        this.chessBoardVisible = false;
+      },
+    );
   }
 }

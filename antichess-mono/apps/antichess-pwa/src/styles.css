@@ -840,8 +840,7 @@ a.tab {
 }
 
 .board {
-  max-width: 30rem;
-  width: 50vw;
+  
   aspect-ratio: 1;
   border: 1px solid black;
 
@@ -850,16 +849,16 @@ a.tab {
 .boardwithannotation {
 
   padding: 1rem;
-  width: 80vw;
-  max-width: 45rem;
-  
+  padding-top: 3rem;
+  max-width: 35rem;
+
   border: 1px dashed darkgray;
   border-radius: 2rem;
   background: #ffffff;
-    border-radius: 18px;
+  border-radius: 18px;
   border: 1px solid #edf0f2;
 
-  
+
   box-shadow:
     0 4px 12px rgba(0, 0, 0, .05);
 
@@ -980,7 +979,7 @@ a.tab {
     text-align: left;
   }
 
-    .right-content {
+  .right-content {
 
     padding-left: 3vw;
     padding-right: 3vw;
@@ -989,6 +988,51 @@ a.tab {
     padding-right: 1rem;
     width: 94vw;
   }
+
+  .guide_sidechessboard {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99999;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Make any board/canvas/svg scale to fill while preserving aspect */
+  .guide_sidechessboard .board,
+  .guide_sidechessboard canvas,
+  .guide_sidechessboard svg,
+  .guide_sidechessboard img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Optional close control positioning if present */
+  .guide_sidechessboard .close,
+  .guide_sidechessboard #close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 100000;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 6px;
+    padding: 0.35rem 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  }
+
 }
 
 @media (min-width: 601px) {
@@ -1026,6 +1070,14 @@ a.tab {
     padding-right: 1rem;
     width: 75vw;
   }
+
+  .guide_sidechessboard {
+    position: sticky;
+    top: 1rem;
+    align-self: flex-start;
+    display: inherit;
+  }
+
 
 }
 
@@ -1138,30 +1190,38 @@ a.tab {
   font-weight: normal;
 }
 
-.academy-links h4{
-  margin:inherit;
+.academy-links h4 {
+  margin: inherit;
 }
 
 .academy-links {
-  
+
   padding: 0;
   margin: 0;
   list-style: none;
 
 }
 
-.guide_content{
+.guide_content {
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   gap: 1rem;
 }
 
-.guide_chessboard {
-  position: sticky;
-  top:1rem;
-  align-self: flex-start;
+
+.openboard-icon {
+  font-size: 1.5rem;
 }
 
-.openboard-icon{
-  font-size: 1.5rem;
+.closebutton {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 50;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
 }

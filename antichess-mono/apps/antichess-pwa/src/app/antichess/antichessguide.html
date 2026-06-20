@@ -34,8 +34,8 @@
 
         <p>New to antichess?. Here are some small tips for starters (click on a row to see an example):</p>
         <ul class="academy-links">
-          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_king')"
-            (keypress)="openSideChessBoard('guide_king')" role="button">
+          <a tabindex="0" [class.active]="false" (click)="openChessBoard('guide_king')"
+            (keypress)="openChessBoard('guide_king')" role="button">
             <li>
               <div class="rule-icon-box">
                 <i class="rule-icon fa-solid fa-chess-king"></i>
@@ -49,8 +49,8 @@
             </li>
           </a>
 
-          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_coverage')"
-            (keypress)="openSideChessBoard('guide_coverage')" role="button">
+          <a tabindex="0" [class.active]="false" (click)="openChessBoard('guide_coverage')"
+            (keypress)="openChessBoard('guide_coverage')" role="button">
             <li>
               <div class="rule-icon-box">
                 <i class="rule-icon fa-solid fa-crosshairs"></i>
@@ -78,8 +78,8 @@
             </li>
           </a>
 
-          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_intermediate')"
-            (keypress)="openSideChessBoard('guide_intermediate')" role="button">
+          <a tabindex="0" [class.active]="false" (click)="openChessBoard('guide_intermediate')"
+            (keypress)="openChessBoard('guide_intermediate')" role="button">
             <li>
               <div class="rule-icon-box">
                 <i class="rule-icon fa-solid fa-layer-group"></i>
@@ -93,8 +93,8 @@
             </li>
           </a>
 
-          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_queen')"
-            (keypress)="openSideChessBoard('guide_queen')" role="button">
+          <a tabindex="0" [class.active]="false" (click)="openChessBoard('guide_queen')"
+            (keypress)="openChessBoard('guide_queen')" role="button">
             <li>
               <div class="rule-icon-box">
                 <i class="rule-icon fa-solid fa-chess-queen"></i>
@@ -121,8 +121,8 @@
             </li>
           </a>
 
-          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_rook')"
-            (keypress)="openSideChessBoard('guide_rook')" role="button">
+          <a tabindex="0" [class.active]="false" (click)="openChessBoard('guide_rook')"
+            (keypress)="openChessBoard('guide_rook')" role="button">
             <li>
               <div class="rule-icon-box">
                 <i class="rule-icon fa-solid fa-chess-rook"></i>
@@ -137,8 +137,8 @@
             </li>
           </a>
 
-          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_bishop')"
-            (keypress)="openSideChessBoard('guide_bishop')" role="button">
+          <a tabindex="0" [class.active]="false" (click)="openChessBoard('guide_bishop')"
+            (keypress)="openChessBoard('guide_bishop')" role="button">
             <li>
               <div class="rule-icon-box">
                 <i class="rule-icon fa-solid fa-chess-bishop"></i>
@@ -195,7 +195,7 @@
 
       </div>
 
-      <div class="guide_chessboard" *ngIf="sideChessBoardVisible">
+      <div class="guide_sidechessboard" *ngIf="chessBoardVisible">
         <app-chessboard [config]="sideChessBoardConfig"></app-chessboard>
       </div>
 

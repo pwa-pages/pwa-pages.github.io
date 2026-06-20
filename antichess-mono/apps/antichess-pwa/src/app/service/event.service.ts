@@ -14,6 +14,7 @@ export enum EventType {
   VersionUpdated = 'VersionUpdated',
   StartFullDownload = 'StartFullDownload',
   EndFullDownload = 'EndFullDownload',
+  CloseChessBoard = 'CloseChessBoard',
 }
 
 export type EventData = string | object;
@@ -42,7 +43,8 @@ export class EventService {
       [EventType.EventsScreenLoaded]: new Subject<EventData>(),
       [EventType.VersionUpdated]: new Subject<EventData>(),
       [EventType.AntichessScreenLoaded]: new Subject<EventData>(),
-      [EventType.WindowResized]: new Subject<EventData>()
+      [EventType.WindowResized]: new Subject<EventData>(),
+      [EventType.CloseChessBoard]: new Subject<EventData>()
     };
     return this.eventSubscriptions;
   }
