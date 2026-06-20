@@ -25,143 +25,185 @@
     </div>
 
 
-    <div class="academy-links">
+    <div class="guide_content">
+
+      <div class="academy-links">
 
 
-      <h3>(Very) quick antichess guide</h3>
+        <h3>(Very) quick antichess guide</h3>
 
-      <p>New to antichess?. Here are some small tips for starters (click on a row to see an example):</p>
-      <ul class="academy-links">
-        <a tabindex="0" [class.active]="false" (click)="openChessBoardOverlay('guide_king')"
-          (keypress)="openChessBoardOverlay('guide_king')" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-chess-king"></i>
-            </div>
-            <span>
-              Keep your king, this is not a hard rule but very useful in many situations.
-            </span>
-          </li>
-        </a>
+        <p>New to antichess?. Here are some small tips for starters (click on a row to see an example):</p>
+        <ul class="academy-links">
+          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_king')"
+            (keypress)="openSideChessBoard('guide_king')" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-chess-king"></i>
+              </div>
+              <span>
+                <h4>Keep your king</h4>this is not a hard rule but very useful in many situations.
+              </span>
+              <div class="openboard-icon">
+                <i class="rule-icon fa-solid fa-angle-right"></i>
+              </div>
+            </li>
+          </a>
 
-        <a tabindex="0" [class.active]="false" (click)="openChessBoardOverlay('guide_coverage')"
-          (keypress)="openChessBoardOverlay('guide_coverage')" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-crosshairs"></i>
-            </div>
-            <span>
-              Have your pieces control squares on the board, this gives you more choice and opponent less which is key in antichess.
-            </span>
-          </li>
-        </a>
+          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_coverage')"
+            (keypress)="openSideChessBoard('guide_coverage')" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-crosshairs"></i>
+              </div>
+              <span>
+                <h4>Have your pieces control squares on the board</h4> this gives you more choice and opponent less which is key
+                in antichess.
+              </span>
+              <div class="openboard-icon">
+                <i class="rule-icon fa-solid fa-angle-right"></i>
+              </div>
+            </li>
+          </a>
 
-        <a tabindex="0" [class.active]="false" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <span>
-              Don't give away strong pieces without good reason (king, rook, queen).
-            </span>
-          </li>
-        </a>
+          <a tabindex="0" [class.active]="false" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-triangle-exclamation"></i>
+              </div>
+              <span>
+                <h4>Don't give away strong pieces</h4>
+                Don't give away strong pieces without good reason (king, rook, queen).
+              </span>
+              
+            </li>
+          </a>
 
-        <a tabindex="0" [class.active]="false" (click)="openChessBoardOverlay('guide_intermediate')"
-          (keypress)="openChessBoardOverlay('guide_intermediate')" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-layer-group"></i>
-            </div>
-            <span>
-              Learn about intermediates (see links below, youtube or lichess study, or click the row).
-            </span>
-          </li>
-        </a>
+          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_intermediate')"
+            (keypress)="openSideChessBoard('guide_intermediate')" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-layer-group"></i>
+              </div>
+              <span>
+                <h4>Learn about intermediates</h4> (see links below, youtube or lichess study, or click the row).
+              </span>
+              <div class="openboard-icon">
+                <i class="rule-icon fa-solid fa-angle-right"></i>
+              </div>
+            </li>
+          </a>
 
-        <a tabindex="0" [class.active]="false" (click)="openChessBoardOverlay('guide_queen')"
-          (keypress)="openChessBoardOverlay('guide_queen')" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-chess-queen"></i>
-            </div>
-            <span>
-              Queen is strong in opening, but dangerous to have going to endgame.
-            </span>
-          </li>
-        </a>
+          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_queen')"
+            (keypress)="openSideChessBoard('guide_queen')" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-chess-queen"></i>
+              </div>
+              <span>
+                <h4>Watch your queen</h4>
+                Queen is strong in opening, but dangerous to have going to endgame.
+              </span>
+              <div class="openboard-icon">
+                <i class="rule-icon fa-solid fa-angle-right"></i>
+              </div>
+            </li>
+          </a>
 
-        <a tabindex="0" [class.active]="false" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-chess-knight"></i>
-            </div>
-            <span>
-              Knights are in general hard to play with in endgame.
-            </span>
-          </li>
-        </a>
+          <a tabindex="0" [class.active]="false" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-chess-knight"></i>
+              </div>
+              <span>
+                <h4>Watch your knights</h4>
+                Knights are in general hard to play with in endgame.
+              </span>
+            </li>
+          </a>
 
-        <a tabindex="0" [class.active]="false" (click)="openChessBoardOverlay('guide_rook')"
-          (keypress)="openChessBoardOverlay('guide_rook')" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-chess-rook"></i>
-            </div>
-            <span>
-              Rooks are in general very good to have in endgame.
-            </span>
-          </li>
-        </a>
+          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_rook')"
+            (keypress)="openSideChessBoard('guide_rook')" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-chess-rook"></i>
+              </div>
+              <span>
+                <h4>Watch your rooks</h4>
+                Rooks are in general very good to have in endgame.
+              </span>
+              <div class="openboard-icon">
+                <i class="rule-icon fa-solid fa-angle-right"></i>
+              </div>
+            </li>
+          </a>
 
-        <a tabindex="0" [class.active]="false" (click)="openChessBoardOverlay('guide_bishop')"
-          (keypress)="openChessBoardOverlay('guide_bishop')" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-chess-bishop"></i>
-            </div>
-            <span>
-              Bishops are very dangerous in opening, many forced opening lines are with bishop cleaning up the board.
-            </span>
-          </li>
-        </a>
+          <a tabindex="0" [class.active]="false" (click)="openSideChessBoard('guide_bishop')"
+            (keypress)="openSideChessBoard('guide_bishop')" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-chess-bishop"></i>
+              </div>
+              <span>
+                <h4>Watch your bishops</h4>
+                Bishops are very dangerous in opening, many forced opening lines are with bishop cleaning up the board.
+              </span>
+              <div class="openboard-icon">
+                <i class="rule-icon fa-solid fa-angle-right"></i>
+              </div>
+            </li>
+          </a>
 
-        <a tabindex="0" [class.active]="false" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-circle-exclamation"></i>
-            </div>
-            <span>
-              d3, d4, e4 are instantly losing for white.
-            </span>
-          </li>
-        </a>
+          <a tabindex="0" [class.active]="false" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-circle-exclamation"></i>
+              </div>
+              <span>
+                <h4>Losing lines</h4>d3, d4, e4 are instantly losing for white.
+              </span>
+            </li>
+          </a>
 
-        <a tabindex="0" [class.active]="false" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-book"></i>
-            </div>
-            <span>
-              Find some opening lines with white or black that are not instantly losing (use analysis engine on lichess or check strong players opening repertoire).
-            </span>
-          </li>
-        </a>
+          <a tabindex="0" [class.active]="false" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-book"></i>
+              </div>
+              <span>
+                <h4>Opening lines</h4>
+                Find some opening lines with white or black that are not instantly losing (use analysis engine on
+                lichess or check strong players opening repertoire).
+              </span>
+            </li>
+          </a>
 
-        <a tabindex="0" [class.active]="false" role="button">
-          <li>
-            <div class="rule-icon-box">
-              <i class="rule-icon fa-solid fa-trophy"></i>
-            </div>
-            <span>
-              Play in lichess arena tournaments, there are often a diverse range of players which is beneficial for improving.
-            </span>
-          </li>
-        </a>
+          <a tabindex="0" [class.active]="false" role="button">
+            <li>
+              <div class="rule-icon-box">
+                <i class="rule-icon fa-solid fa-trophy"></i>
+              </div>
+              <span>
+                <h4>Play in tournaments</h4>
+                Play in lichess arena tournaments, there are often a diverse range of players which is beneficial for
+                improving.
+              </span>
+            </li>
+          </a>
 
 
-      </ul>
+        </ul>
+
+      </div>
+
+      <div class="guide_chessboard" *ngIf="sideChessBoardVisible">
+        <app-chessboard [config]="sideChessBoardConfig"></app-chessboard>
+      </div>
+
 
     </div>
+
+
+
+
   </div>
 </div>

@@ -704,9 +704,6 @@ a.tab {
 }
 
 .rank-results {
-  background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
   max-width: 100%;
   overflow: hidden;
 }
@@ -853,11 +850,18 @@ a.tab {
 .boardwithannotation {
 
   padding: 1rem;
-  max-width: 30rem;
-  width: 50vw;
+  width: 80vw;
+  max-width: 45rem;
+  
   border: 1px dashed darkgray;
   border-radius: 2rem;
-  background: #eeeeee;
+  background: #ffffff;
+    border-radius: 18px;
+  border: 1px solid #edf0f2;
+
+  
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, .05);
 
 }
 
@@ -1130,11 +1134,34 @@ a.tab {
 
 .academy-links li span {
   flex: 1;
+  color: black;
+  font-weight: normal;
+}
+
+.academy-links h4{
+  margin:inherit;
 }
 
 .academy-links {
-  max-width: 60rem;
+  
   padding: 0;
   margin: 0;
   list-style: none;
+
+}
+
+.guide_content{
+  display: flex;
+  flex-direction: row; 
+  gap: 1rem;
+}
+
+.guide_chessboard {
+  position: sticky;
+  top:1rem;
+  align-self: flex-start;
+}
+
+.openboard-icon{
+  font-size: 1.5rem;
 }

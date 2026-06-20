@@ -9,12 +9,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavigationService } from '../service/navigation.service';
 import { HeaderComponent } from './header.component';
+import { ChessBoardComponent } from './chessboard.component';
 
 @Component({
   selector: 'app-antichessguide',
   templateUrl: './antichessguide.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, ChessBoardComponent],
 })
 export class AntichessGuideComponent extends BaseComponent implements OnInit {
 

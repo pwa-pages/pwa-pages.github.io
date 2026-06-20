@@ -19,6 +19,9 @@ export class BaseComponent
   protected browserService: BrowserService;
   protected route: ActivatedRoute | undefined;
   protected chessBoardOverlayService: ChessBoardOverlayService;
+  protected sideChessBoardConfig: string = '';
+  protected moveAnnotation: string | undefined;
+  protected sideChessBoardVisible = false;
 
   constructor(protected override injector: Injector, protected navigationService: NavigationService) {  
     super(injector);
@@ -40,6 +43,13 @@ export class BaseComponent
   openChessBoardOverlay(config: string, moveAnnotation?: string, editable?: boolean): void {
     this.chessBoardOverlayService.open({ config, moveAnnotation, editable });
   }
+
+  openSideChessBoard(config: string, moveAnnotation?: string): void {
+    this.sideChessBoardConfig = config;
+    this.moveAnnotation = moveAnnotation;
+    this.sideChessBoardVisible = true;
+  }
+
   notifyVisible(): boolean {
 
     return true;

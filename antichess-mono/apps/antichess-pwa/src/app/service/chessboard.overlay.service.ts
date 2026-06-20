@@ -20,7 +20,7 @@ export class ChessBoardOverlayService {
     this.overlayRef = this.overlay.create({
       hasBackdrop: true,
       backdropClass: 'chess-overlay-backdrop',
-      panelClass: 'chess-overlay-panel',
+      panelClass: 'antichess-overlay-panel',
       scrollStrategy: this.overlay.scrollStrategies.block(),
       positionStrategy: this.overlay.position()
         .global()

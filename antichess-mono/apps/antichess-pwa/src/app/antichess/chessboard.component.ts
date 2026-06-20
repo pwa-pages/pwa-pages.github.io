@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core'
+import { Component, ElementRef, ViewChild, AfterViewInit, Input, OnChanges, OnInit } from '@angular/core'
 import { Chessground } from 'chessground'
 import type { Api } from 'chessground/api'
 
@@ -54,6 +54,13 @@ export class ChessBoardComponent implements AfterViewInit, OnChanges, OnInit {
       movable: { free: true, color: 'both' },
       animation: { duration: 200, enabled: true },
       disableContextMenu: true,
+      drawable: {
+        ...this.baseDrawable,
+        enabled: true, visible: true,
+        autoShapes: [
+
+        ]
+      },
       moveAnnotation: 'Without a king white is forced to have his long range rook opened up eventually which will lose hime the game. The king is not covering the whole board so is not forced to capture blacks pieces like long range pieces would do.'
     },
 
@@ -82,36 +89,71 @@ export class ChessBoardComponent implements AfterViewInit, OnChanges, OnInit {
     rules_stalemate: {
       fen: 'r4b2/p1pn3r/P3p3/8/8/8/8/8 w - - 0 20',
       orientation: 'white', coordinates: false, disableContextMenu: true,
-      moveAnnotation: 'White to move. White cannot make a move so wins the game.'
+      moveAnnotation: 'White to move. White cannot make a move so wins the game.',
+      drawable: {
+        ...this.baseDrawable,
+        enabled: true, visible: true,
+        autoShapes: [
+
+        ]
+      }
     },
 
     guide_rook: {
       fen: '8/8/8/3k4/8/8/8/7R w - - 0 1',
       orientation: 'white', coordinates: false, disableContextMenu: true,
-      moveAnnotation: 'Rooks are good against pawns, and can give mate on its own against a king, one of the reasons people like to keep rooks. (<a href="https://lichess.org/study/fXx4u9R5/vj24sHOb" target="_blank" rel="noopener noreferrer">See on lichess</a>)'
+      moveAnnotation: 'Rooks are good against pawns, and can give mate on its own against a king, one of the reasons people like to keep rooks. (<a href="https://lichess.org/study/fXx4u9R5/vj24sHOb" target="_blank" rel="noopener noreferrer">See on lichess</a>)',
+      drawable: {
+        ...this.baseDrawable,
+        enabled: true, visible: true,
+        autoShapes: [
+
+        ]
+      }
     }
     ,
 
     guide_intermediate: {
       fen: '4k1n1/ppp2pp1/4p3/8/6n1/N3P3/PPP1K3/R1B5 w - - 0 3',
       orientation: 'white', coordinates: false, disableContextMenu: true,
-      moveAnnotation: 'Intermediate moves can be played when ones pieces are attacked and you can attack an undefended piece, in this case the intermediate is Nb4. (<a href="https://lichess.org/study/fXx4u9R5/nUPHwGg9" target="_blank" rel="noopener noreferrer">See on lichess</a>)'
+      moveAnnotation: 'Intermediate moves can be played when ones pieces are attacked and you can attack an undefended piece, in this case the intermediate is Nb4. (<a href="https://lichess.org/study/fXx4u9R5/nUPHwGg9" target="_blank" rel="noopener noreferrer">See on lichess</a>)',
+      drawable: {
+        ...this.baseDrawable,
+        enabled: true, visible: true,
+        autoShapes: [
+
+        ]
+      }
     }
     ,
 
     guide_queen: {
       fen: '4k3/1pp3pp/8/8/8/4P3/2KP4/3Q4 w - - 0 1',
       orientation: 'white', coordinates: false, disableContextMenu: true,
-      moveAnnotation: 'Unless whites queen has some substantial space safely covered on the board it may be safe, but often it is not, for example here against normally weak pawns in endgame. (<a href="https://lichess.org/study/fXx4u9R5/mvfkwbvo" target="_blank" rel="noopener noreferrer">See on lichess</a>)'
+      moveAnnotation: 'Unless whites queen has some substantial space safely covered on the board it may be safe, but often it is not, for example here against normally weak pawns in endgame. (<a href="https://lichess.org/study/fXx4u9R5/mvfkwbvo" target="_blank" rel="noopener noreferrer">See on lichess</a>)',
+      drawable: {
+        ...this.baseDrawable,
+        enabled: true, visible: true,
+        autoShapes: [
+
+        ]
+      }
     },
 
     guide_bishop: {
       fen: 'rn1qkbnr/ppp1pppp/8/3p4/6b1/4P3/PPPP1PPP/RNBK1BNR b - - 1 3',
       orientation: 'white', coordinates: false, disableContextMenu: true,
-      moveAnnotation: 'White has an easy time having its pieces taken by blacks bishop. (<a href="https://lichess.org/study/fXx4u9R5/BBchgJfg" target="_blank" rel="noopener noreferrer">See on lichess</a>)'
+      moveAnnotation: 'White has an easy time having its pieces taken by blacks bishop. (<a href="https://lichess.org/study/fXx4u9R5/BBchgJfg" target="_blank" rel="noopener noreferrer">See on lichess</a>)',
+      drawable: {
+        ...this.baseDrawable,
+        enabled: true, visible: true,
+        autoShapes: [
+
+        ]
+      }
     }
 
-    
+
   }
 
   ngAfterViewInit() {
@@ -123,12 +165,15 @@ export class ChessBoardComponent implements AfterViewInit, OnChanges, OnInit {
     this.moveAnnotation = this.getConfig(this.config).moveAnnotation ?? ''
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.cg && changes['key'] && !changes['key'].isFirstChange()) {
-      const cfg = this.getConfig(this.config)
+  ngOnChanges() {
+    const cfg = this.getConfig(this.config)
+    if (this.cg) {
       this.cg.set(cfg)
-      this.setMoveAnnotation()
+    } else if (this.board && this.board.nativeElement) {
+      this.cg = Chessground(this.board.nativeElement, cfg)
     }
+    this.setMoveAnnotation()
+
   }
 
   private getConfig(key: string): any { return this.configMap[key] ?? {} }
