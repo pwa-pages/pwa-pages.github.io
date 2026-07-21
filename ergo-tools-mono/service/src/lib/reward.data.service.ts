@@ -47,7 +47,7 @@ class RewardDataService extends DataService<DbInput> {
         input.assets = input.assets
           .filter(
             (asset: Asset) =>
-              asset.tokenId == rs_RSNTokenId || asset.tokenId == rs_eRSNTokenId,
+              asset.amount < 5000000 && (asset.tokenId == rs_RSNTokenId || asset.tokenId == rs_eRSNTokenId),
           )
           .map((asset_1: Asset) => {
             return asset_1;

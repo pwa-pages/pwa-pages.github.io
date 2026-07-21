@@ -34,7 +34,7 @@ class RewardDataService extends DataService {
             const filteredInputs = inputs.filter((i) => i.chainType != null || getChainType(i.address) != null);
             filteredInputs.forEach((input) => {
                 input.assets = input.assets
-                    .filter((asset) => asset.tokenId == rs_RSNTokenId || asset.tokenId == rs_eRSNTokenId)
+                    .filter((asset) => asset.amount < 5000000 && (asset.tokenId == rs_RSNTokenId || asset.tokenId == rs_eRSNTokenId))
                     .map((asset_1) => {
                     return asset_1;
                 });
