@@ -20,7 +20,7 @@ const rs_PerfTx_Key = 'id';
 const rs_Address_Key = 'address';
 const rs_PermitCost = 3000;
 const rs_WatcherCollateralRSN = (chainType) => {
-    if (chainType === ChainType.Runes) {
+    if (chainType === ChainType.Runes || chainType === ChainType.Firo) {
         return 50000;
     }
     else {
@@ -28,7 +28,7 @@ const rs_WatcherCollateralRSN = (chainType) => {
     }
 };
 const rs_WatcherCollateralERG = (chainType) => {
-    if (chainType === ChainType.Runes) {
+    if (chainType === ChainType.Runes || chainType === ChainType.Firo) {
         return 10;
     }
     else {
