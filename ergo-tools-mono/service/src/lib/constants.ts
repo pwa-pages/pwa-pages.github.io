@@ -27,7 +27,7 @@ const rs_WatcherCollateralRSN = (
   chainType: string
 ): number => {
 
-  if (chainType === ChainType.Runes) {
+  if (chainType === ChainType.Runes || chainType === ChainType.Firo) {
     return 50000;
   }
   else {
@@ -39,7 +39,7 @@ const rs_WatcherCollateralRSN = (
 const rs_WatcherCollateralERG = (
   chainType: string
 ): number => {
-  if (chainType === ChainType.Runes) {
+  if (chainType === ChainType.Runes || chainType === ChainType.Firo) {
     return 10;
   }
   else {

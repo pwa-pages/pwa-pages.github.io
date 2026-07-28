@@ -6,9 +6,9 @@ declare enum ChainType {
     Binance = "Binance",
     Doge = "Doge",
     Runes = "Runes",
+    Firo = "Firo",
     Nervos = "Nervos",
     Handshake = "Handshake",
-    Firo = "Firo",
     Base = "Base",
     Monero = "Monero"
 }
