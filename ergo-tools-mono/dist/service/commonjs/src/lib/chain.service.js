@@ -119,7 +119,7 @@ const rewardAddresses = {
     [ChainType.Nervos]: null,
     [ChainType.Handshake]: null,
     [ChainType.Monero]: null,
-    [ChainType.Firo]: null,
+    [ChainType.Firo]: '2Eit2LFRqu2Mo33z3pYTJRHNCPZXtS2f68LNW668eK4nJNwXQZMTEW23dCLCxfBX9CZfhHCCt1AbFaprUWX4wG2LfPVrXjGSpZCB5oX3FQ23WXoS58MGLwDDjrEEyoWCbvS1QN9mAgg44yqcgBQajZp1RRJohTZDfYZT58h7eXMZyWpSqw2TMAjrHSmPgKaHxM5yoGeWsRqTscGxrjvjts9dQWWgAZy7NuKC3zks5GW1dVXFYs9xa1V1JfefjCXW1RWJpWoVc8NqEXKFZF3xh8mgfwbWWmZoo6cJWRn8yMyAjheCCXprsr8uD8zLiJHh2inC34ymhopvGnVVU9wxK9exLNprv2Hgy1TCsxvKJxT1gPX4czEqvv3FfgnbhLF4mStnfUYzwZRCCn6dgjEKBmmQfXzFv88TQWW8AyeagY7Tj9oC3bNi63VutaA4MBCTHkg5xkkqbmmPnyvKrAsXy5SVUuAAzmVDkVrV8MAcjbeiS8SxVqtFKxGSLwEbMLyyDAM4FGmRz4XzhfaT9RHU93iaE54wkM7ApkTDgCpaSnM7hhQgqGRFseEoH5mDJFcNUVL21KJXJ7oufAp5jxAR6XphgaHvSFZqoZhb1mCZEa9ZzJthaKHhKUabcXUxkDs4Ev46VxkxxqhT79JXXmFLg5rNCJEdSwMm324feYFWJodEoEAt9QDd6Tk2itPoCmem7Du1dZ',
     [ChainType.Base]: null,
 };
 const rewardAddressesV2 = {
