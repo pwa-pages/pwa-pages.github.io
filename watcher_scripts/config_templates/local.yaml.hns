@@ -1,4 +1,4 @@
-network: ergo
+network: firo
 api:
   apiKeyHash: '#API_KEY#'
 ergo:
@@ -7,9 +7,17 @@ ergo:
   mnemonic: "#MNEMONIC#"
   node:
     url: http://host.docker.internal:9053
+firo:
+  type: rpc
+  rpc:
+    url: http://host.docker.internal:8382/
+    username: myuser
+    password: mypassword
+  initial:
+    height: #HNS_HEIGHT#
+observation:
+  confirmation: 8
 healthCheck:
   permit:
    warnCommitmentCount: 1 # amount of permits left before giving a warning
    criticalCommitmentCount: 0 # amount of permits left it is critical
-observation:
-  confirmation: 9

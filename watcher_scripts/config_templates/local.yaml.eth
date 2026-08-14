@@ -6,7 +6,7 @@ ergo:
   initialHeight: #ERGO_HEIGHT#
   mnemonic: "#MNEMONIC#"
   node:
-    url: http://host.docker.internal:9053
+    url: http://192.168.178.227:9061
 ethereum:
   type: rpc
   rpc:
@@ -14,8 +14,7 @@ ethereum:
   initial:
     height: #ETH_HEIGHT#
 observation:
-  confirmation: 100
-  validThreshold: 7200
+  confirmation: 20
 healthCheck:
   permit:
    warnCommitmentCount: 1 # amount of permits left before giving a warning

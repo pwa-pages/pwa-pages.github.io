@@ -6,13 +6,12 @@ ergo:
   initialHeight: #ERGO_HEIGHT#
   mnemonic: "#MNEMONIC#"
   node:
-    url: http://host.docker.internal:9053
+    url: https://node-p2p.ergoplatform.com
 binance:
   type: rpc
   rpc:
-    url: http://192.168.178.227:8545/
+    url: http://host.docker.internal:8545/
   initial:
     height: #BSC_HEIGHT#
 observation:
-  confirmation: 400
-  validThreshold: 28800
+  confirmation: 300

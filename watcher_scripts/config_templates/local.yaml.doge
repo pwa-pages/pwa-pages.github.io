@@ -6,7 +6,7 @@ ergo:
   initialHeight: #ERGO_HEIGHT#
   mnemonic: "#MNEMONIC#"
   node:
-    url: http://host.docker.internal:9053
+    url: http://192.168.178.227:9061
 doge:
   type: rpc
   rpc:
@@ -17,5 +17,4 @@ doge:
   initial:
     height: #DOGE_HEIGHT#
 observation:
-  confirmation: 20
-  validThreshold: 1440
+  confirmation: 10

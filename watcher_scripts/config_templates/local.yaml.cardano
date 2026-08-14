@@ -1,12 +1,12 @@
 network: cardano
 api:
-  apiKeyHash: '#API_KEY'
+  apiKeyHash: '#API_KEY#'
 ergo:
   type: node
   initialHeight: #ERGO_HEIGHT#
   mnemonic: "#MNEMONIC#"
   node:
-    url: http://host.docker.internal:9053
+    url: https://node-p2p.ergoplatform.com
 cardano:
   type: ogmios
   ogmios:
@@ -23,4 +23,3 @@ healthCheck:
    criticalCommitmentCount: 0 # amount of permits left it is critical
 observation:
   confirmation: 25
-  validThreshold: 12960
