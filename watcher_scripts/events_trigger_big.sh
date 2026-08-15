@@ -25,7 +25,7 @@ select(.status != "successful") |
     status: .status,
     timestamp: .timestamp,
     token: .lockToken.name,
-    decimals: .lockToken.significantDecimals
+    decimals: .lockToken.significantDecimal
 } | [.amount, .token, .chain, .eventId, .status, .timestamp, .decimals] | @tsv' | \
 # Use awk to format, align, and apply the additional logic
 awk -v current_time="$current_time" '
@@ -88,14 +88,14 @@ BEGIN {
         numeric_amount = (full_amount / (10 ^ decimals)) + 0
 
         # Combine all high-value transaction checks into one condition
-        if ((numeric_amount > 40000 && (token == "ERG" || token == "rsERG")) ||
+        if ((numeric_amount >= 40000 && (token == "ERG" || token == "rsERG")) ||
             (numeric_amount > 40000 && (token == "ADA" || token == "rsADA")) ||
             (numeric_amount > 10000000 && (token == "SUGAR" || token == "rsSUGAR")) ||
             (numeric_amount > 5 && (token == "ETH" || token == "rsETH")) ||
             (numeric_amount > 100 && (token == "BNB" || token == "rsBNB")) ||
             (numeric_amount > 250000 && (token == "DOGE" || token == "rsDOGE")) ||
             (numeric_amount > 200000 && (token == "RSN" || token == "rsRSN")) ||
-            (numeric_amount > 5000000 && (token == "PALM" || token == "rsPALM")) ||
+            (numeric_amount > 25000000 && (token == "PALM" || token == "rsPALM")) ||
             (numeric_amount > 100000000000 && (token == "GIF" || token == "rsGIF")) ||
             (numeric_amount > 0.49999 && (token == "BTC" || token == "rsBTC"))) {
             # Trigger the appropriate script based on token type
@@ -104,22 +104,22 @@ BEGIN {
                 print "High-value ERG transaction detected for " token " " numeric_amount  > "/dev/stderr"
                 system("trigger.sh ergo")
             }
-            if (first_part == "cardano") {
+            if (first_part == "cardanoxxx") {
                 # Trigger for high-value ADA transactions
                 print "High-value ADA transaction detected for " token " " numeric_amount  > "/dev/stderr"
                 system("trigger.sh cardano")
             }
-            if (first_part == "ethereum") {
+            if (first_part == "ethereumxxx") {
                 # Trigger for high-value ETH transactions
                 print "High-value ETH transaction detected for " token " " numeric_amount  > "/dev/stderr"
                 system("trigger.sh eth")
             }
-            if (first_part == "bitcoin") {
+            if (first_part == "bitcoinxxx") {
                 # Trigger for high-value BTC transactions
                print "High-value BTC transaction detected for " token " " numeric_amount  > "/dev/stderr"
                system("trigger.sh btc")
             }
-            if (first_part == "bitcoin-runes") {
+            if (first_part == "bitcoinXXXXDX-runes") {
                 # Trigger for high-value RUNES transactions
                print "High-value RUNES transaction detected for " token " " numeric_amount  > "/dev/stderr"
                system("trigger.sh runes")

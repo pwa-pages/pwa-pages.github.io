@@ -4,7 +4,7 @@
 export LC_NUMERIC=C
 
 # JSON-RPC endpoint of the BSC node (local or remote)
-RPC_URL="http://192.168.178.227:8545"
+RPC_URL="http://localhost:8545"
 
 # Send request to BSC node to check syncing status
 response=$(curl -s --fail --max-time 10 -X POST \

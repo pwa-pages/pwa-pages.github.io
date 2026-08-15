@@ -2,6 +2,36 @@ cd /home/pebblerye/crypto_scripts
 
 sleep 600
 
+# Fetch Handshake (HNS) block height
+echo "Fetching Handshake (HNS) block height..."
+hns_height=$(curl -s --user "x:YOUR_SECRET" \
+    --data-binary '{"method":"getblockchaininfo","params":[],"id":1}' \
+    -H 'content-type: application/json' \
+    http://192.168.178.227:12037/ | jq -r '.result.blocks')
+
+if [ -n "$hns_height" ]; then
+    echo "Handshake (HNS) Block Height: $hns_height"
+else
+    echo "Handshake (HNS): Unable to fetch block height"
+    hns_height=""
+fi
+export hns_height
+
+    echo "Fetching Firo block height..."
+    firo_height=$(curl -s --user myuser:mypassword \
+        --data-binary '{"jsonrpc":"1.0","id":"curltest","method":"getblockcount","params":[]}' \
+        -H 'content-type: text/plain;' \
+        http://127.0.0.1:8382/ | jq -r '.result')
+
+    if [ -n "$firo_height" ]; then
+        echo "FIRO Block Height: $firo_height"
+    else
+        echo "FIRO : Unable to fetch block height"
+        firo_height=""
+    fi
+    export firo_height
+
+
 # Fetch Bitcoin block height
     echo "Fetching Bitcoin block height..."
     btc_height=$(curl -s --user pebblerye:pebblerye \
@@ -32,7 +62,7 @@ sleep 600
  #   export eth_height
 
     echo "Fetching Ergo block height..."
-    ergo_height=$(curl -s http://localhost:9053/info | jq -r '.fullHeight')
+    ergo_height=$(curl -s http://192.168.178.227:9053/info | jq -r '.fullHeight')
 
     if [ -n "$ergo_height" ]; then
         echo "Ergo (ERG) Block Height: $ergo_height"
@@ -102,6 +132,8 @@ cat <<EOF > set_heights.sh
 
 # Hardcoded values for block heights and information
 btc_height="$btc_height"
+firo_height="$firo_height"
+hns_height="$hns_height"
 bsc_height="$bsc_block_height"
 eth_height="$eth_height"
 ergo_height="$ergo_height"
@@ -112,6 +144,8 @@ cardano_absolute_slot="$cardano_absolute_slot"
 
 # Export variables for usage
 export btc_height
+export firo_height
+export hns_height
 export bsc_height
 export eth_height
 export ergo_height
@@ -122,6 +156,8 @@ export cardano_absolute_slot
 
 # Print the hardcoded values for verification
 echo "Hardcoded Bitcoin (BTC) Block Height: \$btc_height"
+echo "Hardcoded FIRO Block Height: \$firo_height"
+echo "Hardcoded HNS Block Height: \$hns_height"
 echo "Hardcoded Binance (BSC) Block Height: \$bsc_height"
 echo "Hardcoded Ethereum (ETH) Block Height: \$eth_height"
 echo "Hardcoded Ergo (ERG) Block Height: \$ergo_height"

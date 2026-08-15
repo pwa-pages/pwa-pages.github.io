@@ -9,6 +9,7 @@ fi
 WATCHER=$1  # Assign the first argument to the WATCHER variable
 COMPOSE_FILE="docker-compose.yaml"
 CURRENT_DIR=$(pwd)
+DIR_NUM="${CURRENT_DIR: -1}"
 
 if ! systemctl is-active --quiet docker; then
   echo "Docker is not running. Please start Docker first."
@@ -28,6 +29,11 @@ cd config
 
 # Dynamically invoke the script based on the 'WATCHER' variable
 set_watcher_"$WATCHER".sh
+
+#sed -i "/type: node/,/^[^ ]/ s|\(url: http://[^:]*:[0-9]*\)[0-9]|\1$DIR_NUM|" local.yaml
+
+
+
 
 cd ..
 

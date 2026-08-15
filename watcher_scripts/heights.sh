@@ -30,7 +30,7 @@
     export eth_height
 
     echo "Fetching Ergo block height..."
-    ergo_height=$(curl -s http://localhost:9053/info | jq -r '.fullHeight')
+    ergo_height=$(curl -s https://node-p2p.ergoplatform.com/info | jq -r '.fullHeight')
 
     if [ -n "$ergo_height" ]; then
         echo "Ergo (ERG) Block Height: $ergo_height"

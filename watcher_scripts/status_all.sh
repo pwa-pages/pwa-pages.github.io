@@ -93,11 +93,12 @@ else
     fi
 fi
 
-/home/pebblerye/crypto_scripts/status_ogmios.sh
-/home/pebblerye/crypto_scripts/status_btc.sh
+#/home/pebblerye/crypto_scripts/status_ogmios.sh
+#/home/pebblerye/crypto_scripts/status_btc.sh
 /home/pebblerye/crypto_scripts/status_ergo.sh
-/home/pebblerye/crypto_scripts/status_binance.sh
-/home/pebblerye/crypto_scripts/status_doge.sh
+#/home/pebblerye/crypto_scripts/status_binance.sh
+#/home/pebblerye/crypto_scripts/status_doge.sh
+/home/pebblerye/crypto_scripts/status_hns.sh
 /home/pebblerye/crypto_scripts/status_watchers.sh
 
 
@@ -124,7 +125,7 @@ select(.status != "successful") |
     status: .status,
     timestamp: .timestamp,
     token: .lockToken.name,
-    decimals: .lockToken.significantDecimals
+    decimals: .lockToken.significantDecimal
 } | [.amount, .token, .chain, .eventId, .status, .timestamp, .decimals] | @tsv' | \
 # Use awk to format and align the output
 awk '
