@@ -37,6 +37,8 @@ set_watcher_"$WATCHER".sh
 
 cd ..
 
+
+
 reinstall_watcher.sh
 echo "Sleeping 30 seconds..."
 sleep 30

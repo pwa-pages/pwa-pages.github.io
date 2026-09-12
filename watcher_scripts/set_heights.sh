@@ -2,11 +2,12 @@
 
 # Hardcoded values for block heights and information
 btc_height=""
-firo_height="1359417"
-hns_height="342720"
+firo_height="1375593"
+hns_height="346684"
+nervos_height="20429250"
 bsc_height=""
-eth_height=""
-ergo_height="1413873"
+eth_height="25958053"
+ergo_height="1871200"
 doge_height=""
 cardano_block_hash=""
 cardano_block_height=""
@@ -16,6 +17,7 @@ cardano_absolute_slot=""
 export btc_height
 export firo_height
 export hns_height
+export nervoes_height
 export bsc_height
 export eth_height
 export ergo_height
@@ -28,6 +30,7 @@ export cardano_absolute_slot
 echo "Hardcoded Bitcoin (BTC) Block Height: $btc_height"
 echo "Hardcoded FIRO Block Height: $firo_height"
 echo "Hardcoded HNS Block Height: $hns_height"
+echo "Hardcoded HNS Block Height: $nervos_height"
 echo "Hardcoded Binance (BSC) Block Height: $bsc_height"
 echo "Hardcoded Ethereum (ETH) Block Height: $eth_height"
 echo "Hardcoded Ergo (ERG) Block Height: $ergo_height"

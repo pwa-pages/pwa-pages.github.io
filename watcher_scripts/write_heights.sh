@@ -2,6 +2,25 @@ cd /home/pebblerye/crypto_scripts
 
 sleep 600
 
+# Fetch Nervos CKB block height
+echo "Fetching Nervos CKB block height..."
+nervos_height_hex=$(curl -s \
+    -H 'Content-Type: application/json' \
+    --data-binary '{"id":1,"jsonrpc":"2.0","method":"get_tip_block_number","params":[]}' \
+    http://192.168.178.227:8114/ | jq -r '.result // empty')
+
+if [ -n "$nervos_height_hex" ]; then
+    # Convert hex block height (e.g. 0x1bffe9) to decimal
+    nervos_height=$((nervos_height_hex))
+    echo "Nervos CKB Block Height: $nervos_height"
+else
+    echo "Nervos CKB: Unable to fetch block height"
+    nervos_height=""
+fi
+
+export nervos_height
+
+
 # Fetch Handshake (HNS) block height
 echo "Fetching Handshake (HNS) block height..."
 hns_height=$(curl -s --user "x:YOUR_SECRET" \
@@ -21,7 +40,7 @@ export hns_height
     firo_height=$(curl -s --user myuser:mypassword \
         --data-binary '{"jsonrpc":"1.0","id":"curltest","method":"getblockcount","params":[]}' \
         -H 'content-type: text/plain;' \
-        http://127.0.0.1:8382/ | jq -r '.result')
+        http://192.168.178.227:8382/ | jq -r '.result')
 
     if [ -n "$firo_height" ]; then
         echo "FIRO Block Height: $firo_height"
@@ -47,19 +66,19 @@ export hns_height
     fi
     export btc_height
 
-#    echo "Fetching Ethereum block height..."
- #   eth_block_hex=$(curl -s -X POST -H "Content-Type: application/json" \
-#        --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
-#        http://localhost:8545 | jq -r '.result')
+    echo "Fetching Ethereum block height..."
+    eth_block_hex=$(curl -s -X POST -H "Content-Type: application/json" \
+        --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+        http://localhost:8545 | jq -r '.result')
 
- #   if [ -n "$eth_block_hex" ]; then
- #       eth_height=$(printf "%d" "$eth_block_hex")
- #       echo "Ethereum (ETH) Block Height: $eth_height"
- #   else
- #       echo "Ethereum (ETH): Unable to fetch block height"
- #       eth_height=""
- #   fi
- #   export eth_height
+    if [ -n "$eth_block_hex" ]; then
+        eth_height=$(printf "%d" "$eth_block_hex")
+        echo "Ethereum (ETH) Block Height: $eth_height"
+    else
+        echo "Ethereum (ETH): Unable to fetch block height"
+        eth_height=""
+    fi
+    export eth_height
 
     echo "Fetching Ergo block height..."
     ergo_height=$(curl -s http://192.168.178.227:9053/info | jq -r '.fullHeight')
@@ -134,6 +153,7 @@ cat <<EOF > set_heights.sh
 btc_height="$btc_height"
 firo_height="$firo_height"
 hns_height="$hns_height"
+nervos_height="$nervos_height"
 bsc_height="$bsc_block_height"
 eth_height="$eth_height"
 ergo_height="$ergo_height"
@@ -146,6 +166,7 @@ cardano_absolute_slot="$cardano_absolute_slot"
 export btc_height
 export firo_height
 export hns_height
+export nervoes_height
 export bsc_height
 export eth_height
 export ergo_height
@@ -158,6 +179,7 @@ export cardano_absolute_slot
 echo "Hardcoded Bitcoin (BTC) Block Height: \$btc_height"
 echo "Hardcoded FIRO Block Height: \$firo_height"
 echo "Hardcoded HNS Block Height: \$hns_height"
+echo "Hardcoded HNS Block Height: \$nervos_height"
 echo "Hardcoded Binance (BSC) Block Height: \$bsc_height"
 echo "Hardcoded Ethereum (ETH) Block Height: \$eth_height"
 echo "Hardcoded Ergo (ERG) Block Height: \$ergo_height"

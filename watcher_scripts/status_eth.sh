@@ -26,19 +26,3 @@ if [ "$eth_syncing" != "false" ]; then
     output+="Ethereum Node: Syncing in progress (starting block: $starting_block, current block: $current_block, highest block: $highest_block)"$'\n'
 fi
 
-
-beacon_status_code=$(curl -s -o /dev/null -w "%{http_code}" \
-    --connect-timeout 10 --max-time 10 \
-    http://localhost:8080/metrics)
-
-if ! [[ "$beacon_status_code" =~ ^2[0-9]{2}$ ]]; then
-    output+="Beacon Node: Unhealthy or unreachable (HTTP status: $beacon_status_code)"$'\n'
-fi
-
-# Final combined success message
-if [ -z "$output" ] && [ "$ergo_api_status" = true ]; then
-    echo "All watchers, Ogmios, Bitcoin RPC, Ergo, Ethereum nodes, and Ergo Platform API healthy"
-else
-    printf "%s" "$output"
-fi
-

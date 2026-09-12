@@ -99,6 +99,9 @@ fi
 #/home/pebblerye/crypto_scripts/status_binance.sh
 #/home/pebblerye/crypto_scripts/status_doge.sh
 /home/pebblerye/crypto_scripts/status_hns.sh
+/home/pebblerye/crypto_scripts/status_nervos.sh
+/home/pebblerye/crypto_scripts/status_firo.sh
+/home/pebblerye/crypto_scripts/status_eth.sh
 /home/pebblerye/crypto_scripts/status_watchers.sh
 
 
@@ -109,7 +112,7 @@ echo bridge transactions:
 echo 
 echo 
 # API URL
-URL="https://app.rosen.tech/api/v1/events?offset=0&limit=100"
+URL="https://app.rosen.tech/api/v1/events?limit=100&offset=0&sorts=timestamp-DESC"
 
 # Fetch the data from the API
 response=$(curl -s $URL)
@@ -117,7 +120,7 @@ response=$(curl -s $URL)
 # Filter the data and format the output
 echo "$response" | jq -r '
 .items[] | 
-select(.status != "successful") | 
+select(.status != "COMPLETED") | 
 {
     amount: .amount,
     chain: (.fromChain + "-" + .toChain),

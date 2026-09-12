@@ -4,7 +4,7 @@ firo_response=$(curl -sS --max-time 10 \
     -H "Content-Type: application/json" \
     --data-binary '{"jsonrpc":"1.0","id":"healthcheck","method":"getblockcount","params":[]}' \
     -w "\n%{http_code}" \
-    http://127.0.0.1:8382/)
+    http://192.168.178.227:8382/)
 curl_exit_code=$?
 
 if [ "$curl_exit_code" -ne 0 ]; then
