@@ -1,12 +1,12 @@
 network: cardano
 api:
-  apiKeyHash: '#API_KEY#'
+  apiKeyHash: 'APIKEY'
 ergo:
   type: node
   initialHeight: #ERGO_HEIGHT#
   mnemonic: "#MNEMONIC#"
   node:
-    url: https://node-p2p.ergoplatform.com
+    url: http://192.168.178.227:9053
 cardano:
   type: ogmios
   ogmios:

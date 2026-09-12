@@ -1,12 +1,12 @@
 network: bitcoin
 api:
-  apiKeyHash: '#API_KEY#'
+  apiKeyHash: '#APIKEY#'
 ergo:
   type: node
   initialHeight: #ERGO_HEIGHT#
   mnemonic: "#MNEMONIC#"
   node:
-    url: http://192.168.178.227:9061
+    url: http://192.168.178.227:9053
 bitcoin:
   type: rpc
   rpc:

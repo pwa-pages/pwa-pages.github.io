@@ -1,12 +1,12 @@
 network: ergo
 api:
-  apiKeyHash: '#API_KEY#'
+  apiKeyHash: '#APIKEY#'
 ergo:
   type: node
   initialHeight: #ERGO_HEIGHT#
   mnemonic: "#MNEMONIC#"
   node:
-    url: http://host.docker.internal:9053
+    url: http://192.168.178.227:9053
 healthCheck:
   permit:
    warnCommitmentCount: 1 # amount of permits left before giving a warning

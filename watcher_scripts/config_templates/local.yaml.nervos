@@ -1,4 +1,4 @@
-network: firo
+network: nervos
 api:
   apiKeyHash: '#APIKEY#'
 ergo:
@@ -7,14 +7,14 @@ ergo:
   mnemonic: "#MNEMONIC#"
   node:
     url: http://192.168.178.227:9053
-firo:
+nervos:
   type: rpc
   rpc:
     url: http://192.168.178.227:8382/
     username: myuser
     password: mypassword
   initial:
-    height: #FIRO_HEIGHT#
+    height: #NERVOS_HEIGHT#
 observation:
   confirmation: 8
 healthCheck:

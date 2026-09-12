@@ -1,12 +1,12 @@
 network: bitcoin-runes
 api:
-  apiKeyHash: '#API_KEY#'
+  apiKeyHash: '#APIKEY#'
 ergo:
   type: node
   initialHeight: #ERGO_HEIGHT#
   mnemonic: "#MNEMONIC#"
   node:
-    url: http://192.168.178.227:9061
+    url: http://192.168.178.227:9053
 bitcoin:
   type: rpc
   rpc:
@@ -19,7 +19,7 @@ bitcoin:
 bitcoinRunes:
   type: ordiscan
   ordiscan:
-    apiKey: #ORDI_API_KEY#
+    apiKey: #ORDI_KEY#
 healthCheck:
   permit:
    warnCommitmentCount: 1 # amount of permits left before giving a warning
