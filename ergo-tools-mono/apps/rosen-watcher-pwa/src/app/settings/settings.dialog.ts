@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -16,6 +16,7 @@ interface DialogData {
   selector: 'app-dialog',
   templateUrl: './dialog.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule, MatDialogClose],
 })
 export class SettingsDialogComponent {

@@ -3,6 +3,7 @@ import { createCustomElement } from '@angular/elements';
 import {
   provideHttpClient,
   withInterceptorsFromDi,
+  withXhr
 } from '@angular/common/http';
 import { APP_INITIALIZER } from '@angular/core';
 import { RosenWatcherComponent } from '../elements/rosen.watcher.component';
@@ -34,7 +35,7 @@ const serviceWorkerInitializer = {
 (async () => {
   const app = await createApplication({
     providers: [
-      provideHttpClient(withInterceptorsFromDi()),
+      provideHttpClient(withXhr(), withInterceptorsFromDi()),
       dataServiceInitializer,
       serviceWorkerInitializer,
       { provide: IS_ELEMENTS_ACTIVE, useValue: true },

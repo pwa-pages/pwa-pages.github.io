@@ -1,3 +1,4 @@
+"use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ChainPerformanceDataService extends DataService {
     db;

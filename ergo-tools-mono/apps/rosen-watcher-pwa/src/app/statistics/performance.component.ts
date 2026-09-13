@@ -4,6 +4,7 @@ import {
   Injector,
   OnInit,
   ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
@@ -17,6 +18,7 @@ import { NavigationService } from '../service/navigation.service';
   selector: 'app-performance',
   templateUrl: './performance.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class PerformanceComponent

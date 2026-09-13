@@ -6,10 +6,10 @@
     "types": ["node"],
     "paths": {
       "@ergo-tools/service": ["../../../service/src/exports"]
-
     },
     "target": "ESNext",
-    "module": "ES2022"
+    "module": "ES2022",
+    "rootDir": "../../.."
   },
   "include": ["src/**/*.ts"]
 }

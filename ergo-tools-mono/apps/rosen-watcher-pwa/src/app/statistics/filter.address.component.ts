@@ -6,6 +6,7 @@ import {
   Input,
   OnInit,
   Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -16,6 +17,7 @@ import { Address } from '@ergo-tools/service';
   selector: 'app-filter-address',
   templateUrl: './filter.address.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatInputModule, FormsModule, MatCheckboxModule],
 })
 export class FilterAddressComponent implements OnInit {

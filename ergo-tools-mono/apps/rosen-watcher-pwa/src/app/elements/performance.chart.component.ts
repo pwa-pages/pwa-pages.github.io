@@ -6,6 +6,7 @@ import {
   ViewChild,
   Injector,
   OnChanges,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import 'chartjs-adapter-date-fns';
 import { DateUtils } from '../statistics/date.utils';
@@ -20,6 +21,7 @@ import { ChartPoint } from '@ergo-tools/service';
 @Component({
   selector: 'app-performance-chart',
   templateUrl: './performance.chart.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class PerformanceChartComponent

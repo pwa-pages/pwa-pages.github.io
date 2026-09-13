@@ -2,12 +2,14 @@
   "name": "rosen-watcher-pwa",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "generators": {},
   "sourceRoot": "apps/rosen-watcher-pwa/src",
   "prefix": "app",
+  "generators": {},
   "targets": {
     "build": {
       "executor": "@angular/build:application",
+      "defaultConfiguration": "production",
+      "outputs": ["{options.outputPath}"],
       "options": {
         "allowedCommonJsDependencies": ["qrcode"],
         "outputPath": "dist/apps/rosen-watcher-pwa",
@@ -79,12 +81,11 @@
           "serviceWorker": "apps/rosen-watcher-pwa/ngsw-config.json",
           "baseHref": "./"
         }
-      },
-      "defaultConfiguration": "production",
-      "outputs": ["{options.outputPath}"]
+      }
     },
     "serve": {
       "executor": "@angular/build:dev-server",
+      "defaultConfiguration": "development",
       "configurations": {
         "production": {
           "buildTarget": "rosen-watcher-pwa:build:production"
@@ -92,8 +93,7 @@
         "development": {
           "buildTarget": "rosen-watcher-pwa:build:development"
         }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "extract-i18n": {
       "executor": "@angular/build:extract-i18n",

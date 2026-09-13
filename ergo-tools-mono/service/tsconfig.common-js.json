@@ -4,20 +4,17 @@
     "types": [],
     "verbatimModuleSyntax": false,
     "esModuleInterop": false,
-    "noEmitHelpers": false,  
-    "importHelpers": false,  
+    "noEmitHelpers": false,
+    "importHelpers": false,
     "rootDir": "./src/lib/",
     "target": "ESNext",
     "module": "commonjs",
     "moduleResolution": "node",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": false,
+    "noUncheckedSideEffectImports": false,
+    "ignoreDeprecations": "6.0"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts",
-    "**/*.test.ts"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
 }

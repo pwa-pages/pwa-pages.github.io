@@ -7,11 +7,12 @@ import {
   OnInit,
   Output,
   OnChanges,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { EventType } from '../service/event.service';
 import { WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
@@ -23,7 +24,8 @@ import { ChainTypeHelper } from '../imports/imports';
   selector: 'app-mywatchers',
   templateUrl: './mywatchers.html',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [FormsModule],
 })
 export class MyWatchersComponent
   extends BaseWatcherComponent

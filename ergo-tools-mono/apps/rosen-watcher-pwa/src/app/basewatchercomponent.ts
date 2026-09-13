@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { EventData, EventType } from './service/event.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ChainService } from './service/chain.service';
@@ -10,6 +10,7 @@ import { BaseEventAwareComponent } from './baseeventawarecomponent';
 
 @Component({
   selector: 'app-root',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class BaseWatcherComponent

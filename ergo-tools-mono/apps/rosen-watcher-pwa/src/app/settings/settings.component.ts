@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { StorageService } from '../service/storage.service';
 import { Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings.dialog';
@@ -9,6 +9,7 @@ import { Address } from '@ergo-tools/service';
   selector: 'app-settings',
   templateUrl: './settings.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class SettingsComponent implements OnInit {

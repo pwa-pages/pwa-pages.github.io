@@ -5,6 +5,7 @@ import {
   ElementRef,
   AfterViewInit,
   ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +19,7 @@ import { ChartPoint } from '@ergo-tools/service';
   selector: 'app-reward-chart',
   templateUrl: './reward.chart.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDatepickerModule,
     MatInputModule,

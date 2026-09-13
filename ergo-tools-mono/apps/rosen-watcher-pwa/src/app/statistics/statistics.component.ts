@@ -4,6 +4,7 @@ import {
   ViewChild,
   ElementRef,
   Injector,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
@@ -26,6 +27,7 @@ import { ChartPoint } from '@ergo-tools/service';
   selector: 'app-statistics',
   templateUrl: './statistics.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     NgStyle,
     RouterLink,

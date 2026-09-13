@@ -6,6 +6,7 @@ import {
   Input,
   OnInit,
   ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
@@ -28,6 +29,7 @@ import { ChainTypeHelper } from '../imports/imports';
   selector: 'app-chain-performance',
   templateUrl: './chain.performance.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule],
 })
 export class ChainPerformanceComponent

@@ -5,6 +5,7 @@ import {
   HostListener,
   Input,
   Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -15,6 +16,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-filter-date',
   templateUrl: './filter.date.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDatepickerModule,
     MatInputModule,

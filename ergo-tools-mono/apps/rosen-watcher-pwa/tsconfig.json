@@ -2,8 +2,18 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": [] ,  "composite": true,
-    "declaration": true
+    "types": [],
+    "composite": true,
+    "declaration": true,
+    "ignoreDeprecations": "6.0"
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts"]
+  "include": ["src/**/*.d.ts", "src/**/*.ts"],
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
 }

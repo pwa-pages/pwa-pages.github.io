@@ -4,6 +4,7 @@ import {
   Input as AngularInput,
   OnChanges,
   Injector,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { EventType } from '../service/event.service';
 import 'chartjs-adapter-date-fns';
@@ -18,6 +19,7 @@ import { ChartPoint } from '@ergo-tools/service';
   selector: 'app-statistics-chart',
   templateUrl: './statistics.chart.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RewardChartComponent],
 })
 export class StatisticsChartComponent

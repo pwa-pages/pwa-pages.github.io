@@ -5,6 +5,7 @@ import {
   Injector,
   Input,
   Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { WatchersComponent } from '../statistics/watchers.component';
@@ -16,7 +17,7 @@ import {
   ChartPerformance,
 } from '@ergo-tools/service';
 import { StatisticsChartComponent } from './statistics.chart.component';
-import { CommonModule } from '@angular/common';
+
 import { PerformanceChartComponent } from './performance.chart.component';
 import { BaseEventAwareComponent } from '../baseeventawarecomponent';
 import { WatchersStats } from '../service/watchers.models';
@@ -30,14 +31,14 @@ import { ChartPoint } from '@ergo-tools/service';
   templateUrl: './rosen.watcher.component.html',
   standalone: true,
   imports: [
-    CommonModule,
     WatchersComponent,
     MyWatchersComponent,
     ChainPerformanceComponent,
     StatisticsChartComponent,
-    PerformanceChartComponent,
-  ],
+    PerformanceChartComponent
+],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     `
       :host ::ng-deep .elementsActive .PerformanceChart,

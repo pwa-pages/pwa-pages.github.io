@@ -1,8 +1,9 @@
-import { Component, OnDestroy, Injector } from '@angular/core';
+import { Component, OnDestroy, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { EventData, EventService, EventType } from './service/event.service';
 
 @Component({
   selector: 'app-root',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class BaseEventAwareComponent implements OnDestroy {

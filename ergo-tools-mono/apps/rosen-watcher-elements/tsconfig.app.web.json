@@ -3,7 +3,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "../rosen-watcher-pwa/src/**/*.d.ts",
@@ -13,6 +14,14 @@
     "../rosen-watcher-pwa/src/app/webcomponents/*.ts",
     "../rosen-watcher-pwa/src/app/*.ts",
     "../rosen-watcher-elements/src/main.ts",
-    "../../service/src/lib/*.ts",
-  ]
+    "../../service/src/lib/*.ts"
+  ],
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
 }

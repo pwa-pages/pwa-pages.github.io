@@ -1,3 +1,4 @@
+"use strict";
 if (typeof self !== 'undefined') {
     self.addEventListener('message', async (event) => {
         const data = event.data;

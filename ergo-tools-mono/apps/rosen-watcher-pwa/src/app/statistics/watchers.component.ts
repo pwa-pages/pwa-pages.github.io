@@ -7,6 +7,7 @@ import {
   Input,
   OnInit,
   Output,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { EventType } from '../service/event.service';
 import { WatchersDataService } from '../service/watchers.data.service';
@@ -22,6 +23,7 @@ import { ChainTypeHelper } from '../imports/imports';
   selector: 'app-watchers',
   templateUrl: './watchers.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, FormsModule],
 })
 export class WatchersComponent extends BaseWatcherComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import 'chartjs-adapter-date-fns';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,7 @@ import { EventService, EventType } from '../service/event.service';
   selector: 'app-navigation',
   templateUrl: './navigation.html',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule, CommonModule],
 })
 export class NavigationComponent implements OnInit {

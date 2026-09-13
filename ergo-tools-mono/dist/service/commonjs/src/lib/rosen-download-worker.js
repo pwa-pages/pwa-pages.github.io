@@ -1,3 +1,4 @@
+"use strict";
 // Define the singleton at module scope
 const processEventServiceSingleton = (() => {
     console.log('Initializing ProcessEventService singleton factory');

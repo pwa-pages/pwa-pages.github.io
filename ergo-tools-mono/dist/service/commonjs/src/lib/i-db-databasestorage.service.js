@@ -1,3 +1,4 @@
+"use strict";
 class IDBDatabaseStorageService {
     db;
     constructor(db) {
