@@ -24,7 +24,12 @@ export function getPermitBulkAddressesByChainType() {
     return globalThis.permitBulkAddresses;
 }
 export function getPermitTriggerAddressesByChainType() {
-    return globalThis.permitTriggerAddresses;
+    if (globalThis.permitTriggerAddresses != null) {
+        return globalThis.permitTriggerAddresses;
+    }
+    else {
+        return globalThis.GetPermitTriggerAddresses();
+    }
 }
 export function getChainTypeTokensByChainType() {
     return globalThis.chainTypeTokens;

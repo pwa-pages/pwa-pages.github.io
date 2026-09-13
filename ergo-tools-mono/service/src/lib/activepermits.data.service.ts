@@ -321,7 +321,7 @@ class ActivePermitsDataService extends DataService<PermitTx> {
           boxId: input.boxId,
           assets: input.assets || [],
           wid: '',
-          chainType: getChainTypeForPermitAddress(address) as ChainType,
+          chainType: getChainTypeForPermitTriggerAddress(address) as ChainType,
           transactionId: item.id,
         };
 

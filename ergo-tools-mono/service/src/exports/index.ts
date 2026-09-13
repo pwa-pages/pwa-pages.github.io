@@ -32,7 +32,13 @@ export function getPermitBulkAddressesByChainType(): Record<string, string | nul
 }
 
 export function getPermitTriggerAddressesByChainType(): Record<string, string | null> {
-  return (globalThis as any).permitTriggerAddresses;
+  if((globalThis as any).permitTriggerAddresses != null){
+    return (globalThis as any).permitTriggerAddresses;
+  }
+  else{
+    return (globalThis as any).GetPermitTriggerAddresses();
+  }
+  
 }
 
 export function getChainTypeTokensByChainType(): Record<string, string | null> {

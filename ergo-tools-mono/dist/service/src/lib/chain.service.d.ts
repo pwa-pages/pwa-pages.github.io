@@ -34,3 +34,4 @@ declare const hotWalletAddress = "nB3L2PD3J4rMmyGk7nnNdESpPXxhPRQ4t1chF8LTXtceMQ
  */
 declare function getChainType(address?: string): ChainType | null | undefined;
 declare function getChainTypeForPermitAddress(address?: string): ChainType | null | undefined;
+declare function getChainTypeForPermitTriggerAddress(address?: string): ChainType | null | undefined;

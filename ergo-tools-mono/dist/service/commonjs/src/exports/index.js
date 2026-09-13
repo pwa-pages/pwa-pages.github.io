@@ -55,7 +55,12 @@ function getPermitBulkAddressesByChainType() {
     return globalThis.permitBulkAddresses;
 }
 function getPermitTriggerAddressesByChainType() {
-    return globalThis.permitTriggerAddresses;
+    if (globalThis.permitTriggerAddresses != null) {
+        return globalThis.permitTriggerAddresses;
+    }
+    else {
+        return globalThis.GetPermitTriggerAddresses();
+    }
 }
 function getChainTypeTokensByChainType() {
     return globalThis.chainTypeTokens;

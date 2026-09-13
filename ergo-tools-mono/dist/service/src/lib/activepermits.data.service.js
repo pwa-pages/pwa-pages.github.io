@@ -211,7 +211,7 @@ class ActivePermitsDataService extends DataService {
                     boxId: input.boxId,
                     assets: input.assets || [],
                     wid: '',
-                    chainType: getChainTypeForPermitAddress(address),
+                    chainType: getChainTypeForPermitTriggerAddress(address),
                     transactionId: item.id,
                 };
                 if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {

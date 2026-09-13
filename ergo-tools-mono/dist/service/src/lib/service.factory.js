@@ -1,4 +1,8 @@
 "use strict";
+globalThis.GetPermitTriggerAddresses =
+    () => {
+        return permitTriggerAddresses;
+    };
 globalThis.CreateActivePermitsDownloadService = (maxDownloadDateDifference, eventSender) => {
     var storageService = new MemoryStorageService();
     const activepermitsDataService = new ActivePermitsDataService(storageService, maxDownloadDateDifference);

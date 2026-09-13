@@ -1,4 +1,7 @@
-
+(globalThis as any).GetPermitTriggerAddresses = 
+() => {
+  return permitTriggerAddresses;
+}
 
 (globalThis as any).CreateActivePermitsDownloadService = (
   maxDownloadDateDifference: number,
