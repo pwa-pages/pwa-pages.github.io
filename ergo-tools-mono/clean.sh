@@ -1,3 +1,4 @@
+npx nx reset
 #!/bin/bash
 
 # Function to delete files older than 10 days but keep the latest 5
