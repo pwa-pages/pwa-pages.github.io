@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import {
+  Injectable,
+  NgZone,
+} from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { Input } from '@ergo-tools/service';
-import { NgZone } from '@angular/core';
 
 export enum EventType {
   StartFullDownload = 'StartFullDownload',
@@ -37,12 +39,15 @@ export type EventData = string | Input | object;
   providedIn: 'root',
 })
 export class EventService {
-  constructor(private ngZone: NgZone) {
+  constructor(
+    private ngZone: NgZone,
+  ) {
     console.log('EventService initialized');
   }
 
   eventSubscriptions: Record<EventType, Subject<EventData>> =
     this.resetSubscriptions();
+
   eventSubscriptionsById: Record<number, Subscription[]> = {};
 
   resetSubscriptions() {
@@ -67,85 +72,122 @@ export class EventService {
       [EventType.WindowResized]: new Subject<EventData>(),
       [EventType.WatchersStatsChanged]: new Subject<EventData>(),
       [EventType.PermitsStatsChanged]: new Subject<EventData>(),
-      [EventType.ChainPerformanceChartsChanged]: new Subject<EventData>(),
-      [EventType.PerformanceChartsChanged]: new Subject<EventData>(),
-      [EventType.StatisticsChartChanged]: new Subject<EventData>(),
+      [EventType.ChainPerformanceChartsChanged]:
+        new Subject<EventData>(),
+      [EventType.PerformanceChartsChanged]:
+        new Subject<EventData>(),
+      [EventType.StatisticsChartChanged]:
+        new Subject<EventData>(),
       [EventType.RefreshPermits]: new Subject<EventData>(),
-      [EventType.AddressPermitsDownloaded]: new Subject<EventData>(),
+      [EventType.AddressPermitsDownloaded]:
+        new Subject<EventData>(),
     };
+
     return this.eventSubscriptions;
   }
 
   async sendEvent(eventType: EventType) {
     console.log('Received event: ' + eventType);
-    this.eventSubscriptions[eventType].next({} as EventData);
+
+    this.eventSubscriptions[eventType].next(
+      {} as EventData,
+    );
   }
 
-  async sendEventWithData(eventType: EventType, eventData: EventData) {
-    this.eventSubscriptions[eventType].next(eventData);
+  async sendEventWithData(
+    eventType: EventType,
+    eventData: EventData,
+  ) {
+    this.eventSubscriptions[eventType].next(
+      eventData,
+    );
   }
 
   async subscribeToEvent<T>(
     eventType: EventType,
-    callback: (...args: T[]) => void,
+    callback: (...args: T[]) => void | Promise<void>,
     id = -1,
   ) {
-    const eventCallBack: (...args: EventData[]) => void = callback as (
+    const eventCallback = callback as (
       ...args: EventData[]
-    ) => void;
-    await this.subscribe(eventType, eventCallBack, id);
+    ) => void | Promise<void>;
+
+    this.subscribe(
+      eventType,
+      eventCallback,
+      id,
+    );
   }
 
-  private async subscribe(
+  private subscribe(
     eventType: EventType,
-    callback: (...args: EventData[]) => void,
+    callback: (
+      ...args: EventData[]
+    ) => void | Promise<void>,
     id: number,
   ) {
-    console.log(`Subscribing to event: ${eventType} with id: ${id}`);
-    let subscription = this.eventSubscriptions[eventType]
-      .asObservable()
-      .subscribe((...eventData) => {
-        this.ngZone.run(() => {
-          callback(...eventData);
+    console.log(
+      `Subscribing to event: ${eventType} with id: ${id}`,
+    );
+
+    const subscription =
+      this.eventSubscriptions[eventType]
+        .asObservable()
+        .subscribe(async (...eventData) => {
+          await this.ngZone.run(() =>
+            callback(...eventData),
+          );
+
+
         });
-      });
 
     if (!this.eventSubscriptionsById[id]) {
       this.eventSubscriptionsById[id] = [];
     }
-    this.eventSubscriptionsById[id].push(subscription);
+
+    this.eventSubscriptionsById[id].push(
+      subscription,
+    );
   }
 
   async subscribeToAllEvents(
-    callback: (eventType: EventType, ...args: EventData[]) => void,
+    callback: (
+      eventType: EventType,
+      ...args: EventData[]
+    ) => void | Promise<void>,
     id = -1,
   ) {
-    Object.values(EventType).forEach((eventType) => {
-      this.subscribeToEvent(
-        eventType,
-        (...args: EventData[]) => callback(eventType, ...args),
-        id,
-      );
-    });
+    Object.values(EventType).forEach(
+      (eventType) => {
+        this.subscribeToEvent(
+          eventType,
+          (...args: EventData[]) =>
+            callback(
+              eventType,
+              ...args,
+            ),
+          id,
+        );
+      },
+    );
   }
 
   async unSubscribe(id: number) {
     if (this.eventSubscriptionsById[id]) {
-      this.eventSubscriptionsById[id].forEach((subscription) =>
-        subscription.unsubscribe(),
+      this.eventSubscriptionsById[id].forEach(
+        (subscription) =>
+          subscription.unsubscribe(),
       );
+
       delete this.eventSubscriptionsById[id];
     }
 
-    Object.entries(this.eventSubscriptionsById).forEach(([key, subs]) => {
-      console.log(`eventSubscriptionsById[${key}] size: ${subs.length}`);
+    Object.entries(
+      this.eventSubscriptionsById,
+    ).forEach(([key, subs]) => {
+      console.log(
+        `eventSubscriptionsById[${key}] size: ${subs.length}`,
+      );
     });
-
-    /*
-    if (this.eventSubscriptionsById[-1]) {
-      this.eventSubscriptionsById[-1].forEach((subscription) => subscription.unsubscribe());
-      delete this.eventSubscriptionsById[-1];
-    }
-      */
   }
 }
