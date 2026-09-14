@@ -1795,7 +1795,6 @@ async function downloadActivePermits() {
     await downloadService.downloadForAddress(addr, true);
     var permits = await downloadService.getDataService().getAdressPermits(false, frommonth, fromyear, tomonth, toyear);
     permits = permits.filter((p) => p.chainType === chainType);
-    console.log("Downloaded permits for chainType:", chainType, "address:", addr, "permits:", permits);
     const byAddress = permits.reduce((map, p) => {
       const addr2 = p.address || "";
       const d = p.date ? new Date(p.date) : null;
