@@ -121,15 +121,25 @@ export class PerformanceChartComponent
     await this.updateCharts();
   }
 
-  private async getPerformanceChart(): Promise<ChartPerformance[]> {
-    console.log('start retrieving chart from database');
+ private async getPerformanceChart(): Promise<ChartPerformance[]> {
+  console.log('start retrieving chart from database');
 
-    const addressCharts = this.dataService.getAddressCharts();
-    let addresses = this.chartService.getPerformanceChart(addressCharts);
-    return (await addresses).filter((chart) =>
-      this.filledAddresses.includes(chart.address),
-    );
-  }
+  const addressCharts = this.dataService.getAddressCharts();
+
+  const filteredAddressCharts: Record<
+    string,
+    { chainType: string | null; charts: Record<number, number> }
+  > = Object.fromEntries(
+    Object.entries(addressCharts).filter(([address]) =>
+      this.filledAddresses.includes(address),
+    ),
+  );
+
+  const addresses =
+    await this.chartService.getPerformanceChart(filteredAddressCharts);
+
+  return addresses;
+}
 
   updateChart(): void {
     this.chartService.convertPerformanceCharts(
