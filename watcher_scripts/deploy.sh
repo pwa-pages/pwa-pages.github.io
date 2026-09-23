@@ -42,17 +42,17 @@ read -sp "Enter API Key: " API_KEY
 reinstall_watcher.sh
 echo "Sleeping 30 seconds..."
 sleep 30
-lock.sh $API_KEY
+lock.sh $API_KEY $DIR_NUM
 echo "Sleeping another 30 seconds..."
 sleep 30
-lock.sh $API_KEY
+lock.sh $API_KEY $DIR_NUM
 echo "Sleeping another 30 seconds..."
 sleep 30
-lock.sh $API_KEY
+lock.sh $API_KEY $DIR_NUM
 echo "Sleeping another 30 seconds..."
 sleep 30
-lock.sh $API_KEY
+lock.sh $API_KEY $DIR_NUM
 echo "Sleeping another 30 seconds..."
 sleep 30
-lock.sh $API_KEY
+lock.sh $API_KEY $DIR_NUM
 
