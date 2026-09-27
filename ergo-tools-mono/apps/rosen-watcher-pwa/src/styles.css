@@ -235,7 +235,20 @@ a {
   grid-template-columns: 3vmax auto auto auto auto !important;
 }
 
+.watcherscontainer.performance {
+  grid-template-columns: 3vmax auto auto !important;
+}
+
 .watcherscontainer {
+  font-size: 1.6vmax;
+  margin-top: var(--medium-height);
+  float: left;
+  border-radius: 3vmax;
+  display: grid;
+  grid-template-columns: 3vmax auto auto auto auto auto;
+}
+
+.watchersperformancecontainer{
   font-size: 1.6vmax;
   margin-top: var(--medium-height);
   float: left;

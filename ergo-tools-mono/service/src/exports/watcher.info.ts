@@ -12,3 +12,13 @@ export class MyWatchersStats {
   chainType: string | undefined;
   address: Address | undefined;
 }
+
+export class WatcherPerformanceAddressStat{
+  address: Address | undefined;
+  reports: number | undefined;
+}
+
+export class WatchersPerformanceStats {
+  watcherPerformanceByChainType: Record<string, WatcherPerformanceAddressStat[]> | undefined;
+}
+

@@ -22,18 +22,42 @@
 
 
   </div>
-  <!--
-  <div class="chain">
+
+  <br />
+
+
+  <div class="chain" *ngIf="chains?.length">
     <label for="chainSelect">Chain:</label>
     <select id="chainSelect" [(ngModel)]="selectedChain" (change)="onChainChange()">
-      <option value="" disabled *ngIf="!chains || chains.length === 0">No chains available</option>
       <option *ngFor="let chain of chains" [value]="chain">{{ chain }}</option>
     </select>
   </div>
--->
-  <br/>
-  *** Coming soon: Performance for all watchers per chain type. ***
-  <div class="watcherscontainer">
+
+
+
+
+  <div class="watcherscontainer performance">
+
+
+    <div class="watcherheader first"></div>
+    <div class="watcherheader">Address</div>
+    <div class="watcherheader">Permits</div>
+
+    @for (stat of watcherPerformanceStats; track stat) {
+
+      <div class="watchersdispl" ></div>
+    <div >
+      {{ stat.address?.address }}
+    </div>
+
+    <div>
+      {{ stat.reports }}
+    </div>
+
+
+    }
+
+    
 
   </div>
 
