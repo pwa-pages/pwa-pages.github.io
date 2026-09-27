@@ -208,7 +208,12 @@ a {
   white-space: inherit;
 }
 
+.watchersmaincontainer .chain{
+  padding-top: var(--small-height);
+}
+
 .currencyrow,
+.chainrow,
 .fullrow,
 .watchervaluerow {
   grid-column: span 6;
@@ -232,7 +237,7 @@ a {
 
 .watcherscontainer {
   font-size: 1.6vmax;
-  margin-top: var(--small-medium-height);
+  margin-top: var(--medium-height);
   float: left;
   border-radius: 3vmax;
   display: grid;
@@ -452,13 +457,15 @@ button:active {
 }
 
 .currency,
-.currency select {
+.currency select,
+.chain,
+.chain select {
   font-size: 1.3vmax;
   display: inline-block;
   color: grey;
 }
 
-.currencyrow {
+.currencyrow, .chainrow {
   padding-right: 0 !important;
 }
 

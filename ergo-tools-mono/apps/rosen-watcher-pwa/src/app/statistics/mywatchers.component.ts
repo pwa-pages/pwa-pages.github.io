@@ -14,13 +14,13 @@ import {
 import { FormsModule } from '@angular/forms';
 
 import { EventType } from '../service/event.service';
-import { WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
 import { ChainDataService } from '../service/chain.data.service';
 import { ChainTypeHelper } from '../imports/imports';
 import { MyWatchersStats } from '@ergo-tools/service';
+import { MyWatchersDataService } from '../service/mywatchers.data.service';
 
 @Component({
   selector: 'app-mywatchers',
@@ -31,8 +31,7 @@ import { MyWatchersStats } from '@ergo-tools/service';
 })
 export class MyWatchersComponent
   extends BaseWatcherComponent
-  implements OnInit, OnChanges
-{
+  implements OnInit, OnChanges {
   private _renderHtml = true;
 
   public myWatcherStats = signal<MyWatchersStats[]>([]);
@@ -66,7 +65,7 @@ export class MyWatchersComponent
 
   constructor(
     injector: Injector,
-    private watchersDataService: WatchersDataService,
+    private myWatchersDataService: MyWatchersDataService,
     private navigationService: NavigationService,
     private chaindataService: ChainDataService,
     @Inject(IS_ELEMENTS_ACTIVE)
@@ -75,8 +74,8 @@ export class MyWatchersComponent
     super(injector);
   }
 
-  selectTab(): void {
-    this.navigationService.navigate('/watchers');
+  selectTab(item: string): void {
+    this.navigationService.navigate(`/${item}`);
   }
 
   onCurrencyChange(): void {
@@ -91,7 +90,7 @@ export class MyWatchersComponent
   }
 
   isChainTypeActive(chainType: string): boolean {
-    return this.watchersDataService.isChainTypeActive(
+    return this.myWatchersDataService.isChainTypeActive(
       chainType,
     );
   }
@@ -100,7 +99,7 @@ export class MyWatchersComponent
     if (
       !this.prevFilledAddresses ||
       this.filledAddresses.length !==
-        this.prevFilledAddresses.length ||
+      this.prevFilledAddresses.length ||
       !this.filledAddresses.every(
         (addr, i) =>
           addr === this.prevFilledAddresses[i],
@@ -155,7 +154,7 @@ export class MyWatchersComponent
       EventType.RefreshPermits,
       async () => {
         const result =
-          await this.watchersDataService.getMyWatcherStats(
+          await this.myWatchersDataService.getMyWatcherStats(
             await this.getAddresses(),
           );
 

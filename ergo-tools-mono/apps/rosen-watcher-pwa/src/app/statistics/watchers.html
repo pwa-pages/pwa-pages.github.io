@@ -9,31 +9,18 @@
 <div class="watchersmaincontainer main-content">
   <div class="watcherstab">
     @if (!isElementsActive) {
-    <a tabindex="0" class="tab" [class.active]="true">All watchers</a>
-    <a
-      tabindex="0"
-      class="tab"
-      [class.active]="false"
-      (click)="selectTab()"
-      (keypress)="selectTab()"
-    >
+    <a tabindex="0" class="tab" [class.active]="true">Watchers</a>
+    <a tabindex="0" class="tab" [class.active]="false" (click)="selectTab('mywatchers')"
+      (keypress)="selectTab('mywatchers')">
       My watchers
+    </a>
+    <a tabindex="0" class="tab" [class.active]="false" (click)="selectTab('watchersperformance')"
+      (keypress)="selectTab('watchersperformance')">
+      Performance
     </a>
     }
 
-    <div class="currency">
-      <label for="currencySelect">Currency:</label>
-      <select
-        id="currencySelect"
-        [(ngModel)]="selectedCurrency"
-        (change)="onCurrencyChange()"
-      >
-        <option value="EUR">Euro</option>
-        <option value="USD">US Dollar</option>
-        <option value="ERG">Ergo</option>
-        <option value="RSN">Rosen</option>
-      </select>
-    </div>
+
   </div>
 
   <div class="watcherscontainer">
@@ -96,13 +83,21 @@
       Total locked: {{getWatcherAmounts().totalLocked | number: '1.0-0'}}
       {{this.selectedCurrency}} (permits + collateral)
     </div>
+
+  </div>
+  <div class="currency">
+    <label for="currencySelect">Currency:</label>
+    <select id="currencySelect" [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
+      <option value="EUR">Euro</option>
+      <option value="USD">US Dollar</option>
+      <option value="ERG">Ergo</option>
+      <option value="RSN">Rosen</option>
+    </select>
   </div>
 </div>
 }
 <div class="watchers-readme watchersmaincontainer">
   Want this on your own page? Check
-  <a href="https://pwa-pages.github.io/rosen-watcher-storybook/"
-    >Documentation and code examples</a
-  >
+  <a href="https://pwa-pages.github.io/rosen-watcher-storybook/">Documentation and code examples</a>
   <br />
 </div>

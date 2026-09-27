@@ -1,0 +1,46 @@
+@if (isHtmlRenderEnabled() ? !isElementsActive : false) {
+<div class="headercontainer">
+  <div class="headerblock">
+    Number of chains:
+    <div class="header">{{ chains.length }}</div>
+  </div>
+</div>
+} @if (isHtmlRenderEnabled()) {
+<div class="watchersmaincontainer main-content">
+  <div class="watcherstab">
+    @if (!isElementsActive) {
+    <a tabindex="0" class="tab" [class.active]="false" (click)="selectTab('watchers')"
+      (keypress)="selectTab('watchers')">
+      Watchers
+    </a>
+    <a tabindex="0" class="tab" [class.active]="false" (click)="selectTab('mywatchers')"
+      (keypress)="selectTab('mywatchers')">
+      My watchers
+    </a>
+    <a tabindex="0" class="tab" [class.active]="true">Performance</a>
+    }
+
+
+  </div>
+  <!--
+  <div class="chain">
+    <label for="chainSelect">Chain:</label>
+    <select id="chainSelect" [(ngModel)]="selectedChain" (change)="onChainChange()">
+      <option value="" disabled *ngIf="!chains || chains.length === 0">No chains available</option>
+      <option *ngFor="let chain of chains" [value]="chain">{{ chain }}</option>
+    </select>
+  </div>
+-->
+  <br/>
+  *** Coming soon: Performance for all watchers per chain type. ***
+  <div class="watcherscontainer">
+
+  </div>
+
+</div>
+}
+<div class="watchers-readme watchersmaincontainer">
+  Want this on your own page? Check
+  <a href="https://pwa-pages.github.io/rosen-watcher-storybook/">Documentation and code examples</a>
+  <br />
+</div>

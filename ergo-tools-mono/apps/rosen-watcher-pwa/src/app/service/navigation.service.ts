@@ -121,7 +121,7 @@ export class NavigationService {
       this.swapPerformanceItems();
     }
 
-    if (to.endsWith('watchers')) {
+    if (to.endsWith('watchers') || to.endsWith('watchersperformance')) {
       localStorage.setItem('watchersScreen', to);
     }
 

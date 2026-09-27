@@ -17,13 +17,99 @@ async function main() {
 
 
   await downloadActivePermits();
+  //await downloadPermits();
 
 
 }
 
 main().catch(console.error);
 
+/*
+async function downloadPermits() {
+  var frommonth = 9;
+  var fromyear = 2026;
+  var tomonth = 9;
+  var toyear = 2026;
+  const now = new Date();
+  const startOfYear = new Date(fromyear, frommonth - 1, 1);
+  var diff = now.getTime() - startOfYear.getTime() + 2 * 24 * 60 * 60 * 1000;
 
+
+  var addresses = getPermitTriggerAddressesByChainType();
+  var addresses = getPermitrAddressesByChainType();
+  var downloadService: IDownloadService<ActivePermitsDataService> = GetActivePermitsDownloadService(diff);
+  var watcherDownloadService : IDownloadService<WatcherDataService> = GetWatcherDownloadService();
+
+
+  for (const [chainType, addr] of Object.entries(addresses)) {
+
+
+    if (addr == null) continue;
+
+    var downloadService: IDownloadService<ActivePermitsDataService> = GetActivePermitsDownloadService(diff);
+
+
+    console.log('Downloading for chainType:', chainType, 'address:', addr);
+    await downloadService.downloadForAddress<PermitTx>(addr, true);
+
+
+    var permits = await downloadService.getDataService().getAdressPermits(false, frommonth, fromyear, tomonth, toyear);
+    permits = permits.filter(p => p.chainType === chainType);
+
+    const byAddress = permits.reduce((map: Map<string, {
+      address: string;
+      count: number;
+      assetsCount: number;
+      earliest: Date | null;
+      latest: Date | null;
+    }>, p: any) => {
+      const addr = p.address || '';
+      const d = p.date ? new Date(p.date) : null;
+      const assetsLen = (p.assets && Array.isArray(p.assets)) ? p.assets.length : 0;
+
+      let entry = map.get(addr);
+      if (!entry) {
+        entry = { address: addr, count: 0, assetsCount: 0, earliest: d, latest: d };
+        map.set(addr, entry);
+      }
+
+      entry.count += 1;
+      entry.assetsCount += assetsLen;
+
+      if (d) {
+        if (!entry.earliest || d < entry.earliest) entry.earliest = d;
+        if (!entry.latest || d > entry.latest) entry.latest = d;
+      }
+
+      return map;
+    }, new Map<string, {
+      address: string;
+      count: number;
+      assetsCount: number;
+      earliest: Date | null;
+      latest: Date | null;
+    }>());
+
+
+    const totalsPerAddress = Array.from(byAddress.values())
+      .map(e => ({
+        address: e.address,
+        totalPermits: e.count,
+        totalAssets: e.assetsCount,
+        earliest: e.earliest ? e.earliest.toISOString() : null,
+        latest: e.latest ? e.latest.toISOString() : null,
+      }))
+      .sort((a, b) => b.totalPermits - a.totalPermits || a.address.localeCompare(b.address));
+
+      
+      console.log('for chainType: ', chainType);
+    console.log('totalsPerAddress: ', totalsPerAddress);
+    
+
+  }
+
+}
+*/
 
 async function downloadActivePermits() {
   var frommonth = 9;

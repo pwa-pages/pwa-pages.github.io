@@ -1,6 +1,5 @@
 import {
   Component,
-  effect,
   EventEmitter,
   Inject,
   Injector,
@@ -20,14 +19,15 @@ import { WatchersStats } from '../service/watchers.models';
 import { ChainTypeHelper } from '../imports/imports';
 
 @Component({
-  selector: 'app-watchers',
-  templateUrl: './watchers.html',
+  selector: 'app-watchers-performance',
+  templateUrl: './watchers.performance.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, FormsModule],
 })
-export class WatchersComponent extends BaseWatcherComponent implements OnInit {
+export class WatchersPerformanceComponent extends BaseWatcherComponent implements OnInit {
   private _renderHtml = true;
+  public chains: string[] = ChainTypeHelper.getActiveChainTypes();
 
   @Input()
   set renderHtml(value: string | boolean) {
@@ -44,8 +44,8 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
   @Output() notifyWatchersStatsChanged = new EventEmitter<WatchersStats>();
 
-  watchersStats: WatchersStats = new WatchersStats();
-  selectedCurrency = '';
+
+  selectedChain = '';
 
   constructor(
     injector: Injector,
@@ -58,22 +58,16 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
 
   }
 
-  onCurrencyChange(): void {
-    localStorage.setItem('selectedCurrency', this.selectedCurrency as string);
+  onChainChange(): void {
+    localStorage.setItem('selectedChain', this.selectedChain as string);
   }
 
   getChainTypes(): string[] {
-    return ChainTypeHelper.getAllChainTypes();
+    return ChainTypeHelper.getActiveChainTypes();
   }
 
   isChainTypeActive(chainType: string): boolean {
     return this.watchersDataService.isChainTypeActive(chainType);
-  }
-
-  getWatcherAmounts() {
-    return this.watchersStats.watchersAmountsPerCurrency[
-      this.selectedCurrency as string
-    ];
   }
 
   selectTab(item: string): void {
@@ -83,24 +77,13 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   override async ngOnInit(): Promise<void> {
     super.ngOnInit();
 
-    this.selectedCurrency = localStorage.getItem(
-      'selectedCurrency',
-    ) as string;
-    this.selectedCurrency =
-      this.selectedCurrency == null ? 'EUR' : this.selectedCurrency;
-    const watcherStatsSignal = this.watchersDataService.download();
-    this.eventService.sendEvent(EventType.WatchersScreenLoaded);
 
-    effect(() => {
-      if (watcherStatsSignal == null) {
-        return;
-      }
-      this.watchersStats = watcherStatsSignal();
-      console.log('Sending watchers stats changed event');
-      this.eventService.sendEventWithData(
-        EventType.WatchersStatsChanged,
-        this.watchersStats,
-      );
-    }, { injector: this.injector });
+    this.selectedChain = localStorage.getItem(
+      'selectedChain',
+    ) as string;
+    this.selectedChain =
+      this.selectedChain == null ? 'Ergo' : this.selectedChain;
+    this.watchersDataService.download();
+    this.eventService.sendEvent(EventType.WatchersScreenLoaded);
   }
 }

@@ -38,7 +38,6 @@ export function getPermitTriggerAddressesByChainType(): Record<string, string | 
   else{
     return (globalThis as any).GetPermitTriggerAddresses();
   }
-  
 }
 
 export function getChainTypeTokensByChainType(): Record<string, string | null> {

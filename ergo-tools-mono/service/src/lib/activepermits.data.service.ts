@@ -267,7 +267,6 @@ class ActivePermitsDataService extends DataService<PermitTx> {
                   result.push(permit);
                 }
               });
-
             }
 
 

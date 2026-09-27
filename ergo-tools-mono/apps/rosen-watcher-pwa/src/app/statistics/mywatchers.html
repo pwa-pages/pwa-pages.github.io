@@ -19,10 +19,10 @@
           tabindex="0"
           class="tab"
           [class.active]="false"
-          (click)="selectTab()"
-          (keypress)="selectTab()"
+          (click)="selectTab('watchers')"
+          (keypress)="selectTab('watchers')"
         >
-          All watchers
+          Watchers
         </a>
 
         <a
@@ -31,6 +31,16 @@
           [class.active]="true"
         >
           My watchers
+        </a>
+
+        <a
+          tabindex="0"
+          class="tab"
+          [class.active]="false"
+          (click)="selectTab('watchersperformance')"
+          (keypress)="selectTab('watchersperformance')"
+        >
+          Performance
         </a>
       </div>
     }
