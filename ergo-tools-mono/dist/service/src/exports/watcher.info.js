@@ -5,4 +5,8 @@ export class WatcherInfo {
 }
 export class MyWatchersStats {
 }
+export class WatcherPerformanceAddressStat {
+}
+export class WatchersPerformanceStats {
+}
 //# sourceMappingURL=watcher.info.js.map

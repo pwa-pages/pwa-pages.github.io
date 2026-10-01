@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MyWatchersStats = exports.WatcherInfo = void 0;
+exports.WatchersPerformanceStats = exports.WatcherPerformanceAddressStat = exports.MyWatchersStats = exports.WatcherInfo = void 0;
 class WatcherInfo {
     tokens;
     constructor(tokens) {
@@ -16,3 +16,12 @@ class MyWatchersStats {
     address;
 }
 exports.MyWatchersStats = MyWatchersStats;
+class WatcherPerformanceAddressStat {
+    address;
+    reports;
+}
+exports.WatcherPerformanceAddressStat = WatcherPerformanceAddressStat;
+class WatchersPerformanceStats {
+    watcherPerformanceByChainType;
+}
+exports.WatchersPerformanceStats = WatchersPerformanceStats;

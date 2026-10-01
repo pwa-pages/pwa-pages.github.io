@@ -1,4 +1,4 @@
-declare class ActivePermitsDataService extends DataService<PermitTx> {
+declare class PermitsDataService extends DataService<PermitTx> {
     private maxDownloadDateDifference;
     getData(): Promise<PermitTx[] | null>;
     getExistingData(transaction: TransactionItem, address: string): Promise<PermitTx | null>;

@@ -135,11 +135,11 @@ export class ErgSettings {
         return globalThis.rs_RSNDecimals;
     }
 }
-export function GetWatcherDataService(activePermitsDataService) {
-    return globalThis.GetWatcherDataService(activePermitsDataService);
+export function GetWatcherDataService(permitsDataService) {
+    return globalThis.GetWatcherDataService(permitsDataService);
 }
-export function GetActivePermitsDownloadService(maxDownloadDateDifference) {
-    return globalThis.CreateActivePermitsDownloadService(maxDownloadDateDifference, null);
+export function GetPermitsDownloadService(maxDownloadDateDifference) {
+    return globalThis.CreatePermitsDownloadService(maxDownloadDateDifference, null);
 }
 export function GetWatcherDownloadService() {
     return globalThis.CreateWatcherDownloadService(null);

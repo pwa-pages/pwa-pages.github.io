@@ -165,7 +165,7 @@ export class ErgSettings {
   }
 }
 
-export interface ActivePermitsDataService {
+export interface PermitsDataService {
   getAdressPermits(
     activeOnly: boolean,
     frommonth: number,
@@ -191,12 +191,12 @@ export interface IDownloadService<SERVICE> {
   getDataService(): SERVICE;
 }
 
-export function GetWatcherDataService (activePermitsDataService : ActivePermitsDataService): WatcherDataService{
-  return (globalThis as any).GetWatcherDataService(activePermitsDataService );
+export function GetWatcherDataService (permitsDataService : PermitsDataService): WatcherDataService{
+  return (globalThis as any).GetWatcherDataService(permitsDataService );
 }
 
-export function GetActivePermitsDownloadService (maxDownloadDateDifference: number): IDownloadService<ActivePermitsDataService>{
-  return (globalThis as any).CreateActivePermitsDownloadService(maxDownloadDateDifference, null);
+export function GetPermitsDownloadService (maxDownloadDateDifference: number): IDownloadService<PermitsDataService>{
+  return (globalThis as any).CreatePermitsDownloadService(maxDownloadDateDifference, null);
 }
 
 export function GetWatcherDownloadService (): IDownloadService<WatcherDataService>{

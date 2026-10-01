@@ -13,7 +13,7 @@ interface Services {
   dataService: RewardDataService;
   chainPerformanceDataService: ChainPerformanceDataService;
   watcherDataService: WatcherDataService;
-  activePermitsDataService: ActivePermitsDataService;
+  permitsDataService: PermitsDataService;
   downloadService: DownloadService<DbInput>;
   chartService: ChartService;
   downloadPerfService: DownloadService<PerfTx>;
@@ -51,10 +51,10 @@ class ProcessEventService {
       this.eventSender,
     );
 
-    const activepermitsDataService: ActivePermitsDataService =
-      new ActivePermitsDataService(db);
+    const permitsDataService: PermitsDataService =
+      new PermitsDataService(db);
     const watcherDataService: WatcherDataService = new WatcherDataService(
-      activepermitsDataService,
+      permitsDataService,
     );
     
    const chainPerformanceDataService: ChainPerformanceDataService =
@@ -62,7 +62,7 @@ class ProcessEventService {
 
     const downloadStatusIndexedDbRewardDataService: DownloadStatusIndexedDbService<DbInput>  = new DownloadStatusIndexedDbService<DbInput>(rewardDataService, db);
     const downloadStatusIndexedDbWatcherDataService: DownloadStatusIndexedDbService<PermitTx>  = new DownloadStatusIndexedDbService<PermitTx>(watcherDataService, db);
-    const downloadStatusIndexedDbActivePermitsDataService: DownloadStatusIndexedDbService<PermitTx>  = new DownloadStatusIndexedDbService<PermitTx>(activepermitsDataService, db);
+    const downloadStatusIndexedDbPermitsDataService: DownloadStatusIndexedDbService<PermitTx>  = new DownloadStatusIndexedDbService<PermitTx>(permitsDataService, db);
     const downloadStatusIndexedDbChainPerformanceDataService: DownloadStatusIndexedDbService<PerfTx>  = new DownloadStatusIndexedDbService<PerfTx>(chainPerformanceDataService, db);
 
     
@@ -86,9 +86,9 @@ class ProcessEventService {
       new DownloadService<PermitTx>(
         rs_FullDownloadsBatchSize,
         rs_InitialNDownloads,
-        activepermitsDataService,
+        permitsDataService,
         this.eventSender,
-        downloadStatusIndexedDbActivePermitsDataService,
+        downloadStatusIndexedDbPermitsDataService,
       );
     const downloadPerfService: DownloadService<PerfTx> =
       new DownloadService<PerfTx>(
@@ -108,7 +108,7 @@ class ProcessEventService {
       downloadPerfService: downloadPerfService,
       downloadMyWatchersService: downloadMyWatchersService,
       downloadActivePermitsService: downloadActivePermitsService,
-      activePermitsDataService: activepermitsDataService,
+      permitsDataService: permitsDataService,
     } as Services;
     return this.services;
   }
@@ -129,7 +129,7 @@ class ProcessEventService {
         chartService,
         chainPerformanceDataService,
         watcherDataService,
-        activePermitsDataService,
+        permitsDataService: permitsDataService,
       }: Services = await this.initServices();
 
       if (event.type === 'RequestInputsDownload') {
@@ -146,7 +146,7 @@ class ProcessEventService {
           event,
           watcherDataService,
           downloadMyWatchersService,
-          activePermitsDataService,
+          permitsDataService,
           downloadActivePermitsService,
         );
       } else if (event.type === 'PerformanceScreenLoaded') {
@@ -186,7 +186,7 @@ class ProcessEventService {
     event: EventPayload<object>,
     watcherDataService: WatcherDataService,
     downloadMyWatchersService: DownloadService<PermitTx>,
-    activePermitsDataService: ActivePermitsDataService,
+    permitsDataService: PermitsDataService,
     downloadActivePermitsService: DownloadService<PermitTx>,
   ) {
     const addresses: string[] = (event.data as { addresses: string[] })
@@ -213,7 +213,7 @@ class ProcessEventService {
 
         await this.processActivePermits(
           chainTypes,
-          activePermitsDataService,
+          permitsDataService,
           watcherDataService,
           addresses,
           downloadActivePermitsService,
@@ -221,7 +221,7 @@ class ProcessEventService {
       } else {
         await this.processActivePermits(
           chainTypes,
-          activePermitsDataService,
+          permitsDataService,
           watcherDataService,
           addresses,
           downloadActivePermitsService,
@@ -243,7 +243,7 @@ class ProcessEventService {
         ) {
           await this.processActivePermits(
             newChainTypes,
-            activePermitsDataService,
+            permitsDataService,
             watcherDataService,
             addresses,
             downloadActivePermitsService,
@@ -270,14 +270,14 @@ class ProcessEventService {
 
   private async processActivePermits(
     chainTypes: Set<ChainType>,
-    activePermitsDataService: ActivePermitsDataService,
+    permitsDataService: PermitsDataService,
     watcherDataService: WatcherDataService,
     addresses: string[],
     downloadActivePermitsService: DownloadService<PermitTx>,
   ) {
     await Promise.all(
       Array.from(chainTypes).map(async (chainType) => {
-        await activePermitsDataService.downloadOpenBoxes(chainType!);
+        await permitsDataService.downloadOpenBoxes(chainType!);
       }),
     );
 

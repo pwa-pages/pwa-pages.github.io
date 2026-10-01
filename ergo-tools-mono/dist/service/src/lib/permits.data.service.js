@@ -1,7 +1,6 @@
 "use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ActivePermitsDataService extends DataService {
-    maxDownloadDateDifference;
+class PermitsDataService extends DataService {
     getData() {
         return this.storageService.getData(rs_ActivePermitTxStoreName);
     }
@@ -299,6 +298,7 @@ class ActivePermitsDataService extends DataService {
         }
     }
 }
-globalThis.GetWatcherDataService = (activePermitsDataService) => {
-    return new WatcherDataService(activePermitsDataService);
+globalThis.GetWatcherDataService = (permitsDataService) => {
+    return new WatcherDataService(permitsDataService);
 };
+//# sourceMappingURL=permits.data.service.js.map

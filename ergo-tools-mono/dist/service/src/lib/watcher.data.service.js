@@ -23,9 +23,9 @@ class WatcherDataService extends DataService {
         }
         return null;
     }
-    constructor(activePermitsDataService) {
-        super(activePermitsDataService.storageService);
-        this.activePermitsDataService = activePermitsDataService;
+    constructor(permitsDataService) {
+        super(permitsDataService.storageService);
+        this.permitsDataService = permitsDataService;
     }
     createUniqueId(boxId, transactionId, address) {
         const str = `${transactionId}_${boxId}_${address}`;
@@ -97,7 +97,7 @@ class WatcherDataService extends DataService {
                 });
             }
         }
-        let addressActivePermits = await this.activePermitsDataService.getAdressPermits(true, null, null, null, null, addresses);
+        let addressActivePermits = await this.permitsDataService.getAdressPermits(true, null, null, null, null, addresses);
         for (const activePermit of addressActivePermits) {
             const info = permitInfo.find((p) => p.address === activePermit.address);
             if (info) {

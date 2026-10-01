@@ -3,19 +3,19 @@
   return permitTriggerAddresses;
 }
 
-(globalThis as any).CreateActivePermitsDownloadService = (
+(globalThis as any).CreatePermitsDownloadService = (
   maxDownloadDateDifference: number,
   eventSender: EventSender
 ): DownloadService<PermitTx> => {
 
   var storageService = new MemoryStorageService<PermitTx>();
-  const activepermitsDataService: ActivePermitsDataService =
-    new ActivePermitsDataService(storageService, maxDownloadDateDifference);
+  const permitsDataService: PermitsDataService =
+    new PermitsDataService(storageService, maxDownloadDateDifference);
 
   return new DownloadService<PermitTx>(
     rs_FullDownloadsBatchSize,
     rs_InitialNDownloads,
-    activepermitsDataService,
+    permitsDataService,
     eventSender,
     null,
   );
@@ -31,11 +31,11 @@
     
   var storageService = new MemoryStorageService<PermitTx>();
 
-const activepermitsDataService: ActivePermitsDataService =
-    new ActivePermitsDataService(storageService, maxDownloadDateDifference);
+const permitsDataService: PermitsDataService =
+    new PermitsDataService(storageService, maxDownloadDateDifference);
 
   const watcherDataService: WatcherDataService =
-    new WatcherDataService(activepermitsDataService);
+    new WatcherDataService(permitsDataService);
 
   return new DownloadService<PermitTx>(
     rs_FullDownloadsBatchSize,

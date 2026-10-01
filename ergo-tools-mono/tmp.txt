@@ -2,6 +2,14 @@ Initializing ProcessEventService singleton factory
 Downloading for chainType: Bitcoin address: 5ivrmzxYZZfH2wJRvogecZo1YYXm32CoKnSZdtwxbjNoogRakUFe56VrrcULZtCkvAzM2MNRMxPYSfZc2rB6tkLKLCirG14JPDMfqBoWMhyzzQLVsDukZupema1i8SvYUuoaiPL5rTyQmqgF3ftPbvM2dHY623B3KsKRTNDhkoMoRmKLzenNWqjXpkANpyc3TCkDuvBypXfbWVN55F2ZZUs8L3XkvaJKcb74GY7whJB8Zg31VgpmVW4uVEuqpcvPk5FYNiTdRakyYTUVFnAdCR6ZDjagBYMr3ks2uHMhQdjmoKmmwCocVm4SGZsA8rU8zj6zrEgpepLT5UPD9sZQWtvSi6C82fPEW9pvNXr4T3sFx2xNRv8meyNUhopUfiRzVoWfx6Q4ArqU3dnmRtN8pxkDfTZr7oGrzAFAb3DRhBUPhhfWY2USAw7LMqMAuW65pdUFcGnczQH3B6V4kALNaoGMD7ixKtkdMkrAPHkJmxKzeMEd6Y49PnHWxFkQbXwqGELjDppqmdbKceyrtjUp3JwcZ5qN7YcLg1yXhFUiWAHhnAwGkHsTHivXADhV81sDBVqM1GUB3piyt6gkJ5My3SaRRTsokrnJLoGL23GwjEfTzDsvXCoXww3MQcwUUCXehQConnMxYsK7HHGV4wf8kbctrFd2ekPkeHm5ksjagEVzKMraZJgrRSRWEHdYmUGkU6tLGZTUF4Xe4MkdzXC3sRtif4iUnZg6Tnt3DEx2i5fmPD4xasYkusc6thd77x5x7MZXMdkxuo9BWTG9iiYAaE4aLQ5yEbrYeVY85DCVFAKXTsiwUH1De3rDhRZfFfQRuDqiYomDFumxofAa9k89yLeCSRyQpAH55BXLqvppusJyDwYJKd5itao8z3Qi2Fsvt7oL77fDnbotPwp7EkFbQZdGi7aUU1SdyfhxNwx6dYcFe2zpj6Spj7zb98FR2HahXwXnqqZjuym7RjN55bqPt2FufJ7CwdgQmiBMid7E1sAVMxBZyAeNbhHEqRJCajpUyGXswJjQJ9S1u9c4rRHzdntMtr2RXDtdgrt6b69GpZgZNeAX3QG9W9kQK4SAHE2BULEmNSBZHHitrRYdx97AsDLFfLpzfsPa82ew9oBy3PacMAF2WP48yxQrAzSA2p5idB5QFbYoECBBLsCyApG37AMuPrr24JrWmZLqR5XEPYnKojYrMcciwkn3L6jRpC5c1D9KrsTGk5dGtqBji1FE9XAVxuVpdddJjBSjphPx2UWtvJnwcxB8CoRSsVDF8RoyPcVwMmSfL5arDGJxBUzVu
 1
 Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=0&limit=30
+Processing initial download(size = 30) for: 5ivrmzxYZZfH2wJRvogecZo1YYXm32CoKnSZdtwxbjNoogRakUFe56VrrcULZtCkvAzM2MNRMxPYSfZc2rB6tkLKLCirG14JPDMfqBoWMhyzzQLVsDukZupema1i8SvYUuoaiPL5rTyQmqgF3ftPbvM2dHY623B3KsKRTNDhkoMoRmKLzenNWqjXpkANpyc3TCkDuvBypXfbWVN55F2ZZUs8L3XkvaJKcb74GY7whJB8Zg31VgpmVW4uVEuqpcvPk5FYNiTdRakyYTUVFnAdCR6ZDjagBYMr3ks2uHMhQdjmoKmmwCocVm4SGZsA8rU8zj6zrEgpepLT5UPD9sZQWtvSi6C82fPEW9pvNXr4T3sFx2xNRv8meyNUhopUfiRzVoWfx6Q4ArqU3dnmRtN8pxkDfTZr7oGrzAFAb3DRhBUPhhfWY2USAw7LMqMAuW65pdUFcGnczQH3B6V4kALNaoGMD7ixKtkdMkrAPHkJmxKzeMEd6Y49PnHWxFkQbXwqGELjDppqmdbKceyrtjUp3JwcZ5qN7YcLg1yXhFUiWAHhnAwGkHsTHivXADhV81sDBVqM1GUB3piyt6gkJ5My3SaRRTsokrnJLoGL23GwjEfTzDsvXCoXww3MQcwUUCXehQConnMxYsK7HHGV4wf8kbctrFd2ekPkeHm5ksjagEVzKMraZJgrRSRWEHdYmUGkU6tLGZTUF4Xe4MkdzXC3sRtif4iUnZg6Tnt3DEx2i5fmPD4xasYkusc6thd77x5x7MZXMdkxuo9BWTG9iiYAaE4aLQ5yEbrYeVY85DCVFAKXTsiwUH1De3rDhRZfFfQRuDqiYomDFumxofAa9k89yLeCSRyQpAH55BXLqvppusJyDwYJKd5itao8z3Qi2Fsvt7oL77fDnbotPwp7EkFbQZdGi7aUU1SdyfhxNwx6dYcFe2zpj6Spj7zb98FR2HahXwXnqqZjuym7RjN55bqPt2FufJ7CwdgQmiBMid7E1sAVMxBZyAeNbhHEqRJCajpUyGXswJjQJ9S1u9c4rRHzdntMtr2RXDtdgrt6b69GpZgZNeAX3QG9W9kQK4SAHE2BULEmNSBZHHitrRYdx97AsDLFfLpzfsPa82ew9oBy3PacMAF2WP48yxQrAzSA2p5idB5QFbYoECBBLsCyApG37AMuPrr24JrWmZLqR5XEPYnKojYrMcciwkn3L6jRpC5c1D9KrsTGk5dGtqBji1FE9XAVxuVpdddJjBSjphPx2UWtvJnwcxB8CoRSsVDF8RoyPcVwMmSfL5arDGJxBUzVu
+Add bunch of data
+Downloading all tx's for : 5ivrmzxYZZfH2wJRvogecZo1YYXm32CoKnSZdtwxbjNoogRakUFe56VrrcULZtCkvAzM2MNRMxPYSfZc2rB6tkLKLCirG14JPDMfqBoWMhyzzQLVsDukZupema1i8SvYUuoaiPL5rTyQmqgF3ftPbvM2dHY623B3KsKRTNDhkoMoRmKLzenNWqjXpkANpyc3TCkDuvBypXfbWVN55F2ZZUs8L3XkvaJKcb74GY7whJB8Zg31VgpmVW4uVEuqpcvPk5FYNiTdRakyYTUVFnAdCR6ZDjagBYMr3ks2uHMhQdjmoKmmwCocVm4SGZsA8rU8zj6zrEgpepLT5UPD9sZQWtvSi6C82fPEW9pvNXr4T3sFx2xNRv8meyNUhopUfiRzVoWfx6Q4ArqU3dnmRtN8pxkDfTZr7oGrzAFAb3DRhBUPhhfWY2USAw7LMqMAuW65pdUFcGnczQH3B6V4kALNaoGMD7ixKtkdMkrAPHkJmxKzeMEd6Y49PnHWxFkQbXwqGELjDppqmdbKceyrtjUp3JwcZ5qN7YcLg1yXhFUiWAHhnAwGkHsTHivXADhV81sDBVqM1GUB3piyt6gkJ5My3SaRRTsokrnJLoGL23GwjEfTzDsvXCoXww3MQcwUUCXehQConnMxYsK7HHGV4wf8kbctrFd2ekPkeHm5ksjagEVzKMraZJgrRSRWEHdYmUGkU6tLGZTUF4Xe4MkdzXC3sRtif4iUnZg6Tnt3DEx2i5fmPD4xasYkusc6thd77x5x7MZXMdkxuo9BWTG9iiYAaE4aLQ5yEbrYeVY85DCVFAKXTsiwUH1De3rDhRZfFfQRuDqiYomDFumxofAa9k89yLeCSRyQpAH55BXLqvppusJyDwYJKd5itao8z3Qi2Fsvt7oL77fDnbotPwp7EkFbQZdGi7aUU1SdyfhxNwx6dYcFe2zpj6Spj7zb98FR2HahXwXnqqZjuym7RjN55bqPt2FufJ7CwdgQmiBMid7E1sAVMxBZyAeNbhHEqRJCajpUyGXswJjQJ9S1u9c4rRHzdntMtr2RXDtdgrt6b69GpZgZNeAX3QG9W9kQK4SAHE2BULEmNSBZHHitrRYdx97AsDLFfLpzfsPa82ew9oBy3PacMAF2WP48yxQrAzSA2p5idB5QFbYoECBBLsCyApG37AMuPrr24JrWmZLqR5XEPYnKojYrMcciwkn3L6jRpC5c1D9KrsTGk5dGtqBji1FE9XAVxuVpdddJjBSjphPx2UWtvJnwcxB8CoRSsVDF8RoyPcVwMmSfL5arDGJxBUzVu
+2
+Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=0&limit=410
+Processing full download(offset = 0, size = 400) for: 5ivrmzxYZZfH2wJRvogecZo1YYXm32CoKnSZdtwxbjNoogRakUFe56VrrcULZtCkvAzM2MNRMxPYSfZc2rB6tkLKLCirG14JPDMfqBoWMhyzzQLVsDukZupema1i8SvYUuoaiPL5rTyQmqgF3ftPbvM2dHY623B3KsKRTNDhkoMoRmKLzenNWqjXpkANpyc3TCkDuvBypXfbWVN55F2ZZUs8L3XkvaJKcb74GY7whJB8Zg31VgpmVW4uVEuqpcvPk5FYNiTdRakyYTUVFnAdCR6ZDjagBYMr3ks2uHMhQdjmoKmmwCocVm4SGZsA8rU8zj6zrEgpepLT5UPD9sZQWtvSi6C82fPEW9pvNXr4T3sFx2xNRv8meyNUhopUfiRzVoWfx6Q4ArqU3dnmRtN8pxkDfTZr7oGrzAFAb3DRhBUPhhfWY2USAw7LMqMAuW65pdUFcGnczQH3B6V4kALNaoGMD7ixKtkdMkrAPHkJmxKzeMEd6Y49PnHWxFkQbXwqGELjDppqmdbKceyrtjUp3JwcZ5qN7YcLg1yXhFUiWAHhnAwGkHsTHivXADhV81sDBVqM1GUB3piyt6gkJ5My3SaRRTsokrnJLoGL23GwjEfTzDsvXCoXww3MQcwUUCXehQConnMxYsK7HHGV4wf8kbctrFd2ekPkeHm5ksjagEVzKMraZJgrRSRWEHdYmUGkU6tLGZTUF4Xe4MkdzXC3sRtif4iUnZg6Tnt3DEx2i5fmPD4xasYkusc6thd77x5x7MZXMdkxuo9BWTG9iiYAaE4aLQ5yEbrYeVY85DCVFAKXTsiwUH1De3rDhRZfFfQRuDqiYomDFumxofAa9k89yLeCSRyQpAH55BXLqvppusJyDwYJKd5itao8z3Qi2Fsvt7oL77fDnbotPwp7EkFbQZdGi7aUU1SdyfhxNwx6dYcFe2zpj6Spj7zb98FR2HahXwXnqqZjuym7RjN55bqPt2FufJ7CwdgQmiBMid7E1sAVMxBZyAeNbhHEqRJCajpUyGXswJjQJ9S1u9c4rRHzdntMtr2RXDtdgrt6b69GpZgZNeAX3QG9W9kQK4SAHE2BULEmNSBZHHitrRYdx97AsDLFfLpzfsPa82ew9oBy3PacMAF2WP48yxQrAzSA2p5idB5QFbYoECBBLsCyApG37AMuPrr24JrWmZLqR5XEPYnKojYrMcciwkn3L6jRpC5c1D9KrsTGk5dGtqBji1FE9XAVxuVpdddJjBSjphPx2UWtvJnwcxB8CoRSsVDF8RoyPcVwMmSfL5arDGJxBUzVu
+1
+StorageService:getData(activePermitTxs) - loaded 0 items in 0ms
 StorageService:getData(activePermitTxs) - loaded 0 items in 0ms
 0
 StorageService:getData(activePermitTxs) - loaded 0 items in 0ms
@@ -17,209 +25,428 @@ Add bunch of data
 Downloading all tx's for : 5ivrmzxYZdjoUYGDMrFbMmAPby1FJAexEDsdu6o5AuRnc6QuMx4WdB5G3B5JBV2igrThbxF3NNtMDCMXsTPfXWJ6pXqAtSZK4ZZAKKj94pVGABxqP55djQPiZYfeVgZhG9DXWUyM1ddRUpEjoKuB9Y5c1xs8rxrFKTzyNBHAufwdFMahNctNo9TvC6qozcTUTPrMYqnU677Bs177MXTPD36XL8jJFc5hRRRvnemJjZaq5huwnPrSh4i153AV2BA83jX1LGoc5Qbb1MHbuFxc6urBSQ61EhkfdmQAt9EtJoa7jpcbseDbkecxTqABEnFXKcyUNR83UyQnmoReubqmfMna1Yoz9GVRZptG7H85X34PquhNVmLyQKJN5mVbE9GLVgG3Nkfoky976YkDxWwg6NXSKogzAmp5w7L1YBKdQNpgNhoA2y4AhtsXW1BPw2T1gDQHdmztwCiFY4VdoLz8NZnR3rdh7tQwnAMXYNM5jMurLLJgbd3wvDi3s45NQALRtnSjkLe9fxBbdt7J5vMZYJdbpSm3gzDYdFnY6GLZCatBcYb7Mo8xWP8iTtiRSPUYMDsDGpLcRzc3xHRFzZhHWEyC5jKPCEPeWFN7TUG96xyMAFJhuAHvmzka8NEvpoJ4gsaWss8iq8nSRWmZQrMNDLfjNNnJCVcnYjg498UnUES7gKHaVT7r4s5Wxdy2k1TsvAuxMsJtrTKu3BHWwiARUqZuMvEb5sa7X9N7DCJWJ2JrLhJdsLqTNVLsK6zfprynXA9hGqaokXJWeReRvKf9zctbwyDkVaKNP4deZxDfTu1SReEWNRXkPVR4CQjS16srSMZbAK8TGVsBhpNxkh7ToU4ajgHtRFvB29LKcDXeJMVqy2tDNNhjHAB1w945Vj8iAwe6a1tpgnTZLJyic6HXHft1mLDDq24vXQxKBiHug9H7b7LvVCBxshm6FoCfeJJWns4PpeBWUixpmpi6DmyieVFbFrvYpBeQaJLyjjdpPN1azTnX55yvShG8WqGquUQTXzjzUc4Fc1aMnzJFZYpbnREsRQKK4FM9PLCgJdedq2cgTXAKjRYawQitv9CFLSegAtTszicmn1fXBn6vvFJ6yDNqm3F1uqsGXccrgtw6o7iVE2pbBmE2PnGFMdxAQ2X1GU7izWWuViHkYgMF6smE47eWMgjPRHRX92edMHpLcVxRA8pAEeENMaJJ58iFH9z9ewy2oYH8U2cUo2VpFhDjUYkBRxhUmwCaKYo3qh9wURDCjYjukS3udLwUEBopTPCwW3GyEZwCgRbcELeJJSt9Y
 2
 Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=0&limit=410
+Processing full download(offset = 0, size = 400) for: 5ivrmzxYZdjoUYGDMrFbMmAPby1FJAexEDsdu6o5AuRnc6QuMx4WdB5G3B5JBV2igrThbxF3NNtMDCMXsTPfXWJ6pXqAtSZK4ZZAKKj94pVGABxqP55djQPiZYfeVgZhG9DXWUyM1ddRUpEjoKuB9Y5c1xs8rxrFKTzyNBHAufwdFMahNctNo9TvC6qozcTUTPrMYqnU677Bs177MXTPD36XL8jJFc5hRRRvnemJjZaq5huwnPrSh4i153AV2BA83jX1LGoc5Qbb1MHbuFxc6urBSQ61EhkfdmQAt9EtJoa7jpcbseDbkecxTqABEnFXKcyUNR83UyQnmoReubqmfMna1Yoz9GVRZptG7H85X34PquhNVmLyQKJN5mVbE9GLVgG3Nkfoky976YkDxWwg6NXSKogzAmp5w7L1YBKdQNpgNhoA2y4AhtsXW1BPw2T1gDQHdmztwCiFY4VdoLz8NZnR3rdh7tQwnAMXYNM5jMurLLJgbd3wvDi3s45NQALRtnSjkLe9fxBbdt7J5vMZYJdbpSm3gzDYdFnY6GLZCatBcYb7Mo8xWP8iTtiRSPUYMDsDGpLcRzc3xHRFzZhHWEyC5jKPCEPeWFN7TUG96xyMAFJhuAHvmzka8NEvpoJ4gsaWss8iq8nSRWmZQrMNDLfjNNnJCVcnYjg498UnUES7gKHaVT7r4s5Wxdy2k1TsvAuxMsJtrTKu3BHWwiARUqZuMvEb5sa7X9N7DCJWJ2JrLhJdsLqTNVLsK6zfprynXA9hGqaokXJWeReRvKf9zctbwyDkVaKNP4deZxDfTu1SReEWNRXkPVR4CQjS16srSMZbAK8TGVsBhpNxkh7ToU4ajgHtRFvB29LKcDXeJMVqy2tDNNhjHAB1w945Vj8iAwe6a1tpgnTZLJyic6HXHft1mLDDq24vXQxKBiHug9H7b7LvVCBxshm6FoCfeJJWns4PpeBWUixpmpi6DmyieVFbFrvYpBeQaJLyjjdpPN1azTnX55yvShG8WqGquUQTXzjzUc4Fc1aMnzJFZYpbnREsRQKK4FM9PLCgJdedq2cgTXAKjRYawQitv9CFLSegAtTszicmn1fXBn6vvFJ6yDNqm3F1uqsGXccrgtw6o7iVE2pbBmE2PnGFMdxAQ2X1GU7izWWuViHkYgMF6smE47eWMgjPRHRX92edMHpLcVxRA8pAEeENMaJJ58iFH9z9ewy2oYH8U2cUo2VpFhDjUYkBRxhUmwCaKYo3qh9wURDCjYjukS3udLwUEBopTPCwW3GyEZwCgRbcELeJJSt9Y
+3
+Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=400&limit=410
+Processing full download(offset = 400, size = 400) for: 5ivrmzxYZdjoUYGDMrFbMmAPby1FJAexEDsdu6o5AuRnc6QuMx4WdB5G3B5JBV2igrThbxF3NNtMDCMXsTPfXWJ6pXqAtSZK4ZZAKKj94pVGABxqP55djQPiZYfeVgZhG9DXWUyM1ddRUpEjoKuB9Y5c1xs8rxrFKTzyNBHAufwdFMahNctNo9TvC6qozcTUTPrMYqnU677Bs177MXTPD36XL8jJFc5hRRRvnemJjZaq5huwnPrSh4i153AV2BA83jX1LGoc5Qbb1MHbuFxc6urBSQ61EhkfdmQAt9EtJoa7jpcbseDbkecxTqABEnFXKcyUNR83UyQnmoReubqmfMna1Yoz9GVRZptG7H85X34PquhNVmLyQKJN5mVbE9GLVgG3Nkfoky976YkDxWwg6NXSKogzAmp5w7L1YBKdQNpgNhoA2y4AhtsXW1BPw2T1gDQHdmztwCiFY4VdoLz8NZnR3rdh7tQwnAMXYNM5jMurLLJgbd3wvDi3s45NQALRtnSjkLe9fxBbdt7J5vMZYJdbpSm3gzDYdFnY6GLZCatBcYb7Mo8xWP8iTtiRSPUYMDsDGpLcRzc3xHRFzZhHWEyC5jKPCEPeWFN7TUG96xyMAFJhuAHvmzka8NEvpoJ4gsaWss8iq8nSRWmZQrMNDLfjNNnJCVcnYjg498UnUES7gKHaVT7r4s5Wxdy2k1TsvAuxMsJtrTKu3BHWwiARUqZuMvEb5sa7X9N7DCJWJ2JrLhJdsLqTNVLsK6zfprynXA9hGqaokXJWeReRvKf9zctbwyDkVaKNP4deZxDfTu1SReEWNRXkPVR4CQjS16srSMZbAK8TGVsBhpNxkh7ToU4ajgHtRFvB29LKcDXeJMVqy2tDNNhjHAB1w945Vj8iAwe6a1tpgnTZLJyic6HXHft1mLDDq24vXQxKBiHug9H7b7LvVCBxshm6FoCfeJJWns4PpeBWUixpmpi6DmyieVFbFrvYpBeQaJLyjjdpPN1azTnX55yvShG8WqGquUQTXzjzUc4Fc1aMnzJFZYpbnREsRQKK4FM9PLCgJdedq2cgTXAKjRYawQitv9CFLSegAtTszicmn1fXBn6vvFJ6yDNqm3F1uqsGXccrgtw6o7iVE2pbBmE2PnGFMdxAQ2X1GU7izWWuViHkYgMF6smE47eWMgjPRHRX92edMHpLcVxRA8pAEeENMaJJ58iFH9z9ewy2oYH8U2cUo2VpFhDjUYkBRxhUmwCaKYo3qh9wURDCjYjukS3udLwUEBopTPCwW3GyEZwCgRbcELeJJSt9Y
+4
+Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=800&limit=410
+Processing full download(offset = 800, size = 400) for: 5ivrmzxYZdjoUYGDMrFbMmAPby1FJAexEDsdu6o5AuRnc6QuMx4WdB5G3B5JBV2igrThbxF3NNtMDCMXsTPfXWJ6pXqAtSZK4ZZAKKj94pVGABxqP55djQPiZYfeVgZhG9DXWUyM1ddRUpEjoKuB9Y5c1xs8rxrFKTzyNBHAufwdFMahNctNo9TvC6qozcTUTPrMYqnU677Bs177MXTPD36XL8jJFc5hRRRvnemJjZaq5huwnPrSh4i153AV2BA83jX1LGoc5Qbb1MHbuFxc6urBSQ61EhkfdmQAt9EtJoa7jpcbseDbkecxTqABEnFXKcyUNR83UyQnmoReubqmfMna1Yoz9GVRZptG7H85X34PquhNVmLyQKJN5mVbE9GLVgG3Nkfoky976YkDxWwg6NXSKogzAmp5w7L1YBKdQNpgNhoA2y4AhtsXW1BPw2T1gDQHdmztwCiFY4VdoLz8NZnR3rdh7tQwnAMXYNM5jMurLLJgbd3wvDi3s45NQALRtnSjkLe9fxBbdt7J5vMZYJdbpSm3gzDYdFnY6GLZCatBcYb7Mo8xWP8iTtiRSPUYMDsDGpLcRzc3xHRFzZhHWEyC5jKPCEPeWFN7TUG96xyMAFJhuAHvmzka8NEvpoJ4gsaWss8iq8nSRWmZQrMNDLfjNNnJCVcnYjg498UnUES7gKHaVT7r4s5Wxdy2k1TsvAuxMsJtrTKu3BHWwiARUqZuMvEb5sa7X9N7DCJWJ2JrLhJdsLqTNVLsK6zfprynXA9hGqaokXJWeReRvKf9zctbwyDkVaKNP4deZxDfTu1SReEWNRXkPVR4CQjS16srSMZbAK8TGVsBhpNxkh7ToU4ajgHtRFvB29LKcDXeJMVqy2tDNNhjHAB1w945Vj8iAwe6a1tpgnTZLJyic6HXHft1mLDDq24vXQxKBiHug9H7b7LvVCBxshm6FoCfeJJWns4PpeBWUixpmpi6DmyieVFbFrvYpBeQaJLyjjdpPN1azTnX55yvShG8WqGquUQTXzjzUc4Fc1aMnzJFZYpbnREsRQKK4FM9PLCgJdedq2cgTXAKjRYawQitv9CFLSegAtTszicmn1fXBn6vvFJ6yDNqm3F1uqsGXccrgtw6o7iVE2pbBmE2PnGFMdxAQ2X1GU7izWWuViHkYgMF6smE47eWMgjPRHRX92edMHpLcVxRA8pAEeENMaJJ58iFH9z9ewy2oYH8U2cUo2VpFhDjUYkBRxhUmwCaKYo3qh9wURDCjYjukS3udLwUEBopTPCwW3GyEZwCgRbcELeJJSt9Y
+3
+2
 1
-StorageService:getData(activePermitTxs) - loaded 145 items in 0ms
-StorageService:getData(activePermitTxs) - loaded 145 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 5015 items in 2ms
+StorageService:getData(activePermitTxs) - loaded 5015 items in 1ms
 0
-StorageService:getData(activePermitTxs) - loaded 145 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 5015 items in 1ms
 Retrieving watcher active permits
-StorageService:getData(openBoxesStore) - loaded 0 items in 0ms
+StorageService:getData(openBoxesStore) - loaded 0 items in 1ms
 for chainType:  Cardano
 totalsPerAddress:  [
   {
     address: '5ivrmzxYZdjoUYGDMrFbMmAPby1FJAexEDsdu6o5AuRnc6QuMx4WdB5G3B5JBV2igrThbxF3NNtMDCMXsTPfXWJ6pXqAtSZK4ZZAKKj94pVGABxqP55djQPiZYfeVgZhG9DXWUyM1ddRUpEjoKuB9Y5c1xs8rxrFKTzyNBHAufwdFMahNctNo9TvC6qozcTUTPrMYqnU677Bs177MXTPD36XL8jJFc5hRRRvnemJjZaq5huwnPrSh4i153AV2BA83jX1LGoc5Qbb1MHbuFxc6urBSQ61EhkfdmQAt9EtJoa7jpcbseDbkecxTqABEnFXKcyUNR83UyQnmoReubqmfMna1Yoz9GVRZptG7H85X34PquhNVmLyQKJN5mVbE9GLVgG3Nkfoky976YkDxWwg6NXSKogzAmp5w7L1YBKdQNpgNhoA2y4AhtsXW1BPw2T1gDQHdmztwCiFY4VdoLz8NZnR3rdh7tQwnAMXYNM5jMurLLJgbd3wvDi3s45NQALRtnSjkLe9fxBbdt7J5vMZYJdbpSm3gzDYdFnY6GLZCatBcYb7Mo8xWP8iTtiRSPUYMDsDGpLcRzc3xHRFzZhHWEyC5jKPCEPeWFN7TUG96xyMAFJhuAHvmzka8NEvpoJ4gsaWss8iq8nSRWmZQrMNDLfjNNnJCVcnYjg498UnUES7gKHaVT7r4s5Wxdy2k1TsvAuxMsJtrTKu3BHWwiARUqZuMvEb5sa7X9N7DCJWJ2JrLhJdsLqTNVLsK6zfprynXA9hGqaokXJWeReRvKf9zctbwyDkVaKNP4deZxDfTu1SReEWNRXkPVR4CQjS16srSMZbAK8TGVsBhpNxkh7ToU4ajgHtRFvB29LKcDXeJMVqy2tDNNhjHAB1w945Vj8iAwe6a1tpgnTZLJyic6HXHft1mLDDq24vXQxKBiHug9H7b7LvVCBxshm6FoCfeJJWns4PpeBWUixpmpi6DmyieVFbFrvYpBeQaJLyjjdpPN1azTnX55yvShG8WqGquUQTXzjzUc4Fc1aMnzJFZYpbnREsRQKK4FM9PLCgJdedq2cgTXAKjRYawQitv9CFLSegAtTszicmn1fXBn6vvFJ6yDNqm3F1uqsGXccrgtw6o7iVE2pbBmE2PnGFMdxAQ2X1GU7izWWuViHkYgMF6smE47eWMgjPRHRX92edMHpLcVxRA8pAEeENMaJJ58iFH9z9ewy2oYH8U2cUo2VpFhDjUYkBRxhUmwCaKYo3qh9wURDCjYjukS3udLwUEBopTPCwW3GyEZwCgRbcELeJJSt9Y',
-    totalPermits: 1,
-    totalAssets: 1,
-    earliest: '2026-09-27T11:45:40.172Z',
+    totalPermits: 23,
+    totalAssets: 23,
+    earliest: '2026-08-29T16:50:26.008Z',
     latest: '2026-09-27T11:45:40.172Z'
   },
   {
-    address: '9emQdTMNSSqVSLPPT6g24rPRMqYDK1WrfQ5gJA56iF7GYTCrEjo',
-    totalPermits: 1,
+    address: '9eat7rwqMiVyGhnqcChGdeQnPVonV8FUP1TMDdkr99RCA6mt3re',
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:28:45.061Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
-    address: '9ep2JYdXSPLNeJXfgax4RckUicSmiGEtbLqvGbA1zEod6L3nUiJ',
-    totalPermits: 1,
+    address: '9emQdTMNSSqVSLPPT6g24rPRMqYDK1WrfQ5gJA56iF7GYTCrEjo',
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:28:45.061Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
     address: '9eqanERQG1GaKZXJAccgjWAyY8nfsbfSNqavsY4tB9sNnr2bLbp',
-    totalPermits: 1,
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:35:08.046Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
-    address: '9evN5Xg1JATMWmiXCzAujCSonbC8HrnALnW9z8u51cfwDfYtR3H',
-    totalPermits: 1,
+    address: '9exBvxQ8FATdcGA91eawr7kvVRPwqv89rZqsz4ZSf44FGMCxXun',
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
+    earliest: '2026-09-02T09:25:26.309Z',
+    latest: '2026-09-27T11:31:36.690Z'
   },
   {
-    address: '9eZnjhtEaHe2Wt7MJ4q2KDo8jued5UAVZwUvTtMhR8eco9J9mxS',
-    totalPermits: 1,
+    address: '9eXEKbvAcrZK7WG5T7DoHXUqnuenez7ZszzR7w76HtJRsM1UrBL',
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9fcespxXgkxCavMD3m7uSVHa7k2tfxua6xmv4YiLbxbs8e1orpa',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:35:08.046Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
     address: '9fFhi7QQTPAZetNXey2CBwSWZzooSwbMvN1ybVVThp6jsvvMbwR',
-    totalPermits: 1,
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:35:08.046Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
-    address: '9ffw6se385w4dXgEEymVrW2476CRbcwES8RJ8DtDPoUMwBAMUsF',
-    totalPermits: 1,
+    address: '9fMHgHEfBpy7Jqo9EQLQe2JrYwG6boCtNCQsTFbXFAKi4ZUBFEU',
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:35:08.046Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
-    address: '9fM3Sz4ARVr2g6jqYpBQ4qqdyxqnrbEbxzq8qr8DvpGWESA25ry',
-    totalPermits: 1,
+    address: '9fQaX51SoryqRtyDpo4kFf2NhCo2vwNuicfbqsBMkCDJZxgyAis',
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:35:08.046Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
-    address: '9ft3r44omVU6RFdws7Tb7VmvGi7RFhU73HutvbJ4EaCzeEciWH5',
-    totalPermits: 1,
+    address: '9g6PMiDcFrmCwb8vNH1vtZPDXR5MMGchc9hwogfdVMyPJb9cLDK',
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9g43BhPqjy1JdT2L7udeBKb15rKyu3iF5ZbbtDTeHPfd5zpAN6w',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9g5SUZQYnpN2uBcu2YpRZtVQJJHyJS8F143G1KsUCQtCGQsi4gE',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
+    earliest: '2026-09-02T09:24:13.781Z',
+    latest: '2026-09-27T11:31:36.690Z'
   },
   {
     address: '9gnp69o52bKWRE4mEQaD1WKJ9AuQ17KjE8kerXcAhxtgjUW2eTL',
-    totalPermits: 1,
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9grz7mHNPM3SVPZrEdBRN59CAU5CoVQMvfoWXKHAUcHoaLMD3fP',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9gtdDWJ8crxViPem3j9P5zA8o2RzLmA9LsAyQmJukNiMf65y2v3',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:35:08.046Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
     address: '9gwiRXe9odKfWNKmitkDdt84g5FrtrrxopcBwZSr1aFHMettbVU',
-    totalPermits: 1,
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9gYZfYNsAoiebNbQgLTan99efQWpSh85rkwfZyWcq4yXPNFXx2z',
+    totalPermits: 22,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
     address: '9h8VZingU9MLYkgQHDHjKjPmK86xPkS9AXeghcLqjdQJseV2dFj',
-    totalPermits: 1,
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9hJ4A8Zo2eMwVokzda5aMPMXqnWezHodQbm45r9dvFwSbD8UKM8',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9hjMo8zcsY2BBksXb1srdmZQ39x5hhLfa8WYtBreqM4GEf3KPBn',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9hkiWQFgqrqTP1TupJn1m2CV77JBcFWeWfSaXGn7dpfsFRXn2gw',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9hkMvoJcKVE7kaaVukUhPDibZU29MsS3q3dqiJ5nZVm9DZsc1h6',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:35:08.046Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
     address: '9hmP3tdJewXStrDv7Ezxsn2oQGGzEYWaRTKxDwsufJwJJRVrAtg',
-    totalPermits: 1,
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9hno1ZghiihWaj8FNE7zY3SQ4UGVdPUPHzDHyxHTBeJB8FkJTmf',
+    totalPermits: 22,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
     address: '9hpF5e6DWw2L5qhM58EpGothRX9W6xQ73qNGdFHD8iYd1yGqjuV',
-    totalPermits: 1,
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9hRF597dbFUNvP9VftsR69146Zv6UBBJ1Ny2jBsJTdprSP9rAo2',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
-    latest: '2026-09-27T11:40:45.981Z'
-  },
-  {
-    address: '9hsEitwpZafhGeH9ADUEtNpDwMdy9xV8MQPEDEzn76MbJWGp1aq',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:35:08.046Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
     address: '9i5WYwqpb8VruEq7F3j7jkc8sVHhnZujtgb3ZXDectSnHQNY4cm',
-    totalPermits: 1,
+    totalPermits: 22,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9evN5Xg1JATMWmiXCzAujCSonbC8HrnALnW9z8u51cfwDfYtR3H',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9eZnjhtEaHe2Wt7MJ4q2KDo8jued5UAVZwUvTtMhR8eco9J9mxS',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9f3JTcVVF1yMA3QeLZhmnJAPVKCnb33onyU9Ex7xbzftroj9r4V',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9fcespxXgkxCavMD3m7uSVHa7k2tfxua6xmv4YiLbxbs8e1orpa',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9fMUmccKVLi6nwV19eSVKaUeizL2f2LwZW5K6i8tRojJx9dfWmy',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9foELkHZwXFcsHmy1wEB8gdnRMvr7NQnYNYWhpksvCMEZyfoTup',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9g43BhPqjy1JdT2L7udeBKb15rKyu3iF5ZbbtDTeHPfd5zpAN6w',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9g5SUZQYnpN2uBcu2YpRZtVQJJHyJS8F143G1KsUCQtCGQsi4gE',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9gimQDkWg4AFuwtZeJocEDXW8FatzJKpXWsJBHngbiuzQxhiWo5',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9grz7mHNPM3SVPZrEdBRN59CAU5CoVQMvfoWXKHAUcHoaLMD3fP',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9hJ4A8Zo2eMwVokzda5aMPMXqnWezHodQbm45r9dvFwSbD8UKM8',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9hkiWQFgqrqTP1TupJn1m2CV77JBcFWeWfSaXGn7dpfsFRXn2gw',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9hYarWq12ZGhg9DwUyNL6Xp7EBmyJ32vikCM4wbbqytQiFqGD6K',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9iC7jG2fNSbKYMaqbQ6dNfALp4mmDzna2UyhVB4WqyjB5SKa4G4',
+    totalPermits: 21,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9ebsbYMzPNdaJF2F6Ta6DWgvJhGGt2z71ED5USUsptaX7zjwr37',
+    totalPermits: 20,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9ecsERLdfAiyPFMu7mGMWH4xWEaH3wX1K1vWb3zv7bLMuiXg9HF',
+    totalPermits: 20,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:25:26.309Z',
+    latest: '2026-09-27T11:31:36.690Z'
+  },
+  {
+    address: '9f9zXFuc7mZYSaqw97xXjx4jqaqnXVVEQHa5SqQW351KNoMPC3N',
+    totalPermits: 20,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-22T16:07:41.001Z'
+  },
+  {
+    address: '9fy6E3P4NHPcUaponanyaCuS5jFVzuHGgLzn5cqK2T55yoJs283',
+    totalPermits: 20,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9gtdDWJ8crxViPem3j9P5zA8o2RzLmA9LsAyQmJukNiMf65y2v3',
+    totalPermits: 20,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9gtmQebeaNUgEjB8cPdN9WcV3uAEAYDRYWiKgYrKj3YiJUwfwuF',
+    totalPermits: 20,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-26T02:33:44.221Z'
+  },
+  {
+    address: '9hjMo8zcsY2BBksXb1srdmZQ39x5hhLfa8WYtBreqM4GEf3KPBn',
+    totalPermits: 20,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9i91qjuzGNpvZNDeYknLbzoURHwfVaZncRaN9aeoCiUMTivMtKo',
+    totalPermits: 20,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-27T11:31:36.690Z'
+  },
+  {
+    address: '9ffw6se385w4dXgEEymVrW2476CRbcwES8RJ8DtDPoUMwBAMUsF',
+    totalPermits: 19,
+    totalAssets: 0,
+    earliest: '2026-09-07T23:57:11.162Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9hiF1M5cn3fz81v6LP7mJ9UPGKjxvDfNjEVJVnyivAWSu4RFdpj',
+    totalPermits: 19,
+    totalAssets: 0,
+    earliest: '2026-09-07T23:57:11.162Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9ep2JYdXSPLNeJXfgax4RckUicSmiGEtbLqvGbA1zEod6L3nUiJ',
+    totalPermits: 16,
+    totalAssets: 0,
+    earliest: '2026-09-07T23:57:11.162Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9hRF597dbFUNvP9VftsR69146Zv6UBBJ1Ny2jBsJTdprSP9rAo2',
+    totalPermits: 16,
+    totalAssets: 0,
+    earliest: '2026-09-10T06:47:37.991Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9hsEitwpZafhGeH9ADUEtNpDwMdy9xV8MQPEDEzn76MbJWGp1aq',
+    totalPermits: 16,
+    totalAssets: 0,
+    earliest: '2026-09-08T19:06:12.225Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9es31eUcLccnDoscS4toeZNKdyK1nyizQXUkmH7qigSKTYR3wGp',
+    totalPermits: 15,
+    totalAssets: 0,
+    earliest: '2026-09-10T06:47:37.991Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9f4iMawVsnuX3U4QzuCPnfsHir8ecTfuq8yQDwyf5qdDwVwydrf',
+    totalPermits: 15,
+    totalAssets: 0,
+    earliest: '2026-09-08T19:06:12.225Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9ec1Qu82zUCKzvCaAp5AQU4yu8W28ity1iNfRHnUmTRXPTgD6GN',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-15T15:03:48.422Z'
+  },
+  {
+    address: '9i383WLGZCX9aWktfTcpkU2FKVBudUoVKXsLd1rwXvVp5bUZRci',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:28:45.061Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9h1SfZNy44gtnWRzgCdPicKirmVAvm9cdrfBBvBLy7B4psNBHoj',
+    totalPermits: 9,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-22T16:07:41.001Z'
+  },
+  {
+    address: '9fM3Sz4ARVr2g6jqYpBQ4qqdyxqnrbEbxzq8qr8DvpGWESA25ry',
+    totalPermits: 8,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9hkMvoJcKVE7kaaVukUhPDibZU29MsS3q3dqiJ5nZVm9DZsc1h6',
+    totalPermits: 8,
+    totalAssets: 0,
+    earliest: '2026-09-02T18:47:06.031Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9ft3r44omVU6RFdws7Tb7VmvGi7RFhU73HutvbJ4EaCzeEciWH5',
+    totalPermits: 7,
+    totalAssets: 0,
+    earliest: '2026-09-02T09:35:08.046Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9hmeVz6gjNxfhrxyzAfGY6u4M6jczhNmHuR6BVoU5cdudgzYkqv',
+    totalPermits: 6,
+    totalAssets: 0,
+    earliest: '2026-09-21T14:11:47.377Z',
+    latest: '2026-09-27T11:40:45.981Z'
+  },
+  {
+    address: '9hPDVX8Twuso39SZfEU6CXYfPT2kC5WSHCdXD83NYq2LC4yPeSU',
+    totalPermits: 5,
+    totalAssets: 0,
+    earliest: '2026-09-03T07:52:39.587Z',
+    latest: '2026-09-26T02:33:44.221Z'
+  },
+  {
+    address: '9f6k2hBghjcFiBwrZHU5s1a34ZCNCaqh3EUfd9cRzk7CBqDN1PL',
+    totalPermits: 3,
+    totalAssets: 0,
+    earliest: '2026-09-18T17:18:36.924Z',
+    latest: '2026-09-21T21:54:18.835Z'
+  },
+  {
+    address: '9fsTMAjRBxvwPpifYo88pvgFoQqLzBC8LuiXNiZJdWUCkNYk7ZL',
+    totalPermits: 2,
+    totalAssets: 0,
+    earliest: '2026-09-26T02:33:44.221Z',
     latest: '2026-09-27T11:40:45.981Z'
   },
   {
     address: '9iBWh875fomDgj2AeW8aDE85RJQr9kKv8MNnrDqs74zATzhTZDE',
-    totalPermits: 1,
+    totalPermits: 2,
     totalAssets: 0,
-    earliest: '2026-09-27T11:40:45.981Z',
+    earliest: '2026-09-26T02:33:44.221Z',
     latest: '2026-09-27T11:40:45.981Z'
   }
 ]
@@ -231,210 +458,471 @@ Add bunch of data
 Downloading all tx's for : 5ivrmzxYa2fPRuSMsFA3at4RrZhv9SHi17B1UoU74JNL1m8YWnxRs8UfifV8VYjLbifEAczBEo1W2mU7SbeDYRn5HphWf2uvpeHgptESPrYWUmKg9QbaPL8du1i1dJJPWUTVNZsMaWkPSadzazX5uHqAX1bssGJGg75uqVdW1jxdEmixZgU68JnrQdyJybjeFuD2qAxyCYBrW9KHBwMvuzjyUHmF9VhvzFuaWs1Cxr5Jk3tXT6GeTuehauFy5Nf6RuWYabqxHjyKoaNLAQ995CF91wAXTVfH3z9JQuxS3kiyBDCRqfpK5y3wn2bbYJESNkK3DE8idbyNYUD72xipwcD7t29GUMx64wDHYLiTKZNDvTvbZ2i7x8EusAFbJMVppbnfWPzjFyq1THwPsqh9ZscJUeXSC4xKovwYF1oDA3ESkxXYJESwhixwb4MbveLor65rj73rPHRFat4nmFDUmBJzyBqF9CGwCsuKSmPzAvC1SnoEAfgYSS92GzXYNUMqoehdWsp91U6cgVBAygvH9E982VQsLBdewybVcfUQNCKVgRfaCNM1FswCw6MbbLRGELrAk6ahVnVqCctn66apBnNJWQL7cfpsb57JvxAgwF9dzyAyUgMB3PKqKpYNPYGZ4Rz2Vrgu6LznSS1wdZsTgJuXuCKPS36Xw4LfmTYQppeCoAc6zv6QfFybdbyHcDEQbvrVYtR5Va8MCgwKiRQZ1Nyr2qiQRfkUemGhw4UDkzHJqaQ5a7QJY1xbKy5An9HzpsAtZqgD2eW5qoTPDoNmYNcjYFt7ZBBqNKecEi7SKrc7HsbV9As2PdaxqHZb55GuduryAfKUtsBMC6Wb7vt25m2BL6fCeF69YFcH9rGdGhQy6m1fGEFxxYxSV1sf9TkRcY5dSo9wjsjxaE94QJCp4D75uE7fn3uRx3rjaHXcrNLYYN7NoosK1W6T6LePD2o1GNm8LujzGWa2QwXjYUqgXSPTqM4xBoXwMPhPoSBPgvBg5wm1DiaZ1kyTDjVetiXzWe5SPt5FPxfqeGE7T3Pcqv6nnBczR7VfwvvGB2uQM2F9zfxm3nUYegJuuZvQXPEd7PjDPMk9fJBNL5v7D1P4dezzxcA9m3q6DrkmcW1Ar5UMXSU5g8Cqb1CdV5wgabZdDcGuJaE8PZFDtzj5ehWvVjbnTP9z4jKxNjpz2Lom91RXiVKsyZJkk8ypSLm95FEHnmeZAuaVxwNuziQML7Y1Rqx3fLL328G8xG1qtnE2UisBD913UBZxgne1erdSHUc98ciHaYVoxzghVaozi1ckJ
 2
 Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=0&limit=410
+Processing full download(offset = 0, size = 400) for: 5ivrmzxYa2fPRuSMsFA3at4RrZhv9SHi17B1UoU74JNL1m8YWnxRs8UfifV8VYjLbifEAczBEo1W2mU7SbeDYRn5HphWf2uvpeHgptESPrYWUmKg9QbaPL8du1i1dJJPWUTVNZsMaWkPSadzazX5uHqAX1bssGJGg75uqVdW1jxdEmixZgU68JnrQdyJybjeFuD2qAxyCYBrW9KHBwMvuzjyUHmF9VhvzFuaWs1Cxr5Jk3tXT6GeTuehauFy5Nf6RuWYabqxHjyKoaNLAQ995CF91wAXTVfH3z9JQuxS3kiyBDCRqfpK5y3wn2bbYJESNkK3DE8idbyNYUD72xipwcD7t29GUMx64wDHYLiTKZNDvTvbZ2i7x8EusAFbJMVppbnfWPzjFyq1THwPsqh9ZscJUeXSC4xKovwYF1oDA3ESkxXYJESwhixwb4MbveLor65rj73rPHRFat4nmFDUmBJzyBqF9CGwCsuKSmPzAvC1SnoEAfgYSS92GzXYNUMqoehdWsp91U6cgVBAygvH9E982VQsLBdewybVcfUQNCKVgRfaCNM1FswCw6MbbLRGELrAk6ahVnVqCctn66apBnNJWQL7cfpsb57JvxAgwF9dzyAyUgMB3PKqKpYNPYGZ4Rz2Vrgu6LznSS1wdZsTgJuXuCKPS36Xw4LfmTYQppeCoAc6zv6QfFybdbyHcDEQbvrVYtR5Va8MCgwKiRQZ1Nyr2qiQRfkUemGhw4UDkzHJqaQ5a7QJY1xbKy5An9HzpsAtZqgD2eW5qoTPDoNmYNcjYFt7ZBBqNKecEi7SKrc7HsbV9As2PdaxqHZb55GuduryAfKUtsBMC6Wb7vt25m2BL6fCeF69YFcH9rGdGhQy6m1fGEFxxYxSV1sf9TkRcY5dSo9wjsjxaE94QJCp4D75uE7fn3uRx3rjaHXcrNLYYN7NoosK1W6T6LePD2o1GNm8LujzGWa2QwXjYUqgXSPTqM4xBoXwMPhPoSBPgvBg5wm1DiaZ1kyTDjVetiXzWe5SPt5FPxfqeGE7T3Pcqv6nnBczR7VfwvvGB2uQM2F9zfxm3nUYegJuuZvQXPEd7PjDPMk9fJBNL5v7D1P4dezzxcA9m3q6DrkmcW1Ar5UMXSU5g8Cqb1CdV5wgabZdDcGuJaE8PZFDtzj5ehWvVjbnTP9z4jKxNjpz2Lom91RXiVKsyZJkk8ypSLm95FEHnmeZAuaVxwNuziQML7Y1Rqx3fLL328G8xG1qtnE2UisBD913UBZxgne1erdSHUc98ciHaYVoxzghVaozi1ckJ
+3
+Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=400&limit=410
+Processing full download(offset = 400, size = 400) for: 5ivrmzxYa2fPRuSMsFA3at4RrZhv9SHi17B1UoU74JNL1m8YWnxRs8UfifV8VYjLbifEAczBEo1W2mU7SbeDYRn5HphWf2uvpeHgptESPrYWUmKg9QbaPL8du1i1dJJPWUTVNZsMaWkPSadzazX5uHqAX1bssGJGg75uqVdW1jxdEmixZgU68JnrQdyJybjeFuD2qAxyCYBrW9KHBwMvuzjyUHmF9VhvzFuaWs1Cxr5Jk3tXT6GeTuehauFy5Nf6RuWYabqxHjyKoaNLAQ995CF91wAXTVfH3z9JQuxS3kiyBDCRqfpK5y3wn2bbYJESNkK3DE8idbyNYUD72xipwcD7t29GUMx64wDHYLiTKZNDvTvbZ2i7x8EusAFbJMVppbnfWPzjFyq1THwPsqh9ZscJUeXSC4xKovwYF1oDA3ESkxXYJESwhixwb4MbveLor65rj73rPHRFat4nmFDUmBJzyBqF9CGwCsuKSmPzAvC1SnoEAfgYSS92GzXYNUMqoehdWsp91U6cgVBAygvH9E982VQsLBdewybVcfUQNCKVgRfaCNM1FswCw6MbbLRGELrAk6ahVnVqCctn66apBnNJWQL7cfpsb57JvxAgwF9dzyAyUgMB3PKqKpYNPYGZ4Rz2Vrgu6LznSS1wdZsTgJuXuCKPS36Xw4LfmTYQppeCoAc6zv6QfFybdbyHcDEQbvrVYtR5Va8MCgwKiRQZ1Nyr2qiQRfkUemGhw4UDkzHJqaQ5a7QJY1xbKy5An9HzpsAtZqgD2eW5qoTPDoNmYNcjYFt7ZBBqNKecEi7SKrc7HsbV9As2PdaxqHZb55GuduryAfKUtsBMC6Wb7vt25m2BL6fCeF69YFcH9rGdGhQy6m1fGEFxxYxSV1sf9TkRcY5dSo9wjsjxaE94QJCp4D75uE7fn3uRx3rjaHXcrNLYYN7NoosK1W6T6LePD2o1GNm8LujzGWa2QwXjYUqgXSPTqM4xBoXwMPhPoSBPgvBg5wm1DiaZ1kyTDjVetiXzWe5SPt5FPxfqeGE7T3Pcqv6nnBczR7VfwvvGB2uQM2F9zfxm3nUYegJuuZvQXPEd7PjDPMk9fJBNL5v7D1P4dezzxcA9m3q6DrkmcW1Ar5UMXSU5g8Cqb1CdV5wgabZdDcGuJaE8PZFDtzj5ehWvVjbnTP9z4jKxNjpz2Lom91RXiVKsyZJkk8ypSLm95FEHnmeZAuaVxwNuziQML7Y1Rqx3fLL328G8xG1qtnE2UisBD913UBZxgne1erdSHUc98ciHaYVoxzghVaozi1ckJ
+4
+Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=800&limit=410
+Processing full download(offset = 800, size = 400) for: 5ivrmzxYa2fPRuSMsFA3at4RrZhv9SHi17B1UoU74JNL1m8YWnxRs8UfifV8VYjLbifEAczBEo1W2mU7SbeDYRn5HphWf2uvpeHgptESPrYWUmKg9QbaPL8du1i1dJJPWUTVNZsMaWkPSadzazX5uHqAX1bssGJGg75uqVdW1jxdEmixZgU68JnrQdyJybjeFuD2qAxyCYBrW9KHBwMvuzjyUHmF9VhvzFuaWs1Cxr5Jk3tXT6GeTuehauFy5Nf6RuWYabqxHjyKoaNLAQ995CF91wAXTVfH3z9JQuxS3kiyBDCRqfpK5y3wn2bbYJESNkK3DE8idbyNYUD72xipwcD7t29GUMx64wDHYLiTKZNDvTvbZ2i7x8EusAFbJMVppbnfWPzjFyq1THwPsqh9ZscJUeXSC4xKovwYF1oDA3ESkxXYJESwhixwb4MbveLor65rj73rPHRFat4nmFDUmBJzyBqF9CGwCsuKSmPzAvC1SnoEAfgYSS92GzXYNUMqoehdWsp91U6cgVBAygvH9E982VQsLBdewybVcfUQNCKVgRfaCNM1FswCw6MbbLRGELrAk6ahVnVqCctn66apBnNJWQL7cfpsb57JvxAgwF9dzyAyUgMB3PKqKpYNPYGZ4Rz2Vrgu6LznSS1wdZsTgJuXuCKPS36Xw4LfmTYQppeCoAc6zv6QfFybdbyHcDEQbvrVYtR5Va8MCgwKiRQZ1Nyr2qiQRfkUemGhw4UDkzHJqaQ5a7QJY1xbKy5An9HzpsAtZqgD2eW5qoTPDoNmYNcjYFt7ZBBqNKecEi7SKrc7HsbV9As2PdaxqHZb55GuduryAfKUtsBMC6Wb7vt25m2BL6fCeF69YFcH9rGdGhQy6m1fGEFxxYxSV1sf9TkRcY5dSo9wjsjxaE94QJCp4D75uE7fn3uRx3rjaHXcrNLYYN7NoosK1W6T6LePD2o1GNm8LujzGWa2QwXjYUqgXSPTqM4xBoXwMPhPoSBPgvBg5wm1DiaZ1kyTDjVetiXzWe5SPt5FPxfqeGE7T3Pcqv6nnBczR7VfwvvGB2uQM2F9zfxm3nUYegJuuZvQXPEd7PjDPMk9fJBNL5v7D1P4dezzxcA9m3q6DrkmcW1Ar5UMXSU5g8Cqb1CdV5wgabZdDcGuJaE8PZFDtzj5ehWvVjbnTP9z4jKxNjpz2Lom91RXiVKsyZJkk8ypSLm95FEHnmeZAuaVxwNuziQML7Y1Rqx3fLL328G8xG1qtnE2UisBD913UBZxgne1erdSHUc98ciHaYVoxzghVaozi1ckJ
+3
+2
 1
-StorageService:getData(activePermitTxs) - loaded 291 items in 0ms
-StorageService:getData(activePermitTxs) - loaded 291 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 10039 items in 2ms
+StorageService:getData(activePermitTxs) - loaded 10039 items in 1ms
 0
-StorageService:getData(activePermitTxs) - loaded 291 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 10039 items in 1ms
 Retrieving watcher active permits
-StorageService:getData(openBoxesStore) - loaded 0 items in 0ms
+StorageService:getData(openBoxesStore) - loaded 0 items in 1ms
 for chainType:  Ergo
 totalsPerAddress:  [
   {
     address: '5ivrmzxYa2fPRuSMsFA3at4RrZhv9SHi17B1UoU74JNL1m8YWnxRs8UfifV8VYjLbifEAczBEo1W2mU7SbeDYRn5HphWf2uvpeHgptESPrYWUmKg9QbaPL8du1i1dJJPWUTVNZsMaWkPSadzazX5uHqAX1bssGJGg75uqVdW1jxdEmixZgU68JnrQdyJybjeFuD2qAxyCYBrW9KHBwMvuzjyUHmF9VhvzFuaWs1Cxr5Jk3tXT6GeTuehauFy5Nf6RuWYabqxHjyKoaNLAQ995CF91wAXTVfH3z9JQuxS3kiyBDCRqfpK5y3wn2bbYJESNkK3DE8idbyNYUD72xipwcD7t29GUMx64wDHYLiTKZNDvTvbZ2i7x8EusAFbJMVppbnfWPzjFyq1THwPsqh9ZscJUeXSC4xKovwYF1oDA3ESkxXYJESwhixwb4MbveLor65rj73rPHRFat4nmFDUmBJzyBqF9CGwCsuKSmPzAvC1SnoEAfgYSS92GzXYNUMqoehdWsp91U6cgVBAygvH9E982VQsLBdewybVcfUQNCKVgRfaCNM1FswCw6MbbLRGELrAk6ahVnVqCctn66apBnNJWQL7cfpsb57JvxAgwF9dzyAyUgMB3PKqKpYNPYGZ4Rz2Vrgu6LznSS1wdZsTgJuXuCKPS36Xw4LfmTYQppeCoAc6zv6QfFybdbyHcDEQbvrVYtR5Va8MCgwKiRQZ1Nyr2qiQRfkUemGhw4UDkzHJqaQ5a7QJY1xbKy5An9HzpsAtZqgD2eW5qoTPDoNmYNcjYFt7ZBBqNKecEi7SKrc7HsbV9As2PdaxqHZb55GuduryAfKUtsBMC6Wb7vt25m2BL6fCeF69YFcH9rGdGhQy6m1fGEFxxYxSV1sf9TkRcY5dSo9wjsjxaE94QJCp4D75uE7fn3uRx3rjaHXcrNLYYN7NoosK1W6T6LePD2o1GNm8LujzGWa2QwXjYUqgXSPTqM4xBoXwMPhPoSBPgvBg5wm1DiaZ1kyTDjVetiXzWe5SPt5FPxfqeGE7T3Pcqv6nnBczR7VfwvvGB2uQM2F9zfxm3nUYegJuuZvQXPEd7PjDPMk9fJBNL5v7D1P4dezzxcA9m3q6DrkmcW1Ar5UMXSU5g8Cqb1CdV5wgabZdDcGuJaE8PZFDtzj5ehWvVjbnTP9z4jKxNjpz2Lom91RXiVKsyZJkk8ypSLm95FEHnmeZAuaVxwNuziQML7Y1Rqx3fLL328G8xG1qtnE2UisBD913UBZxgne1erdSHUc98ciHaYVoxzghVaozi1ckJ',
-    totalPermits: 1,
-    totalAssets: 1,
-    earliest: '2026-09-22T20:12:42.794Z',
+    totalPermits: 14,
+    totalAssets: 14,
+    earliest: '2026-09-01T13:55:08.447Z',
     latest: '2026-09-22T20:12:42.794Z'
   },
   {
-    address: '9eqqoMmpTYVdBxFV39imiSgYD3NbnZApqDNRE5uWbvLi1jXH5Fz',
-    totalPermits: 1,
+    address: '9eo8PcQW5hykEuorTMu5vw1WaUi6ith9WkbdoU7H4kwE7gzSpUy',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9eqqoMmpTYVdBxFV39imiSgYD3NbnZApqDNRE5uWbvLi1jXH5Fz',
+    totalPermits: 14,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
     address: '9ercfPnFZ2ekTBT5L2noxan6JGjPATpkz2gcYPE7MuXHwu8bCG4',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:47:10.693Z',
     latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9f5MTHfHGpuKeprRJebQSsj8XBme8YTuTUPpKbaXo7N7qPVFzto',
+    totalPermits: 14,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9fCJ1cS1cDrGWMyx11Q3fr7EZmr8hTHeQqgv6dY5ib6Gre2uxJG',
+    totalPermits: 14,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
   },
   {
     address: '9fdGMq36W4YM2NgCWEKM6ht4pzB4bnqqjBe1rr8Pu5p11b6xB2n',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:47:10.693Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
-    address: '9fkqBGJgXAWNg72PRzxmB88y3d8kwvPcVjwxKe1EzqwGjsTe4WM',
-    totalPermits: 1,
+    address: '9fhpx5PPY44NqfxasA34QYRJegVhX3C5wAw77U55HadL6gMYH7t',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9fk8qZLN7CPHEqg9gWZ3xC2aBias2CGVMkuXq5SBvsm2adcBHuU',
+    totalPermits: 14,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
   },
   {
     address: '9fLhf7Ea3ztKBsk6bjQxo5Qac6ACVJHoARdtVxa5sEMmsfW1JXh',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:49:35.249Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
-    address: '9fLyWdMa8YJuCPABHzrGq2S2nVhV87E5UR8DgXsLZ7tcqHX6hPL',
-    totalPermits: 1,
+    address: '9fphXzooUkWAGnDjioEGSmoksqfaypWcMZRL5fa4rNT94jfEERR',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:48:04.195Z'
   },
   {
-    address: '9fpW3Z3Gy2FDYbTxEB6kEpVnxh7tfCRjWQeLmpnX9FjBuAW9RrH',
-    totalPermits: 1,
+    address: '9ge4WbkfC1RW6UAVsS8PwXjUcPjnxAfb3AFZaY3Hn82DdtnerCL',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:48:04.195Z'
   },
   {
-    address: '9fr99g4Gz8yQ6ce9kWUNWR8sHMbWxJvLbGDQ8ok7VohrM8Y9KgA',
-    totalPermits: 1,
+    address: '9gFcRhNPh2pPcRgCZEirfQQDa69gpnMtGBAEGiPpnfKfJu5KiKQ',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:48:04.195Z'
   },
   {
-    address: '9gAUWGxi3TLfev52ZWacVbd1KdzERKHRm6Rvuz5STwNmHtWcc5H',
-    totalPermits: 1,
+    address: '9gfh7iHrqdby5bCYySAzDNDZX54Ch1n7Y8Dzpfu2W8uc8ngpjnH',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
-  },
-  {
-    address: '9gDvQhi9oN4twy5CpS5n1H8fDfZ2mQivcMynBBJj5SWgSnVZkBH',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
-  },
-  {
-    address: '9ggC3zgjnfJGhcySy9V5FJnjE6GavqcjBupqSwKmf8QU4tFE6fU',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
   },
   {
     address: '9ghAxhpJYV5MZQBotkKVH6M8CwkUDT2BKDahBSD6G1PJ9JV629L',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
-  },
-  {
-    address: '9gLQ1fYf4xZ1P3DMVKZKQtevd39Qo11zqHzCwHestgqPaMewMqb',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:47:10.693Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
     address: '9gnajWHFjreMaGnpXounNYb14F7N1NRVmfcYVJq8m2Fn4iU58yv',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:49:35.249Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
     address: '9gpgXRTmEEoZLH82YDa2XEKybV9ps3x1FgozpYepYd6k27WR4cF',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:49:35.249Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
     address: '9gPo3JqB5DxZE1vZ4Xn668HcK2jGmMa7o7Erf7wFStMRvGw9Yb3',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:49:35.249Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
-    address: '9gqQkrefVLjHHeAFcnS9BGzF71qtvtn35YTKbjHgLzas55fhCqT',
-    totalPermits: 1,
+    address: '9gpxawrSrX34Yrz3Teq9vapr6D3p8BFu9yyyKWLATMnxrBXwouL',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
   },
   {
     address: '9gSCfS4d1XPmJdjVGLPL5t2gqEAcK3JKWp1NMRfM9qjCqiL2j2c',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
-  },
-  {
-    address: '9gtX363JsRyS3FS7rpotbn5pP3cobVSJPTroRGutUVeR5YfJkPV',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:47:10.693Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
     address: '9gyXFWm2N3ZSUYmwkysFQNMw4VCLZSsq1G47U1hCjuUbtd7UYy3',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:47:10.693Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
     address: '9h7sJNL27pcbPeehPwR8LrW3iy6edbz6YdrTVZcomVBPufEf1Ny',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:47:10.693Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
-    address: '9h8zdpcPBMxzCc5w6KXGqYBsFbhNALem8hJtZDCkrzTjH75xJMg',
-    totalPermits: 1,
+    address: '9ha6v36nv7p3mVRsVPnMajGmASbY6Etz4ba3MqfgZy4D2zvvPxg',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:48:04.195Z'
   },
   {
-    address: '9hhnozzdoW1DZTuyVnr2MqAyWJkeLgSSZx5tzBTmYnvoMAkAWNy',
-    totalPermits: 1,
+    address: '9hATsZcgazqRMR6zUtFmToyvwGhK1ZMdjE1BrPK9z1MrSLCr6Yn',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
   },
   {
-    address: '9hpBWZqDdBS8FdmaVaQ69vDijHA4gehKpNAHJe9XhuMnpBB8dva',
-    totalPermits: 1,
+    address: '9hD5S6Az9Y9DBW7seKehDheWis5ihLuULzAN4SuJFYf5gZYNfLH',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
-    latest: '2026-09-22T19:53:27.103Z'
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9head3z4pqLEnWTpVGAtPK52bV9bNmy8T58N1Ev8YS5v4pP9uRs',
+    totalPermits: 14,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
   },
   {
     address: '9hqThqeLivduVS71Esvzmk7Vx9bGrLe9Y7UY81Qv4hg1Zj5hfdr',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:49:35.249Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
     address: '9hrV9qpjSyWD5anHDtbMeUpVVNG5JNm74zuBmcAkcMvWsefjitr',
-    totalPermits: 1,
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:47:10.693Z',
     latest: '2026-09-22T19:53:27.103Z'
   },
   {
-    address: '9i816m2XJCEFHsy9JmMULYJ2UXcapJBvhE3ohMRn5fkGQ7uQmHi',
-    totalPermits: 1,
+    address: '9huNTAeiNhgbzzQvDWCpdWjQmNTRQbfkfN3dVFH6GnRgZpqLj46',
+    totalPermits: 14,
     totalAssets: 0,
-    earliest: '2026-09-22T19:53:27.103Z',
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9i5ADe3Hr12pTYc6VDngveqBRzPUEPMphAkqCN3ovy9EbsJRTFh',
+    totalPermits: 14,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9fE3M2idA4r1UukAVyb2U4n7P8QtRAc47pqJXZY274FRsm9bnsB',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9fr99g4Gz8yQ6ce9kWUNWR8sHMbWxJvLbGDQ8ok7VohrM8Y9KgA',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
     latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9ggC3zgjnfJGhcySy9V5FJnjE6GavqcjBupqSwKmf8QU4tFE6fU',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9gqQkrefVLjHHeAFcnS9BGzF71qtvtn35YTKbjHgLzas55fhCqT',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-05T12:16:49.273Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9gvP9iXKJ9kXVKGqYNTvYL3tNbY6PFRXPUiCqfUgH2jc4yaxUap',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9gxvGPHbKtC6otw1tvNEC73qhJ8mkMkqCwbiHrq9yiZGqn3jpSh',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9h8zdpcPBMxzCc5w6KXGqYBsFbhNALem8hJtZDCkrzTjH75xJMg',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-05T12:16:49.273Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9hhnozzdoW1DZTuyVnr2MqAyWJkeLgSSZx5tzBTmYnvoMAkAWNy',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9iBRU8Q7U1KYaZD8BmdbuEBbLngfran1xhk84t8h1VXUiZPsYzn',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9ecdJdS8U6gizfcEMtU69Dnw3VpjnQvKUZe73eJv9Zf1vmM3MEf',
+    totalPermits: 12,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-18T12:41:29.260Z'
+  },
+  {
+    address: '9ekimHBnmokUMRSqNfjAk7jHJJLvN1PWwyGcyfacyTdTDZd459c',
+    totalPermits: 12,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9fLyWdMa8YJuCPABHzrGq2S2nVhV87E5UR8DgXsLZ7tcqHX6hPL',
+    totalPermits: 12,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9g99bsaYqiV8tsuyDLymJL2gBrCqCYj4FX5AMZLyBy7YMybhdaX',
+    totalPermits: 12,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-18T12:40:32.623Z'
+  },
+  {
+    address: '9gtFnnx4wkzbAsyRy8jvNyobnsm2fv4DR3ckv5VQzLzsgxdyddR',
+    totalPermits: 12,
+    totalAssets: 0,
+    earliest: '2026-09-05T12:16:49.273Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9gtX363JsRyS3FS7rpotbn5pP3cobVSJPTroRGutUVeR5YfJkPV',
+    totalPermits: 12,
+    totalAssets: 0,
+    earliest: '2026-09-05T12:16:49.273Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9fDJhKprNYyyqZNiTAZskPRMZM5N75xYEnnoXoe1vFTt3RDR7E9',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9fkqBGJgXAWNg72PRzxmB88y3d8kwvPcVjwxKe1EzqwGjsTe4WM',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9fMuCRJ9mBok5K43Qb8Ddx3rBnoHbvg82d7wAsBW33CPz9ioLS3',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9fpW3Z3Gy2FDYbTxEB6kEpVnxh7tfCRjWQeLmpnX9FjBuAW9RrH',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9gD9G8XoK2keTFtmaHNjsrmahQnmuvQtKGEPUwEqSjb9z85R4By',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9gGBZfrB9broKspfVYzSabfTPT42TZ94c9WzgmumtsHi7qTdFdP',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9gtEhGzsj4xenbiqr4U8QoDKoZf6W8UXVhQy4f9yDARJXoeFuMv',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9gyt8Puw7s3TaotJ59UNivLQcBUiw5g4avwuLG4TRVAML1hbgJ5',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9hyUg58dMQH3xZjisWbYP77961t2RpqxbQaQtZ78VSug8YBHWLd',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-05T12:16:49.273Z',
+    latest: '2026-09-22T19:48:04.195Z'
+  },
+  {
+    address: '9gAUWGxi3TLfev52ZWacVbd1KdzERKHRm6Rvuz5STwNmHtWcc5H',
+    totalPermits: 10,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9hpBWZqDdBS8FdmaVaQ69vDijHA4gehKpNAHJe9XhuMnpBB8dva',
+    totalPermits: 10,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9gLQ1fYf4xZ1P3DMVKZKQtevd39Qo11zqHzCwHestgqPaMewMqb',
+    totalPermits: 9,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9gDvQhi9oN4twy5CpS5n1H8fDfZ2mQivcMynBBJj5SWgSnVZkBH',
+    totalPermits: 8,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9h1SfZNy44gtnWRzgCdPicKirmVAvm9cdrfBBvBLy7B4psNBHoj',
+    totalPermits: 8,
+    totalAssets: 0,
+    earliest: '2026-09-06T02:14:56.540Z',
+    latest: '2026-09-18T12:34:36.275Z'
+  },
+  {
+    address: '9i816m2XJCEFHsy9JmMULYJ2UXcapJBvhE3ohMRn5fkGQ7uQmHi',
+    totalPermits: 8,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:47:10.693Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9fsqhJD55eBHfPQT3QwWyCXQbEowjTQC9XFPjmX5AHq2MNx4Zd8',
+    totalPermits: 7,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-22T19:53:27.103Z'
+  },
+  {
+    address: '9hkMvoJcKVE7kaaVukUhPDibZU29MsS3q3dqiJ5nZVm9DZsc1h6',
+    totalPermits: 7,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-09T13:04:18.083Z'
+  },
+  {
+    address: '9hPDVX8Twuso39SZfEU6CXYfPT2kC5WSHCdXD83NYq2LC4yPeSU',
+    totalPermits: 4,
+    totalAssets: 0,
+    earliest: '2026-09-01T13:49:35.249Z',
+    latest: '2026-09-18T12:40:32.623Z'
+  },
+  {
+    address: '9hAa8G7RHUmoegSQTU6gNv9rQ7jmESuRANwKngJdx61Q6n2nKGC',
+    totalPermits: 3,
+    totalAssets: 0,
+    earliest: '2026-09-05T12:16:49.273Z',
+    latest: '2026-09-06T02:14:56.540Z'
   }
 ]
 Downloading for chainType: Ethereum address: 5ivrmzxYZnAwXXHDXZtf5AoxKY4bJ3ChPKWcnhzvEtgfroWgwdXz8trwiZEd2ZrhsARDEa9raWwyAFLoGpLi6WWreee2wP8Ro9mCfCDp35jKtrpRnsS6oN474E8rpfVjJ8HffMWTHtuMSbZRSrwvmtmQ2dYvBDDzNSdX89xxDyQBFhvSWAk6L2eb9cw5hEPAtAh4BLJbjNeef4zotmBuTZPP5y8yCRQgPbSG6tnzeYHtb3JAiShyCkie6cKR7PXRyqJndcbLaAHKEUjtLJ6a7mJ5dUyDujHsHrcx3msx9rsTcGwAwkvj7y2YqCxQy5AbisyFgJYFvQQbPRpcjkeicn2zH8hX6QD6TYAGqa7w3a3vz9oMuosBZLbFT7emyGWKi6mEUET4fn7V1JKXN731Y4cpLyRt9fdiiX4Cr2CaFcEY9QCQvEErGPKqkfog3ebBRzPWNMZxRCmHWafqSqvhukT3Ei5F5cVW4RHGrZ86TDSpnRywesyAGS3RhmBsWkHV9GN4WUNYHSDooeVHRoVp4ibNLh1mCNKas4v3RzKcp4mzkbDKiuTUKZ6rPPbHFaJdC3sPxS5PwfT9VkrW5xgyUK2kUkgNzTSDE8Bb8PaeAD9vFw7pA3qfDe8L5wQ6yarKSrVQKouoE4nQVvcQDEia5TmQMcug4yAFCjH3kRunBBs3opfpGctjhKgLBBrLKBWxVi4YYMRzqpENc2WSG1d3ydWP8FtqAW2f6bzaxJ1eHQM8E7SbyrrVJPZNwC7eT8xDfBhEqacKzS8AWyfmu8wq7FoW7YmMQLttJ7T4qtzA7MWu8KqHmcpaHHbSN7b8YNWXXqEP7zwQE4BoeTEfPDmqio3oF4VYR2oQvQGDpF8PRtVygj5WTxiKXg5muXNE2kcsQNhH9aM3266hqi6Q5iRR3sDGjuxCv7wErxpKqtQf7KEWjTeTYxR5kGffWKYy2JEP7LcH8AQFV3owWz5rA6Rbc4yJQXKHQ56rMsBBZEssj1BZBJLezv3cr61bDpjsdyiSnKrYKecRWWbGKc2QsiQpHEsnbdRTdutyiX1ATKgwZGWijcvBcUsN2eNFYxPb3HhCRnxqEaLXfeDja6NeQTy9DK14KBZSxnq1D9nwiTThJAwd9GxGSHqRGHdr9wUd9xmaB5crR55A6kMjLqnTXCJ1s6nKwfAoEDXWPnaYMyhNKPtKT7d7JvpLMfUcpuuvk1VV8sLSuSxraGmYmN4aeuGPZPXKkGrkeYWAnDqiNGcE7jdfomsT7RsFjGkaGXs91dJSUKzd1nAGxh5iXWWSimpZE
@@ -445,119 +933,141 @@ Add bunch of data
 Downloading all tx's for : 5ivrmzxYZnAwXXHDXZtf5AoxKY4bJ3ChPKWcnhzvEtgfroWgwdXz8trwiZEd2ZrhsARDEa9raWwyAFLoGpLi6WWreee2wP8Ro9mCfCDp35jKtrpRnsS6oN474E8rpfVjJ8HffMWTHtuMSbZRSrwvmtmQ2dYvBDDzNSdX89xxDyQBFhvSWAk6L2eb9cw5hEPAtAh4BLJbjNeef4zotmBuTZPP5y8yCRQgPbSG6tnzeYHtb3JAiShyCkie6cKR7PXRyqJndcbLaAHKEUjtLJ6a7mJ5dUyDujHsHrcx3msx9rsTcGwAwkvj7y2YqCxQy5AbisyFgJYFvQQbPRpcjkeicn2zH8hX6QD6TYAGqa7w3a3vz9oMuosBZLbFT7emyGWKi6mEUET4fn7V1JKXN731Y4cpLyRt9fdiiX4Cr2CaFcEY9QCQvEErGPKqkfog3ebBRzPWNMZxRCmHWafqSqvhukT3Ei5F5cVW4RHGrZ86TDSpnRywesyAGS3RhmBsWkHV9GN4WUNYHSDooeVHRoVp4ibNLh1mCNKas4v3RzKcp4mzkbDKiuTUKZ6rPPbHFaJdC3sPxS5PwfT9VkrW5xgyUK2kUkgNzTSDE8Bb8PaeAD9vFw7pA3qfDe8L5wQ6yarKSrVQKouoE4nQVvcQDEia5TmQMcug4yAFCjH3kRunBBs3opfpGctjhKgLBBrLKBWxVi4YYMRzqpENc2WSG1d3ydWP8FtqAW2f6bzaxJ1eHQM8E7SbyrrVJPZNwC7eT8xDfBhEqacKzS8AWyfmu8wq7FoW7YmMQLttJ7T4qtzA7MWu8KqHmcpaHHbSN7b8YNWXXqEP7zwQE4BoeTEfPDmqio3oF4VYR2oQvQGDpF8PRtVygj5WTxiKXg5muXNE2kcsQNhH9aM3266hqi6Q5iRR3sDGjuxCv7wErxpKqtQf7KEWjTeTYxR5kGffWKYy2JEP7LcH8AQFV3owWz5rA6Rbc4yJQXKHQ56rMsBBZEssj1BZBJLezv3cr61bDpjsdyiSnKrYKecRWWbGKc2QsiQpHEsnbdRTdutyiX1ATKgwZGWijcvBcUsN2eNFYxPb3HhCRnxqEaLXfeDja6NeQTy9DK14KBZSxnq1D9nwiTThJAwd9GxGSHqRGHdr9wUd9xmaB5crR55A6kMjLqnTXCJ1s6nKwfAoEDXWPnaYMyhNKPtKT7d7JvpLMfUcpuuvk1VV8sLSuSxraGmYmN4aeuGPZPXKkGrkeYWAnDqiNGcE7jdfomsT7RsFjGkaGXs91dJSUKzd1nAGxh5iXWWSimpZE
 2
 Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=0&limit=410
+Processing full download(offset = 0, size = 400) for: 5ivrmzxYZnAwXXHDXZtf5AoxKY4bJ3ChPKWcnhzvEtgfroWgwdXz8trwiZEd2ZrhsARDEa9raWwyAFLoGpLi6WWreee2wP8Ro9mCfCDp35jKtrpRnsS6oN474E8rpfVjJ8HffMWTHtuMSbZRSrwvmtmQ2dYvBDDzNSdX89xxDyQBFhvSWAk6L2eb9cw5hEPAtAh4BLJbjNeef4zotmBuTZPP5y8yCRQgPbSG6tnzeYHtb3JAiShyCkie6cKR7PXRyqJndcbLaAHKEUjtLJ6a7mJ5dUyDujHsHrcx3msx9rsTcGwAwkvj7y2YqCxQy5AbisyFgJYFvQQbPRpcjkeicn2zH8hX6QD6TYAGqa7w3a3vz9oMuosBZLbFT7emyGWKi6mEUET4fn7V1JKXN731Y4cpLyRt9fdiiX4Cr2CaFcEY9QCQvEErGPKqkfog3ebBRzPWNMZxRCmHWafqSqvhukT3Ei5F5cVW4RHGrZ86TDSpnRywesyAGS3RhmBsWkHV9GN4WUNYHSDooeVHRoVp4ibNLh1mCNKas4v3RzKcp4mzkbDKiuTUKZ6rPPbHFaJdC3sPxS5PwfT9VkrW5xgyUK2kUkgNzTSDE8Bb8PaeAD9vFw7pA3qfDe8L5wQ6yarKSrVQKouoE4nQVvcQDEia5TmQMcug4yAFCjH3kRunBBs3opfpGctjhKgLBBrLKBWxVi4YYMRzqpENc2WSG1d3ydWP8FtqAW2f6bzaxJ1eHQM8E7SbyrrVJPZNwC7eT8xDfBhEqacKzS8AWyfmu8wq7FoW7YmMQLttJ7T4qtzA7MWu8KqHmcpaHHbSN7b8YNWXXqEP7zwQE4BoeTEfPDmqio3oF4VYR2oQvQGDpF8PRtVygj5WTxiKXg5muXNE2kcsQNhH9aM3266hqi6Q5iRR3sDGjuxCv7wErxpKqtQf7KEWjTeTYxR5kGffWKYy2JEP7LcH8AQFV3owWz5rA6Rbc4yJQXKHQ56rMsBBZEssj1BZBJLezv3cr61bDpjsdyiSnKrYKecRWWbGKc2QsiQpHEsnbdRTdutyiX1ATKgwZGWijcvBcUsN2eNFYxPb3HhCRnxqEaLXfeDja6NeQTy9DK14KBZSxnq1D9nwiTThJAwd9GxGSHqRGHdr9wUd9xmaB5crR55A6kMjLqnTXCJ1s6nKwfAoEDXWPnaYMyhNKPtKT7d7JvpLMfUcpuuvk1VV8sLSuSxraGmYmN4aeuGPZPXKkGrkeYWAnDqiNGcE7jdfomsT7RsFjGkaGXs91dJSUKzd1nAGxh5iXWWSimpZE
 1
-StorageService:getData(activePermitTxs) - loaded 443 items in 0ms
-StorageService:getData(activePermitTxs) - loaded 443 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 10631 items in 2ms
+StorageService:getData(activePermitTxs) - loaded 10631 items in 2ms
 0
-StorageService:getData(activePermitTxs) - loaded 443 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 10631 items in 2ms
 Retrieving watcher active permits
 StorageService:getData(openBoxesStore) - loaded 0 items in 1ms
 for chainType:  Ethereum
 totalsPerAddress:  [
   {
     address: '5ivrmzxYZnAwXXHDXZtf5AoxKY4bJ3ChPKWcnhzvEtgfroWgwdXz8trwiZEd2ZrhsARDEa9raWwyAFLoGpLi6WWreee2wP8Ro9mCfCDp35jKtrpRnsS6oN474E8rpfVjJ8HffMWTHtuMSbZRSrwvmtmQ2dYvBDDzNSdX89xxDyQBFhvSWAk6L2eb9cw5hEPAtAh4BLJbjNeef4zotmBuTZPP5y8yCRQgPbSG6tnzeYHtb3JAiShyCkie6cKR7PXRyqJndcbLaAHKEUjtLJ6a7mJ5dUyDujHsHrcx3msx9rsTcGwAwkvj7y2YqCxQy5AbisyFgJYFvQQbPRpcjkeicn2zH8hX6QD6TYAGqa7w3a3vz9oMuosBZLbFT7emyGWKi6mEUET4fn7V1JKXN731Y4cpLyRt9fdiiX4Cr2CaFcEY9QCQvEErGPKqkfog3ebBRzPWNMZxRCmHWafqSqvhukT3Ei5F5cVW4RHGrZ86TDSpnRywesyAGS3RhmBsWkHV9GN4WUNYHSDooeVHRoVp4ibNLh1mCNKas4v3RzKcp4mzkbDKiuTUKZ6rPPbHFaJdC3sPxS5PwfT9VkrW5xgyUK2kUkgNzTSDE8Bb8PaeAD9vFw7pA3qfDe8L5wQ6yarKSrVQKouoE4nQVvcQDEia5TmQMcug4yAFCjH3kRunBBs3opfpGctjhKgLBBrLKBWxVi4YYMRzqpENc2WSG1d3ydWP8FtqAW2f6bzaxJ1eHQM8E7SbyrrVJPZNwC7eT8xDfBhEqacKzS8AWyfmu8wq7FoW7YmMQLttJ7T4qtzA7MWu8KqHmcpaHHbSN7b8YNWXXqEP7zwQE4BoeTEfPDmqio3oF4VYR2oQvQGDpF8PRtVygj5WTxiKXg5muXNE2kcsQNhH9aM3266hqi6Q5iRR3sDGjuxCv7wErxpKqtQf7KEWjTeTYxR5kGffWKYy2JEP7LcH8AQFV3owWz5rA6Rbc4yJQXKHQ56rMsBBZEssj1BZBJLezv3cr61bDpjsdyiSnKrYKecRWWbGKc2QsiQpHEsnbdRTdutyiX1ATKgwZGWijcvBcUsN2eNFYxPb3HhCRnxqEaLXfeDja6NeQTy9DK14KBZSxnq1D9nwiTThJAwd9GxGSHqRGHdr9wUd9xmaB5crR55A6kMjLqnTXCJ1s6nKwfAoEDXWPnaYMyhNKPtKT7d7JvpLMfUcpuuvk1VV8sLSuSxraGmYmN4aeuGPZPXKkGrkeYWAnDqiNGcE7jdfomsT7RsFjGkaGXs91dJSUKzd1nAGxh5iXWWSimpZE',
-    totalPermits: 5,
-    totalAssets: 5,
-    earliest: '2026-09-22T08:30:05.631Z',
+    totalPermits: 12,
+    totalAssets: 12,
+    earliest: '2026-09-05T13:46:34.507Z',
     latest: '2026-09-22T11:15:26.124Z'
   },
   {
-    address: '9f9d7jMn5vxuPTr9zbrkwYyEwAnDDMbYpNuipd6Acpj7VyqbAuy',
-    totalPermits: 2,
-    totalAssets: 0,
-    earliest: '2026-09-22T08:30:05.631Z',
-    latest: '2026-09-22T10:58:36.222Z'
-  },
-  {
-    address: '9fmQ1JsTK6DmUXeGWDz1EhszPi5PbeQy3DtcBC7oY65Ata3UQvJ',
-    totalPermits: 2,
-    totalAssets: 0,
-    earliest: '2026-09-22T08:30:05.631Z',
-    latest: '2026-09-22T10:58:36.222Z'
-  },
-  {
     address: '9fUJxJb6m7ngxLnYsue2hnaLDhjiBFzdmLTH8vawVYjURBLQ1Fx',
-    totalPermits: 2,
+    totalPermits: 12,
     totalAssets: 0,
-    earliest: '2026-09-22T08:30:05.631Z',
-    latest: '2026-09-22T10:58:36.222Z'
-  },
-  {
-    address: '9hkAi1EW4CfgqCinDiLw3SgeRKdqqnW7C6zz5W6HWq7FcTTFNQ5',
-    totalPermits: 2,
-    totalAssets: 0,
-    earliest: '2026-09-22T08:30:05.631Z',
-    latest: '2026-09-22T10:58:36.222Z'
-  },
-  {
-    address: '9hTxkmkSZBChHax2zaRH6WggCg9GbZpi4XmWuVmrLtHP77ZV4Q3',
-    totalPermits: 2,
-    totalAssets: 0,
-    earliest: '2026-09-22T08:30:05.631Z',
-    latest: '2026-09-22T10:58:36.222Z'
-  },
-  {
-    address: '9esKcr8mmDBaejvRVJqBQFmjpa9uQv7ivoQkF9DGFhFbZwvg8Bs',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-22T10:58:36.222Z',
-    latest: '2026-09-22T10:58:36.222Z'
-  },
-  {
-    address: '9fG77kCphNYA8KR5v2u6yKZ1V9KTCEY1WqHT9E1HNCMXm5ip91R',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-22T10:58:36.222Z',
-    latest: '2026-09-22T10:58:36.222Z'
-  },
-  {
-    address: '9ft3r44omVU6RFdws7Tb7VmvGi7RFhU73HutvbJ4EaCzeEciWH5',
-    totalPermits: 1,
-    totalAssets: 0,
-    earliest: '2026-09-22T10:58:36.222Z',
+    earliest: '2026-09-05T13:28:46.499Z',
     latest: '2026-09-22T10:58:36.222Z'
   },
   {
     address: '9g4f6kNxGcfYRL1R2o8RLeJQqpeDdhQFW6MRxoo1hp1pfhAtvt8',
-    totalPermits: 1,
+    totalPermits: 12,
     totalAssets: 0,
-    earliest: '2026-09-22T10:58:36.222Z',
+    earliest: '2026-09-05T13:37:37.238Z',
     latest: '2026-09-22T10:58:36.222Z'
   },
   {
     address: '9heCq4zG49Unid9yxKyvxfxzi8ir469bY3Qhb4Ec7WgatrSdphZ',
-    totalPermits: 1,
+    totalPermits: 12,
     totalAssets: 0,
-    earliest: '2026-09-22T10:58:36.222Z',
+    earliest: '2026-09-05T13:28:46.499Z',
     latest: '2026-09-22T10:58:36.222Z'
   },
   {
     address: '9hjMikYA1Fj5qJdkgpFERMKjHhLfEfSAZG3pCrq6rco6Auhf4fQ',
-    totalPermits: 1,
+    totalPermits: 12,
     totalAssets: 0,
-    earliest: '2026-09-22T10:58:36.222Z',
+    earliest: '2026-09-05T13:28:46.499Z',
     latest: '2026-09-22T10:58:36.222Z'
   },
   {
-    address: '9hPDVX8Twuso39SZfEU6CXYfPT2kC5WSHCdXD83NYq2LC4yPeSU',
-    totalPermits: 1,
+    address: '9hkAi1EW4CfgqCinDiLw3SgeRKdqqnW7C6zz5W6HWq7FcTTFNQ5',
+    totalPermits: 12,
     totalAssets: 0,
-    earliest: '2026-09-22T10:58:36.222Z',
+    earliest: '2026-09-05T13:28:46.499Z',
     latest: '2026-09-22T10:58:36.222Z'
   },
   {
-    address: '9hZu6JaUFmWSpPR6jY2PVbsuizmbZk3ysxyZjBgSiZZZk1dXaUt',
-    totalPermits: 1,
+    address: '9hTxkmkSZBChHax2zaRH6WggCg9GbZpi4XmWuVmrLtHP77ZV4Q3',
+    totalPermits: 12,
     totalAssets: 0,
-    earliest: '2026-09-22T10:58:36.222Z',
+    earliest: '2026-09-05T13:28:46.499Z',
     latest: '2026-09-22T10:58:36.222Z'
   },
   {
     address: '9iLMe2qNjNtgzoQ4coSyNyaeS7sLTbzD2Br7EiXC1zZSPekF1Yx',
-    totalPermits: 1,
+    totalPermits: 12,
     totalAssets: 0,
-    earliest: '2026-09-22T10:58:36.222Z',
+    earliest: '2026-09-05T13:28:46.499Z',
     latest: '2026-09-22T10:58:36.222Z'
+  },
+  {
+    address: '9fG77kCphNYA8KR5v2u6yKZ1V9KTCEY1WqHT9E1HNCMXm5ip91R',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:28:46.499Z',
+    latest: '2026-09-22T10:58:36.222Z'
+  },
+  {
+    address: '9fmQ1JsTK6DmUXeGWDz1EhszPi5PbeQy3DtcBC7oY65Ata3UQvJ',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:28:46.499Z',
+    latest: '2026-09-22T10:58:36.222Z'
+  },
+  {
+    address: '9esKcr8mmDBaejvRVJqBQFmjpa9uQv7ivoQkF9DGFhFbZwvg8Bs',
+    totalPermits: 10,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:28:46.499Z',
+    latest: '2026-09-22T10:58:36.222Z'
+  },
+  {
+    address: '9hZu6JaUFmWSpPR6jY2PVbsuizmbZk3ysxyZjBgSiZZZk1dXaUt',
+    totalPermits: 10,
+    totalAssets: 0,
+    earliest: '2026-09-11T20:04:08.103Z',
+    latest: '2026-09-22T10:58:36.222Z'
+  },
+  {
+    address: '9f9d7jMn5vxuPTr9zbrkwYyEwAnDDMbYpNuipd6Acpj7VyqbAuy',
+    totalPermits: 9,
+    totalAssets: 0,
+    earliest: '2026-09-15T18:48:36.451Z',
+    latest: '2026-09-22T10:58:36.222Z'
+  },
+  {
+    address: '9hPDVX8Twuso39SZfEU6CXYfPT2kC5WSHCdXD83NYq2LC4yPeSU',
+    totalPermits: 9,
+    totalAssets: 0,
+    earliest: '2026-09-05T14:39:57.480Z',
+    latest: '2026-09-22T10:58:36.222Z'
+  },
+  {
+    address: '9ft3r44omVU6RFdws7Tb7VmvGi7RFhU73HutvbJ4EaCzeEciWH5',
+    totalPermits: 7,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:35:30.439Z',
+    latest: '2026-09-22T10:58:36.222Z'
+  },
+  {
+    address: '9fTbZHMsuBeWYAWsw7Nr61zNSe4i2FLrREhJcFGRkKLmNYVFwqL',
+    totalPermits: 5,
+    totalAssets: 0,
+    earliest: '2026-09-11T20:04:08.103Z',
+    latest: '2026-09-17T07:46:10.677Z'
+  },
+  {
+    address: '9gFFEZPoDUAA1jgfoNMN5FMARPUbuRHGB8sS8i6Lm1M9dXAiVx9',
+    totalPermits: 5,
+    totalAssets: 0,
+    earliest: '2026-09-11T20:04:08.103Z',
+    latest: '2026-09-17T07:46:10.677Z'
+  },
+  {
+    address: '9hpHhiHWFo8hKBNAx7h5TpAMzhymhzgt6Gve1whnan3FHbvQyyk',
+    totalPermits: 5,
+    totalAssets: 0,
+    earliest: '2026-09-11T20:04:08.103Z',
+    latest: '2026-09-17T07:46:10.677Z'
   }
 ]
 Downloading for chainType: Binance address: 5ivrmzxYZWMXWzecVWbdQrMUvT2Y2EJxuqtA7wUop4Jdq8SpEPFZX7qBJWuaMrZXYeinNPG2erfUgkacGJSeTKXKDCKscotUpzVXNozfpYhAxcpDgUYatU3ba1ZAKhnd8K36dCfpTc4WAzp3fukkwYvgWmdf2Lf7JtQNmyE4eJjwQTNnoUqWjSWaCYAdoj4Bkq2wTyRdwoC384AiTs88rLJ48iDTdC5kvfHLC5tVbgM9UA3Uz4e5nYHLM7QgoRkfB1J3YSvvBYReYi1YzUS91SWcKGzoMnMrpEKpTrsGEeJK6L3ThBbmHgzCrTA5WGWCFGSFJtG2B1c6vzRjYrJKSFb2dhfmfTd4oHke1tcKmq2qcteQWmU1Zvi6jK39gWCeZJi9LaZikLPC5tDwnFjpKktj2PgK88Pvpki2ShXs2fWv5FgToZERicmTsfc9NTtz79n6F1tkMnmL81MF9k3Ckphq8FJGLG6ez8o998FL5zuyLRDwn1WmGFoYfwEUubaS7X7byV3xKCweQv97d92LFYh4KVaU9dwash9xPGC2K2w1BA4PJ9Yybg8nPxgsvETPryvQQe29Sio1Mm2NQFLvhnzYMrPiP7wra9g8xGbEJCQN92Qz3CfpShPPZAbst3v8Za32DJG9bxhSxu79koL6GZ8eC6pvZLQDVWLymF178P25QQA3NPDQVMsjnQhCdPzcYiDyszs8vcZWphwHXHh7S6YErQ25GkzbmuWGvhKZU3WbxZ99wwjacsVxNb9gSuzf81U5YdDgibeCS5EsmUcn4W4k6XKV84JeVQwHCwWdrze8oZeSY9RNK6ugoaajT5GXyM1c3bAz9xpyXJaqDcMffZrG6FGHMA9Hp7hvUsJ3AS4zzuEBNwVpLVA9vQUNu5nTwtrRwv78JRnp64uuZ1y7zSwR1ikmSmyCjs9J1PuZQtrFeHxhjbvKoQGbiMnCMuyL5wH6LGidkzzeesUcWqUCxjc1eo3ZEPMV5ci1M18iefkCu829Q2Esfp9rm42qvcHGvakkBrm3XJBri1Un1iHwfec9ZW2kMnWaY8kJqtgF3PP74gsi349yptYFLyrSonwBptqR5vyeZzgxPoxboA4YnRimsnsAoJAQQGs8iCsrB86xJZvv4Mj4rkpxcQwbpNbdApBnG8WHSTmJknqtNrjwXUuimUQvuDzPM3BhTaC76ZQPNAXMAz6284k7yHiJcvMukfVi8htanigsPBJBNd4XDuNLedzrh3fenbZ76DZChHs3gTTEKoZcAT4eTi4wg7P2RmazhGLow75H8gNgtaaKe
@@ -568,112 +1078,134 @@ Add bunch of data
 Downloading all tx's for : 5ivrmzxYZWMXWzecVWbdQrMUvT2Y2EJxuqtA7wUop4Jdq8SpEPFZX7qBJWuaMrZXYeinNPG2erfUgkacGJSeTKXKDCKscotUpzVXNozfpYhAxcpDgUYatU3ba1ZAKhnd8K36dCfpTc4WAzp3fukkwYvgWmdf2Lf7JtQNmyE4eJjwQTNnoUqWjSWaCYAdoj4Bkq2wTyRdwoC384AiTs88rLJ48iDTdC5kvfHLC5tVbgM9UA3Uz4e5nYHLM7QgoRkfB1J3YSvvBYReYi1YzUS91SWcKGzoMnMrpEKpTrsGEeJK6L3ThBbmHgzCrTA5WGWCFGSFJtG2B1c6vzRjYrJKSFb2dhfmfTd4oHke1tcKmq2qcteQWmU1Zvi6jK39gWCeZJi9LaZikLPC5tDwnFjpKktj2PgK88Pvpki2ShXs2fWv5FgToZERicmTsfc9NTtz79n6F1tkMnmL81MF9k3Ckphq8FJGLG6ez8o998FL5zuyLRDwn1WmGFoYfwEUubaS7X7byV3xKCweQv97d92LFYh4KVaU9dwash9xPGC2K2w1BA4PJ9Yybg8nPxgsvETPryvQQe29Sio1Mm2NQFLvhnzYMrPiP7wra9g8xGbEJCQN92Qz3CfpShPPZAbst3v8Za32DJG9bxhSxu79koL6GZ8eC6pvZLQDVWLymF178P25QQA3NPDQVMsjnQhCdPzcYiDyszs8vcZWphwHXHh7S6YErQ25GkzbmuWGvhKZU3WbxZ99wwjacsVxNb9gSuzf81U5YdDgibeCS5EsmUcn4W4k6XKV84JeVQwHCwWdrze8oZeSY9RNK6ugoaajT5GXyM1c3bAz9xpyXJaqDcMffZrG6FGHMA9Hp7hvUsJ3AS4zzuEBNwVpLVA9vQUNu5nTwtrRwv78JRnp64uuZ1y7zSwR1ikmSmyCjs9J1PuZQtrFeHxhjbvKoQGbiMnCMuyL5wH6LGidkzzeesUcWqUCxjc1eo3ZEPMV5ci1M18iefkCu829Q2Esfp9rm42qvcHGvakkBrm3XJBri1Un1iHwfec9ZW2kMnWaY8kJqtgF3PP74gsi349yptYFLyrSonwBptqR5vyeZzgxPoxboA4YnRimsnsAoJAQQGs8iCsrB86xJZvv4Mj4rkpxcQwbpNbdApBnG8WHSTmJknqtNrjwXUuimUQvuDzPM3BhTaC76ZQPNAXMAz6284k7yHiJcvMukfVi8htanigsPBJBNd4XDuNLedzrh3fenbZ76DZChHs3gTTEKoZcAT4eTi4wg7P2RmazhGLow75H8gNgtaaKe
 2
 Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=0&limit=410
+Processing full download(offset = 0, size = 400) for: 5ivrmzxYZWMXWzecVWbdQrMUvT2Y2EJxuqtA7wUop4Jdq8SpEPFZX7qBJWuaMrZXYeinNPG2erfUgkacGJSeTKXKDCKscotUpzVXNozfpYhAxcpDgUYatU3ba1ZAKhnd8K36dCfpTc4WAzp3fukkwYvgWmdf2Lf7JtQNmyE4eJjwQTNnoUqWjSWaCYAdoj4Bkq2wTyRdwoC384AiTs88rLJ48iDTdC5kvfHLC5tVbgM9UA3Uz4e5nYHLM7QgoRkfB1J3YSvvBYReYi1YzUS91SWcKGzoMnMrpEKpTrsGEeJK6L3ThBbmHgzCrTA5WGWCFGSFJtG2B1c6vzRjYrJKSFb2dhfmfTd4oHke1tcKmq2qcteQWmU1Zvi6jK39gWCeZJi9LaZikLPC5tDwnFjpKktj2PgK88Pvpki2ShXs2fWv5FgToZERicmTsfc9NTtz79n6F1tkMnmL81MF9k3Ckphq8FJGLG6ez8o998FL5zuyLRDwn1WmGFoYfwEUubaS7X7byV3xKCweQv97d92LFYh4KVaU9dwash9xPGC2K2w1BA4PJ9Yybg8nPxgsvETPryvQQe29Sio1Mm2NQFLvhnzYMrPiP7wra9g8xGbEJCQN92Qz3CfpShPPZAbst3v8Za32DJG9bxhSxu79koL6GZ8eC6pvZLQDVWLymF178P25QQA3NPDQVMsjnQhCdPzcYiDyszs8vcZWphwHXHh7S6YErQ25GkzbmuWGvhKZU3WbxZ99wwjacsVxNb9gSuzf81U5YdDgibeCS5EsmUcn4W4k6XKV84JeVQwHCwWdrze8oZeSY9RNK6ugoaajT5GXyM1c3bAz9xpyXJaqDcMffZrG6FGHMA9Hp7hvUsJ3AS4zzuEBNwVpLVA9vQUNu5nTwtrRwv78JRnp64uuZ1y7zSwR1ikmSmyCjs9J1PuZQtrFeHxhjbvKoQGbiMnCMuyL5wH6LGidkzzeesUcWqUCxjc1eo3ZEPMV5ci1M18iefkCu829Q2Esfp9rm42qvcHGvakkBrm3XJBri1Un1iHwfec9ZW2kMnWaY8kJqtgF3PP74gsi349yptYFLyrSonwBptqR5vyeZzgxPoxboA4YnRimsnsAoJAQQGs8iCsrB86xJZvv4Mj4rkpxcQwbpNbdApBnG8WHSTmJknqtNrjwXUuimUQvuDzPM3BhTaC76ZQPNAXMAz6284k7yHiJcvMukfVi8htanigsPBJBNd4XDuNLedzrh3fenbZ76DZChHs3gTTEKoZcAT4eTi4wg7P2RmazhGLow75H8gNgtaaKe
 1
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 11339 items in 3ms
+StorageService:getData(activePermitTxs) - loaded 11339 items in 3ms
 0
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 11339 items in 2ms
 Retrieving watcher active permits
-StorageService:getData(openBoxesStore) - loaded 0 items in 0ms
+StorageService:getData(openBoxesStore) - loaded 0 items in 1ms
 for chainType:  Binance
 totalsPerAddress:  [
   {
     address: '5ivrmzxYZWMXWzecVWbdQrMUvT2Y2EJxuqtA7wUop4Jdq8SpEPFZX7qBJWuaMrZXYeinNPG2erfUgkacGJSeTKXKDCKscotUpzVXNozfpYhAxcpDgUYatU3ba1ZAKhnd8K36dCfpTc4WAzp3fukkwYvgWmdf2Lf7JtQNmyE4eJjwQTNnoUqWjSWaCYAdoj4Bkq2wTyRdwoC384AiTs88rLJ48iDTdC5kvfHLC5tVbgM9UA3Uz4e5nYHLM7QgoRkfB1J3YSvvBYReYi1YzUS91SWcKGzoMnMrpEKpTrsGEeJK6L3ThBbmHgzCrTA5WGWCFGSFJtG2B1c6vzRjYrJKSFb2dhfmfTd4oHke1tcKmq2qcteQWmU1Zvi6jK39gWCeZJi9LaZikLPC5tDwnFjpKktj2PgK88Pvpki2ShXs2fWv5FgToZERicmTsfc9NTtz79n6F1tkMnmL81MF9k3Ckphq8FJGLG6ez8o998FL5zuyLRDwn1WmGFoYfwEUubaS7X7byV3xKCweQv97d92LFYh4KVaU9dwash9xPGC2K2w1BA4PJ9Yybg8nPxgsvETPryvQQe29Sio1Mm2NQFLvhnzYMrPiP7wra9g8xGbEJCQN92Qz3CfpShPPZAbst3v8Za32DJG9bxhSxu79koL6GZ8eC6pvZLQDVWLymF178P25QQA3NPDQVMsjnQhCdPzcYiDyszs8vcZWphwHXHh7S6YErQ25GkzbmuWGvhKZU3WbxZ99wwjacsVxNb9gSuzf81U5YdDgibeCS5EsmUcn4W4k6XKV84JeVQwHCwWdrze8oZeSY9RNK6ugoaajT5GXyM1c3bAz9xpyXJaqDcMffZrG6FGHMA9Hp7hvUsJ3AS4zzuEBNwVpLVA9vQUNu5nTwtrRwv78JRnp64uuZ1y7zSwR1ikmSmyCjs9J1PuZQtrFeHxhjbvKoQGbiMnCMuyL5wH6LGidkzzeesUcWqUCxjc1eo3ZEPMV5ci1M18iefkCu829Q2Esfp9rm42qvcHGvakkBrm3XJBri1Un1iHwfec9ZW2kMnWaY8kJqtgF3PP74gsi349yptYFLyrSonwBptqR5vyeZzgxPoxboA4YnRimsnsAoJAQQGs8iCsrB86xJZvv4Mj4rkpxcQwbpNbdApBnG8WHSTmJknqtNrjwXUuimUQvuDzPM3BhTaC76ZQPNAXMAz6284k7yHiJcvMukfVi8htanigsPBJBNd4XDuNLedzrh3fenbZ76DZChHs3gTTEKoZcAT4eTi4wg7P2RmazhGLow75H8gNgtaaKe',
-    totalPermits: 3,
-    totalAssets: 3,
-    earliest: '2026-09-21T14:00:00.170Z',
-    latest: '2026-09-23T15:05:33.806Z'
-  },
-  {
-    address: '9eyeHXE9hfYuAPH48aAQje1LBYKvxQfxkUmTRLkS27qXX9aGASm',
-    totalPermits: 2,
-    totalAssets: 0,
-    earliest: '2026-09-23T12:34:12.315Z',
-    latest: '2026-09-23T14:45:32.573Z'
+    totalPermits: 16,
+    totalAssets: 16,
+    earliest: '2026-09-04T08:12:01.068Z',
+    latest: '2026-09-28T10:11:13.916Z'
   },
   {
     address: '9fCF5yexMnvQ5aLTpfDfHoCFZg4GGfBxksWsZ5RpaWjHHukSCAL',
-    totalPermits: 2,
+    totalPermits: 16,
     totalAssets: 0,
-    earliest: '2026-09-23T12:35:38.814Z',
-    latest: '2026-09-23T14:46:56.884Z'
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:55:06.681Z'
   },
   {
     address: '9fdfTDgVBqYKHVn4jbHpoTY4E85112aNogdTBVDji1DMtYaBTMP',
-    totalPermits: 2,
+    totalPermits: 16,
     totalAssets: 0,
-    earliest: '2026-09-23T12:35:38.814Z',
-    latest: '2026-09-23T14:45:32.573Z'
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:55:06.681Z'
   },
   {
     address: '9frm1tsiHtF2ECXzk49jyxKPy4JBYRyfpqpUP7TEjG4M8s4FvE9',
-    totalPermits: 2,
+    totalPermits: 16,
     totalAssets: 0,
-    earliest: '2026-09-23T12:35:38.814Z',
-    latest: '2026-09-23T14:45:32.573Z'
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:55:06.681Z'
   },
   {
     address: '9fuvyYzgSjfQxrBT8JBVoFx7v4ULGKa32wRmLXg2X2kmaqC8r5w',
-    totalPermits: 2,
+    totalPermits: 16,
     totalAssets: 0,
-    earliest: '2026-09-23T12:34:12.315Z',
-    latest: '2026-09-23T14:45:32.573Z'
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:54:04.999Z'
   },
   {
     address: '9haWY1KURECHxqa7TQZwZTT2zpfjeSSpSQxhnFEuCaWFwj26w14',
-    totalPermits: 2,
+    totalPermits: 16,
     totalAssets: 0,
-    earliest: '2026-09-23T12:35:38.814Z',
-    latest: '2026-09-23T14:46:56.884Z'
-  },
-  {
-    address: '9hgjjMGqGa3jVEaLsbarud6HdATKJ8jUUAa2Tw3tVctZSTSJQDS',
-    totalPermits: 2,
-    totalAssets: 0,
-    earliest: '2026-09-23T12:34:12.315Z',
-    latest: '2026-09-23T14:46:56.884Z'
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:54:04.999Z'
   },
   {
     address: '9hmjsWH5sBQmG1ijBEUf4zpyh26ZFoFFtk4mGdq36zPA66xphCo',
-    totalPermits: 2,
+    totalPermits: 16,
     totalAssets: 0,
-    earliest: '2026-09-23T12:35:38.814Z',
-    latest: '2026-09-23T14:45:32.573Z'
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:55:06.681Z'
   },
   {
     address: '9hVnsx2daXdxDpRZyRYgGsVNdH7u7ZtML3sRm5ejWfboEzXGxyB',
-    totalPermits: 2,
+    totalPermits: 16,
     totalAssets: 0,
-    earliest: '2026-09-23T12:35:38.814Z',
-    latest: '2026-09-23T14:45:32.573Z'
-  },
-  {
-    address: '9iBj2Swh6RBM792sum9pWvqGKtLssQ6vqoh3oXgMiPvwEyck7ry',
-    totalPermits: 2,
-    totalAssets: 0,
-    earliest: '2026-09-23T12:34:12.315Z',
-    latest: '2026-09-23T14:46:56.884Z'
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:55:06.681Z'
   },
   {
     address: '9iH5ZzHvQhksQ5FgAEumLHfFLXrjFeLN7pS8BLpRanGtKXQYo3z',
-    totalPermits: 2,
+    totalPermits: 16,
     totalAssets: 0,
-    earliest: '2026-09-23T12:35:38.814Z',
-    latest: '2026-09-23T14:45:32.573Z'
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:55:06.681Z'
   },
   {
     address: '9iKbSRzhfGibTZKDsP3ckNQdXyR2zHqgTqFWuPKHeiE5UJHz9di',
-    totalPermits: 2,
+    totalPermits: 16,
     totalAssets: 0,
-    earliest: '2026-09-23T12:34:12.315Z',
-    latest: '2026-09-23T14:46:56.884Z'
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:54:04.999Z'
   },
   {
     address: '9h9N3H7qkSivZXUU21DRvzFgTCE7UBaefnEsUvqmdP1cqPKWzxd',
+    totalPermits: 15,
+    totalAssets: 0,
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:55:06.681Z'
+  },
+  {
+    address: '9hgjjMGqGa3jVEaLsbarud6HdATKJ8jUUAa2Tw3tVctZSTSJQDS',
+    totalPermits: 15,
+    totalAssets: 0,
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:55:06.681Z'
+  },
+  {
+    address: '9iBj2Swh6RBM792sum9pWvqGKtLssQ6vqoh3oXgMiPvwEyck7ry',
+    totalPermits: 15,
+    totalAssets: 0,
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-28T09:54:04.999Z'
+  },
+  {
+    address: '9eyeHXE9hfYuAPH48aAQje1LBYKvxQfxkUmTRLkS27qXX9aGASm',
+    totalPermits: 9,
+    totalAssets: 0,
+    earliest: '2026-09-04T07:51:04.900Z',
+    latest: '2026-09-28T09:54:04.999Z'
+  },
+  {
+    address: '9h1SfZNy44gtnWRzgCdPicKirmVAvm9cdrfBBvBLy7B4psNBHoj',
+    totalPermits: 3,
+    totalAssets: 0,
+    earliest: '2026-09-14T09:59:39.220Z',
+    latest: '2026-09-28T09:55:06.681Z'
+  },
+  {
+    address: '9h5Qk3k5FVfkvwPPGhMCUGdHuqLjynkrdSgSHHZkRVi9REBSDeE',
     totalPermits: 1,
     totalAssets: 0,
-    earliest: '2026-09-23T14:45:32.573Z',
-    latest: '2026-09-23T14:45:32.573Z'
+    earliest: '2026-09-04T07:53:19.037Z',
+    latest: '2026-09-04T07:53:19.037Z'
+  },
+  {
+    address: '9hkMvoJcKVE7kaaVukUhPDibZU29MsS3q3dqiJ5nZVm9DZsc1h6',
+    totalPermits: 1,
+    totalAssets: 0,
+    earliest: '2026-09-21T02:10:38.378Z',
+    latest: '2026-09-21T02:10:38.378Z'
   }
 ]
 Downloading for chainType: Doge address: 5ivrmzxYa3qBuYZ3teFTEJP1ziojbVZAYdZF528CNfT5tiycZoiqXfZEqgud81sBrXGyGoanY95RS1xwRSzc4nSGhvhg9Awr23q8vde4k7PWrErq42DeCwborsxAwKm1YrWJEwD8KZiKmSMR9jCD3pTxfsvoq4yMJeh4bscJKRj9iuy79tzWT3NU4L1vrVNjQd9ksz8V2mUeU7EXouDTHxAM5Vci3HgeC2CBqY23J3mpXryfb3UPha7a4zf2eF7Tv5viA7ayrGgu582W2ZttnLFHQTRn3gnTU715qzjk7NMer98y528FxXNZsjSFs72tZm4kL6zMthigXX1yNBtr5vXmYKcHUyAeRWuX2CK8jAFWYF4cJeceCN5E2KjoTK47Ge7q8B9MNZBVU83HPGzjVkqjvFDQsDZyt7hyCRhguwKibwyw1Y76ceNXrhzwPgukP6PsCWyipqSMVTAxB3QNR46mGi1v2S3MNKR9bThJU98yQntABweyLuqHVmALaU5s971p9SPi25gVnLsFD2FQnczLpHR2g8iJ2PcUZageyVyCxKbX3EvUoyQTymeaQuSwNgySKAs67YgUPFGcmXD33Fbs7vQvkrDbqUVprE2igGNZvCmStypiqZA6ijDzbaTX1XwFAehFT39WyGQ9NXzCtYn35fj95NLkDWugvEmqL5to8JFbCcHbV13WCJaVgvcerLKU922nuM54QXYNoSQHYdCypp3PXwaWBbsemt1cbH9mGM5JnYuhAm2gKctu7rUwCQ9P6qx7k4nC6ycUWLPsYeaYt23RXxF9cx31A9nUqSW4n4j46j3fVTkBX47C7X2TFF2VgHFJky4d3etKp5EQodYs2caNLgmmACErMCtJ1GuamHCfSEg3iLyLaPAmtRM9HFUVCsMEL3GwLzqEasH3fy9dpUrAh8FqAHPT16gAx7ePEPU8k9obwUyYqkxMBuyaMonoy37GejLXzpzM9DTacEuNCBKw9hVHnDCB5Zxkhuj5kkaH3794qur5GCF3XKFnWNuKf35DBwVeEq3SMMsWmcBB6ZqfJJxa4vCLS6aEhtDxnSxw1TS8T9bvu91dXLH6HoAfK5vnoGHKP387yTuJmcbacFtvBoT6EWDS6DvXQx9FptRgojeF9T1ZjCChE6igPL9WhWPvvCEm6BMR2Jtsxw16JJzqMW33W5CBJstoi8oSKE2yrw7i2hxsyY6UPDWZUe4Cex2tSfWSzSS3tXo5ahVMfoVHxUmmKJoE6St16U58ETVipwqU6WLJT6BGYboueetYfbzL37FPgQEruWWNT
@@ -686,12 +1218,12 @@ Downloading all tx's for : 5ivrmzxYa3qBuYZ3teFTEJP1ziojbVZAYdZF528CNfT5tiycZoiqX
 Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=0&limit=410
 Processing full download(offset = 0, size = 400) for: 5ivrmzxYa3qBuYZ3teFTEJP1ziojbVZAYdZF528CNfT5tiycZoiqXfZEqgud81sBrXGyGoanY95RS1xwRSzc4nSGhvhg9Awr23q8vde4k7PWrErq42DeCwborsxAwKm1YrWJEwD8KZiKmSMR9jCD3pTxfsvoq4yMJeh4bscJKRj9iuy79tzWT3NU4L1vrVNjQd9ksz8V2mUeU7EXouDTHxAM5Vci3HgeC2CBqY23J3mpXryfb3UPha7a4zf2eF7Tv5viA7ayrGgu582W2ZttnLFHQTRn3gnTU715qzjk7NMer98y528FxXNZsjSFs72tZm4kL6zMthigXX1yNBtr5vXmYKcHUyAeRWuX2CK8jAFWYF4cJeceCN5E2KjoTK47Ge7q8B9MNZBVU83HPGzjVkqjvFDQsDZyt7hyCRhguwKibwyw1Y76ceNXrhzwPgukP6PsCWyipqSMVTAxB3QNR46mGi1v2S3MNKR9bThJU98yQntABweyLuqHVmALaU5s971p9SPi25gVnLsFD2FQnczLpHR2g8iJ2PcUZageyVyCxKbX3EvUoyQTymeaQuSwNgySKAs67YgUPFGcmXD33Fbs7vQvkrDbqUVprE2igGNZvCmStypiqZA6ijDzbaTX1XwFAehFT39WyGQ9NXzCtYn35fj95NLkDWugvEmqL5to8JFbCcHbV13WCJaVgvcerLKU922nuM54QXYNoSQHYdCypp3PXwaWBbsemt1cbH9mGM5JnYuhAm2gKctu7rUwCQ9P6qx7k4nC6ycUWLPsYeaYt23RXxF9cx31A9nUqSW4n4j46j3fVTkBX47C7X2TFF2VgHFJky4d3etKp5EQodYs2caNLgmmACErMCtJ1GuamHCfSEg3iLyLaPAmtRM9HFUVCsMEL3GwLzqEasH3fy9dpUrAh8FqAHPT16gAx7ePEPU8k9obwUyYqkxMBuyaMonoy37GejLXzpzM9DTacEuNCBKw9hVHnDCB5Zxkhuj5kkaH3794qur5GCF3XKFnWNuKf35DBwVeEq3SMMsWmcBB6ZqfJJxa4vCLS6aEhtDxnSxw1TS8T9bvu91dXLH6HoAfK5vnoGHKP387yTuJmcbacFtvBoT6EWDS6DvXQx9FptRgojeF9T1ZjCChE6igPL9WhWPvvCEm6BMR2Jtsxw16JJzqMW33W5CBJstoi8oSKE2yrw7i2hxsyY6UPDWZUe4Cex2tSfWSzSS3tXo5ahVMfoVHxUmmKJoE6St16U58ETVipwqU6WLJT6BGYboueetYfbzL37FPgQEruWWNT
 1
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 10993 items in 7ms
+StorageService:getData(activePermitTxs) - loaded 10993 items in 3ms
 0
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 10993 items in 2ms
 Retrieving watcher active permits
-StorageService:getData(openBoxesStore) - loaded 0 items in 0ms
+StorageService:getData(openBoxesStore) - loaded 0 items in 1ms
 for chainType:  Doge
 totalsPerAddress:  []
 Downloading for chainType: Runes address: 5ivrmzxYZwTAiTX9sPndhvFogPtijgcySCRKTQBJwcgHkKVsM9Chqog7YhdVDbf7AH9Z2PgYmjMrWbPgDDCHLDANY9RyY22DvgyS3P4XmuD1YptEBLveRbcQGJjeLmxF5HzmQePE9MtFC2foD2e7gWBqqSuhcSQMWtWZXrsWzEgbtvvQP1UYsW3DHaXa89oQzxiLq7bGPrVqvxEK3fHS7onA6MZo7bf2UxJE7zqnbvq91CLZCAcp33VM48vTmwq5X27URUV81iJdpqES3JSVdAdDqrMXGiqCh8rB8mJsVqfmUy66nYmK5QVSu11N23pELKWotBnoN5WxZuHugeytjkFRtFMpwuowE2tmrkJ6NXF4BBe3hAh162o6b4zVUpbkhsjg59HkaSeFAhQScYYQdcJf6uZoA8cF7JHya1QEuVzeG5esubZjDx7MSPrEL42Gehvbt6QZ6R1QYK6gZSFB7twXHWWgcX2VzjofWtbAJkN69JbaWh2W54PQ4x8JZdUTWQcUQUTbPd6T8Wj8xuuXWfGLsadY8CJ9y1Nojctupz9MxzkZZQZnqtuwnNU6w15CP5MGskSbpF4U6Ha6mSnjQzWRGTjZTS73nof3Rr3QcJzpMbT18GQCoZnkUXJ19ch5Ub62pBhSc7gUaed1vxMfyfHBpnviCMwyTA91MWCjajbMzZyEzbrGz47xFW3VuPkTqtyNTFbue8pgouvoDC7vu7haTQWyjQXQ4UmVN6cWNzxKW81JhUSUWPXy9spJcH1ESXwtgJPGPfGwdmCPkJogdrZvPZcrPpDEE3U2UWVKHwHPVgGj1iDdXDxCaht4AdHus2sJhtC2P3N4gsP2RFbkecSMZii6ZB5R3n58qzq3xnCeHbvCu22Xdkao7jFPkEjDqdsbLVkwK85dTVHcybB1xV2Cgvv4YDjaHemfAwUrWEfELi2MgJeRxrA3bPPT8PsAh1uSMMEL598EijK2Psn8YwmwZFTMoigWEAfr1PzvisDZjYAH6ofrt95jFHuT1XKFy3wT5uhveGWjqFjhJpV4XvvRf9qLBiv6XRTqimK3AQUR1URog9fkfVd6u9spDUTkX1tWMTXRTPnrCPkWmkjY9K8PdSsY9YsbTv6YQ8HzeeiHTa18uPhy99bd4k3bubL1zuAmPMoNDUKm2m9d3xmMB6soNS849xt1LS7EeXRzvkqEY2kU75QSDSrqhaMPr4iGYkd2JBjyQohbCMsWNdsjWqxQjgCc7cyTWQngrtLaFRXdLbVNKCzHvTzCnWqpa8xNZB9ecsrcbno13jrAKzHhx
@@ -704,21 +1236,410 @@ Downloading all tx's for : 5ivrmzxYZwTAiTX9sPndhvFogPtijgcySCRKTQBJwcgHkKVsM9Chq
 Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=0&limit=410
 Processing full download(offset = 0, size = 400) for: 5ivrmzxYZwTAiTX9sPndhvFogPtijgcySCRKTQBJwcgHkKVsM9Chqog7YhdVDbf7AH9Z2PgYmjMrWbPgDDCHLDANY9RyY22DvgyS3P4XmuD1YptEBLveRbcQGJjeLmxF5HzmQePE9MtFC2foD2e7gWBqqSuhcSQMWtWZXrsWzEgbtvvQP1UYsW3DHaXa89oQzxiLq7bGPrVqvxEK3fHS7onA6MZo7bf2UxJE7zqnbvq91CLZCAcp33VM48vTmwq5X27URUV81iJdpqES3JSVdAdDqrMXGiqCh8rB8mJsVqfmUy66nYmK5QVSu11N23pELKWotBnoN5WxZuHugeytjkFRtFMpwuowE2tmrkJ6NXF4BBe3hAh162o6b4zVUpbkhsjg59HkaSeFAhQScYYQdcJf6uZoA8cF7JHya1QEuVzeG5esubZjDx7MSPrEL42Gehvbt6QZ6R1QYK6gZSFB7twXHWWgcX2VzjofWtbAJkN69JbaWh2W54PQ4x8JZdUTWQcUQUTbPd6T8Wj8xuuXWfGLsadY8CJ9y1Nojctupz9MxzkZZQZnqtuwnNU6w15CP5MGskSbpF4U6Ha6mSnjQzWRGTjZTS73nof3Rr3QcJzpMbT18GQCoZnkUXJ19ch5Ub62pBhSc7gUaed1vxMfyfHBpnviCMwyTA91MWCjajbMzZyEzbrGz47xFW3VuPkTqtyNTFbue8pgouvoDC7vu7haTQWyjQXQ4UmVN6cWNzxKW81JhUSUWPXy9spJcH1ESXwtgJPGPfGwdmCPkJogdrZvPZcrPpDEE3U2UWVKHwHPVgGj1iDdXDxCaht4AdHus2sJhtC2P3N4gsP2RFbkecSMZii6ZB5R3n58qzq3xnCeHbvCu22Xdkao7jFPkEjDqdsbLVkwK85dTVHcybB1xV2Cgvv4YDjaHemfAwUrWEfELi2MgJeRxrA3bPPT8PsAh1uSMMEL598EijK2Psn8YwmwZFTMoigWEAfr1PzvisDZjYAH6ofrt95jFHuT1XKFy3wT5uhveGWjqFjhJpV4XvvRf9qLBiv6XRTqimK3AQUR1URog9fkfVd6u9spDUTkX1tWMTXRTPnrCPkWmkjY9K8PdSsY9YsbTv6YQ8HzeeiHTa18uPhy99bd4k3bubL1zuAmPMoNDUKm2m9d3xmMB6soNS849xt1LS7EeXRzvkqEY2kU75QSDSrqhaMPr4iGYkd2JBjyQohbCMsWNdsjWqxQjgCc7cyTWQngrtLaFRXdLbVNKCzHvTzCnWqpa8xNZB9ecsrcbno13jrAKzHhx
 1
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 10624 items in 2ms
+StorageService:getData(activePermitTxs) - loaded 10624 items in 2ms
 0
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 10624 items in 2ms
 Retrieving watcher active permits
-StorageService:getData(openBoxesStore) - loaded 0 items in 0ms
+StorageService:getData(openBoxesStore) - loaded 0 items in 1ms
 for chainType:  Runes
 totalsPerAddress:  []
 Downloading for chainType: Firo address: 5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn
 1
 Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=0&limit=30
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
+Processing initial download(size = 30) for: 5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn
+Add bunch of data
+Downloading all tx's for : 5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn
+2
+Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=0&limit=410
+Processing full download(offset = 0, size = 400) for: 5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn
+3
+Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=400&limit=410
+Processing full download(offset = 400, size = 400) for: 5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn
+4
+Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=800&limit=410
+Processing full download(offset = 800, size = 400) for: 5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn
+5
+Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=1200&limit=410
+Processing full download(offset = 1200, size = 400) for: 5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn
+6
+Downloading from: https://node-p2p.ergoplatform.com/blockchain/transaction/byAddress?offset=1600&limit=410
+Processing full download(offset = 1600, size = 400) for: 5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn
+5
+4
+3
+2
+1
+StorageService:getData(activePermitTxs) - loaded 18455 items in 4ms
+StorageService:getData(activePermitTxs) - loaded 18455 items in 4ms
 0
-StorageService:getData(activePermitTxs) - loaded 581 items in 0ms
+StorageService:getData(activePermitTxs) - loaded 18455 items in 3ms
 Retrieving watcher active permits
-StorageService:getData(openBoxesStore) - loaded 0 items in 0ms
+StorageService:getData(openBoxesStore) - loaded 0 items in 2ms
 for chainType:  Firo
-totalsPerAddress:  []
+totalsPerAddress:  [
+  {
+    address: '5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn',
+    totalPermits: 54,
+    totalAssets: 54,
+    earliest: '2026-09-05T13:16:31.493Z',
+    latest: '2026-09-28T10:44:26.240Z'
+  },
+  {
+    address: '9ffqtz3Nck92gWJf6FLbyDcqXattsTyxWzsSn7erkZfNY9DMNvN',
+    totalPermits: 54,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9ee9vC7rfFYF7RKNVUGf7VdNRaNwksKvVpi4yfqrCeLiSEzKHjE',
+    totalPermits: 53,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9fb31GzvvtgWAssCAEeEhLu7xTjywm9ybkqyzywhjMgXSC3LLLQ',
+    totalPermits: 53,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9gJM9rnPkHpX7fou7PXZH76utZirdAnCEh8d3YZ4vcXi9pNHfqz',
+    totalPermits: 53,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9gyECosVSywUjXPLXAFo8uGKvdUrUGtCzs7ihWPCWaC7HkLvfSd',
+    totalPermits: 53,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9iDUGhsTvzUw8g2Z38W47Svgu11WvDzWEATGWNLd8JrYLu9PPnM',
+    totalPermits: 53,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9grkwjK2F2m4B8aY78zXYPq7ynE6EpLt6LmUHN8G79fbvUFXzxm',
+    totalPermits: 52,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9hhWtWQKUKrftYjaRCAW7UdKqVEXhmuTDzfvFugJwBbGdhHfU9N',
+    totalPermits: 52,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9hmw83dS6bij2w3HMYYhypdR2cNxwnfkTh53XvFcbmjMyL62ZKZ',
+    totalPermits: 52,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9hvbdyB6ihcPLyBiw6a5GWDjE6TsYyySarSdegPfU6mtWu2VVrk',
+    totalPermits: 52,
+    totalAssets: 0,
+    earliest: '2026-09-11T06:13:58.365Z',
+    latest: '2026-09-28T10:31:41.872Z'
+  },
+  {
+    address: '9i64FcWC2zFzPqFf6ccTN8DmSdmkRrWfZWBZ5XVBWYJ5S9PZUw9',
+    totalPermits: 52,
+    totalAssets: 0,
+    earliest: '2026-09-11T06:13:58.365Z',
+    latest: '2026-09-28T10:31:41.872Z'
+  },
+  {
+    address: '9ghMdbrqhvNLVrGCqu72DixY3vMV8mgzfsu4Urv6hFMCxGvkau7',
+    totalPermits: 51,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9gSNSXxyDVcn9u7LheeEH4fibbRN3gGycnzbKAYhQ2JKyEEmLVS',
+    totalPermits: 51,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9gvssNdwbYzHgpYxVvN5Li6Nw6d54opyxSjH9RfAVrUz9fWqtfb',
+    totalPermits: 51,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9gwAhZfEcPXLheUUJW5VJfzEecNyFmFpcXMYN8r62kDmmVrvg8f',
+    totalPermits: 51,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9ennVvcQocE4Qh3B6Jsac6aGt8g5yVH7afJEXDv5N3ig7HC6KcC',
+    totalPermits: 50,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9faShjBL9tPVW3p6Mw9KFSW1HkMiyfr56wVX1bf6m7VZPLnrRir',
+    totalPermits: 50,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:56.413Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9gfHtw8xCdBZCRMrYvMV5cJS4JkGgftmF2SBu1C7gFyE6xUSMi4',
+    totalPermits: 50,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9i89KB8AK5fPzn9ZG32gozZYge9ZtdTtPZAbhMRmVis5mEAXPXG',
+    totalPermits: 50,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9iPzSLSSJaoVbz4jcaQzZqpqhK9R6vdH9uLpCoxw3nk63Tb4GSN',
+    totalPermits: 50,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9hJH9woVEZYGCq2Y3jJYSDjDmfWSZ4Lof8bXKbXx5z8LQEJxCFo',
+    totalPermits: 48,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9iBrPDkyEdckaEV2fup9GusWJXWx92P6Dm65PWj1ju5Q3STHwQW',
+    totalPermits: 48,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9fftUMVjE3YzCuZE3ks7kSJfT5mnUbNChfnLnCJqLQr6RgkFaPn',
+    totalPermits: 38,
+    totalAssets: 0,
+    earliest: '2026-09-18T03:58:02.736Z',
+    latest: '2026-09-28T10:31:41.872Z'
+  },
+  {
+    address: '9ec1Qu82zUCKzvCaAp5AQU4yu8W28ity1iNfRHnUmTRXPTgD6GN',
+    totalPermits: 37,
+    totalAssets: 0,
+    earliest: '2026-09-17T18:21:11.444Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9hPDVX8Twuso39SZfEU6CXYfPT2kC5WSHCdXD83NYq2LC4yPeSU',
+    totalPermits: 35,
+    totalAssets: 0,
+    earliest: '2026-09-11T12:11:25.298Z',
+    latest: '2026-09-28T10:31:41.872Z'
+  },
+  {
+    address: '9hkMvoJcKVE7kaaVukUhPDibZU29MsS3q3dqiJ5nZVm9DZsc1h6',
+    totalPermits: 29,
+    totalAssets: 0,
+    earliest: '2026-09-11T06:13:58.365Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9hMq5ZoEpb2T8rYkhUHcTurqqnxeJBxbFchQHjjz1tpE5ezDsyi',
+    totalPermits: 24,
+    totalAssets: 0,
+    earliest: '2026-09-19T17:13:21.239Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9i3dG8x4y3N1sbTKDpiSckMRXYCUmTBBJapu3fTzobCaKj7axEj',
+    totalPermits: 23,
+    totalAssets: 0,
+    earliest: '2026-09-19T17:13:21.239Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9ecdJdS8U6gizfcEMtU69Dnw3VpjnQvKUZe73eJv9Zf1vmM3MEf',
+    totalPermits: 22,
+    totalAssets: 0,
+    earliest: '2026-09-22T08:14:00.189Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9faX5Mjzgu7tcFcNjw24cZfLwSENi5yoHveR6XVrvhay1DYSCh6',
+    totalPermits: 22,
+    totalAssets: 0,
+    earliest: '2026-09-22T08:13:14.766Z',
+    latest: '2026-09-28T10:31:41.872Z'
+  },
+  {
+    address: '9fCA7nA197foXHek6brNP8wFnMh8aAvp4f8PiRX3bH3XK3TXZW6',
+    totalPermits: 22,
+    totalAssets: 0,
+    earliest: '2026-09-19T17:13:21.239Z',
+    latest: '2026-09-28T10:31:41.872Z'
+  },
+  {
+    address: '9fG8A8ijhySGViGKjvzS8W34qD7BtsK8cHzHENcR1ecF7KsVDCH',
+    totalPermits: 22,
+    totalAssets: 0,
+    earliest: '2026-09-19T17:13:21.239Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9fwx9F5D72kft9Ji1Ez8QNLwHxVaCELphuZdMRy6vR5mejFrP5u',
+    totalPermits: 20,
+    totalAssets: 0,
+    earliest: '2026-09-22T09:20:23.618Z',
+    latest: '2026-09-28T10:31:41.872Z'
+  },
+  {
+    address: '9gFFEZPoDUAA1jgfoNMN5FMARPUbuRHGB8sS8i6Lm1M9dXAiVx9',
+    totalPermits: 16,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-23T14:13:09.210Z'
+  },
+  {
+    address: '9hpHhiHWFo8hKBNAx7h5TpAMzhymhzgt6Gve1whnan3FHbvQyyk',
+    totalPermits: 16,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-22T16:56:39.003Z'
+  },
+  {
+    address: '9fTbZHMsuBeWYAWsw7Nr61zNSe4i2FLrREhJcFGRkKLmNYVFwqL',
+    totalPermits: 15,
+    totalAssets: 0,
+    earliest: '2026-09-05T13:01:26.117Z',
+    latest: '2026-09-22T16:56:39.003Z'
+  },
+  {
+    address: '9gFzh1EjqVmCF9GNfczMe9UnWX6mTRNx6NdoJaXMHbj21zpu5GQ',
+    totalPermits: 15,
+    totalAssets: 0,
+    earliest: '2026-09-20T09:23:21.161Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9fLhf7Ea3ztKBsk6bjQxo5Qac6ACVJHoARdtVxa5sEMmsfW1JXh',
+    totalPermits: 14,
+    totalAssets: 0,
+    earliest: '2026-09-23T14:13:09.210Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9gnajWHFjreMaGnpXounNYb14F7N1NRVmfcYVJq8m2Fn4iU58yv',
+    totalPermits: 14,
+    totalAssets: 0,
+    earliest: '2026-09-23T14:13:09.210Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9h8zdpcPBMxzCc5w6KXGqYBsFbhNALem8hJtZDCkrzTjH75xJMg',
+    totalPermits: 14,
+    totalAssets: 0,
+    earliest: '2026-09-23T14:13:09.210Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9hhnozzdoW1DZTuyVnr2MqAyWJkeLgSSZx5tzBTmYnvoMAkAWNy',
+    totalPermits: 14,
+    totalAssets: 0,
+    earliest: '2026-09-23T14:13:09.210Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9eqqoMmpTYVdBxFV39imiSgYD3NbnZApqDNRE5uWbvLi1jXH5Fz',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-23T14:13:09.210Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9exaMtuV26T9y4j4ViUDxnC6A21Aw8xZSHrRjh3T2qTwDY5MsNS',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-11T06:13:58.365Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9fE3M2idA4r1UukAVyb2U4n7P8QtRAc47pqJXZY274FRsm9bnsB',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-23T14:13:09.210Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9gpgXRTmEEoZLH82YDa2XEKybV9ps3x1FgozpYepYd6k27WR4cF',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-23T14:13:09.210Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9gqQkrefVLjHHeAFcnS9BGzF71qtvtn35YTKbjHgLzas55fhCqT',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-23T14:13:09.210Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9gtX363JsRyS3FS7rpotbn5pP3cobVSJPTroRGutUVeR5YfJkPV',
+    totalPermits: 13,
+    totalAssets: 0,
+    earliest: '2026-09-23T14:13:09.210Z',
+    latest: '2026-09-28T10:31:41.872Z'
+  },
+  {
+    address: '9ge4WbkfC1RW6UAVsS8PwXjUcPjnxAfb3AFZaY3Hn82DdtnerCL',
+    totalPermits: 11,
+    totalAssets: 0,
+    earliest: '2026-09-24T01:45:10.297Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  },
+  {
+    address: '9ha6v36nv7p3mVRsVPnMajGmASbY6Etz4ba3MqfgZy4D2zvvPxg',
+    totalPermits: 9,
+    totalAssets: 0,
+    earliest: '2026-09-24T01:45:10.297Z',
+    latest: '2026-09-28T08:54:57.591Z'
+  },
+  {
+    address: '9gw5Bq58wKdZP9n7oWNHjNk1L2oLKNr4NvQfvpkY5CJn7RfF7H7',
+    totalPermits: 8,
+    totalAssets: 0,
+    earliest: '2026-09-24T14:48:26.084Z',
+    latest: '2026-09-28T10:31:41.872Z'
+  },
+  {
+    address: '9hxmr1zzzieKddRYfFS55Y49QNBia1uuJhxSy4AorCtDVGwydB6',
+    totalPermits: 6,
+    totalAssets: 0,
+    earliest: '2026-09-25T15:30:04.586Z',
+    latest: '2026-09-28T10:36:34.380Z'
+  }
+]

@@ -64,7 +64,7 @@ export declare class ErgSettings {
     static rs_TokenIdMap(): Record<string, string>;
     static rs_RSNDecimals(): number;
 }
-export interface ActivePermitsDataService {
+export interface PermitsDataService {
     getAdressPermits(activeOnly: boolean, frommonth: number, fromyear: number, tomonth: number, toyear: number): Promise<PermitTx[]>;
 }
 export interface WatcherDataService {
@@ -74,6 +74,6 @@ export interface IDownloadService<SERVICE> {
     downloadForAddress<T>(address: string, useNode: boolean, callback?: () => Promise<T>): Promise<T[]>;
     getDataService(): SERVICE;
 }
-export declare function GetWatcherDataService(activePermitsDataService: ActivePermitsDataService): WatcherDataService;
-export declare function GetActivePermitsDownloadService(maxDownloadDateDifference: number): IDownloadService<ActivePermitsDataService>;
+export declare function GetWatcherDataService(permitsDataService: PermitsDataService): WatcherDataService;
+export declare function GetPermitsDownloadService(maxDownloadDateDifference: number): IDownloadService<PermitsDataService>;
 export declare function GetWatcherDownloadService(): IDownloadService<WatcherDataService>;

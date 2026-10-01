@@ -1,7 +1,7 @@
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ActivePermitsDataService extends DataService<PermitTx> {
+class PermitsDataService extends DataService<PermitTx> {
   override getData(): Promise<PermitTx[] | null> {
     return this.storageService.getData<PermitTx>(rs_ActivePermitTxStoreName);
   }
@@ -439,9 +439,9 @@ class ActivePermitsDataService extends DataService<PermitTx> {
 }
 
 (globalThis as any).GetWatcherDataService = (
-  activePermitsDataService: ActivePermitsDataService
+  permitsDataService: PermitsDataService
 ): WatcherDataService => {
 
-  return new WatcherDataService(activePermitsDataService);
+  return new WatcherDataService(permitsDataService);
 
 };

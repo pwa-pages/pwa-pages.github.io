@@ -1,8 +1,8 @@
 declare class WatcherDataService extends DataService<PermitTx> {
-    private activePermitsDataService;
+    private permitsDataService;
     getData(): Promise<PermitTx[] | null>;
     getExistingData(transaction: TransactionItem, address: string): Promise<PermitTx | null>;
-    constructor(activePermitsDataService: ActivePermitsDataService);
+    constructor(permitsDataService: PermitsDataService);
     createUniqueId(boxId: string, transactionId: string, address: string): string;
     getDataType(): string;
     private getWatcherPermits;

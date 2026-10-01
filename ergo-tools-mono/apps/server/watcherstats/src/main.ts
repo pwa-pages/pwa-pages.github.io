@@ -1,7 +1,7 @@
 import { getPermitTriggerAddressesByChainType, IDownloadService, WatcherDataService } from '@ergo-tools/service';
-import { GetActivePermitsDownloadService } from '@ergo-tools/service';
+import { GetPermitsDownloadService } from '@ergo-tools/service';
 import { GetWatcherDownloadService } from '@ergo-tools/service';
-import { ActivePermitsDataService } from '@ergo-tools/service';
+import { PermitsDataService } from '@ergo-tools/service';
 import { PermitTx } from '@ergo-tools/service';
 
 
@@ -129,7 +129,7 @@ async function downloadActivePermits() {
 
     if (addr == null) continue;
 
-    var downloadService: IDownloadService<ActivePermitsDataService> = GetActivePermitsDownloadService(diff);
+    var downloadService: IDownloadService<PermitsDataService> = GetPermitsDownloadService(diff);
 
 
     console.log('Downloading for chainType:', chainType, 'address:', addr);

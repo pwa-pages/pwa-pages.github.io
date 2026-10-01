@@ -22,7 +22,7 @@ class DataService {
 }
 "use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ActivePermitsDataService extends DataService {
+class PermitsDataService extends DataService {
     maxDownloadDateDifference;
     getData() {
         return this.storageService.getData(rs_ActivePermitTxStoreName);
@@ -321,8 +321,8 @@ class ActivePermitsDataService extends DataService {
         }
     }
 }
-globalThis.GetWatcherDataService = (activePermitsDataService) => {
-    return new WatcherDataService(activePermitsDataService);
+globalThis.GetWatcherDataService = (permitsDataService) => {
+    return new WatcherDataService(permitsDataService);
 };
 "use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -526,15 +526,15 @@ globalThis.GetPermitTriggerAddresses =
     () => {
         return permitTriggerAddresses;
     };
-globalThis.CreateActivePermitsDownloadService = (maxDownloadDateDifference, eventSender) => {
+globalThis.CreatePermitsDownloadService = (maxDownloadDateDifference, eventSender) => {
     var storageService = new MemoryStorageService();
-    const activepermitsDataService = new ActivePermitsDataService(storageService, maxDownloadDateDifference);
-    return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, eventSender, null);
+    const permitsDataService = new PermitsDataService(storageService, maxDownloadDateDifference);
+    return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, permitsDataService, eventSender, null);
 };
 globalThis.CreateWatcherDownloadService = (maxDownloadDateDifference, eventSender) => {
     var storageService = new MemoryStorageService();
-    const activepermitsDataService = new ActivePermitsDataService(storageService, maxDownloadDateDifference);
-    const watcherDataService = new WatcherDataService(activepermitsDataService);
+    const permitsDataService = new PermitsDataService(storageService, maxDownloadDateDifference);
+    const watcherDataService = new WatcherDataService(permitsDataService);
     return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, watcherDataService, eventSender, null);
 };
 "use strict";
@@ -1311,7 +1311,7 @@ if (typeof window !== 'undefined') {
 "use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class WatcherDataService extends DataService {
-    activePermitsDataService;
+    permitsDataService;
     getData() {
         return this.storageService.getData(rs_PermitTxStoreName);
     }
@@ -1334,9 +1334,9 @@ class WatcherDataService extends DataService {
         }
         return null;
     }
-    constructor(activePermitsDataService) {
-        super(activePermitsDataService.storageService);
-        this.activePermitsDataService = activePermitsDataService;
+    constructor(permitsDataService) {
+        super(permitsDataService.storageService);
+        this.permitsDataService = permitsDataService;
     }
     createUniqueId(boxId, transactionId, address) {
         const str = `${transactionId}_${boxId}_${address}`;
@@ -1408,7 +1408,7 @@ class WatcherDataService extends DataService {
                 });
             }
         }
-        let addressActivePermits = await this.activePermitsDataService.getAdressPermits(true, null, null, null, null, addresses);
+        let addressActivePermits = await this.permitsDataService.getAdressPermits(true, null, null, null, null, addresses);
         for (const activePermit of addressActivePermits) {
             const info = permitInfo.find((p) => p.address === activePermit.address);
             if (info) {
@@ -1535,16 +1535,16 @@ class ProcessEventService {
         const db = await this.initIndexedDB();
         const chartService = new ChartService();
         const rewardDataService = new RewardDataService(db, chartService, this.eventSender);
-        const activepermitsDataService = new ActivePermitsDataService(db);
-        const watcherDataService = new WatcherDataService(activepermitsDataService);
+        const permitsDataService = new PermitsDataService(db);
+        const watcherDataService = new WatcherDataService(permitsDataService);
         const chainPerformanceDataService = new ChainPerformanceDataService(db, this.eventSender);
         const downloadStatusIndexedDbRewardDataService = new DownloadStatusIndexedDbService(rewardDataService, db);
         const downloadStatusIndexedDbWatcherDataService = new DownloadStatusIndexedDbService(watcherDataService, db);
-        const downloadStatusIndexedDbActivePermitsDataService = new DownloadStatusIndexedDbService(activepermitsDataService, db);
+        const downloadStatusIndexedDbPermitsDataService = new DownloadStatusIndexedDbService(permitsDataService, db);
         const downloadStatusIndexedDbChainPerformanceDataService = new DownloadStatusIndexedDbService(chainPerformanceDataService, db);
         const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, this.eventSender, downloadStatusIndexedDbRewardDataService);
         const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, watcherDataService, this.eventSender, downloadStatusIndexedDbWatcherDataService);
-        const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, activepermitsDataService, this.eventSender, downloadStatusIndexedDbActivePermitsDataService);
+        const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, permitsDataService, this.eventSender, downloadStatusIndexedDbPermitsDataService);
         const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, this.eventSender, downloadStatusIndexedDbChainPerformanceDataService);
         this.services = {
             dataService: rewardDataService,
@@ -1555,7 +1555,7 @@ class ProcessEventService {
             downloadPerfService: downloadPerfService,
             downloadMyWatchersService: downloadMyWatchersService,
             downloadActivePermitsService: downloadActivePermitsService,
-            activePermitsDataService: activepermitsDataService,
+            permitsDataService: permitsDataService,
         };
         return this.services;
     }
@@ -1564,7 +1564,7 @@ class ProcessEventService {
             event.type === 'PerformanceScreenLoaded' ||
             event.type === 'MyWatchersScreenLoaded' ||
             event.type === 'RequestInputsDownload') {
-            const { dataService, downloadService, downloadPerfService, downloadMyWatchersService, downloadActivePermitsService, chartService, chainPerformanceDataService, watcherDataService, activePermitsDataService, } = await this.initServices();
+            const { dataService, downloadService, downloadPerfService, downloadMyWatchersService, downloadActivePermitsService, chartService, chainPerformanceDataService, watcherDataService, permitsDataService: permitsDataService, } = await this.initServices();
             if (event.type === 'RequestInputsDownload') {
                 await this.processRequestInputsDownload(event, chartService, dataService, downloadService);
             }
@@ -1572,7 +1572,7 @@ class ProcessEventService {
                 await this.processStatisticsScreenLoaded(dataService, downloadService);
             }
             else if (event.type === 'MyWatchersScreenLoaded') {
-                await this.processMyWatchersScreenLoaded(event, watcherDataService, downloadMyWatchersService, activePermitsDataService, downloadActivePermitsService);
+                await this.processMyWatchersScreenLoaded(event, watcherDataService, downloadMyWatchersService, permitsDataService, downloadActivePermitsService);
             }
             else if (event.type === 'PerformanceScreenLoaded') {
                 await this.processPerformanceScreenLoaded(chainPerformanceDataService, downloadPerfService);
@@ -1594,7 +1594,7 @@ class ProcessEventService {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
     }
-    async processMyWatchersScreenLoaded(event, watcherDataService, downloadMyWatchersService, activePermitsDataService, downloadActivePermitsService) {
+    async processMyWatchersScreenLoaded(event, watcherDataService, downloadMyWatchersService, permitsDataService, downloadActivePermitsService) {
         const addresses = event.data
             .addresses;
         console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
@@ -1606,16 +1606,16 @@ class ProcessEventService {
                 await this.downloadForChainPermitAddresses(addresses, downloadMyWatchersService, watcherDataService);
                 permits = await this.sendPermitChangedEvent(watcherDataService, addresses);
                 let chainTypes = this.extractChaintTypes(permits, addresses);
-                await this.processActivePermits(chainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService);
+                await this.processActivePermits(chainTypes, permitsDataService, watcherDataService, addresses, downloadActivePermitsService);
             }
             else {
-                await this.processActivePermits(chainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService);
+                await this.processActivePermits(chainTypes, permitsDataService, watcherDataService, addresses, downloadActivePermitsService);
                 await this.downloadForChainPermitAddresses(addresses, downloadMyWatchersService, watcherDataService);
                 await this.sendPermitChangedEvent(watcherDataService, addresses);
                 let newChainTypes = this.extractChaintTypes(await watcherDataService.getAdressPermits(addresses), addresses);
                 if (newChainTypes.size !== chainTypes.size ||
                     [...newChainTypes].some((ct) => !chainTypes.has(ct))) {
-                    await this.processActivePermits(newChainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService);
+                    await this.processActivePermits(newChainTypes, permitsDataService, watcherDataService, addresses, downloadActivePermitsService);
                 }
             }
         }
@@ -1632,9 +1632,9 @@ class ProcessEventService {
         }
         return chainTypes;
     }
-    async processActivePermits(chainTypes, activePermitsDataService, watcherDataService, addresses, downloadActivePermitsService) {
+    async processActivePermits(chainTypes, permitsDataService, watcherDataService, addresses, downloadActivePermitsService) {
         await Promise.all(Array.from(chainTypes).map(async (chainType) => {
-            await activePermitsDataService.downloadOpenBoxes(chainType);
+            await permitsDataService.downloadOpenBoxes(chainType);
         }));
         await this.sendPermitChangedEvent(watcherDataService, addresses);
         await Promise.all(Array.from(chainTypes).map(async (chainType) => {
@@ -1770,8 +1770,8 @@ function getPermitTriggerAddressesByChainType() {
     return globalThis.GetPermitTriggerAddresses();
   }
 }
-function GetActivePermitsDownloadService(maxDownloadDateDifference) {
-  return globalThis.CreateActivePermitsDownloadService(maxDownloadDateDifference, null);
+function GetPermitsDownloadService(maxDownloadDateDifference) {
+  return globalThis.CreatePermitsDownloadService(maxDownloadDateDifference, null);
 }
 
 // apps/server/watcherstats/src/main.ts
@@ -1790,7 +1790,7 @@ async function downloadActivePermits() {
   var addresses = getPermitTriggerAddressesByChainType();
   for (const [chainType, addr] of Object.entries(addresses)) {
     if (addr == null) continue;
-    var downloadService = GetActivePermitsDownloadService(diff);
+    var downloadService = GetPermitsDownloadService(diff);
     console.log("Downloading for chainType:", chainType, "address:", addr);
     await downloadService.downloadForAddress(addr, true);
     var permits = await downloadService.getDataService().getAdressPermits(false, frommonth, fromyear, tomonth, toyear);

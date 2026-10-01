@@ -11,3 +11,10 @@ export declare class MyWatchersStats {
     chainType: string | undefined;
     address: Address | undefined;
 }
+export declare class WatcherPerformanceAddressStat {
+    address: Address | undefined;
+    reports: number | undefined;
+}
+export declare class WatchersPerformanceStats {
+    watcherPerformanceByChainType: Record<string, WatcherPerformanceAddressStat[]> | undefined;
+}

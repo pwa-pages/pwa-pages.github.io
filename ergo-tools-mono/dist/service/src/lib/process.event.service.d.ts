@@ -9,7 +9,7 @@ interface Services {
     dataService: RewardDataService;
     chainPerformanceDataService: ChainPerformanceDataService;
     watcherDataService: WatcherDataService;
-    activePermitsDataService: ActivePermitsDataService;
+    permitsDataService: PermitsDataService;
     downloadService: DownloadService<DbInput>;
     chartService: ChartService;
     downloadPerfService: DownloadService<PerfTx>;
