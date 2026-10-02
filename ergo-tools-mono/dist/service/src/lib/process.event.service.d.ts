@@ -26,7 +26,7 @@ declare class ProcessEventService {
     processEvent(event: EventPayload<object>): Promise<void>;
     private processPerformanceScreenLoaded;
     private processMyWatchersScreenLoaded;
-    private extractChaintTypes;
+    private extractChainTypes;
     private processActivePermits;
     downloadForChainPermitAddresses(addresses: string[], services: Services): Promise<void>;
     private sendPermitChangedEvent;

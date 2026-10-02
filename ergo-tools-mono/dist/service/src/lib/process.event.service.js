@@ -42,63 +42,26 @@ class ProcessEventService {
         this.eventSender = eventSender;
     }
     async processEvent(event) {
-        if (event.type === 'StatisticsScreenLoaded' ||
-            event.type === 'PerformanceScreenLoaded' ||
-            event.type === 'MyWatchersScreenLoaded' ||
-            event.type === 'RequestInputsDownload') {
-            const db = await this.initIndexedDB();
-            const services = await createServices(this.eventSender, db);
-            if (event.type === 'RequestInputsDownload') {
-                await this.processRequestInputsDownload(event, services);
-            }
-            else if (event.type === 'StatisticsScreenLoaded') {
-                await this.processStatisticsScreenLoaded(services);
-            }
-            else if (event.type === 'MyWatchersScreenLoaded') {
-                await this.processMyWatchersScreenLoaded(event, services);
-            }
-            else if (event.type === 'PerformanceScreenLoaded') {
-                await this.processPerformanceScreenLoaded(services);
-            }
-        }
-    }
-    async processPerformanceScreenLoaded(services) {
-        console.log('Rosen service worker received PerformanceScreenLoaded');
         try {
-            console.log('Downloading perftxs.');
-            const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
-            this.eventSender?.sendEvent({
-                type: 'PerfChartChanged',
-                data: perfTxs,
-            });
-            services.downloadPerfService.downloadForAddress(hotWalletAddress, true);
-        }
-        catch (error) {
-            console.error('Error initializing IndexedDB or downloading addresses:', error);
-        }
-    }
-    async processMyWatchersScreenLoaded(event, services) {
-        const addresses = event.data
-            .addresses;
-        console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
-        try {
-            let permits = await services.watcherDataService.getAdressPermits(addresses);
-            let chainTypes = this.extractChaintTypes(permits, addresses);
-            this.sendPermitsChangedEvent(permits);
-            if (chainTypes.size === 0) {
-                await this.downloadForChainPermitAddresses(addresses, services);
-                permits = await this.sendPermitChangedEvent(services, addresses);
-                let chainTypes = this.extractChaintTypes(permits, addresses);
-                await this.processActivePermits(chainTypes, services, addresses);
-            }
-            else {
-                await this.processActivePermits(chainTypes, services, addresses);
-                await this.downloadForChainPermitAddresses(addresses, services);
-                await this.sendPermitChangedEvent(services, addresses);
-                let newChainTypes = this.extractChaintTypes(await services.watcherDataService.getAdressPermits(addresses), addresses);
-                if (newChainTypes.size !== chainTypes.size ||
-                    [...newChainTypes].some((ct) => !chainTypes.has(ct))) {
-                    await this.processActivePermits(newChainTypes, services, addresses);
+            if (event.type === 'StatisticsScreenLoaded' ||
+                event.type === 'PerformanceScreenLoaded' ||
+                event.type === 'MyWatchersScreenLoaded' ||
+                event.type === 'RequestInputsDownload') {
+                const db = await this.initIndexedDB();
+                const services = await createServices(this.eventSender, db);
+                switch (event.type) {
+                    case 'RequestInputsDownload':
+                        await this.processRequestInputsDownload(event, services);
+                        break;
+                    case 'StatisticsScreenLoaded':
+                        await this.processStatisticsScreenLoaded(services);
+                        break;
+                    case 'MyWatchersScreenLoaded':
+                        await this.processMyWatchersScreenLoaded(event, services);
+                        break;
+                    case 'PerformanceScreenLoaded':
+                        await this.processPerformanceScreenLoaded(services);
+                        break;
                 }
             }
         }
@@ -106,8 +69,42 @@ class ProcessEventService {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
     }
-    extractChaintTypes(permits, addresses) {
-        let chainTypes = new Set();
+    async processPerformanceScreenLoaded(services) {
+        console.log('Rosen service worker received PerformanceScreenLoaded');
+        console.log('Downloading perftxs.');
+        const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
+        this.eventSender?.sendEvent({
+            type: 'PerfChartChanged',
+            data: perfTxs,
+        });
+        services.downloadPerfService.downloadForAddress(hotWalletAddress, true);
+    }
+    async processMyWatchersScreenLoaded(event, services) {
+        const { addresses } = event.data;
+        console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
+        const permits = await services.watcherDataService.getAdressPermits(addresses);
+        const chainTypes = this.extractChainTypes(permits, addresses);
+        this.sendPermitsChangedEvent(permits);
+        if (chainTypes.size === 0) {
+            await this.downloadForChainPermitAddresses(addresses, services);
+            const updatedPermits = await this.sendPermitChangedEvent(services, addresses);
+            const updatedChainTypes = this.extractChainTypes(updatedPermits, addresses);
+            await this.processActivePermits(updatedChainTypes, services, addresses);
+            return;
+        }
+        await this.processActivePermits(chainTypes, services, addresses);
+        await this.downloadForChainPermitAddresses(addresses, services);
+        await this.sendPermitChangedEvent(services, addresses);
+        const updatedPermits = await services.watcherDataService.getAdressPermits(addresses);
+        const updatedChainTypes = this.extractChainTypes(updatedPermits, addresses);
+        const chainTypesChanged = updatedChainTypes.size !== chainTypes.size ||
+            [...updatedChainTypes].some((chainType) => !chainTypes.has(chainType));
+        if (chainTypesChanged) {
+            await this.processActivePermits(updatedChainTypes, services, addresses);
+        }
+    }
+    extractChainTypes(permits, addresses) {
+        const chainTypes = new Set();
         for (const permit of Object.values(permits)) {
             if (permit && permit.chainType && addresses.includes(permit.address)) {
                 chainTypes.add(permit.chainType);
@@ -125,29 +122,24 @@ class ProcessEventService {
         }));
     }
     async downloadForChainPermitAddresses(addresses, services) {
-        try {
-            const downloadPromises = Object.entries(permitAddresses)
-                .filter(([, address]) => address != null)
-                .map(async ([chainType, address]) => {
-                await services.downloadMyWatchersService.downloadForAddress(address, true);
-                const permits = await services.watcherDataService.getAdressPermits(addresses);
-                await this.eventSender?.sendEvent({
-                    type: 'PermitsChanged',
-                    data: permits,
-                });
-                await this.eventSender?.sendEvent({
-                    type: 'AddressPermitsDownloaded',
-                    data: chainType,
-                });
+        const downloadPromises = Object.entries(permitAddresses)
+            .filter(([, address]) => address != null)
+            .map(async ([chainType, address]) => {
+            await services.downloadMyWatchersService.downloadForAddress(address, true);
+            const permits = await services.watcherDataService.getAdressPermits(addresses);
+            await this.eventSender?.sendEvent({
+                type: 'PermitsChanged',
+                data: permits,
             });
-            await Promise.all(downloadPromises);
-        }
-        catch (e) {
-            console.error('Error downloading for addresses:', e);
-        }
+            await this.eventSender?.sendEvent({
+                type: 'AddressPermitsDownloaded',
+                data: chainType,
+            });
+        });
+        await Promise.all(downloadPromises);
     }
     async sendPermitChangedEvent(services, addresses) {
-        let permits = await services.watcherDataService.getAdressPermits(addresses);
+        const permits = await services.watcherDataService.getAdressPermits(addresses);
         this.eventSender?.sendEvent({
             type: 'PermitsChanged',
             data: permits,
@@ -162,64 +154,44 @@ class ProcessEventService {
     }
     async processStatisticsScreenLoaded(services) {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
-        try {
-            const inputs = await services.dataService.getSortedInputs();
-            this.eventSender?.sendEvent({
-                type: 'InputsChanged',
-                data: inputs,
-            });
-            await services.downloadService.downloadForAddresses();
-        }
-        catch (error) {
-            console.error('Error initializing IndexedDB or downloading addresses:', error);
-        }
+        const inputs = await services.dataService.getSortedInputs();
+        this.eventSender?.sendEvent({
+            type: 'InputsChanged',
+            data: inputs,
+        });
+        await services.downloadService.downloadForAddresses();
     }
     async downloadForActivePermitAddresses(allAddresses, chainType, services) {
-        try {
-            let addresses = [];
-            Object.entries(permitTriggerAddresses).forEach(([key, address]) => {
-                if (key === chainType && address != null) {
-                    addresses.push(address);
-                }
-            });
-            const downloadPromises = addresses.map(async (address) => {
-                await services.downloadActivePermitsService.downloadForAddress(address, true, async () => {
-                    try {
-                        const permits = await services.watcherDataService.getAdressPermits(allAddresses);
-                        await this.eventSender?.sendEvent({
-                            type: 'PermitsChanged',
-                            data: permits,
-                        });
-                    }
-                    catch (err) {
-                        console.error('Error in permits callback:', err);
-                    }
+        let addresses = [];
+        Object.entries(permitTriggerAddresses).forEach(([key, address]) => {
+            if (key === chainType && address != null) {
+                addresses.push(address);
+            }
+        });
+        const downloadPromises = addresses.map(async (address) => {
+            await services.downloadActivePermitsService.downloadForAddress(address, true, async () => {
+                const permits = await services.watcherDataService.getAdressPermits(allAddresses);
+                await this.eventSender?.sendEvent({
+                    type: 'PermitsChanged',
+                    data: permits,
                 });
             });
-            await Promise.all(downloadPromises);
-        }
-        catch (e) {
-            console.error('Error downloading for addresses:', e);
-        }
+        });
+        await Promise.all(downloadPromises);
     }
     async processRequestInputsDownload(event, services) {
         console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
             event.data);
-        try {
-            const addressCharts = await services.chartService.getAddressCharts(await services.dataService.getSortedInputs());
-            this.eventSender?.sendEvent({
-                type: 'AddressChartChanged',
-                data: addressCharts,
-            });
-            if (event.data && typeof event.data === 'string') {
-                await services.downloadService.downloadForAddress(event.data, true);
-            }
-            else {
-                await services.downloadService.downloadForAddresses();
-            }
+        const addressCharts = await services.chartService.getAddressCharts(await services.dataService.getSortedInputs());
+        this.eventSender?.sendEvent({
+            type: 'AddressChartChanged',
+            data: addressCharts,
+        });
+        if (event.data && typeof event.data === 'string') {
+            await services.downloadService.downloadForAddress(event.data, true);
         }
-        catch (error) {
-            console.error('Error initializing IndexedDB or downloading addresses:', error);
+        else {
+            await services.downloadService.downloadForAddresses();
         }
     }
     // IndexedDB Initialization
