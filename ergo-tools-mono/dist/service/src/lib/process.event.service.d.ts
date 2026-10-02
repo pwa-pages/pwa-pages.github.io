@@ -23,17 +23,17 @@ declare class ProcessEventService {
     private eventSender;
     private services;
     constructor(eventSender: EventSender);
-    private initServices;
+    private createServices;
     processEvent(event: EventPayload<object>): Promise<void>;
     private processPerformanceScreenLoaded;
     private processMyWatchersScreenLoaded;
     private extractChaintTypes;
     private processActivePermits;
-    downloadForChainPermitAddresses(addresses: string[], downloadMyWatchersService: DownloadService<PermitTx>, watcherDataService: WatcherDataService): Promise<void>;
+    downloadForChainPermitAddresses(addresses: string[], services: Services): Promise<void>;
     private sendPermitChangedEvent;
     private sendPermitsChangedEvent;
     private processStatisticsScreenLoaded;
-    downloadForActivePermitAddresses(allAddresses: string[], chainType: string, downloadActivePermitsService: DownloadService<PermitTx>, watcherDataService: WatcherDataService): Promise<void>;
+    downloadForActivePermitAddresses(allAddresses: string[], chainType: string, services: Services): Promise<void>;
     private processRequestInputsDownload;
     private initIndexedDB;
 }

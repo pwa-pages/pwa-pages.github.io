@@ -1,5 +1,3 @@
-
-
 interface EventPayload<T> {
   type: string;
   data?: T;
@@ -21,6 +19,77 @@ interface Services {
   downloadActivePermitsService: DownloadService<PermitTx>;
 }
 
+async function createServices(
+  eventSender: EventSender,
+  db: IDBDatabase,
+): Promise<Services> {
+  const chartService: ChartService = new ChartService();
+  const rewardDataService: RewardDataService = new RewardDataService(
+    db,
+    chartService,
+    eventSender,
+  );
+
+  const permitsDataService: PermitsDataService =
+    new PermitsDataService(db);
+  const watcherDataService: WatcherDataService = new WatcherDataService(
+    permitsDataService,
+  );
+
+  const chainPerformanceDataService: ChainPerformanceDataService =
+    new ChainPerformanceDataService(db, eventSender);
+
+  const downloadStatusIndexedDbRewardDataService: DownloadStatusIndexedDbService<DbInput> = new DownloadStatusIndexedDbService<DbInput>(rewardDataService, db);
+  const downloadStatusIndexedDbWatcherDataService: DownloadStatusIndexedDbService<PermitTx> = new DownloadStatusIndexedDbService<PermitTx>(watcherDataService, db);
+  const downloadStatusIndexedDbPermitsDataService: DownloadStatusIndexedDbService<PermitTx> = new DownloadStatusIndexedDbService<PermitTx>(permitsDataService, db);
+  const downloadStatusIndexedDbChainPerformanceDataService: DownloadStatusIndexedDbService<PerfTx> = new DownloadStatusIndexedDbService<PerfTx>(chainPerformanceDataService, db);
+
+  const downloadService: DownloadService<DbInput> =
+    new DownloadService<DbInput>(
+      rs_FullDownloadsBatchSize,
+      rs_InitialNDownloads,
+      rewardDataService,
+      eventSender,
+      downloadStatusIndexedDbRewardDataService,
+    );
+  const downloadMyWatchersService: DownloadService<PermitTx> =
+    new DownloadService<PermitTx>(
+      rs_FullDownloadsBatchSize,
+      rs_InitialNDownloads,
+      watcherDataService,
+      eventSender,
+      downloadStatusIndexedDbWatcherDataService,
+    );
+  const downloadActivePermitsService: DownloadService<PermitTx> =
+    new DownloadService<PermitTx>(
+      rs_FullDownloadsBatchSize,
+      rs_InitialNDownloads,
+      permitsDataService,
+      eventSender,
+      downloadStatusIndexedDbPermitsDataService,
+    );
+  const downloadPerfService: DownloadService<PerfTx> =
+    new DownloadService<PerfTx>(
+      rs_PerfFullDownloadsBatchSize,
+      rs_PerfInitialNDownloads,
+      chainPerformanceDataService,
+      eventSender,
+      downloadStatusIndexedDbChainPerformanceDataService,
+    );
+
+  return {
+    dataService: rewardDataService,
+    chainPerformanceDataService,
+    watcherDataService,
+    downloadService,
+    chartService,
+    downloadPerfService,
+    downloadMyWatchersService,
+    downloadActivePermitsService,
+    permitsDataService,
+  };
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ServiceWorkerEventSender implements EventSender {
   async sendEvent<T>(event: EventPayload<T>): Promise<void> {
@@ -37,81 +106,7 @@ class ServiceWorkerEventSender implements EventSender {
 }
 
 class ProcessEventService {
-  private services: Services | null = null;
   constructor(private eventSender: EventSender) { }
-
-  private async initServices() {
-    //if (this.services) return this.services;
-
-    const db: IDBDatabase = await this.initIndexedDB();
-    const chartService: ChartService = new ChartService();
-    const rewardDataService: RewardDataService = new RewardDataService(
-      db,
-      chartService,
-      this.eventSender,
-    );
-
-    const permitsDataService: PermitsDataService =
-      new PermitsDataService(db);
-    const watcherDataService: WatcherDataService = new WatcherDataService(
-      permitsDataService,
-    );
-    
-   const chainPerformanceDataService: ChainPerformanceDataService =
-      new ChainPerformanceDataService(db, this.eventSender);
-
-    const downloadStatusIndexedDbRewardDataService: DownloadStatusIndexedDbService<DbInput>  = new DownloadStatusIndexedDbService<DbInput>(rewardDataService, db);
-    const downloadStatusIndexedDbWatcherDataService: DownloadStatusIndexedDbService<PermitTx>  = new DownloadStatusIndexedDbService<PermitTx>(watcherDataService, db);
-    const downloadStatusIndexedDbPermitsDataService: DownloadStatusIndexedDbService<PermitTx>  = new DownloadStatusIndexedDbService<PermitTx>(permitsDataService, db);
-    const downloadStatusIndexedDbChainPerformanceDataService: DownloadStatusIndexedDbService<PerfTx>  = new DownloadStatusIndexedDbService<PerfTx>(chainPerformanceDataService, db);
-
-    
-    const downloadService: DownloadService<DbInput> =
-      new DownloadService<DbInput>(
-        rs_FullDownloadsBatchSize,
-        rs_InitialNDownloads,
-        rewardDataService,
-        this.eventSender,
-        downloadStatusIndexedDbRewardDataService,
-      );
-    const downloadMyWatchersService: DownloadService<PermitTx> =
-      new DownloadService<PermitTx>(
-        rs_FullDownloadsBatchSize,
-        rs_InitialNDownloads,
-        watcherDataService,
-        this.eventSender,
-        downloadStatusIndexedDbWatcherDataService,
-      );
-    const downloadActivePermitsService: DownloadService<PermitTx> =
-      new DownloadService<PermitTx>(
-        rs_FullDownloadsBatchSize,
-        rs_InitialNDownloads,
-        permitsDataService,
-        this.eventSender,
-        downloadStatusIndexedDbPermitsDataService,
-      );
-    const downloadPerfService: DownloadService<PerfTx> =
-      new DownloadService<PerfTx>(
-        rs_PerfFullDownloadsBatchSize,
-        rs_PerfInitialNDownloads,
-        chainPerformanceDataService,
-        this.eventSender,
-        downloadStatusIndexedDbChainPerformanceDataService,
-      );
-
-    this.services = {
-      dataService: rewardDataService,
-      chainPerformanceDataService: chainPerformanceDataService,
-      watcherDataService,
-      downloadService,
-      chartService,
-      downloadPerfService: downloadPerfService,
-      downloadMyWatchersService: downloadMyWatchersService,
-      downloadActivePermitsService: downloadActivePermitsService,
-      permitsDataService: permitsDataService,
-    } as Services;
-    return this.services;
-  }
 
   public async processEvent(event: EventPayload<object>) {
     if (
@@ -120,60 +115,36 @@ class ProcessEventService {
       event.type === 'MyWatchersScreenLoaded' ||
       event.type === 'RequestInputsDownload'
     ) {
-      const {
-        dataService,
-        downloadService,
-        downloadPerfService,
-        downloadMyWatchersService,
-        downloadActivePermitsService,
-        chartService,
-        chainPerformanceDataService,
-        watcherDataService,
-        permitsDataService: permitsDataService,
-      }: Services = await this.initServices();
+      const db = await this.initIndexedDB();
+      const services = await createServices(this.eventSender, db);
 
       if (event.type === 'RequestInputsDownload') {
-        await this.processRequestInputsDownload(
-          event,
-          chartService,
-          dataService,
-          downloadService,
-        );
+        await this.processRequestInputsDownload(event, services);
       } else if (event.type === 'StatisticsScreenLoaded') {
-        await this.processStatisticsScreenLoaded(dataService, downloadService);
+        await this.processStatisticsScreenLoaded(services);
       } else if (event.type === 'MyWatchersScreenLoaded') {
-        await this.processMyWatchersScreenLoaded(
-          event,
-          watcherDataService,
-          downloadMyWatchersService,
-          permitsDataService,
-          downloadActivePermitsService,
-        );
+        await this.processMyWatchersScreenLoaded(event, services);
       } else if (event.type === 'PerformanceScreenLoaded') {
-        await this.processPerformanceScreenLoaded(
-          chainPerformanceDataService,
-          downloadPerfService,
-        );
+        await this.processPerformanceScreenLoaded(services);
       }
     }
   }
 
   private async processPerformanceScreenLoaded(
-    chainPerformanceDataService: ChainPerformanceDataService,
-    downloadPerfService: DownloadService<PerfTx>,
+    services: Services,
   ) {
     console.log('Rosen service worker received PerformanceScreenLoaded');
 
     try {
       console.log('Downloading perftxs.');
-      const perfTxs = await chainPerformanceDataService.getPerfTxs();
+      const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
 
       this.eventSender?.sendEvent({
         type: 'PerfChartChanged',
         data: perfTxs,
       });
 
-      downloadPerfService.downloadForAddress(hotWalletAddress, true);
+      services.downloadPerfService.downloadForAddress(hotWalletAddress, true);
     } catch (error) {
       console.error(
         'Error initializing IndexedDB or downloading addresses:',
@@ -184,56 +155,50 @@ class ProcessEventService {
 
   private async processMyWatchersScreenLoaded(
     event: EventPayload<object>,
-    watcherDataService: WatcherDataService,
-    downloadMyWatchersService: DownloadService<PermitTx>,
-    permitsDataService: PermitsDataService,
-    downloadActivePermitsService: DownloadService<PermitTx>,
+    services: Services,
   ) {
     const addresses: string[] = (event.data as { addresses: string[] })
       .addresses;
 
+    
     console.log(
       'Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain',
     );
 
     try {
-      let permits = await watcherDataService.getAdressPermits(addresses);
+      let permits = await services.watcherDataService.getAdressPermits(addresses);
       let chainTypes = this.extractChaintTypes(permits, addresses);
       this.sendPermitsChangedEvent(permits);
 
       if (chainTypes.size === 0) {
         await this.downloadForChainPermitAddresses(
-          addresses, downloadMyWatchersService, watcherDataService
+          addresses, services
         );
         permits = await this.sendPermitChangedEvent(
-          watcherDataService,
+          services,
           addresses,
         );
         let chainTypes = this.extractChaintTypes(permits, addresses);
 
         await this.processActivePermits(
           chainTypes,
-          permitsDataService,
-          watcherDataService,
+          services,
           addresses,
-          downloadActivePermitsService,
         );
       } else {
         await this.processActivePermits(
           chainTypes,
-          permitsDataService,
-          watcherDataService,
+          services,
           addresses,
-          downloadActivePermitsService,
         );
 
         await this.downloadForChainPermitAddresses(
-          addresses, downloadMyWatchersService, watcherDataService
+          addresses, services
         );
-        await this.sendPermitChangedEvent(watcherDataService, addresses);
+        await this.sendPermitChangedEvent(services, addresses);
 
         let newChainTypes = this.extractChaintTypes(
-          await watcherDataService.getAdressPermits(addresses),
+          await services.watcherDataService.getAdressPermits(addresses),
           addresses,
         );
 
@@ -243,10 +208,8 @@ class ProcessEventService {
         ) {
           await this.processActivePermits(
             newChainTypes,
-            permitsDataService,
-            watcherDataService,
+            services,
             addresses,
-            downloadActivePermitsService,
           );
         }
       }
@@ -270,38 +233,36 @@ class ProcessEventService {
 
   private async processActivePermits(
     chainTypes: Set<ChainType>,
-    permitsDataService: PermitsDataService,
-    watcherDataService: WatcherDataService,
+    services: Services,
     addresses: string[],
-    downloadActivePermitsService: DownloadService<PermitTx>,
   ) {
     await Promise.all(
       Array.from(chainTypes).map(async (chainType) => {
-        await permitsDataService.downloadOpenBoxes(chainType!);
+        await services.permitsDataService.downloadOpenBoxes(chainType!);
       }),
     );
 
-    await this.sendPermitChangedEvent(watcherDataService, addresses);
+    await this.sendPermitChangedEvent(services, addresses);
 
     await Promise.all(
       Array.from(chainTypes).map(async (chainType) => {
         await this.downloadForActivePermitAddresses(
           addresses,
-          chainType!, downloadActivePermitsService, watcherDataService
+          chainType!, services
         );
       }),
     );
   }
 
-  async downloadForChainPermitAddresses(addresses: string[], downloadMyWatchersService: DownloadService<PermitTx>, watcherDataService: WatcherDataService): Promise<void> {
+  async downloadForChainPermitAddresses(addresses: string[], services: Services): Promise<void> {
     try {
       const downloadPromises: Promise<void>[] = Object.entries(permitAddresses)
         .filter(([, address]) => address != null)
         .map(async ([chainType, address]) => {
-          await downloadMyWatchersService.downloadForAddress(address as string, true);
+          await services.downloadMyWatchersService.downloadForAddress(address as string, true);
 
           const permits =
-            await watcherDataService.getAdressPermits(addresses);
+            await services.watcherDataService.getAdressPermits(addresses);
 
           await this.eventSender?.sendEvent({
             type: 'PermitsChanged',
@@ -322,10 +283,10 @@ class ProcessEventService {
 
 
   private async sendPermitChangedEvent(
-    watcherDataService: WatcherDataService,
+    services: Services,
     addresses: string[],
   ) {
-    let permits = await watcherDataService.getAdressPermits(addresses);
+    let permits = await services.watcherDataService.getAdressPermits(addresses);
 
     this.eventSender?.sendEvent({
       type: 'PermitsChanged',
@@ -342,21 +303,20 @@ class ProcessEventService {
   }
 
   private async processStatisticsScreenLoaded(
-    dataService: RewardDataService,
-    downloadService: DownloadService<DbInput>,
+    services: Services,
   ) {
     console.log(
       'Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain',
     );
 
     try {
-      const inputs = await dataService.getSortedInputs();
+      const inputs = await services.dataService.getSortedInputs();
       this.eventSender?.sendEvent({
         type: 'InputsChanged',
         data: inputs,
       });
 
-      await downloadService.downloadForAddresses();
+      await services.downloadService.downloadForAddresses();
     } catch (error) {
       console.error(
         'Error initializing IndexedDB or downloading addresses:',
@@ -369,8 +329,7 @@ class ProcessEventService {
   async downloadForActivePermitAddresses(
     allAddresses: string[],
     chainType: string,
-    downloadActivePermitsService: DownloadService<PermitTx>,
-    watcherDataService: WatcherDataService
+    services: Services
   ): Promise<void> {
     try {
       let addresses: string[] = [];
@@ -383,10 +342,10 @@ class ProcessEventService {
 
       const downloadPromises: Promise<void>[] = addresses.map(
         async (address) => {
-          await downloadActivePermitsService.downloadForAddress(address, true, async () => {
+          await services.downloadActivePermitsService.downloadForAddress(address, true, async () => {
             try {
               const permits =
-                await watcherDataService.getAdressPermits(allAddresses);
+                await services.watcherDataService.getAdressPermits(allAddresses);
 
               await this.eventSender?.sendEvent({
                 type: 'PermitsChanged',
@@ -407,9 +366,7 @@ class ProcessEventService {
 
   private async processRequestInputsDownload(
     event: EventPayload<object>,
-    chartService: ChartService,
-    dataService: RewardDataService,
-    downloadService: DownloadService<DbInput>,
+    services: Services,
   ) {
     console.log(
       'Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
@@ -417,8 +374,8 @@ class ProcessEventService {
     );
 
     try {
-      const addressCharts = await chartService.getAddressCharts(
-        await dataService.getSortedInputs(),
+      const addressCharts = await services.chartService.getAddressCharts(
+        await services.dataService.getSortedInputs(),
       );
 
       this.eventSender?.sendEvent({
@@ -427,12 +384,12 @@ class ProcessEventService {
       });
 
       if (event.data && typeof event.data === 'string') {
-        await downloadService.downloadForAddress(
+        await services.downloadService.downloadForAddress(
           event.data as unknown as string,
           true,
         );
       } else {
-        await downloadService.downloadForAddresses();
+        await services.downloadService.downloadForAddresses();
       }
     } catch (error) {
       console.error(

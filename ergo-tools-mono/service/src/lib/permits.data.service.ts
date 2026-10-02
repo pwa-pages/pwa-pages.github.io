@@ -186,10 +186,7 @@ class PermitsDataService extends DataService<PermitTx> {
     }
     if (activeOnly === false) {
       addressPermits = permits;
-
     }
-
-
 
     let result = new Array<PermitTx>();
 
@@ -268,21 +265,14 @@ class PermitsDataService extends DataService<PermitTx> {
                 }
               });
             }
-
-
-
           }
         }
-
       }
 
       if (foundResolved === false) {
         result.push(permit);
       }
     }
-
-
-
 
     const seen = new Set<string>();
     const filteredResult = result.filter((r: PermitTx) => {
