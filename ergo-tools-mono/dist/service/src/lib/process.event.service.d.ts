@@ -16,14 +16,13 @@ interface Services {
     downloadMyWatchersService: DownloadService<PermitTx>;
     downloadActivePermitsService: DownloadService<PermitTx>;
 }
+declare function createServices(eventSender: EventSender, db: IDBDatabase): Promise<Services>;
 declare class ServiceWorkerEventSender implements EventSender {
     sendEvent<T>(event: EventPayload<T>): Promise<void>;
 }
 declare class ProcessEventService {
     private eventSender;
-    private services;
     constructor(eventSender: EventSender);
-    private createServices;
     processEvent(event: EventPayload<object>): Promise<void>;
     private processPerformanceScreenLoaded;
     private processMyWatchersScreenLoaded;

@@ -1,4 +1,30 @@
 "use strict";
+async function createServices(eventSender, db) {
+    const chartService = new ChartService();
+    const rewardDataService = new RewardDataService(db, chartService, eventSender);
+    const permitsDataService = new PermitsDataService(db);
+    const watcherDataService = new WatcherDataService(permitsDataService);
+    const chainPerformanceDataService = new ChainPerformanceDataService(db, eventSender);
+    const downloadStatusIndexedDbRewardDataService = new DownloadStatusIndexedDbService(rewardDataService, db);
+    const downloadStatusIndexedDbWatcherDataService = new DownloadStatusIndexedDbService(watcherDataService, db);
+    const downloadStatusIndexedDbPermitsDataService = new DownloadStatusIndexedDbService(permitsDataService, db);
+    const downloadStatusIndexedDbChainPerformanceDataService = new DownloadStatusIndexedDbService(chainPerformanceDataService, db);
+    const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, eventSender, downloadStatusIndexedDbRewardDataService);
+    const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, watcherDataService, eventSender, downloadStatusIndexedDbWatcherDataService);
+    const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, permitsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
+    const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, eventSender, downloadStatusIndexedDbChainPerformanceDataService);
+    return {
+        dataService: rewardDataService,
+        chainPerformanceDataService,
+        watcherDataService,
+        downloadService,
+        chartService,
+        downloadPerfService,
+        downloadMyWatchersService,
+        downloadActivePermitsService,
+        permitsDataService,
+    };
+}
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ServiceWorkerEventSender {
     async sendEvent(event) {
@@ -14,42 +40,14 @@ class ServiceWorkerEventSender {
 class ProcessEventService {
     constructor(eventSender) {
         this.eventSender = eventSender;
-        this.services = null;
-    }
-    async createServices() {
-        const db = await this.initIndexedDB();
-        const chartService = new ChartService();
-        const rewardDataService = new RewardDataService(db, chartService, this.eventSender);
-        const permitsDataService = new PermitsDataService(db);
-        const watcherDataService = new WatcherDataService(permitsDataService);
-        const chainPerformanceDataService = new ChainPerformanceDataService(db, this.eventSender);
-        const downloadStatusIndexedDbRewardDataService = new DownloadStatusIndexedDbService(rewardDataService, db);
-        const downloadStatusIndexedDbWatcherDataService = new DownloadStatusIndexedDbService(watcherDataService, db);
-        const downloadStatusIndexedDbPermitsDataService = new DownloadStatusIndexedDbService(permitsDataService, db);
-        const downloadStatusIndexedDbChainPerformanceDataService = new DownloadStatusIndexedDbService(chainPerformanceDataService, db);
-        const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, this.eventSender, downloadStatusIndexedDbRewardDataService);
-        const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, watcherDataService, this.eventSender, downloadStatusIndexedDbWatcherDataService);
-        const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, permitsDataService, this.eventSender, downloadStatusIndexedDbPermitsDataService);
-        const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, this.eventSender, downloadStatusIndexedDbChainPerformanceDataService);
-        this.services = {
-            dataService: rewardDataService,
-            chainPerformanceDataService: chainPerformanceDataService,
-            watcherDataService,
-            downloadService,
-            chartService,
-            downloadPerfService: downloadPerfService,
-            downloadMyWatchersService: downloadMyWatchersService,
-            downloadActivePermitsService: downloadActivePermitsService,
-            permitsDataService: permitsDataService,
-        };
-        return this.services;
     }
     async processEvent(event) {
         if (event.type === 'StatisticsScreenLoaded' ||
             event.type === 'PerformanceScreenLoaded' ||
             event.type === 'MyWatchersScreenLoaded' ||
             event.type === 'RequestInputsDownload') {
-            const services = await this.createServices();
+            const db = await this.initIndexedDB();
+            const services = await createServices(this.eventSender, db);
             if (event.type === 'RequestInputsDownload') {
                 await this.processRequestInputsDownload(event, services);
             }
