@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./data.service");
-require("./activepermits.data.service");
+require("./permits.data.service");
 require("./chain.performance.data.service");
 require("./chain.service");
 require("./chart.service");
