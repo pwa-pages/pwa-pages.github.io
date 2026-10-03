@@ -10,7 +10,7 @@
 
   var storageService = new MemoryStorageService<PermitTx>();
   const permitsDataService: PermitsDataService =
-    new PermitsDataService(storageService, maxDownloadDateDifference);
+    new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
 
   return new DownloadService<PermitTx>(
     rs_FullDownloadsBatchSize,
@@ -32,7 +32,7 @@
   var storageService = new MemoryStorageService<PermitTx>();
 
 const permitsDataService: PermitsDataService =
-    new PermitsDataService(storageService, maxDownloadDateDifference);
+    new PermitsDataService(storageService, rs_ActivePermitTxStoreName,  maxDownloadDateDifference);
 
   const watcherDataService: WatcherDataService =
     new WatcherDataService(permitsDataService);

@@ -17,6 +17,8 @@ interface Services {
   downloadPerfService: DownloadService<PerfTx>;
   downloadMyWatchersService: DownloadService<PermitTx>;
   downloadActivePermitsService: DownloadService<PermitTx>;
+  reportsDataService: ReportsDataService;
+  downloadReportsService: DownloadService<PermitTx>;
 }
 
 async function createServices(
@@ -32,6 +34,8 @@ async function createServices(
 
   const permitsDataService: PermitsDataService =
     new PermitsDataService(db);
+  const reportsDataService: ReportsDataService =
+    new ReportsDataService(db);
   const watcherDataService: WatcherDataService = new WatcherDataService(
     permitsDataService,
   );
@@ -72,6 +76,14 @@ async function createServices(
       eventSender,
       downloadStatusIndexedDbPermitsDataService,
     );
+    const downloadReportsService: DownloadService<PermitTx> =
+    new DownloadService<PermitTx>(
+      rs_FullDownloadsBatchSize,
+      rs_InitialNDownloads,
+      reportsDataService,
+      eventSender,
+      downloadStatusIndexedDbPermitsDataService,
+    );
   const downloadPerfService: DownloadService<PerfTx> =
     new DownloadService<PerfTx>(
       rs_PerfFullDownloadsBatchSize,
@@ -91,6 +103,8 @@ async function createServices(
     downloadMyWatchersService,
     downloadActivePermitsService,
     permitsDataService,
+    reportsDataService,
+    downloadReportsService,
   };
 }
 
@@ -118,7 +132,8 @@ class ProcessEventService {
         event.type === 'StatisticsScreenLoaded' ||
         event.type === 'PerformanceScreenLoaded' ||
         event.type === 'MyWatchersScreenLoaded' ||
-        event.type === 'RequestInputsDownload'
+        event.type === 'RequestInputsDownload' ||
+        event.type === 'ReportsRequested'
       ) {
         const db = await this.initIndexedDB();
         const services = await createServices(this.eventSender, db);
@@ -135,6 +150,9 @@ class ProcessEventService {
             break;
           case 'PerformanceScreenLoaded':
             await this.processPerformanceScreenLoaded(services);
+            break;
+          case 'ReportsRequested':
+            await this.processReportsRequested(event, services);
             break;
         }
       }
@@ -165,6 +183,21 @@ class ProcessEventService {
         reject((event.target as IDBOpenDBRequest).error);
       };
     });
+  }
+
+  private async processReportsRequested(
+    event: EventPayload<object>,
+    services: Services,
+  ) {
+    console.log(
+      'Rosen service worker received ReportsRequested initiating syncing of data by downloading from blockchain, event.data: ' +
+        event.data,
+    );
+
+    await services.downloadReportsService.downloadForAddress(
+        event.data as unknown as string,
+        true,
+      );
   }
 
   private async processRequestInputsDownload(

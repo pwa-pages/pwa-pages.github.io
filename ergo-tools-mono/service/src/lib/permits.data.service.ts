@@ -3,7 +3,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class PermitsDataService extends DataService<PermitTx> {
   override getData(): Promise<PermitTx[] | null> {
-    return this.storageService.getData<PermitTx>(rs_ActivePermitTxStoreName);
+    return this.storageService.getData<PermitTx>(this.storeName);
   }
   override async getExistingData(
     transaction: TransactionItem,
@@ -13,7 +13,7 @@ class PermitsDataService extends DataService<PermitTx> {
     for (const input of transaction.inputs) {
       if (input.boxId) {
         const data = await this.storageService.getDataById(
-          rs_ActivePermitTxStoreName, this.createUniqueId(input.boxId, transaction.id, address)
+          this.storeName, this.createUniqueId(input.boxId, transaction.id, address)
         );
         if (data) {
           return data;
@@ -24,7 +24,7 @@ class PermitsDataService extends DataService<PermitTx> {
     for (const output of transaction.outputs) {
       if (output.boxId) {
         const data = await this.storageService.getDataById(
-          rs_ActivePermitTxStoreName, this.createUniqueId(output.boxId, transaction.id, address)
+          this.storeName, this.createUniqueId(output.boxId, transaction.id, address)
         );
         if (data) {
           return data;
@@ -34,7 +34,7 @@ class PermitsDataService extends DataService<PermitTx> {
 
     return null;
   }
-  constructor(db: IDBDatabase | IStorageService<PermitTx>, private maxDownloadDateDifference: number = 204800000) {
+  constructor(db: IDBDatabase | IStorageService<PermitTx>, private storeName = rs_ActivePermitTxStoreName, private maxDownloadDateDifference: number = 204800000) {
     super(db);
   }
   createUniqueId(
@@ -63,7 +63,7 @@ class PermitsDataService extends DataService<PermitTx> {
   }
 
   private async getWatcherPermits(): Promise<PermitTx[]> {
-    const permitsPromise = this.storageService.getData<PermitTx>(rs_ActivePermitTxStoreName);
+    const permitsPromise = this.storageService.getData<PermitTx>(this.storeName);
 
     console.log('Retrieving watcher active permits');
 
@@ -354,11 +354,11 @@ class PermitsDataService extends DataService<PermitTx> {
       });
     });
 
-    await this.storageService.addData(rs_ActivePermitTxStoreName, tempData);
+    await this.storageService.addData(this.storeName, tempData);
   }
 
   override async purgeData(): Promise<void> {
-    let permitTxs = await this.storageService.getData<PermitTx>(rs_ActivePermitTxStoreName);
+    let permitTxs = await this.storageService.getData<PermitTx>(this.storeName);
     permitTxs = (await permitTxs).sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
@@ -388,7 +388,7 @@ class PermitsDataService extends DataService<PermitTx> {
       }
     }
 
-    await this.storageService.deleteData(rs_ActivePermitTxStoreName, purgePermitTxs.map(pt => pt.id));
+    await this.storageService.deleteData(this.storeName, purgePermitTxs.map(pt => pt.id));
 
   }
 

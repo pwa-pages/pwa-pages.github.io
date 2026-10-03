@@ -1,9 +1,10 @@
 declare const rs_DbName = "rosenDatabase_1.1.5";
-declare const rs_DbVersion = 40;
+declare const rs_DbVersion = 43;
 declare const rs_InputsStoreName = "inputBoxes";
 declare const rs_PerfTxStoreName = "perfTxs";
 declare const rs_PermitTxStoreName = "permitTxs";
 declare const rs_ActivePermitTxStoreName = "activePermitTxs";
+declare const rs_ReportsStoreName = "reportsStore";
 declare const rs_DownloadStatusStoreName = "downloadStatusStore";
 declare const rs_OpenBoxesStoreName = "openBoxesStore";
 declare const rs_AddressDataStoreName = "addressData";

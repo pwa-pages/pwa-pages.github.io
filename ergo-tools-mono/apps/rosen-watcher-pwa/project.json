@@ -51,6 +51,7 @@
           "dist/service/src/lib/process.event.service.js",
           "dist/service/src/lib/watcher.data.service.js",
           "dist/service/src/lib/permits.data.service.js",
+          "dist/service/src/lib/reports.data.service.js",
           "dist/service/src/lib/i-db-databasestorage.service.js",
           "dist/service/src/lib/download.status.indexeddb.service.js",
           "dist/service/src/lib/memory.storage.service.js"

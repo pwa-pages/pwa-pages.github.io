@@ -23,14 +23,15 @@ class DataService {
 "use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class PermitsDataService extends DataService {
+    storeName;
     maxDownloadDateDifference;
     getData() {
-        return this.storageService.getData(rs_ActivePermitTxStoreName);
+        return this.storageService.getData(this.storeName);
     }
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId) {
-                const data = await this.storageService.getDataById(rs_ActivePermitTxStoreName, this.createUniqueId(input.boxId, transaction.id, address));
+                const data = await this.storageService.getDataById(this.storeName, this.createUniqueId(input.boxId, transaction.id, address));
                 if (data) {
                     return data;
                 }
@@ -38,7 +39,7 @@ class PermitsDataService extends DataService {
         }
         for (const output of transaction.outputs) {
             if (output.boxId) {
-                const data = await this.storageService.getDataById(rs_ActivePermitTxStoreName, this.createUniqueId(output.boxId, transaction.id, address));
+                const data = await this.storageService.getDataById(this.storeName, this.createUniqueId(output.boxId, transaction.id, address));
                 if (data) {
                     return data;
                 }
@@ -46,8 +47,9 @@ class PermitsDataService extends DataService {
         }
         return null;
     }
-    constructor(db, maxDownloadDateDifference = 204800000) {
+    constructor(db, storeName = rs_ActivePermitTxStoreName, maxDownloadDateDifference = 204800000) {
         super(db);
+        this.storeName = storeName;
         this.maxDownloadDateDifference = maxDownloadDateDifference;
     }
     createUniqueId(boxId, transactionId, address) {
@@ -67,7 +69,7 @@ class PermitsDataService extends DataService {
         return this.maxDownloadDateDifference;
     }
     async getWatcherPermits() {
-        const permitsPromise = this.storageService.getData(rs_ActivePermitTxStoreName);
+        const permitsPromise = this.storageService.getData(this.storeName);
         console.log('Retrieving watcher active permits');
         try {
             const permits = await permitsPromise;
@@ -265,10 +267,10 @@ class PermitsDataService extends DataService {
                 }
             });
         });
-        await this.storageService.addData(rs_ActivePermitTxStoreName, tempData);
+        await this.storageService.addData(this.storeName, tempData);
     }
     async purgeData() {
-        let permitTxs = await this.storageService.getData(rs_ActivePermitTxStoreName);
+        let permitTxs = await this.storageService.getData(this.storeName);
         permitTxs = (await permitTxs).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         let permitTx = null;
         if (permitTxs.length >= rs_FullDownloadsBatchSize) {
@@ -289,7 +291,7 @@ class PermitsDataService extends DataService {
                 purgePermitTxs.push(permitTx);
             }
         }
-        await this.storageService.deleteData(rs_ActivePermitTxStoreName, purgePermitTxs.map(pt => pt.id));
+        await this.storageService.deleteData(this.storeName, purgePermitTxs.map(pt => pt.id));
     }
     async getSortedPermits() {
         const permitsPromise = await this.getWatcherPermits();
@@ -319,6 +321,26 @@ class PermitsDataService extends DataService {
             console.error(error);
             return sortedPermits;
         }
+    }
+}
+globalThis.GetWatcherDataService = (permitsDataService) => {
+    return new WatcherDataService(permitsDataService);
+};
+"use strict";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+class ReportsDataService extends PermitsDataService {
+    constructor(db, storeName = rs_ActivePermitTxStoreName, maxDownloadDateDifference = 204800000) {
+        super(db, storeName, maxDownloadDateDifference);
+    }
+    getDataType() {
+        return 'report';
+    }
+    async purgeData() {
+    }
+    getMaxDownloadDateDifference() {
+        const now = new Date();
+        const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        return now.getTime() - firstOfMonth.getTime() + 2 * 24 * 60 * 60 * 1000;
     }
 }
 globalThis.GetWatcherDataService = (permitsDataService) => {
@@ -528,12 +550,12 @@ globalThis.GetPermitTriggerAddresses =
     };
 globalThis.CreatePermitsDownloadService = (maxDownloadDateDifference, eventSender) => {
     var storageService = new MemoryStorageService();
-    const permitsDataService = new PermitsDataService(storageService, maxDownloadDateDifference);
+    const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
     return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, permitsDataService, eventSender, null);
 };
 globalThis.CreateWatcherDownloadService = (maxDownloadDateDifference, eventSender) => {
     var storageService = new MemoryStorageService();
-    const permitsDataService = new PermitsDataService(storageService, maxDownloadDateDifference);
+    const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
     const watcherDataService = new WatcherDataService(permitsDataService);
     return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, watcherDataService, eventSender, null);
 };
@@ -827,6 +849,8 @@ var ChainType;
     ChainType["Handshake"] = "Handshake";
     ChainType["Base"] = "Base";
     ChainType["Monero"] = "Monero";
+    ChainType["BitcoinCash"] = "BitcoinCash";
+    ChainType["Zcash"] = "Zcash";
 })(ChainType || (ChainType = {}));
 function getChainTypes() {
     return Object.values(ChainType);
@@ -864,7 +888,7 @@ const rwtTokenIds = {
     'f925f738bd68ccad506891f8a4e52437cec9ff53a20b1ab51ec07d249f313fe0': ChainType.Binance,
     '07cdd28a4fae28ea8f186fc2bbadf8698b41f8fc611d640495c186bb4d84c3f5': ChainType.Doge,
     '1ec6e90bc4b453fd51b6606b86c837b241a20efa36229e195f211fbf6f8e9c87': ChainType.Runes,
-    '62a0b535eda42da5b003042c3cf587cf7cb5202959b7f00878183d2f676d3db5': ChainType.Firo
+    '62a0b535eda42da5b003042c3cf587cf7cb5202959b7f00878183d2f676d3db5': ChainType.Firo,
 };
 const permitAddresses = {
     [ChainType.Bitcoin]: 'NY4PEzZ7VfjxESbhPaCAkoFLZS4NXxXFsfiqzZTycYKaCpHm2QVDJUh9MtA9KbHZivPgGoCpBP8p6qtRQNfT8kH12bCFWjsFZaGFJbFgP6gwGA7s9eJiS2h9HdGL4FCZ1KYS9ADnqp6cFuw4MagrEXbmGyixjb1mMN3JTdLANmfFrPcv68ucpeTvGKvvDbzvLXKzQB8wVyamMYu8PCYq1QNmmHtXZSGdhX5dfajFqo8ubbJZiiTKJzQuw9d69vwUBgqmMLEXUK8MCsfUerPged4eGt1qm8ZvpPT6MxCpaKsVNRCagSVCDVjwCivjZ7owo62oWL4Q5NdWAYxVN3TG9yNy6iviEEX6ENbAjpGCqmZag2qRYmbLGZPf4XxNqKfzQ1wzriqy4M5s5mLqsKs1Bhp9XR1gjUyWvui5BAYM97XWvyRXAv5PFoZqTNJWemKuEY2wub97Ac7asNhhRpLwDMNfdW4vkpYUKXHnJiDvQQGsWEs5Jx2PjwCe9wYTRKM69t6nyfddR7quYMn8SLxVFM22xq49Cr9GHTpLZxcLCQisDmRRspxkYstmBPvuDzcbXYQtAodUKrXhwmCrk39Hir5P3XQ7BHpQP5x5dLu8Vn24jSaPyBJxq6HNBrMBGDJq9JxqQXmy1GReXp5RYi8ZUEEZFdc1R2cBw5aBNCvS2Z9UWBDBPNQW7rpx4VE2MpFNJa2y7VnSBft3cnWtbE8tsDuMpHJnDTDCP55eHJJ5iYsUEfqeHQRbXmi9AhPRaZ1YTbMFGMVu6ub14m68jrzvCpgB2wyPRnNsDi3YMhbtzYQS2uVNKpr8jDJE51bYjeLki9apBtKUhD18JCKNH5R7tWfhi7LDx878Ai2CSppY45GqTTZqNFDSFYjnhtYntQvb3ZAfEgkQXMKegz37hqAvyfNxCD94jksJjyUa8Em1JP8JrMYvEaGBcMWkRvwoUFYSa2sZrekrv9s8jn5TJsQFiWKmLmxKb1cfa9vi2Q3rRBdVEZswAxCka1p6dKjXSpAqRRrfXyEaTtHYfgNH676WnA3cxXkPeURMDf1mM15rUSLCBwtxCDrvFcsAgCdNhRvfAesuS15aUZjYHuLDXFGhSf3vmrr8MDUJQ1mqEmLWJLjwQ1SsU81GnGddHBxS8FqP5r2hFsVwboKNf8FBUQv7JWimMm8aFkgbpcG35tgpL9TB8CmpJZ53VShUVmssxMqSTPs1yxAZXG3ejkBZvV8rmdZAsnjVDv',
@@ -879,6 +903,8 @@ const permitAddresses = {
     [ChainType.Monero]: null,
     [ChainType.Firo]: 'NY4PEzZ7VfjtpACh7a9NbxyyMQPghQ39LcRZjPmyZ7oPeSXT3E6uNUumgzTjJqx2YQj6Yv949NXmyGPwYSdSTmLdU4k4UuUwUAKS9aGozcX2VzHn7HAgbezL44thy7BiJZLNvW7npvrhvve1K3w56sNB5Q5Cw1Q4vKdD5vktYE72vcu81Ls9Jo3dstmGPFrxzGYZtqYfR5Lyq8JwazKse3Ea7gypuqv3Pv3emVdBwAquXMTATofoAp9aaffrQA8XbsnAbmAHiVxcMmyhf6iCjYxDBKNd3LUCMpy5uHSg8AwijbRDYCaacc2pt2RK9VWmthdtCVcC8XBh1bsXNp1aCeRprg8nmCfb4YkRXXVH2TTWo5D4BvW23gjbNVU8a2SkTR3ZwboiL1QA4sq6JRY5HkZQjSk33W4YcJCbgNNu4Z6cU6xCnNyoiX89FfD8uMq4DZKD3bxD9HBdXpN2xs8BHA9EMtwaovxDANjsL9jxWH6FSN2KrKHsbTHAPSB3Lwzj468BdRetD5VHFfKetRT3qUsvrBXZ1n2UBd6WvhRA4T9erCZDRP3Ui2Wxbx2pVvXKeWLsJMYX5fiX8rX55z1mX5wMfbRPJKMTGtyfwDoy3D6pVra2zvPxR2ME5A1rzWxtUwdUfJZ5oBGYFkV94yjZJKMKws4UtgkSdgeGgqN9eEnzjv3nYp2rZjxZnXeacC5JvQghzKf6jsRzGyzWwJf4CZnAaL9V9Ap3Up8YfxuHvWzTVJSgUq5RD8MSwc51Ctx9GoJ7YBW961NPuuTnJrp2CR67w2izrgEwyQCMvzcxv8rNSacPRybXv9peBJVRuXx2uoNAxEYeHPqW5eF7L8Xc2cKF7AHREKeJAPbZz5aQTSQMhRgV7DSyEFPB9riWyxJM1bbaiVD3R5J4BTzQWffVdXU6JGfabniS51pihUmS3uQQap4bx2QTMSRJYcHDzwikCgNK3bZgB3vYjAojV15s7bvciFrCuLLhF1LhEVUh1oQf1HnZSradFABNhnzwRTn6nrgqyBxeBYSXbcusrD3gUfymv7mrpEEA6r98s77dn6JDrvDo3aRqSFhPAXLXQpkv4MNq1dZkrrgUGwDyohEYXQMqVQdJoAQxiybg6qLiaYnUtKm3CzFaY3eDYzySGWcZXQ2JuLNQKdMUFLQXEWUi7eWH1EaZ8HsYH1J1NTo2ZoJVvxdyL9JpsVk6p5pTdLm3Ucsds5nLQMga7UameEGSxCjUoYiwxQ',
     [ChainType.Base]: null,
+    [ChainType.Zcash]: null,
+    [ChainType.BitcoinCash]: null
 };
 const permitTriggerAddresses = {
     [ChainType.Bitcoin]: '5ivrmzxYZZfH2wJRvogecZo1YYXm32CoKnSZdtwxbjNoogRakUFe56VrrcULZtCkvAzM2MNRMxPYSfZc2rB6tkLKLCirG14JPDMfqBoWMhyzzQLVsDukZupema1i8SvYUuoaiPL5rTyQmqgF3ftPbvM2dHY623B3KsKRTNDhkoMoRmKLzenNWqjXpkANpyc3TCkDuvBypXfbWVN55F2ZZUs8L3XkvaJKcb74GY7whJB8Zg31VgpmVW4uVEuqpcvPk5FYNiTdRakyYTUVFnAdCR6ZDjagBYMr3ks2uHMhQdjmoKmmwCocVm4SGZsA8rU8zj6zrEgpepLT5UPD9sZQWtvSi6C82fPEW9pvNXr4T3sFx2xNRv8meyNUhopUfiRzVoWfx6Q4ArqU3dnmRtN8pxkDfTZr7oGrzAFAb3DRhBUPhhfWY2USAw7LMqMAuW65pdUFcGnczQH3B6V4kALNaoGMD7ixKtkdMkrAPHkJmxKzeMEd6Y49PnHWxFkQbXwqGELjDppqmdbKceyrtjUp3JwcZ5qN7YcLg1yXhFUiWAHhnAwGkHsTHivXADhV81sDBVqM1GUB3piyt6gkJ5My3SaRRTsokrnJLoGL23GwjEfTzDsvXCoXww3MQcwUUCXehQConnMxYsK7HHGV4wf8kbctrFd2ekPkeHm5ksjagEVzKMraZJgrRSRWEHdYmUGkU6tLGZTUF4Xe4MkdzXC3sRtif4iUnZg6Tnt3DEx2i5fmPD4xasYkusc6thd77x5x7MZXMdkxuo9BWTG9iiYAaE4aLQ5yEbrYeVY85DCVFAKXTsiwUH1De3rDhRZfFfQRuDqiYomDFumxofAa9k89yLeCSRyQpAH55BXLqvppusJyDwYJKd5itao8z3Qi2Fsvt7oL77fDnbotPwp7EkFbQZdGi7aUU1SdyfhxNwx6dYcFe2zpj6Spj7zb98FR2HahXwXnqqZjuym7RjN55bqPt2FufJ7CwdgQmiBMid7E1sAVMxBZyAeNbhHEqRJCajpUyGXswJjQJ9S1u9c4rRHzdntMtr2RXDtdgrt6b69GpZgZNeAX3QG9W9kQK4SAHE2BULEmNSBZHHitrRYdx97AsDLFfLpzfsPa82ew9oBy3PacMAF2WP48yxQrAzSA2p5idB5QFbYoECBBLsCyApG37AMuPrr24JrWmZLqR5XEPYnKojYrMcciwkn3L6jRpC5c1D9KrsTGk5dGtqBji1FE9XAVxuVpdddJjBSjphPx2UWtvJnwcxB8CoRSsVDF8RoyPcVwMmSfL5arDGJxBUzVu',
@@ -893,6 +919,8 @@ const permitTriggerAddresses = {
     [ChainType.Monero]: null,
     [ChainType.Firo]: '5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn',
     [ChainType.Base]: null,
+    [ChainType.Zcash]: null,
+    [ChainType.BitcoinCash]: null
 };
 const permitBulkAddresses = {
     [ChainType.Bitcoin]: 'ZsPNMsGz8D8y11MAneZTVjJndCjgTUrBWezH77jKWr2KXMVRgs4gRkDdTLoUQq8xqtGoESTa7r3zr5E3SxQkE5CM2PaPDSHb5bQWeRtaL9eikJWw95bx4DSjCDcsECpjLxbEfahCHy2sDuXQg6potLhwVVADP5TNUxEDgWPR27x658qcHA54TPRhybb6z67cdmkPrQNXwumoGvoPNnqVcXsdXS71KpQViuk4wXBT156Nd7Tt9b3Dvx827QiLbjJXuajydCDFC6yp2sj5dk7uA5ArNfViybrVQaf71GNGwyh6USgVKBpTurrRBtxeGWNzXi4krd7XbseaU5Crnauk9fj5jEbVH88sPzuD6o4XReNW3odcKDkvqgUh9Vu6b2uGLJsV5wY44Kk3bf8PJmkTc6vQE7Mprkdi2jBfZrzffqoKC6hWLfSZNcUWFV821L43VkJbsaYLukMq1SBJ7y7rsnWcct1U8owQbDpboysHrxfeE84JMTterx8E8sxJqwQRRTxT7M',
@@ -907,6 +935,8 @@ const permitBulkAddresses = {
     [ChainType.Monero]: null,
     [ChainType.Firo]: 'ZsPNMsGz8D8y11MAneZTVjJndCjgTUnUoCHtd2sBVHNWA2CZnTaDAnQ5yk4yws8txwETo9odSqXEDQfLDEb3htK6C7nsmMEjQzYuEMAW5R3ACcb7hbTjH3CvzFRbCxKdD18gpfM7D2fBAoNEYYYWiWFGVn9SqBu8MDnUctEHru88XWz3brkmYrjFaHwiy1N1fNhTJ1hFavTPmZYPgA9yJnnV8ZxuRhAZtbCwJEpGe6UTBUja2P2jX58unerXMatzoKSW6fKdj7QzgDzNnHTkWUCkpN4AiCiKAmVktA8JXUbFGW29tUx9aeFxP2K9aQiqdrxwme5QJRKm3HRoeXtFdavym77CKbMajMfiMTvPoTNFdCNfwga15jrqjSjNCXyYV5TrQhCSfoEBkdbjttDevzKvJuGGP67iwdRJeZ8NLxFy6noRdbCuSDfpvCiLDgLzpK4pq1KHyRkuW2AQ1s8sRJmAXDNaG5tz7wDVXRTpo1373ky6sAW81i5L7mZkf79a64h8Us',
     [ChainType.Base]: null,
+    [ChainType.Zcash]: null,
+    [ChainType.BitcoinCash]: null
 };
 const rewardAddresses = {
     [ChainType.Bitcoin]: '2Eit2LFRqu2Mo33z3pYTJRHNCPZXtS2f68LNW668eK4nJNwXQZMTEW23dCLCxfBX9CZfhHCCt1AbFaprUWX4wG2LfPVrXjGSpZCB5oX3FQ23WXi1YB7LpWt5UCEbbauhPcpkVV7wr5EZAqcVqWR1ps3Tnt5nMH1a3cUCMugh1BJKcBr687wqjEscF3kYGkKAzHnVaB3bx9reqJf2fqtC9c77EsoxSpueQxVhHoPaYwVWfXcnaRQTTR81p5fQJ1bSLAsRcfoQjF8sM4dfMeDrDGwCMor8vQFzzTmdYRc51jtcaRevAQ2JiMNp8DUbJEevVPvtWhYGPiHA7EdFKsoUQHGhm6sa4v15XVUiZstbJ7sVDmPEX22peSTc4SQBPSBEUD3fRExknLTChW4nVjLZcUBgJQSDoDpakHR2v8EeSnpfrnwmnY4EoGAFyL17nVJBUjgjGDcbuV5tFPK752f3yJqGr7H5KvejJot2QjAmzdz9emhmEHoqVuho2wiJ5nF2S8PcCFwrsp38cgtvGfFvC6iHmKtp93MTEq66Bw5kKooD1vZDxTXHRnZNi3Y2Rz5VKBhMFi4BvRWu2k3MgDVebaxBVXfzPdVqjHr9xitdz6cP1Xrdu7dzuLLjfJNEh8RDGtGsdcizfeNZ3LCZVYb1fRyTKY7YNu7NB6wDKKPoCEszpxK1FhA2TDQ7HXQTxAr62h1Toe',
@@ -921,6 +951,8 @@ const rewardAddresses = {
     [ChainType.Monero]: null,
     [ChainType.Firo]: '2Eit2LFRqu2Mo33z3pYTJRHNCPZXtS2f68LNW668eK4nJNwXQZMTEW23dCLCxfBX9CZfhHCCt1AbFaprUWX4wG2LfPVrXjGSpZCB5oX3FQ23WXoS58MGLwDDjrEEyoWCbvS1QN9mAgg44yqcgBQajZp1RRJohTZDfYZT58h7eXMZyWpSqw2TMAjrHSmPgKaHxM5yoGeWsRqTscGxrjvjts9dQWWgAZy7NuKC3zks5GW1dVXFYs9xa1V1JfefjCXW1RWJpWoVc8NqEXKFZF3xh8mgfwbWWmZoo6cJWRn8yMyAjheCCXprsr8uD8zLiJHh2inC34ymhopvGnVVU9wxK9exLNprv2Hgy1TCsxvKJxT1gPX4czEqvv3FfgnbhLF4mStnfUYzwZRCCn6dgjEKBmmQfXzFv88TQWW8AyeagY7Tj9oC3bNi63VutaA4MBCTHkg5xkkqbmmPnyvKrAsXy5SVUuAAzmVDkVrV8MAcjbeiS8SxVqtFKxGSLwEbMLyyDAM4FGmRz4XzhfaT9RHU93iaE54wkM7ApkTDgCpaSnM7hhQgqGRFseEoH5mDJFcNUVL21KJXJ7oufAp5jxAR6XphgaHvSFZqoZhb1mCZEa9ZzJthaKHhKUabcXUxkDs4Ev46VxkxxqhT79JXXmFLg5rNCJEdSwMm324feYFWJodEoEAt9QDd6Tk2itPoCmem7Du1dZ',
     [ChainType.Base]: null,
+    [ChainType.Zcash]: null,
+    [ChainType.BitcoinCash]: null
 };
 const rewardAddressesV2 = {
     [ChainType.Bitcoin]: '2Eit2LFRqu2Mo33z3pYTJRHNCPYS33MrU9QgeNcRsF9359pYMahqnLvKsHwwH72C6WDSZRj7G7WC5heVyUEawcSLSx821iJXT4xWf2F5fjVWDUpyGNdkxhFwQMhPKpx85Uu16put68V837wxDx19LRJ5uqi7xBa7EDFRU79Grzk8HDrfpUF3qct4xrQUvDofDroRQTuKueAbwybAfGDhNqG3jzKQchgjedBkbPAuDuNunehW4ZXUBLRSfqy3xofV76bxT5zpZjZcKud4XaRQvXUAVGunJzAs7RNZD5WZxenhmKzhiyuzWiq5QkWqxFw2h9vQ6Dd5PdYsWP3dPtaDC8WUjGz8tQ1tU9LuhqZ8QThQA5zBfoPFrk2iJ1repUuwZPjWnDRHLfWppqDQJGm2GEWHmYTQAfCJQFChUtSNstSATxw37xXjziKkPQRRVPr3VPapbHtGSoQyygzTHgcjxv3HSzwXkD7DScyA2iGDsd4B4WeXo4a6nM4CYpxa9f9FvabbNByhKsgq3ZoCsbUVXN99Pet93MFdxVmBBEsGYEYvtmMEDZEGb5z3JZDtVSdudFcm3bij82bdFzKSmmxxWZhscmLYpGGq1J5geqTiyTCgsmksAHumPFBmLkz8v843Jc3z5b6dwFgyXuBmQPTq6Nf8t95y1UYe8UYx3qNVfrHSGbToSgvCQyLKVv5ns8T2SZRWWr',
@@ -935,6 +967,8 @@ const rewardAddressesV2 = {
     [ChainType.Monero]: null,
     [ChainType.Firo]: null,
     [ChainType.Base]: null,
+    [ChainType.Zcash]: null,
+    [ChainType.BitcoinCash]: null
 };
 const hotWalletAddress = 'nB3L2PD3J4rMmyGk7nnNdESpPXxhPRQ4t1chF8LTXtceMQjKCEgL2pFjPY6cehGjyEFZyHEomBTFXZyqfonvxDozrTtK5JzatD8SdmcPeJNWPvdRb5UxEMXE4WQtpAFzt2veT8Z6bmoWN';
 /**
@@ -1204,11 +1238,12 @@ class MemoryStorageService {
 "use strict";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 40;
+const rs_DbVersion = 43;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';
 const rs_ActivePermitTxStoreName = 'activePermitTxs';
+const rs_ReportsStoreName = 'reportsStore';
 const rs_DownloadStatusStoreName = 'downloadStatusStore';
 const rs_OpenBoxesStoreName = 'openBoxesStore';
 const rs_AddressDataStoreName = 'addressData';
@@ -1281,6 +1316,7 @@ if (typeof window !== 'undefined') {
     globalThis.rs_InputsStoreName = rs_InputsStoreName;
     globalThis.rs_PerfTxStoreName = rs_PerfTxStoreName;
     globalThis.rs_PermitTxStoreName = rs_PermitTxStoreName;
+    globalThis.rs_ReportsStoreName = rs_ReportsStoreName;
     globalThis.rs_ActivePermitTxStoreName = rs_ActivePermitTxStoreName;
     globalThis.rs_DownloadStatusStoreName = rs_DownloadStatusStoreName;
     globalThis.rs_OpenBoxesStoreName = rs_OpenBoxesStoreName;
@@ -1516,6 +1552,7 @@ async function createServices(eventSender, db) {
     const chartService = new ChartService();
     const rewardDataService = new RewardDataService(db, chartService, eventSender);
     const permitsDataService = new PermitsDataService(db);
+    const reportsDataService = new ReportsDataService(db);
     const watcherDataService = new WatcherDataService(permitsDataService);
     const chainPerformanceDataService = new ChainPerformanceDataService(db, eventSender);
     const downloadStatusIndexedDbRewardDataService = new DownloadStatusIndexedDbService(rewardDataService, db);
@@ -1525,6 +1562,7 @@ async function createServices(eventSender, db) {
     const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, eventSender, downloadStatusIndexedDbRewardDataService);
     const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, watcherDataService, eventSender, downloadStatusIndexedDbWatcherDataService);
     const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, permitsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
+    const downloadReportsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, reportsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
     const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, eventSender, downloadStatusIndexedDbChainPerformanceDataService);
     return {
         dataService: rewardDataService,
@@ -1536,6 +1574,8 @@ async function createServices(eventSender, db) {
         downloadMyWatchersService,
         downloadActivePermitsService,
         permitsDataService,
+        reportsDataService,
+        downloadReportsService,
     };
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -1560,7 +1600,8 @@ class ProcessEventService {
             if (event.type === 'StatisticsScreenLoaded' ||
                 event.type === 'PerformanceScreenLoaded' ||
                 event.type === 'MyWatchersScreenLoaded' ||
-                event.type === 'RequestInputsDownload') {
+                event.type === 'RequestInputsDownload' ||
+                event.type === 'ReportsRequested') {
                 const db = await this.initIndexedDB();
                 const services = await createServices(this.eventSender, db);
                 switch (event.type) {
@@ -1576,12 +1617,58 @@ class ProcessEventService {
                     case 'PerformanceScreenLoaded':
                         await this.processPerformanceScreenLoaded(services);
                         break;
+                    case 'ReportsRequested':
+                        await this.processReportsRequested(event, services);
+                        break;
                 }
             }
         }
         catch (error) {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
+    }
+    async initIndexedDB() {
+        return new Promise((resolve, reject) => {
+            let dbName = rs_DbName;
+            const request = indexedDB.open(dbName);
+            request.onsuccess = (event) => {
+                const db = event.target.result;
+                resolve(db);
+            };
+            request.onerror = (event) => {
+                console.error('Error opening IndexedDB:', event.target.error);
+                reject(event.target.error);
+            };
+        });
+    }
+    async processReportsRequested(event, services) {
+        console.log('Rosen service worker received ReportsRequested initiating syncing of data by downloading from blockchain, event.data: ' +
+            event.data);
+        await services.downloadReportsService.downloadForAddress(event.data, true);
+    }
+    async processRequestInputsDownload(event, services) {
+        console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
+            event.data);
+        const addressCharts = await services.chartService.getAddressCharts(await services.dataService.getSortedInputs());
+        this.eventSender?.sendEvent({
+            type: 'AddressChartChanged',
+            data: addressCharts,
+        });
+        if (event.data && typeof event.data === 'string') {
+            await services.downloadService.downloadForAddress(event.data, true);
+        }
+        else {
+            await services.downloadService.downloadForAddresses();
+        }
+    }
+    async processStatisticsScreenLoaded(services) {
+        console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
+        const inputs = await services.dataService.getSortedInputs();
+        this.eventSender?.sendEvent({
+            type: 'InputsChanged',
+            data: inputs,
+        });
+        await services.downloadService.downloadForAddresses();
     }
     async processPerformanceScreenLoaded(services) {
         console.log('Rosen service worker received PerformanceScreenLoaded');
@@ -1636,21 +1723,20 @@ class ProcessEventService {
         }));
     }
     async downloadForChainPermitAddresses(addresses, services) {
-        const downloadPromises = Object.entries(permitAddresses)
-            .filter(([, address]) => address != null)
-            .map(async ([chainType, address]) => {
-            await services.downloadMyWatchersService.downloadForAddress(address, true);
-            const permits = await services.watcherDataService.getAdressPermits(addresses);
-            await this.eventSender?.sendEvent({
-                type: 'PermitsChanged',
-                data: permits,
-            });
-            await this.eventSender?.sendEvent({
-                type: 'AddressPermitsDownloaded',
-                data: chainType,
-            });
+        const permitAddressEntries = Object.entries(permitAddresses).filter(([, address]) => address != null);
+        await Promise.all(permitAddressEntries.map(([chainType, address]) => this.downloadForChainPermitAddress(addresses, chainType, address, services)));
+    }
+    async downloadForChainPermitAddress(addresses, chainType, address, services) {
+        await services.downloadMyWatchersService.downloadForAddress(address, true);
+        const permits = await services.watcherDataService.getAdressPermits(addresses);
+        await this.eventSender?.sendEvent({
+            type: 'PermitsChanged',
+            data: permits,
         });
-        await Promise.all(downloadPromises);
+        await this.eventSender?.sendEvent({
+            type: 'AddressPermitsDownloaded',
+            data: chainType,
+        });
     }
     async sendPermitChangedEvent(services, addresses) {
         const permits = await services.watcherDataService.getAdressPermits(addresses);
@@ -1666,61 +1752,23 @@ class ProcessEventService {
             data: permits,
         });
     }
-    async processStatisticsScreenLoaded(services) {
-        console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
-        const inputs = await services.dataService.getSortedInputs();
-        this.eventSender?.sendEvent({
-            type: 'InputsChanged',
-            data: inputs,
-        });
-        await services.downloadService.downloadForAddresses();
-    }
     async downloadForActivePermitAddresses(allAddresses, chainType, services) {
-        let addresses = [];
-        Object.entries(permitTriggerAddresses).forEach(([key, address]) => {
-            if (key === chainType && address != null) {
+        const addresses = [];
+        for (const [addressChainType, address] of Object.entries(permitTriggerAddresses)) {
+            if (addressChainType === chainType && address != null) {
                 addresses.push(address);
             }
-        });
-        const downloadPromises = addresses.map(async (address) => {
-            await services.downloadActivePermitsService.downloadForAddress(address, true, async () => {
-                const permits = await services.watcherDataService.getAdressPermits(allAddresses);
-                await this.eventSender?.sendEvent({
-                    type: 'PermitsChanged',
-                    data: permits,
-                });
-            });
-        });
-        await Promise.all(downloadPromises);
-    }
-    async processRequestInputsDownload(event, services) {
-        console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
-            event.data);
-        const addressCharts = await services.chartService.getAddressCharts(await services.dataService.getSortedInputs());
-        this.eventSender?.sendEvent({
-            type: 'AddressChartChanged',
-            data: addressCharts,
-        });
-        if (event.data && typeof event.data === 'string') {
-            await services.downloadService.downloadForAddress(event.data, true);
         }
-        else {
-            await services.downloadService.downloadForAddresses();
-        }
+        await Promise.all(addresses.map((address) => this.downloadForActivePermitAddress(allAddresses, address, services)));
     }
-    // IndexedDB Initialization
-    async initIndexedDB() {
-        return new Promise((resolve, reject) => {
-            let dbName = rs_DbName;
-            const request = indexedDB.open(dbName);
-            request.onsuccess = (event) => {
-                const db = event.target.result;
-                resolve(db);
-            };
-            request.onerror = (event) => {
-                console.error('Error opening IndexedDB:', event.target.error);
-                reject(event.target.error);
-            };
+    async downloadForActivePermitAddress(allAddresses, address, services) {
+        await services.downloadActivePermitsService.downloadForAddress(address, true, () => this.sendPermitsChangedEventForAddresses(services, allAddresses));
+    }
+    async sendPermitsChangedEventForAddresses(services, addresses) {
+        const permits = await services.watcherDataService.getAdressPermits(addresses);
+        await this.eventSender?.sendEvent({
+            type: 'PermitsChanged',
+            data: permits,
         });
     }
 }

@@ -51,7 +51,8 @@ export class ServiceWorkerService {
         eventType == EventType.PerformanceScreenLoaded ||
         eventType == EventType.MyWatchersScreenLoaded ||
         eventType == EventType.StatisticsScreenLoaded ||
-        eventType == EventType.RequestInputsDownload
+        eventType == EventType.RequestInputsDownload ||
+        eventType == EventType.ReportsRequested
       ) {
         console.log(eventData);
 

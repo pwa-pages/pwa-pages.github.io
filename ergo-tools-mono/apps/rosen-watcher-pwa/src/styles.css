@@ -368,6 +368,23 @@ a {
   filter: brightness(0.8);
 }
 
+.statdetaildispl.BitcoinCash,
+.mainaddressdispl.BitcoinCash,
+.watchersdispl.BitcoinCash,
+.chainType.BitcoinCash {
+  background-image: url('./assets/images/bitcoincash.png');
+  filter: brightness(0.8);
+}
+
+
+.statdetaildispl.Zcash,
+.mainaddressdispl.Zcash,
+.watchersdispl.Zcash,
+.chainType.Zcash {
+  background-image: url('./assets/images/zcash.png');
+  filter: brightness(0.8);
+}
+
 .noAddresses {
   color: green;
   font-size: var(--large-font);

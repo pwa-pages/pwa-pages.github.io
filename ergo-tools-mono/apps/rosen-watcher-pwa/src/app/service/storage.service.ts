@@ -45,6 +45,15 @@ export class StorageService {
           keyPath: ErgSettings.rs_ActivePermit_Key(),
         });
 
+        if (db.objectStoreNames.contains(ErgSettings.rs_ReportsStoreName())) {
+          db.deleteObjectStore(ErgSettings.rs_ReportsStoreName());
+        }
+        db.createObjectStore(ErgSettings.rs_ReportsStoreName(), {
+          keyPath: ErgSettings.rs_ActivePermit_Key(),
+        });
+
+        
+
         if (!db.objectStoreNames.contains(ErgSettings.rs_AddressDataStoreName())) {
           db.createObjectStore(ErgSettings.rs_AddressDataStoreName(), {
             keyPath: ErgSettings.rs_Address_Key(),

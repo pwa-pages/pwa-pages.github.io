@@ -1,5 +1,6 @@
 import './data.service';
-import './permits.data.service' ;
+import './permits.data.service';
+import './reports.data.service';
 import './chain.performance.data.service';
 import './chain.service';
 import './chart.service';

@@ -64,7 +64,7 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
   async onChainChange(): Promise<void> {
     localStorage.setItem('selectedChain', this.selectedChain as string);
     await this.retrieveWatcherPerformanceStats(this.selectedChain); 
-    
+    await this.eventService.sendEventWithData(EventType.ReportsRequested, this.selectedChain);
   }
 
   getChainTypes(): string[] {

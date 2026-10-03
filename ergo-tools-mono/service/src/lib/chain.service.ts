@@ -16,6 +16,8 @@ enum ChainType {
   Handshake = 'Handshake',
   Base = 'Base',
   Monero = 'Monero',
+  BitcoinCash = 'BitcoinCash',
+  Zcash = 'Zcash'
 }
 
 function getChainTypes(): string[] {
@@ -80,7 +82,7 @@ const rwtTokenIds: Record<string, ChainType> = {
   '1ec6e90bc4b453fd51b6606b86c837b241a20efa36229e195f211fbf6f8e9c87':
     ChainType.Runes,
   '62a0b535eda42da5b003042c3cf587cf7cb5202959b7f00878183d2f676d3db5':
-    ChainType.Firo
+    ChainType.Firo,
 
 };
 
@@ -105,6 +107,8 @@ const permitAddresses: Record<ChainType, string | null> = {
   [ChainType.Firo]:
     'NY4PEzZ7VfjtpACh7a9NbxyyMQPghQ39LcRZjPmyZ7oPeSXT3E6uNUumgzTjJqx2YQj6Yv949NXmyGPwYSdSTmLdU4k4UuUwUAKS9aGozcX2VzHn7HAgbezL44thy7BiJZLNvW7npvrhvve1K3w56sNB5Q5Cw1Q4vKdD5vktYE72vcu81Ls9Jo3dstmGPFrxzGYZtqYfR5Lyq8JwazKse3Ea7gypuqv3Pv3emVdBwAquXMTATofoAp9aaffrQA8XbsnAbmAHiVxcMmyhf6iCjYxDBKNd3LUCMpy5uHSg8AwijbRDYCaacc2pt2RK9VWmthdtCVcC8XBh1bsXNp1aCeRprg8nmCfb4YkRXXVH2TTWo5D4BvW23gjbNVU8a2SkTR3ZwboiL1QA4sq6JRY5HkZQjSk33W4YcJCbgNNu4Z6cU6xCnNyoiX89FfD8uMq4DZKD3bxD9HBdXpN2xs8BHA9EMtwaovxDANjsL9jxWH6FSN2KrKHsbTHAPSB3Lwzj468BdRetD5VHFfKetRT3qUsvrBXZ1n2UBd6WvhRA4T9erCZDRP3Ui2Wxbx2pVvXKeWLsJMYX5fiX8rX55z1mX5wMfbRPJKMTGtyfwDoy3D6pVra2zvPxR2ME5A1rzWxtUwdUfJZ5oBGYFkV94yjZJKMKws4UtgkSdgeGgqN9eEnzjv3nYp2rZjxZnXeacC5JvQghzKf6jsRzGyzWwJf4CZnAaL9V9Ap3Up8YfxuHvWzTVJSgUq5RD8MSwc51Ctx9GoJ7YBW961NPuuTnJrp2CR67w2izrgEwyQCMvzcxv8rNSacPRybXv9peBJVRuXx2uoNAxEYeHPqW5eF7L8Xc2cKF7AHREKeJAPbZz5aQTSQMhRgV7DSyEFPB9riWyxJM1bbaiVD3R5J4BTzQWffVdXU6JGfabniS51pihUmS3uQQap4bx2QTMSRJYcHDzwikCgNK3bZgB3vYjAojV15s7bvciFrCuLLhF1LhEVUh1oQf1HnZSradFABNhnzwRTn6nrgqyBxeBYSXbcusrD3gUfymv7mrpEEA6r98s77dn6JDrvDo3aRqSFhPAXLXQpkv4MNq1dZkrrgUGwDyohEYXQMqVQdJoAQxiybg6qLiaYnUtKm3CzFaY3eDYzySGWcZXQ2JuLNQKdMUFLQXEWUi7eWH1EaZ8HsYH1J1NTo2ZoJVvxdyL9JpsVk6p5pTdLm3Ucsds5nLQMga7UameEGSxCjUoYiwxQ',
   [ChainType.Base]: null,
+  [ChainType.Zcash]: null,
+  [ChainType.BitcoinCash]: null
 };
 
 const permitTriggerAddresses: Record<ChainType, string | null> = {
@@ -128,6 +132,8 @@ const permitTriggerAddresses: Record<ChainType, string | null> = {
   [ChainType.Firo]: 
     '5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn',
   [ChainType.Base]: null,
+  [ChainType.Zcash]: null,
+  [ChainType.BitcoinCash]: null
 };
 
 const permitBulkAddresses: Record<ChainType, string | null> = {
@@ -151,6 +157,8 @@ const permitBulkAddresses: Record<ChainType, string | null> = {
   [ChainType.Firo]: 
     'ZsPNMsGz8D8y11MAneZTVjJndCjgTUnUoCHtd2sBVHNWA2CZnTaDAnQ5yk4yws8txwETo9odSqXEDQfLDEb3htK6C7nsmMEjQzYuEMAW5R3ACcb7hbTjH3CvzFRbCxKdD18gpfM7D2fBAoNEYYYWiWFGVn9SqBu8MDnUctEHru88XWz3brkmYrjFaHwiy1N1fNhTJ1hFavTPmZYPgA9yJnnV8ZxuRhAZtbCwJEpGe6UTBUja2P2jX58unerXMatzoKSW6fKdj7QzgDzNnHTkWUCkpN4AiCiKAmVktA8JXUbFGW29tUx9aeFxP2K9aQiqdrxwme5QJRKm3HRoeXtFdavym77CKbMajMfiMTvPoTNFdCNfwga15jrqjSjNCXyYV5TrQhCSfoEBkdbjttDevzKvJuGGP67iwdRJeZ8NLxFy6noRdbCuSDfpvCiLDgLzpK4pq1KHyRkuW2AQ1s8sRJmAXDNaG5tz7wDVXRTpo1373ky6sAW81i5L7mZkf79a64h8Us',
   [ChainType.Base]: null,
+  [ChainType.Zcash]: null,
+  [ChainType.BitcoinCash]: null
 };
 
 const rewardAddresses: Record<ChainType, string | null> = {
@@ -174,6 +182,8 @@ const rewardAddresses: Record<ChainType, string | null> = {
   [ChainType.Firo]: 
     '2Eit2LFRqu2Mo33z3pYTJRHNCPZXtS2f68LNW668eK4nJNwXQZMTEW23dCLCxfBX9CZfhHCCt1AbFaprUWX4wG2LfPVrXjGSpZCB5oX3FQ23WXoS58MGLwDDjrEEyoWCbvS1QN9mAgg44yqcgBQajZp1RRJohTZDfYZT58h7eXMZyWpSqw2TMAjrHSmPgKaHxM5yoGeWsRqTscGxrjvjts9dQWWgAZy7NuKC3zks5GW1dVXFYs9xa1V1JfefjCXW1RWJpWoVc8NqEXKFZF3xh8mgfwbWWmZoo6cJWRn8yMyAjheCCXprsr8uD8zLiJHh2inC34ymhopvGnVVU9wxK9exLNprv2Hgy1TCsxvKJxT1gPX4czEqvv3FfgnbhLF4mStnfUYzwZRCCn6dgjEKBmmQfXzFv88TQWW8AyeagY7Tj9oC3bNi63VutaA4MBCTHkg5xkkqbmmPnyvKrAsXy5SVUuAAzmVDkVrV8MAcjbeiS8SxVqtFKxGSLwEbMLyyDAM4FGmRz4XzhfaT9RHU93iaE54wkM7ApkTDgCpaSnM7hhQgqGRFseEoH5mDJFcNUVL21KJXJ7oufAp5jxAR6XphgaHvSFZqoZhb1mCZEa9ZzJthaKHhKUabcXUxkDs4Ev46VxkxxqhT79JXXmFLg5rNCJEdSwMm324feYFWJodEoEAt9QDd6Tk2itPoCmem7Du1dZ',
   [ChainType.Base]: null,
+  [ChainType.Zcash]: null,
+  [ChainType.BitcoinCash]: null
 };
 
 const rewardAddressesV2: Record<ChainType, string | null> = {
@@ -196,6 +206,8 @@ const rewardAddressesV2: Record<ChainType, string | null> = {
   [ChainType.Monero]: null,
   [ChainType.Firo]: null,
   [ChainType.Base]: null,
+  [ChainType.Zcash]: null,
+  [ChainType.BitcoinCash]: null
 };
 
 

@@ -1,11 +1,12 @@
 "use strict";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 40;
+const rs_DbVersion = 43;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';
 const rs_ActivePermitTxStoreName = 'activePermitTxs';
+const rs_ReportsStoreName = 'reportsStore';
 const rs_DownloadStatusStoreName = 'downloadStatusStore';
 const rs_OpenBoxesStoreName = 'openBoxesStore';
 const rs_AddressDataStoreName = 'addressData';
@@ -78,6 +79,7 @@ if (typeof window !== 'undefined') {
     globalThis.rs_InputsStoreName = rs_InputsStoreName;
     globalThis.rs_PerfTxStoreName = rs_PerfTxStoreName;
     globalThis.rs_PermitTxStoreName = rs_PermitTxStoreName;
+    globalThis.rs_ReportsStoreName = rs_ReportsStoreName;
     globalThis.rs_ActivePermitTxStoreName = rs_ActivePermitTxStoreName;
     globalThis.rs_DownloadStatusStoreName = rs_DownloadStatusStoreName;
     globalThis.rs_OpenBoxesStoreName = rs_OpenBoxesStoreName;

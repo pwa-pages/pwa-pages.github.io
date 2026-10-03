@@ -15,6 +15,8 @@ interface Services {
     downloadPerfService: DownloadService<PerfTx>;
     downloadMyWatchersService: DownloadService<PermitTx>;
     downloadActivePermitsService: DownloadService<PermitTx>;
+    reportsDataService: ReportsDataService;
+    downloadReportsService: DownloadService<PermitTx>;
 }
 declare function createServices(eventSender: EventSender, db: IDBDatabase): Promise<Services>;
 declare class ServiceWorkerEventSender implements EventSender {
@@ -24,15 +26,19 @@ declare class ProcessEventService {
     private eventSender;
     constructor(eventSender: EventSender);
     processEvent(event: EventPayload<object>): Promise<void>;
+    private initIndexedDB;
+    private processReportsRequested;
+    private processRequestInputsDownload;
+    private processStatisticsScreenLoaded;
     private processPerformanceScreenLoaded;
     private processMyWatchersScreenLoaded;
     private extractChainTypes;
     private processActivePermits;
     downloadForChainPermitAddresses(addresses: string[], services: Services): Promise<void>;
+    private downloadForChainPermitAddress;
     private sendPermitChangedEvent;
     private sendPermitsChangedEvent;
-    private processStatisticsScreenLoaded;
     downloadForActivePermitAddresses(allAddresses: string[], chainType: string, services: Services): Promise<void>;
-    private processRequestInputsDownload;
-    private initIndexedDB;
+    private downloadForActivePermitAddress;
+    private sendPermitsChangedEventForAddresses;
 }

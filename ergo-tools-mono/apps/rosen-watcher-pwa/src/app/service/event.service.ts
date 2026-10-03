@@ -2,8 +2,9 @@ import {
   Injectable,
   NgZone,
 } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
 import { Input } from '@ergo-tools/service';
+import { Subject, Subscription } from 'rxjs';
+
 
 export enum EventType {
   StartFullDownload = 'StartFullDownload',
@@ -16,6 +17,7 @@ export enum EventType {
   SwipeVertical = 'SwipeVertical',
   StatisticsScreenLoaded = 'StatisticsScreenLoaded',
   MyWatchersScreenLoaded = 'MyWatchersScreenLoaded',
+  ReportsRequested = 'ReportsRequested',
   RequestInputsDownload = 'RequestInputsDownload',
   WatchersScreenLoaded = 'WatchersScreenLoaded',
   SettingsScreenLoaded = 'SettingsScreenLoaded',
@@ -57,6 +59,7 @@ export class EventService {
       [EventType.RefreshInputs]: new Subject<EventData>(),
       [EventType.InputsChanged]: new Subject<EventData>(),
       [EventType.PerfChartChanged]: new Subject<EventData>(),
+      [EventType.ReportsRequested]: new Subject<EventData>(), 
       [EventType.SwipeActivated]: new Subject<EventData>(),
       [EventType.SwipeDeActivated]: new Subject<EventData>(),
       [EventType.SwipeVertical]: new Subject<EventData>(),

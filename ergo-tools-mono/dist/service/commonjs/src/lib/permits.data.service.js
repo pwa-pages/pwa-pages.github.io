@@ -1,14 +1,15 @@
 "use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class PermitsDataService extends DataService {
+    storeName;
     maxDownloadDateDifference;
     getData() {
-        return this.storageService.getData(rs_ActivePermitTxStoreName);
+        return this.storageService.getData(this.storeName);
     }
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId) {
-                const data = await this.storageService.getDataById(rs_ActivePermitTxStoreName, this.createUniqueId(input.boxId, transaction.id, address));
+                const data = await this.storageService.getDataById(this.storeName, this.createUniqueId(input.boxId, transaction.id, address));
                 if (data) {
                     return data;
                 }
@@ -16,7 +17,7 @@ class PermitsDataService extends DataService {
         }
         for (const output of transaction.outputs) {
             if (output.boxId) {
-                const data = await this.storageService.getDataById(rs_ActivePermitTxStoreName, this.createUniqueId(output.boxId, transaction.id, address));
+                const data = await this.storageService.getDataById(this.storeName, this.createUniqueId(output.boxId, transaction.id, address));
                 if (data) {
                     return data;
                 }
@@ -24,8 +25,9 @@ class PermitsDataService extends DataService {
         }
         return null;
     }
-    constructor(db, maxDownloadDateDifference = 204800000) {
+    constructor(db, storeName = rs_ActivePermitTxStoreName, maxDownloadDateDifference = 204800000) {
         super(db);
+        this.storeName = storeName;
         this.maxDownloadDateDifference = maxDownloadDateDifference;
     }
     createUniqueId(boxId, transactionId, address) {
@@ -45,7 +47,7 @@ class PermitsDataService extends DataService {
         return this.maxDownloadDateDifference;
     }
     async getWatcherPermits() {
-        const permitsPromise = this.storageService.getData(rs_ActivePermitTxStoreName);
+        const permitsPromise = this.storageService.getData(this.storeName);
         console.log('Retrieving watcher active permits');
         try {
             const permits = await permitsPromise;
@@ -243,10 +245,10 @@ class PermitsDataService extends DataService {
                 }
             });
         });
-        await this.storageService.addData(rs_ActivePermitTxStoreName, tempData);
+        await this.storageService.addData(this.storeName, tempData);
     }
     async purgeData() {
-        let permitTxs = await this.storageService.getData(rs_ActivePermitTxStoreName);
+        let permitTxs = await this.storageService.getData(this.storeName);
         permitTxs = (await permitTxs).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         let permitTx = null;
         if (permitTxs.length >= rs_FullDownloadsBatchSize) {
@@ -267,7 +269,7 @@ class PermitsDataService extends DataService {
                 purgePermitTxs.push(permitTx);
             }
         }
-        await this.storageService.deleteData(rs_ActivePermitTxStoreName, purgePermitTxs.map(pt => pt.id));
+        await this.storageService.deleteData(this.storeName, purgePermitTxs.map(pt => pt.id));
     }
     async getSortedPermits() {
         const permitsPromise = await this.getWatcherPermits();

@@ -74,6 +74,9 @@ export class ErgSettings {
     static rs_ActivePermitTxStoreName() {
         return globalThis.rs_ActivePermitTxStoreName;
     }
+    static rs_ReportsStoreName() {
+        return globalThis.rs_ReportsStoreName;
+    }
     static rs_DownloadStatusStoreName() {
         return globalThis.rs_DownloadStatusStoreName;
     }

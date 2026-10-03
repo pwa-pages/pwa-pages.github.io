@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1790961164918,
+  "timestamp": 1791046004164,
   "appData": {
-    "version": "4.2.7"
+    "version": "4.3.9"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-W4ZD2ET7.js",
+        "./main-TVI7MBX2.js",
         "./manifest.webmanifest",
         "./polyfills-LVNOU2XZ.js",
         "./rosen.html",
-        "./scripts-R5WNIBQQ.js",
+        "./scripts-RWKN2Y2J.js",
         "./styles-OGXVVNRV.css"
       ],
       "patterns": []
@@ -40,6 +40,7 @@
         "./assets/images/base.png",
         "./assets/images/binance.png",
         "./assets/images/bitcoin.png",
+        "./assets/images/bitcoincash.png",
         "./assets/images/cardano.png",
         "./assets/images/doge.png",
         "./assets/images/ergo.png",
@@ -49,6 +50,7 @@
         "./assets/images/monero.png",
         "./assets/images/nervos.png",
         "./assets/images/runes.png",
+        "./assets/images/zcash.png",
         "./assets/rosen-chain-performance.html",
         "./assets/rosen-multiple.html",
         "./assets/rosen-performance.html",
@@ -85,6 +87,7 @@
     "./assets/images/base.png": "83424fb0277a8df26a85a0af9bcdeec47051f248",
     "./assets/images/binance.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
     "./assets/images/bitcoin.png": "c518bf385ea2cd889bdf1f1f650e24a4212ab5db",
+    "./assets/images/bitcoincash.png": "58fcbd9a1780d294fc919ceb5cb5552199f137c3",
     "./assets/images/cardano.png": "1047c4cef96e5cfbbf42f3037c48f7a8f3de64bb",
     "./assets/images/doge.png": "89504e3fc801a3e4f8d7f1ecdcfd1715efc17f20",
     "./assets/images/ergo.png": "f30bed94b41b5c594897394389d884c4d88c3f50",
@@ -94,6 +97,7 @@
     "./assets/images/monero.png": "e0eb65245e00fd0c85985d38258a9f3b50cd7329",
     "./assets/images/nervos.png": "c498927d32356b930c348cd8bc71fc5c3b24c3ac",
     "./assets/images/runes.png": "ea5ce402d8db6c0bd0a138cc93745770bda962bc",
+    "./assets/images/zcash.png": "a645a5027336e32ae87864cc682174ab1b413550",
     "./assets/rosen-chain-performance.html": "a78669741fc769f3842da3a9bb2224cb0cf4a4b9",
     "./assets/rosen-multiple.html": "765f201a00f0186a5162f06affead9fc04d864e2",
     "./assets/rosen-performance.html": "34cc73fac078788856f7c07ae807fadf7ae8865c",
@@ -102,8 +106,8 @@
     "./assets/rosen-watchers.html": "61235d2d68e1a1bb8f19fa33390f9f320436be24",
     "./assets/test.html": "7be1e51ec537c8242b37e42fdc4fa46c88a77508",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "e1b5043b1d666eadd81b14bb63d1ef943387f335",
-    "./main-W4ZD2ET7.js": "ba47f56a0510cc84d65d79654c73bb02e3873571",
+    "./index.html": "34a8a9fe676ab31100d4694049500b172e75f488",
+    "./main-TVI7MBX2.js": "6dae42af7ddfb184ec0b4cb4c342fa63e0e3530d",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/base-C3MBVN5M.png": "83424fb0277a8df26a85a0af9bcdeec47051f248",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
@@ -123,7 +127,7 @@
     "./media/runes-YRKWHLRH.png": "ea5ce402d8db6c0bd0a138cc93745770bda962bc",
     "./polyfills-LVNOU2XZ.js": "2f9a12d1b36d16ea2c21645c118124acea70f07e",
     "./rosen.html": "d7161a40ae648d11c75098244147e693537693b8",
-    "./scripts-R5WNIBQQ.js": "f2fdb6581d700cf14180091fad67b7e151063a8f",
+    "./scripts-RWKN2Y2J.js": "578e9db4786608ad5218b7aacfced24cbdc5141d",
     "./styles-OGXVVNRV.css": "016ca30d755b8c84e7e0a1594a593231fc719b22"
   },
   "navigationUrls": [

@@ -43,6 +43,7 @@ export declare class ErgSettings {
     static rs_PerfTxStoreName(): string;
     static rs_PermitTxStoreName(): string;
     static rs_ActivePermitTxStoreName(): string;
+    static rs_ReportsStoreName(): string;
     static rs_DownloadStatusStoreName(): string;
     static rs_OpenBoxesStoreName(): string;
     static rs_AddressDataStoreName(): string;
