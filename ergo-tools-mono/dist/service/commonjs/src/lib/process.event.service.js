@@ -3,7 +3,7 @@ async function createServices(eventSender, db) {
     const chartService = new ChartService();
     const rewardDataService = new RewardDataService(db, chartService, eventSender);
     const permitsDataService = new PermitsDataService(db);
-    const reportsDataService = new ReportsDataService(db);
+    const reportsDataService = new ReportsDataService(db, eventSender);
     const watcherDataService = new WatcherDataService(permitsDataService);
     const chainPerformanceDataService = new ChainPerformanceDataService(db, eventSender);
     const downloadStatusIndexedDbRewardDataService = new DownloadStatusIndexedDbService(rewardDataService, db);
@@ -95,7 +95,24 @@ class ProcessEventService {
     async processReportsRequested(event, services) {
         console.log('Rosen service worker received ReportsRequested initiating syncing of data by downloading from blockchain, event.data: ' +
             event.data);
-        await services.downloadReportsService.downloadForAddress(event.data, true);
+        if (event.data && typeof event.data === 'string') {
+            var chainType = event.data;
+            for (const [addressChainType, address] of Object.entries(permitTriggerAddresses)) {
+                if (addressChainType === chainType && address != null) {
+                    var permitTxs = await services.reportsDataService.getAdressPermits(false, null, null, null, null);
+                    this.eventSender?.sendEvent({
+                        type: 'ReportsChanged',
+                        data: permitTxs,
+                    });
+                    await services.downloadReportsService.downloadForAddress(address, true);
+                    permitTxs = await services.reportsDataService.getAdressPermits(false, null, null, null, null);
+                    this.eventSender?.sendEvent({
+                        type: 'ReportsChanged',
+                        data: permitTxs,
+                    });
+                }
+            }
+        }
     }
     async processRequestInputsDownload(event, services) {
         console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +

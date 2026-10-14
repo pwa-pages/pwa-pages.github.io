@@ -35,7 +35,7 @@ async function createServices(
   const permitsDataService: PermitsDataService =
     new PermitsDataService(db);
   const reportsDataService: ReportsDataService =
-    new ReportsDataService(db);
+    new ReportsDataService(db, eventSender);
   const watcherDataService: WatcherDataService = new WatcherDataService(
     permitsDataService,
   );
@@ -76,7 +76,7 @@ async function createServices(
       eventSender,
       downloadStatusIndexedDbPermitsDataService,
     );
-    const downloadReportsService: DownloadService<PermitTx> =
+  const downloadReportsService: DownloadService<PermitTx> =
     new DownloadService<PermitTx>(
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
@@ -191,13 +191,36 @@ class ProcessEventService {
   ) {
     console.log(
       'Rosen service worker received ReportsRequested initiating syncing of data by downloading from blockchain, event.data: ' +
-        event.data,
+      event.data,
     );
 
-    await services.downloadReportsService.downloadForAddress(
-        event.data as unknown as string,
-        true,
-      );
+    if (event.data && typeof event.data === 'string') {
+      var chainType = event.data as unknown as string;
+      for (const [addressChainType, address] of Object.entries(
+        permitTriggerAddresses,
+      )) {
+        if (addressChainType === chainType && address != null) {
+
+          var permitTxs = await services.reportsDataService.getAdressPermits(false, null, null, null, null);
+
+          this.eventSender?.sendEvent({
+            type: 'ReportsChanged',
+            data: permitTxs,
+          });
+
+          await services.downloadReportsService.downloadForAddress(
+            address,
+            true,
+          );
+          permitTxs = await services.reportsDataService.getAdressPermits(false, null, null, null, null);
+
+          this.eventSender?.sendEvent({
+            type: 'ReportsChanged',
+            data: permitTxs,
+          });
+        }
+      }
+    }
   }
 
   private async processRequestInputsDownload(
@@ -206,7 +229,7 @@ class ProcessEventService {
   ) {
     console.log(
       'Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
-        event.data,
+      event.data,
     );
 
     const addressCharts = await services.chartService.getAddressCharts(

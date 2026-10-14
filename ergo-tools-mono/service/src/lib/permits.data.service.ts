@@ -54,6 +54,51 @@ class PermitsDataService extends DataService<PermitTx> {
     return hash.toString();
   }
 
+  private createPermitTx(
+    boxId: string,
+    transactionId: string,
+    transactionAddress: string,
+    address: string,
+    date: Date,
+    assets: Asset[],
+    chainType: ChainType,
+  ): PermitTx {
+
+  
+    for (const [key, triggerAddress] of Object.entries(permitTriggerAddresses)) {
+      if (triggerAddress === address) {
+        address = `trigger_address_${key}`;
+        break;
+      }
+    }  
+
+    for (const [key, bulkAddress] of Object.entries(permitBulkAddresses)) {
+      if (bulkAddress === address) {
+        address = `bulk_address_${key}`;
+        break;
+      }
+    }
+
+    for (const [key, rewardAddress] of Object.entries(rewardAddresses)) {
+      if (rewardAddress === address) {
+        address = `reward_address_${key}`;
+        break;
+      }
+    }
+      
+
+    return {
+      id: this.createUniqueId(boxId, transactionId, transactionAddress),
+      address,
+      date,
+      boxId,
+      assets: assets || [],
+      wid: '',
+      chainType,
+      transactionId,
+    };
+  }
+
   getDataType(): string {
     return 'activepermit';
   }
@@ -69,6 +114,8 @@ class PermitsDataService extends DataService<PermitTx> {
 
     try {
       const permits = await permitsPromise;
+
+
 
       permits.forEach((permit: PermitTx) => {
         permit.assets = permit.assets
@@ -154,11 +201,18 @@ class PermitsDataService extends DataService<PermitTx> {
     return openBoxesMap;
   }
 
-  shouldAddInputToDb(address: string, assets: Asset[]): boolean {
-    return (
-      (address != null && address.length <= 100 && assets.length > 0) ||
-      Object.values(permitTriggerAddresses).includes(address)
-    );
+  shouldAddInputToDb(address: string, assets: Asset[], item: TransactionItem): boolean {
+
+    if (Object.values(permitTriggerAddresses).includes(address)) {
+      return true;
+    }
+
+    if (address != null && address.length <= 100 && assets.length > 0) {
+      if (item.outputs.some((output: Output) => Object.values(permitBulkAddresses).includes(output.address))) { return false; }
+      return true;
+    }
+
+    return false;
   }
 
   shouldAddOutputToDb(address: string): boolean {
@@ -208,15 +262,21 @@ class PermitsDataService extends DataService<PermitTx> {
 
     var permitBulkAddressSet = new Set(Object.values(permitBulkAddresses));
     for (const permit of addressPermits) {
+
+      if(permit.address.startsWith("trigger_address")) {
+        continue;
+      }
+
       let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) =>
         Object.values(permitTriggerAddresses).some(
-          (address) => address === o.address,
+          (address) => address === o.address || o.address.startsWith("trigger_address"),
         ),
       );
       let foundResolved = false;
-
+  
       for (const output of outputs) {
         let cnt = boxIdMap[output.boxId] ?? [];
+        
         if (cnt.length >= 2) {
           foundResolved = true;
 
@@ -224,7 +284,7 @@ class PermitsDataService extends DataService<PermitTx> {
             for (const p of cnt) {
               let txs =
                 permitsByTxId[p.transactionId]?.filter((t) =>
-                  permitBulkAddressSet.has(t.address),
+                  permitBulkAddressSet.has(t.address) || t.address.startsWith("bulk_address_"),
                 ) ?? [];
 
               txs.map(async (t) => {
@@ -244,7 +304,7 @@ class PermitsDataService extends DataService<PermitTx> {
             for (const p of cnt) {
               let txs =
                 permitsByTxId[p.transactionId]?.filter((t) =>
-                  permitBulkAddressSet.has(t.address),
+                  permitBulkAddressSet.has(t.address) || t.address.startsWith("bulk_address_"),
                 ) ?? [];
 
               txs.map(t => {
@@ -261,6 +321,8 @@ class PermitsDataService extends DataService<PermitTx> {
                     result.push(permit);
                   }
                 } else {
+
+
                   result.push(permit);
                 }
               });
@@ -276,10 +338,16 @@ class PermitsDataService extends DataService<PermitTx> {
 
     const seen = new Set<string>();
     const filteredResult = result.filter((r: PermitTx) => {
-      if (seen.has(r.transactionId)) return false;
-      seen.add(r.transactionId);
+      const key = `${r.transactionId}:${r.address}`;
+
+      if (seen.has(key)) return false;
+      seen.add(key);
       return true;
     });
+
+
+
+
     return filteredResult;
   }
 
@@ -294,7 +362,7 @@ class PermitsDataService extends DataService<PermitTx> {
 
     transactions.forEach((item: TransactionItem) => {
       item.inputs.forEach((input: Input) => {
-        if (this.shouldAddInputToDb(input.address, input.assets) === false) {
+        if (this.shouldAddInputToDb(input.address, input.assets, item) === false) {
           return;
         }
         input.inputDate = new Date(item.timestamp);
@@ -303,18 +371,18 @@ class PermitsDataService extends DataService<PermitTx> {
           (a) => a.tokenId != null && a.tokenId in rwtTokenIds,
         );
 
-        const permitTx: PermitTx = {
-          id: this.createUniqueId(input.boxId, item.id, address),
-          address: input.address,
-          date: input.inputDate,
-          boxId: input.boxId,
-          assets: input.assets || [],
-          wid: '',
-          chainType: getChainTypeForPermitTriggerAddress(address) as ChainType,
-          transactionId: item.id,
-        };
+        const permitTx = this.createPermitTx(
+          input.boxId,
+          item.id,
+          address,
+          input.address,
+          input.inputDate,
+          input.assets,
+          getChainTypeForPermitTriggerAddress(address) as ChainType,
+        );
 
         if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {
+
           tempData.push(permitTx);
         }
       });
@@ -332,24 +400,20 @@ class PermitsDataService extends DataService<PermitTx> {
           a.amount = -a.amount;
         });
 
-        const permitTx: PermitTx = {
-          id: this.createUniqueId(output.boxId, item.id, address),
-          address: output.address,
-          date: output.outputDate,
-          boxId: output.boxId,
-          assets: output.assets || [],
-          wid: '',
-          chainType: getChainTypeForPermitAddress(address) as ChainType,
-          transactionId: item.id,
-        };
-
-
+        const permitTx = this.createPermitTx(
+          output.boxId,
+          item.id,
+          address,
+          output.address,
+          output.outputDate,
+          output.assets,
+          getChainTypeForPermitAddress(address) as ChainType,
+        );
 
 
         if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {
           tempData.push(permitTx);
         }
-
 
       });
     });

@@ -114,7 +114,7 @@ async function downloadPermits() {
 async function downloadActivePermits() {
   var frommonth = 9;
   var fromyear = 2026;
-  var tomonth = 9;
+  var tomonth = 10;
   var toyear = 2026;
   const now = new Date();
   const startOfYear = new Date(fromyear, frommonth - 1, 1);

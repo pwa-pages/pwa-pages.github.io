@@ -237,6 +237,7 @@ a {
 
 .watcherscontainer.performance {
   grid-template-columns: 3vmax auto auto !important;
+  font-family: 'Geist Mono', monospace;
 }
 
 .watcherscontainer {

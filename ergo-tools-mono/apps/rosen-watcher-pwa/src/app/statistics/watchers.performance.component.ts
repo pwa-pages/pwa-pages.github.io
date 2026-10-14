@@ -6,10 +6,13 @@ import {
   Input,
   OnInit,
   Output,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  Signal
 } from '@angular/core';
 import { EventType } from '../service/event.service';
-
+import {
+  WatchersPerformanceStats
+} from '@ergo-tools/service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +21,7 @@ import { NavigationService } from '../service/navigation.service';
 import { WatchersStats } from '../service/watchers.models';
 import { ChainTypeHelper } from '../imports/imports';
 import { WatchersPerformanceDataService } from '../service/watchers.performance.data.service';
-import { WatcherPerformanceAddressStat } from '@ergo-tools/service';
+
 
 @Component({
   selector: 'app-watchers-performance',
@@ -30,7 +33,18 @@ import { WatcherPerformanceAddressStat } from '@ergo-tools/service';
 export class WatchersPerformanceComponent extends BaseWatcherComponent implements OnInit {
   private _renderHtml = true;
   public chains: string[] = ChainTypeHelper.getActiveChainTypes();
-  watcherPerformanceStats: WatcherPerformanceAddressStat[] = [];
+  public months: string[] = this.getCurrentAndPreviousMonths();
+  watcherPerformanceStats: Signal<WatchersPerformanceStats> | null = null;
+
+  private getCurrentAndPreviousMonths(): string[] {
+    const now = new Date();
+    const currentMonth = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(now);
+    const previousMonth = new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+    }).format(new Date(now.getFullYear(), now.getMonth() - 1, 1));
+
+    return [currentMonth, previousMonth];
+  }
 
   @Input()
   set renderHtml(value: string | boolean) {
@@ -46,9 +60,8 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
   }
 
   @Output() notifyWatchersStatsChanged = new EventEmitter<WatchersStats>();
-
-
   selectedChain = '';
+  selectedMonth = '';
 
   constructor(
     injector: Injector,
@@ -63,8 +76,12 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
 
   async onChainChange(): Promise<void> {
     localStorage.setItem('selectedChain', this.selectedChain as string);
-    await this.retrieveWatcherPerformanceStats(this.selectedChain); 
-    await this.eventService.sendEventWithData(EventType.ReportsRequested, this.selectedChain);
+    await this.retrieveWatcherPerformanceStats();
+  }
+
+  async onMonthChange(): Promise<void> {
+    localStorage.setItem('selectedMonth', this.selectedMonth as string);
+    await this.retrieveWatcherPerformanceStats();
   }
 
   getChainTypes(): string[] {
@@ -79,8 +96,12 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
     this.navigationService.navigate(`/${item}`);
   }
 
-  async retrieveWatcherPerformanceStats(chainType: string): Promise<void> {
-    this.watcherPerformanceStats = await this.watchersPerformanceDataService.getWatchersPerformanceStats(chainType);
+  async retrieveWatcherPerformanceStats(): Promise<void> {
+    var r = await this.watchersPerformanceDataService.getWatchersPerformanceStats(this.selectedMonth);
+    if(this.watcherPerformanceStats == null) {
+      this.watcherPerformanceStats = r;
+    }
+    await this.eventService.sendEventWithData(EventType.ReportsRequested, this.selectedChain);
   }
 
   override async ngOnInit(): Promise<void> {
@@ -92,9 +113,16 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
     ) as string;
     this.selectedChain =
       this.selectedChain == null ? 'Ergo' : this.selectedChain;
-    this.watchersPerformanceDataService.getWatchersPerformanceStats;
-    this.eventService.sendEvent(EventType.WatchersScreenLoaded);
 
-    await this.retrieveWatcherPerformanceStats(this.selectedChain); 
+    this.selectedMonth = localStorage.getItem(
+      'selectedMonth',
+    ) as string;
+    this.selectedMonth =
+      this.selectedMonth == null ? this.months[0] : this.selectedMonth;
+
+    await this.retrieveWatcherPerformanceStats();
+    await this.eventService.sendEventWithData(EventType.ReportsRequested, this.selectedChain);
+
+    
   }
 }

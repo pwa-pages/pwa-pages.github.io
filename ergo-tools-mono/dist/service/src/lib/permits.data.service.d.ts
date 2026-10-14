@@ -5,13 +5,14 @@ declare class PermitsDataService extends DataService<PermitTx> {
     getExistingData(transaction: TransactionItem, address: string): Promise<PermitTx | null>;
     constructor(db: IDBDatabase | IStorageService<PermitTx>, storeName?: string, maxDownloadDateDifference?: number);
     createUniqueId(boxId: string, transactionId: string, address: string): string;
+    private createPermitTx;
     getDataType(): string;
     getMaxDownloadDateDifference(): number;
     private getWatcherPermits;
     downloadOpenBoxes(chainType: string): Promise<void>;
     saveOpenBoxes(address: string, openBoxesJson: string): Promise<void>;
     getOpenBoxesMap(): Promise<Record<string, string | null> | null>;
-    shouldAddInputToDb(address: string, assets: Asset[]): boolean;
+    shouldAddInputToDb(address: string, assets: Asset[], item: TransactionItem): boolean;
     shouldAddOutputToDb(address: string): boolean;
     getAdressPermits(activeOnly: boolean, frommonth: number | null, fromyear: number | null, tomonth: number | null, toyear: number | null, addresses?: string[] | null): Promise<PermitTx[]>;
     addData(address: string, transactions: TransactionItem[]): Promise<void>;

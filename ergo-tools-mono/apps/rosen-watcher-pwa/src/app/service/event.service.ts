@@ -2,8 +2,8 @@ import {
   Injectable,
   NgZone,
 } from '@angular/core';
-import { Input } from '@ergo-tools/service';
 import { Subject, Subscription } from 'rxjs';
+import { Input } from '@ergo-tools/service';
 
 
 export enum EventType {
@@ -33,6 +33,7 @@ export enum EventType {
   PermitsChanged = 'PermitsChanged',
   RefreshPermits = 'RefreshPermits',
   AddressPermitsDownloaded = 'AddressPermitsDownloaded',
+  ReportsChanged = 'ReportsChanged'
 }
 
 export type EventData = string | Input | object;
@@ -75,6 +76,7 @@ export class EventService {
       [EventType.WindowResized]: new Subject<EventData>(),
       [EventType.WatchersStatsChanged]: new Subject<EventData>(),
       [EventType.PermitsStatsChanged]: new Subject<EventData>(),
+      [EventType.ReportsChanged]: new Subject<EventData>(),
       [EventType.ChainPerformanceChartsChanged]:
         new Subject<EventData>(),
       [EventType.PerformanceChartsChanged]:

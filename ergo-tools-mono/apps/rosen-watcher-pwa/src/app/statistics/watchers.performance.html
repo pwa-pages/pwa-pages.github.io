@@ -22,13 +22,20 @@
 
 
   </div>
-*** coming soon ***
   <!--
+*** coming soon ***
+-->
+
   <br />
   <div class="chain" *ngIf="chains?.length">
     <label for="chainSelect">Chain:</label>
     <select id="chainSelect" [(ngModel)]="selectedChain" (change)="onChainChange()">
       <option *ngFor="let chain of chains" [value]="chain">{{ chain }}</option>
+    </select>
+    &nbsp;
+    <label for="monthSelect">Month:</label>
+    <select id="monthSelect" [(ngModel)]="selectedMonth" (change)="onMonthChange()">
+      <option *ngFor="let month of months" [value]="month">{{ month }}</option>
     </select>
   </div>
 
@@ -36,30 +43,17 @@
 
 
   <div class="watcherscontainer performance">
-
-
     <div class="watcherheader first"></div>
     <div class="watcherheader">Address</div>
-    <div class="watcherheader">Permits</div>
+    <div class="watcherheader">Reports</div>
 
-    @for (stat of watcherPerformanceStats; track stat) {
-
-      <div class="watchersdispl" ></div>
-    <div >
-      {{ stat.address?.address }}
-    </div>
-
-    <div>
-      {{ stat.reports }}
-    </div>
-
-
+    @for (stat of (watcherPerformanceStats?.()?.watcherPerformanceByChainType?.[selectedChain] ?? []); track stat.address?.address) {
+    <div class="watchersdispl"></div>
+    <div>{{ stat.address?.address }}</div>
+    <div>{{ stat.reports }}</div>
     }
-
-    
-
   </div>
--->
+
 
 </div>
 }

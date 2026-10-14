@@ -38,6 +38,36 @@ class PermitsDataService extends DataService {
         }
         return hash.toString();
     }
+    createPermitTx(boxId, transactionId, transactionAddress, address, date, assets, chainType) {
+        for (const [key, triggerAddress] of Object.entries(permitTriggerAddresses)) {
+            if (triggerAddress === address) {
+                address = `trigger_address_${key}`;
+                break;
+            }
+        }
+        for (const [key, bulkAddress] of Object.entries(permitBulkAddresses)) {
+            if (bulkAddress === address) {
+                address = `bulk_address_${key}`;
+                break;
+            }
+        }
+        for (const [key, rewardAddress] of Object.entries(rewardAddresses)) {
+            if (rewardAddress === address) {
+                address = `reward_address_${key}`;
+                break;
+            }
+        }
+        return {
+            id: this.createUniqueId(boxId, transactionId, transactionAddress),
+            address,
+            date,
+            boxId,
+            assets: assets || [],
+            wid: '',
+            chainType,
+            transactionId,
+        };
+    }
     getDataType() {
         return 'activepermit';
     }
@@ -106,9 +136,17 @@ class PermitsDataService extends DataService {
         }
         return openBoxesMap;
     }
-    shouldAddInputToDb(address, assets) {
-        return ((address != null && address.length <= 100 && assets.length > 0) ||
-            Object.values(permitTriggerAddresses).includes(address));
+    shouldAddInputToDb(address, assets, item) {
+        if (Object.values(permitTriggerAddresses).includes(address)) {
+            return true;
+        }
+        if (address != null && address.length <= 100 && assets.length > 0) {
+            if (item.outputs.some((output) => Object.values(permitBulkAddresses).includes(output.address))) {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
     shouldAddOutputToDb(address) {
         return (Object.values(permitBulkAddresses).includes(address) ||
@@ -142,7 +180,10 @@ class PermitsDataService extends DataService {
         }
         var permitBulkAddressSet = new Set(Object.values(permitBulkAddresses));
         for (const permit of addressPermits) {
-            let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) => Object.values(permitTriggerAddresses).some((address) => address === o.address));
+            if (permit.address.startsWith("trigger_address")) {
+                continue;
+            }
+            let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) => Object.values(permitTriggerAddresses).some((address) => address === o.address || o.address.startsWith("trigger_address")));
             let foundResolved = false;
             for (const output of outputs) {
                 let cnt = boxIdMap[output.boxId] ?? [];
@@ -150,7 +191,7 @@ class PermitsDataService extends DataService {
                     foundResolved = true;
                     if (activeOnly) {
                         for (const p of cnt) {
-                            let txs = permitsByTxId[p.transactionId]?.filter((t) => permitBulkAddressSet.has(t.address)) ?? [];
+                            let txs = permitsByTxId[p.transactionId]?.filter((t) => permitBulkAddressSet.has(t.address) || t.address.startsWith("bulk_address_")) ?? [];
                             txs.map(async (t) => {
                                 let openBoxes = openBoxesMap[t.address];
                                 if (openBoxes && openBoxes.indexOf(t.boxId) !== -1) {
@@ -163,7 +204,7 @@ class PermitsDataService extends DataService {
                     }
                     else {
                         for (const p of cnt) {
-                            let txs = permitsByTxId[p.transactionId]?.filter((t) => permitBulkAddressSet.has(t.address)) ?? [];
+                            let txs = permitsByTxId[p.transactionId]?.filter((t) => permitBulkAddressSet.has(t.address) || t.address.startsWith("bulk_address_")) ?? [];
                             txs.map(t => {
                                 const d0 = new Date(t.date);
                                 if (frommonth != null && fromyear != null && tomonth != null && toyear != null) {
@@ -187,9 +228,10 @@ class PermitsDataService extends DataService {
         }
         const seen = new Set();
         const filteredResult = result.filter((r) => {
-            if (seen.has(r.transactionId))
+            const key = `${r.transactionId}:${r.address}`;
+            if (seen.has(key))
                 return false;
-            seen.add(r.transactionId);
+            seen.add(key);
             return true;
         });
         return filteredResult;
@@ -200,21 +242,12 @@ class PermitsDataService extends DataService {
         let maxDiff = this.getMaxDownloadDateDifference();
         transactions.forEach((item) => {
             item.inputs.forEach((input) => {
-                if (this.shouldAddInputToDb(input.address, input.assets) === false) {
+                if (this.shouldAddInputToDb(input.address, input.assets, item) === false) {
                     return;
                 }
                 input.inputDate = new Date(item.timestamp);
                 input.assets = input.assets.filter((a) => a.tokenId != null && a.tokenId in rwtTokenIds);
-                const permitTx = {
-                    id: this.createUniqueId(input.boxId, item.id, address),
-                    address: input.address,
-                    date: input.inputDate,
-                    boxId: input.boxId,
-                    assets: input.assets || [],
-                    wid: '',
-                    chainType: getChainTypeForPermitTriggerAddress(address),
-                    transactionId: item.id,
-                };
+                const permitTx = this.createPermitTx(input.boxId, item.id, address, input.address, input.inputDate, input.assets, getChainTypeForPermitTriggerAddress(address));
                 if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {
                     tempData.push(permitTx);
                 }
@@ -228,16 +261,7 @@ class PermitsDataService extends DataService {
                 output.assets.forEach((a) => {
                     a.amount = -a.amount;
                 });
-                const permitTx = {
-                    id: this.createUniqueId(output.boxId, item.id, address),
-                    address: output.address,
-                    date: output.outputDate,
-                    boxId: output.boxId,
-                    assets: output.assets || [],
-                    wid: '',
-                    chainType: getChainTypeForPermitAddress(address),
-                    transactionId: item.id,
-                };
+                const permitTx = this.createPermitTx(output.boxId, item.id, address, output.address, output.outputDate, output.assets, getChainTypeForPermitAddress(address));
                 if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {
                     tempData.push(permitTx);
                 }
