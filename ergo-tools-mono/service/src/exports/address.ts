@@ -5,11 +5,13 @@ export class Address {
   chainType: string | null | undefined;
   smallAddressForDisplay: string;
   largeAddressForDisplay: string;
+  ownAddress?: boolean;
 
   constructor(
     address: string,
     chainType: string | null | undefined,
     active = true,
+    ownAddress: boolean = false,
   ) {
     this.address = address;
     this.Address = address;
@@ -21,5 +23,6 @@ export class Address {
 
     this.chainType = chainType;
     this.active = active;
+    this.ownAddress = ownAddress;
   }
 }

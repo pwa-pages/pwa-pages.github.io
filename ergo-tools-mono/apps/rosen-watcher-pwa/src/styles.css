@@ -634,3 +634,48 @@ button:active {
   min-height: 0;
   overflow: auto;
 }
+
+.performance .large-display-address {
+  font-weight: bold;
+  font-size: var(--large-display-address-font);
+  
+}
+
+.performance .full-address {
+  font-weight: bold;
+  font-size: var(--large-display-address-font);
+  
+}
+
+@media (min-width: 601px) {
+  .performance .full-address {
+    display: block;
+  }
+
+  .performance .large-display-address {
+    display: none;
+  }
+}
+
+@media (max-width: 601px) {
+  .performance .full-address {
+    display: none;
+  }
+
+  .performance .large-display-address {
+    display: block;
+  }
+}
+
+.owned-indicator{
+  float: right;
+  padding: 0.2em 0.65em;
+  border: 1px solid rgba(138, 128, 128, 0.45);
+  border-radius: 999px;
+  background-color: rgba(138, 128, 128, 0.1);
+  color: rgba(80, 70, 70);
+  font-size: 0.75em;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-left: 0.65em;
+}

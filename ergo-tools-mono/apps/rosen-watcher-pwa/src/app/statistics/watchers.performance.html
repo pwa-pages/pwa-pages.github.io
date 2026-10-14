@@ -47,10 +47,19 @@
     <div class="watcherheader">Address</div>
     <div class="watcherheader">Reports</div>
 
-    @for (stat of (watcherPerformanceStats?.()?.watcherPerformanceByChainType?.[selectedChain] ?? []); track stat.address?.address) {
+    @for (stat of (watcherPerformanceStats?.()?.watcherPerformanceByChainType?.[selectedChain] ?? []); track
+    stat.address?.address) {
     <div class="watchersdispl"></div>
-    <div>{{ stat.address?.address }}</div>
-    <div>{{ stat.reports }}</div>
+    <div class="large-display-address">{{ stat.address?.largeAddressForDisplay }}</div>
+    <div class="full-address">{{ stat.address?.address }}</div>
+    <div>{{ stat.reports }}
+      @if (stat.address?.ownAddress) {
+        <div class = "owned-indicator">
+        (Owned)
+        </div>  
+      }
+
+    </div>
     }
   </div>
 

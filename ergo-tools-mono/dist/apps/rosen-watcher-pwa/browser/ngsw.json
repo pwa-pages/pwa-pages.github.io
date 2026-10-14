@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1791998925475,
+  "timestamp": 1792000282228,
   "appData": {
     "version": "4.6.1"
   },
@@ -16,7 +16,7 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-34DSEIQ4.js",
+        "./main-SG5QBRQ2.js",
         "./manifest.webmanifest",
         "./polyfills-LVNOU2XZ.js",
         "./rosen.html",
@@ -108,8 +108,8 @@
     "./assets/rosen-watchers.html": "61235d2d68e1a1bb8f19fa33390f9f320436be24",
     "./assets/test.html": "7be1e51ec537c8242b37e42fdc4fa46c88a77508",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "4aa8b36281a19fd6abc019f85da2a3563f04dd4c",
-    "./main-34DSEIQ4.js": "8f6adca477bdbee6fa7c479a2530286c96f6d2d1",
+    "./index.html": "2143de74fea07f87f1716cbf2ce169cce4973312",
+    "./main-SG5QBRQ2.js": "e7e218f24f1a4b1d98ca1882110103c7b2eeeb4e",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/base-C3MBVN5M.png": "83424fb0277a8df26a85a0af9bcdeec47051f248",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",

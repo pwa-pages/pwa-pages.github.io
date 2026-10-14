@@ -7,6 +7,7 @@ import {
 } from '@ergo-tools/service';
 import { ChainTypeHelper } from '../imports/imports';
 import { EventService, EventType } from './event.service';
+import { ChainDataService } from './chain.data.service';
 
 
 @Injectable({
@@ -24,19 +25,22 @@ export class WatchersPerformanceDataService {
 
   busyCounter = 0;
 
-  constructor(private eventService: EventService
+  constructor(private eventService: EventService, private chainDataService: ChainDataService
   ) {
     this.eventService.subscribeToEvent(
       EventType.ReportsChanged,
-      (permits: PermitTx[]) => {
-        this.updateWatchersPerformanceStats(permits);
+      async (permits: PermitTx[]) => {
+        await this.updateWatchersPerformanceStats(permits);
       }
     );
 
   }
 
-  private updateWatchersPerformanceStats(permits: PermitTx[]): void {
+  private async updateWatchersPerformanceStats(permits: PermitTx[]): Promise<void> {
     const reportCountsByChainType: Record<string, Record<string, number>> = {};
+
+
+    var ownAddresses = await this.chainDataService.getAddresses();
 
     permits.forEach((permit: PermitTx) => {
       if (!permit.chainType || !permit.address) {
@@ -59,8 +63,8 @@ export class WatchersPerformanceDataService {
     Object.entries(reportCountsByChainType).forEach(([chainType, addressCounts]) => {
       watcherPerformanceByChainType[chainType] = Object.entries(addressCounts)
         .map(([address, reports]) => ({
-          address: new Address(address, chainType),
-          reports,
+          address: new Address(address, chainType, true, ownAddresses.some(addr => addr === address)),
+          reports
         }))
         .sort((a, b) => b.reports - a.reports);
     });
