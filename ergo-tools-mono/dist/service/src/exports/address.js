@@ -1,5 +1,5 @@
 export class Address {
-    constructor(address, chainType, active = true) {
+    constructor(address, chainType, active = true, ownAddress = false) {
         this.active = true;
         this.address = address;
         this.Address = address;
@@ -10,6 +10,7 @@ export class Address {
                 address.substring(address.length - 6, address.length);
         this.chainType = chainType;
         this.active = active;
+        this.ownAddress = ownAddress;
     }
 }
 //# sourceMappingURL=address.js.map

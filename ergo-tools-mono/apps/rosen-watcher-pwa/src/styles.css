@@ -673,7 +673,7 @@ button:active {
   border: 1px solid rgba(138, 128, 128, 0.45);
   border-radius: 999px;
   background-color: rgba(138, 128, 128, 0.1);
-  color: rgba(80, 70, 70);
+  
   font-size: 0.75em;
   font-weight: bold;
   text-transform: uppercase;

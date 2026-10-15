@@ -5,5 +5,6 @@ export declare class Address {
     chainType: string | null | undefined;
     smallAddressForDisplay: string;
     largeAddressForDisplay: string;
-    constructor(address: string, chainType: string | null | undefined, active?: boolean);
+    ownAddress?: boolean;
+    constructor(address: string, chainType: string | null | undefined, active?: boolean, ownAddress?: boolean);
 }

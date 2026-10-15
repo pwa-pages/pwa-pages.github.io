@@ -8,7 +8,8 @@ class Address {
     chainType;
     smallAddressForDisplay;
     largeAddressForDisplay;
-    constructor(address, chainType, active = true) {
+    ownAddress;
+    constructor(address, chainType, active = true, ownAddress = false) {
         this.address = address;
         this.Address = address;
         this.smallAddressForDisplay = address.substring(0, 6) + '...';
@@ -18,6 +19,7 @@ class Address {
                 address.substring(address.length - 6, address.length);
         this.chainType = chainType;
         this.active = active;
+        this.ownAddress = ownAddress;
     }
 }
 exports.Address = Address;
