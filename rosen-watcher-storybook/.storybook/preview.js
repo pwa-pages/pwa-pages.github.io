@@ -2,14 +2,14 @@
 document.body.insertAdjacentHTML('beforeend', '<rosen-watcher-component></rosen-watcher-component>');
 
 const script = document.createElement('script');
-script.src = './rosen-watcher-components.4.2.6.js'; 
+script.src = './rosen-watcher-components.4.6.3.js'; 
 script.type = 'module';    
 script.async = false;
 document.body.appendChild(script);
 
 const link = document.createElement('link');
 link.rel = 'stylesheet';
-link.href = './styles-DQBE5XFT.css'; 
+link.href = './styles-B6Z73MPF.css'; 
 document.head.appendChild(link);
 
 export const parameters = {
