@@ -17,7 +17,8 @@ class ReportsDataService extends PermitsDataService {
 
   }
 
-  override async getAdressPermits(
+  async getAdressPermitsByChainType(
+    chainType: string,
     activeOnly: boolean,
     startMonth: number | null,
     startYear: number | null,
@@ -28,6 +29,7 @@ class ReportsDataService extends PermitsDataService {
 
      
       permits = permits.filter((tx) => !Object.values(permitTriggerAddresses).includes(tx.address));
+      permits = permits.filter((tx) => tx.chainType === chainType);
       return permits;
   }
 
@@ -37,7 +39,13 @@ class ReportsDataService extends PermitsDataService {
   ): Promise<void> {
     await super.addData(address, transactions);
 
-    const permitTxs = (await this.getAdressPermits(false, null, null, null, null));
+    var chainType = getChainTypeForPermitTriggerAddress(address);
+
+    if (chainType === undefined || chainType === null) {
+      return;
+    }
+
+    const permitTxs = (await this.getAdressPermitsByChainType(chainType.toString(), false, null, null, null, null));
 
     this.eventSender?.sendEvent({
       type: 'ReportsChanged',

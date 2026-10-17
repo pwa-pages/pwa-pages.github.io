@@ -61,12 +61,16 @@ export class WatchersPerformanceDataService {
     const watcherPerformanceByChainType: Record<string, WatcherPerformanceAddressStat[]> = {};
 
     Object.entries(reportCountsByChainType).forEach(([chainType, addressCounts]) => {
-      watcherPerformanceByChainType[chainType] = Object.entries(addressCounts)
+      const addressStats = Object.entries(addressCounts)
         .map(([address, reports]) => ({
           address: new Address(address, chainType, true, ownAddresses.some(addr => addr === address)),
           reports
         }))
         .sort((a, b) => b.reports - a.reports);
+
+      if (addressStats.length > 0) {
+        watcherPerformanceByChainType[chainType] = addressStats;
+      }
     });
 
     const stats = new WatchersPerformanceStats();

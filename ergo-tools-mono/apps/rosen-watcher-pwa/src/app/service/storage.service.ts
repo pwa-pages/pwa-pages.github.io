@@ -48,11 +48,14 @@ export class StorageService {
         if (db.objectStoreNames.contains(ErgSettings.rs_ReportsStoreName())) {
           db.deleteObjectStore(ErgSettings.rs_ReportsStoreName());
         }
-        db.createObjectStore(ErgSettings.rs_ReportsStoreName(), {
-          keyPath: ErgSettings.rs_ActivePermit_Key(),
+
+        const store = db.createObjectStore(ErgSettings.rs_ReportsStoreName(), {
+          keyPath: ErgSettings.rs_PerfTx_Key(),
         });
 
-        
+        store.createIndex("chainType", "chainType", {
+          unique: false,
+        });
 
         if (!db.objectStoreNames.contains(ErgSettings.rs_AddressDataStoreName())) {
           db.createObjectStore(ErgSettings.rs_AddressDataStoreName(), {

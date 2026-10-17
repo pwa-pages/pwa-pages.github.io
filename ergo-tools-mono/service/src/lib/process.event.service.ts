@@ -201,7 +201,7 @@ class ProcessEventService {
       )) {
         if (addressChainType === chainType && address != null) {
 
-          var permitTxs = await services.reportsDataService.getAdressPermits(false, null, null, null, null);
+          var permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
 
           this.eventSender?.sendEvent({
             type: 'ReportsChanged',
@@ -212,7 +212,7 @@ class ProcessEventService {
             address,
             true,
           );
-          permitTxs = await services.reportsDataService.getAdressPermits(false, null, null, null, null);
+          permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
 
           this.eventSender?.sendEvent({
             type: 'ReportsChanged',

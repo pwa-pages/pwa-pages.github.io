@@ -99,13 +99,13 @@ class ProcessEventService {
             var chainType = event.data;
             for (const [addressChainType, address] of Object.entries(permitTriggerAddresses)) {
                 if (addressChainType === chainType && address != null) {
-                    var permitTxs = await services.reportsDataService.getAdressPermits(false, null, null, null, null);
+                    var permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
                     this.eventSender?.sendEvent({
                         type: 'ReportsChanged',
                         data: permitTxs,
                     });
                     await services.downloadReportsService.downloadForAddress(address, true);
-                    permitTxs = await services.reportsDataService.getAdressPermits(false, null, null, null, null);
+                    permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
                     this.eventSender?.sendEvent({
                         type: 'ReportsChanged',
                         data: permitTxs,
