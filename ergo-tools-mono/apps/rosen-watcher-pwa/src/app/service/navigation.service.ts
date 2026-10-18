@@ -127,7 +127,9 @@ export class NavigationService {
 
     localStorage.setItem('performanceScreen', this.navigationItems[1].route);
 
+
     this.router.navigate([to]);
+
   }
 
   private swapPerformanceItems() {

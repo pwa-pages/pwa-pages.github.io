@@ -9,13 +9,19 @@
     "build": {
       "executor": "@angular/build:application",
       "defaultConfiguration": "production",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
-        "allowedCommonJsDependencies": ["qrcode"],
+        "allowedCommonJsDependencies": [
+          "qrcode"
+        ],
         "outputPath": "dist/apps/rosen-watcher-pwa",
         "index": "apps/rosen-watcher-pwa/src/index.html",
         "browser": "apps/rosen-watcher-pwa/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/rosen-watcher-pwa/tsconfig.json",
         "assets": [
           "apps/rosen-watcher-pwa/src/favicon.ico",
@@ -87,6 +93,10 @@
     "serve": {
       "executor": "@angular/build:dev-server",
       "defaultConfiguration": "development",
+      "options": {
+        "host": "0.0.0.0",
+        "port": 4200
+      },
       "configurations": {
         "production": {
           "buildTarget": "rosen-watcher-pwa:build:production"

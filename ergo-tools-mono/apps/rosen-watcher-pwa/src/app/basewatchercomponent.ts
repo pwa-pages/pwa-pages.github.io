@@ -51,6 +51,14 @@ export class BaseWatcherComponent
 
     window.addEventListener('resize', this.resetHeight);
 
+
+    const screen = document.querySelector<HTMLElement>('.screen-div');
+    if (screen) {
+      document.body.scrollTop = 0;
+      screen.scrollTop = 0;
+    }
+
+
     this.resetHeight();
   }
 

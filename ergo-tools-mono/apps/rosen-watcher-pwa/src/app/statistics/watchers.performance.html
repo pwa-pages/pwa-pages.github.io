@@ -6,7 +6,7 @@
   </div>
 </div>
 } @if (isHtmlRenderEnabled()) {
-<div class="watchersmaincontainer main-content">
+<div class="watchersmaincontainer main-content verticalscrollablecontainer">
   <div class="watcherstab">
     @if (!isElementsActive) {
     <a tabindex="0" class="tab" [class.active]="false" (click)="selectTab('watchers')"
@@ -74,3 +74,4 @@ if one is interested to have one's name displayed publicly let me know on telegr
   <a href="https://pwa-pages.github.io/rosen-watcher-storybook/">Documentation and code examples</a>
   <br />
 </div>
+<div class = "watchers-spacer"></div>

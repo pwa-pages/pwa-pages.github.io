@@ -603,6 +603,12 @@ button:active {
   font-family: 'Segoe UI', Arial, sans-serif;
   line-height: 1.7;
 }
+
+.watchers-spacer {
+  height: 7vh;
+}
+
+
 .watchers-readme a {
   text-decoration: underline;
   font-weight: bold;
