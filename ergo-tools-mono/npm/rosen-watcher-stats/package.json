@@ -1,0 +1,17 @@
+{
+  "name": "@pebblerye/rosen-watcher-stats",
+  "version": "4.7.1",
+  "description": "Standalone framework-independent web components for rosen watcher stats",
+  "exports": {
+    "./rosen-watcher-components.js": "./rosen-watcher-components.js",
+    "./rosen-watcher-styles.css": "./rosen-watcher-styles.css"
+  },
+  "files": [
+    "rosen-watcher-components.js",
+    "rosen-watcher-styles.css"
+  ],
+  "sideEffects": true,
+  "publishConfig": {
+    "access": "public"
+  }
+}
