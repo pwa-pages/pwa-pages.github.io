@@ -141,7 +141,7 @@ class DownloadService {
             }
         }
         catch (e) {
-            console.error(e);
+            throw e;
         }
         finally {
             this.decreaseBusyCounter(address);

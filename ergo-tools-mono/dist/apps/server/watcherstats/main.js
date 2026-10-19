@@ -147,14 +147,15 @@ class PermitsDataService extends DataService {
     async getOpenBoxesMap() {
         const openBoxesMap = {};
         const boxes = this.storageService.getData(rs_OpenBoxesStoreName);
-        for (const [, address] of Object.entries(permitBulkAddresses)) {
+        for (const [chainType, address] of Object.entries(permitBulkAddresses)) {
             if (address) {
                 var json = (await boxes).filter(ob => ob.address === address);
+                var key = "bulk_address_" + chainType;
                 if (json.length != 0) {
-                    openBoxesMap[address] = JSON.stringify(json);
+                    openBoxesMap[key] = JSON.stringify(json);
                 }
                 else {
-                    openBoxesMap[address] = null;
+                    openBoxesMap[key] = null;
                 }
             }
         }
@@ -533,7 +534,7 @@ class DownloadService {
             }
         }
         catch (e) {
-            console.error(e);
+            throw e;
         }
         finally {
             this.decreaseBusyCounter(address);

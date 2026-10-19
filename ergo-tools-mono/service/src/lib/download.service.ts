@@ -194,7 +194,7 @@ class DownloadService<T> {
         await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
       }
     } catch (e) {
-      console.error(e);
+      throw e;
     } finally {
       this.decreaseBusyCounter(address);
 

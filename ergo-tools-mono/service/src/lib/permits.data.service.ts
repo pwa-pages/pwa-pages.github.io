@@ -182,20 +182,21 @@ class PermitsDataService extends DataService<PermitTx> {
 
 
     const boxes = this.storageService.getData<OpenBoxes>(rs_OpenBoxesStoreName);
-    for (const [, address] of Object.entries(permitBulkAddresses)) {
+    for (const [chainType, address] of Object.entries(permitBulkAddresses)) {
       if (address) {
 
 
         var json = (await boxes).filter(ob => ob.address === address);
+ 
+
+        var key = "bulk_address_" + chainType;
 
         if (json.length != 0) {
-          openBoxesMap[address] = JSON.stringify(json);
+          openBoxesMap[key] = JSON.stringify(json);
         }
         else {
-          openBoxesMap[address] = null;
+          openBoxesMap[key] = null;
         }
-
-
       }
     }
     return openBoxesMap;
