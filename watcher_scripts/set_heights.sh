@@ -2,12 +2,12 @@
 
 # Hardcoded values for block heights and information
 btc_height=""
-firo_height="1396277"
-hns_height="351830"
-nervos_height="20758430"
-bsc_height="114247755"
-eth_height="0"
-ergo_height="1896878"
+firo_height="1397788"
+hns_height="352214"
+nervos_height="20784143"
+bsc_height="115597657"
+eth_height="26235198"
+ergo_height="1898826"
 doge_height=""
 cardano_block_hash=""
 cardano_block_height=""

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-output=""
-
 eth_sync_result=$(curl -s --fail --connect-timeout 10 --max-time 10 \
     -X POST -H "Content-Type: application/json" \
     --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' \
@@ -37,6 +35,9 @@ sync_status=$(echo "$eth_sync_result" | jq -er '
     exit 1
 }
 
-output+="Ethereum Node: $sync_status"$'\n'
+# Exit silently if fully synced
+if [[ "$sync_status" == "Synced" ]]; then
+    exit 0
+fi
 
-echo -n "$output"
+echo "Ethereum Node: $sync_status"
