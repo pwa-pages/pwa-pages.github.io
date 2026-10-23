@@ -30,9 +30,9 @@ class DownloadService {
             throw error;
         }
     }
-    async downloadTransactions(address, offset = 0, limit = 500, useNode) {
-        if (useNode) {
-            const url = `${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
+    async downloadTransactions(address, offset = 0, limit = 500, urlAction) {
+        if (getUrlConfig(urlAction).isNode) {
+            const url = `${getUrlConfig(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
             console.log(`Downloading from: ${url}`);
             const response = await fetch(url, {
                 method: 'POST',
@@ -58,7 +58,7 @@ class DownloadService {
             return result;
         }
         else {
-            const url = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
+            const url = `https://${getUrlConfig(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
             console.log(`Downloading from: ${url}`);
             const response = await this.fetchTransactions(url);
             const result = {
@@ -75,12 +75,12 @@ class DownloadService {
             return result;
         }
     }
-    async downloadForAddresses() {
+    async downloadForAddresses(urlAction) {
         console.log('Start downloading for all addresses');
         try {
             const addresses = await this.dataService.storageService.getData(rs_AddressDataStoreName);
             const downloadPromises = addresses.map(async (addressObj) => {
-                await this.downloadForAddress(addressObj.address, true);
+                await this.downloadForAddress(addressObj.address, urlAction);
             });
             await Promise.all(downloadPromises);
         }
@@ -111,11 +111,11 @@ class DownloadService {
         }
     }
     // Download All for Address (recursive)
-    async downloadAllForAddress(address, offset, useNode, callback) {
+    async downloadAllForAddress(address, offset, urlAction, callback) {
         this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
-            const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10, useNode);
+            const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10, urlAction);
             console.log(`Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`);
             //const t = this.processItems(result.transactions);
             //console.log('permit amount ' + t);
@@ -134,7 +134,7 @@ class DownloadService {
             if (this.dataService.getMaxDownloadDateDifference() >
                 new Date().getTime() -
                     new Date(result.transactions[result.transactions.length - 1].timestamp).getTime()) {
-                await this.downloadAllForAddress(address, offset + this.downloadFullSize, useNode);
+                await this.downloadAllForAddress(address, offset + this.downloadFullSize, urlAction);
             }
             else {
                 await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
@@ -148,11 +148,11 @@ class DownloadService {
             console.log(this.busyCounter);
         }
     }
-    async downloadForAddress(address, useNode, callback) {
+    async downloadForAddress(address, urlAction, callback) {
         this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
-            const result = await this.downloadTransactions(address, 0, this.downloadInitialSize, useNode);
+            const result = await this.downloadTransactions(address, 0, this.downloadInitialSize, urlAction);
             console.log(`Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`);
             const itemsz = result.transactions.length;
             let existingData = null;
@@ -177,7 +177,7 @@ class DownloadService {
             else if (itemsz >= this.downloadInitialSize) {
                 await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'false');
                 console.log(`Downloading all tx's for : ${address}`);
-                await this.downloadAllForAddress(address, 0, useNode, callback);
+                await this.downloadAllForAddress(address, 0, urlAction, callback);
                 return this.dataService.getData();
             }
         }

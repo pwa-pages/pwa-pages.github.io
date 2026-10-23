@@ -210,7 +210,7 @@ class ProcessEventService {
 
           await services.downloadReportsService.downloadForAddress(
             address,
-            true,
+            UrlAction.PermitTriggerTransactions,
           );
           permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
 
@@ -244,10 +244,10 @@ class ProcessEventService {
     if (event.data && typeof event.data === 'string') {
       await services.downloadService.downloadForAddress(
         event.data as unknown as string,
-        true,
+        UrlAction.StatisticsTransactions,
       );
     } else {
-      await services.downloadService.downloadForAddresses();
+      await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
     }
   }
 
@@ -262,7 +262,7 @@ class ProcessEventService {
       data: inputs,
     });
 
-    await services.downloadService.downloadForAddresses();
+    await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
   }
 
   private async processPerformanceScreenLoaded(
@@ -278,7 +278,7 @@ class ProcessEventService {
       data: perfTxs,
     });
 
-    services.downloadPerfService.downloadForAddress(hotWalletAddress, true);
+    services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
   }
 
   private async processMyWatchersScreenLoaded(
@@ -396,7 +396,7 @@ class ProcessEventService {
     address: string,
     services: Services,
   ): Promise<void> {
-    await services.downloadMyWatchersService.downloadForAddress(address, true);
+    await services.downloadMyWatchersService.downloadForAddress(address, UrlAction.PermitTransactions);
 
     const permits = await services.watcherDataService.getAdressPermits(addresses);
 
@@ -460,7 +460,7 @@ class ProcessEventService {
   ): Promise<void> {
     await services.downloadActivePermitsService.downloadForAddress(
       address,
-      true,
+      UrlAction.PermitTriggerTransactions,
       () => this.sendPermitsChangedEventForAddresses(services, allAddresses),
     );
   }

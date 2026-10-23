@@ -1,5 +1,5 @@
 declare const rs_DbName = "rosenDatabase_1.1.5";
-declare const rs_DbVersion = 45;
+declare const rs_DbVersion = 46;
 declare const rs_InputsStoreName = "inputBoxes";
 declare const rs_PerfTxStoreName = "perfTxs";
 declare const rs_PermitTxStoreName = "permitTxs";
@@ -23,6 +23,22 @@ declare const rs_WatcherCollateralRSN: (chainType: string) => number;
 declare const rs_WatcherCollateralERG: (chainType: string) => number;
 declare const rs_ErgoExplorerHost = "api.ergoplatform.com";
 declare const rs_ErgoNodeHost = "https://node-p2p.ergoplatform.com";
+declare enum UrlAction {
+    StatisticsTransactions = "statisticsTransactions",
+    ChainPerformanceTransactions = "chainPerformanceTransactions",
+    WatchersBalance = "watchersBalance",
+    PermitTransactions = "permitTransactions",
+    PermitTriggerTransactions = "permitTriggerTransactions",
+    PermitBulkTransactions = "permitBulkTransactions"
+}
+declare const urlConfig: Record<UrlAction, {
+    isNode: boolean;
+    url: string;
+}[]>;
+declare const getUrlConfig: (key: UrlAction) => {
+    isNode: boolean;
+    url: string;
+};
 declare const rs_RSNTokenId = "8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b";
 declare const rs_eRSNTokenId = "dede2cf5c1a2966453ffec198a9b97b53d281e548903a905519b3525d59cdc3c";
 declare const rs_TokenIdMap: Record<string, string>;

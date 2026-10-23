@@ -423,9 +423,9 @@ class DownloadService {
             throw error;
         }
     }
-    async downloadTransactions(address, offset = 0, limit = 500, useNode) {
-        if (useNode) {
-            const url = `${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
+    async downloadTransactions(address, offset = 0, limit = 500, urlAction) {
+        if (getUrlConfig(urlAction).isNode) {
+            const url = `${getUrlConfig(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
             console.log(`Downloading from: ${url}`);
             const response = await fetch(url, {
                 method: 'POST',
@@ -451,7 +451,7 @@ class DownloadService {
             return result;
         }
         else {
-            const url = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
+            const url = `https://${getUrlConfig(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
             console.log(`Downloading from: ${url}`);
             const response = await this.fetchTransactions(url);
             const result = {
@@ -468,12 +468,12 @@ class DownloadService {
             return result;
         }
     }
-    async downloadForAddresses() {
+    async downloadForAddresses(urlAction) {
         console.log('Start downloading for all addresses');
         try {
             const addresses = await this.dataService.storageService.getData(rs_AddressDataStoreName);
             const downloadPromises = addresses.map(async (addressObj) => {
-                await this.downloadForAddress(addressObj.address, true);
+                await this.downloadForAddress(addressObj.address, urlAction);
             });
             await Promise.all(downloadPromises);
         }
@@ -504,11 +504,11 @@ class DownloadService {
         }
     }
     // Download All for Address (recursive)
-    async downloadAllForAddress(address, offset, useNode, callback) {
+    async downloadAllForAddress(address, offset, urlAction, callback) {
         this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
-            const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10, useNode);
+            const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10, urlAction);
             console.log(`Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`);
             //const t = this.processItems(result.transactions);
             //console.log('permit amount ' + t);
@@ -527,7 +527,7 @@ class DownloadService {
             if (this.dataService.getMaxDownloadDateDifference() >
                 new Date().getTime() -
                     new Date(result.transactions[result.transactions.length - 1].timestamp).getTime()) {
-                await this.downloadAllForAddress(address, offset + this.downloadFullSize, useNode);
+                await this.downloadAllForAddress(address, offset + this.downloadFullSize, urlAction);
             }
             else {
                 await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
@@ -541,11 +541,11 @@ class DownloadService {
             console.log(this.busyCounter);
         }
     }
-    async downloadForAddress(address, useNode, callback) {
+    async downloadForAddress(address, urlAction, callback) {
         this.increaseBusyCounter(address);
         console.log(this.busyCounter);
         try {
-            const result = await this.downloadTransactions(address, 0, this.downloadInitialSize, useNode);
+            const result = await this.downloadTransactions(address, 0, this.downloadInitialSize, urlAction);
             console.log(`Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`);
             const itemsz = result.transactions.length;
             let existingData = null;
@@ -570,7 +570,7 @@ class DownloadService {
             else if (itemsz >= this.downloadInitialSize) {
                 await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'false');
                 console.log(`Downloading all tx's for : ${address}`);
-                await this.downloadAllForAddress(address, 0, useNode, callback);
+                await this.downloadAllForAddress(address, 0, urlAction, callback);
                 return this.dataService.getData();
             }
         }
@@ -1283,7 +1283,7 @@ class MemoryStorageService {
 "use strict";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 45;
+const rs_DbVersion = 46;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';
@@ -1326,13 +1326,96 @@ const rs_ErgoNodeHost = 'https://node-p2p.ergoplatform.com';
 // https://node-p2p.ergoplatform.com/swagger
 /*
 
+https://explorer.ergoplatform.com/
+https://explorer-p2p.ergoplatform.com/
+https://ergo.aap.cornell.edu/
+https://ergobackup.aap.cornell.edu/
+https://explorer.codeutxo.com/
+https://ergexplorer.com/
+https://sigmaspace.io/
+https://api.sigmaspace.io/
+
+API's
 https://api.ergoplatform.com/api/v1/docs/
 https://api-p2p.ergoplatform.com/api/v1/docs/
 https://api.ergo.aap.cornell.edu/api/v1/docs/
 https://api.ergobackup.aap.cornell.edu/api/v1/docs/
 https://api.codeutxo.com/api/v1/docs/
 
+GraphQL
+https://gql.ergoplatform.com/
+https://graphql-p2p.ergoplatform.com/
+https://graphql.ergo.aap.cornell.edu/
+https://graphql.ergobackup.aap.cornell.edu/
+https://graphql.codeutxo.com/
+
 */
+var UrlAction;
+(function (UrlAction) {
+    UrlAction["StatisticsTransactions"] = "statisticsTransactions";
+    UrlAction["ChainPerformanceTransactions"] = "chainPerformanceTransactions";
+    UrlAction["WatchersBalance"] = "watchersBalance";
+    UrlAction["PermitTransactions"] = "permitTransactions";
+    UrlAction["PermitTriggerTransactions"] = "permitTriggerTransactions";
+    UrlAction["PermitBulkTransactions"] = "permitBulkTransactions";
+})(UrlAction || (UrlAction = {}));
+const urlConfig = {
+    [UrlAction.StatisticsTransactions]: [
+        {
+            isNode: false,
+            url: 'api.sigmaspace.io',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ],
+    [UrlAction.ChainPerformanceTransactions]: [
+        {
+            isNode: false,
+            url: 'api.sigmaspace.io',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ],
+    [UrlAction.WatchersBalance]: [
+        {
+            isNode: false,
+            url: 'api.ergoplatform.com',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ],
+    [UrlAction.PermitTransactions]: [
+        {
+            isNode: false,
+            url: 'api.sigmaspace.io',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ],
+    [UrlAction.PermitTriggerTransactions]: [
+        {
+            isNode: false,
+            url: 'api.sigmaspace.io',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ],
+    [UrlAction.PermitBulkTransactions]: [
+        {
+            isNode: false,
+            url: 'api.sigmaspace.io',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ]
+};
+const getUrlConfig = (key) => urlConfig[key][0];
 const rs_RSNTokenId = '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';
 const rs_eRSNTokenId = 'dede2cf5c1a2966453ffec198a9b97b53d281e548903a905519b3525d59cdc3c';
 const rs_TokenIdMap = {
@@ -1698,7 +1781,7 @@ class ProcessEventService {
                         type: 'ReportsChanged',
                         data: permitTxs,
                     });
-                    await services.downloadReportsService.downloadForAddress(address, true);
+                    await services.downloadReportsService.downloadForAddress(address, UrlAction.PermitTriggerTransactions);
                     permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
                     this.eventSender?.sendEvent({
                         type: 'ReportsChanged',
@@ -1717,10 +1800,10 @@ class ProcessEventService {
             data: addressCharts,
         });
         if (event.data && typeof event.data === 'string') {
-            await services.downloadService.downloadForAddress(event.data, true);
+            await services.downloadService.downloadForAddress(event.data, UrlAction.StatisticsTransactions);
         }
         else {
-            await services.downloadService.downloadForAddresses();
+            await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
         }
     }
     async processStatisticsScreenLoaded(services) {
@@ -1730,7 +1813,7 @@ class ProcessEventService {
             type: 'InputsChanged',
             data: inputs,
         });
-        await services.downloadService.downloadForAddresses();
+        await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
     }
     async processPerformanceScreenLoaded(services) {
         console.log('Rosen service worker received PerformanceScreenLoaded');
@@ -1740,7 +1823,7 @@ class ProcessEventService {
             type: 'PerfChartChanged',
             data: perfTxs,
         });
-        services.downloadPerfService.downloadForAddress(hotWalletAddress, true);
+        services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
     }
     async processMyWatchersScreenLoaded(event, services) {
         const { addresses } = event.data;
@@ -1789,7 +1872,7 @@ class ProcessEventService {
         await Promise.all(permitAddressEntries.map(([chainType, address]) => this.downloadForChainPermitAddress(addresses, chainType, address, services)));
     }
     async downloadForChainPermitAddress(addresses, chainType, address, services) {
-        await services.downloadMyWatchersService.downloadForAddress(address, true);
+        await services.downloadMyWatchersService.downloadForAddress(address, UrlAction.PermitTransactions);
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
             type: 'PermitsChanged',
@@ -1824,7 +1907,7 @@ class ProcessEventService {
         await Promise.all(addresses.map((address) => this.downloadForActivePermitAddress(allAddresses, address, services)));
     }
     async downloadForActivePermitAddress(allAddresses, address, services) {
-        await services.downloadActivePermitsService.downloadForAddress(address, true, () => this.sendPermitsChangedEventForAddresses(services, allAddresses));
+        await services.downloadActivePermitsService.downloadForAddress(address, UrlAction.PermitTriggerTransactions, () => this.sendPermitsChangedEventForAddresses(services, allAddresses));
     }
     async sendPermitsChangedEventForAddresses(services, addresses) {
         const permits = await services.watcherDataService.getAdressPermits(addresses);

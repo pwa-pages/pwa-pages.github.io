@@ -59,13 +59,99 @@ const rs_ErgoNodeHost = 'https://node-p2p.ergoplatform.com';
 
 /*
 
+https://explorer.ergoplatform.com/
+https://explorer-p2p.ergoplatform.com/
+https://ergo.aap.cornell.edu/
+https://ergobackup.aap.cornell.edu/
+https://explorer.codeutxo.com/
+https://ergexplorer.com/
+https://sigmaspace.io/
+https://api.sigmaspace.io/
+
+API's
 https://api.ergoplatform.com/api/v1/docs/
 https://api-p2p.ergoplatform.com/api/v1/docs/
 https://api.ergo.aap.cornell.edu/api/v1/docs/
 https://api.ergobackup.aap.cornell.edu/api/v1/docs/
 https://api.codeutxo.com/api/v1/docs/
 
+GraphQL
+https://gql.ergoplatform.com/
+https://graphql-p2p.ergoplatform.com/
+https://graphql.ergo.aap.cornell.edu/
+https://graphql.ergobackup.aap.cornell.edu/
+https://graphql.codeutxo.com/
+
 */
+
+enum UrlAction {
+  StatisticsTransactions = 'statisticsTransactions',
+  ChainPerformanceTransactions = 'chainPerformanceTransactions',
+  WatchersBalance = 'watchersBalance',
+  PermitTransactions = 'permitTransactions',
+  PermitTriggerTransactions = 'permitTriggerTransactions',
+  PermitBulkTransactions = 'permitBulkTransactions',
+}
+
+const urlConfig: Record<UrlAction, { isNode: boolean; url: string }[]> = {
+  [UrlAction.StatisticsTransactions]: [
+    {
+      isNode: false,
+      url: 'api.sigmaspace.io',
+    }, {
+      isNode: true,
+      url: 'node-p2p.ergoplatform.com',
+    },
+  ],
+  [UrlAction.ChainPerformanceTransactions]: [
+    {
+      isNode: false,
+      url: 'api.sigmaspace.io',
+    }, {
+      isNode: true,
+      url: 'node-p2p.ergoplatform.com',
+    },
+  ],
+  [UrlAction.WatchersBalance]: [
+    {
+      isNode: false,
+      url: 'api.ergoplatform.com',
+    }, {
+      isNode: true,
+      url: 'node-p2p.ergoplatform.com',
+    },
+  ],
+  [UrlAction.PermitTransactions]: [
+    {
+      isNode: false,
+      url: 'api.sigmaspace.io',
+    }, {
+      isNode: true,
+      url: 'node-p2p.ergoplatform.com',
+    },
+  ],
+  [UrlAction.PermitTriggerTransactions]: [
+    {
+      isNode: false,
+      url: 'api.sigmaspace.io',
+    }, {
+      isNode: true,
+      url: 'node-p2p.ergoplatform.com',
+    },
+  ],
+  [UrlAction.PermitBulkTransactions]: [
+    {
+      isNode: false,
+      url: 'api.sigmaspace.io',
+    }, {
+      isNode: true,
+      url: 'node-p2p.ergoplatform.com',
+    },
+  ]
+};
+
+const getUrlConfig = (key: UrlAction): { isNode: boolean; url: string } =>
+  urlConfig[key][0];
 
 const rs_RSNTokenId =
   '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';

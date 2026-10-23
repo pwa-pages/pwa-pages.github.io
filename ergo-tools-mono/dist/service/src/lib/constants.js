@@ -1,7 +1,7 @@
 "use strict";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 45;
+const rs_DbVersion = 46;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';
@@ -44,13 +44,96 @@ const rs_ErgoNodeHost = 'https://node-p2p.ergoplatform.com';
 // https://node-p2p.ergoplatform.com/swagger
 /*
 
+https://explorer.ergoplatform.com/
+https://explorer-p2p.ergoplatform.com/
+https://ergo.aap.cornell.edu/
+https://ergobackup.aap.cornell.edu/
+https://explorer.codeutxo.com/
+https://ergexplorer.com/
+https://sigmaspace.io/
+https://api.sigmaspace.io/
+
+API's
 https://api.ergoplatform.com/api/v1/docs/
 https://api-p2p.ergoplatform.com/api/v1/docs/
 https://api.ergo.aap.cornell.edu/api/v1/docs/
 https://api.ergobackup.aap.cornell.edu/api/v1/docs/
 https://api.codeutxo.com/api/v1/docs/
 
+GraphQL
+https://gql.ergoplatform.com/
+https://graphql-p2p.ergoplatform.com/
+https://graphql.ergo.aap.cornell.edu/
+https://graphql.ergobackup.aap.cornell.edu/
+https://graphql.codeutxo.com/
+
 */
+var UrlAction;
+(function (UrlAction) {
+    UrlAction["StatisticsTransactions"] = "statisticsTransactions";
+    UrlAction["ChainPerformanceTransactions"] = "chainPerformanceTransactions";
+    UrlAction["WatchersBalance"] = "watchersBalance";
+    UrlAction["PermitTransactions"] = "permitTransactions";
+    UrlAction["PermitTriggerTransactions"] = "permitTriggerTransactions";
+    UrlAction["PermitBulkTransactions"] = "permitBulkTransactions";
+})(UrlAction || (UrlAction = {}));
+const urlConfig = {
+    [UrlAction.StatisticsTransactions]: [
+        {
+            isNode: false,
+            url: 'api.sigmaspace.io',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ],
+    [UrlAction.ChainPerformanceTransactions]: [
+        {
+            isNode: false,
+            url: 'api.sigmaspace.io',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ],
+    [UrlAction.WatchersBalance]: [
+        {
+            isNode: false,
+            url: 'api.ergoplatform.com',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ],
+    [UrlAction.PermitTransactions]: [
+        {
+            isNode: false,
+            url: 'api.sigmaspace.io',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ],
+    [UrlAction.PermitTriggerTransactions]: [
+        {
+            isNode: false,
+            url: 'api.sigmaspace.io',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ],
+    [UrlAction.PermitBulkTransactions]: [
+        {
+            isNode: false,
+            url: 'api.sigmaspace.io',
+        }, {
+            isNode: true,
+            url: 'node-p2p.ergoplatform.com',
+        },
+    ]
+};
+const getUrlConfig = (key) => urlConfig[key][0];
 const rs_RSNTokenId = '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';
 const rs_eRSNTokenId = 'dede2cf5c1a2966453ffec198a9b97b53d281e548903a905519b3525d59cdc3c';
 const rs_TokenIdMap = {

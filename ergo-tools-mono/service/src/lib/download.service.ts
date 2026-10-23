@@ -39,10 +39,10 @@ class DownloadService<T> {
     address: string,
     offset = 0,
     limit = 500,
-    useNode: boolean,
+    urlAction: UrlAction
   ): Promise<FetchTransactionsResponse> {
-    if (useNode) {
-      const url = `${rs_ErgoNodeHost}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
+    if (getUrlConfig(urlAction).isNode) {
+      const url = `${getUrlConfig(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
       console.log(`Downloading from: ${url}`);
 
       const response: Response = await fetch(url, {
@@ -71,7 +71,7 @@ class DownloadService<T> {
 
       return result;
     } else {
-      const url = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
+      const url = `https://${getUrlConfig(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
       console.log(`Downloading from: ${url}`);
 
       const response: FetchTransactionsResponse =
@@ -93,7 +93,7 @@ class DownloadService<T> {
     }
   }
 
-  async downloadForAddresses(): Promise<void> {
+  async downloadForAddresses(urlAction: UrlAction): Promise<void> {
     console.log('Start downloading for all addresses');
 
     try {
@@ -102,7 +102,7 @@ class DownloadService<T> {
 
       const downloadPromises: Promise<void>[] = addresses.map(
         async (addressObj: Address) => {
-          await this.downloadForAddress(addressObj.address, true);
+          await this.downloadForAddress(addressObj.address, urlAction);
         },
       );
 
@@ -141,7 +141,7 @@ class DownloadService<T> {
   async downloadAllForAddress(
     address: string,
     offset: number,
-    useNode: boolean,
+    urlAction: UrlAction,
     callback?: () => Promise<void>,
   ): Promise<void> {
     this.increaseBusyCounter(address);
@@ -152,7 +152,7 @@ class DownloadService<T> {
         address,
         offset,
         this.downloadFullSize + 10,
-        useNode,
+        urlAction,
       );
       console.log(
         `Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`,
@@ -188,7 +188,7 @@ class DownloadService<T> {
         await this.downloadAllForAddress(
           address,
           offset + this.downloadFullSize,
-          useNode,
+          urlAction,
         );
       } else {
         await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
@@ -204,7 +204,7 @@ class DownloadService<T> {
 
   async downloadForAddress(
     address: string,
-    useNode: boolean,
+    urlAction: UrlAction,
     callback?: () => Promise<void>,
   ): Promise<T[] | null> {
     this.increaseBusyCounter(address);
@@ -215,7 +215,7 @@ class DownloadService<T> {
         address,
         0,
         this.downloadInitialSize,
-        useNode,
+        urlAction,
       );
       console.log(
         `Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`,
@@ -259,7 +259,7 @@ class DownloadService<T> {
         await this.downloadAllForAddress(
           address,
           0,
-          useNode,
+          urlAction,
           callback,
         );
         return this.dataService.getData();

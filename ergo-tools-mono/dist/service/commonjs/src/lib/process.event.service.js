@@ -104,7 +104,7 @@ class ProcessEventService {
                         type: 'ReportsChanged',
                         data: permitTxs,
                     });
-                    await services.downloadReportsService.downloadForAddress(address, true);
+                    await services.downloadReportsService.downloadForAddress(address, UrlAction.PermitTriggerTransactions);
                     permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
                     this.eventSender?.sendEvent({
                         type: 'ReportsChanged',
@@ -123,10 +123,10 @@ class ProcessEventService {
             data: addressCharts,
         });
         if (event.data && typeof event.data === 'string') {
-            await services.downloadService.downloadForAddress(event.data, true);
+            await services.downloadService.downloadForAddress(event.data, UrlAction.StatisticsTransactions);
         }
         else {
-            await services.downloadService.downloadForAddresses();
+            await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
         }
     }
     async processStatisticsScreenLoaded(services) {
@@ -136,7 +136,7 @@ class ProcessEventService {
             type: 'InputsChanged',
             data: inputs,
         });
-        await services.downloadService.downloadForAddresses();
+        await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
     }
     async processPerformanceScreenLoaded(services) {
         console.log('Rosen service worker received PerformanceScreenLoaded');
@@ -146,7 +146,7 @@ class ProcessEventService {
             type: 'PerfChartChanged',
             data: perfTxs,
         });
-        services.downloadPerfService.downloadForAddress(hotWalletAddress, true);
+        services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
     }
     async processMyWatchersScreenLoaded(event, services) {
         const { addresses } = event.data;
@@ -195,7 +195,7 @@ class ProcessEventService {
         await Promise.all(permitAddressEntries.map(([chainType, address]) => this.downloadForChainPermitAddress(addresses, chainType, address, services)));
     }
     async downloadForChainPermitAddress(addresses, chainType, address, services) {
-        await services.downloadMyWatchersService.downloadForAddress(address, true);
+        await services.downloadMyWatchersService.downloadForAddress(address, UrlAction.PermitTransactions);
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
             type: 'PermitsChanged',
@@ -230,7 +230,7 @@ class ProcessEventService {
         await Promise.all(addresses.map((address) => this.downloadForActivePermitAddress(allAddresses, address, services)));
     }
     async downloadForActivePermitAddress(allAddresses, address, services) {
-        await services.downloadActivePermitsService.downloadForAddress(address, true, () => this.sendPermitsChangedEventForAddresses(services, allAddresses));
+        await services.downloadActivePermitsService.downloadForAddress(address, UrlAction.PermitTriggerTransactions, () => this.sendPermitsChangedEventForAddresses(services, allAddresses));
     }
     async sendPermitsChangedEventForAddresses(services, addresses) {
         const permits = await services.watcherDataService.getAdressPermits(addresses);
