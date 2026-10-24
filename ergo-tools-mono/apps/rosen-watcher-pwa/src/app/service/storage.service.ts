@@ -23,35 +23,20 @@ export class StorageService {
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
 
-        if (db.objectStoreNames.contains(ErgSettings.rs_InputsStoreName())) {
-          db.deleteObjectStore(ErgSettings.rs_InputsStoreName());
-        }
-        db.createObjectStore(ErgSettings.rs_InputsStoreName(), { keyPath: ErgSettings.rs_Input_Key() });
+        this.recreateObjectStore(db, ErgSettings.rs_InputsStoreName(), ErgSettings.rs_Input_Key());
+        this.recreateObjectStore(db, ErgSettings.rs_PerfTxStoreName(), ErgSettings.rs_PerfTx_Key());
+        this.recreateObjectStore(db, ErgSettings.rs_PermitTxStoreName(), ErgSettings.rs_Permit_Key());
+        this.recreateObjectStore(
+          db,
+          ErgSettings.rs_ActivePermitTxStoreName(),
+          ErgSettings.rs_ActivePermit_Key(),
+        );
 
-        if (db.objectStoreNames.contains(ErgSettings.rs_PerfTxStoreName())) {
-          db.deleteObjectStore(ErgSettings.rs_PerfTxStoreName());
-        }
-        db.createObjectStore(ErgSettings.rs_PerfTxStoreName(), { keyPath: ErgSettings.rs_PerfTx_Key() });
-
-        if (db.objectStoreNames.contains(ErgSettings.rs_PermitTxStoreName())) {
-          db.deleteObjectStore(ErgSettings.rs_PermitTxStoreName());
-        }
-        db.createObjectStore(ErgSettings.rs_PermitTxStoreName(), { keyPath: ErgSettings.rs_Permit_Key() });
-
-        if (db.objectStoreNames.contains(ErgSettings.rs_ActivePermitTxStoreName())) {
-          db.deleteObjectStore(ErgSettings.rs_ActivePermitTxStoreName());
-        }
-        db.createObjectStore(ErgSettings.rs_ActivePermitTxStoreName(), {
-          keyPath: ErgSettings.rs_ActivePermit_Key(),
-        });
-
-        if (db.objectStoreNames.contains(ErgSettings.rs_ReportsStoreName())) {
-          db.deleteObjectStore(ErgSettings.rs_ReportsStoreName());
-        }
-
-        const store = db.createObjectStore(ErgSettings.rs_ReportsStoreName(), {
-          keyPath: ErgSettings.rs_PerfTx_Key(),
-        });
+        const store = this.recreateObjectStore(
+          db,
+          ErgSettings.rs_ReportsStoreName(),
+          ErgSettings.rs_PerfTx_Key(),
+        );
 
         store.createIndex("chainType", "chainType", {
           unique: false,
@@ -63,17 +48,17 @@ export class StorageService {
           });
         }
 
-        if (!db.objectStoreNames.contains(ErgSettings.rs_DownloadStatusStoreName())) {
-          db.createObjectStore(ErgSettings.rs_DownloadStatusStoreName(), {
-            keyPath: ErgSettings.rs_Address_Key(),
-          });
-        }
+        this.recreateObjectStore(
+          db,
+          ErgSettings.rs_DownloadStatusStoreName(),
+          ErgSettings.rs_Address_Key(),
+        );
+        this.recreateObjectStore(
+          db,
+          ErgSettings.rs_OpenBoxesStoreName(),
+          ErgSettings.rs_Address_Key(),
+        );
 
-        if (!db.objectStoreNames.contains(ErgSettings.rs_OpenBoxesStoreName())) {
-          db.createObjectStore(ErgSettings.rs_OpenBoxesStoreName(), {
-            keyPath: ErgSettings.rs_Address_Key(),
-          });
-        }
       };
 
       request.onsuccess = async (event: Event) => {
@@ -91,6 +76,17 @@ export class StorageService {
 
   async getDB(): Promise<IDBDatabase> {
     return await this.dbPromise;
+  }
+
+  private recreateObjectStore(
+    db: IDBDatabase,
+    storeName: string,
+    keyPath: string | string[],
+  ): IDBObjectStore {
+    if (db.objectStoreNames.contains(storeName)) {
+      db.deleteObjectStore(storeName);
+    }
+    return db.createObjectStore(storeName, { keyPath });
   }
 
   async clearAddressStore(): Promise<void> {
