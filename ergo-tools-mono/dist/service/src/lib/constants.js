@@ -1,7 +1,7 @@
 "use strict";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 48;
+const rs_DbVersion = 49;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';

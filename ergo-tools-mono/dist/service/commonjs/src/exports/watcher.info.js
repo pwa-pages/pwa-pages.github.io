@@ -16,12 +16,14 @@ class MyWatchersStats {
     address;
 }
 exports.MyWatchersStats = MyWatchersStats;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class WatcherPerformanceAddressStat {
     address;
     reports;
 }
 exports.WatcherPerformanceAddressStat = WatcherPerformanceAddressStat;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class WatchersPerformanceStats {
-    watcherPerformanceByChainType;
+    watcherPerformances;
 }
 exports.WatchersPerformanceStats = WatchersPerformanceStats;

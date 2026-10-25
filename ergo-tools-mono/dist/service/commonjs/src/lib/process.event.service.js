@@ -99,16 +99,16 @@ class ProcessEventService {
             var chainType = event.data;
             for (const [addressChainType, address] of Object.entries(permitTriggerAddresses)) {
                 if (addressChainType === chainType && address != null) {
-                    var permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
-                    this.eventSender?.sendEvent({
+                    var performances = await services.reportsDataService.getWatcherPerformanceByChainType();
+                    await this.eventSender?.sendEvent({
                         type: 'ReportsChanged',
-                        data: permitTxs,
+                        data: performances,
                     });
                     await services.downloadReportsService.downloadForAddress(address, UrlAction.PermitTriggerTransactions);
-                    permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
-                    this.eventSender?.sendEvent({
+                    performances = await services.reportsDataService.getWatcherPerformanceByChainType();
+                    await this.eventSender?.sendEvent({
                         type: 'ReportsChanged',
-                        data: permitTxs,
+                        data: performances,
                     });
                 }
             }
@@ -118,7 +118,7 @@ class ProcessEventService {
         console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
             event.data);
         const addressCharts = await services.chartService.getAddressCharts(await services.dataService.getSortedInputs());
-        this.eventSender?.sendEvent({
+        await this.eventSender?.sendEvent({
             type: 'AddressChartChanged',
             data: addressCharts,
         });
@@ -132,7 +132,7 @@ class ProcessEventService {
     async processStatisticsScreenLoaded(services) {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
         const inputs = await services.dataService.getSortedInputs();
-        this.eventSender?.sendEvent({
+        await this.eventSender?.sendEvent({
             type: 'InputsChanged',
             data: inputs,
         });
@@ -142,18 +142,18 @@ class ProcessEventService {
         console.log('Rosen service worker received PerformanceScreenLoaded');
         console.log('Downloading perftxs.');
         const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
-        this.eventSender?.sendEvent({
+        await this.eventSender?.sendEvent({
             type: 'PerfChartChanged',
             data: perfTxs,
         });
-        services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
+        await services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
     }
     async processMyWatchersScreenLoaded(event, services) {
         const { addresses } = event.data;
         console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         const chainTypes = this.extractChainTypes(permits, addresses);
-        this.sendPermitsChangedEvent(permits);
+        await this.sendPermitsChangedEvent(permits);
         if (chainTypes.size === 0) {
             await this.downloadForChainPermitAddresses(addresses, services);
             const updatedPermits = await this.sendPermitChangedEvent(services, addresses);
@@ -208,14 +208,14 @@ class ProcessEventService {
     }
     async sendPermitChangedEvent(services, addresses) {
         const permits = await services.watcherDataService.getAdressPermits(addresses);
-        this.eventSender?.sendEvent({
+        await this.eventSender?.sendEvent({
             type: 'PermitsChanged',
             data: permits,
         });
         return permits;
     }
-    sendPermitsChangedEvent(permits) {
-        this.eventSender?.sendEvent({
+    async sendPermitsChangedEvent(permits) {
+        await this.eventSender?.sendEvent({
             type: 'PermitsChanged',
             data: permits,
         });

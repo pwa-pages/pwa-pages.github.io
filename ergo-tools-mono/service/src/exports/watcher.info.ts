@@ -13,12 +13,16 @@ export class MyWatchersStats {
   address: Address | undefined;
 }
 
-export class WatcherPerformanceAddressStat{
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export class WatcherPerformanceAddressStat {
   address: Address | undefined;
   reports: number | undefined;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class WatchersPerformanceStats {
-  watcherPerformanceByChainType: Record<string, WatcherPerformanceAddressStat[]> | undefined;
+  watcherPerformances:
+    | Record<string, Record<string, WatcherPerformanceAddressStat[]>>
+    | undefined;
 }
 

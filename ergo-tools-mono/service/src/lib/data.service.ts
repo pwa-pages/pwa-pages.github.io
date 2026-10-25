@@ -6,6 +6,7 @@ interface MessageEventData {
 interface Address {
   address: string;
   Address: string;
+  chainType?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -114,6 +115,21 @@ interface Output {
   assets: Asset[];
   address: string;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface WatcherPerformanceAddressStat {
+  address: Address | undefined;
+  reports: number | undefined;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface WatchersPerformanceStats {
+  watcherPerformances:
+    | Record<string, Record<string, WatcherPerformanceAddressStat[]>>
+    | undefined;
+}
+
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 abstract class DataService<T> {
   public storageService: IStorageService<T>;

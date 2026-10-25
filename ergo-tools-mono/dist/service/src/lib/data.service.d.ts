@@ -5,6 +5,7 @@ interface MessageEventData {
 interface Address {
     address: string;
     Address: string;
+    chainType?: string;
 }
 interface MyWatchersStats {
     chainType?: ChainType;
@@ -95,6 +96,13 @@ interface Output {
     outputDate: Date;
     assets: Asset[];
     address: string;
+}
+interface WatcherPerformanceAddressStat {
+    address: Address | undefined;
+    reports: number | undefined;
+}
+interface WatchersPerformanceStats {
+    watcherPerformances: Record<string, Record<string, WatcherPerformanceAddressStat[]>> | undefined;
 }
 declare abstract class DataService<T> {
     storageService: IStorageService<T>;

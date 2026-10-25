@@ -6,8 +6,7 @@ import {
   Input,
   OnInit,
   Output,
-  ChangeDetectionStrategy,
-  Signal
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { EventType } from '../service/event.service';
 import {
@@ -34,7 +33,7 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
   private _renderHtml = true;
   public chains: string[] = ChainTypeHelper.getActiveChainTypes();
   public months: string[] = this.getCurrentAndPreviousMonths();
-  watcherPerformanceStats: Signal<WatchersPerformanceStats> | null = null;
+  watcherPerformanceStats: WatchersPerformanceStats | undefined = undefined;
 
   private getCurrentAndPreviousMonths(): string[] {
     const now = new Date();
@@ -65,8 +64,8 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
 
   constructor(
     injector: Injector,
-    private watchersPerformanceDataService: WatchersPerformanceDataService,
     private navigationService: NavigationService,
+    private watchersPerformanceDataService: WatchersPerformanceDataService,
     @Inject(IS_ELEMENTS_ACTIVE) public isElementsActive: boolean,
   ) {
     super(injector);
@@ -76,12 +75,12 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
 
   async onChainChange(): Promise<void> {
     localStorage.setItem('selectedChain', this.selectedChain as string);
-    await this.retrieveWatcherPerformanceStats();
+    await this.triggerReportsRequested();
   }
 
   async onMonthChange(): Promise<void> {
     localStorage.setItem('selectedMonth', this.selectedMonth as string);
-    await this.retrieveWatcherPerformanceStats();
+    await this.triggerReportsRequested();
   }
 
   getChainTypes(): string[] {
@@ -96,11 +95,7 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
     this.navigationService.navigate(`/${item}`);
   }
 
-  async retrieveWatcherPerformanceStats(): Promise<void> {
-    var r = await this.watchersPerformanceDataService.getWatchersPerformanceStats(this.selectedMonth);
-    if(this.watcherPerformanceStats == null) {
-      this.watcherPerformanceStats = r;
-    }
+  async triggerReportsRequested(): Promise<void> {
     await this.eventService.sendEventWithData(EventType.ReportsRequested, this.selectedChain);
   }
 
@@ -120,9 +115,22 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
     this.selectedMonth =
       this.selectedMonth == null ? this.months[0] : this.selectedMonth;
 
-    await this.retrieveWatcherPerformanceStats();
-    await this.eventService.sendEventWithData(EventType.ReportsRequested, this.selectedChain);
-
+    await this.triggerReportsRequested();
     
+
+    this.subscribeToEvent(
+      EventType.ReportsChanged,
+      async (performanceStats: WatchersPerformanceStats) => {
+        if (!this.watcherPerformanceStats) {
+          this.watcherPerformanceStats = { watcherPerformances: {} };
+        }
+        this.watcherPerformanceStats = await this.watchersPerformanceDataService.enrichWatchersPerformanceStats(
+          performanceStats
+        );
+        this.watcherPerformanceStats.watcherPerformances = performanceStats.watcherPerformances;
+      }
+    );
+
+
   }
 }

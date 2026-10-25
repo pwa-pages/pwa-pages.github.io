@@ -16,5 +16,5 @@ export declare class WatcherPerformanceAddressStat {
     reports: number | undefined;
 }
 export declare class WatchersPerformanceStats {
-    watcherPerformanceByChainType: Record<string, WatcherPerformanceAddressStat[]> | undefined;
+    watcherPerformances: Record<string, Record<string, WatcherPerformanceAddressStat[]>> | undefined;
 }

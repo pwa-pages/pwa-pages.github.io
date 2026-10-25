@@ -201,22 +201,22 @@ class ProcessEventService {
       )) {
         if (addressChainType === chainType && address != null) {
 
-          var permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
+          var performances = await services.reportsDataService.getWatcherPerformanceByChainType();
 
-          this.eventSender?.sendEvent({
+          await this.eventSender?.sendEvent({
             type: 'ReportsChanged',
-            data: permitTxs,
+            data: performances,
           });
 
           await services.downloadReportsService.downloadForAddress(
             address,
             UrlAction.PermitTriggerTransactions,
           );
-          permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
+          performances = await services.reportsDataService.getWatcherPerformanceByChainType();
 
-          this.eventSender?.sendEvent({
+          await this.eventSender?.sendEvent({
             type: 'ReportsChanged',
-            data: permitTxs,
+            data: performances,
           });
         }
       }
@@ -236,7 +236,7 @@ class ProcessEventService {
       await services.dataService.getSortedInputs(),
     );
 
-    this.eventSender?.sendEvent({
+    await this.eventSender?.sendEvent({
       type: 'AddressChartChanged',
       data: addressCharts,
     });
@@ -257,7 +257,7 @@ class ProcessEventService {
     );
 
     const inputs = await services.dataService.getSortedInputs();
-    this.eventSender?.sendEvent({
+    await this.eventSender?.sendEvent({
       type: 'InputsChanged',
       data: inputs,
     });
@@ -273,12 +273,12 @@ class ProcessEventService {
     console.log('Downloading perftxs.');
     const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
 
-    this.eventSender?.sendEvent({
+    await this.eventSender?.sendEvent({
       type: 'PerfChartChanged',
       data: perfTxs,
     });
 
-    services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
+    await services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
   }
 
   private async processMyWatchersScreenLoaded(
@@ -292,7 +292,7 @@ class ProcessEventService {
 
     const permits = await services.watcherDataService.getAdressPermits(addresses);
     const chainTypes = this.extractChainTypes(permits, addresses);
-    this.sendPermitsChangedEvent(permits);
+    await this.sendPermitsChangedEvent(permits);
 
     if (chainTypes.size === 0) {
       await this.downloadForChainPermitAddresses(addresses, services);
@@ -418,15 +418,15 @@ class ProcessEventService {
   ) {
     const permits = await services.watcherDataService.getAdressPermits(addresses);
 
-    this.eventSender?.sendEvent({
+    await this.eventSender?.sendEvent({
       type: 'PermitsChanged',
       data: permits,
     });
     return permits;
   }
 
-  private sendPermitsChangedEvent(permits: PermitInfo[]) {
-    this.eventSender?.sendEvent({
+  private async sendPermitsChangedEvent(permits: PermitInfo[]) {
+    await this.eventSender?.sendEvent({
       type: 'PermitsChanged',
       data: permits,
     });

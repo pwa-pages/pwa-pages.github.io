@@ -364,6 +364,42 @@ class ReportsDataService extends PermitsDataService {
     }
     async purgeData() {
     }
+    async getWatcherPerformanceByChainType() {
+        const permits = await super.getAdressPermits(false, null, null, null, null);
+        const reportCountsByChainTypeAndMonth = {};
+        permits.forEach((permit) => {
+            if (!permit.chainType || !permit.address || Number.isNaN(permit.date.getTime())) {
+                return;
+            }
+            const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(permit.date);
+            const monthCounts = reportCountsByChainTypeAndMonth[permit.chainType] ??
+                (reportCountsByChainTypeAndMonth[permit.chainType] = {});
+            const addressCounts = monthCounts[month] ?? (monthCounts[month] = {});
+            addressCounts[permit.address] = (addressCounts[permit.address] ?? 0) + 1;
+        });
+        const watcherPerformanceByChainType = {};
+        Object.entries(reportCountsByChainTypeAndMonth).forEach(([chain, monthCounts]) => {
+            watcherPerformanceByChainType[chain] = {};
+            Object.entries(monthCounts).forEach(([month, addressCounts]) => {
+                const addressStats = Object.entries(addressCounts)
+                    .map(([address, reports]) => ({
+                    address: {
+                        address,
+                        chainType: chain
+                    },
+                    reports
+                }))
+                    .sort((a, b) => b.reports - a.reports);
+                if (addressStats.length > 0) {
+                    watcherPerformanceByChainType[chain][month] = addressStats;
+                }
+            });
+        });
+        const watcherPerformanceStats = {
+            watcherPerformances: watcherPerformanceByChainType
+        };
+        return watcherPerformanceStats;
+    }
     async getAdressPermitsByChainType(chainType, activeOnly, startMonth, startYear, endMonth, endYear) {
         var permits = await super.getAdressPermits(activeOnly, startMonth, startYear, endMonth, endYear);
         permits = permits.filter((tx) => !Object.values(permitTriggerAddresses).includes(tx.address));
@@ -376,10 +412,10 @@ class ReportsDataService extends PermitsDataService {
         if (chainType === undefined || chainType === null) {
             return;
         }
-        const permitTxs = (await this.getAdressPermitsByChainType(chainType.toString(), false, null, null, null, null));
+        var performances = await this.getWatcherPerformanceByChainType();
         this.eventSender?.sendEvent({
             type: 'ReportsChanged',
-            data: permitTxs,
+            data: performances,
         });
     }
     getMaxDownloadDateDifference() {
@@ -1283,7 +1319,7 @@ class MemoryStorageService {
 "use strict";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 48;
+const rs_DbVersion = 49;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';
@@ -1776,16 +1812,16 @@ class ProcessEventService {
             var chainType = event.data;
             for (const [addressChainType, address] of Object.entries(permitTriggerAddresses)) {
                 if (addressChainType === chainType && address != null) {
-                    var permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
-                    this.eventSender?.sendEvent({
+                    var performances = await services.reportsDataService.getWatcherPerformanceByChainType();
+                    await this.eventSender?.sendEvent({
                         type: 'ReportsChanged',
-                        data: permitTxs,
+                        data: performances,
                     });
                     await services.downloadReportsService.downloadForAddress(address, UrlAction.PermitTriggerTransactions);
-                    permitTxs = await services.reportsDataService.getAdressPermitsByChainType(chainType, false, null, null, null, null);
-                    this.eventSender?.sendEvent({
+                    performances = await services.reportsDataService.getWatcherPerformanceByChainType();
+                    await this.eventSender?.sendEvent({
                         type: 'ReportsChanged',
-                        data: permitTxs,
+                        data: performances,
                     });
                 }
             }
@@ -1795,7 +1831,7 @@ class ProcessEventService {
         console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
             event.data);
         const addressCharts = await services.chartService.getAddressCharts(await services.dataService.getSortedInputs());
-        this.eventSender?.sendEvent({
+        await this.eventSender?.sendEvent({
             type: 'AddressChartChanged',
             data: addressCharts,
         });
@@ -1809,7 +1845,7 @@ class ProcessEventService {
     async processStatisticsScreenLoaded(services) {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
         const inputs = await services.dataService.getSortedInputs();
-        this.eventSender?.sendEvent({
+        await this.eventSender?.sendEvent({
             type: 'InputsChanged',
             data: inputs,
         });
@@ -1819,18 +1855,18 @@ class ProcessEventService {
         console.log('Rosen service worker received PerformanceScreenLoaded');
         console.log('Downloading perftxs.');
         const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
-        this.eventSender?.sendEvent({
+        await this.eventSender?.sendEvent({
             type: 'PerfChartChanged',
             data: perfTxs,
         });
-        services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
+        await services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
     }
     async processMyWatchersScreenLoaded(event, services) {
         const { addresses } = event.data;
         console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         const chainTypes = this.extractChainTypes(permits, addresses);
-        this.sendPermitsChangedEvent(permits);
+        await this.sendPermitsChangedEvent(permits);
         if (chainTypes.size === 0) {
             await this.downloadForChainPermitAddresses(addresses, services);
             const updatedPermits = await this.sendPermitChangedEvent(services, addresses);
@@ -1885,14 +1921,14 @@ class ProcessEventService {
     }
     async sendPermitChangedEvent(services, addresses) {
         const permits = await services.watcherDataService.getAdressPermits(addresses);
-        this.eventSender?.sendEvent({
+        await this.eventSender?.sendEvent({
             type: 'PermitsChanged',
             data: permits,
         });
         return permits;
     }
-    sendPermitsChangedEvent(permits) {
-        this.eventSender?.sendEvent({
+    async sendPermitsChangedEvent(permits) {
+        await this.eventSender?.sendEvent({
             type: 'PermitsChanged',
             data: permits,
         });

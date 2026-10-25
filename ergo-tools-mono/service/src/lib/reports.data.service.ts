@@ -17,6 +17,53 @@ class ReportsDataService extends PermitsDataService {
 
   }
 
+
+  async getWatcherPerformanceByChainType(
+  ): Promise<WatchersPerformanceStats> {
+    const permits = await super.getAdressPermits(false, null, null, null, null);
+    const reportCountsByChainTypeAndMonth: Record<string, Record<string, Record<string, number>>> = {};
+
+    permits.forEach((permit: PermitTx) => {
+      if (!permit.chainType || !permit.address || Number.isNaN(permit.date.getTime())) {
+        return;
+      }
+      const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(permit.date);
+
+      const monthCounts =
+        reportCountsByChainTypeAndMonth[permit.chainType] ??
+        (reportCountsByChainTypeAndMonth[permit.chainType] = {});
+      const addressCounts = monthCounts[month] ?? (monthCounts[month] = {});
+
+      addressCounts[permit.address] = (addressCounts[permit.address] ?? 0) + 1;
+    });
+
+    const watcherPerformanceByChainType: Record<string, Record<string, WatcherPerformanceAddressStat[]>> = {};
+
+    Object.entries(reportCountsByChainTypeAndMonth).forEach(([chain, monthCounts]) => {
+      watcherPerformanceByChainType[chain] = {};
+      Object.entries(monthCounts).forEach(([month, addressCounts]) => {
+        const addressStats = Object.entries(addressCounts)
+          .map(([address, reports]) => ({
+            address: {
+              address,
+              chainType: chain
+            } as Address,
+            reports
+          }))
+          .sort((a, b) => b.reports - a.reports);
+
+        if (addressStats.length > 0) {
+          watcherPerformanceByChainType[chain][month] = addressStats;
+        }
+      });
+    });
+
+    const watcherPerformanceStats: WatchersPerformanceStats = {
+      watcherPerformances: watcherPerformanceByChainType
+    };
+    return watcherPerformanceStats;
+  }
+
   async getAdressPermitsByChainType(
     chainType: string,
     activeOnly: boolean,
@@ -45,11 +92,11 @@ class ReportsDataService extends PermitsDataService {
       return;
     }
 
-    const permitTxs = (await this.getAdressPermitsByChainType(chainType.toString(), false, null, null, null, null));
+    var performances = await this.getWatcherPerformanceByChainType();
 
     this.eventSender?.sendEvent({
       type: 'ReportsChanged',
-      data: permitTxs,
+      data: performances,
     });
   }
 
@@ -59,14 +106,6 @@ class ReportsDataService extends PermitsDataService {
     const firstOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     return now.getTime() - firstOfPreviousMonth.getTime() + 2 * 24 * 60 * 60 * 1000;
   }
-
-  /*
-    public async getAddressPermits(address: string): Promise<PermitTx[]> {
-      const now = new Date();
-        var permits = super.getAdressPermits(true, now.getMonth(), now.getFullYear(), now.getMonth(), now.getFullYear());
-        return [];
-    }
-        */
 
 }
 
