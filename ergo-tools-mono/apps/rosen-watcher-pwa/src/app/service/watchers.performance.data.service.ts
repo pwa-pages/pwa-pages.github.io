@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  Address,
   WatchersPerformanceStats
 } from '@ergo-tools/service';
 import { ChainTypeHelper } from '../imports/imports';
@@ -35,6 +36,13 @@ export class WatchersPerformanceDataService {
     for (const performanceByPeriod of Object.values(watchersPerformanceStats.watcherPerformances ?? {})) {
       for (const addressStats of Object.values(performanceByPeriod)) {
         for (const addressStat of addressStats) {
+
+          const originalAddress = addressStat.address;
+          if (originalAddress?.address === undefined) {
+            continue;
+          }
+          addressStat.address = new Address(originalAddress.address, originalAddress.chainType, originalAddress.active, originalAddress.ownAddress);
+
           const address = addressStat.address;
           if (address === undefined) {
             continue;

@@ -59,7 +59,7 @@ class ReportsDataService extends PermitsDataService {
             return;
         }
         var performances = await this.getWatcherPerformanceByChainType();
-        this.eventSender?.sendEvent({
+        await this.eventSender?.sendEvent({
             type: 'ReportsChanged',
             data: performances,
         });
