@@ -50,7 +50,7 @@ if one is interested to have one's name displayed publicly let me know on telegr
     <div class="watcherheader">Address</div>
     <div class="watcherheader">Reports</div>
 
-    @for (stat of (watcherPerformanceStats?.watcherPerformances?.[selectedChain]?.[selectedMonth] ?? []); track
+    @for (stat of (watcherPerformanceStats()?.watcherPerformances?.[selectedChain]?.[selectedMonth] ?? []); track
     stat) {
     <div class="watchersdispl"></div>
     <div class="large-display-address">{{ stat.address?.largeAddressForDisplay }}</div>
