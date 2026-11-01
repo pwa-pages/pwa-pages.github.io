@@ -41,6 +41,8 @@ class DownloadService<T> {
     limit = 500,
     urlAction: UrlAction
   ): Promise<FetchTransactionsResponse> {
+    
+    
     if (getUrlConfig(urlAction).isNode) {
       const url = `${getUrlConfig(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
       console.log(`Downloading from: ${url}`);

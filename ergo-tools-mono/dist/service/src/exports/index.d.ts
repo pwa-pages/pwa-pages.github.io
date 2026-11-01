@@ -74,7 +74,7 @@ export interface WatcherDataService {
     getAdressPermits(): Promise<PermitInfo[]>;
 }
 export interface IDownloadService<SERVICE> {
-    downloadForAddress<T>(address: string, useNode: boolean, callback?: () => Promise<T>): Promise<T[]>;
+    downloadForAddress<T>(address: string, urlAction: string, callback?: () => Promise<T>): Promise<T[]>;
     getDataService(): SERVICE;
 }
 export declare function GetWatcherDataService(permitsDataService: PermitsDataService): WatcherDataService;

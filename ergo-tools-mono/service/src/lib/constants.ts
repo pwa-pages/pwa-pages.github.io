@@ -231,7 +231,10 @@ if (typeof window !== 'undefined') {
   (globalThis as any).rs_TokenIdMap = rs_TokenIdMap;
   (globalThis as any).rs_RSNDecimals = rs_RSNDecimals;
   (globalThis as any).currencies = Object.values(Currency);
+  (globalThis as any).urlConfig = urlConfig;
+  
 
   (window as any).Period = Period;
   (window as any).Currency = Currency;
 }
+

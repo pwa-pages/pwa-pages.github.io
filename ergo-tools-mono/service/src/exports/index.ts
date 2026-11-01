@@ -194,7 +194,7 @@ export interface WatcherDataService {
 export interface IDownloadService<SERVICE> {
   downloadForAddress<T>(
     address: string,
-    useNode: boolean,
+    urlAction: string,
     callback?: () => Promise<T>,
   ): Promise<T[]>;
   getDataService(): SERVICE;

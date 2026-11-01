@@ -1556,6 +1556,7 @@ if (typeof window !== 'undefined') {
     globalThis.rs_TokenIdMap = rs_TokenIdMap;
     globalThis.rs_RSNDecimals = rs_RSNDecimals;
     globalThis.currencies = Object.values(Currency);
+    globalThis.urlConfig = urlConfig;
     window.Period = Period;
     window.Currency = Currency;
 }
@@ -2029,9 +2030,9 @@ async function main() {
 }
 main().catch(console.error);
 async function downloadActivePermits() {
-  var frommonth = 9;
+  var frommonth = 10;
   var fromyear = 2026;
-  var tomonth = 10;
+  var tomonth = 12;
   var toyear = 2026;
   const now = /* @__PURE__ */ new Date();
   const startOfYear = new Date(fromyear, frommonth - 1, 1);
@@ -2041,7 +2042,7 @@ async function downloadActivePermits() {
     if (addr == null) continue;
     var downloadService = GetPermitsDownloadService(diff);
     console.log("Downloading for chainType:", chainType, "address:", addr);
-    await downloadService.downloadForAddress(addr, true);
+    await downloadService.downloadForAddress(addr, "permitTriggerTransactions");
     var permits = await downloadService.getDataService().getAdressPermits(false, frommonth, fromyear, tomonth, toyear);
     permits = permits.filter((p) => p.chainType === chainType);
     const byAddress = permits.reduce((map, p) => {

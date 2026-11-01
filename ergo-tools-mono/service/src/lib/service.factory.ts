@@ -1,7 +1,7 @@
-(globalThis as any).GetPermitTriggerAddresses = 
-() => {
-  return permitTriggerAddresses;
-}
+(globalThis as any).GetPermitTriggerAddresses =
+  () => {
+    return permitTriggerAddresses;
+  }
 
 (globalThis as any).CreatePermitsDownloadService = (
   maxDownloadDateDifference: number,
@@ -21,18 +21,16 @@
   );
 };
 
-
-
 (globalThis as any).CreateWatcherDownloadService = (
   maxDownloadDateDifference: number,
   eventSender: EventSender
 ): DownloadService<PermitTx> => {
 
-    
+
   var storageService = new MemoryStorageService<PermitTx>();
 
-const permitsDataService: PermitsDataService =
-    new PermitsDataService(storageService, rs_ActivePermitTxStoreName,  maxDownloadDateDifference);
+  const permitsDataService: PermitsDataService =
+    new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
 
   const watcherDataService: WatcherDataService =
     new WatcherDataService(permitsDataService);

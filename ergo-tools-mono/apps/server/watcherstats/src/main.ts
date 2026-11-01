@@ -112,9 +112,9 @@ async function downloadPermits() {
 */
 
 async function downloadActivePermits() {
-  var frommonth = 9;
+  var frommonth = 10;
   var fromyear = 2026;
-  var tomonth = 10;
+  var tomonth = 12;
   var toyear = 2026;
   const now = new Date();
   const startOfYear = new Date(fromyear, frommonth - 1, 1);
@@ -133,7 +133,7 @@ async function downloadActivePermits() {
 
 
     console.log('Downloading for chainType:', chainType, 'address:', addr);
-    await downloadService.downloadForAddress<PermitTx>(addr, true);
+    await downloadService.downloadForAddress<PermitTx>(addr, 'permitTriggerTransactions');
 
 
     var permits = await downloadService.getDataService().getAdressPermits(false, frommonth, fromyear, tomonth, toyear);
