@@ -1,6 +1,4 @@
-
 const processEventServiceSingleton = (() => {
-  console.log('Initializing ProcessEventService singleton factory');
 
   let instance: ProcessEventService | null = null;
 

@@ -1,6 +1,5 @@
 "use strict";
 const processEventServiceSingleton = (() => {
-    console.log('Initializing ProcessEventService singleton factory');
     let instance = null;
     return () => {
         if (!instance) {
