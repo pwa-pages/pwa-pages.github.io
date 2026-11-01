@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 49;
+const rs_DbVersion = 52;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';
 const rs_ActivePermitTxStoreName = 'activePermitTxs';
 const rs_ReportsStoreName = 'reportsStore';
+const rs_WatcherReportsStoreName = 'watcherReports';
 const rs_DownloadStatusStoreName = 'downloadStatusStore';
 const rs_OpenBoxesStoreName = 'openBoxesStore';
 const rs_AddressDataStoreName = 'addressData';
@@ -16,6 +17,7 @@ const rs_PerfFullDownloadsBatchSize = 40;
 const rs_StartFrom: Date = new Date('2024-01-01');
 const rs_Input_Key = ['boxId', 'outputAddress'];
 const rs_Permit_Key = 'id';
+const rs_WatcherReports_Key = 'chainType';
 const rs_ActivePermit_Key = 'id';
 const rs_PerfTx_Key = 'id';
 const rs_Address_Key = 'address';
@@ -172,9 +174,9 @@ interface DateNumberPoint {
 }
 
 interface IStorageService<T> {
-  getData<S = T>(storeName: string): Promise<T[] | S[]>;
+  getData<S = T>(storeName: string, key?: IDBValidKey): Promise<T[] | S[]>;
   getDataById(storeName: string, id: IDBValidKey): Promise<T | null>;
-  addData<S = T>(storeName: string, data: S[]): Promise<void>;
+  addData<S = T>(storeName: string, data: S[], key?: IDBValidKey): Promise<void>;
   deleteData(storeName: string, keys: IDBValidKey | IDBValidKey[]): Promise<void>;
 }
 
@@ -213,8 +215,10 @@ if (typeof window !== 'undefined') {
   (globalThis as any).rs_Input_Key = rs_Input_Key;
   (globalThis as any).rs_PerfTx_Key = rs_PerfTx_Key;
   (globalThis as any).rs_Permit_Key = rs_Permit_Key;
+  (globalThis as any).rs_WatcherReports_Key = rs_WatcherReports_Key;
   (globalThis as any).rs_ActivePermit_Key = rs_ActivePermit_Key;
   (globalThis as any).rs_Address_Key = rs_Address_Key;
+  (globalThis as any).rs_WatcherReportsStoreName = rs_WatcherReportsStoreName;
   (globalThis as any).rs_PermitCost = rs_PermitCost;
   (globalThis as any).rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
   (globalThis as any).rs_WatcherCollateralERG = rs_WatcherCollateralERG;

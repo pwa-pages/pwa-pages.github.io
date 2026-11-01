@@ -364,7 +364,7 @@ class ReportsDataService extends PermitsDataService {
     }
     async purgeData() {
     }
-    async getWatcherPerformanceByChainType() {
+    async getWatcherPerformanceByChainTypeFromReports() {
         const permits = await super.getAdressPermits(false, null, null, null, null);
         const reportCountsByChainTypeAndMonth = {};
         permits.forEach((permit) => {
@@ -400,6 +400,21 @@ class ReportsDataService extends PermitsDataService {
         };
         return watcherPerformanceStats;
     }
+    async getWatcherPerformanceByChainType() {
+        const chainTypes = Object.values(ChainType);
+        const watcherPerformances = {};
+        for (const chainType of chainTypes) {
+            const result = await this.storageService.getData(rs_WatcherReportsStoreName, chainType);
+            const monthStats = (Array.isArray(result) ? result[0] : result);
+            if (monthStats) {
+                watcherPerformances[chainType] = monthStats;
+            }
+        }
+        const watcherPerformanceStats = {
+            watcherPerformances
+        };
+        return watcherPerformanceStats;
+    }
     async getAdressPermitsByChainType(chainType, activeOnly, startMonth, startYear, endMonth, endYear) {
         var permits = await super.getAdressPermits(activeOnly, startMonth, startYear, endMonth, endYear);
         permits = permits.filter((tx) => !Object.values(permitTriggerAddresses).includes(tx.address));
@@ -412,7 +427,12 @@ class ReportsDataService extends PermitsDataService {
         if (chainType === undefined || chainType === null) {
             return;
         }
-        var performances = await this.getWatcherPerformanceByChainType();
+        var performances = await this.getWatcherPerformanceByChainTypeFromReports();
+        const watcherPerformances = performances.watcherPerformances ?? {};
+        Object.keys(watcherPerformances).forEach((c) => {
+            const monthStats = watcherPerformances[c];
+            this.storageService.addData(rs_WatcherReportsStoreName, [monthStats], c);
+        });
         await this.eventSender?.sendEvent({
             type: 'ReportsChanged',
             data: performances,
@@ -1113,25 +1133,21 @@ class IDBDatabaseStorageService {
     constructor(db) {
         this.db = db;
     }
-    async getData(storeName) {
+    async getData(storeName, key) {
         return new Promise((resolve, reject) => {
-            const start = typeof performance !== 'undefined' && performance.now
-                ? performance.now()
-                : Date.now();
+            const start = performance.now();
             const label = `StorageService:getData(${storeName})`;
             const tx = this.db.transaction([storeName], 'readonly');
             const store = tx.objectStore(storeName);
-            const request = store.getAll();
+            const request = store.getAll(key);
             request.onsuccess = () => {
                 const result = request.result;
-                const end = typeof performance !== 'undefined' && performance.now
-                    ? performance.now()
-                    : Date.now();
-                const duration = Math.round(end - start);
+                const duration = Math.round(performance.now() - start);
                 console.log(`${label} - loaded ${result.length} items in ${duration}ms`);
                 resolve(result);
             };
-            request.onerror = e => reject(e.target.error);
+            request.onerror = () => reject(request.error);
+            tx.onabort = () => reject(tx.error ?? new Error('Read transaction aborted'));
         });
     }
     async getDataById(storeName, id) {
@@ -1140,23 +1156,37 @@ class IDBDatabaseStorageService {
             const store = tx.objectStore(storeName);
             const request = store.get(id);
             request.onsuccess = () => {
-                const result = request.result;
-                resolve(result ?? null);
+                resolve(request.result ?? null);
             };
-            request.onerror = e => reject(e.target.error);
+            request.onerror = () => reject(request.error);
+            tx.onabort = () => reject(tx.error ?? new Error('Read transaction aborted'));
         });
     }
-    async addData(storeName, data) {
+    async addData(storeName, data, key) {
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction([storeName], 'readwrite');
             const store = tx.objectStore(storeName);
-            Promise.all(data.map(item => new Promise((res, rej) => {
-                const req = store.put(item);
-                req.onsuccess = () => res();
-                req.onerror = e => rej(e.target.error);
-            })))
-                .then(() => resolve())
-                .catch(reject);
+            tx.oncomplete = () => resolve();
+            tx.onabort = () => reject(tx.error ?? new Error('Write transaction aborted'));
+            try {
+                for (const item of data) {
+                    if (key) {
+                        store.put(item, key);
+                    }
+                    else {
+                        store.put(item);
+                    }
+                }
+            }
+            catch (error) {
+                try {
+                    tx.abort();
+                }
+                catch {
+                    // Transaction may already be inactive.
+                }
+                reject(error);
+            }
         });
     }
     async deleteData(storeName, keys) {
@@ -1164,18 +1194,26 @@ class IDBDatabaseStorageService {
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction([storeName], 'readwrite');
             const store = tx.objectStore(storeName);
-            Promise.all(arr.map(key => new Promise((res, rej) => {
-                const req = store.delete(key);
-                req.onsuccess = () => res();
-                req.onerror = e => rej(e.target.error);
-            })))
-                .then(() => resolve())
-                .catch(reject);
+            tx.oncomplete = () => resolve();
+            tx.onabort = () => reject(tx.error ?? new Error('Delete transaction aborted'));
+            try {
+                for (const key of arr) {
+                    store.delete(key);
+                }
+            }
+            catch (error) {
+                try {
+                    tx.abort();
+                }
+                catch {
+                    // Transaction may already be inactive.
+                }
+                reject(error);
+            }
         });
     }
 }
 "use strict";
-// Define the singleton at module scope
 const processEventServiceSingleton = (() => {
     console.log('Initializing ProcessEventService singleton factory');
     let instance = null;
@@ -1187,16 +1225,25 @@ const processEventServiceSingleton = (() => {
         return instance;
     };
 })();
-if (typeof self !== 'undefined') {
-    self.addEventListener('message', async (event) => {
+// Detect execution environment
+const isServiceWorker = typeof self !== 'undefined' &&
+    'ServiceWorkerGlobalScope' in globalThis &&
+    self instanceof globalThis.ServiceWorkerGlobalScope;
+if (isServiceWorker) {
+    console.log('[Rosen Download] Running inside SERVICE WORKER');
+    self.addEventListener('message', (event) => {
         const processEventService = processEventServiceSingleton();
         const data = event.data;
-        console.log(`Rosen service worker received event of type ${data.type}`);
-        processEventService.processEvent({
+        console.log(`[Rosen Download][SW] Received event: ${data.type}`);
+        const extendableEvent = event;
+        extendableEvent.waitUntil(processEventService.processEvent({
             data: data.data,
             type: data.type,
-        });
+        }));
     });
+}
+else {
+    console.log('[Rosen Download] Running outside Service Worker (Angular/main thread or another context)');
 }
 "use strict";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -1319,12 +1366,13 @@ class MemoryStorageService {
 "use strict";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 49;
+const rs_DbVersion = 52;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';
 const rs_ActivePermitTxStoreName = 'activePermitTxs';
 const rs_ReportsStoreName = 'reportsStore';
+const rs_WatcherReportsStoreName = 'watcherReports';
 const rs_DownloadStatusStoreName = 'downloadStatusStore';
 const rs_OpenBoxesStoreName = 'openBoxesStore';
 const rs_AddressDataStoreName = 'addressData';
@@ -1335,6 +1383,7 @@ const rs_PerfFullDownloadsBatchSize = 40;
 const rs_StartFrom = new Date('2024-01-01');
 const rs_Input_Key = ['boxId', 'outputAddress'];
 const rs_Permit_Key = 'id';
+const rs_WatcherReports_Key = 'chainType';
 const rs_ActivePermit_Key = 'id';
 const rs_PerfTx_Key = 'id';
 const rs_Address_Key = 'address';
@@ -1491,8 +1540,10 @@ if (typeof window !== 'undefined') {
     globalThis.rs_Input_Key = rs_Input_Key;
     globalThis.rs_PerfTx_Key = rs_PerfTx_Key;
     globalThis.rs_Permit_Key = rs_Permit_Key;
+    globalThis.rs_WatcherReports_Key = rs_WatcherReports_Key;
     globalThis.rs_ActivePermit_Key = rs_ActivePermit_Key;
     globalThis.rs_Address_Key = rs_Address_Key;
+    globalThis.rs_WatcherReportsStoreName = rs_WatcherReportsStoreName;
     globalThis.rs_PermitCost = rs_PermitCost;
     globalThis.rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
     globalThis.rs_WatcherCollateralERG = rs_WatcherCollateralERG;

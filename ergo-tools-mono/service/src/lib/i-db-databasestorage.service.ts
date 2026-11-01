@@ -1,28 +1,20 @@
+
 class IDBDatabaseStorageService<T> implements IStorageService<T> {
   constructor(public db: IDBDatabase) { }
 
-
-
-  async getData<S>(storeName: string): Promise<T[] | S[]> {
+  async getData<S>(storeName: string, key?: IDBValidKey): Promise<T[] | S[]> {
     return new Promise((resolve, reject) => {
-      const start =
-        typeof performance !== 'undefined' && performance.now
-          ? performance.now()
-          : Date.now();
+      const start = performance.now();
       const label = `StorageService:getData(${storeName})`;
 
       const tx = this.db.transaction([storeName], 'readonly');
       const store = tx.objectStore(storeName);
-      const request = store.getAll();
+      const request = store.getAll(key);
 
       request.onsuccess = () => {
         const result = request.result as T[];
 
-        const end =
-          typeof performance !== 'undefined' && performance.now
-            ? performance.now()
-            : Date.now();
-        const duration = Math.round(end - start);
+        const duration = Math.round(performance.now() - start);
 
         console.log(
           `${label} - loaded ${result.length} items in ${duration}ms`
@@ -31,8 +23,9 @@ class IDBDatabaseStorageService<T> implements IStorageService<T> {
         resolve(result as T[] | S[]);
       };
 
-      request.onerror = e =>
-        reject((e.target as IDBRequest).error);
+      request.onerror = () => reject(request.error);
+      tx.onabort = () =>
+        reject(tx.error ?? new Error('Read transaction aborted'));
     });
   }
 
@@ -46,36 +39,45 @@ class IDBDatabaseStorageService<T> implements IStorageService<T> {
       const request = store.get(id);
 
       request.onsuccess = () => {
-        const result = request.result as T | undefined;
-        resolve(result ?? null);
+        resolve((request.result as T | undefined) ?? null);
       };
 
-      request.onerror = e =>
-        reject((e.target as IDBRequest).error);
+      request.onerror = () => reject(request.error);
+      tx.onabort = () =>
+        reject(tx.error ?? new Error('Read transaction aborted'));
     });
   }
 
   async addData<S = T>(
     storeName: string,
-    data: S[]
+    data: S[],
+    key?: IDBValidKey
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       const tx = this.db.transaction([storeName], 'readwrite');
       const store = tx.objectStore(storeName);
 
-      Promise.all(
-        data.map(
-          item =>
-            new Promise<void>((res, rej) => {
-              const req = store.put(item);
-              req.onsuccess = () => res();
-              req.onerror = e =>
-                rej((e.target as IDBRequest).error);
-            })
-        )
-      )
-        .then(() => resolve())
-        .catch(reject);
+      tx.oncomplete = () => resolve();
+
+      tx.onabort = () =>
+        reject(tx.error ?? new Error('Write transaction aborted'));
+
+      try {
+        for (const item of data) {
+          if(key) {
+            store.put(item, key);
+          } else {
+            store.put(item);
+          } 
+        }
+      } catch (error) {
+        try {
+          tx.abort();
+        } catch {
+          // Transaction may already be inactive.
+        }
+        reject(error);
+      }
     });
   }
 
@@ -89,19 +91,23 @@ class IDBDatabaseStorageService<T> implements IStorageService<T> {
       const tx = this.db.transaction([storeName], 'readwrite');
       const store = tx.objectStore(storeName);
 
-      Promise.all(
-        arr.map(
-          key =>
-            new Promise<void>((res, rej) => {
-              const req = store.delete(key);
-              req.onsuccess = () => res();
-              req.onerror = e =>
-                rej((e.target as IDBRequest).error);
-            })
-        )
-      )
-        .then(() => resolve())
-        .catch(reject);
+      tx.oncomplete = () => resolve();
+
+      tx.onabort = () =>
+        reject(tx.error ?? new Error('Delete transaction aborted'));
+
+      try {
+        for (const key of arr) {
+          store.delete(key);
+        }
+      } catch (error) {
+        try {
+          tx.abort();
+        } catch {
+          // Transaction may already be inactive.
+        }
+        reject(error);
+      }
     });
   }
 }

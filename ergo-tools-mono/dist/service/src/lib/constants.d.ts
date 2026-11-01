@@ -1,10 +1,11 @@
 declare const rs_DbName = "rosenDatabase_1.1.5";
-declare const rs_DbVersion = 49;
+declare const rs_DbVersion = 52;
 declare const rs_InputsStoreName = "inputBoxes";
 declare const rs_PerfTxStoreName = "perfTxs";
 declare const rs_PermitTxStoreName = "permitTxs";
 declare const rs_ActivePermitTxStoreName = "activePermitTxs";
 declare const rs_ReportsStoreName = "reportsStore";
+declare const rs_WatcherReportsStoreName = "watcherReports";
 declare const rs_DownloadStatusStoreName = "downloadStatusStore";
 declare const rs_OpenBoxesStoreName = "openBoxesStore";
 declare const rs_AddressDataStoreName = "addressData";
@@ -15,6 +16,7 @@ declare const rs_PerfFullDownloadsBatchSize = 40;
 declare const rs_StartFrom: Date;
 declare const rs_Input_Key: string[];
 declare const rs_Permit_Key = "id";
+declare const rs_WatcherReports_Key = "chainType";
 declare const rs_ActivePermit_Key = "id";
 declare const rs_PerfTx_Key = "id";
 declare const rs_Address_Key = "address";
@@ -48,9 +50,9 @@ interface DateNumberPoint {
     y: number;
 }
 interface IStorageService<T> {
-    getData<S = T>(storeName: string): Promise<T[] | S[]>;
+    getData<S = T>(storeName: string, key?: IDBValidKey): Promise<T[] | S[]>;
     getDataById(storeName: string, id: IDBValidKey): Promise<T | null>;
-    addData<S = T>(storeName: string, data: S[]): Promise<void>;
+    addData<S = T>(storeName: string, data: S[], key?: IDBValidKey): Promise<void>;
     deleteData(storeName: string, keys: IDBValidKey | IDBValidKey[]): Promise<void>;
 }
 declare enum Period {

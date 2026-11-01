@@ -77,6 +77,9 @@ export class ErgSettings {
     static rs_ReportsStoreName() {
         return globalThis.rs_ReportsStoreName;
     }
+    static rs_WatcherReportsStoreName() {
+        return globalThis.rs_WatcherReportsStoreName;
+    }
     static rs_DownloadStatusStoreName() {
         return globalThis.rs_DownloadStatusStoreName;
     }
@@ -106,6 +109,9 @@ export class ErgSettings {
     }
     static rs_Permit_Key() {
         return globalThis.rs_Permit_Key;
+    }
+    static rs_WatcherReports_Key() {
+        return globalThis.rs_WatcherReports_Key;
     }
     static rs_ActivePermit_Key() {
         return globalThis.rs_ActivePermit_Key;

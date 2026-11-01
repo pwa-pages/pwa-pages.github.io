@@ -18,7 +18,7 @@ class ReportsDataService extends PermitsDataService {
   }
 
 
-  async getWatcherPerformanceByChainType(
+  async getWatcherPerformanceByChainTypeFromReports(
   ): Promise<WatchersPerformanceStats> {
     const permits = await super.getAdressPermits(false, null, null, null, null);
     const reportCountsByChainTypeAndMonth: Record<string, Record<string, Record<string, number>>> = {};
@@ -64,6 +64,28 @@ class ReportsDataService extends PermitsDataService {
     return watcherPerformanceStats;
   }
 
+  async getWatcherPerformanceByChainType(
+  ): Promise<WatchersPerformanceStats> {
+    const chainTypes = Object.values(ChainType);
+    const watcherPerformances: Record<string, Record<string, WatcherPerformanceAddressStat[]>> = {};
+
+    for (const chainType of chainTypes) {
+      const result = await this.storageService.getData<Record<string, WatcherPerformanceAddressStat[]>>(
+        rs_WatcherReportsStoreName, chainType
+      ) ;
+
+      const monthStats = (Array.isArray(result) ? result[0] : result) as unknown as Record<string, WatcherPerformanceAddressStat[]> | undefined;
+      if (monthStats) {
+        watcherPerformances[chainType] = monthStats;
+      }
+    }
+
+    const watcherPerformanceStats: WatchersPerformanceStats = {
+      watcherPerformances
+    };
+    return watcherPerformanceStats;
+  }
+
   async getAdressPermitsByChainType(
     chainType: string,
     activeOnly: boolean,
@@ -72,13 +94,15 @@ class ReportsDataService extends PermitsDataService {
     endMonth: number | null,
     endYear: number | null
   ): Promise<PermitTx[]> {
-      var permits = await super.getAdressPermits(activeOnly, startMonth, startYear, endMonth, endYear); 
+    var permits = await super.getAdressPermits(activeOnly, startMonth, startYear, endMonth, endYear);
 
-     
-      permits = permits.filter((tx) => !Object.values(permitTriggerAddresses).includes(tx.address));
-      permits = permits.filter((tx) => tx.chainType === chainType);
-      return permits;
+
+    permits = permits.filter((tx) => !Object.values(permitTriggerAddresses).includes(tx.address));
+    permits = permits.filter((tx) => tx.chainType === chainType);
+    return permits;
   }
+
+  
 
   override async addData(
     address: string,
@@ -92,7 +116,13 @@ class ReportsDataService extends PermitsDataService {
       return;
     }
 
-    var performances = await this.getWatcherPerformanceByChainType();
+    var performances = await this.getWatcherPerformanceByChainTypeFromReports();
+
+    const watcherPerformances = performances.watcherPerformances ?? {};
+    Object.keys(watcherPerformances).forEach((c) => {
+      const monthStats = watcherPerformances[c];
+      this.storageService.addData<Record<string, WatcherPerformanceAddressStat[]>>(rs_WatcherReportsStoreName, [monthStats], c);
+    });
 
     await this.eventSender?.sendEvent({
       type: 'ReportsChanged',

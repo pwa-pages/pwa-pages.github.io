@@ -106,6 +106,9 @@ export class ErgSettings {
   static rs_ReportsStoreName(): string {
     return (globalThis as any).rs_ReportsStoreName;
   }
+  static rs_WatcherReportsStoreName(): string {
+    return (globalThis as any).rs_WatcherReportsStoreName;
+  }
   static rs_DownloadStatusStoreName(): string {
     return (globalThis as any).rs_DownloadStatusStoreName;
   }
@@ -135,6 +138,9 @@ export class ErgSettings {
   }
   static rs_Permit_Key(): string {
     return (globalThis as any).rs_Permit_Key;
+  }
+  static rs_WatcherReports_Key(): string {
+    return (globalThis as any).rs_WatcherReports_Key;
   }
   static rs_ActivePermit_Key(): string {
     return (globalThis as any).rs_ActivePermit_Key;

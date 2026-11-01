@@ -1,12 +1,13 @@
 "use strict";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 49;
+const rs_DbVersion = 52;
 const rs_InputsStoreName = 'inputBoxes';
 const rs_PerfTxStoreName = 'perfTxs';
 const rs_PermitTxStoreName = 'permitTxs';
 const rs_ActivePermitTxStoreName = 'activePermitTxs';
 const rs_ReportsStoreName = 'reportsStore';
+const rs_WatcherReportsStoreName = 'watcherReports';
 const rs_DownloadStatusStoreName = 'downloadStatusStore';
 const rs_OpenBoxesStoreName = 'openBoxesStore';
 const rs_AddressDataStoreName = 'addressData';
@@ -17,6 +18,7 @@ const rs_PerfFullDownloadsBatchSize = 40;
 const rs_StartFrom = new Date('2024-01-01');
 const rs_Input_Key = ['boxId', 'outputAddress'];
 const rs_Permit_Key = 'id';
+const rs_WatcherReports_Key = 'chainType';
 const rs_ActivePermit_Key = 'id';
 const rs_PerfTx_Key = 'id';
 const rs_Address_Key = 'address';
@@ -173,8 +175,10 @@ if (typeof window !== 'undefined') {
     globalThis.rs_Input_Key = rs_Input_Key;
     globalThis.rs_PerfTx_Key = rs_PerfTx_Key;
     globalThis.rs_Permit_Key = rs_Permit_Key;
+    globalThis.rs_WatcherReports_Key = rs_WatcherReports_Key;
     globalThis.rs_ActivePermit_Key = rs_ActivePermit_Key;
     globalThis.rs_Address_Key = rs_Address_Key;
+    globalThis.rs_WatcherReportsStoreName = rs_WatcherReportsStoreName;
     globalThis.rs_PermitCost = rs_PermitCost;
     globalThis.rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
     globalThis.rs_WatcherCollateralERG = rs_WatcherCollateralERG;

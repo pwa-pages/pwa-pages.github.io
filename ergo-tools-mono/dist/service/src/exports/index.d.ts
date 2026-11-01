@@ -44,6 +44,7 @@ export declare class ErgSettings {
     static rs_PermitTxStoreName(): string;
     static rs_ActivePermitTxStoreName(): string;
     static rs_ReportsStoreName(): string;
+    static rs_WatcherReportsStoreName(): string;
     static rs_DownloadStatusStoreName(): string;
     static rs_OpenBoxesStoreName(): string;
     static rs_AddressDataStoreName(): string;
@@ -54,6 +55,7 @@ export declare class ErgSettings {
     static rs_StartFrom(): Date;
     static rs_Input_Key(): string[];
     static rs_Permit_Key(): string;
+    static rs_WatcherReports_Key(): string;
     static rs_ActivePermit_Key(): string;
     static rs_PerfTx_Key(): string;
     static rs_Address_Key(): string;

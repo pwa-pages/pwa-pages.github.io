@@ -10,7 +10,7 @@ class ReportsDataService extends PermitsDataService {
     }
     async purgeData() {
     }
-    async getWatcherPerformanceByChainType() {
+    async getWatcherPerformanceByChainTypeFromReports() {
         const permits = await super.getAdressPermits(false, null, null, null, null);
         const reportCountsByChainTypeAndMonth = {};
         permits.forEach((permit) => {
@@ -46,6 +46,21 @@ class ReportsDataService extends PermitsDataService {
         };
         return watcherPerformanceStats;
     }
+    async getWatcherPerformanceByChainType() {
+        const chainTypes = Object.values(ChainType);
+        const watcherPerformances = {};
+        for (const chainType of chainTypes) {
+            const result = await this.storageService.getData(rs_WatcherReportsStoreName, chainType);
+            const monthStats = (Array.isArray(result) ? result[0] : result);
+            if (monthStats) {
+                watcherPerformances[chainType] = monthStats;
+            }
+        }
+        const watcherPerformanceStats = {
+            watcherPerformances
+        };
+        return watcherPerformanceStats;
+    }
     async getAdressPermitsByChainType(chainType, activeOnly, startMonth, startYear, endMonth, endYear) {
         var permits = await super.getAdressPermits(activeOnly, startMonth, startYear, endMonth, endYear);
         permits = permits.filter((tx) => !Object.values(permitTriggerAddresses).includes(tx.address));
@@ -58,7 +73,12 @@ class ReportsDataService extends PermitsDataService {
         if (chainType === undefined || chainType === null) {
             return;
         }
-        var performances = await this.getWatcherPerformanceByChainType();
+        var performances = await this.getWatcherPerformanceByChainTypeFromReports();
+        const watcherPerformances = performances.watcherPerformances ?? {};
+        Object.keys(watcherPerformances).forEach((c) => {
+            const monthStats = watcherPerformances[c];
+            this.storageService.addData(rs_WatcherReportsStoreName, [monthStats], c);
+        });
         await this.eventSender?.sendEvent({
             type: 'ReportsChanged',
             data: performances,

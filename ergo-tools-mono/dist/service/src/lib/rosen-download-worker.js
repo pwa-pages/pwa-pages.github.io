@@ -1,5 +1,4 @@
 "use strict";
-// Define the singleton at module scope
 const processEventServiceSingleton = (() => {
     console.log('Initializing ProcessEventService singleton factory');
     let instance = null;
@@ -11,15 +10,24 @@ const processEventServiceSingleton = (() => {
         return instance;
     };
 })();
-if (typeof self !== 'undefined') {
-    self.addEventListener('message', async (event) => {
+// Detect execution environment
+const isServiceWorker = typeof self !== 'undefined' &&
+    'ServiceWorkerGlobalScope' in globalThis &&
+    self instanceof globalThis.ServiceWorkerGlobalScope;
+if (isServiceWorker) {
+    console.log('[Rosen Download] Running inside SERVICE WORKER');
+    self.addEventListener('message', (event) => {
         const processEventService = processEventServiceSingleton();
         const data = event.data;
-        console.log(`Rosen service worker received event of type ${data.type}`);
-        processEventService.processEvent({
+        console.log(`[Rosen Download][SW] Received event: ${data.type}`);
+        const extendableEvent = event;
+        extendableEvent.waitUntil(processEventService.processEvent({
             data: data.data,
             type: data.type,
-        });
+        }));
     });
+}
+else {
+    console.log('[Rosen Download] Running outside Service Worker (Angular/main thread or another context)');
 }
 //# sourceMappingURL=rosen-download-worker.js.map

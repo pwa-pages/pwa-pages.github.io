@@ -26,6 +26,7 @@ export class StorageService {
         this.recreateObjectStore(db, ErgSettings.rs_InputsStoreName(), ErgSettings.rs_Input_Key());
         this.recreateObjectStore(db, ErgSettings.rs_PerfTxStoreName(), ErgSettings.rs_PerfTx_Key());
         this.recreateObjectStore(db, ErgSettings.rs_PermitTxStoreName(), ErgSettings.rs_Permit_Key());
+        this.recreateObjectStore(db, ErgSettings.rs_WatcherReportsStoreName());
         this.recreateObjectStore(
           db,
           ErgSettings.rs_ActivePermitTxStoreName(),
@@ -81,12 +82,17 @@ export class StorageService {
   private recreateObjectStore(
     db: IDBDatabase,
     storeName: string,
-    keyPath: string | string[],
+    keyPath: string | string[] | null = null,
   ): IDBObjectStore {
     if (db.objectStoreNames.contains(storeName)) {
       db.deleteObjectStore(storeName);
     }
-    return db.createObjectStore(storeName, { keyPath });
+    if(keyPath === null) {
+      return db.createObjectStore(storeName);
+    }
+    else{
+      return db.createObjectStore(storeName, { keyPath });
+    }
   }
 
   async clearAddressStore(): Promise<void> {
