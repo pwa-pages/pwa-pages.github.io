@@ -1,4 +1,7 @@
-declare class ChainPerformanceDataService extends DataService<PerfTx> {
+import { ChainType } from "./chain.service";
+import { DataService, TransactionItem, PerfTx } from "./data.service";
+import { EventSender } from "./process.event.service";
+export declare class ChainPerformanceDataService extends DataService<PerfTx> {
     db: IDBDatabase;
     private eventSender;
     getData(): Promise<PerfTx[] | null>;

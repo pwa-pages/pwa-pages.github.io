@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IDBDatabaseStorageService = void 0;
 class IDBDatabaseStorageService {
     db;
     constructor(db) {
@@ -84,3 +86,4 @@ class IDBDatabaseStorageService {
         });
     }
 }
+exports.IDBDatabaseStorageService = IDBDatabaseStorageService;

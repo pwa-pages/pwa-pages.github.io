@@ -45,22 +45,7 @@
         ],
         "scripts": [
           "apps/rosen-watcher-pwa/src/rosen-ngsw-worker.js",
-          "dist/service/src/lib/rosen-download-worker.js",
-          "dist/service/src/lib/rosen-db-worker.js",
-          "dist/service/src/lib/chain.service.js",
-          "dist/service/src/lib/constants.js",
-          "dist/service/src/lib/data.service.js",
-          "dist/service/src/lib/chain.performance.data.service.js",
-          "dist/service/src/lib/reward.data.service.js",
-          "dist/service/src/lib/chart.service.js",
-          "dist/service/src/lib/download.service.js",
-          "dist/service/src/lib/process.event.service.js",
-          "dist/service/src/lib/watcher.data.service.js",
-          "dist/service/src/lib/permits.data.service.js",
-          "dist/service/src/lib/reports.data.service.js",
-          "dist/service/src/lib/i-db-databasestorage.service.js",
-          "dist/service/src/lib/download.status.indexeddb.service.js",
-          "dist/service/src/lib/memory.storage.service.js"
+          "dist/rosen-service-lib.js"
         ]
       },
       "configurations": {

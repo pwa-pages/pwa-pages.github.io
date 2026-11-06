@@ -1,4 +1,5 @@
-declare class DownloadStatusIndexedDbService<T> {
+import { DataService, DownloadStatus } from "./data.service";
+export declare class DownloadStatusIndexedDbService<T> {
     private dataService;
     private db;
     constructor(dataService: DataService<T>, db: IDBDatabase);

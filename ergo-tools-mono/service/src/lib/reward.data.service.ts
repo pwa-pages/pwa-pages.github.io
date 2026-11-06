@@ -1,5 +1,12 @@
+import { Asset } from "./asset";
+import { getChainType, ChainType } from "./chain.service";
+import { ChartService } from "./chart.service";
+import { rs_InputsStoreName, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals } from "./constants";
+import { DataService, DbInput, TransactionItem } from "./data.service";
+import { Input } from "./input";
+import { EventSender } from "./process.event.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class RewardDataService extends DataService<DbInput> {
+export class RewardDataService extends DataService<DbInput> {
   override getData(): Promise<DbInput[] | null> {
     return this.storageService.getData<DbInput>(rs_InputsStoreName);
   }
@@ -155,8 +162,8 @@ class RewardDataService extends DataService<DbInput> {
             boxId: input.boxId,
             accumulatedAmount: amount,
             amount: asset.amount / Math.pow(10, asset.decimals),
-            chainType:
-              (input.chainType as ChainType) ?? getChainType(input.address),
+            chainType: (input.chainType as ChainType) ?? getChainType(input.address),
+            outputCreatedAt: 0
           });
         });
       });

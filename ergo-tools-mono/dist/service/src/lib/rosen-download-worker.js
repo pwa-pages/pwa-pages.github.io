@@ -1,4 +1,4 @@
-"use strict";
+import { ProcessEventService, ServiceWorkerEventSender } from "./process.event.service";
 const processEventServiceSingleton = (() => {
     let instance = null;
     return () => {

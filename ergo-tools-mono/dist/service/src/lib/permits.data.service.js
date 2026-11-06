@@ -1,6 +1,9 @@
-"use strict";
+import { permitTriggerAddresses, permitBulkAddresses, rewardAddresses, rwtTokenIds, getChainTypeForPermitTriggerAddress, getChainTypeForPermitAddress } from "./chain.service";
+import { rs_ActivePermitTxStoreName, rs_OpenBoxesStoreName, rs_FullDownloadsBatchSize } from "./constants";
+import { DataService } from "./data.service";
+import { WatcherDataService } from "./watcher.data.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class PermitsDataService extends DataService {
+export class PermitsDataService extends DataService {
     getData() {
         return this.storageService.getData(this.storeName);
     }

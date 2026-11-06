@@ -1,5 +1,4 @@
-"use strict";
-class IDBDatabaseStorageService {
+export class IDBDatabaseStorageService {
     constructor(db) {
         this.db = db;
     }

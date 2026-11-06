@@ -1,4 +1,7 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DownloadStatusIndexedDbService = void 0;
+const constants_1 = require("./constants");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadStatusIndexedDbService {
     dataService;
@@ -11,8 +14,8 @@ class DownloadStatusIndexedDbService {
     // Get Download Status for Address from IndexedDB
     async getDownloadStatus(address) {
         return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction([rs_DownloadStatusStoreName], 'readonly');
-            const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
+            const transaction = this.db.transaction([constants_1.rs_DownloadStatusStoreName], 'readonly');
+            const objectStore = transaction.objectStore(constants_1.rs_DownloadStatusStoreName);
             const request = objectStore.get(address + '_' + this.dataService.getDataType());
             request.onsuccess = () => resolve(request.result);
             request.onerror = (event) => reject(event.target.error);
@@ -38,11 +41,12 @@ class DownloadStatusIndexedDbService {
     }
     async saveDownloadStatus(downloadStatus) {
         return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction([rs_DownloadStatusStoreName], 'readwrite');
-            const objectStore = transaction.objectStore(rs_DownloadStatusStoreName);
+            const transaction = this.db.transaction([constants_1.rs_DownloadStatusStoreName], 'readwrite');
+            const objectStore = transaction.objectStore(constants_1.rs_DownloadStatusStoreName);
             const request = objectStore.put(downloadStatus);
             request.onsuccess = () => resolve();
             request.onerror = (event) => reject(event.target.error);
         });
     }
 }
+exports.DownloadStatusIndexedDbService = DownloadStatusIndexedDbService;

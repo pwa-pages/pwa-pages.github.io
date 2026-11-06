@@ -1,10 +1,12 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const process_event_service_1 = require("./process.event.service");
 const processEventServiceSingleton = (() => {
     let instance = null;
     return () => {
         if (!instance) {
             console.log('Creating new ProcessEventService instance');
-            instance = new ProcessEventService(new ServiceWorkerEventSender());
+            instance = new process_event_service_1.ProcessEventService(new process_event_service_1.ServiceWorkerEventSender());
         }
         return instance;
     };

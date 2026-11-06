@@ -1,6 +1,6 @@
-"use strict";
+import { getChainType } from "./chain.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ChartService {
+export class ChartService {
     async getAddressCharts(inputs) {
         const addressCharts = {};
         inputs.forEach((input) => {

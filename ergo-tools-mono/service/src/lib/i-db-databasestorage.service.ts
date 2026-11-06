@@ -1,5 +1,6 @@
+import { IStorageService } from "./constants";
 
-class IDBDatabaseStorageService<T> implements IStorageService<T> {
+export class IDBDatabaseStorageService<T> implements IStorageService<T> {
   constructor(public db: IDBDatabase) { }
 
   async getData<S>(storeName: string, key?: IDBValidKey): Promise<T[] | S[]> {

@@ -1,12 +1,15 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DownloadService = void 0;
+const constants_1 = require("./constants");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService {
     dataService;
     eventSender;
     downloadStatusIndexedDbService;
     busyCounter = 0;
-    downloadFullSize = rs_FullDownloadsBatchSize;
-    downloadInitialSize = rs_InitialNDownloads;
+    downloadFullSize = constants_1.rs_FullDownloadsBatchSize;
+    downloadInitialSize = constants_1.rs_InitialNDownloads;
     //private static addressDownloadDateMap = new Map<string, Date>();
     constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusIndexedDbService) {
         this.dataService = dataService;
@@ -31,8 +34,8 @@ class DownloadService {
         }
     }
     async downloadTransactions(address, offset = 0, limit = 500, urlAction) {
-        if (getUrlConfig(urlAction).isNode) {
-            const url = `${getUrlConfig(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
+        if ((0, constants_1.getUrlConfig)(urlAction).isNode) {
+            const url = `${(0, constants_1.getUrlConfig)(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
             console.log(`Downloading from: ${url}`);
             const response = await fetch(url, {
                 method: 'POST',
@@ -51,14 +54,14 @@ class DownloadService {
             };
             for (const item of data.items) {
                 const inputDate = new Date(item.timestamp);
-                if (inputDate < rs_StartFrom) {
+                if (inputDate < constants_1.rs_StartFrom) {
                     return result;
                 }
             }
             return result;
         }
         else {
-            const url = `https://${getUrlConfig(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
+            const url = `https://${(0, constants_1.getUrlConfig)(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
             console.log(`Downloading from: ${url}`);
             const response = await this.fetchTransactions(url);
             const result = {
@@ -68,7 +71,7 @@ class DownloadService {
             };
             for (const item of response.items) {
                 const inputDate = new Date(item.timestamp);
-                if (inputDate < rs_StartFrom) {
+                if (inputDate < constants_1.rs_StartFrom) {
                     return result;
                 }
             }
@@ -78,7 +81,7 @@ class DownloadService {
     async downloadForAddresses(urlAction) {
         console.log('Start downloading for all addresses');
         try {
-            const addresses = await this.dataService.storageService.getData(rs_AddressDataStoreName);
+            const addresses = await this.dataService.storageService.getData(constants_1.rs_AddressDataStoreName);
             const downloadPromises = addresses.map(async (addressObj) => {
                 await this.downloadForAddress(addressObj.address, urlAction);
             });
@@ -192,6 +195,7 @@ class DownloadService {
         return null;
     }
 }
+exports.DownloadService = DownloadService;
 if (typeof window !== 'undefined') {
     window.DownloadService = DownloadService;
 }

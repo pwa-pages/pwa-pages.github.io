@@ -1,6 +1,9 @@
-"use strict";
+import { ChainType, getChainTypeForPermitTriggerAddress, permitTriggerAddresses } from "./chain.service";
+import { rs_ReportsStoreName, rs_WatcherReportsStoreName } from "./constants";
+import { PermitsDataService } from "./permits.data.service";
+import { WatcherDataService } from "./watcher.data.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ReportsDataService extends PermitsDataService {
+export class ReportsDataService extends PermitsDataService {
     constructor(db, eventSender, storeName = rs_ReportsStoreName, maxDownloadDateDifference = 204800000) {
         super(db, storeName, maxDownloadDateDifference);
         this.eventSender = eventSender;

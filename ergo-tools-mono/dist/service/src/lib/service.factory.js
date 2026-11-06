@@ -1,4 +1,9 @@
-"use strict";
+import { DownloadService } from "./download.service";
+import { MemoryStorageService } from "./memory.storage.service";
+import { PermitsDataService } from "./permits.data.service";
+import { WatcherDataService } from "./watcher.data.service";
+import { rs_ActivePermitTxStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads } from "./constants";
+import { permitTriggerAddresses } from "./chain.service";
 globalThis.GetPermitTriggerAddresses =
     () => {
         return permitTriggerAddresses;

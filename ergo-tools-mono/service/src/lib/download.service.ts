@@ -1,7 +1,10 @@
-
+import { getUrlConfig, rs_AddressDataStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_StartFrom, UrlAction } from "./constants";
+import { Address, DataService, FetchTransactionsResponse, TransactionItem } from "./data.service";
+import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
+import { EventSender } from "./process.event.service";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class DownloadService<T> {
+export class DownloadService<T> {
   private busyCounter = 0;
   private downloadFullSize = rs_FullDownloadsBatchSize;
   private downloadInitialSize = rs_InitialNDownloads;

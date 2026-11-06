@@ -1,4 +1,13 @@
-"use strict";
+import { ChainPerformanceDataService } from "./chain.performance.data.service";
+import { permitTriggerAddresses, hotWalletAddress, permitAddresses } from "./chain.service";
+import { ChartService } from "./chart.service";
+import { rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_DbName, UrlAction } from "./constants";
+import { DownloadService } from "./download.service";
+import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
+import { PermitsDataService } from "./permits.data.service";
+import { ReportsDataService } from "./reports.data.service";
+import { RewardDataService } from "./reward.data.service";
+import { WatcherDataService } from "./watcher.data.service";
 async function createServices(eventSender, db) {
     const chartService = new ChartService();
     const rewardDataService = new RewardDataService(db, chartService, eventSender);
@@ -30,7 +39,7 @@ async function createServices(eventSender, db) {
     };
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ServiceWorkerEventSender {
+export class ServiceWorkerEventSender {
     async sendEvent(event) {
         const clientsList = await self.clients.matchAll({
             type: 'window',
@@ -41,7 +50,7 @@ class ServiceWorkerEventSender {
         }
     }
 }
-class ProcessEventService {
+export class ProcessEventService {
     constructor(eventSender) {
         this.eventSender = eventSender;
     }

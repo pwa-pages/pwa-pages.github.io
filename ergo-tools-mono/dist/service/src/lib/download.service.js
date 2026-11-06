@@ -1,6 +1,6 @@
-"use strict";
+import { getUrlConfig, rs_AddressDataStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_StartFrom } from "./constants";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class DownloadService {
+export class DownloadService {
     //private static addressDownloadDateMap = new Map<string, Date>();
     constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusIndexedDbService) {
         this.dataService = dataService;

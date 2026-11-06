@@ -1,4 +1,4 @@
-class MemoryStorageService<T> {
+export class MemoryStorageService<T> {
   private getMemoryStore(): Record<string, any> {
     const g = globalThis as any;
     if (!g.__storageServiceStore) {

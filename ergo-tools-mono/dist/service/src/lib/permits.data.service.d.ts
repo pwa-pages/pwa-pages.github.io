@@ -1,4 +1,7 @@
-declare class PermitsDataService extends DataService<PermitTx> {
+import { Asset } from "./asset";
+import { IStorageService } from "./constants";
+import { DataService, PermitTx, TransactionItem } from "./data.service";
+export declare class PermitsDataService extends DataService<PermitTx> {
     private storeName;
     private maxDownloadDateDifference;
     getData(): Promise<PermitTx[] | null>;

@@ -1,54 +1,91 @@
-interface MessageEventData {
+import { Address } from "./address";
+import { Asset } from "./asset";
+import { ChainType } from "./chain.service";
+import { IStorageService } from "./constants";
+import { IDBDatabaseStorageService } from "./i-db-databasestorage.service";
+import { Input } from "./input";
+
+export class ChartPoint {
+  x: Date;
+  y: number;
+
+  constructor(x: Date, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+export class ChartPerformance {
+  address: string;
+  addressForDisplay: string;
+  chart: ChartPoint[];
+  chainType: string | null;
+  color: string;
+
+  constructor(
+    address: string,
+    addressForDisplay: string,
+    chart: ChartPoint[],
+    color: string,
+    chainType: string | null,
+  ) {
+    this.address = address;
+    this.addressForDisplay = addressForDisplay;
+    this.chart = chart;
+    this.chainType = chainType;
+    this.color = color;
+  }
+}
+
+export class ChainChartPerformance {
+  address: string;
+  addressForDisplay: string;
+  chart: number;
+  chainType: string | null;
+  color: string;
+
+  constructor(
+    address: string,
+    addressForDisplay: string,
+    chart: number,
+    color: string,
+    chainType: string | null,
+  ) {
+    this.address = address;
+    this.addressForDisplay = addressForDisplay;
+    this.chart = chart;
+    this.chainType = chainType;
+    this.color = color;
+  }
+}
+
+export interface MessageEventData {
   type: string;
   data: string;
 }
 
-interface Address {
-  address: string;
-  Address: string;
-  chainType?: string;
-}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface MyWatchersStats {
-  chainType?: ChainType;
-  address?: Address;
-}
-
-interface TransactionItem {
+export interface TransactionItem {
   timestamp: string;
   inputs: Input[];
   outputs: Output[];
   id: string;
 }
 
-interface FetchTransactionsResponse {
+export interface FetchTransactionsResponse {
   transactions: TransactionItem[];
   items: TransactionItem[];
   total: number;
 }
 
-interface DownloadStatus {
+export interface DownloadStatus {
   address: string;
   Address: string;
   status: string;
   lastDownloadDate: Date | undefined;
 }
 
-interface FetchTransactionsResponse {
-  transactions: TransactionItem[];
-  items: TransactionItem[];
-  total: number;
-}
-
-interface DownloadStatus {
-  address: string;
-  Address: string;
-  status: string;
-  lastDownloadDate: Date | undefined;
-}
-
-interface PerfTx {
+export interface PerfTx {
   id: string;
   timestamp: string;
   chainType?: string;
@@ -56,20 +93,13 @@ interface PerfTx {
   decimals?: number;
 }
 
-interface OpenBoxes {
+export interface OpenBoxes {
   address: string;
   openBoxesJson: string;
 }
 
-interface Asset {
-  name: string;
-  amount: number;
-  decimals: number;
-  tokenId: string | null;
-}
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface PermitTx {
+export interface PermitTx {
   id: string;
   date: Date;
   boxId: string;
@@ -81,7 +111,7 @@ interface PermitTx {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface PermitInfo {
+export interface PermitInfo {
   lockedRSN: number;
   activeLockedRSN: number;
   address: string;
@@ -89,7 +119,7 @@ interface PermitInfo {
   chainType: ChainType;
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface DbInput {
+export interface DbInput {
   outputAddress: string;
   inputDate: Date;
   boxId: string;
@@ -97,19 +127,9 @@ interface DbInput {
   address?: string;
   chainType?: string;
 }
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface Input {
-  boxId: string;
-  outputAddress: string;
-  inputDate: Date;
-  assets: Asset[];
-  address: string;
-  amount?: number;
-  accumulatedAmount?: number;
-  chainType?: ChainType | null;
-}
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface Output {
+export interface Output {
   boxId: string;
   outputDate: Date;
   assets: Asset[];
@@ -117,21 +137,7 @@ interface Output {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface WatcherPerformanceAddressStat {
-  address: Address | undefined;
-  reports: number | undefined;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface WatchersPerformanceStats {
-  watcherPerformances:
-    | Record<string, Record<string, WatcherPerformanceAddressStat[]>>
-    | undefined;
-}
-
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-abstract class DataService<T> {
+export abstract class DataService<T> {
   public storageService: IStorageService<T>;
   public db?: IDBDatabase;
   constructor(dbOrStorage: IDBDatabase | IStorageService<T>) {
@@ -168,3 +174,5 @@ abstract class DataService<T> {
   ): Promise<T[] | null>;
 
 }
+export { Address };
+

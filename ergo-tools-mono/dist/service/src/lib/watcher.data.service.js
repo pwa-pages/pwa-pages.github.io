@@ -1,6 +1,8 @@
-"use strict";
+import { getChainTypeForPermitAddress } from "./chain.service";
+import { rs_PermitTxStoreName, rs_RSNTokenId, rs_RSNDecimals, rs_PermitCost } from "./constants";
+import { DataService } from "./data.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class WatcherDataService extends DataService {
+export class WatcherDataService extends DataService {
     getData() {
         return this.storageService.getData(rs_PermitTxStoreName);
     }

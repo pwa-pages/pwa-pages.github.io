@@ -1,5 +1,11 @@
+import { Asset } from "./asset";
+import { ChainType, getChainTypeForPermitAddress } from "./chain.service";
+import { rs_PermitTxStoreName, rs_RSNTokenId, rs_RSNDecimals, rs_PermitCost } from "./constants";
+import {  DataService, Output, PermitTx, TransactionItem, PermitInfo } from "./data.service";
+import { Input } from "./input";
+import { PermitsDataService } from "./permits.data.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class WatcherDataService extends DataService<PermitTx> {
+export class WatcherDataService extends DataService<PermitTx> {
   override getData(): Promise<PermitTx[] | null> {
     return this.storageService.getData<PermitTx>(rs_PermitTxStoreName);
   }

@@ -1,6 +1,8 @@
-"use strict";
+import { getChainType } from "./chain.service";
+import { rs_InputsStoreName, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals } from "./constants";
+import { DataService } from "./data.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class RewardDataService extends DataService {
+export class RewardDataService extends DataService {
     getData() {
         return this.storageService.getData(rs_InputsStoreName);
     }
@@ -110,6 +112,7 @@ class RewardDataService extends DataService {
                         accumulatedAmount: amount,
                         amount: asset.amount / Math.pow(10, asset.decimals),
                         chainType: input.chainType ?? getChainType(input.address),
+                        outputCreatedAt: 0
                     });
                 });
             });

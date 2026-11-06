@@ -1,0 +1,165 @@
+export * from './address';
+export * from './input';
+export * from './asset';
+export * from './data.service';
+export * from './permits.data.service';
+export * from './reports.data.service';
+export * from './chain.performance.data.service';
+export * from './chain.service';
+export * from './chart.service';
+export * from './chart.dataset';
+export * from './constants';
+export * from './data.service';
+export * from './download.status.indexeddb.service';
+export * from './i-db-databasestorage.service';
+export * from './memory.storage.service';
+export * from './watcher.data.service';
+export * from './watcher.info';
+export * from './token';
+export * from './process.event.service';
+export * from './reward.data.service';
+//export * from './rosen-db-worker';
+export * from './rosen-download-worker';
+export function getAllChainTypes() {
+    return globalThis.getChainTypes();
+}
+export function getCurrencyValues() {
+    return globalThis.currencies;
+}
+export function getPermitAddressesByChainType() {
+    return globalThis.permitAddresses;
+}
+export function getPermitBulkAddressesByChainType() {
+    return globalThis.permitBulkAddresses;
+}
+export function getPermitTriggerAddressesByChainType() {
+    if (globalThis.permitTriggerAddresses != null) {
+        return globalThis.permitTriggerAddresses;
+    }
+    else {
+        return globalThis.GetPermitTriggerAddresses();
+    }
+}
+export function getChainTypeTokensByChainType() {
+    return globalThis.chainTypeTokens;
+}
+export function getChainTypeWatcherIdentifiersByChainType() {
+    return globalThis.chainTypeWatcherIdentifier;
+}
+export function getActivatedChainTypes() {
+    return globalThis.getActiveChainTypes();
+}
+export function getChainTypeForAddress(address) {
+    return globalThis.getChainType(address);
+}
+export function getRewardAddressForChainType(chainType) {
+    return globalThis.rewardAddresses[chainType];
+}
+export function createProcessEvtService(eventSender) {
+    return globalThis.CreateProcessEventService(eventSender);
+}
+export function GetWatcherDataService(permitsDataService) {
+    return globalThis.GetWatcherDataService(permitsDataService);
+}
+export function GetPermitsDownloadService(maxDownloadDateDifference) {
+    return globalThis.CreatePermitsDownloadService(maxDownloadDateDifference, null);
+}
+export function GetWatcherDownloadService() {
+    return globalThis.CreateWatcherDownloadService(null);
+}
+export class ErgSettings {
+    static rs_ErgoExplorerHost() {
+        return globalThis.rs_ErgoExplorerHost;
+    }
+    static rs_ErgoNodeHost() {
+        return globalThis.rs_ErgoNodeHost;
+    }
+    static rs_dbName() {
+        return globalThis.rs_DbName;
+    }
+    static rs_DbVersion() {
+        return globalThis.rs_DbVersion;
+    }
+    static rs_InputsStoreName() {
+        return globalThis.rs_InputsStoreName;
+    }
+    static rs_PerfTxStoreName() {
+        return globalThis.rs_PerfTxStoreName;
+    }
+    static rs_PermitTxStoreName() {
+        return globalThis.rs_PermitTxStoreName;
+    }
+    static rs_ActivePermitTxStoreName() {
+        return globalThis.rs_ActivePermitTxStoreName;
+    }
+    static rs_ReportsStoreName() {
+        return globalThis.rs_ReportsStoreName;
+    }
+    static rs_WatcherReportsStoreName() {
+        return globalThis.rs_WatcherReportsStoreName;
+    }
+    static rs_DownloadStatusStoreName() {
+        return globalThis.rs_DownloadStatusStoreName;
+    }
+    static rs_OpenBoxesStoreName() {
+        return globalThis.rs_OpenBoxesStoreName;
+    }
+    static rs_AddressDataStoreName() {
+        return globalThis.rs_AddressDataStoreName;
+    }
+    static rs_InitialNDownloads() {
+        return globalThis.rs_InitialNDownloads;
+    }
+    static rs_FullDownloadsBatchSize() {
+        return globalThis.rs_FullDownloadsBatchSize;
+    }
+    static rs_PerfInitialNDownloads() {
+        return globalThis.rs_PerfInitialNDownloads;
+    }
+    static rs_PerfFullDownloadsBatchSize() {
+        return globalThis.rs_PerfFullDownloadsBatchSize;
+    }
+    static rs_StartFrom() {
+        return globalThis.rs_StartFrom;
+    }
+    static rs_Input_Key() {
+        return globalThis.rs_Input_Key;
+    }
+    static rs_Permit_Key() {
+        return globalThis.rs_Permit_Key;
+    }
+    static rs_WatcherReports_Key() {
+        return globalThis.rs_WatcherReports_Key;
+    }
+    static rs_ActivePermit_Key() {
+        return globalThis.rs_ActivePermit_Key;
+    }
+    static rs_PerfTx_Key() {
+        return globalThis.rs_PerfTx_Key;
+    }
+    static rs_Address_Key() {
+        return globalThis.rs_Address_Key;
+    }
+    static rs_PermitCost() {
+        return globalThis.rs_PermitCost;
+    }
+    static rs_WatcherCollateralRSN(chainType) {
+        return globalThis.rs_WatcherCollateralRSN(chainType);
+    }
+    static rs_WatcherCollateralERG(chainType) {
+        return globalThis.rs_WatcherCollateralERG(chainType);
+    }
+    static rs_RSNTokenId() {
+        return globalThis.rs_RSNTokenId;
+    }
+    static rs_eRSNTokenId() {
+        return globalThis.rs_eRSNTokenId;
+    }
+    static rs_TokenIdMap() {
+        return globalThis.rs_TokenIdMap;
+    }
+    static rs_RSNDecimals() {
+        return globalThis.rs_RSNDecimals;
+    }
+}
+//# sourceMappingURL=index.js.map

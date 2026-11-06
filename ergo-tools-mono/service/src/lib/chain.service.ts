@@ -3,7 +3,7 @@
 // chainService.ts
 
 // Define the ChainType enum if it's not already available
-enum ChainType {
+export enum ChainType {
   Ergo = 'Ergo',
   Cardano = 'Cardano',
   Bitcoin = 'Bitcoin',
@@ -20,11 +20,11 @@ enum ChainType {
   Zcash = 'Zcash'
 }
 
-function getChainTypes(): string[] {
+export function getChainTypes(): string[] {
   return Object.values(ChainType)
 }
 
-function getActiveChainTypes(): ChainType[] {
+export function getActiveChainTypes(): ChainType[] {
   const active = new Set<ChainType>();
 
   const addIfPresent = (
@@ -50,7 +50,7 @@ function getActiveChainTypes(): ChainType[] {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const chainTypeTokens = Object.fromEntries(
+export const chainTypeTokens = Object.fromEntries(
   Object.values(ChainType).map((chain) =>
     chain === ChainType.Runes ? [chain, `rspv3BitcoinRunesRWT`] :
       [chain, `rspv3${chain}RWT`]
@@ -59,14 +59,14 @@ const chainTypeTokens = Object.fromEntries(
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const chainTypeWatcherIdentifier = Object.fromEntries(
+export const chainTypeWatcherIdentifier = Object.fromEntries(
   Object.values(ChainType).map((chain) =>
     chain === ChainType.Runes ? [chain, `rspv3BitcoinRunesAWC`] :
       [chain, `rspv3${chain}AWC`]
   ),
 );
 
-const rwtTokenIds: Record<string, ChainType> = {
+export const rwtTokenIds: Record<string, ChainType> = {
   '73c00e245574b45eca0c06796c40730260f9812fefc0da2dc64576559ac251b5':
     ChainType.Ergo,
   '0c60af62d0a3895eafded7587218a88157b5a0e5075f36596b3ed6d73cdefcf9':
@@ -86,7 +86,7 @@ const rwtTokenIds: Record<string, ChainType> = {
 
 };
 
-const permitAddresses: Record<ChainType, string | null> = {
+export const permitAddresses: Record<ChainType, string | null> = {
   [ChainType.Bitcoin]:
     'NY4PEzZ7VfjxESbhPaCAkoFLZS4NXxXFsfiqzZTycYKaCpHm2QVDJUh9MtA9KbHZivPgGoCpBP8p6qtRQNfT8kH12bCFWjsFZaGFJbFgP6gwGA7s9eJiS2h9HdGL4FCZ1KYS9ADnqp6cFuw4MagrEXbmGyixjb1mMN3JTdLANmfFrPcv68ucpeTvGKvvDbzvLXKzQB8wVyamMYu8PCYq1QNmmHtXZSGdhX5dfajFqo8ubbJZiiTKJzQuw9d69vwUBgqmMLEXUK8MCsfUerPged4eGt1qm8ZvpPT6MxCpaKsVNRCagSVCDVjwCivjZ7owo62oWL4Q5NdWAYxVN3TG9yNy6iviEEX6ENbAjpGCqmZag2qRYmbLGZPf4XxNqKfzQ1wzriqy4M5s5mLqsKs1Bhp9XR1gjUyWvui5BAYM97XWvyRXAv5PFoZqTNJWemKuEY2wub97Ac7asNhhRpLwDMNfdW4vkpYUKXHnJiDvQQGsWEs5Jx2PjwCe9wYTRKM69t6nyfddR7quYMn8SLxVFM22xq49Cr9GHTpLZxcLCQisDmRRspxkYstmBPvuDzcbXYQtAodUKrXhwmCrk39Hir5P3XQ7BHpQP5x5dLu8Vn24jSaPyBJxq6HNBrMBGDJq9JxqQXmy1GReXp5RYi8ZUEEZFdc1R2cBw5aBNCvS2Z9UWBDBPNQW7rpx4VE2MpFNJa2y7VnSBft3cnWtbE8tsDuMpHJnDTDCP55eHJJ5iYsUEfqeHQRbXmi9AhPRaZ1YTbMFGMVu6ub14m68jrzvCpgB2wyPRnNsDi3YMhbtzYQS2uVNKpr8jDJE51bYjeLki9apBtKUhD18JCKNH5R7tWfhi7LDx878Ai2CSppY45GqTTZqNFDSFYjnhtYntQvb3ZAfEgkQXMKegz37hqAvyfNxCD94jksJjyUa8Em1JP8JrMYvEaGBcMWkRvwoUFYSa2sZrekrv9s8jn5TJsQFiWKmLmxKb1cfa9vi2Q3rRBdVEZswAxCka1p6dKjXSpAqRRrfXyEaTtHYfgNH676WnA3cxXkPeURMDf1mM15rUSLCBwtxCDrvFcsAgCdNhRvfAesuS15aUZjYHuLDXFGhSf3vmrr8MDUJQ1mqEmLWJLjwQ1SsU81GnGddHBxS8FqP5r2hFsVwboKNf8FBUQv7JWimMm8aFkgbpcG35tgpL9TB8CmpJZ53VShUVmssxMqSTPs1yxAZXG3ejkBZvV8rmdZAsnjVDv',
   [ChainType.Cardano]:
@@ -111,7 +111,7 @@ const permitAddresses: Record<ChainType, string | null> = {
   [ChainType.BitcoinCash]: null
 };
 
-const permitTriggerAddresses: Record<ChainType, string | null> = {
+export const permitTriggerAddresses: Record<ChainType, string | null> = {
   [ChainType.Bitcoin]:
     '5ivrmzxYZsdXpJSFsVWEJvBM51M3enFM1f8iCWXb7wGAdq6kD5Sz7oeMomL3SpLu3LJFKHyD4UWWKLMt8yFtLFyxiCfktxmA9NtJUXT7TfmkdnkMYAyyFfaQSxzu4AbkL5opx28ro9d42atuoWDJfBr6uDHL12swQ8uAjR16yv4cREPv2mwUwmgGc6sqd8p2pXjmQqvS6d8Hi92GqnqStiYEqqGRUoeEi1v5DUVTox4a56xo3C4gPQT1DYdjSSvwUXduMFcjj1ZTnugyUjgen7UBAHWgXpYrmkfVxwMiK9bTRXi1cfPibDJGdUTHfTL8eShrjhkhYZNj6PDqd6hg4taEfGyrmxfWzMaGU7DWQExkWaowaZGqAkHmExTGLrCJNSaRjBgEYrpMEghaJ2htPVdVtBtAZVhDqn22gHYXBRSGJjXz3X4YQtLqkRgHvbDZf4uoZGaeijS9eKw7mMwUEJdmTpGie7YvXrt4GCZQzJY9H444zKS2MTFyGHPBazPThZfd81DLLdHMvHQP78kHY3m23h9TkiNEE3xUNtRYdqoH387E7XDGoUgH4eAaVnSHJ21EDh7SKiuvmucF5TZy74CU1n4eBxjR4MgwTLd3a14BLjoNHwhgwtT9YAG5rJR8WWDeqao2Nt5MczR9rDQinDXtwC9L2QS3VDwdGAgro9byPt4yeot1gk7wj4xR7KdSTuqqc9mLDM2LCNQikrPFy4feX9bJAWFxm234rsh7DS8JoAxakTntkDxAryWByS94Pm4uSi1hkvbspjeykTiHmwL1LAWzUWVpqMJVPnngnDs7eS4Y6XJV12TNYVj3SRWs8FCY2c66FNo7gBdGLwiMrEQ5ktiYiDz6v2N77R3f6onpckgiFLDjrpR2Zad6TM2TCBPxYgukKgFeXUdrY53WBvtyAFY8zTAh2rZRbYALYajBF16ZPRoCJAb6NusvSkQ6iqLJh9iC9Wm4Re8UsTkD4qtHNCjfvyvcM5jcyzLFsZ8GFYg5ukWLhrAzb19BTbKKH2eCvgUketrM6XDZwaUQsd7NJXZGeE8ZJLVTrGFp6Njc3cmJRkZyj9YWyxZs21KiNy98FhtNimkJ3RSXw4XFTX4AkMXikNZaoP1fXdKDGRSmVfsPP5yMXfcCCzjqwSbjSrzUexC8B43Cii15Y2yKx1SgWNn5ogmRXuUvpQoYP8bUy5SD5cMgco5tc9Xf95BsLeX5ibmDjToZEm8mJcJgKs88pUomN8XMWjnt5HdFH3zCoCUfYajcdJnq64bmZjMauvdjACPDPtAjrNsxorrra',
   [ChainType.Cardano]:
@@ -136,7 +136,7 @@ const permitTriggerAddresses: Record<ChainType, string | null> = {
   [ChainType.BitcoinCash]: null
 };
 
-const permitBulkAddresses: Record<ChainType, string | null> = {
+export const permitBulkAddresses: Record<ChainType, string | null> = {
   [ChainType.Bitcoin]:
     'ZsPNMsGz8D8y11MAneZTVjJndCjgTUhKaMCWGp1mugfdTV8uKMae9RN2QxT7TzNMQYycaJwe7SQtnFSVwTbbNa9VfrqvmKvTsH78Sk1rXrVjr6CQL74RYew3oSJyhVaQQzgmyoDqF2FvMvvZHBArfvkyfT8gwpA7XvSobfvDVd1yFVkrjBehReQnDQUbYNfJZFhrqubKHNvThwgUkM4MFYQGzf9vCwHp5y4kEVaVra3KVukX6PAUkoNSZ9kpSPZiGVn18AXWc4PU7Wt68vg4FRnLfR7iSBpCEYK7PcNWxyyFatJmcbj4L2PbaNXsPTazv9rzPNGUPsPLDDPuTvXuCvcRBvrxjSTWiNrNgURwYfDKssc2hDSd3MabStci4FYz4xZ4kF4nMPksdETsepw5Ruyuf4hUiFnHGqYseKCwaPP725igisJ4gKFm4Geefr3aELkDGGQbmBCFirXS96ffychBbRFsUVaX94KnsDTKtXs8NgEAm4d8awjTdohjgcGC4bca5P',
   [ChainType.Cardano]:
@@ -161,7 +161,7 @@ const permitBulkAddresses: Record<ChainType, string | null> = {
   [ChainType.BitcoinCash]: null
 };
 
-const rewardAddresses: Record<ChainType, string | null> = {
+export const rewardAddresses: Record<ChainType, string | null> = {
   [ChainType.Bitcoin]:
     '2Eit2LFRqu2Mo33z3pYTJRHNCPZXtS2f68LNW668eK4nJNwXQZMTEW23dCLCxfBX9CZfhHCCt1AbFaprUWX4wG2LfPVrXjGSpZCB5oX3FQ23WXi1YB7LpWt5UCEbbauhPcpkVV7wr5EZAqcVqWR1ps3Tnt5nMH1a3cUCMugh1BJKcBr687wqjEscF3kYGkKAzHnVaB3bx9reqJf2fqtC9c77EsoxSpueQxVhHoPaYwVWfXcnaRQTTR81p5fQJ1bSLAsRcfoQjF8sM4dfMeDrDGwCMor8vQFzzTmdYRc51jtcaRevAQ2JiMNp8DUbJEevVPvtWhYGPiHA7EdFKsoUQHGhm6sa4v15XVUiZstbJ7sVDmPEX22peSTc4SQBPSBEUD3fRExknLTChW4nVjLZcUBgJQSDoDpakHR2v8EeSnpfrnwmnY4EoGAFyL17nVJBUjgjGDcbuV5tFPK752f3yJqGr7H5KvejJot2QjAmzdz9emhmEHoqVuho2wiJ5nF2S8PcCFwrsp38cgtvGfFvC6iHmKtp93MTEq66Bw5kKooD1vZDxTXHRnZNi3Y2Rz5VKBhMFi4BvRWu2k3MgDVebaxBVXfzPdVqjHr9xitdz6cP1Xrdu7dzuLLjfJNEh8RDGtGsdcizfeNZ3LCZVYb1fRyTKY7YNu7NB6wDKKPoCEszpxK1FhA2TDQ7HXQTxAr62h1Toe',
   [ChainType.Cardano]:
@@ -186,7 +186,7 @@ const rewardAddresses: Record<ChainType, string | null> = {
   [ChainType.BitcoinCash]: null
 };
 
-const rewardAddressesV2: Record<ChainType, string | null> = {
+export const rewardAddressesV2: Record<ChainType, string | null> = {
   [ChainType.Bitcoin]:
     '2Eit2LFRqu2Mo33z3pYTJRHNCPYS33MrU9QgeNcRsF9359pYMahqnLvKsHwwH72C6WDSZRj7G7WC5heVyUEawcSLSx821iJXT4xWf2F5fjVWDUpyGNdkxhFwQMhPKpx85Uu16put68V837wxDx19LRJ5uqi7xBa7EDFRU79Grzk8HDrfpUF3qct4xrQUvDofDroRQTuKueAbwybAfGDhNqG3jzKQchgjedBkbPAuDuNunehW4ZXUBLRSfqy3xofV76bxT5zpZjZcKud4XaRQvXUAVGunJzAs7RNZD5WZxenhmKzhiyuzWiq5QkWqxFw2h9vQ6Dd5PdYsWP3dPtaDC8WUjGz8tQ1tU9LuhqZ8QThQA5zBfoPFrk2iJ1repUuwZPjWnDRHLfWppqDQJGm2GEWHmYTQAfCJQFChUtSNstSATxw37xXjziKkPQRRVPr3VPapbHtGSoQyygzTHgcjxv3HSzwXkD7DScyA2iGDsd4B4WeXo4a6nM4CYpxa9f9FvabbNByhKsgq3ZoCsbUVXN99Pet93MFdxVmBBEsGYEYvtmMEDZEGb5z3JZDtVSdudFcm3bij82bdFzKSmmxxWZhscmLYpGGq1J5geqTiyTCgsmksAHumPFBmLkz8v843Jc3z5b6dwFgyXuBmQPTq6Nf8t95y1UYe8UYx3qNVfrHSGbToSgvCQyLKVv5ns8T2SZRWWr',
   [ChainType.Cardano]:
@@ -211,7 +211,7 @@ const rewardAddressesV2: Record<ChainType, string | null> = {
 };
 
 
-const hotWalletAddress =
+export const hotWalletAddress =
   'nB3L2PD3J4rMmyGk7nnNdESpPXxhPRQ4t1chF8LTXtceMQjKCEgL2pFjPY6cehGjyEFZyHEomBTFXZyqfonvxDozrTtK5JzatD8SdmcPeJNWPvdRb5UxEMXE4WQtpAFzt2veT8Z6bmoWN';
 
 /**
@@ -219,7 +219,7 @@ const hotWalletAddress =
  * @param address The address to evaluate.
  * @returns The corresponding ChainType or null if not found.
  */
-function getChainType(address?: string): ChainType | null | undefined {
+export function getChainType(address?: string): ChainType | null | undefined {
   if (!address) return undefined;
 
   for (const [chain, addr] of Object.entries(rewardAddresses)) {
@@ -237,7 +237,7 @@ function getChainType(address?: string): ChainType | null | undefined {
   return null;
 }
 
-function getChainTypeForPermitAddress(
+export function getChainTypeForPermitAddress(
   address?: string,
 ): ChainType | null | undefined {
   if (!address) return undefined;
@@ -251,7 +251,7 @@ function getChainTypeForPermitAddress(
   return null;
 }
 
-function getChainTypeForPermitTriggerAddress(
+export function getChainTypeForPermitTriggerAddress(
   address?: string,
 ): ChainType | null | undefined {
   if (!address) return undefined;
@@ -265,7 +265,6 @@ function getChainTypeForPermitTriggerAddress(
   return null;
 }
 
-if (typeof window !== 'undefined') {
   (globalThis as any).ChainType = ChainType;
   (globalThis as any).getChainType = getChainType;
   (globalThis as any).getChainTypeForPermitAddress = getChainTypeForPermitAddress;
@@ -279,5 +278,3 @@ if (typeof window !== 'undefined') {
   (globalThis as any).chainTypeWatcherIdentifier = chainTypeWatcherIdentifier;
   (globalThis as any).chainTypeTokens = chainTypeTokens;
   (globalThis as any).getChainTypes = getChainTypes;
-
-}

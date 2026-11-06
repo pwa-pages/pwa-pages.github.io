@@ -1,20 +1,32 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ProcessEventService = exports.ServiceWorkerEventSender = void 0;
+const chain_performance_data_service_1 = require("./chain.performance.data.service");
+const chain_service_1 = require("./chain.service");
+const chart_service_1 = require("./chart.service");
+const constants_1 = require("./constants");
+const download_service_1 = require("./download.service");
+const download_status_indexeddb_service_1 = require("./download.status.indexeddb.service");
+const permits_data_service_1 = require("./permits.data.service");
+const reports_data_service_1 = require("./reports.data.service");
+const reward_data_service_1 = require("./reward.data.service");
+const watcher_data_service_1 = require("./watcher.data.service");
 async function createServices(eventSender, db) {
-    const chartService = new ChartService();
-    const rewardDataService = new RewardDataService(db, chartService, eventSender);
-    const permitsDataService = new PermitsDataService(db);
-    const reportsDataService = new ReportsDataService(db, eventSender);
-    const watcherDataService = new WatcherDataService(permitsDataService);
-    const chainPerformanceDataService = new ChainPerformanceDataService(db, eventSender);
-    const downloadStatusIndexedDbRewardDataService = new DownloadStatusIndexedDbService(rewardDataService, db);
-    const downloadStatusIndexedDbWatcherDataService = new DownloadStatusIndexedDbService(watcherDataService, db);
-    const downloadStatusIndexedDbPermitsDataService = new DownloadStatusIndexedDbService(permitsDataService, db);
-    const downloadStatusIndexedDbChainPerformanceDataService = new DownloadStatusIndexedDbService(chainPerformanceDataService, db);
-    const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, eventSender, downloadStatusIndexedDbRewardDataService);
-    const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, watcherDataService, eventSender, downloadStatusIndexedDbWatcherDataService);
-    const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, permitsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
-    const downloadReportsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, reportsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
-    const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, eventSender, downloadStatusIndexedDbChainPerformanceDataService);
+    const chartService = new chart_service_1.ChartService();
+    const rewardDataService = new reward_data_service_1.RewardDataService(db, chartService, eventSender);
+    const permitsDataService = new permits_data_service_1.PermitsDataService(db);
+    const reportsDataService = new reports_data_service_1.ReportsDataService(db, eventSender);
+    const watcherDataService = new watcher_data_service_1.WatcherDataService(permitsDataService);
+    const chainPerformanceDataService = new chain_performance_data_service_1.ChainPerformanceDataService(db, eventSender);
+    const downloadStatusIndexedDbRewardDataService = new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(rewardDataService, db);
+    const downloadStatusIndexedDbWatcherDataService = new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(watcherDataService, db);
+    const downloadStatusIndexedDbPermitsDataService = new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(permitsDataService, db);
+    const downloadStatusIndexedDbChainPerformanceDataService = new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(chainPerformanceDataService, db);
+    const downloadService = new download_service_1.DownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, rewardDataService, eventSender, downloadStatusIndexedDbRewardDataService);
+    const downloadMyWatchersService = new download_service_1.DownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, watcherDataService, eventSender, downloadStatusIndexedDbWatcherDataService);
+    const downloadActivePermitsService = new download_service_1.DownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, permitsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
+    const downloadReportsService = new download_service_1.DownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, reportsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
+    const downloadPerfService = new download_service_1.DownloadService(constants_1.rs_PerfFullDownloadsBatchSize, constants_1.rs_PerfInitialNDownloads, chainPerformanceDataService, eventSender, downloadStatusIndexedDbChainPerformanceDataService);
     return {
         dataService: rewardDataService,
         chainPerformanceDataService,
@@ -41,6 +53,7 @@ class ServiceWorkerEventSender {
         }
     }
 }
+exports.ServiceWorkerEventSender = ServiceWorkerEventSender;
 class ProcessEventService {
     eventSender;
     constructor(eventSender) {
@@ -80,7 +93,7 @@ class ProcessEventService {
     }
     async initIndexedDB() {
         return new Promise((resolve, reject) => {
-            let dbName = rs_DbName;
+            let dbName = constants_1.rs_DbName;
             const request = indexedDB.open(dbName);
             request.onsuccess = (event) => {
                 const db = event.target.result;
@@ -97,14 +110,14 @@ class ProcessEventService {
             event.data);
         if (event.data && typeof event.data === 'string') {
             var chainType = event.data;
-            for (const [addressChainType, address] of Object.entries(permitTriggerAddresses)) {
+            for (const [addressChainType, address] of Object.entries(chain_service_1.permitTriggerAddresses)) {
                 if (addressChainType === chainType && address != null) {
                     var performances = await services.reportsDataService.getWatcherPerformanceByChainType();
                     await this.eventSender?.sendEvent({
                         type: 'ReportsChanged',
                         data: performances,
                     });
-                    await services.downloadReportsService.downloadForAddress(address, UrlAction.PermitTriggerTransactions);
+                    await services.downloadReportsService.downloadForAddress(address, constants_1.UrlAction.PermitTriggerTransactions);
                     performances = await services.reportsDataService.getWatcherPerformanceByChainType();
                     await this.eventSender?.sendEvent({
                         type: 'ReportsChanged',
@@ -123,10 +136,10 @@ class ProcessEventService {
             data: addressCharts,
         });
         if (event.data && typeof event.data === 'string') {
-            await services.downloadService.downloadForAddress(event.data, UrlAction.StatisticsTransactions);
+            await services.downloadService.downloadForAddress(event.data, constants_1.UrlAction.StatisticsTransactions);
         }
         else {
-            await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
+            await services.downloadService.downloadForAddresses(constants_1.UrlAction.StatisticsTransactions);
         }
     }
     async processStatisticsScreenLoaded(services) {
@@ -136,7 +149,7 @@ class ProcessEventService {
             type: 'InputsChanged',
             data: inputs,
         });
-        await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
+        await services.downloadService.downloadForAddresses(constants_1.UrlAction.StatisticsTransactions);
     }
     async processPerformanceScreenLoaded(services) {
         console.log('Rosen service worker received PerformanceScreenLoaded');
@@ -146,7 +159,7 @@ class ProcessEventService {
             type: 'PerfChartChanged',
             data: perfTxs,
         });
-        await services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
+        await services.downloadPerfService.downloadForAddress(chain_service_1.hotWalletAddress, constants_1.UrlAction.StatisticsTransactions);
     }
     async processMyWatchersScreenLoaded(event, services) {
         const { addresses } = event.data;
@@ -191,11 +204,11 @@ class ProcessEventService {
         }));
     }
     async downloadForChainPermitAddresses(addresses, services) {
-        const permitAddressEntries = Object.entries(permitAddresses).filter(([, address]) => address != null);
+        const permitAddressEntries = Object.entries(chain_service_1.permitAddresses).filter(([, address]) => address != null);
         await Promise.all(permitAddressEntries.map(([chainType, address]) => this.downloadForChainPermitAddress(addresses, chainType, address, services)));
     }
     async downloadForChainPermitAddress(addresses, chainType, address, services) {
-        await services.downloadMyWatchersService.downloadForAddress(address, UrlAction.PermitTransactions);
+        await services.downloadMyWatchersService.downloadForAddress(address, constants_1.UrlAction.PermitTransactions);
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
             type: 'PermitsChanged',
@@ -222,7 +235,7 @@ class ProcessEventService {
     }
     async downloadForActivePermitAddresses(allAddresses, chainType, services) {
         const addresses = [];
-        for (const [addressChainType, address] of Object.entries(permitTriggerAddresses)) {
+        for (const [addressChainType, address] of Object.entries(chain_service_1.permitTriggerAddresses)) {
             if (addressChainType === chainType && address != null) {
                 addresses.push(address);
             }
@@ -230,7 +243,7 @@ class ProcessEventService {
         await Promise.all(addresses.map((address) => this.downloadForActivePermitAddress(allAddresses, address, services)));
     }
     async downloadForActivePermitAddress(allAddresses, address, services) {
-        await services.downloadActivePermitsService.downloadForAddress(address, UrlAction.PermitTriggerTransactions, () => this.sendPermitsChangedEventForAddresses(services, allAddresses));
+        await services.downloadActivePermitsService.downloadForAddress(address, constants_1.UrlAction.PermitTriggerTransactions, () => this.sendPermitsChangedEventForAddresses(services, allAddresses));
     }
     async sendPermitsChangedEventForAddresses(services, addresses) {
         const permits = await services.watcherDataService.getAdressPermits(addresses);
@@ -240,6 +253,7 @@ class ProcessEventService {
         });
     }
 }
+exports.ProcessEventService = ProcessEventService;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 if (typeof window !== 'undefined') {
     window.ProcessEventService = ProcessEventService;

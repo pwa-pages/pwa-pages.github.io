@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MemoryStorageService = void 0;
 class MemoryStorageService {
     getMemoryStore() {
         const g = globalThis;
@@ -61,3 +63,4 @@ class MemoryStorageService {
         });
     }
 }
+exports.MemoryStorageService = MemoryStorageService;

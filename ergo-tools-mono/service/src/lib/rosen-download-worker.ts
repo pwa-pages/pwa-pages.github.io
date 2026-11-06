@@ -1,3 +1,6 @@
+import { MessageEventData } from "./data.service";
+import { ProcessEventService, ServiceWorkerEventSender } from "./process.event.service";
+
 const processEventServiceSingleton = (() => {
 
   let instance: ProcessEventService | null = null;

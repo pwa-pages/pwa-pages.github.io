@@ -1,7 +1,10 @@
-
+import { ChainType, rewardAddresses, rwtTokenIds } from "./chain.service";
+import { rs_PerfTxStoreName, rs_eRSNTokenId, rs_RSNDecimals } from "./constants";
+import { DataService, TransactionItem, PerfTx,  } from "./data.service";
+import { EventSender } from "./process.event.service";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ChainPerformanceDataService extends DataService<PerfTx> {
+export class ChainPerformanceDataService extends DataService<PerfTx> {
   override getData(): Promise<PerfTx[] | null> {
     return this.storageService.getData<PerfTx>(rs_PerfTxStoreName);
   }

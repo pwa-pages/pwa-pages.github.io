@@ -1,7 +1,13 @@
-
+import { ChainType, getChainTypeForPermitTriggerAddress, permitTriggerAddresses } from "./chain.service";
+import { IStorageService, rs_ReportsStoreName, rs_WatcherReportsStoreName } from "./constants";
+import { Address, PermitTx, TransactionItem} from "./data.service";
+import { PermitsDataService } from "./permits.data.service";
+import { EventSender } from "./process.event.service";
+import { WatcherDataService } from "./watcher.data.service";
+import { WatcherPerformanceAddressStat, WatchersPerformanceStats } from "./watcher.info";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ReportsDataService extends PermitsDataService {
+export class ReportsDataService extends PermitsDataService {
   constructor(db: IDBDatabase | IStorageService<PermitTx>, private eventSender: EventSender, storeName = rs_ReportsStoreName, maxDownloadDateDifference: number = 204800000) {
     super(db, storeName, maxDownloadDateDifference);
   }

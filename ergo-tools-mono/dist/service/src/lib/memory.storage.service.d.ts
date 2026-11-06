@@ -1,4 +1,4 @@
-declare class MemoryStorageService<T> {
+export declare class MemoryStorageService<T> {
     private getMemoryStore;
     private generateKey;
     getData<S>(storeName: string): Promise<T[] | S[]>;

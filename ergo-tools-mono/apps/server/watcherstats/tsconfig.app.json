@@ -5,7 +5,7 @@
     "moduleResolution": "node",
     "types": ["node"],
     "paths": {
-      "@ergo-tools/service": ["../../../service/src/exports"]
+      "@ergo-tools/service": ["../../../service/src/lib"]
     },
     "target": "ESNext",
     "module": "ES2022",

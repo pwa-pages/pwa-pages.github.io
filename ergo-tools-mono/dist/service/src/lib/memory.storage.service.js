@@ -1,5 +1,4 @@
-"use strict";
-class MemoryStorageService {
+export class MemoryStorageService {
     getMemoryStore() {
         const g = globalThis;
         if (!g.__storageServiceStore) {

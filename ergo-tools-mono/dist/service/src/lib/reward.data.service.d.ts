@@ -1,4 +1,8 @@
-declare class RewardDataService extends DataService<DbInput> {
+import { ChartService } from "./chart.service";
+import { DataService, DbInput, TransactionItem } from "./data.service";
+import { Input } from "./input";
+import { EventSender } from "./process.event.service";
+export declare class RewardDataService extends DataService<DbInput> {
     db: IDBDatabase;
     private chartService;
     private eventSender;

@@ -1,4 +1,7 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ChartService = void 0;
+const chain_service_1 = require("./chain.service");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ChartService {
     async getAddressCharts(inputs) {
@@ -18,7 +21,7 @@ class ChartService {
                     addressCharts[input.outputAddress].charts[dt] +=
                         asset.amount / Math.pow(10, asset.decimals);
                     addressCharts[input.outputAddress].chainType =
-                        input.chainType ?? getChainType(input.address);
+                        input.chainType ?? (0, chain_service_1.getChainType)(input.address);
                 }
             });
         });
@@ -53,3 +56,4 @@ class ChartService {
         return inputs;
     }
 }
+exports.ChartService = ChartService;

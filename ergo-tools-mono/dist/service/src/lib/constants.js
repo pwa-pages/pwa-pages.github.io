@@ -1,29 +1,29 @@
-"use strict";
+import { ChainType } from "./chain.service";
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const rs_DbName = 'rosenDatabase_1.1.5';
-const rs_DbVersion = 52;
-const rs_InputsStoreName = 'inputBoxes';
-const rs_PerfTxStoreName = 'perfTxs';
-const rs_PermitTxStoreName = 'permitTxs';
-const rs_ActivePermitTxStoreName = 'activePermitTxs';
-const rs_ReportsStoreName = 'reportsStore';
-const rs_WatcherReportsStoreName = 'watcherReports';
-const rs_DownloadStatusStoreName = 'downloadStatusStore';
-const rs_OpenBoxesStoreName = 'openBoxesStore';
-const rs_AddressDataStoreName = 'addressData';
-const rs_InitialNDownloads = 30;
-const rs_FullDownloadsBatchSize = 400;
-const rs_PerfInitialNDownloads = 10;
-const rs_PerfFullDownloadsBatchSize = 40;
-const rs_StartFrom = new Date('2024-01-01');
-const rs_Input_Key = ['boxId', 'outputAddress'];
-const rs_Permit_Key = 'id';
-const rs_WatcherReports_Key = 'chainType';
-const rs_ActivePermit_Key = 'id';
-const rs_PerfTx_Key = 'id';
-const rs_Address_Key = 'address';
-const rs_PermitCost = 3000;
-const rs_WatcherCollateralRSN = (chainType) => {
+export const rs_DbName = 'rosenDatabase_1.1.5';
+export const rs_DbVersion = 52;
+export const rs_InputsStoreName = 'inputBoxes';
+export const rs_PerfTxStoreName = 'perfTxs';
+export const rs_PermitTxStoreName = 'permitTxs';
+export const rs_ActivePermitTxStoreName = 'activePermitTxs';
+export const rs_ReportsStoreName = 'reportsStore';
+export const rs_WatcherReportsStoreName = 'watcherReports';
+export const rs_DownloadStatusStoreName = 'downloadStatusStore';
+export const rs_OpenBoxesStoreName = 'openBoxesStore';
+export const rs_AddressDataStoreName = 'addressData';
+export const rs_InitialNDownloads = 30;
+export const rs_FullDownloadsBatchSize = 400;
+export const rs_PerfInitialNDownloads = 10;
+export const rs_PerfFullDownloadsBatchSize = 40;
+export const rs_StartFrom = new Date('2024-01-01');
+export const rs_Input_Key = ['boxId', 'outputAddress'];
+export const rs_Permit_Key = 'id';
+export const rs_WatcherReports_Key = 'chainType';
+export const rs_ActivePermit_Key = 'id';
+export const rs_PerfTx_Key = 'id';
+export const rs_Address_Key = 'address';
+export const rs_PermitCost = 3000;
+export const rs_WatcherCollateralRSN = (chainType) => {
     if (chainType === ChainType.Runes || chainType === ChainType.Firo) {
         return 50000;
     }
@@ -31,7 +31,7 @@ const rs_WatcherCollateralRSN = (chainType) => {
         return 30000;
     }
 };
-const rs_WatcherCollateralERG = (chainType) => {
+export const rs_WatcherCollateralERG = (chainType) => {
     if (chainType === ChainType.Runes || chainType === ChainType.Firo) {
         return 10;
     }
@@ -39,8 +39,8 @@ const rs_WatcherCollateralERG = (chainType) => {
         return 800;
     }
 };
-const rs_ErgoExplorerHost = 'api.ergoplatform.com';
-const rs_ErgoNodeHost = 'https://node-p2p.ergoplatform.com';
+export const rs_ErgoExplorerHost = 'api.ergoplatform.com';
+export const rs_ErgoNodeHost = 'https://node-p2p.ergoplatform.com';
 //const rs_ErgoNodeHost = 'localhost:9053';
 //const rs_ErgoExplorerHost = 'node-p2p.ergoplatform.com';
 // https://node-p2p.ergoplatform.com/swagger
@@ -70,7 +70,7 @@ https://graphql.ergobackup.aap.cornell.edu/
 https://graphql.codeutxo.com/
 
 */
-var UrlAction;
+export var UrlAction;
 (function (UrlAction) {
     UrlAction["StatisticsTransactions"] = "statisticsTransactions";
     UrlAction["ChainPerformanceTransactions"] = "chainPerformanceTransactions";
@@ -79,7 +79,7 @@ var UrlAction;
     UrlAction["PermitTriggerTransactions"] = "permitTriggerTransactions";
     UrlAction["PermitBulkTransactions"] = "permitBulkTransactions";
 })(UrlAction || (UrlAction = {}));
-const urlConfig = {
+export const urlConfig = {
     [UrlAction.StatisticsTransactions]: [
         {
             isNode: false,
@@ -135,15 +135,15 @@ const urlConfig = {
         },
     ]
 };
-const getUrlConfig = (key) => urlConfig[key][0];
-const rs_RSNTokenId = '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';
-const rs_eRSNTokenId = 'dede2cf5c1a2966453ffec198a9b97b53d281e548903a905519b3525d59cdc3c';
-const rs_TokenIdMap = {
+export const getUrlConfig = (key) => urlConfig[key][0];
+export const rs_RSNTokenId = '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';
+export const rs_eRSNTokenId = 'dede2cf5c1a2966453ffec198a9b97b53d281e548903a905519b3525d59cdc3c';
+export const rs_TokenIdMap = {
     [rs_RSNTokenId]: 'RSN',
     [rs_eRSNTokenId]: 'eRSN',
 };
-const rs_RSNDecimals = 3;
-var Period;
+export const rs_RSNDecimals = 3;
+export var Period;
 (function (Period) {
     Period["Day"] = "Day";
     Period["Week"] = "Week";
@@ -151,47 +151,47 @@ var Period;
     Period["Year"] = "year";
     Period["All"] = "All";
 })(Period || (Period = {}));
-var Currency;
+export var Currency;
 (function (Currency) {
     Currency["EUR"] = "EUR";
     Currency["USD"] = "USD";
     Currency["ERG"] = "ERG";
     Currency["RSN"] = "RSN";
 })(Currency || (Currency = {}));
+globalThis.rs_DbName = rs_DbName;
+globalThis.rs_DbVersion = rs_DbVersion;
+globalThis.rs_InputsStoreName = rs_InputsStoreName;
+globalThis.rs_PerfTxStoreName = rs_PerfTxStoreName;
+globalThis.rs_PermitTxStoreName = rs_PermitTxStoreName;
+globalThis.rs_ReportsStoreName = rs_ReportsStoreName;
+globalThis.rs_ActivePermitTxStoreName = rs_ActivePermitTxStoreName;
+globalThis.rs_DownloadStatusStoreName = rs_DownloadStatusStoreName;
+globalThis.rs_OpenBoxesStoreName = rs_OpenBoxesStoreName;
+globalThis.rs_AddressDataStoreName = rs_AddressDataStoreName;
+globalThis.rs_InitialNDownloads = rs_InitialNDownloads;
+globalThis.rs_FullDownloadsBatchSize = rs_FullDownloadsBatchSize;
+globalThis.rs_StartFrom = rs_StartFrom;
+globalThis.rs_Input_Key = rs_Input_Key;
+globalThis.rs_PerfTx_Key = rs_PerfTx_Key;
+globalThis.rs_Permit_Key = rs_Permit_Key;
+globalThis.rs_WatcherReports_Key = rs_WatcherReports_Key;
+globalThis.rs_ActivePermit_Key = rs_ActivePermit_Key;
+globalThis.rs_Address_Key = rs_Address_Key;
+globalThis.rs_WatcherReportsStoreName = rs_WatcherReportsStoreName;
+globalThis.rs_PermitCost = rs_PermitCost;
+globalThis.rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
+globalThis.rs_WatcherCollateralERG = rs_WatcherCollateralERG;
+globalThis.rs_PerfInitialNDownloads = rs_PerfInitialNDownloads;
+globalThis.rs_PerfFullDownloadsBatchSize = rs_PerfFullDownloadsBatchSize;
+globalThis.rs_ErgoExplorerHost = rs_ErgoExplorerHost;
+globalThis.rs_ErgoNodeHost = rs_ErgoNodeHost;
+globalThis.rs_RSNTokenId = rs_RSNTokenId;
+globalThis.rs_eRSNTokenId = rs_eRSNTokenId;
+globalThis.rs_TokenIdMap = rs_TokenIdMap;
+globalThis.rs_RSNDecimals = rs_RSNDecimals;
+globalThis.currencies = Object.values(Currency);
+globalThis.urlConfig = urlConfig;
 if (typeof window !== 'undefined') {
-    globalThis.rs_DbName = rs_DbName;
-    globalThis.rs_DbVersion = rs_DbVersion;
-    globalThis.rs_InputsStoreName = rs_InputsStoreName;
-    globalThis.rs_PerfTxStoreName = rs_PerfTxStoreName;
-    globalThis.rs_PermitTxStoreName = rs_PermitTxStoreName;
-    globalThis.rs_ReportsStoreName = rs_ReportsStoreName;
-    globalThis.rs_ActivePermitTxStoreName = rs_ActivePermitTxStoreName;
-    globalThis.rs_DownloadStatusStoreName = rs_DownloadStatusStoreName;
-    globalThis.rs_OpenBoxesStoreName = rs_OpenBoxesStoreName;
-    globalThis.rs_AddressDataStoreName = rs_AddressDataStoreName;
-    globalThis.rs_InitialNDownloads = rs_InitialNDownloads;
-    globalThis.rs_FullDownloadsBatchSize = rs_FullDownloadsBatchSize;
-    globalThis.rs_StartFrom = rs_StartFrom;
-    globalThis.rs_Input_Key = rs_Input_Key;
-    globalThis.rs_PerfTx_Key = rs_PerfTx_Key;
-    globalThis.rs_Permit_Key = rs_Permit_Key;
-    globalThis.rs_WatcherReports_Key = rs_WatcherReports_Key;
-    globalThis.rs_ActivePermit_Key = rs_ActivePermit_Key;
-    globalThis.rs_Address_Key = rs_Address_Key;
-    globalThis.rs_WatcherReportsStoreName = rs_WatcherReportsStoreName;
-    globalThis.rs_PermitCost = rs_PermitCost;
-    globalThis.rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
-    globalThis.rs_WatcherCollateralERG = rs_WatcherCollateralERG;
-    globalThis.rs_PerfInitialNDownloads = rs_PerfInitialNDownloads;
-    globalThis.rs_PerfFullDownloadsBatchSize = rs_PerfFullDownloadsBatchSize;
-    globalThis.rs_ErgoExplorerHost = rs_ErgoExplorerHost;
-    globalThis.rs_ErgoNodeHost = rs_ErgoNodeHost;
-    globalThis.rs_RSNTokenId = rs_RSNTokenId;
-    globalThis.rs_eRSNTokenId = rs_eRSNTokenId;
-    globalThis.rs_TokenIdMap = rs_TokenIdMap;
-    globalThis.rs_RSNDecimals = rs_RSNDecimals;
-    globalThis.currencies = Object.values(Currency);
-    globalThis.urlConfig = urlConfig;
     window.Period = Period;
     window.Currency = Currency;
 }

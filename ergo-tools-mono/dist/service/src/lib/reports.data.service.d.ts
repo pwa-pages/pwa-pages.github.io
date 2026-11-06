@@ -1,4 +1,9 @@
-declare class ReportsDataService extends PermitsDataService {
+import { IStorageService } from "./constants";
+import { PermitTx, TransactionItem } from "./data.service";
+import { PermitsDataService } from "./permits.data.service";
+import { EventSender } from "./process.event.service";
+import { WatchersPerformanceStats } from "./watcher.info";
+export declare class ReportsDataService extends PermitsDataService {
     private eventSender;
     constructor(db: IDBDatabase | IStorageService<PermitTx>, eventSender: EventSender, storeName?: string, maxDownloadDateDifference?: number);
     getDataType(): string;

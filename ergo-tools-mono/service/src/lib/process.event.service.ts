@@ -1,9 +1,21 @@
+import { ChainPerformanceDataService } from "./chain.performance.data.service";
+import { permitTriggerAddresses, hotWalletAddress, ChainType, permitAddresses } from "./chain.service";
+import { ChartService } from "./chart.service";
+import { rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_DbName, UrlAction } from "./constants";
+import { DbInput, PerfTx, PermitInfo, PermitTx } from "./data.service";
+import { DownloadService } from "./download.service";
+import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
+import { PermitsDataService } from "./permits.data.service";
+import { ReportsDataService } from "./reports.data.service";
+import { RewardDataService } from "./reward.data.service";
+import { WatcherDataService } from "./watcher.data.service";
+
 interface EventPayload<T> {
   type: string;
   data?: T;
 }
 
-interface EventSender {
+export interface EventSender {
   sendEvent<T>(event: EventPayload<T>): Promise<void>;
 }
 
@@ -109,7 +121,7 @@ async function createServices(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class ServiceWorkerEventSender implements EventSender {
+export class ServiceWorkerEventSender implements EventSender {
   async sendEvent<T>(event: EventPayload<T>): Promise<void> {
     const clientsList = await (
       self as any
@@ -123,7 +135,7 @@ class ServiceWorkerEventSender implements EventSender {
   }
 }
 
-class ProcessEventService {
+export class ProcessEventService {
   constructor(private eventSender: EventSender) { }
 
   public async processEvent(event: EventPayload<object>) {

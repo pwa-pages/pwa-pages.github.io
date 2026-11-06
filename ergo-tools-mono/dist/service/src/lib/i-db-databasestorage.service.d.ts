@@ -1,4 +1,5 @@
-declare class IDBDatabaseStorageService<T> implements IStorageService<T> {
+import { IStorageService } from "./constants";
+export declare class IDBDatabaseStorageService<T> implements IStorageService<T> {
     db: IDBDatabase;
     constructor(db: IDBDatabase);
     getData<S>(storeName: string, key?: IDBValidKey): Promise<T[] | S[]>;

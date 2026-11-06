@@ -26,7 +26,7 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "@ergo-tools/service": ["service/src/exports"]
+      "@ergo-tools/service": ["service/src/lib"]
     },
     "noUncheckedSideEffectImports": false,
     "types": ["*"],

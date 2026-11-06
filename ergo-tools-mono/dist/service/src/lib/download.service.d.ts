@@ -1,4 +1,8 @@
-declare class DownloadService<T> {
+import { UrlAction } from "./constants";
+import { DataService, FetchTransactionsResponse } from "./data.service";
+import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
+import { EventSender } from "./process.event.service";
+export declare class DownloadService<T> {
     private dataService;
     private eventSender;
     private downloadStatusIndexedDbService;
