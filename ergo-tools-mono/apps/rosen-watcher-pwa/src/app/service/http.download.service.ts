@@ -4,8 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { EventService, EventType } from './event.service';
-import { WatcherInfo } from '@ergo-tools/service';
-import { ErgSettings } from '@ergo-tools/service';
+import { rs_ErgoExplorerHost, rs_ErgoNodeHost, WatcherInfo } from '@ergo-tools/service';
 
 @Injectable({
   providedIn: 'root',
@@ -50,10 +49,10 @@ export class HttpDownloadService {
 
   downloadBalance(address: string): Observable<WatcherInfo> {
     if (!this.useNode) {
-      const url = `https://${ErgSettings.rs_ErgoExplorerHost()}/api/v1/addresses/${address}/balance/confirmed`;
+      const url = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/balance/confirmed`;
       return this.downloadStream<WatcherInfo>(url);
     } else {
-      const url = `https://${ErgSettings.rs_ErgoNodeHost()}/blockchain/balance`;
+      const url = `https://${rs_ErgoNodeHost}/blockchain/balance`;
       let result = this.downloadPostStream<{ confirmed: WatcherInfo }>(
         url,
         address,

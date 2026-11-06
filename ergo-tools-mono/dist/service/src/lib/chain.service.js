@@ -177,17 +177,4 @@ export function getChainTypeForPermitTriggerAddress(address) {
     }
     return null;
 }
-globalThis.ChainType = ChainType;
-globalThis.getChainType = getChainType;
-globalThis.getChainTypeForPermitAddress = getChainTypeForPermitAddress;
-globalThis.permitAddresses = permitAddresses;
-globalThis.rewardAddresses = rewardAddresses;
-globalThis.permitTriggerAddresses = permitTriggerAddresses;
-globalThis.permitBulkAddresses = permitBulkAddresses;
-globalThis.hotWalletAddress = hotWalletAddress;
-globalThis.rwtTokenIds = rwtTokenIds;
-globalThis.getActiveChainTypes = getActiveChainTypes;
-globalThis.chainTypeWatcherIdentifier = chainTypeWatcherIdentifier;
-globalThis.chainTypeTokens = chainTypeTokens;
-globalThis.getChainTypes = getChainTypes;
 //# sourceMappingURL=chain.service.js.map

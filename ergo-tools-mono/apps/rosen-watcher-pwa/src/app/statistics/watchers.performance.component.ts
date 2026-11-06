@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { EventType } from '../service/event.service';
 import {
+  getActiveChainTypes,
   WatchersPerformanceStats
 } from '@ergo-tools/service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
@@ -19,7 +20,6 @@ import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
 import { WatchersStats } from '../service/watchers.models';
-import { ChainTypeHelper } from '../imports/imports';
 import { WatchersPerformanceDataService } from '../service/watchers.performance.data.service';
 
 export class Address {
@@ -60,7 +60,7 @@ export class Address {
 })
 export class WatchersPerformanceComponent extends BaseWatcherComponent implements OnInit {
   private _renderHtml = true;
-  public chains: string[] = ChainTypeHelper.getActiveChainTypes();
+  public chains: string[] = getActiveChainTypes() as string[];
   public months: string[] = this.getCurrentAndPreviousMonths();
   readonly watcherPerformanceStats: Signal<WatchersPerformanceStats | undefined>;
 
@@ -114,11 +114,11 @@ export class WatchersPerformanceComponent extends BaseWatcherComponent implement
   }
 
   getChainTypes(): string[] {
-    return ChainTypeHelper.getActiveChainTypes();
+    return this.getChainTypes();
   }
 
   isChainTypeActive(chainType: string): boolean {
-    return ChainTypeHelper.isChainTypeActive(chainType);
+    return (getActiveChainTypes() as string[]).includes(chainType);
   }
 
   selectTab(item: string): void {

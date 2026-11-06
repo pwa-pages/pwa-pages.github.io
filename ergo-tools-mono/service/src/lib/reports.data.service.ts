@@ -3,7 +3,6 @@ import { IStorageService, rs_ReportsStoreName, rs_WatcherReportsStoreName } from
 import { Address, PermitTx, TransactionItem} from "./data.service";
 import { PermitsDataService } from "./permits.data.service";
 import { EventSender } from "./process.event.service";
-import { WatcherDataService } from "./watcher.data.service";
 import { WatcherPerformanceAddressStat, WatchersPerformanceStats } from "./watcher.info";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -145,10 +144,3 @@ export class ReportsDataService extends PermitsDataService {
 
 }
 
-(globalThis as any).GetWatcherDataService = (
-  permitsDataService: PermitsDataService
-): WatcherDataService => {
-
-  return new WatcherDataService(permitsDataService);
-
-};

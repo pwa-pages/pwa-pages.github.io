@@ -1,9 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import {
   Address,
+  getActiveChainTypes,
   WatchersPerformanceStats
 } from '@ergo-tools/service';
-import { ChainTypeHelper } from '../imports/imports';
 import { ChainDataService } from './chain.data.service';
 import { EventService, EventType } from './event.service';
 
@@ -14,7 +14,7 @@ import { EventService, EventType } from './event.service';
 export class WatchersPerformanceDataService {
   selectedMonth: string = '';
   isChainTypeActive(chainType: string): boolean {
-    return ChainTypeHelper.isChainTypeActive(chainType);
+    return (getActiveChainTypes() as string[]).includes(chainType);
   }
 
   private readonly _watcherPerformanceStats =

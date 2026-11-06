@@ -23,5 +23,3 @@ npm install
 ./build_service_worker.sh
 nx run-many --target=build,build-common --all --configuration=production --parallel=false
 
-./prep_server_component.sh
-

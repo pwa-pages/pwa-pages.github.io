@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PermitsDataService = void 0;
+exports.GetWatcherDataService = exports.PermitsDataService = void 0;
 const chain_service_1 = require("./chain.service");
 const constants_1 = require("./constants");
 const data_service_1 = require("./data.service");
@@ -333,6 +333,7 @@ class PermitsDataService extends data_service_1.DataService {
     }
 }
 exports.PermitsDataService = PermitsDataService;
-globalThis.GetWatcherDataService = (permitsDataService) => {
+const GetWatcherDataService = (permitsDataService) => {
     return new watcher_data_service_1.WatcherDataService(permitsDataService);
 };
+exports.GetWatcherDataService = GetWatcherDataService;

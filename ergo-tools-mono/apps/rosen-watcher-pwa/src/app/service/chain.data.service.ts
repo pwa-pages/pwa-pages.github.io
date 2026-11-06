@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 
-import { Input } from '@ergo-tools/service';
+import { getActiveChainTypes, getChainTypes, Input } from '@ergo-tools/service';
 import { Address } from '@ergo-tools/service';
 import { EventService, EventType } from './event.service';
 import { DateUtils } from '../statistics/date.utils';
-import { ChainTypeHelper } from '../imports/imports';
 
 export function initializeDataService(dataService: ChainDataService) {
   return (): Promise<void> => {
@@ -23,7 +22,7 @@ export class ChainDataService {
     { chainType: string | null; charts: Record<number, number> }
   > = {};
   private chainChart: Record<string, { chart: number }> =
-    ChainTypeHelper.getAllChainTypes().reduce(
+    getChainTypes().reduce(
       (acc, chainType) => {
         acc[chainType] = { chart: 0 };
         return acc;
@@ -158,7 +157,7 @@ export class ChainDataService {
   }
 
   getChainChart(): Record<string, { chart: number }> {
-    const activeChainTypes = ChainTypeHelper.getActiveChainTypes() as string[];
+    const activeChainTypes = getActiveChainTypes() as string[];
     const result = {} as Record<string, { chart: number }>;
     for (const ct of activeChainTypes) {
       if (this.chainChart[ct]) {

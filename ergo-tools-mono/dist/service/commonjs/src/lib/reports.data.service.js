@@ -4,7 +4,6 @@ exports.ReportsDataService = void 0;
 const chain_service_1 = require("./chain.service");
 const constants_1 = require("./constants");
 const permits_data_service_1 = require("./permits.data.service");
-const watcher_data_service_1 = require("./watcher.data.service");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ReportsDataService extends permits_data_service_1.PermitsDataService {
     eventSender;
@@ -98,6 +97,3 @@ class ReportsDataService extends permits_data_service_1.PermitsDataService {
     }
 }
 exports.ReportsDataService = ReportsDataService;
-globalThis.GetWatcherDataService = (permitsDataService) => {
-    return new watcher_data_service_1.WatcherDataService(permitsDataService);
-};

@@ -1,7 +1,6 @@
 import { ChainType, getChainTypeForPermitTriggerAddress, permitTriggerAddresses } from "./chain.service";
 import { rs_ReportsStoreName, rs_WatcherReportsStoreName } from "./constants";
 import { PermitsDataService } from "./permits.data.service";
-import { WatcherDataService } from "./watcher.data.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ReportsDataService extends PermitsDataService {
     constructor(db, eventSender, storeName = rs_ReportsStoreName, maxDownloadDateDifference = 204800000) {
@@ -93,7 +92,4 @@ export class ReportsDataService extends PermitsDataService {
         return now.getTime() - firstOfPreviousMonth.getTime() + 2 * 24 * 60 * 60 * 1000;
     }
 }
-globalThis.GetWatcherDataService = (permitsDataService) => {
-    return new WatcherDataService(permitsDataService);
-};
 //# sourceMappingURL=reports.data.service.js.map

@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
 import { WatchersStats } from '../service/watchers.models';
-import { ChainTypeHelper } from '../imports/imports';
+import { getActiveChainTypes, getChainTypes } from 'service/src/lib/chain.service';
 
 @Component({
   selector: 'app-watchers',
@@ -63,11 +63,11 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
   }
 
   getChainTypes(): string[] {
-    return ChainTypeHelper.getAllChainTypes();
+    return getChainTypes();
   }
 
   isChainTypeActive(chainType: string): boolean {
-    return this.watchersDataService.isChainTypeActive(chainType);
+    return (getActiveChainTypes() as string[]).includes(chainType);
   }
 
   getWatcherAmounts() {

@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
+  getActiveChainTypes,
+  getChainTypes,
   MyWatchersStats,
+  rs_PermitCost,
+  rs_WatcherCollateralRSN,
 } from '@ergo-tools/service';
 import { EventService, EventType } from './event.service';
 import { Address } from '@ergo-tools/service';
-import { ChainTypeHelper } from '../imports/imports';
-import { ErgSettings, getAllChainTypes } from '@ergo-tools/service';
 
 interface PermitInfo {
   lockedRSN: number;
@@ -20,7 +22,7 @@ interface PermitInfo {
 })
 export class MyWatchersDataService {
   isChainTypeActive(chainType: string): boolean {
-    return ChainTypeHelper.isChainTypeActive(chainType);
+    return (getActiveChainTypes() as string[]).includes(chainType);
   }
 
   readonly rsnToken =
@@ -40,10 +42,10 @@ export class MyWatchersDataService {
         let myWatcherStats: MyWatchersStats[] = [];
         permits.forEach((permit: PermitInfo) => {
           let permitCount = Math.floor(
-            (permit.lockedRSN - ErgSettings.rs_WatcherCollateralRSN(permit.chainType)) / ErgSettings.rs_PermitCost(),
+            (permit.lockedRSN - rs_WatcherCollateralRSN(permit.chainType)) / rs_PermitCost,
           );
           let activepermitCount = Math.floor(
-            permit.activeLockedRSN / ErgSettings.rs_PermitCost(),
+            permit.activeLockedRSN / rs_PermitCost,
           );
 
           if (permitCount < 0) {
@@ -61,7 +63,7 @@ export class MyWatchersDataService {
           }
         });
 
-        let entries = getAllChainTypes();
+        let entries = getChainTypes();
 
         entries.forEach((chainType) => {
           const stats = myWatcherStats.filter(

@@ -264,17 +264,3 @@ export function getChainTypeForPermitTriggerAddress(
 
   return null;
 }
-
-  (globalThis as any).ChainType = ChainType;
-  (globalThis as any).getChainType = getChainType;
-  (globalThis as any).getChainTypeForPermitAddress = getChainTypeForPermitAddress;
-  (globalThis as any).permitAddresses = permitAddresses;
-  (globalThis as any).rewardAddresses = rewardAddresses;
-  (globalThis as any).permitTriggerAddresses = permitTriggerAddresses;
-  (globalThis as any).permitBulkAddresses = permitBulkAddresses;
-  (globalThis as any).hotWalletAddress = hotWalletAddress;
-  (globalThis as any).rwtTokenIds = rwtTokenIds;
-  (globalThis as any).getActiveChainTypes = getActiveChainTypes;
-  (globalThis as any).chainTypeWatcherIdentifier = chainTypeWatcherIdentifier;
-  (globalThis as any).chainTypeTokens = chainTypeTokens;
-  (globalThis as any).getChainTypes = getChainTypes;

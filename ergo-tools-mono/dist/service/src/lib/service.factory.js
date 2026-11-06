@@ -4,16 +4,15 @@ import { PermitsDataService } from "./permits.data.service";
 import { WatcherDataService } from "./watcher.data.service";
 import { rs_ActivePermitTxStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads } from "./constants";
 import { permitTriggerAddresses } from "./chain.service";
-globalThis.GetPermitTriggerAddresses =
-    () => {
-        return permitTriggerAddresses;
-    };
-globalThis.CreatePermitsDownloadService = (maxDownloadDateDifference, eventSender) => {
+export const GetPermitTriggerAddresses = () => {
+    return permitTriggerAddresses;
+};
+export function CreatePermitsDownloadService(maxDownloadDateDifference, eventSender) {
     var storageService = new MemoryStorageService();
     const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
     return new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, permitsDataService, eventSender, null);
-};
-globalThis.CreateWatcherDownloadService = (maxDownloadDateDifference, eventSender) => {
+}
+export const CreateWatcherDownloadService = (maxDownloadDateDifference, eventSender) => {
     var storageService = new MemoryStorageService();
     const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
     const watcherDataService = new WatcherDataService(permitsDataService);

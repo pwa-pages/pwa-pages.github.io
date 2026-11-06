@@ -327,7 +327,7 @@ export class PermitsDataService extends DataService {
         }
     }
 }
-globalThis.GetWatcherDataService = (permitsDataService) => {
+export const GetWatcherDataService = (permitsDataService) => {
     return new WatcherDataService(permitsDataService);
 };
 //# sourceMappingURL=permits.data.service.js.map

@@ -1,9 +1,9 @@
-import { ErgSettings } from "@ergo-tools/service";
-import { ChainTypeHelper, getCurrencies } from "../imports/imports";
+import { Currency, getChainTypes, rs_PermitCost, rs_WatcherCollateralERG, rs_WatcherCollateralRSN } from "@ergo-tools/service";
+
 
 export function createChainNumber(): Record<string, number | undefined> {
   return Object.fromEntries(
-    ChainTypeHelper.getAllChainTypes().map((key) => [key, undefined]),
+    getChainTypes().map((key) => [key, undefined]),
   ) as Record<string, number | undefined>;
 }
 
@@ -24,19 +24,19 @@ export class WatchersStats {
   chainLockedRSN = createChainNumber();
   chainPermitCount = createChainNumber();
   chainWatcherCount = createChainNumber();
-  permitCost = ErgSettings.rs_PermitCost();
+  permitCost = rs_PermitCost;
   totalActivePermitCount: number | undefined;
   totalLockedERG: number | undefined;
   totalLockedRSN: number | undefined;
   totalPermitCount: number | undefined;
   totalWatcherCount: number | undefined;
   triggerPermitCount = createChainNumber();
-  watcherCollateralERG = ErgSettings.rs_WatcherCollateralERG('Ergo');
-  watcherCollateralRSN = ErgSettings.rs_WatcherCollateralRSN('Ergo');
+  watcherCollateralERG = rs_WatcherCollateralERG('Ergo');
+  watcherCollateralRSN = rs_WatcherCollateralRSN('Ergo');
 
   watchersAmountsPerCurrency: Record<string, WatchersAmounts> =
     Object.fromEntries(
-      getCurrencies().map((currency) => [
+      Object.values(Currency).map((currency) => [
         currency,
         new WatchersAmounts(),
       ]),

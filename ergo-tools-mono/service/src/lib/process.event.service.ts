@@ -10,7 +10,7 @@ import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
 import { WatcherDataService } from "./watcher.data.service";
 
-interface EventPayload<T> {
+export interface EventPayload<T> {
   type: string;
   data?: T;
 }
@@ -489,12 +489,8 @@ export class ProcessEventService {
   }
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-if (typeof window !== 'undefined') {
-  (window as any).ProcessEventService = ProcessEventService;
-  (globalThis as any).CreateProcessEventService = (
-    eventSender: EventSender,
-  ): ProcessEventService => {
-    return new ProcessEventService(eventSender);
-  };
+export const CreateProcessEventService = (
+  eventSender: EventSender,
+): ProcessEventService => {
+  return new ProcessEventService(eventSender);
 }

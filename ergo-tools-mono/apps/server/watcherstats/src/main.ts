@@ -1,7 +1,4 @@
-import { getPermitTriggerAddressesByChainType, IDownloadService, WatcherDataService } from '@ergo-tools/service';
-import { GetPermitsDownloadService } from '@ergo-tools/service';
-import { GetWatcherDownloadService } from '@ergo-tools/service';
-import { PermitsDataService } from '@ergo-tools/service';
+import { CreatePermitsDownloadService, PermitsDataService, permitTriggerAddresses, UrlAction } from '@ergo-tools/service';
 import { PermitTx } from '@ergo-tools/service';
 
 
@@ -121,7 +118,7 @@ async function downloadActivePermits() {
   var diff = now.getTime() - startOfYear.getTime() + 2 * 24 * 60 * 60 * 1000;
 
 
-  var addresses = getPermitTriggerAddressesByChainType();
+  var addresses = permitTriggerAddresses;
 
 
   for (const [chainType, addr] of Object.entries(addresses)) {
@@ -129,14 +126,14 @@ async function downloadActivePermits() {
 
     if (addr == null) continue;
 
-    var downloadService: IDownloadService<PermitsDataService> = GetPermitsDownloadService(diff);
+    var downloadService = CreatePermitsDownloadService(diff, null);
 
 
     console.log('Downloading for chainType:', chainType, 'address:', addr);
-    await downloadService.downloadForAddress<PermitTx>(addr, 'permitTriggerTransactions');
+    await downloadService.downloadForAddress(addr, UrlAction.PermitTriggerTransactions);
 
 
-    var permits = await downloadService.getDataService().getAdressPermits(false, frommonth, fromyear, tomonth, toyear);
+    var permits = await (downloadService.getDataService() as PermitsDataService).getAdressPermits(false, frommonth, fromyear, tomonth, toyear);
     permits = permits.filter(p => p.chainType === chainType);
 
     const byAddress = permits.reduce((map: Map<string, {
@@ -184,10 +181,10 @@ async function downloadActivePermits() {
       }))
       .sort((a, b) => b.totalPermits - a.totalPermits || a.address.localeCompare(b.address));
 
-      
-      console.log('for chainType: ', chainType);
+
+    console.log('for chainType: ', chainType);
     console.log('totalsPerAddress: ', totalsPerAddress);
-    
+
 
   }
 

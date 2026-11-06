@@ -6,7 +6,7 @@ import { PermitsDataService } from "./permits.data.service";
 import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
 import { WatcherDataService } from "./watcher.data.service";
-interface EventPayload<T> {
+export interface EventPayload<T> {
     type: string;
     data?: T;
 }
@@ -49,4 +49,5 @@ export declare class ProcessEventService {
     private downloadForActivePermitAddress;
     private sendPermitsChangedEventForAddresses;
 }
+export declare const CreateProcessEventService: (eventSender: EventSender) => ProcessEventService;
 export {};

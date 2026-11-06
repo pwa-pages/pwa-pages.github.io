@@ -18,8 +18,7 @@ import { BaseWatcherComponent } from '../basewatchercomponent';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
 import { ChainDataService } from '../service/chain.data.service';
-import { ChainTypeHelper } from '../imports/imports';
-import { MyWatchersStats } from '@ergo-tools/service';
+import { getChainTypes, MyWatchersStats } from '@ergo-tools/service';
 import { MyWatchersDataService } from '../service/mywatchers.data.service';
 
 @Component({
@@ -86,7 +85,7 @@ export class MyWatchersComponent
   }
 
   getChainTypes(): string[] {
-    return ChainTypeHelper.getAllChainTypes();
+    return getChainTypes();
   }
 
   isChainTypeActive(chainType: string): boolean {

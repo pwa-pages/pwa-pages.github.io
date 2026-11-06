@@ -12,7 +12,7 @@ import { EventData, EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainChartService } from '../service/chain.chart.service';
 
-import { ChainPerfChartDataSet } from '@ergo-tools/service';
+import { ChainPerfChartDataSet, getChainTypes } from '@ergo-tools/service';
 import { ChainChartPerformance } from '@ergo-tools/service';
 import { Chart } from 'chart.js';
 import { NavigationService } from '../service/navigation.service';
@@ -22,8 +22,7 @@ import { Token } from '@ergo-tools/service';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { CommonModule } from '@angular/common';
 import { createChainNumber } from '../service/watchers.models';
-import { getAllChainTypes } from '@ergo-tools/service';
-import { ChainTypeHelper } from '../imports/imports';
+import { chainTypeWatcherIdentifier } from '@ergo-tools/service';
 
 @Component({
   selector: 'app-chain-performance',
@@ -108,10 +107,10 @@ export class ChainPerformanceComponent
     watcherInfo$
       .pipe(
         map((watcherInfo) => {
-          getAllChainTypes().forEach((c) => {
+          getChainTypes().forEach((c) => {
             const amount =
               watcherInfo.tokens.find(
-                (token: Token) => token.name === ChainTypeHelper.getChainTypeWatcherIdentifiers()[c],
+                (token: Token) => token.name === chainTypeWatcherIdentifier[c],
               )?.amount ?? 0;
             this.chainWatcherCount[c] = amount;
           });

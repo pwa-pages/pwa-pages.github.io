@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProcessEventService = exports.ServiceWorkerEventSender = void 0;
+exports.CreateProcessEventService = exports.ProcessEventService = exports.ServiceWorkerEventSender = void 0;
 const chain_performance_data_service_1 = require("./chain.performance.data.service");
 const chain_service_1 = require("./chain.service");
 const chart_service_1 = require("./chart.service");
@@ -254,10 +254,7 @@ class ProcessEventService {
     }
 }
 exports.ProcessEventService = ProcessEventService;
-/* eslint-disable @typescript-eslint/no-explicit-any */
-if (typeof window !== 'undefined') {
-    window.ProcessEventService = ProcessEventService;
-    globalThis.CreateProcessEventService = (eventSender) => {
-        return new ProcessEventService(eventSender);
-    };
-}
+const CreateProcessEventService = (eventSender) => {
+    return new ProcessEventService(eventSender);
+};
+exports.CreateProcessEventService = CreateProcessEventService;

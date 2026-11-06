@@ -499,10 +499,8 @@ export class PermitsDataService extends DataService<PermitTx> {
   }
 }
 
-(globalThis as any).GetWatcherDataService = (
+export const GetWatcherDataService = (
   permitsDataService: PermitsDataService
 ): WatcherDataService => {
-
   return new WatcherDataService(permitsDataService);
-
 };

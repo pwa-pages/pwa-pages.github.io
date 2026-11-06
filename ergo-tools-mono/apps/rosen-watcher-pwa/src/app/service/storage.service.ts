@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Input } from '@ergo-tools/service';
+import { Input, rs_ActivePermit_Key, rs_ActivePermitTxStoreName, rs_Address_Key, rs_AddressDataStoreName, rs_DbName, rs_DbVersion, rs_DownloadStatusStoreName, rs_Input_Key, rs_InputsStoreName, rs_OpenBoxesStoreName, rs_PerfTx_Key, rs_PerfTxStoreName, rs_Permit_Key, rs_PermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName } from '@ergo-tools/service';
 import { Address } from '@ergo-tools/service';
-import { ErgSettings } from '@ergo-tools/service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,46 +17,46 @@ export class StorageService {
 
 
     this.dbPromise = new Promise((resolve, reject) => {
-      const request = window.indexedDB.open(ErgSettings.rs_dbName(), ErgSettings.rs_DbVersion());
+      const request = window.indexedDB.open(rs_DbName, rs_DbVersion);
 
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
 
-        this.recreateObjectStore(db, ErgSettings.rs_InputsStoreName(), ErgSettings.rs_Input_Key());
-        this.recreateObjectStore(db, ErgSettings.rs_PerfTxStoreName(), ErgSettings.rs_PerfTx_Key());
-        this.recreateObjectStore(db, ErgSettings.rs_PermitTxStoreName(), ErgSettings.rs_Permit_Key());
-        this.recreateObjectStore(db, ErgSettings.rs_WatcherReportsStoreName());
+        this.recreateObjectStore(db, rs_InputsStoreName, rs_Input_Key);
+        this.recreateObjectStore(db, rs_PerfTxStoreName, rs_PerfTx_Key);
+        this.recreateObjectStore(db, rs_PermitTxStoreName, rs_Permit_Key);
+        this.recreateObjectStore(db, rs_WatcherReportsStoreName);
         this.recreateObjectStore(
           db,
-          ErgSettings.rs_ActivePermitTxStoreName(),
-          ErgSettings.rs_ActivePermit_Key(),
+          rs_ActivePermitTxStoreName,
+          rs_ActivePermit_Key,
         );
 
         const store = this.recreateObjectStore(
           db,
-          ErgSettings.rs_ReportsStoreName(),
-          ErgSettings.rs_PerfTx_Key(),
+          rs_ReportsStoreName,
+          rs_PerfTx_Key,
         );
 
         store.createIndex("chainType", "chainType", {
           unique: false,
         });
 
-        if (!db.objectStoreNames.contains(ErgSettings.rs_AddressDataStoreName())) {
-          db.createObjectStore(ErgSettings.rs_AddressDataStoreName(), {
-            keyPath: ErgSettings.rs_Address_Key(),
+        if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
+          db.createObjectStore(rs_AddressDataStoreName, {
+            keyPath: rs_Address_Key,
           });
         }
 
         this.recreateObjectStore(
           db,
-          ErgSettings.rs_DownloadStatusStoreName(),
-          ErgSettings.rs_Address_Key(),
+          rs_DownloadStatusStoreName,
+          rs_Address_Key,
         );
         this.recreateObjectStore(
           db,
-          ErgSettings.rs_OpenBoxesStoreName(),
-          ErgSettings.rs_Address_Key(),
+          rs_OpenBoxesStoreName,
+          rs_Address_Key,
         );
 
       };
@@ -99,10 +98,10 @@ export class StorageService {
     const db = await this.getDB();
     return new Promise<void>((resolve) => {
       const transaction = db.transaction(
-        [ErgSettings.rs_AddressDataStoreName()],
+        [rs_AddressDataStoreName],
         'readwrite',
       );
-      const objectStore = transaction.objectStore(ErgSettings.rs_AddressDataStoreName());
+      const objectStore = transaction.objectStore(rs_AddressDataStoreName);
       const request = objectStore.clear();
 
       request.onsuccess = () => {
@@ -120,8 +119,8 @@ export class StorageService {
   async clearInputsStore(): Promise<void> {
     const db = await this.getDB();
     return new Promise<void>((resolve) => {
-      const transaction = db.transaction([ErgSettings.rs_InputsStoreName()], 'readwrite');
-      const objectStore = transaction.objectStore(ErgSettings.rs_InputsStoreName());
+      const transaction = db.transaction([rs_InputsStoreName], 'readwrite');
+      const objectStore = transaction.objectStore(rs_InputsStoreName);
       const request = objectStore.clear();
 
       request.onsuccess = () => {
@@ -138,7 +137,7 @@ export class StorageService {
 
   async getInputs(): Promise<Input[]> {
     console.log('Getting inputs from database');
-    this.inputsCache = await this.getData<Input>(ErgSettings.rs_InputsStoreName());
+    this.inputsCache = await this.getData<Input>(rs_InputsStoreName);
     return this.inputsCache;
   }
   async getAddressData(): Promise<Address[]> {
@@ -146,7 +145,7 @@ export class StorageService {
       address: string;
       chainType: string | null;
       active?: boolean;
-    }>(ErgSettings.rs_AddressDataStoreName());
+    }>(rs_AddressDataStoreName);
 
     const addresses: Address[] = rawData.map(
       (obj) => new Address(obj.address, obj.chainType, obj.active ?? true),
@@ -184,10 +183,10 @@ export class StorageService {
 
     addressData.forEach((a) => {
       const transaction = db.transaction(
-        [ErgSettings.rs_AddressDataStoreName()],
+        [rs_AddressDataStoreName],
         'readwrite',
       );
-      const objectStore = transaction.objectStore(ErgSettings.rs_AddressDataStoreName());
+      const objectStore = transaction.objectStore(rs_AddressDataStoreName);
       a.Address = a.address;
       objectStore.put(a);
     });

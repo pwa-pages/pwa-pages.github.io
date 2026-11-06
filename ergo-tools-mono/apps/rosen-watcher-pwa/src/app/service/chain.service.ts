@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChainTypeHelper } from '../imports/imports';
+import { getChainType } from '@ergo-tools/service';
 
 
 @Injectable({
@@ -8,6 +8,6 @@ import { ChainTypeHelper } from '../imports/imports';
 export class ChainService {
   getChainType(address: string) {
     
-    return ChainTypeHelper.getChainType(address);
+    return getChainType(address);
   }
 }

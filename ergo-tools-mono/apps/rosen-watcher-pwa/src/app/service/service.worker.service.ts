@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { EventData, EventService, EventType } from './event.service';
 import { HttpClient } from '@angular/common/http';
 import { IS_ELEMENTS_ACTIVE } from './tokens';
-import { createProcessEventService, EventPayload, EventSender } from '../imports/imports';
+import { CreateProcessEventService, EventPayload, EventSender } from '@ergo-tools/service';
 
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {
@@ -63,7 +63,7 @@ export class ServiceWorkerService {
               'to angular worker',
           );
           
-          const processEventService = createProcessEventService(new DirectEventSender(this.eventService));
+          const processEventService = CreateProcessEventService(new DirectEventSender(this.eventService));
           
 
           processEventService.processEvent({
