@@ -1,6 +1,6 @@
 import { ChainType, rewardAddresses, rwtTokenIds } from "./chain.service";
 import { rs_PerfTxStoreName, rs_eRSNTokenId, rs_RSNDecimals } from "./constants";
-import { DataService, } from "./data.service";
+import { DataService } from "./data.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ChainPerformanceDataService extends DataService {
     getData() {

@@ -1,5 +1,5 @@
-import { Asset } from "./asset";
-import { DataService, PermitTx, TransactionItem, PermitInfo } from "./data.service";
+import { DataService } from "./data.service";
+import { PermitTx, TransactionItem, Asset, PermitInfo } from "./models";
 import { PermitsDataService } from "./permits.data.service";
 export declare class WatcherDataService extends DataService<PermitTx> {
     private permitsDataService;

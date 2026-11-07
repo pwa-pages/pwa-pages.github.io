@@ -36,7 +36,8 @@ class DownloadService {
     async downloadTransactions(address, offset = 0, limit = 500, urlAction) {
         if ((0, constants_1.getUrlConfig)(urlAction).isNode) {
             const url = `${(0, constants_1.getUrlConfig)(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
-            console.log(`Downloading from: ${url}`);
+            const displayedUrl = `${url} (address: ${address.slice(0, 20)})`;
+            console.log(`Downloading from: ${displayedUrl}`);
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -62,7 +63,8 @@ class DownloadService {
         }
         else {
             const url = `https://${(0, constants_1.getUrlConfig)(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
-            console.log(`Downloading from: ${url}`);
+            const displayedUrl = url.replace(`/addresses/${address}/`, `/addresses/${address.slice(0, 20)}/`);
+            console.log(`Downloading from: ${displayedUrl}`);
             const response = await this.fetchTransactions(url);
             const result = {
                 transactions: response.items,

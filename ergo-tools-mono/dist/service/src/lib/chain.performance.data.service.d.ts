@@ -1,5 +1,6 @@
 import { ChainType } from "./chain.service";
-import { DataService, TransactionItem, PerfTx } from "./data.service";
+import { DataService } from "./data.service";
+import { PerfTx, TransactionItem } from "./models";
 import { EventSender } from "./process.event.service";
 export declare class ChainPerformanceDataService extends DataService<PerfTx> {
     db: IDBDatabase;

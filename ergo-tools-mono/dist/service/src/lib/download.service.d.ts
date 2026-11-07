@@ -1,6 +1,7 @@
 import { UrlAction } from "./constants";
-import { DataService, FetchTransactionsResponse } from "./data.service";
+import { DataService } from "./data.service";
 import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
+import { FetchTransactionsResponse } from "./models";
 import { EventSender } from "./process.event.service";
 export declare class DownloadService<T> {
     private dataService;

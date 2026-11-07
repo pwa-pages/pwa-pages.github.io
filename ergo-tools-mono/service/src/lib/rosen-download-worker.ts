@@ -1,4 +1,4 @@
-import { MessageEventData } from "./data.service";
+import { MessageEventData } from "./models";
 import { ProcessEventService, ServiceWorkerEventSender } from "./process.event.service";
 
 const processEventServiceSingleton = (() => {

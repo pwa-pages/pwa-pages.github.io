@@ -1,9 +1,8 @@
 import { ChainType, getChainTypeForPermitTriggerAddress, permitTriggerAddresses } from "./chain.service";
 import { IStorageService, rs_ReportsStoreName, rs_WatcherReportsStoreName } from "./constants";
-import { Address, PermitTx, TransactionItem} from "./data.service";
+import { PermitTx, WatchersPerformanceStats, WatcherPerformanceAddressStat, Address, TransactionItem } from "./models";
 import { PermitsDataService } from "./permits.data.service";
 import { EventSender } from "./process.event.service";
-import { WatcherPerformanceAddressStat, WatchersPerformanceStats } from "./watcher.info";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ReportsDataService extends PermitsDataService {

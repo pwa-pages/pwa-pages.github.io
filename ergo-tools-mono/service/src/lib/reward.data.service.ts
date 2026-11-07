@@ -1,9 +1,9 @@
-import { Asset } from "./asset";
+
 import { getChainType, ChainType } from "./chain.service";
 import { ChartService } from "./chart.service";
 import { rs_InputsStoreName, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals } from "./constants";
-import { DataService, DbInput, TransactionItem } from "./data.service";
-import { Input } from "./input";
+import { DataService } from "./data.service";
+import { DbInput, TransactionItem, Asset, Input } from "./models";
 import { EventSender } from "./process.event.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class RewardDataService extends DataService<DbInput> {

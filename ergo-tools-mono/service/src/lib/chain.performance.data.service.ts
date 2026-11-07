@@ -1,6 +1,7 @@
 import { ChainType, rewardAddresses, rwtTokenIds } from "./chain.service";
 import { rs_PerfTxStoreName, rs_eRSNTokenId, rs_RSNDecimals } from "./constants";
-import { DataService, TransactionItem, PerfTx,  } from "./data.service";
+import { DataService } from "./data.service";
+import { PerfTx, TransactionItem } from "./models";
 import { EventSender } from "./process.event.service";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

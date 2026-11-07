@@ -1,6 +1,6 @@
 import { ChartService } from "./chart.service";
-import { DataService, DbInput, TransactionItem } from "./data.service";
-import { Input } from "./input";
+import { DataService } from "./data.service";
+import { DbInput, TransactionItem, Input } from "./models";
 import { EventSender } from "./process.event.service";
 export declare class RewardDataService extends DataService<DbInput> {
     db: IDBDatabase;

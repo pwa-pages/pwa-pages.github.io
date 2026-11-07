@@ -1,5 +1,6 @@
 import { rs_DownloadStatusStoreName } from "./constants";
-import { DataService, DownloadStatus } from "./data.service";
+import { DataService } from "./data.service";
+import { DownloadStatus } from "./models";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class DownloadStatusIndexedDbService<T> {
 

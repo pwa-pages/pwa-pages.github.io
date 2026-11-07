@@ -1,0 +1,106 @@
+export class Address {
+    constructor(address, chainType, active = true, ownAddress = false) {
+        this.active = true;
+        this.address = address;
+        this.Address = address;
+        this.smallAddressForDisplay = address.substring(0, 6) + '...';
+        this.largeAddressForDisplay =
+            address.substring(0, 6) +
+                '...' +
+                address.substring(address.length - 6, address.length);
+        this.chainType = chainType;
+        this.active = active;
+        this.ownAddress = ownAddress;
+    }
+}
+export class Asset {
+    constructor(amount, name, decimals, type, tokenId) {
+        this.amount = amount;
+        this.name = name;
+        this.decimals = decimals;
+        this.type = type;
+        this.tokenId = tokenId;
+    }
+}
+export class Input {
+    constructor(inputDate, address, outputCreatedAt, assets, outputAddress, boxId, accumulatedAmount, amount, chainType) {
+        this.outputAddress = outputAddress;
+        this.inputDate = inputDate;
+        this.assets = assets;
+        this.boxId = boxId;
+        this.outputCreatedAt = outputCreatedAt;
+        this.address = address;
+        this.accumulatedAmount = accumulatedAmount;
+        this.amount = amount;
+        this.chainType = chainType;
+    }
+}
+export class Token {
+    constructor(tokenId, amount, decimals, name, tokenType) {
+        this.tokenId = tokenId;
+        this.amount = amount;
+        this.decimals = decimals;
+        this.name = name;
+        this.tokenType = tokenType;
+    }
+}
+export class WatcherInfo {
+    constructor(tokens) {
+        this.tokens = tokens;
+    }
+}
+export class MyWatchersStats {
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export class WatcherPerformanceAddressStat {
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export class WatchersPerformanceStats {
+}
+export class ChartDataSet {
+    constructor(chartColor) {
+        this.label = '';
+        this.data = [];
+        this.backgroundColor = chartColor;
+        this.pointBackgroundColor = chartColor;
+        this.borderColor = chartColor;
+        this.borderWidth = 0;
+        this.borderSkipped = false;
+    }
+}
+export class ChainPerfChartDataSet {
+    constructor(chartColor) {
+        this.label = '';
+        this.data = [];
+        this.backgroundColor = chartColor;
+        this.pointBackgroundColor = chartColor;
+        this.borderColor = chartColor;
+        this.borderWidth = 0;
+        this.borderSkipped = false;
+    }
+}
+export class ChartPoint {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+export class ChartPerformance {
+    constructor(address, addressForDisplay, chart, color, chainType) {
+        this.address = address;
+        this.addressForDisplay = addressForDisplay;
+        this.chart = chart;
+        this.chainType = chainType;
+        this.color = color;
+    }
+}
+export class ChainChartPerformance {
+    constructor(address, addressForDisplay, chart, color, chainType) {
+        this.address = address;
+        this.addressForDisplay = addressForDisplay;
+        this.chart = chart;
+        this.chainType = chainType;
+        this.color = color;
+    }
+}
+//# sourceMappingURL=models.js.map

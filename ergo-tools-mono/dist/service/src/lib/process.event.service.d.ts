@@ -1,7 +1,7 @@
 import { ChainPerformanceDataService } from "./chain.performance.data.service";
 import { ChartService } from "./chart.service";
-import { DbInput, PerfTx, PermitTx } from "./data.service";
 import { DownloadService } from "./download.service";
+import { DbInput, PerfTx, PermitTx } from "./models";
 import { PermitsDataService } from "./permits.data.service";
 import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";

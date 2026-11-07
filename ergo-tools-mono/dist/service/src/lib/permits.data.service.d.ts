@@ -1,6 +1,6 @@
-import { Asset } from "./asset";
 import { IStorageService } from "./constants";
-import { DataService, PermitTx, TransactionItem } from "./data.service";
+import { DataService } from "./data.service";
+import { PermitTx, TransactionItem, Asset } from "./models";
 import { WatcherDataService } from "./watcher.data.service";
 export declare class PermitsDataService extends DataService<PermitTx> {
     private storeName;

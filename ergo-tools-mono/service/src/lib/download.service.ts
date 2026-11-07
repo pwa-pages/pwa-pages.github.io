@@ -1,6 +1,7 @@
 import { getUrlConfig, rs_AddressDataStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_StartFrom, UrlAction } from "./constants";
-import { Address, DataService, FetchTransactionsResponse, TransactionItem } from "./data.service";
+import { DataService } from "./data.service";
 import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
+import { FetchTransactionsResponse, Address, TransactionItem } from "./models";
 import { EventSender } from "./process.event.service";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -48,7 +49,8 @@ export class DownloadService<T> {
     
     if (getUrlConfig(urlAction).isNode) {
       const url = `${getUrlConfig(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
-      console.log(`Downloading from: ${url}`);
+      const displayedUrl = `${url} (address: ${address.slice(0, 20)})`;
+      console.log(`Downloading from: ${displayedUrl}`);
 
       const response: Response = await fetch(url, {
         method: 'POST',
@@ -77,7 +79,8 @@ export class DownloadService<T> {
       return result;
     } else {
       const url = `https://${getUrlConfig(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
-      console.log(`Downloading from: ${url}`);
+      const displayedUrl = url.replace(`/addresses/${address}/`, `/addresses/${address.slice(0, 20)}/`);
+      console.log(`Downloading from: ${displayedUrl}`);
 
       const response: FetchTransactionsResponse =
         await this.fetchTransactions(url);

@@ -41,31 +41,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// service/src/lib/address.ts
-var Address;
-var init_address = __esm({
-  "service/src/lib/address.ts"() {
-    Address = class {
-      address;
-      Address;
-      active = true;
-      chainType;
-      smallAddressForDisplay;
-      largeAddressForDisplay;
-      ownAddress;
-      constructor(address, chainType, active = true, ownAddress = false) {
-        this.address = address;
-        this.Address = address;
-        this.smallAddressForDisplay = address.substring(0, 6) + "...";
-        this.largeAddressForDisplay = address.substring(0, 6) + "..." + address.substring(address.length - 6, address.length);
-        this.chainType = chainType;
-        this.active = active;
-        this.ownAddress = ownAddress;
-      }
-    };
-  }
-});
-
 // service/src/lib/i-db-databasestorage.service.ts
 var IDBDatabaseStorageService;
 var init_i_db_databasestorage_service = __esm({
@@ -154,47 +129,10 @@ var init_i_db_databasestorage_service = __esm({
 });
 
 // service/src/lib/data.service.ts
-var ChartPoint, ChartPerformance, ChainChartPerformance, DataService;
+var DataService;
 var init_data_service = __esm({
   "service/src/lib/data.service.ts"() {
-    init_address();
     init_i_db_databasestorage_service();
-    ChartPoint = class {
-      x;
-      y;
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-      }
-    };
-    ChartPerformance = class {
-      address;
-      addressForDisplay;
-      chart;
-      chainType;
-      color;
-      constructor(address, addressForDisplay, chart, color, chainType) {
-        this.address = address;
-        this.addressForDisplay = addressForDisplay;
-        this.chart = chart;
-        this.chainType = chainType;
-        this.color = color;
-      }
-    };
-    ChainChartPerformance = class {
-      address;
-      addressForDisplay;
-      chart;
-      chainType;
-      color;
-      constructor(address, addressForDisplay, chart, color, chainType) {
-        this.address = address;
-        this.addressForDisplay = addressForDisplay;
-        this.chart = chart;
-        this.chainType = chainType;
-        this.color = color;
-      }
-    };
     DataService = class {
       storageService;
       db;
@@ -664,7 +602,7 @@ var init_watcher_data_service = __esm({
             );
             let wid;
             for (wid of allWids) {
-              const PermitTx3 = {
+              const PermitTx = {
                 id: this.createUniqueId(input.boxId, item.id, address),
                 address: input.address,
                 date: input.inputDate,
@@ -674,8 +612,8 @@ var init_watcher_data_service = __esm({
                 chainType: getChainTypeForPermitAddress(address),
                 transactionId: item.id
               };
-              if (PermitTx3.assets.length > 0) {
-                tempData.push(PermitTx3);
+              if (PermitTx.assets.length > 0) {
+                tempData.push(PermitTx);
               }
             }
           });
@@ -692,7 +630,7 @@ var init_watcher_data_service = __esm({
             });
             let wid;
             for (wid of allWids) {
-              const PermitTx3 = {
+              const PermitTx = {
                 id: this.createUniqueId(output.boxId, item.id, address),
                 address: output.address,
                 date: output.outputDate,
@@ -702,8 +640,8 @@ var init_watcher_data_service = __esm({
                 chainType: getChainTypeForPermitAddress(address),
                 transactionId: item.id
               };
-              if (PermitTx3.assets.length > 0) {
-                tempData.push(PermitTx3);
+              if (PermitTx.assets.length > 0) {
+                tempData.push(PermitTx);
               }
             }
           });
@@ -1489,7 +1427,8 @@ var init_download_service = __esm({
       async downloadTransactions(address, offset = 0, limit = 500, urlAction) {
         if (getUrlConfig(urlAction).isNode) {
           const url = `${getUrlConfig(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
-          console.log(`Downloading from: ${url}`);
+          const displayedUrl = `${url} (address: ${address.slice(0, 20)})`;
+          console.log(`Downloading from: ${displayedUrl}`);
           const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -1514,7 +1453,8 @@ var init_download_service = __esm({
           return result;
         } else {
           const url = `https://${getUrlConfig(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
-          console.log(`Downloading from: ${url}`);
+          const displayedUrl = url.replace(`/addresses/${address}/`, `/addresses/${address.slice(0, 20)}/`);
+          console.log(`Downloading from: ${displayedUrl}`);
           const response = await this.fetchTransactions(url);
           const result = {
             transactions: response.items,
@@ -2300,9 +2240,40 @@ __export(lib_exports, {
   rwtTokenIds: () => rwtTokenIds,
   urlConfig: () => urlConfig
 });
-init_address();
 
-// service/src/lib/input.ts
+// service/src/lib/models.ts
+var Address = class {
+  address;
+  Address;
+  active = true;
+  chainType;
+  smallAddressForDisplay;
+  largeAddressForDisplay;
+  ownAddress;
+  constructor(address, chainType, active = true, ownAddress = false) {
+    this.address = address;
+    this.Address = address;
+    this.smallAddressForDisplay = address.substring(0, 6) + "...";
+    this.largeAddressForDisplay = address.substring(0, 6) + "..." + address.substring(address.length - 6, address.length);
+    this.chainType = chainType;
+    this.active = active;
+    this.ownAddress = ownAddress;
+  }
+};
+var Asset = class {
+  amount;
+  name;
+  decimals;
+  type;
+  tokenId;
+  constructor(amount, name, decimals, type, tokenId) {
+    this.amount = amount;
+    this.name = name;
+    this.decimals = decimals;
+    this.type = type;
+    this.tokenId = tokenId;
+  }
+};
 var Input = class {
   outputAddress;
   inputDate;
@@ -2325,31 +2296,40 @@ var Input = class {
     this.chainType = chainType;
   }
 };
-
-// service/src/lib/asset.ts
-var Asset = class {
-  amount;
-  name;
-  decimals;
-  type;
-  tokenId;
-  constructor(amount, name, decimals, type, tokenId) {
-    this.amount = amount;
-    this.name = name;
-    this.decimals = decimals;
-    this.type = type;
+var Token = class {
+  constructor(tokenId, amount, decimals, name, tokenType) {
     this.tokenId = tokenId;
+    this.amount = amount;
+    this.decimals = decimals;
+    this.name = name;
+    this.tokenType = tokenType;
   }
+  tokenId;
+  amount;
+  decimals;
+  name;
+  tokenType;
 };
-
-// service/src/lib/index.ts
-init_data_service();
-init_permits_data_service();
-init_reports_data_service();
-init_chain_performance_data_service();
-init_chain_service();
-
-// service/src/lib/chart.dataset.ts
+var WatcherInfo = class {
+  constructor(tokens) {
+    this.tokens = tokens;
+  }
+  tokens;
+};
+var MyWatchersStats = class {
+  activePermitCount;
+  permitCount;
+  wid;
+  chainType;
+  address;
+};
+var WatcherPerformanceAddressStat = class {
+  address;
+  reports;
+};
+var WatchersPerformanceStats = class {
+  watcherPerformances;
+};
 var ChartDataSet = class {
   label;
   data;
@@ -2386,8 +2366,49 @@ var ChainPerfChartDataSet = class {
     this.borderSkipped = false;
   }
 };
+var ChartPoint = class {
+  x;
+  y;
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+};
+var ChartPerformance = class {
+  address;
+  addressForDisplay;
+  chart;
+  chainType;
+  color;
+  constructor(address, addressForDisplay, chart, color, chainType) {
+    this.address = address;
+    this.addressForDisplay = addressForDisplay;
+    this.chart = chart;
+    this.chainType = chainType;
+    this.color = color;
+  }
+};
+var ChainChartPerformance = class {
+  address;
+  addressForDisplay;
+  chart;
+  chainType;
+  color;
+  constructor(address, addressForDisplay, chart, color, chainType) {
+    this.address = address;
+    this.addressForDisplay = addressForDisplay;
+    this.chart = chart;
+    this.chainType = chainType;
+    this.color = color;
+  }
+};
 
 // service/src/lib/index.ts
+init_data_service();
+init_permits_data_service();
+init_reports_data_service();
+init_chain_performance_data_service();
+init_chain_service();
 init_constants();
 init_data_service();
 init_download_status_indexeddb_service();
@@ -2453,46 +2474,6 @@ var MemoryStorageService = class {
 
 // service/src/lib/index.ts
 init_watcher_data_service();
-
-// service/src/lib/watcher.info.ts
-var WatcherInfo = class {
-  constructor(tokens) {
-    this.tokens = tokens;
-  }
-  tokens;
-};
-var MyWatchersStats = class {
-  activePermitCount;
-  permitCount;
-  wid;
-  chainType;
-  address;
-};
-var WatcherPerformanceAddressStat = class {
-  address;
-  reports;
-};
-var WatchersPerformanceStats = class {
-  watcherPerformances;
-};
-
-// service/src/lib/token.ts
-var Token = class {
-  constructor(tokenId, amount, decimals, name, tokenType) {
-    this.tokenId = tokenId;
-    this.amount = amount;
-    this.decimals = decimals;
-    this.name = name;
-    this.tokenType = tokenType;
-  }
-  tokenId;
-  amount;
-  decimals;
-  name;
-  tokenType;
-};
-
-// service/src/lib/index.ts
 init_process_event_service();
 init_reward_data_service();
 
@@ -2538,7 +2519,7 @@ async function main() {
 }
 main().catch(console.error);
 async function downloadActivePermits() {
-  var frommonth = 10;
+  var frommonth = 11;
   var fromyear = 2026;
   var tomonth = 12;
   var toyear = 2026;

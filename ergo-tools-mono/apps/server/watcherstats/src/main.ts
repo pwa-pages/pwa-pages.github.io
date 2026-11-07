@@ -109,7 +109,7 @@ async function downloadPermits() {
 */
 
 async function downloadActivePermits() {
-  var frommonth = 10;
+  var frommonth = 11;
   var fromyear = 2026;
   var tomonth = 12;
   var toyear = 2026;

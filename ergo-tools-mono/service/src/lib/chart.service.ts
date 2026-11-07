@@ -1,7 +1,6 @@
 import { ChainType, getChainType } from "./chain.service";
 import { DateNumberPoint } from "./constants";
-import { Input } from "./input";
-import { Asset } from "./asset";
+import { Input, Asset } from "./models";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ChartService {
   async getAddressCharts(

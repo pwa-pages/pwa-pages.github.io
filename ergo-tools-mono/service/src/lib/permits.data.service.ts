@@ -1,8 +1,7 @@
-import { Asset } from "./asset";
 import { ChainType, permitTriggerAddresses, permitBulkAddresses, rewardAddresses, rwtTokenIds, getChainTypeForPermitTriggerAddress, getChainTypeForPermitAddress } from "./chain.service";
 import { IStorageService, rs_ActivePermitTxStoreName, rs_OpenBoxesStoreName, rs_FullDownloadsBatchSize } from "./constants";
-import { DataService, OpenBoxes, Output, PermitTx, TransactionItem } from "./data.service";
-import { Input } from "./input";
+import { DataService } from "./data.service";
+import { PermitTx, TransactionItem, Asset, OpenBoxes, Output, Input } from "./models";
 import { WatcherDataService } from "./watcher.data.service";
 
 

@@ -1,4 +1,5 @@
-import { DataService, DownloadStatus } from "./data.service";
+import { DataService } from "./data.service";
+import { DownloadStatus } from "./models";
 export declare class DownloadStatusIndexedDbService<T> {
     private dataService;
     private db;
