@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const models_1 = require("./models");
 const process_event_service_1 = require("./process.event.service");
 const processEventServiceSingleton = (() => {
     let instance = null;
@@ -24,7 +25,7 @@ if (isServiceWorker) {
         const extendableEvent = event;
         extendableEvent.waitUntil(processEventService.processEvent({
             data: data.data,
-            type: data.type,
+            type: models_1.EventType[data.type],
         }));
     });
 }

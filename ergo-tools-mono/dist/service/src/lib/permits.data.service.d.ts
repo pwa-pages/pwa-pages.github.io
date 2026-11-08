@@ -1,7 +1,7 @@
 import { IStorageService } from "./constants";
 import { DataService } from "./data.service";
 import { PermitTx, TransactionItem, Asset } from "./models";
-import { WatcherDataService } from "./watcher.data.service";
+import { MyWatcherDataService } from "./mywatcher.data.service";
 export declare class PermitsDataService extends DataService<PermitTx> {
     private storeName;
     private maxDownloadDateDifference;
@@ -23,4 +23,4 @@ export declare class PermitsDataService extends DataService<PermitTx> {
     purgeData(): Promise<void>;
     getSortedPermits(): Promise<PermitTx[]>;
 }
-export declare const GetWatcherDataService: (permitsDataService: PermitsDataService) => WatcherDataService;
+export declare const GetWatcherDataService: (permitsDataService: PermitsDataService) => MyWatcherDataService;

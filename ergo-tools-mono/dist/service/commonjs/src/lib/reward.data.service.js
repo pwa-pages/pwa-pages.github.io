@@ -4,6 +4,7 @@ exports.RewardDataService = void 0;
 const chain_service_1 = require("./chain.service");
 const constants_1 = require("./constants");
 const data_service_1 = require("./data.service");
+const models_1 = require("./models");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class RewardDataService extends data_service_1.DataService {
     db;
@@ -84,11 +85,11 @@ class RewardDataService extends data_service_1.DataService {
         await this.storageService.addData(constants_1.rs_InputsStoreName, tempData);
         const inputs = await this.getSortedInputs();
         this.eventSender?.sendEvent({
-            type: 'InputsChanged',
+            type: models_1.EventType.InputsChanged,
             data: inputs,
         });
         this.eventSender?.sendEvent({
-            type: 'AddressChartChanged',
+            type: models_1.EventType.AddressChartChanged,
             data: await this.chartService.getAddressCharts(inputs),
         });
     }

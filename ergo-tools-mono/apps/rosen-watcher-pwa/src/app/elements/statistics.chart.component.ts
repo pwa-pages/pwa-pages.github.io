@@ -6,9 +6,8 @@ import {
   Injector,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { EventType } from '../service/event.service';
 import 'chartjs-adapter-date-fns';
-import { Input } from '@ergo-tools/service';
+import { EventType, Input } from '@ergo-tools/service';
 import { DateUtils } from '../statistics/date.utils';
 import { RewardChartComponent } from '../statistics/reward.chart.component';
 import { ChainDataService } from '../service/chain.data.service';

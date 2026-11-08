@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { EventService, EventType } from './event.service';
+import { EventService } from './event.service';
 import { Router } from '@angular/router';
 import { NavigationService } from './navigation.service';
+import { EventType } from '@ergo-tools/service';
 
 @Injectable({
   providedIn: 'root',

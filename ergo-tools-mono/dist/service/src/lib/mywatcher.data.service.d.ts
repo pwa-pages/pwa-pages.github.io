@@ -1,7 +1,7 @@
 import { DataService } from "./data.service";
 import { PermitTx, TransactionItem, Asset, PermitInfo } from "./models";
 import { PermitsDataService } from "./permits.data.service";
-export declare class WatcherDataService extends DataService<PermitTx> {
+export declare class MyWatcherDataService extends DataService<PermitTx> {
     private permitsDataService;
     getData(): Promise<PermitTx[] | null>;
     getExistingData(transaction: TransactionItem, address: string): Promise<PermitTx | null>;

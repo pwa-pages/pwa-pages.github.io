@@ -4,8 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { QRDialogComponent } from '../statistics/qrdialog.component';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { EventService, EventType } from './event.service';
-import { Address } from '@ergo-tools/service';
+import { EventService } from './event.service';
+import { Address, EventType } from '@ergo-tools/service';
 export interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;

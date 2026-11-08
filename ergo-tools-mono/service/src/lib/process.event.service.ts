@@ -4,14 +4,14 @@ import { ChartService } from "./chart.service";
 import { rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_DbName, UrlAction } from "./constants";
 import { DownloadService } from "./download.service";
 import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
-import { DbInput, PerfTx, PermitTx, PermitInfo } from "./models";
+import { DbInput, PerfTx, PermitTx, PermitInfo, EventType } from "./models";
 import { PermitsDataService } from "./permits.data.service";
 import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
-import { WatcherDataService } from "./watcher.data.service";
+import { MyWatcherDataService } from "./mywatcher.data.service";
 
 export interface EventPayload<T> {
-  type: string;
+  type: EventType;
   data?: T;
 }
 
@@ -22,7 +22,7 @@ export interface EventSender {
 interface Services {
   dataService: RewardDataService;
   chainPerformanceDataService: ChainPerformanceDataService;
-  watcherDataService: WatcherDataService;
+  watcherDataService: MyWatcherDataService;
   permitsDataService: PermitsDataService;
   downloadService: DownloadService<DbInput>;
   chartService: ChartService;
@@ -48,7 +48,7 @@ async function createServices(
     new PermitsDataService(db);
   const reportsDataService: ReportsDataService =
     new ReportsDataService(db, eventSender);
-  const watcherDataService: WatcherDataService = new WatcherDataService(
+  const watcherDataService: MyWatcherDataService = new MyWatcherDataService(
     permitsDataService,
   );
 
@@ -216,7 +216,7 @@ export class ProcessEventService {
           var performances = await services.reportsDataService.getWatcherPerformanceByChainType();
 
           await this.eventSender?.sendEvent({
-            type: 'ReportsChanged',
+            type: EventType.ReportsChanged,
             data: performances,
           });
 
@@ -227,7 +227,7 @@ export class ProcessEventService {
           performances = await services.reportsDataService.getWatcherPerformanceByChainType();
 
           await this.eventSender?.sendEvent({
-            type: 'ReportsChanged',
+            type: EventType.ReportsChanged,
             data: performances,
           });
         }
@@ -249,7 +249,7 @@ export class ProcessEventService {
     );
 
     await this.eventSender?.sendEvent({
-      type: 'AddressChartChanged',
+      type: EventType.AddressChartChanged,
       data: addressCharts,
     });
 
@@ -270,7 +270,7 @@ export class ProcessEventService {
 
     const inputs = await services.dataService.getSortedInputs();
     await this.eventSender?.sendEvent({
-      type: 'InputsChanged',
+      type: EventType.InputsChanged,
       data: inputs,
     });
 
@@ -286,7 +286,7 @@ export class ProcessEventService {
     const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
 
     await this.eventSender?.sendEvent({
-      type: 'PerfChartChanged',
+      type: EventType.PerfChartChanged,
       data: perfTxs,
     });
 
@@ -413,12 +413,12 @@ export class ProcessEventService {
     const permits = await services.watcherDataService.getAdressPermits(addresses);
 
     await this.eventSender?.sendEvent({
-      type: 'PermitsChanged',
+      type: EventType.PermitsChanged,
       data: permits,
     });
 
     await this.eventSender?.sendEvent({
-      type: 'AddressPermitsDownloaded',
+      type: EventType.AddressPermitsDownloaded,
       data: chainType,
     });
   }
@@ -431,7 +431,7 @@ export class ProcessEventService {
     const permits = await services.watcherDataService.getAdressPermits(addresses);
 
     await this.eventSender?.sendEvent({
-      type: 'PermitsChanged',
+      type: EventType.PermitsChanged,
       data: permits,
     });
     return permits;
@@ -439,7 +439,7 @@ export class ProcessEventService {
 
   private async sendPermitsChangedEvent(permits: PermitInfo[]) {
     await this.eventSender?.sendEvent({
-      type: 'PermitsChanged',
+      type: EventType.PermitsChanged,
       data: permits,
     });
   }
@@ -483,7 +483,7 @@ export class ProcessEventService {
   ): Promise<void> {
     const permits = await services.watcherDataService.getAdressPermits(addresses);
     await this.eventSender?.sendEvent({
-      type: 'PermitsChanged',
+      type: EventType.PermitsChanged,
       data: permits,
     });
   }

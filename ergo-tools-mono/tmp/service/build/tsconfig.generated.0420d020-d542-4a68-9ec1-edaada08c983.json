@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@ergo-tools/service": [
+        "/home/pebblerye/pwa/pwa-pages.github.io/ergo-tools-mono/service/src/lib"
+      ]
+    }
+  },
+  "extends": "../../../service/tsconfig.lib.json"
+}

@@ -11,10 +11,10 @@ import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { WatchersComponent } from '../statistics/watchers.component';
 import { ChainPerformanceComponent } from '../statistics/chain.performance.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { EventType } from '../service/event.service';
 import {
   ChainChartPerformance,
   ChartPerformance,
+  EventType,
 } from '@ergo-tools/service';
 import { StatisticsChartComponent } from './statistics.chart.component';
 

@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
-import { of, Observable, throwError, concat, EMPTY } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
+import { of, Observable, throwError, concat, EMPTY, defer, from } from 'rxjs';
+import { catchError, concatMap, finalize, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { EventService, EventType } from './event.service';
-import { rs_ErgoExplorerHost, rs_ErgoNodeHost, WatcherInfo } from '@ergo-tools/service';
+import { EventService } from './event.service';
+import { EventType, IDBDatabaseStorageService, rs_DownloadStoreName, rs_ErgoExplorerHost, rs_ErgoNodeHost, WatcherInfo } from '@ergo-tools/service';
+import { StorageService } from './storage.service';
+
+interface CachedDownload<T> {
+  url: string;
+  data: T;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpDownloadService {
-  private activeDownloads: Record<string, boolean> = {};
+  private activeDownloads = 0;
   private useNode = false;
   constructor(
-    private http: HttpClient,
     private eventService: EventService,
+    private storageService: StorageService,
   ) {}
 
   downloadPermitInfo<T>(watcherUrl: string): Promise<T> {
@@ -26,24 +31,15 @@ export class HttpDownloadService {
     return firstValueFrom(this.downloadStream(url));
   }
 
-  private async initiateDownload() {
-    const numActive = Object.values(this.activeDownloads).filter(
-      (value) => value === true,
-    ).length;
-    if (numActive == 0) {
+  private initiateDownload() {
+    if (this.activeDownloads++ === 0) {
       this.eventService.sendEvent(EventType.StartFullDownload);
     }
   }
 
-  private async endDownload(url: string) {
-    if (this.activeDownloads[url]) {
-      this.activeDownloads[url] = false;
-      const numActive = Object.values(this.activeDownloads).filter(
-        (value) => value === true,
-      ).length;
-      if (numActive == 0) {
-        this.eventService.sendEvent(EventType.EndFullDownload);
-      }
+  private endDownload() {
+    if (--this.activeDownloads === 0) {
+      this.eventService.sendEvent(EventType.EndFullDownload);
     }
   }
 
@@ -66,73 +62,47 @@ export class HttpDownloadService {
   }
 
   downloadStream<T>(url: string): Observable<T> {
-    this.initiateDownload();
-    console.log('Attempting to load from cache:', url);
-    this.activeDownloads[url] = true;
-
-    const cachedData = localStorage.getItem(url);
-    let cacheObservable: Observable<T>;
-
-    if (cachedData) {
-      console.log('Loaded from cache:', url);
-      cacheObservable = of(JSON.parse(cachedData));
-    } else {
-      console.log('No cache available:', url);
-      cacheObservable = EMPTY;
-    }
-
-    const downloadObservable = this.http.get<T>(url).pipe(
-      map((results: T) => {
-        console.log('Downloaded from server:', url);
-        localStorage.setItem(url, JSON.stringify(results));
-
-        this.endDownload(url);
-        return results;
-      }),
-      catchError((error) => {
-        console.log('Download failed:', url);
-
-        this.endDownload(url);
-        return throwError(error);
-      }),
-    );
-
-    return concat(cacheObservable, downloadObservable);
+    return this.downloadWithCache<T>(url, url);
   }
 
   downloadPostStream<T>(url: string, body: string): Observable<T> {
-    let downloadKey = url + body;
-    this.initiateDownload();
-    console.log('Attempting to load from cache:', downloadKey);
-    this.activeDownloads[downloadKey] = true;
-    // Check if the data exists in the cache
-    const cachedData = localStorage.getItem(downloadKey);
-    let cacheObservable: Observable<T>;
+    return this.downloadWithCache<T>(url + body, url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body,
+    });
+  }
 
-    if (cachedData) {
-      console.log('Loaded from cache:', downloadKey);
-      cacheObservable = of(JSON.parse(cachedData));
-    } else {
-      console.log('No cache available:', downloadKey);
-      cacheObservable = EMPTY;
-    }
+  private downloadWithCache<T>(key: string, url: string, options?: RequestInit): Observable<T> {
+    return defer(() => {
+      this.initiateDownload();
+      const storage = from(this.storageService.getDB()).pipe(
+        map((db) => new IDBDatabaseStorageService<CachedDownload<T>>(db)),
+      );
+      const cached = storage.pipe(
+        concatMap((store) => from(store.getDataById(rs_DownloadStoreName, [key]))),
+        concatMap((entry) => entry === null ? EMPTY : of(entry.data)),
+      );
+      const downloaded = defer(() => from(fetch(url, options))).pipe(
+        concatMap(async (response) => {
+          if (!response.ok) {
+            throw new Error(`Server returned code: ${response.status}`);
+          }
+          return (await response.json()) as T;
+        }),
+        concatMap((data) => storage.pipe(
+          concatMap((store) => from(store.addData(rs_DownloadStoreName, [{ url: key, data }]))),
+          map(() => data),
+        )),
+      );
 
-    const downloadObservable = this.http.post<T>(url, body).pipe(
-      map((results: T) => {
-        console.log('Downloaded from server:', url);
-        localStorage.setItem(downloadKey, JSON.stringify(results));
-
-        this.endDownload(downloadKey);
-        return results;
-      }),
-      catchError((error) => {
-        console.log('Download failed:', url);
-
-        this.endDownload(downloadKey);
-        return throwError(error);
-      }),
-    );
-
-    return concat(cacheObservable, downloadObservable);
+      return concat(cached, downloaded).pipe(
+        catchError((error) => {
+          console.error('Download or cache failed:', url, error);
+          return throwError(() => error);
+        }),
+        finalize(() => this.endDownload()),
+      );
+    });
   }
 }

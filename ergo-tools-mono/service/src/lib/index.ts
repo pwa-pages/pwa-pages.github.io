@@ -9,7 +9,7 @@ export * from './data.service';
 export * from './download.status.indexeddb.service';
 export * from './i-db-databasestorage.service';
 export * from './memory.storage.service';
-export * from './watcher.data.service' ;
+export * from './mywatcher.data.service' ;
 export * from './process.event.service';
 export * from './reward.data.service';
 export * from './service.factory';

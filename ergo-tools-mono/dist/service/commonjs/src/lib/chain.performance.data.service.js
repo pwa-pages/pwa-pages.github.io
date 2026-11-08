@@ -4,6 +4,7 @@ exports.ChainPerformanceDataService = void 0;
 const chain_service_1 = require("./chain.service");
 const constants_1 = require("./constants");
 const data_service_1 = require("./data.service");
+const models_1 = require("./models");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ChainPerformanceDataService extends data_service_1.DataService {
     db;
@@ -48,7 +49,7 @@ class ChainPerformanceDataService extends data_service_1.DataService {
         await this.storageService.addData(constants_1.rs_PerfTxStoreName, tempData);
         const perfTxs = await this.getPerfTxs();
         this.eventSender?.sendEvent({
-            type: 'PerfChartChanged',
+            type: models_1.EventType.PerfChartChanged,
             data: perfTxs,
         });
     }

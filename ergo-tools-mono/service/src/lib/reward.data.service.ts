@@ -3,7 +3,7 @@ import { getChainType, ChainType } from "./chain.service";
 import { ChartService } from "./chart.service";
 import { rs_InputsStoreName, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals } from "./constants";
 import { DataService } from "./data.service";
-import { DbInput, TransactionItem, Asset, Input } from "./models";
+import { DbInput, TransactionItem, Asset, Input, EventType } from "./models";
 import { EventSender } from "./process.event.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class RewardDataService extends DataService<DbInput> {
@@ -119,12 +119,12 @@ export class RewardDataService extends DataService<DbInput> {
     const inputs = await this.getSortedInputs();
 
     this.eventSender?.sendEvent({
-      type: 'InputsChanged',
+      type: EventType.InputsChanged,
       data: inputs,
     });
 
     this.eventSender?.sendEvent({
-      type: 'AddressChartChanged',
+      type: EventType.AddressChartChanged,
       data: await this.chartService.getAddressCharts(inputs),
     });
 

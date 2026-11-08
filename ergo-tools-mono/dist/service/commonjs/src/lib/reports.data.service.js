@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReportsDataService = void 0;
 const chain_service_1 = require("./chain.service");
 const constants_1 = require("./constants");
+const models_1 = require("./models");
 const permits_data_service_1 = require("./permits.data.service");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ReportsDataService extends permits_data_service_1.PermitsDataService {
@@ -86,7 +87,7 @@ class ReportsDataService extends permits_data_service_1.PermitsDataService {
             this.storageService.addData(constants_1.rs_WatcherReportsStoreName, [monthStats], c);
         });
         await this.eventSender?.sendEvent({
-            type: 'ReportsChanged',
+            type: models_1.EventType.ReportsChanged,
             data: performances,
         });
     }

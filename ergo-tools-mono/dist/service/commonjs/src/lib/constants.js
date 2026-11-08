@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Currency = exports.Period = exports.rs_RSNDecimals = exports.rs_TokenIdMap = exports.rs_eRSNTokenId = exports.rs_RSNTokenId = exports.getUrlConfig = exports.urlConfig = exports.UrlAction = exports.rs_ErgoNodeHost = exports.rs_ErgoExplorerHost = exports.rs_WatcherCollateralERG = exports.rs_WatcherCollateralRSN = exports.rs_PermitCost = exports.rs_Address_Key = exports.rs_PerfTx_Key = exports.rs_ActivePermit_Key = exports.rs_WatcherReports_Key = exports.rs_Permit_Key = exports.rs_Input_Key = exports.rs_StartFrom = exports.rs_PerfFullDownloadsBatchSize = exports.rs_PerfInitialNDownloads = exports.rs_FullDownloadsBatchSize = exports.rs_InitialNDownloads = exports.rs_AddressDataStoreName = exports.rs_OpenBoxesStoreName = exports.rs_DownloadStatusStoreName = exports.rs_WatcherReportsStoreName = exports.rs_ReportsStoreName = exports.rs_ActivePermitTxStoreName = exports.rs_PermitTxStoreName = exports.rs_PerfTxStoreName = exports.rs_InputsStoreName = exports.rs_DbVersion = exports.rs_DbName = void 0;
+exports.Currency = exports.Period = exports.rs_RSNDecimals = exports.rs_TokenIdMap = exports.rs_eRSNTokenId = exports.rs_RSNTokenId = exports.getUrlConfig = exports.urlConfig = exports.UrlAction = exports.rs_ErgoNodeHost = exports.rs_ErgoExplorerHost = exports.rs_WatcherCollateralERG = exports.rs_WatcherCollateralRSN = exports.rs_PermitCost = exports.rs_Address_Key = exports.rs_PerfTx_Key = exports.rs_ActivePermit_Key = exports.rs_WatcherReports_Key = exports.rs_Permit_Key = exports.rs_Download_Key = exports.rs_Input_Key = exports.rs_StartFrom = exports.rs_PerfFullDownloadsBatchSize = exports.rs_PerfInitialNDownloads = exports.rs_FullDownloadsBatchSize = exports.rs_InitialNDownloads = exports.rs_AddressDataStoreName = exports.rs_OpenBoxesStoreName = exports.rs_DownloadStatusStoreName = exports.rs_WatcherReportsStoreName = exports.rs_ReportsStoreName = exports.rs_ActivePermitTxStoreName = exports.rs_PermitTxStoreName = exports.rs_PerfTxStoreName = exports.rs_InputsStoreName = exports.rs_DownloadStoreName = exports.rs_DbVersion = exports.rs_DbName = void 0;
 const chain_service_1 = require("./chain.service");
 /* eslint-disable @typescript-eslint/no-explicit-any */
 exports.rs_DbName = 'rosenDatabase_1.1.5';
-exports.rs_DbVersion = 52;
+exports.rs_DbVersion = 53;
+exports.rs_DownloadStoreName = 'downloads';
 exports.rs_InputsStoreName = 'inputBoxes';
 exports.rs_PerfTxStoreName = 'perfTxs';
 exports.rs_PermitTxStoreName = 'permitTxs';
@@ -20,6 +21,7 @@ exports.rs_PerfInitialNDownloads = 10;
 exports.rs_PerfFullDownloadsBatchSize = 40;
 exports.rs_StartFrom = new Date('2024-01-01');
 exports.rs_Input_Key = ['boxId', 'outputAddress'];
+exports.rs_Download_Key = ['url'];
 exports.rs_Permit_Key = 'id';
 exports.rs_WatcherReports_Key = 'chainType';
 exports.rs_ActivePermit_Key = 'id';

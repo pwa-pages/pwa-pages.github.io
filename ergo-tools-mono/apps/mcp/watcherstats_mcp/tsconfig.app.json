@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc",
+    "moduleResolution": "node",
+    "types": ["node"],
+    "paths": {
+      "@ergo-tools/service": ["../../../service/src/lib"]
+    },
+    "target": "ESNext",
+    "module": "ES2022",
+    "rootDir": "../../.."
+  },
+  "include": ["src/**/*.ts"]
+}

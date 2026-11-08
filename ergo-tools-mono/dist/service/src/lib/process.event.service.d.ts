@@ -1,13 +1,13 @@
 import { ChainPerformanceDataService } from "./chain.performance.data.service";
 import { ChartService } from "./chart.service";
 import { DownloadService } from "./download.service";
-import { DbInput, PerfTx, PermitTx } from "./models";
+import { DbInput, PerfTx, PermitTx, EventType } from "./models";
 import { PermitsDataService } from "./permits.data.service";
 import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
-import { WatcherDataService } from "./watcher.data.service";
+import { MyWatcherDataService } from "./mywatcher.data.service";
 export interface EventPayload<T> {
-    type: string;
+    type: EventType;
     data?: T;
 }
 export interface EventSender {
@@ -16,7 +16,7 @@ export interface EventSender {
 interface Services {
     dataService: RewardDataService;
     chainPerformanceDataService: ChainPerformanceDataService;
-    watcherDataService: WatcherDataService;
+    watcherDataService: MyWatcherDataService;
     permitsDataService: PermitsDataService;
     downloadService: DownloadService<DbInput>;
     chartService: ChartService;

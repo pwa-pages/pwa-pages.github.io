@@ -12,10 +12,9 @@ import 'chartjs-adapter-date-fns';
 import { DateUtils } from '../statistics/date.utils';
 import { Chart } from 'chart.js';
 import { ChainChartService } from '../service/chain.chart.service';
-import { EventType } from '../service/event.service';
 import { ChainDataService } from '../service/chain.data.service';
 import { BaseEventAwareComponent } from '../baseeventawarecomponent';
-import { ChartPerformance, ChartPoint } from '@ergo-tools/service';
+import { ChartPerformance, ChartPoint, EventType } from '@ergo-tools/service';
 
 @Component({
   selector: 'app-performance-chart',

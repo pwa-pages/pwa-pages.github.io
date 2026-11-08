@@ -1,5 +1,6 @@
 import { Component, OnDestroy, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { EventData, EventService, EventType } from './service/event.service';
+import { EventData, EventService } from './service/event.service';
+import { EventType } from '@ergo-tools/service';
 
 @Component({
   selector: 'app-root',

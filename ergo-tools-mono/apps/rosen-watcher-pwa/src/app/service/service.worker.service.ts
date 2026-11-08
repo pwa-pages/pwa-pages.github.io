@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
-import { EventData, EventService, EventType } from './event.service';
+import { EventData, EventService } from './event.service';
 import { HttpClient } from '@angular/common/http';
 import { IS_ELEMENTS_ACTIVE } from './tokens';
-import { CreateProcessEventService, EventPayload, EventSender } from '@ergo-tools/service';
+import { CreateProcessEventService, EventPayload, EventSender, EventType } from '@ergo-tools/service';
 
 // Define a type for the messages being sent to the service worker
 interface ServiceWorkerMessage {

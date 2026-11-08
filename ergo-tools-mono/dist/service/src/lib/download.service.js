@@ -1,4 +1,5 @@
 import { getUrlConfig, rs_AddressDataStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_StartFrom } from "./constants";
+import { EventType } from "./models";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class DownloadService {
     //private static addressDownloadDateMap = new Map<string, Date>();
@@ -94,7 +95,7 @@ export class DownloadService {
     increaseBusyCounter(address) {
         if (this.busyCounter === 0) {
             this.eventSender?.sendEvent({
-                type: 'StartFullDownload',
+                type: EventType.StartFullDownload,
                 data: address,
             });
         }
@@ -104,7 +105,7 @@ export class DownloadService {
         this.busyCounter--;
         if (this.busyCounter === 0) {
             this.eventSender?.sendEvent({
-                type: 'EndFullDownload',
+                type: EventType.EndFullDownload,
                 data: address,
             });
         }

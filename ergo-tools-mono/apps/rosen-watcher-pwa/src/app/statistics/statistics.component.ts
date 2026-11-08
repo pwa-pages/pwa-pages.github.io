@@ -6,12 +6,11 @@ import {
   Injector,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NgStyle } from '@angular/common';
 import 'chartjs-adapter-date-fns';
-import { Input } from '@ergo-tools/service';
+import { EventType, Input } from '@ergo-tools/service';
 import { Address } from '@ergo-tools/service';
 import { ServiceWorkerService } from '../service/service.worker.service';
 import { FormsModule } from '@angular/forms';

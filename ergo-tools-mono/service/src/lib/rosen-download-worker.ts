@@ -1,4 +1,4 @@
-import { MessageEventData } from "./models";
+import { MessageEventData, EventType } from "./models";
 import { ProcessEventService, ServiceWorkerEventSender } from "./process.event.service";
 
 const processEventServiceSingleton = (() => {
@@ -47,7 +47,7 @@ if (isServiceWorker) {
     extendableEvent.waitUntil(
       processEventService.processEvent({
         data: data.data as unknown as object,
-        type: data.type,
+        type: EventType[data.type as keyof typeof EventType],
       })
     );
   });

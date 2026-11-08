@@ -2,7 +2,7 @@ import { ChainType, permitTriggerAddresses, permitBulkAddresses, rewardAddresses
 import { IStorageService, rs_ActivePermitTxStoreName, rs_OpenBoxesStoreName, rs_FullDownloadsBatchSize } from "./constants";
 import { DataService } from "./data.service";
 import { PermitTx, TransactionItem, Asset, OpenBoxes, Output, Input } from "./models";
-import { WatcherDataService } from "./watcher.data.service";
+import { MyWatcherDataService } from "./mywatcher.data.service";
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -500,6 +500,6 @@ export class PermitsDataService extends DataService<PermitTx> {
 
 export const GetWatcherDataService = (
   permitsDataService: PermitsDataService
-): WatcherDataService => {
-  return new WatcherDataService(permitsDataService);
+): MyWatcherDataService => {
+  return new MyWatcherDataService(permitsDataService);
 };

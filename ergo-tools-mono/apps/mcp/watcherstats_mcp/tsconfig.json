@@ -1,0 +1,18 @@
+{
+  "files": [],
+  "include": [],
+  "types": [],
+  "composite": true,
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "strict": false,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "ignoreDeprecations": "6.0"
+  }
+}

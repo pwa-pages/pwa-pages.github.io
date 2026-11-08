@@ -12,8 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { ChainChartService, LineChart } from '../service/chain.chart.service';
-import { EventService, EventType } from '../service/event.service';
-import { ChartPoint } from '@ergo-tools/service';
+import { EventService } from '../service/event.service';
+import { ChartPoint, EventType } from '@ergo-tools/service';
 
 @Component({
   selector: 'app-reward-chart',

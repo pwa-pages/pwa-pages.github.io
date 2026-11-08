@@ -24,6 +24,7 @@
   },
   "implicitDependencies": {
     "watcherstats": ["service"],
+    "watcherstats_mcp": ["service"],
     "rosen-watcher-pwa": ["service"],
     "rosen-watcher-elements": ["rosen-watcher-pwa"]
   },

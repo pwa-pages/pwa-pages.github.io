@@ -1,6 +1,6 @@
 import { ChainType, getChainTypeForPermitTriggerAddress, permitTriggerAddresses } from "./chain.service";
 import { IStorageService, rs_ReportsStoreName, rs_WatcherReportsStoreName } from "./constants";
-import { PermitTx, WatchersPerformanceStats, WatcherPerformanceAddressStat, Address, TransactionItem } from "./models";
+import { PermitTx, WatchersPerformanceStats, WatcherPerformanceAddressStat, Address, TransactionItem, EventType } from "./models";
 import { PermitsDataService } from "./permits.data.service";
 import { EventSender } from "./process.event.service";
 
@@ -129,7 +129,7 @@ export class ReportsDataService extends PermitsDataService {
     });
 
     await this.eventSender?.sendEvent({
-      type: 'ReportsChanged',
+      type: EventType.ReportsChanged,
       data: performances,
     });
   }

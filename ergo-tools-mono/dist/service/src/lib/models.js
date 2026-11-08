@@ -1,3 +1,33 @@
+export var EventType;
+(function (EventType) {
+    EventType["StartFullDownload"] = "StartFullDownload";
+    EventType["EndFullDownload"] = "EndFullDownload";
+    EventType["RefreshInputs"] = "RefreshInputs";
+    EventType["InputsChanged"] = "InputsChanged";
+    EventType["PerfChartChanged"] = "PerfChartChanged";
+    EventType["SwipeActivated"] = "SwipeActivated";
+    EventType["SwipeDeActivated"] = "SwipeDeActivated";
+    EventType["SwipeVertical"] = "SwipeVertical";
+    EventType["StatisticsScreenLoaded"] = "StatisticsScreenLoaded";
+    EventType["MyWatchersScreenLoaded"] = "MyWatchersScreenLoaded";
+    EventType["ReportsRequested"] = "ReportsRequested";
+    EventType["RequestInputsDownload"] = "RequestInputsDownload";
+    EventType["WatchersScreenLoaded"] = "WatchersScreenLoaded";
+    EventType["SettingsScreenLoaded"] = "SettingsScreenLoaded";
+    EventType["PerformanceScreenLoaded"] = "PerformanceScreenLoaded";
+    EventType["AddressChartChanged"] = "AddressChartChanged";
+    EventType["WindowResized"] = "WindowResized";
+    EventType["VersionUpdated"] = "VersionUpdated";
+    EventType["WatchersStatsChanged"] = "WatchersStatsChanged";
+    EventType["PermitsStatsChanged"] = "PermitsStatsChanged";
+    EventType["ChainPerformanceChartsChanged"] = "ChainPerformanceChartsChanged";
+    EventType["PerformanceChartsChanged"] = "PerformanceChartsChanged";
+    EventType["StatisticsChartChanged"] = "StatisticsChartChanged";
+    EventType["PermitsChanged"] = "PermitsChanged";
+    EventType["RefreshPermits"] = "RefreshPermits";
+    EventType["AddressPermitsDownloaded"] = "AddressPermitsDownloaded";
+    EventType["ReportsChanged"] = "ReportsChanged";
+})(EventType || (EventType = {}));
 export class Address {
     constructor(address, chainType, active = true, ownAddress = false) {
         this.active = true;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Input, rs_ActivePermit_Key, rs_ActivePermitTxStoreName, rs_Address_Key, rs_AddressDataStoreName, rs_DbName, rs_DbVersion, rs_DownloadStatusStoreName, rs_Input_Key, rs_InputsStoreName, rs_OpenBoxesStoreName, rs_PerfTx_Key, rs_PerfTxStoreName, rs_Permit_Key, rs_PermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName } from '@ergo-tools/service';
+import { Input, rs_ActivePermit_Key, rs_ActivePermitTxStoreName, rs_Address_Key, rs_AddressDataStoreName, rs_DbName, rs_DbVersion, rs_Download_Key, rs_DownloadStatusStoreName, rs_DownloadStoreName, rs_Input_Key, rs_InputsStoreName, rs_OpenBoxesStoreName, rs_PerfTx_Key, rs_PerfTxStoreName, rs_Permit_Key, rs_PermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName } from '@ergo-tools/service';
 import { Address } from '@ergo-tools/service';
 
 @Injectable({
@@ -22,42 +22,50 @@ export class StorageService {
       request.onupgradeneeded = (event: Event) => {
         const db = (event.target as IDBOpenDBRequest).result;
 
-        this.recreateObjectStore(db, rs_InputsStoreName, rs_Input_Key);
-        this.recreateObjectStore(db, rs_PerfTxStoreName, rs_PerfTx_Key);
-        this.recreateObjectStore(db, rs_PermitTxStoreName, rs_Permit_Key);
-        this.recreateObjectStore(db, rs_WatcherReportsStoreName);
-        this.recreateObjectStore(
-          db,
-          rs_ActivePermitTxStoreName,
-          rs_ActivePermit_Key,
-        );
 
-        const store = this.recreateObjectStore(
-          db,
-          rs_ReportsStoreName,
-          rs_PerfTx_Key,
-        );
+          this.recreateObjectStore(db, rs_InputsStoreName, rs_Input_Key);
+          this.recreateObjectStore(db, rs_PerfTxStoreName, rs_PerfTx_Key);
+          this.recreateObjectStore(db, rs_PermitTxStoreName, rs_Permit_Key);
+          this.recreateObjectStore(db, rs_WatcherReportsStoreName);
+          this.recreateObjectStore(
+            db,
+            rs_ActivePermitTxStoreName,
+            rs_ActivePermit_Key,
+          );
+          this.recreateObjectStore(
+            db,
+            rs_DownloadStoreName,
+            rs_Download_Key,
+          );
 
-        store.createIndex("chainType", "chainType", {
-          unique: false,
-        });
 
-        if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
-          db.createObjectStore(rs_AddressDataStoreName, {
-            keyPath: rs_Address_Key,
+          const store = this.recreateObjectStore(
+            db,
+            rs_ReportsStoreName,
+            rs_PerfTx_Key,
+          );
+
+          store.createIndex("chainType", "chainType", {
+            unique: false,
           });
-        }
 
-        this.recreateObjectStore(
-          db,
-          rs_DownloadStatusStoreName,
-          rs_Address_Key,
-        );
-        this.recreateObjectStore(
-          db,
-          rs_OpenBoxesStoreName,
-          rs_Address_Key,
-        );
+          if (!db.objectStoreNames.contains(rs_AddressDataStoreName)) {
+            db.createObjectStore(rs_AddressDataStoreName, {
+              keyPath: rs_Address_Key,
+            });
+          }
+
+          this.recreateObjectStore(
+            db,
+            rs_DownloadStatusStoreName,
+            rs_Address_Key,
+          );
+          this.recreateObjectStore(
+            db,
+            rs_OpenBoxesStoreName,
+            rs_Address_Key,
+          );
+        
 
       };
 

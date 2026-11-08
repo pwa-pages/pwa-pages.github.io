@@ -1,5 +1,6 @@
 import { ChainType, getChainTypeForPermitTriggerAddress, permitTriggerAddresses } from "./chain.service";
 import { rs_ReportsStoreName, rs_WatcherReportsStoreName } from "./constants";
+import { EventType } from "./models";
 import { PermitsDataService } from "./permits.data.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ReportsDataService extends PermitsDataService {
@@ -82,7 +83,7 @@ export class ReportsDataService extends PermitsDataService {
             this.storageService.addData(rs_WatcherReportsStoreName, [monthStats], c);
         });
         await this.eventSender?.sendEvent({
-            type: 'ReportsChanged',
+            type: EventType.ReportsChanged,
             data: performances,
         });
     }

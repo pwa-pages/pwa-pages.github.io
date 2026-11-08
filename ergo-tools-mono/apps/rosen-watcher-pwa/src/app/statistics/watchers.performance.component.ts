@@ -9,8 +9,8 @@ import {
   ChangeDetectionStrategy,
   Signal
 } from '@angular/core';
-import { EventType } from '../service/event.service';
 import {
+  EventType,
   getActiveChainTypes,
   WatchersPerformanceStats
 } from '@ergo-tools/service';

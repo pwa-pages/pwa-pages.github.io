@@ -1,7 +1,7 @@
 import { getUrlConfig, rs_AddressDataStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_StartFrom, UrlAction } from "./constants";
 import { DataService } from "./data.service";
 import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
-import { FetchTransactionsResponse, Address, TransactionItem } from "./models";
+import { FetchTransactionsResponse, Address, TransactionItem, EventType } from "./models";
 import { EventSender } from "./process.event.service";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -128,7 +128,7 @@ export class DownloadService<T> {
   private increaseBusyCounter(address: string): void {
     if (this.busyCounter === 0) {
       this.eventSender?.sendEvent({
-        type: 'StartFullDownload',
+        type: EventType.StartFullDownload,
         data: address,
       });
     }
@@ -139,7 +139,7 @@ export class DownloadService<T> {
     this.busyCounter--;
     if (this.busyCounter === 0) {
       this.eventSender?.sendEvent({
-        type: 'EndFullDownload',
+        type: EventType.EndFullDownload,
         data: address,
       });
     }

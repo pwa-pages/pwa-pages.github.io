@@ -7,16 +7,17 @@ const chart_service_1 = require("./chart.service");
 const constants_1 = require("./constants");
 const download_service_1 = require("./download.service");
 const download_status_indexeddb_service_1 = require("./download.status.indexeddb.service");
+const models_1 = require("./models");
 const permits_data_service_1 = require("./permits.data.service");
 const reports_data_service_1 = require("./reports.data.service");
 const reward_data_service_1 = require("./reward.data.service");
-const watcher_data_service_1 = require("./watcher.data.service");
+const mywatcher_data_service_1 = require("./mywatcher.data.service");
 async function createServices(eventSender, db) {
     const chartService = new chart_service_1.ChartService();
     const rewardDataService = new reward_data_service_1.RewardDataService(db, chartService, eventSender);
     const permitsDataService = new permits_data_service_1.PermitsDataService(db);
     const reportsDataService = new reports_data_service_1.ReportsDataService(db, eventSender);
-    const watcherDataService = new watcher_data_service_1.WatcherDataService(permitsDataService);
+    const watcherDataService = new mywatcher_data_service_1.MyWatcherDataService(permitsDataService);
     const chainPerformanceDataService = new chain_performance_data_service_1.ChainPerformanceDataService(db, eventSender);
     const downloadStatusIndexedDbRewardDataService = new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(rewardDataService, db);
     const downloadStatusIndexedDbWatcherDataService = new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(watcherDataService, db);
@@ -114,13 +115,13 @@ class ProcessEventService {
                 if (addressChainType === chainType && address != null) {
                     var performances = await services.reportsDataService.getWatcherPerformanceByChainType();
                     await this.eventSender?.sendEvent({
-                        type: 'ReportsChanged',
+                        type: models_1.EventType.ReportsChanged,
                         data: performances,
                     });
                     await services.downloadReportsService.downloadForAddress(address, constants_1.UrlAction.PermitTriggerTransactions);
                     performances = await services.reportsDataService.getWatcherPerformanceByChainType();
                     await this.eventSender?.sendEvent({
-                        type: 'ReportsChanged',
+                        type: models_1.EventType.ReportsChanged,
                         data: performances,
                     });
                 }
@@ -132,7 +133,7 @@ class ProcessEventService {
             event.data);
         const addressCharts = await services.chartService.getAddressCharts(await services.dataService.getSortedInputs());
         await this.eventSender?.sendEvent({
-            type: 'AddressChartChanged',
+            type: models_1.EventType.AddressChartChanged,
             data: addressCharts,
         });
         if (event.data && typeof event.data === 'string') {
@@ -146,7 +147,7 @@ class ProcessEventService {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
         const inputs = await services.dataService.getSortedInputs();
         await this.eventSender?.sendEvent({
-            type: 'InputsChanged',
+            type: models_1.EventType.InputsChanged,
             data: inputs,
         });
         await services.downloadService.downloadForAddresses(constants_1.UrlAction.StatisticsTransactions);
@@ -156,7 +157,7 @@ class ProcessEventService {
         console.log('Downloading perftxs.');
         const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
         await this.eventSender?.sendEvent({
-            type: 'PerfChartChanged',
+            type: models_1.EventType.PerfChartChanged,
             data: perfTxs,
         });
         await services.downloadPerfService.downloadForAddress(chain_service_1.hotWalletAddress, constants_1.UrlAction.StatisticsTransactions);
@@ -211,25 +212,25 @@ class ProcessEventService {
         await services.downloadMyWatchersService.downloadForAddress(address, constants_1.UrlAction.PermitTransactions);
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
-            type: 'PermitsChanged',
+            type: models_1.EventType.PermitsChanged,
             data: permits,
         });
         await this.eventSender?.sendEvent({
-            type: 'AddressPermitsDownloaded',
+            type: models_1.EventType.AddressPermitsDownloaded,
             data: chainType,
         });
     }
     async sendPermitChangedEvent(services, addresses) {
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
-            type: 'PermitsChanged',
+            type: models_1.EventType.PermitsChanged,
             data: permits,
         });
         return permits;
     }
     async sendPermitsChangedEvent(permits) {
         await this.eventSender?.sendEvent({
-            type: 'PermitsChanged',
+            type: models_1.EventType.PermitsChanged,
             data: permits,
         });
     }
@@ -248,7 +249,7 @@ class ProcessEventService {
     async sendPermitsChangedEventForAddresses(services, addresses) {
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
-            type: 'PermitsChanged',
+            type: models_1.EventType.PermitsChanged,
             data: permits,
         });
     }

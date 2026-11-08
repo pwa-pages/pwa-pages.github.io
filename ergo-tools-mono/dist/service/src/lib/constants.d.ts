@@ -1,5 +1,6 @@
 export declare const rs_DbName = "rosenDatabase_1.1.5";
-export declare const rs_DbVersion = 52;
+export declare const rs_DbVersion = 53;
+export declare const rs_DownloadStoreName = "downloads";
 export declare const rs_InputsStoreName = "inputBoxes";
 export declare const rs_PerfTxStoreName = "perfTxs";
 export declare const rs_PermitTxStoreName = "permitTxs";
@@ -15,6 +16,7 @@ export declare const rs_PerfInitialNDownloads = 10;
 export declare const rs_PerfFullDownloadsBatchSize = 40;
 export declare const rs_StartFrom: Date;
 export declare const rs_Input_Key: string[];
+export declare const rs_Download_Key: string[];
 export declare const rs_Permit_Key = "id";
 export declare const rs_WatcherReports_Key = "chainType";
 export declare const rs_ActivePermit_Key = "id";

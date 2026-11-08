@@ -41,6 +41,203 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
+// service/src/lib/models.ts
+var EventType, Address, Asset, Input, Token, WatcherInfo, MyWatchersStats, WatcherPerformanceAddressStat, WatchersPerformanceStats, ChartDataSet, ChainPerfChartDataSet, ChartPoint, ChartPerformance, ChainChartPerformance;
+var init_models = __esm({
+  "service/src/lib/models.ts"() {
+    EventType = /* @__PURE__ */ ((EventType2) => {
+      EventType2["StartFullDownload"] = "StartFullDownload";
+      EventType2["EndFullDownload"] = "EndFullDownload";
+      EventType2["RefreshInputs"] = "RefreshInputs";
+      EventType2["InputsChanged"] = "InputsChanged";
+      EventType2["PerfChartChanged"] = "PerfChartChanged";
+      EventType2["SwipeActivated"] = "SwipeActivated";
+      EventType2["SwipeDeActivated"] = "SwipeDeActivated";
+      EventType2["SwipeVertical"] = "SwipeVertical";
+      EventType2["StatisticsScreenLoaded"] = "StatisticsScreenLoaded";
+      EventType2["MyWatchersScreenLoaded"] = "MyWatchersScreenLoaded";
+      EventType2["ReportsRequested"] = "ReportsRequested";
+      EventType2["RequestInputsDownload"] = "RequestInputsDownload";
+      EventType2["WatchersScreenLoaded"] = "WatchersScreenLoaded";
+      EventType2["SettingsScreenLoaded"] = "SettingsScreenLoaded";
+      EventType2["PerformanceScreenLoaded"] = "PerformanceScreenLoaded";
+      EventType2["AddressChartChanged"] = "AddressChartChanged";
+      EventType2["WindowResized"] = "WindowResized";
+      EventType2["VersionUpdated"] = "VersionUpdated";
+      EventType2["WatchersStatsChanged"] = "WatchersStatsChanged";
+      EventType2["PermitsStatsChanged"] = "PermitsStatsChanged";
+      EventType2["ChainPerformanceChartsChanged"] = "ChainPerformanceChartsChanged";
+      EventType2["PerformanceChartsChanged"] = "PerformanceChartsChanged";
+      EventType2["StatisticsChartChanged"] = "StatisticsChartChanged";
+      EventType2["PermitsChanged"] = "PermitsChanged";
+      EventType2["RefreshPermits"] = "RefreshPermits";
+      EventType2["AddressPermitsDownloaded"] = "AddressPermitsDownloaded";
+      EventType2["ReportsChanged"] = "ReportsChanged";
+      return EventType2;
+    })(EventType || {});
+    Address = class {
+      address;
+      Address;
+      active = true;
+      chainType;
+      smallAddressForDisplay;
+      largeAddressForDisplay;
+      ownAddress;
+      constructor(address, chainType, active = true, ownAddress = false) {
+        this.address = address;
+        this.Address = address;
+        this.smallAddressForDisplay = address.substring(0, 6) + "...";
+        this.largeAddressForDisplay = address.substring(0, 6) + "..." + address.substring(address.length - 6, address.length);
+        this.chainType = chainType;
+        this.active = active;
+        this.ownAddress = ownAddress;
+      }
+    };
+    Asset = class {
+      amount;
+      name;
+      decimals;
+      type;
+      tokenId;
+      constructor(amount, name, decimals, type, tokenId) {
+        this.amount = amount;
+        this.name = name;
+        this.decimals = decimals;
+        this.type = type;
+        this.tokenId = tokenId;
+      }
+    };
+    Input = class {
+      outputAddress;
+      inputDate;
+      boxId;
+      assets;
+      outputCreatedAt;
+      address;
+      accumulatedAmount;
+      amount;
+      chainType;
+      constructor(inputDate, address, outputCreatedAt, assets, outputAddress, boxId, accumulatedAmount, amount, chainType) {
+        this.outputAddress = outputAddress;
+        this.inputDate = inputDate;
+        this.assets = assets;
+        this.boxId = boxId;
+        this.outputCreatedAt = outputCreatedAt;
+        this.address = address;
+        this.accumulatedAmount = accumulatedAmount;
+        this.amount = amount;
+        this.chainType = chainType;
+      }
+    };
+    Token = class {
+      constructor(tokenId, amount, decimals, name, tokenType) {
+        this.tokenId = tokenId;
+        this.amount = amount;
+        this.decimals = decimals;
+        this.name = name;
+        this.tokenType = tokenType;
+      }
+      tokenId;
+      amount;
+      decimals;
+      name;
+      tokenType;
+    };
+    WatcherInfo = class {
+      constructor(tokens) {
+        this.tokens = tokens;
+      }
+      tokens;
+    };
+    MyWatchersStats = class {
+      activePermitCount;
+      permitCount;
+      wid;
+      chainType;
+      address;
+    };
+    WatcherPerformanceAddressStat = class {
+      address;
+      reports;
+    };
+    WatchersPerformanceStats = class {
+      watcherPerformances;
+    };
+    ChartDataSet = class {
+      label;
+      data;
+      backgroundColor;
+      pointBackgroundColor;
+      borderColor;
+      borderWidth;
+      borderSkipped;
+      constructor(chartColor) {
+        this.label = "";
+        this.data = [];
+        this.backgroundColor = chartColor;
+        this.pointBackgroundColor = chartColor;
+        this.borderColor = chartColor;
+        this.borderWidth = 0;
+        this.borderSkipped = false;
+      }
+    };
+    ChainPerfChartDataSet = class {
+      label;
+      data;
+      backgroundColor;
+      pointBackgroundColor;
+      borderColor;
+      borderWidth;
+      borderSkipped;
+      constructor(chartColor) {
+        this.label = "";
+        this.data = [];
+        this.backgroundColor = chartColor;
+        this.pointBackgroundColor = chartColor;
+        this.borderColor = chartColor;
+        this.borderWidth = 0;
+        this.borderSkipped = false;
+      }
+    };
+    ChartPoint = class {
+      x;
+      y;
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+    };
+    ChartPerformance = class {
+      address;
+      addressForDisplay;
+      chart;
+      chainType;
+      color;
+      constructor(address, addressForDisplay, chart, color, chainType) {
+        this.address = address;
+        this.addressForDisplay = addressForDisplay;
+        this.chart = chart;
+        this.chainType = chainType;
+        this.color = color;
+      }
+    };
+    ChainChartPerformance = class {
+      address;
+      addressForDisplay;
+      chart;
+      chainType;
+      color;
+      constructor(address, addressForDisplay, chart, color, chainType) {
+        this.address = address;
+        this.addressForDisplay = addressForDisplay;
+        this.chart = chart;
+        this.chainType = chainType;
+        this.color = color;
+      }
+    };
+  }
+});
+
 // service/src/lib/i-db-databasestorage.service.ts
 var IDBDatabaseStorageService;
 var init_i_db_databasestorage_service = __esm({
@@ -333,12 +530,13 @@ var init_chain_service = __esm({
 });
 
 // service/src/lib/constants.ts
-var rs_DbName, rs_DbVersion, rs_InputsStoreName, rs_PerfTxStoreName, rs_PermitTxStoreName, rs_ActivePermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName, rs_DownloadStatusStoreName, rs_OpenBoxesStoreName, rs_AddressDataStoreName, rs_InitialNDownloads, rs_FullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_StartFrom, rs_Input_Key, rs_Permit_Key, rs_WatcherReports_Key, rs_ActivePermit_Key, rs_PerfTx_Key, rs_Address_Key, rs_PermitCost, rs_WatcherCollateralRSN, rs_WatcherCollateralERG, rs_ErgoExplorerHost, rs_ErgoNodeHost, UrlAction, urlConfig, getUrlConfig, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals, Period, Currency;
+var rs_DbName, rs_DbVersion, rs_DownloadStoreName, rs_InputsStoreName, rs_PerfTxStoreName, rs_PermitTxStoreName, rs_ActivePermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName, rs_DownloadStatusStoreName, rs_OpenBoxesStoreName, rs_AddressDataStoreName, rs_InitialNDownloads, rs_FullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_StartFrom, rs_Input_Key, rs_Download_Key, rs_Permit_Key, rs_WatcherReports_Key, rs_ActivePermit_Key, rs_PerfTx_Key, rs_Address_Key, rs_PermitCost, rs_WatcherCollateralRSN, rs_WatcherCollateralERG, rs_ErgoExplorerHost, rs_ErgoNodeHost, UrlAction, urlConfig, getUrlConfig, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals, Period, Currency;
 var init_constants = __esm({
   "service/src/lib/constants.ts"() {
     init_chain_service();
     rs_DbName = "rosenDatabase_1.1.5";
-    rs_DbVersion = 52;
+    rs_DbVersion = 53;
+    rs_DownloadStoreName = "downloads";
     rs_InputsStoreName = "inputBoxes";
     rs_PerfTxStoreName = "perfTxs";
     rs_PermitTxStoreName = "permitTxs";
@@ -354,6 +552,7 @@ var init_constants = __esm({
     rs_PerfFullDownloadsBatchSize = 40;
     rs_StartFrom = /* @__PURE__ */ new Date("2024-01-01");
     rs_Input_Key = ["boxId", "outputAddress"];
+    rs_Download_Key = ["url"];
     rs_Permit_Key = "id";
     rs_WatcherReports_Key = "chainType";
     rs_ActivePermit_Key = "id";
@@ -473,14 +672,14 @@ var init_constants = __esm({
   }
 });
 
-// service/src/lib/watcher.data.service.ts
-var WatcherDataService;
-var init_watcher_data_service = __esm({
-  "service/src/lib/watcher.data.service.ts"() {
+// service/src/lib/mywatcher.data.service.ts
+var MyWatcherDataService;
+var init_mywatcher_data_service = __esm({
+  "service/src/lib/mywatcher.data.service.ts"() {
     init_chain_service();
     init_constants();
     init_data_service();
-    WatcherDataService = class extends DataService {
+    MyWatcherDataService = class extends DataService {
       constructor(permitsDataService) {
         super(permitsDataService.storageService);
         this.permitsDataService = permitsDataService;
@@ -602,7 +801,7 @@ var init_watcher_data_service = __esm({
             );
             let wid;
             for (wid of allWids) {
-              const PermitTx = {
+              const PermitTx3 = {
                 id: this.createUniqueId(input.boxId, item.id, address),
                 address: input.address,
                 date: input.inputDate,
@@ -612,8 +811,8 @@ var init_watcher_data_service = __esm({
                 chainType: getChainTypeForPermitAddress(address),
                 transactionId: item.id
               };
-              if (PermitTx.assets.length > 0) {
-                tempData.push(PermitTx);
+              if (PermitTx3.assets.length > 0) {
+                tempData.push(PermitTx3);
               }
             }
           });
@@ -630,7 +829,7 @@ var init_watcher_data_service = __esm({
             });
             let wid;
             for (wid of allWids) {
-              const PermitTx = {
+              const PermitTx3 = {
                 id: this.createUniqueId(output.boxId, item.id, address),
                 address: output.address,
                 date: output.outputDate,
@@ -640,8 +839,8 @@ var init_watcher_data_service = __esm({
                 chainType: getChainTypeForPermitAddress(address),
                 transactionId: item.id
               };
-              if (PermitTx.assets.length > 0) {
-                tempData.push(PermitTx);
+              if (PermitTx3.assets.length > 0) {
+                tempData.push(PermitTx3);
               }
             }
           });
@@ -688,7 +887,7 @@ var init_permits_data_service = __esm({
     init_chain_service();
     init_constants();
     init_data_service();
-    init_watcher_data_service();
+    init_mywatcher_data_service();
     PermitsDataService = class extends DataService {
       constructor(db, storeName = rs_ActivePermitTxStoreName, maxDownloadDateDifference = 2048e5) {
         super(db);
@@ -1042,7 +1241,7 @@ var init_permits_data_service = __esm({
       }
     };
     GetWatcherDataService = (permitsDataService) => {
-      return new WatcherDataService(permitsDataService);
+      return new MyWatcherDataService(permitsDataService);
     };
   }
 });
@@ -1053,6 +1252,7 @@ var init_reports_data_service = __esm({
   "service/src/lib/reports.data.service.ts"() {
     init_chain_service();
     init_constants();
+    init_models();
     init_permits_data_service();
     ReportsDataService = class extends PermitsDataService {
       constructor(db, eventSender, storeName = rs_ReportsStoreName, maxDownloadDateDifference = 2048e5) {
@@ -1135,7 +1335,7 @@ var init_reports_data_service = __esm({
           this.storageService.addData(rs_WatcherReportsStoreName, [monthStats], c);
         });
         await this.eventSender?.sendEvent({
-          type: "ReportsChanged",
+          type: "ReportsChanged" /* ReportsChanged */,
           data: performances
         });
       }
@@ -1155,6 +1355,7 @@ var init_chain_performance_data_service = __esm({
     init_chain_service();
     init_constants();
     init_data_service();
+    init_models();
     ChainPerformanceDataService = class extends DataService {
       constructor(db, eventSender) {
         super(db);
@@ -1210,7 +1411,7 @@ var init_chain_performance_data_service = __esm({
         await this.storageService.addData(rs_PerfTxStoreName, tempData);
         const perfTxs = await this.getPerfTxs();
         this.eventSender?.sendEvent({
-          type: "PerfChartChanged",
+          type: "PerfChartChanged" /* PerfChartChanged */,
           data: perfTxs
         });
       }
@@ -1395,6 +1596,7 @@ var DownloadService;
 var init_download_service = __esm({
   "service/src/lib/download.service.ts"() {
     init_constants();
+    init_models();
     DownloadService = class {
       //private static addressDownloadDateMap = new Map<string, Date>();
       constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusIndexedDbService) {
@@ -1490,7 +1692,7 @@ var init_download_service = __esm({
       increaseBusyCounter(address) {
         if (this.busyCounter === 0) {
           this.eventSender?.sendEvent({
-            type: "StartFullDownload",
+            type: "StartFullDownload" /* StartFullDownload */,
             data: address
           });
         }
@@ -1500,7 +1702,7 @@ var init_download_service = __esm({
         this.busyCounter--;
         if (this.busyCounter === 0) {
           this.eventSender?.sendEvent({
-            type: "EndFullDownload",
+            type: "EndFullDownload" /* EndFullDownload */,
             data: address
           });
         }
@@ -1614,6 +1816,7 @@ var init_reward_data_service = __esm({
     init_chain_service();
     init_constants();
     init_data_service();
+    init_models();
     RewardDataService = class extends DataService {
       constructor(db, chartService, eventSender) {
         super(db);
@@ -1700,11 +1903,11 @@ var init_reward_data_service = __esm({
         );
         const inputs = await this.getSortedInputs();
         this.eventSender?.sendEvent({
-          type: "InputsChanged",
+          type: "InputsChanged" /* InputsChanged */,
           data: inputs
         });
         this.eventSender?.sendEvent({
-          type: "AddressChartChanged",
+          type: "AddressChartChanged" /* AddressChartChanged */,
           data: await this.chartService.getAddressCharts(inputs)
         });
       }
@@ -1766,7 +1969,7 @@ async function createServices(eventSender, db) {
   );
   const permitsDataService = new PermitsDataService(db);
   const reportsDataService = new ReportsDataService(db, eventSender);
-  const watcherDataService = new WatcherDataService(
+  const watcherDataService = new MyWatcherDataService(
     permitsDataService
   );
   const chainPerformanceDataService = new ChainPerformanceDataService(db, eventSender);
@@ -1832,10 +2035,11 @@ var init_process_event_service = __esm({
     init_constants();
     init_download_service();
     init_download_status_indexeddb_service();
+    init_models();
     init_permits_data_service();
     init_reports_data_service();
     init_reward_data_service();
-    init_watcher_data_service();
+    init_mywatcher_data_service();
     ServiceWorkerEventSender = class {
       async sendEvent(event) {
         const clientsList = await self.clients.matchAll({
@@ -1911,7 +2115,7 @@ var init_process_event_service = __esm({
             if (addressChainType === chainType && address != null) {
               var performances = await services.reportsDataService.getWatcherPerformanceByChainType();
               await this.eventSender?.sendEvent({
-                type: "ReportsChanged",
+                type: "ReportsChanged" /* ReportsChanged */,
                 data: performances
               });
               await services.downloadReportsService.downloadForAddress(
@@ -1920,7 +2124,7 @@ var init_process_event_service = __esm({
               );
               performances = await services.reportsDataService.getWatcherPerformanceByChainType();
               await this.eventSender?.sendEvent({
-                type: "ReportsChanged",
+                type: "ReportsChanged" /* ReportsChanged */,
                 data: performances
               });
             }
@@ -1935,7 +2139,7 @@ var init_process_event_service = __esm({
           await services.dataService.getSortedInputs()
         );
         await this.eventSender?.sendEvent({
-          type: "AddressChartChanged",
+          type: "AddressChartChanged" /* AddressChartChanged */,
           data: addressCharts
         });
         if (event.data && typeof event.data === "string") {
@@ -1953,7 +2157,7 @@ var init_process_event_service = __esm({
         );
         const inputs = await services.dataService.getSortedInputs();
         await this.eventSender?.sendEvent({
-          type: "InputsChanged",
+          type: "InputsChanged" /* InputsChanged */,
           data: inputs
         });
         await services.downloadService.downloadForAddresses("statisticsTransactions" /* StatisticsTransactions */);
@@ -1963,7 +2167,7 @@ var init_process_event_service = __esm({
         console.log("Downloading perftxs.");
         const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
         await this.eventSender?.sendEvent({
-          type: "PerfChartChanged",
+          type: "PerfChartChanged" /* PerfChartChanged */,
           data: perfTxs
         });
         await services.downloadPerfService.downloadForAddress(hotWalletAddress, "statisticsTransactions" /* StatisticsTransactions */);
@@ -2055,25 +2259,25 @@ var init_process_event_service = __esm({
         await services.downloadMyWatchersService.downloadForAddress(address, "permitTransactions" /* PermitTransactions */);
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
-          type: "PermitsChanged",
+          type: "PermitsChanged" /* PermitsChanged */,
           data: permits
         });
         await this.eventSender?.sendEvent({
-          type: "AddressPermitsDownloaded",
+          type: "AddressPermitsDownloaded" /* AddressPermitsDownloaded */,
           data: chainType
         });
       }
       async sendPermitChangedEvent(services, addresses) {
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
-          type: "PermitsChanged",
+          type: "PermitsChanged" /* PermitsChanged */,
           data: permits
         });
         return permits;
       }
       async sendPermitsChangedEvent(permits) {
         await this.eventSender?.sendEvent({
-          type: "PermitsChanged",
+          type: "PermitsChanged" /* PermitsChanged */,
           data: permits
         });
       }
@@ -2102,7 +2306,7 @@ var init_process_event_service = __esm({
       async sendPermitsChangedEventForAddresses(services, addresses) {
         const permits = await services.watcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
-          type: "PermitsChanged",
+          type: "PermitsChanged" /* PermitsChanged */,
           data: permits
         });
       }
@@ -2116,6 +2320,7 @@ var init_process_event_service = __esm({
 // service/src/lib/rosen-download-worker.ts
 var require_rosen_download_worker = __commonJS({
   "service/src/lib/rosen-download-worker.ts"() {
+    init_models();
     init_process_event_service();
     var processEventServiceSingleton = /* @__PURE__ */ (() => {
       let instance = null;
@@ -2144,7 +2349,7 @@ var require_rosen_download_worker = __commonJS({
         extendableEvent.waitUntil(
           processEventService.processEvent({
             data: data.data,
-            type: data.type
+            type: EventType[data.type]
           })
         );
       });
@@ -2174,11 +2379,13 @@ __export(lib_exports, {
   Currency: () => Currency,
   DataService: () => DataService,
   DownloadStatusIndexedDbService: () => DownloadStatusIndexedDbService,
+  EventType: () => EventType,
   GetPermitTriggerAddresses: () => GetPermitTriggerAddresses,
   GetWatcherDataService: () => GetWatcherDataService,
   IDBDatabaseStorageService: () => IDBDatabaseStorageService,
   Input: () => Input,
   MemoryStorageService: () => MemoryStorageService,
+  MyWatcherDataService: () => MyWatcherDataService,
   MyWatchersStats: () => MyWatchersStats,
   Period: () => Period,
   PermitsDataService: () => PermitsDataService,
@@ -2188,7 +2395,6 @@ __export(lib_exports, {
   ServiceWorkerEventSender: () => ServiceWorkerEventSender,
   Token: () => Token,
   UrlAction: () => UrlAction,
-  WatcherDataService: () => WatcherDataService,
   WatcherInfo: () => WatcherInfo,
   WatcherPerformanceAddressStat: () => WatcherPerformanceAddressStat,
   WatchersPerformanceStats: () => WatchersPerformanceStats,
@@ -2213,6 +2419,8 @@ __export(lib_exports, {
   rs_DbName: () => rs_DbName,
   rs_DbVersion: () => rs_DbVersion,
   rs_DownloadStatusStoreName: () => rs_DownloadStatusStoreName,
+  rs_DownloadStoreName: () => rs_DownloadStoreName,
+  rs_Download_Key: () => rs_Download_Key,
   rs_ErgoExplorerHost: () => rs_ErgoExplorerHost,
   rs_ErgoNodeHost: () => rs_ErgoNodeHost,
   rs_FullDownloadsBatchSize: () => rs_FullDownloadsBatchSize,
@@ -2240,170 +2448,7 @@ __export(lib_exports, {
   rwtTokenIds: () => rwtTokenIds,
   urlConfig: () => urlConfig
 });
-
-// service/src/lib/models.ts
-var Address = class {
-  address;
-  Address;
-  active = true;
-  chainType;
-  smallAddressForDisplay;
-  largeAddressForDisplay;
-  ownAddress;
-  constructor(address, chainType, active = true, ownAddress = false) {
-    this.address = address;
-    this.Address = address;
-    this.smallAddressForDisplay = address.substring(0, 6) + "...";
-    this.largeAddressForDisplay = address.substring(0, 6) + "..." + address.substring(address.length - 6, address.length);
-    this.chainType = chainType;
-    this.active = active;
-    this.ownAddress = ownAddress;
-  }
-};
-var Asset = class {
-  amount;
-  name;
-  decimals;
-  type;
-  tokenId;
-  constructor(amount, name, decimals, type, tokenId) {
-    this.amount = amount;
-    this.name = name;
-    this.decimals = decimals;
-    this.type = type;
-    this.tokenId = tokenId;
-  }
-};
-var Input = class {
-  outputAddress;
-  inputDate;
-  boxId;
-  assets;
-  outputCreatedAt;
-  address;
-  accumulatedAmount;
-  amount;
-  chainType;
-  constructor(inputDate, address, outputCreatedAt, assets, outputAddress, boxId, accumulatedAmount, amount, chainType) {
-    this.outputAddress = outputAddress;
-    this.inputDate = inputDate;
-    this.assets = assets;
-    this.boxId = boxId;
-    this.outputCreatedAt = outputCreatedAt;
-    this.address = address;
-    this.accumulatedAmount = accumulatedAmount;
-    this.amount = amount;
-    this.chainType = chainType;
-  }
-};
-var Token = class {
-  constructor(tokenId, amount, decimals, name, tokenType) {
-    this.tokenId = tokenId;
-    this.amount = amount;
-    this.decimals = decimals;
-    this.name = name;
-    this.tokenType = tokenType;
-  }
-  tokenId;
-  amount;
-  decimals;
-  name;
-  tokenType;
-};
-var WatcherInfo = class {
-  constructor(tokens) {
-    this.tokens = tokens;
-  }
-  tokens;
-};
-var MyWatchersStats = class {
-  activePermitCount;
-  permitCount;
-  wid;
-  chainType;
-  address;
-};
-var WatcherPerformanceAddressStat = class {
-  address;
-  reports;
-};
-var WatchersPerformanceStats = class {
-  watcherPerformances;
-};
-var ChartDataSet = class {
-  label;
-  data;
-  backgroundColor;
-  pointBackgroundColor;
-  borderColor;
-  borderWidth;
-  borderSkipped;
-  constructor(chartColor) {
-    this.label = "";
-    this.data = [];
-    this.backgroundColor = chartColor;
-    this.pointBackgroundColor = chartColor;
-    this.borderColor = chartColor;
-    this.borderWidth = 0;
-    this.borderSkipped = false;
-  }
-};
-var ChainPerfChartDataSet = class {
-  label;
-  data;
-  backgroundColor;
-  pointBackgroundColor;
-  borderColor;
-  borderWidth;
-  borderSkipped;
-  constructor(chartColor) {
-    this.label = "";
-    this.data = [];
-    this.backgroundColor = chartColor;
-    this.pointBackgroundColor = chartColor;
-    this.borderColor = chartColor;
-    this.borderWidth = 0;
-    this.borderSkipped = false;
-  }
-};
-var ChartPoint = class {
-  x;
-  y;
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-  }
-};
-var ChartPerformance = class {
-  address;
-  addressForDisplay;
-  chart;
-  chainType;
-  color;
-  constructor(address, addressForDisplay, chart, color, chainType) {
-    this.address = address;
-    this.addressForDisplay = addressForDisplay;
-    this.chart = chart;
-    this.chainType = chainType;
-    this.color = color;
-  }
-};
-var ChainChartPerformance = class {
-  address;
-  addressForDisplay;
-  chart;
-  chainType;
-  color;
-  constructor(address, addressForDisplay, chart, color, chainType) {
-    this.address = address;
-    this.addressForDisplay = addressForDisplay;
-    this.chart = chart;
-    this.chainType = chainType;
-    this.color = color;
-  }
-};
-
-// service/src/lib/index.ts
+init_models();
 init_data_service();
 init_permits_data_service();
 init_reports_data_service();
@@ -2473,39 +2518,39 @@ var MemoryStorageService = class {
 };
 
 // service/src/lib/index.ts
-init_watcher_data_service();
+init_mywatcher_data_service();
 init_process_event_service();
 init_reward_data_service();
 
 // service/src/lib/service.factory.ts
 init_download_service();
 init_permits_data_service();
-init_watcher_data_service();
+init_mywatcher_data_service();
 init_constants();
 init_chain_service();
 var GetPermitTriggerAddresses = () => {
   return permitTriggerAddresses;
 };
-function CreatePermitsDownloadService(maxDownloadDateDifference, eventSender) {
+function CreatePermitsDownloadService(maxDownloadDateDifference) {
   var storageService = new MemoryStorageService();
   const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
   return new DownloadService(
     rs_FullDownloadsBatchSize,
     rs_InitialNDownloads,
     permitsDataService,
-    eventSender,
+    null,
     null
   );
 }
-var CreateWatcherDownloadService = (maxDownloadDateDifference, eventSender) => {
+var CreateWatcherDownloadService = () => {
   var storageService = new MemoryStorageService();
-  const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
-  const watcherDataService = new WatcherDataService(permitsDataService);
+  const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName);
+  const watcherDataService = new MyWatcherDataService(permitsDataService);
   return new DownloadService(
     rs_FullDownloadsBatchSize,
     rs_InitialNDownloads,
     watcherDataService,
-    eventSender,
+    null,
     null
   );
 };
@@ -2529,7 +2574,7 @@ async function downloadActivePermits() {
   var addresses = permitTriggerAddresses;
   for (const [chainType, addr] of Object.entries(addresses)) {
     if (addr == null) continue;
-    var downloadService = CreatePermitsDownloadService(diff, null);
+    var downloadService = CreatePermitsDownloadService(diff);
     console.log("Downloading for chainType:", chainType, "address:", addr);
     await downloadService.downloadForAddress(addr, "permitTriggerTransactions" /* PermitTriggerTransactions */);
     var permits = await downloadService.getDataService().getAdressPermits(false, frommonth, fromyear, tomonth, toyear);

@@ -7,7 +7,8 @@ import {
   NavigationService,
 } from '../service/navigation.service';
 import { SwipeService } from '../service/swipe.service';
-import { EventService, EventType } from '../service/event.service';
+import { EventService } from '../service/event.service';
+import { EventType } from '@ergo-tools/service';
 
 @Component({
   selector: 'app-navigation',

@@ -5,7 +5,7 @@ import { PermitTx, TransactionItem, Asset, PermitInfo, Input, Output } from "./m
 
 import { PermitsDataService } from "./permits.data.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class WatcherDataService extends DataService<PermitTx> {
+export class MyWatcherDataService extends DataService<PermitTx> {
   override getData(): Promise<PermitTx[] | null> {
     return this.storageService.getData<PermitTx>(rs_PermitTxStoreName);
   }

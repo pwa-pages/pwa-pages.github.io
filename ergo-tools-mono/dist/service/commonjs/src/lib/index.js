@@ -25,7 +25,7 @@ __exportStar(require("./data.service"), exports);
 __exportStar(require("./download.status.indexeddb.service"), exports);
 __exportStar(require("./i-db-databasestorage.service"), exports);
 __exportStar(require("./memory.storage.service"), exports);
-__exportStar(require("./watcher.data.service"), exports);
+__exportStar(require("./mywatcher.data.service"), exports);
 __exportStar(require("./process.event.service"), exports);
 __exportStar(require("./reward.data.service"), exports);
 __exportStar(require("./service.factory"), exports);

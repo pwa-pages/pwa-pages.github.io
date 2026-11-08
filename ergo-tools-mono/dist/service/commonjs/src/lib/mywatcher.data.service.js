@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WatcherDataService = void 0;
+exports.MyWatcherDataService = void 0;
 const chain_service_1 = require("./chain.service");
 const constants_1 = require("./constants");
 const data_service_1 = require("./data.service");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class WatcherDataService extends data_service_1.DataService {
+class MyWatcherDataService extends data_service_1.DataService {
     permitsDataService;
     getData() {
         return this.storageService.getData(constants_1.rs_PermitTxStoreName);
@@ -206,4 +206,4 @@ class WatcherDataService extends data_service_1.DataService {
         }
     }
 }
-exports.WatcherDataService = WatcherDataService;
+exports.MyWatcherDataService = MyWatcherDataService;

@@ -9,7 +9,6 @@ import {
   Output,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { EventType } from '../service/event.service';
 import { WatchersDataService } from '../service/watchers.data.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { CommonModule } from '@angular/common';
@@ -18,6 +17,7 @@ import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
 import { WatchersStats } from '../service/watchers.models';
 import { getActiveChainTypes, getChainTypes } from 'service/src/lib/chain.service';
+import { EventType } from '@ergo-tools/service';
 
 @Component({
   selector: 'app-watchers',

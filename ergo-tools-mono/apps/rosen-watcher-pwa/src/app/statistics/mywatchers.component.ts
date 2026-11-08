@@ -12,13 +12,11 @@ import {
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-
-import { EventType } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
 import { ChainDataService } from '../service/chain.data.service';
-import { getChainTypes, MyWatchersStats } from '@ergo-tools/service';
+import { EventType, getChainTypes, MyWatchersStats } from '@ergo-tools/service';
 import { MyWatchersDataService } from '../service/mywatchers.data.service';
 
 @Component({

@@ -1,7 +1,7 @@
 import { permitTriggerAddresses, permitBulkAddresses, rewardAddresses, rwtTokenIds, getChainTypeForPermitTriggerAddress, getChainTypeForPermitAddress } from "./chain.service";
 import { rs_ActivePermitTxStoreName, rs_OpenBoxesStoreName, rs_FullDownloadsBatchSize } from "./constants";
 import { DataService } from "./data.service";
-import { WatcherDataService } from "./watcher.data.service";
+import { MyWatcherDataService } from "./mywatcher.data.service";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class PermitsDataService extends DataService {
     getData() {
@@ -328,6 +328,6 @@ export class PermitsDataService extends DataService {
     }
 }
 export const GetWatcherDataService = (permitsDataService) => {
-    return new WatcherDataService(permitsDataService);
+    return new MyWatcherDataService(permitsDataService);
 };
 //# sourceMappingURL=permits.data.service.js.map

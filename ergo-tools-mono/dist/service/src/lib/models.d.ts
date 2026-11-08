@@ -1,4 +1,33 @@
 import { ChainType } from "./chain.service";
+export declare enum EventType {
+    StartFullDownload = "StartFullDownload",
+    EndFullDownload = "EndFullDownload",
+    RefreshInputs = "RefreshInputs",
+    InputsChanged = "InputsChanged",
+    PerfChartChanged = "PerfChartChanged",
+    SwipeActivated = "SwipeActivated",
+    SwipeDeActivated = "SwipeDeActivated",
+    SwipeVertical = "SwipeVertical",
+    StatisticsScreenLoaded = "StatisticsScreenLoaded",
+    MyWatchersScreenLoaded = "MyWatchersScreenLoaded",
+    ReportsRequested = "ReportsRequested",
+    RequestInputsDownload = "RequestInputsDownload",
+    WatchersScreenLoaded = "WatchersScreenLoaded",
+    SettingsScreenLoaded = "SettingsScreenLoaded",
+    PerformanceScreenLoaded = "PerformanceScreenLoaded",
+    AddressChartChanged = "AddressChartChanged",
+    WindowResized = "WindowResized",
+    VersionUpdated = "VersionUpdated",
+    WatchersStatsChanged = "WatchersStatsChanged",
+    PermitsStatsChanged = "PermitsStatsChanged",
+    ChainPerformanceChartsChanged = "ChainPerformanceChartsChanged",
+    PerformanceChartsChanged = "PerformanceChartsChanged",
+    StatisticsChartChanged = "StatisticsChartChanged",
+    PermitsChanged = "PermitsChanged",
+    RefreshPermits = "RefreshPermits",
+    AddressPermitsDownloaded = "AddressPermitsDownloaded",
+    ReportsChanged = "ReportsChanged"
+}
 export declare class Address {
     address: string;
     Address: string;

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DownloadService = void 0;
 const constants_1 = require("./constants");
+const models_1 = require("./models");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class DownloadService {
     dataService;
@@ -100,7 +101,7 @@ class DownloadService {
     increaseBusyCounter(address) {
         if (this.busyCounter === 0) {
             this.eventSender?.sendEvent({
-                type: 'StartFullDownload',
+                type: models_1.EventType.StartFullDownload,
                 data: address,
             });
         }
@@ -110,7 +111,7 @@ class DownloadService {
         this.busyCounter--;
         if (this.busyCounter === 0) {
             this.eventSender?.sendEvent({
-                type: 'EndFullDownload',
+                type: models_1.EventType.EndFullDownload,
                 data: address,
             });
         }

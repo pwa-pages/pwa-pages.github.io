@@ -126,7 +126,7 @@ async function downloadActivePermits() {
 
     if (addr == null) continue;
 
-    var downloadService = CreatePermitsDownloadService(diff, null);
+    var downloadService = CreatePermitsDownloadService(diff);
 
 
     console.log('Downloading for chainType:', chainType, 'address:', addr);

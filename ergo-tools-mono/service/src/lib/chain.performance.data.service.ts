@@ -1,7 +1,7 @@
 import { ChainType, rewardAddresses, rwtTokenIds } from "./chain.service";
 import { rs_PerfTxStoreName, rs_eRSNTokenId, rs_RSNDecimals } from "./constants";
 import { DataService } from "./data.service";
-import { PerfTx, TransactionItem } from "./models";
+import { EventType, PerfTx, TransactionItem } from "./models";
 import { EventSender } from "./process.event.service";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -76,7 +76,7 @@ export class ChainPerformanceDataService extends DataService<PerfTx> {
 
     const perfTxs = await this.getPerfTxs();
     this.eventSender?.sendEvent({
-      type: 'PerfChartChanged',
+      type: EventType.PerfChartChanged,
       data: perfTxs,
     });
 
