@@ -1,7 +1,7 @@
 import { ChainType } from "./chain.service";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const rs_DbName = 'rosenDatabase_1.1.5';
-export const rs_DbVersion = 53;
+export const rs_DbVersion = 54;
 export const rs_DownloadStoreName = 'downloads';
 export const rs_InputsStoreName = 'inputBoxes';
 export const rs_PerfTxStoreName = 'perfTxs';
@@ -18,7 +18,7 @@ export const rs_PerfInitialNDownloads = 10;
 export const rs_PerfFullDownloadsBatchSize = 40;
 export const rs_StartFrom = new Date('2024-01-01');
 export const rs_Input_Key = ['boxId', 'outputAddress'];
-export const rs_Download_Key = ['url'];
+export const rs_Download_Key = 'url';
 export const rs_Permit_Key = 'id';
 export const rs_WatcherReports_Key = 'chainType';
 export const rs_ActivePermit_Key = 'id';

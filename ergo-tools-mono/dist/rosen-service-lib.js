@@ -479,7 +479,7 @@
       "use strict";
       init_chain_service();
       rs_DbName = "rosenDatabase_1.1.5";
-      rs_DbVersion = 53;
+      rs_DbVersion = 54;
       rs_DownloadStoreName = "downloads";
       rs_InputsStoreName = "inputBoxes";
       rs_PerfTxStoreName = "perfTxs";
@@ -496,7 +496,7 @@
       rs_PerfFullDownloadsBatchSize = 40;
       rs_StartFrom = /* @__PURE__ */ new Date("2024-01-01");
       rs_Input_Key = ["boxId", "outputAddress"];
-      rs_Download_Key = ["url"];
+      rs_Download_Key = "url";
       rs_Permit_Key = "id";
       rs_WatcherReports_Key = "chainType";
       rs_ActivePermit_Key = "id";
@@ -745,7 +745,7 @@
               );
               let wid;
               for (wid of allWids) {
-                const PermitTx3 = {
+                const PermitTx2 = {
                   id: this.createUniqueId(input.boxId, item.id, address),
                   address: input.address,
                   date: input.inputDate,
@@ -755,8 +755,8 @@
                   chainType: getChainTypeForPermitAddress(address),
                   transactionId: item.id
                 };
-                if (PermitTx3.assets.length > 0) {
-                  tempData.push(PermitTx3);
+                if (PermitTx2.assets.length > 0) {
+                  tempData.push(PermitTx2);
                 }
               }
             });
@@ -773,7 +773,7 @@
               });
               let wid;
               for (wid of allWids) {
-                const PermitTx3 = {
+                const PermitTx2 = {
                   id: this.createUniqueId(output.boxId, item.id, address),
                   address: output.address,
                   date: output.outputDate,
@@ -783,8 +783,8 @@
                   chainType: getChainTypeForPermitAddress(address),
                   transactionId: item.id
                 };
-                if (PermitTx3.assets.length > 0) {
-                  tempData.push(PermitTx3);
+                if (PermitTx2.assets.length > 0) {
+                  tempData.push(PermitTx2);
                 }
               }
             });
@@ -1465,6 +1465,70 @@
     }
   });
 
+  // service/src/lib/memory.storage.service.ts
+  var MemoryStorageService;
+  var init_memory_storage_service = __esm({
+    "service/src/lib/memory.storage.service.ts"() {
+      "use strict";
+      MemoryStorageService = class {
+        getMemoryStore() {
+          const g = globalThis;
+          if (!g.__storageServiceStore) {
+            g.__storageServiceStore = {};
+          }
+          return g.__storageServiceStore;
+        }
+        generateKey(storeName, key) {
+          if (Array.isArray(key)) {
+            return storeName + ":" + key.map((k) => String(k)).join(",");
+          }
+          return storeName + ":" + String(key);
+        }
+        async getData(storeName) {
+          return new Promise((resolve) => {
+            const start = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+            const store = this.getMemoryStore();
+            const prefix = storeName + ":";
+            const result = Object.keys(store).filter((key) => key.startsWith(prefix)).map((key) => store[key]);
+            const end = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
+            const duration = Math.round(end - start);
+            console.log(`StorageService:getData(${storeName}) - loaded ${result.length} items in ${duration}ms`);
+            resolve(result);
+          });
+        }
+        async getDataById(storeName, id) {
+          return new Promise((resolve) => {
+            const key = this.generateKey(storeName, id);
+            const store = this.getMemoryStore();
+            resolve(store[key] ?? null);
+          });
+        }
+        async addData(storeName, data) {
+          return new Promise((resolve) => {
+            const store = this.getMemoryStore();
+            data.forEach((item) => {
+              const id = item.id ?? Math.random().toString(36).slice(2);
+              const key = this.generateKey(storeName, id);
+              store[key] = item;
+            });
+            resolve();
+          });
+        }
+        async deleteData(storeName, keys) {
+          const arr = Array.isArray(keys) ? keys : [keys];
+          return new Promise((resolve) => {
+            const store = this.getMemoryStore();
+            arr.forEach((key) => {
+              const storageKey = this.generateKey(storeName, key);
+              delete store[storageKey];
+            });
+            resolve();
+          });
+        }
+      };
+    }
+  });
+
   // service/src/lib/chart.service.ts
   var ChartService;
   var init_chart_service = __esm({
@@ -1533,14 +1597,162 @@
     }
   });
 
-  // service/src/lib/download.service.ts
-  var DownloadService;
-  var init_download_service = __esm({
-    "service/src/lib/download.service.ts"() {
+  // service/src/lib/reward.data.service.ts
+  var RewardDataService;
+  var init_reward_data_service = __esm({
+    "service/src/lib/reward.data.service.ts"() {
+      "use strict";
+      init_chain_service();
+      init_constants();
+      init_data_service();
+      init_models();
+      RewardDataService = class extends DataService {
+        constructor(db, chartService, eventSender) {
+          super(db);
+          this.db = db;
+          this.chartService = chartService;
+          this.eventSender = eventSender;
+        }
+        getData() {
+          return this.storageService.getData(rs_InputsStoreName);
+        }
+        async getExistingData(transaction, address) {
+          for (const input of transaction.inputs) {
+            if (input.boxId && getChainType(input.address)) {
+              const data = await this.getDataByBoxId(input.boxId, address);
+              if (data) {
+                return data;
+              }
+            }
+          }
+          return null;
+        }
+        getDataType() {
+          return "reward";
+        }
+        async getWatcherInputs() {
+          const inputsPromise = this.storageService.getData(rs_InputsStoreName);
+          console.log("Retrieving watcher inputs and such");
+          try {
+            const inputs = await inputsPromise;
+            const filteredInputs = inputs.filter(
+              (i) => i.chainType != null || getChainType(i.address) != null
+            );
+            filteredInputs.forEach((input) => {
+              input.assets = input.assets.filter(
+                (asset) => asset.amount < 5e6 && (asset.tokenId == rs_RSNTokenId || asset.tokenId == rs_eRSNTokenId)
+              ).map((asset_1) => {
+                return asset_1;
+              });
+            });
+            filteredInputs.sort(
+              (a, b) => a.inputDate.getTime() - b.inputDate.getTime()
+            );
+            return await new Promise((resolve) => {
+              resolve(filteredInputs);
+            });
+          } catch (error) {
+            console.error(error);
+            return [];
+          }
+        }
+        async addData(address, transactions) {
+          const tempData = [];
+          transactions.forEach((item) => {
+            item.inputs.forEach((input) => {
+              input.outputAddress = address;
+              input.inputDate = new Date(item.timestamp);
+              input.assets = input.assets.filter(
+                (a) => a.tokenId == rs_RSNTokenId || a.tokenId == rs_eRSNTokenId
+              );
+              input.assets.forEach((asset) => {
+                if (asset.tokenId && rs_TokenIdMap[asset.tokenId]) {
+                  asset.name = rs_TokenIdMap[asset.tokenId];
+                  asset.decimals = rs_RSNDecimals;
+                }
+              });
+              const dbInput = {
+                outputAddress: input.outputAddress,
+                inputDate: input.inputDate,
+                boxId: input.boxId,
+                assets: input.assets || [],
+                chainType: getChainType(input.address)
+              };
+              if (dbInput.chainType && dbInput.assets.length > 0) {
+                tempData.push(dbInput);
+              }
+            });
+          });
+          await this.storageService.addData(
+            rs_InputsStoreName,
+            tempData
+          );
+          const inputs = await this.getSortedInputs();
+          this.eventSender?.sendEvent({
+            type: "InputsChanged" /* InputsChanged */,
+            data: inputs
+          });
+          this.eventSender?.sendEvent({
+            type: "AddressChartChanged" /* AddressChartChanged */,
+            data: await this.chartService.getAddressCharts(inputs)
+          });
+        }
+        // Get Data by BoxId from IndexedDB
+        async getDataByBoxId(boxId, addressId) {
+          return await this.storageService.getDataById(
+            rs_InputsStoreName,
+            [
+              boxId,
+              addressId
+            ]
+          );
+        }
+        async getSortedInputs() {
+          const inputsPromise = await this.getWatcherInputs();
+          let amount = 0;
+          const sortedInputs = [];
+          console.log("start retrieving chart from database");
+          try {
+            const inputs = await inputsPromise;
+            inputs.forEach((input) => {
+              input.assets.forEach((asset) => {
+                amount += asset.amount;
+                sortedInputs.push({
+                  inputDate: input.inputDate,
+                  address: input.address ?? "",
+                  assets: input.assets,
+                  outputAddress: input.outputAddress,
+                  boxId: input.boxId,
+                  accumulatedAmount: amount,
+                  amount: asset.amount / Math.pow(10, asset.decimals),
+                  chainType: input.chainType ?? getChainType(input.address),
+                  outputCreatedAt: 0
+                });
+              });
+            });
+            console.log(
+              "done retrieving chart from database " + inputs.length + " inputs"
+            );
+            return await new Promise((resolve) => {
+              resolve(sortedInputs);
+            });
+          } catch (error) {
+            console.error(error);
+            return sortedInputs;
+          }
+        }
+      };
+    }
+  });
+
+  // service/src/lib/transaction.download.service.ts
+  var TransactionDownloadService;
+  var init_transaction_download_service = __esm({
+    "service/src/lib/transaction.download.service.ts"() {
       "use strict";
       init_constants();
       init_models();
-      DownloadService = class {
+      TransactionDownloadService = class {
         //private static addressDownloadDateMap = new Map<string, Date>();
         constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusIndexedDbService) {
           this.dataService = dataService;
@@ -1744,160 +1956,23 @@
         }
       };
       if (typeof window !== "undefined") {
-        window.DownloadService = DownloadService;
+        window.DownloadService = TransactionDownloadService;
       }
     }
   });
 
-  // service/src/lib/reward.data.service.ts
-  var RewardDataService;
-  var init_reward_data_service = __esm({
-    "service/src/lib/reward.data.service.ts"() {
-      "use strict";
-      init_chain_service();
-      init_constants();
-      init_data_service();
-      init_models();
-      RewardDataService = class extends DataService {
-        constructor(db, chartService, eventSender) {
-          super(db);
-          this.db = db;
-          this.chartService = chartService;
-          this.eventSender = eventSender;
-        }
-        getData() {
-          return this.storageService.getData(rs_InputsStoreName);
-        }
-        async getExistingData(transaction, address) {
-          for (const input of transaction.inputs) {
-            if (input.boxId && getChainType(input.address)) {
-              const data = await this.getDataByBoxId(input.boxId, address);
-              if (data) {
-                return data;
-              }
-            }
-          }
-          return null;
-        }
-        getDataType() {
-          return "reward";
-        }
-        async getWatcherInputs() {
-          const inputsPromise = this.storageService.getData(rs_InputsStoreName);
-          console.log("Retrieving watcher inputs and such");
-          try {
-            const inputs = await inputsPromise;
-            const filteredInputs = inputs.filter(
-              (i) => i.chainType != null || getChainType(i.address) != null
-            );
-            filteredInputs.forEach((input) => {
-              input.assets = input.assets.filter(
-                (asset) => asset.amount < 5e6 && (asset.tokenId == rs_RSNTokenId || asset.tokenId == rs_eRSNTokenId)
-              ).map((asset_1) => {
-                return asset_1;
-              });
-            });
-            filteredInputs.sort(
-              (a, b) => a.inputDate.getTime() - b.inputDate.getTime()
-            );
-            return await new Promise((resolve) => {
-              resolve(filteredInputs);
-            });
-          } catch (error) {
-            console.error(error);
-            return [];
-          }
-        }
-        async addData(address, transactions) {
-          const tempData = [];
-          transactions.forEach((item) => {
-            item.inputs.forEach((input) => {
-              input.outputAddress = address;
-              input.inputDate = new Date(item.timestamp);
-              input.assets = input.assets.filter(
-                (a) => a.tokenId == rs_RSNTokenId || a.tokenId == rs_eRSNTokenId
-              );
-              input.assets.forEach((asset) => {
-                if (asset.tokenId && rs_TokenIdMap[asset.tokenId]) {
-                  asset.name = rs_TokenIdMap[asset.tokenId];
-                  asset.decimals = rs_RSNDecimals;
-                }
-              });
-              const dbInput = {
-                outputAddress: input.outputAddress,
-                inputDate: input.inputDate,
-                boxId: input.boxId,
-                assets: input.assets || [],
-                chainType: getChainType(input.address)
-              };
-              if (dbInput.chainType && dbInput.assets.length > 0) {
-                tempData.push(dbInput);
-              }
-            });
-          });
-          await this.storageService.addData(
-            rs_InputsStoreName,
-            tempData
-          );
-          const inputs = await this.getSortedInputs();
-          this.eventSender?.sendEvent({
-            type: "InputsChanged" /* InputsChanged */,
-            data: inputs
-          });
-          this.eventSender?.sendEvent({
-            type: "AddressChartChanged" /* AddressChartChanged */,
-            data: await this.chartService.getAddressCharts(inputs)
-          });
-        }
-        // Get Data by BoxId from IndexedDB
-        async getDataByBoxId(boxId, addressId) {
-          return await this.storageService.getDataById(
-            rs_InputsStoreName,
-            [
-              boxId,
-              addressId
-            ]
-          );
-        }
-        async getSortedInputs() {
-          const inputsPromise = await this.getWatcherInputs();
-          let amount = 0;
-          const sortedInputs = [];
-          console.log("start retrieving chart from database");
-          try {
-            const inputs = await inputsPromise;
-            inputs.forEach((input) => {
-              input.assets.forEach((asset) => {
-                amount += asset.amount;
-                sortedInputs.push({
-                  inputDate: input.inputDate,
-                  address: input.address ?? "",
-                  assets: input.assets,
-                  outputAddress: input.outputAddress,
-                  boxId: input.boxId,
-                  accumulatedAmount: amount,
-                  amount: asset.amount / Math.pow(10, asset.decimals),
-                  chainType: input.chainType ?? getChainType(input.address),
-                  outputCreatedAt: 0
-                });
-              });
-            });
-            console.log(
-              "done retrieving chart from database " + inputs.length + " inputs"
-            );
-            return await new Promise((resolve) => {
-              resolve(sortedInputs);
-            });
-          } catch (error) {
-            console.error(error);
-            return sortedInputs;
-          }
-        }
-      };
-    }
-  });
-
-  // service/src/lib/process.event.service.ts
+  // service/src/lib/service.factory.ts
+  function CreatePermitsDownloadService(maxDownloadDateDifference) {
+    var storageService = new MemoryStorageService();
+    const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
+    return new TransactionDownloadService(
+      rs_FullDownloadsBatchSize,
+      rs_InitialNDownloads,
+      permitsDataService,
+      null,
+      null
+    );
+  }
   async function createServices(eventSender, db) {
     const chartService = new ChartService();
     const rewardDataService = new RewardDataService(
@@ -1915,35 +1990,35 @@
     const downloadStatusIndexedDbWatcherDataService = new DownloadStatusIndexedDbService(watcherDataService, db);
     const downloadStatusIndexedDbPermitsDataService = new DownloadStatusIndexedDbService(permitsDataService, db);
     const downloadStatusIndexedDbChainPerformanceDataService = new DownloadStatusIndexedDbService(chainPerformanceDataService, db);
-    const downloadService = new DownloadService(
+    const downloadService = new TransactionDownloadService(
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
       rewardDataService,
       eventSender,
       downloadStatusIndexedDbRewardDataService
     );
-    const downloadMyWatchersService = new DownloadService(
+    const downloadMyWatchersService = new TransactionDownloadService(
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
       watcherDataService,
       eventSender,
       downloadStatusIndexedDbWatcherDataService
     );
-    const downloadActivePermitsService = new DownloadService(
+    const downloadActivePermitsService = new TransactionDownloadService(
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
       permitsDataService,
       eventSender,
       downloadStatusIndexedDbPermitsDataService
     );
-    const downloadReportsService = new DownloadService(
+    const downloadReportsService = new TransactionDownloadService(
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
       reportsDataService,
       eventSender,
       downloadStatusIndexedDbPermitsDataService
     );
-    const downloadPerfService = new DownloadService(
+    const downloadPerfService = new TransactionDownloadService(
       rs_PerfFullDownloadsBatchSize,
       rs_PerfInitialNDownloads,
       chainPerformanceDataService,
@@ -1964,21 +2039,48 @@
       downloadReportsService
     };
   }
-  var ServiceWorkerEventSender, ProcessEventService, CreateProcessEventService;
-  var init_process_event_service = __esm({
-    "service/src/lib/process.event.service.ts"() {
+  var GetPermitTriggerAddresses, CreateWatcherDownloadService;
+  var init_service_factory = __esm({
+    "service/src/lib/service.factory.ts"() {
       "use strict";
       init_chain_performance_data_service();
       init_chain_service();
       init_chart_service();
       init_constants();
-      init_download_service();
       init_download_status_indexeddb_service();
-      init_models();
+      init_memory_storage_service();
+      init_mywatcher_data_service();
       init_permits_data_service();
       init_reports_data_service();
       init_reward_data_service();
-      init_mywatcher_data_service();
+      init_transaction_download_service();
+      GetPermitTriggerAddresses = () => {
+        return permitTriggerAddresses;
+      };
+      CreateWatcherDownloadService = () => {
+        var storageService = new MemoryStorageService();
+        const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName);
+        const watcherDataService = new MyWatcherDataService(permitsDataService);
+        return new TransactionDownloadService(
+          rs_FullDownloadsBatchSize,
+          rs_InitialNDownloads,
+          watcherDataService,
+          null,
+          null
+        );
+      };
+    }
+  });
+
+  // service/src/lib/process.event.service.ts
+  var ServiceWorkerEventSender, ProcessEventService, CreateProcessEventService;
+  var init_process_event_service = __esm({
+    "service/src/lib/process.event.service.ts"() {
+      "use strict";
+      init_chain_service();
+      init_constants();
+      init_models();
+      init_service_factory();
       ServiceWorkerEventSender = class {
         async sendEvent(event) {
           const clientsList = await self.clients.matchAll({
@@ -1996,23 +2098,23 @@
         }
         async processEvent(event) {
           try {
-            if (event.type === "StatisticsScreenLoaded" || event.type === "PerformanceScreenLoaded" || event.type === "MyWatchersScreenLoaded" || event.type === "RequestInputsDownload" || event.type === "ReportsRequested") {
+            if (event.type === "StatisticsScreenLoaded" /* StatisticsScreenLoaded */ || event.type === "PerformanceScreenLoaded" /* PerformanceScreenLoaded */ || event.type === "MyWatchersScreenLoaded" /* MyWatchersScreenLoaded */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */) {
               const db = await this.initIndexedDB();
               const services = await createServices(this.eventSender, db);
               switch (event.type) {
-                case "RequestInputsDownload":
+                case "RequestInputsDownload" /* RequestInputsDownload */:
                   await this.processRequestInputsDownload(event, services);
                   break;
-                case "StatisticsScreenLoaded":
+                case "StatisticsScreenLoaded" /* StatisticsScreenLoaded */:
                   await this.processStatisticsScreenLoaded(services);
                   break;
-                case "MyWatchersScreenLoaded":
+                case "MyWatchersScreenLoaded" /* MyWatchersScreenLoaded */:
                   await this.processMyWatchersScreenLoaded(event, services);
                   break;
-                case "PerformanceScreenLoaded":
+                case "PerformanceScreenLoaded" /* PerformanceScreenLoaded */:
                   await this.processPerformanceScreenLoaded(services);
                   break;
-                case "ReportsRequested":
+                case "ReportsRequested" /* ReportsRequested */:
                   await this.processReportsRequested(event, services);
                   break;
               }
@@ -2339,6 +2441,7 @@
     WatchersPerformanceStats: () => WatchersPerformanceStats,
     chainTypeTokens: () => chainTypeTokens,
     chainTypeWatcherIdentifier: () => chainTypeWatcherIdentifier,
+    createServices: () => createServices,
     getActiveChainTypes: () => getActiveChainTypes,
     getChainType: () => getChainType,
     getChainTypeForPermitAddress: () => getChainTypeForPermitAddress,
@@ -2397,104 +2500,11 @@
   init_data_service();
   init_download_status_indexeddb_service();
   init_i_db_databasestorage_service();
-
-  // service/src/lib/memory.storage.service.ts
-  var MemoryStorageService = class {
-    getMemoryStore() {
-      const g = globalThis;
-      if (!g.__storageServiceStore) {
-        g.__storageServiceStore = {};
-      }
-      return g.__storageServiceStore;
-    }
-    generateKey(storeName, key) {
-      if (Array.isArray(key)) {
-        return storeName + ":" + key.map((k) => String(k)).join(",");
-      }
-      return storeName + ":" + String(key);
-    }
-    async getData(storeName) {
-      return new Promise((resolve) => {
-        const start = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
-        const store = this.getMemoryStore();
-        const prefix = storeName + ":";
-        const result = Object.keys(store).filter((key) => key.startsWith(prefix)).map((key) => store[key]);
-        const end = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
-        const duration = Math.round(end - start);
-        console.log(`StorageService:getData(${storeName}) - loaded ${result.length} items in ${duration}ms`);
-        resolve(result);
-      });
-    }
-    async getDataById(storeName, id) {
-      return new Promise((resolve) => {
-        const key = this.generateKey(storeName, id);
-        const store = this.getMemoryStore();
-        resolve(store[key] ?? null);
-      });
-    }
-    async addData(storeName, data) {
-      return new Promise((resolve) => {
-        const store = this.getMemoryStore();
-        data.forEach((item) => {
-          const id = item.id ?? Math.random().toString(36).slice(2);
-          const key = this.generateKey(storeName, id);
-          store[key] = item;
-        });
-        resolve();
-      });
-    }
-    async deleteData(storeName, keys) {
-      const arr = Array.isArray(keys) ? keys : [keys];
-      return new Promise((resolve) => {
-        const store = this.getMemoryStore();
-        arr.forEach((key) => {
-          const storageKey = this.generateKey(storeName, key);
-          delete store[storageKey];
-        });
-        resolve();
-      });
-    }
-  };
-
-  // service/src/lib/index.ts
+  init_memory_storage_service();
   init_mywatcher_data_service();
   init_process_event_service();
   init_reward_data_service();
-
-  // service/src/lib/service.factory.ts
-  init_download_service();
-  init_permits_data_service();
-  init_mywatcher_data_service();
-  init_constants();
-  init_chain_service();
-  var GetPermitTriggerAddresses = () => {
-    return permitTriggerAddresses;
-  };
-  function CreatePermitsDownloadService(maxDownloadDateDifference) {
-    var storageService = new MemoryStorageService();
-    const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
-    return new DownloadService(
-      rs_FullDownloadsBatchSize,
-      rs_InitialNDownloads,
-      permitsDataService,
-      null,
-      null
-    );
-  }
-  var CreateWatcherDownloadService = () => {
-    var storageService = new MemoryStorageService();
-    const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName);
-    const watcherDataService = new MyWatcherDataService(permitsDataService);
-    return new DownloadService(
-      rs_FullDownloadsBatchSize,
-      rs_InitialNDownloads,
-      watcherDataService,
-      null,
-      null
-    );
-  };
-
-  // service/src/lib/index.ts
+  init_service_factory();
   __reExport(index_exports, __toESM(require_rosen_download_worker()));
 })();
 //# sourceMappingURL=rosen-service-lib.js.map

@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DownloadService = void 0;
+exports.TransactionDownloadService = void 0;
 const constants_1 = require("./constants");
 const models_1 = require("./models");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-class DownloadService {
+class TransactionDownloadService {
     dataService;
     eventSender;
     downloadStatusIndexedDbService;
@@ -198,7 +198,7 @@ class DownloadService {
         return null;
     }
 }
-exports.DownloadService = DownloadService;
+exports.TransactionDownloadService = TransactionDownloadService;
 if (typeof window !== 'undefined') {
-    window.DownloadService = DownloadService;
+    window.DownloadService = TransactionDownloadService;
 }

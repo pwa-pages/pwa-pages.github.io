@@ -3,7 +3,7 @@ import { DataService } from "./data.service";
 import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
 import { FetchTransactionsResponse } from "./models";
 import { EventSender } from "./process.event.service";
-export declare class DownloadService<T> {
+export declare class TransactionDownloadService<T> {
     private dataService;
     private eventSender;
     private downloadStatusIndexedDbService;

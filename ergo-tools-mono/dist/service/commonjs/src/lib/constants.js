@@ -4,7 +4,7 @@ exports.Currency = exports.Period = exports.rs_RSNDecimals = exports.rs_TokenIdM
 const chain_service_1 = require("./chain.service");
 /* eslint-disable @typescript-eslint/no-explicit-any */
 exports.rs_DbName = 'rosenDatabase_1.1.5';
-exports.rs_DbVersion = 53;
+exports.rs_DbVersion = 54;
 exports.rs_DownloadStoreName = 'downloads';
 exports.rs_InputsStoreName = 'inputBoxes';
 exports.rs_PerfTxStoreName = 'perfTxs';
@@ -21,7 +21,7 @@ exports.rs_PerfInitialNDownloads = 10;
 exports.rs_PerfFullDownloadsBatchSize = 40;
 exports.rs_StartFrom = new Date('2024-01-01');
 exports.rs_Input_Key = ['boxId', 'outputAddress'];
-exports.rs_Download_Key = ['url'];
+exports.rs_Download_Key = 'url';
 exports.rs_Permit_Key = 'id';
 exports.rs_WatcherReports_Key = 'chainType';
 exports.rs_ActivePermit_Key = 'id';

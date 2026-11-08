@@ -1,124 +1,7 @@
-import { ChainPerformanceDataService } from "./chain.performance.data.service";
 import { permitTriggerAddresses, hotWalletAddress, ChainType, permitAddresses } from "./chain.service";
-import { ChartService } from "./chart.service";
-import { rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_DbName, UrlAction } from "./constants";
-import { DownloadService } from "./download.service";
-import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
-import { DbInput, PerfTx, PermitTx, PermitInfo, EventType } from "./models";
-import { PermitsDataService } from "./permits.data.service";
-import { ReportsDataService } from "./reports.data.service";
-import { RewardDataService } from "./reward.data.service";
-import { MyWatcherDataService } from "./mywatcher.data.service";
-
-export interface EventPayload<T> {
-  type: EventType;
-  data?: T;
-}
-
-export interface EventSender {
-  sendEvent<T>(event: EventPayload<T>): Promise<void>;
-}
-
-interface Services {
-  dataService: RewardDataService;
-  chainPerformanceDataService: ChainPerformanceDataService;
-  watcherDataService: MyWatcherDataService;
-  permitsDataService: PermitsDataService;
-  downloadService: DownloadService<DbInput>;
-  chartService: ChartService;
-  downloadPerfService: DownloadService<PerfTx>;
-  downloadMyWatchersService: DownloadService<PermitTx>;
-  downloadActivePermitsService: DownloadService<PermitTx>;
-  reportsDataService: ReportsDataService;
-  downloadReportsService: DownloadService<PermitTx>;
-}
-
-async function createServices(
-  eventSender: EventSender,
-  db: IDBDatabase,
-): Promise<Services> {
-  const chartService: ChartService = new ChartService();
-  const rewardDataService: RewardDataService = new RewardDataService(
-    db,
-    chartService,
-    eventSender,
-  );
-
-  const permitsDataService: PermitsDataService =
-    new PermitsDataService(db);
-  const reportsDataService: ReportsDataService =
-    new ReportsDataService(db, eventSender);
-  const watcherDataService: MyWatcherDataService = new MyWatcherDataService(
-    permitsDataService,
-  );
-
-  const chainPerformanceDataService: ChainPerformanceDataService =
-    new ChainPerformanceDataService(db, eventSender);
-
-  const downloadStatusIndexedDbRewardDataService =
-    new DownloadStatusIndexedDbService<DbInput>(rewardDataService, db);
-  const downloadStatusIndexedDbWatcherDataService =
-    new DownloadStatusIndexedDbService<PermitTx>(watcherDataService, db);
-  const downloadStatusIndexedDbPermitsDataService =
-    new DownloadStatusIndexedDbService<PermitTx>(permitsDataService, db);
-  const downloadStatusIndexedDbChainPerformanceDataService =
-    new DownloadStatusIndexedDbService<PerfTx>(chainPerformanceDataService, db);
-
-  const downloadService: DownloadService<DbInput> =
-    new DownloadService<DbInput>(
-      rs_FullDownloadsBatchSize,
-      rs_InitialNDownloads,
-      rewardDataService,
-      eventSender,
-      downloadStatusIndexedDbRewardDataService,
-    );
-  const downloadMyWatchersService: DownloadService<PermitTx> =
-    new DownloadService<PermitTx>(
-      rs_FullDownloadsBatchSize,
-      rs_InitialNDownloads,
-      watcherDataService,
-      eventSender,
-      downloadStatusIndexedDbWatcherDataService,
-    );
-  const downloadActivePermitsService: DownloadService<PermitTx> =
-    new DownloadService<PermitTx>(
-      rs_FullDownloadsBatchSize,
-      rs_InitialNDownloads,
-      permitsDataService,
-      eventSender,
-      downloadStatusIndexedDbPermitsDataService,
-    );
-  const downloadReportsService: DownloadService<PermitTx> =
-    new DownloadService<PermitTx>(
-      rs_FullDownloadsBatchSize,
-      rs_InitialNDownloads,
-      reportsDataService,
-      eventSender,
-      downloadStatusIndexedDbPermitsDataService,
-    );
-  const downloadPerfService: DownloadService<PerfTx> =
-    new DownloadService<PerfTx>(
-      rs_PerfFullDownloadsBatchSize,
-      rs_PerfInitialNDownloads,
-      chainPerformanceDataService,
-      eventSender,
-      downloadStatusIndexedDbChainPerformanceDataService,
-    );
-
-  return {
-    dataService: rewardDataService,
-    chainPerformanceDataService,
-    watcherDataService,
-    downloadService,
-    chartService,
-    downloadPerfService,
-    downloadMyWatchersService,
-    downloadActivePermitsService,
-    permitsDataService,
-    reportsDataService,
-    downloadReportsService,
-  };
-}
+import { rs_DbName, UrlAction } from "./constants";
+import { PermitInfo, EventType } from "./models";
+import { createServices, EventPayload, EventSender, Services } from "./service.factory";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ServiceWorkerEventSender implements EventSender {
@@ -141,29 +24,29 @@ export class ProcessEventService {
   public async processEvent(event: EventPayload<object>) {
     try {
       if (
-        event.type === 'StatisticsScreenLoaded' ||
-        event.type === 'PerformanceScreenLoaded' ||
-        event.type === 'MyWatchersScreenLoaded' ||
-        event.type === 'RequestInputsDownload' ||
-        event.type === 'ReportsRequested'
+        event.type === EventType.StatisticsScreenLoaded ||
+        event.type === EventType.PerformanceScreenLoaded ||
+        event.type === EventType.MyWatchersScreenLoaded ||
+        event.type === EventType.RequestInputsDownload ||
+        event.type === EventType.ReportsRequested
       ) {
         const db = await this.initIndexedDB();
         const services = await createServices(this.eventSender, db);
 
         switch (event.type) {
-          case 'RequestInputsDownload':
+          case EventType.RequestInputsDownload:
             await this.processRequestInputsDownload(event, services);
             break;
-          case 'StatisticsScreenLoaded':
+          case EventType.StatisticsScreenLoaded:
             await this.processStatisticsScreenLoaded(services);
             break;
-          case 'MyWatchersScreenLoaded':
+          case EventType.MyWatchersScreenLoaded:
             await this.processMyWatchersScreenLoaded(event, services);
             break;
-          case 'PerformanceScreenLoaded':
+          case EventType.PerformanceScreenLoaded:
             await this.processPerformanceScreenLoaded(services);
             break;
-          case 'ReportsRequested':
+          case EventType.ReportsRequested:
             await this.processReportsRequested(event, services);
             break;
         }
@@ -494,3 +377,5 @@ export const CreateProcessEventService = (
 ): ProcessEventService => {
   return new ProcessEventService(eventSender);
 }
+export { EventSender };
+

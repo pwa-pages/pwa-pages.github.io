@@ -6,10 +6,6 @@ import { EventService } from './event.service';
 import { EventType, IDBDatabaseStorageService, rs_DownloadStoreName, rs_ErgoExplorerHost, rs_ErgoNodeHost, WatcherInfo } from '@ergo-tools/service';
 import { StorageService } from './storage.service';
 
-interface CachedDownload<T> {
-  url: string;
-  data: T;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -77,11 +73,11 @@ export class HttpDownloadService {
     return defer(() => {
       this.initiateDownload();
       const storage = from(this.storageService.getDB()).pipe(
-        map((db) => new IDBDatabaseStorageService<CachedDownload<T>>(db)),
+        map((db) => new IDBDatabaseStorageService<T>(db)),
       );
       const cached = storage.pipe(
         concatMap((store) => from(store.getDataById(rs_DownloadStoreName, [key]))),
-        concatMap((entry) => entry === null ? EMPTY : of(entry.data)),
+        concatMap((entry) => entry === null ? EMPTY : of(entry)),
       );
       const downloaded = defer(() => from(fetch(url, options))).pipe(
         concatMap(async (response) => {
@@ -91,7 +87,7 @@ export class HttpDownloadService {
           return (await response.json()) as T;
         }),
         concatMap((data) => storage.pipe(
-          concatMap((store) => from(store.addData(rs_DownloadStoreName, [{ url: key, data }]))),
+          concatMap((store) => from(store.addData(rs_DownloadStoreName, [data], key))),
           map(() => data),
         )),
       );

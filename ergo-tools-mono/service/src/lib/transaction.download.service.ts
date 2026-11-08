@@ -5,7 +5,7 @@ import { FetchTransactionsResponse, Address, TransactionItem, EventType } from "
 import { EventSender } from "./process.event.service";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class DownloadService<T> {
+export class TransactionDownloadService<T> {
   private busyCounter = 0;
   private downloadFullSize = rs_FullDownloadsBatchSize;
   private downloadInitialSize = rs_InitialNDownloads;
@@ -288,5 +288,5 @@ export class DownloadService<T> {
 
 
 if (typeof window !== 'undefined') {
-  (window as any).DownloadService = DownloadService;
+  (window as any).DownloadService = TransactionDownloadService;
 }

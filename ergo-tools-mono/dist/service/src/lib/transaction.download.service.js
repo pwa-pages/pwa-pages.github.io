@@ -1,7 +1,7 @@
 import { getUrlConfig, rs_AddressDataStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_StartFrom } from "./constants";
 import { EventType } from "./models";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class DownloadService {
+export class TransactionDownloadService {
     //private static addressDownloadDateMap = new Map<string, Date>();
     constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusIndexedDbService) {
         this.dataService = dataService;
@@ -193,6 +193,6 @@ export class DownloadService {
     }
 }
 if (typeof window !== 'undefined') {
-    window.DownloadService = DownloadService;
+    window.DownloadService = TransactionDownloadService;
 }
-//# sourceMappingURL=download.service.js.map
+//# sourceMappingURL=transaction.download.service.js.map

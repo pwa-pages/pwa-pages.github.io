@@ -1,44 +1,7 @@
-import { ChainPerformanceDataService } from "./chain.performance.data.service";
 import { permitTriggerAddresses, hotWalletAddress, permitAddresses } from "./chain.service";
-import { ChartService } from "./chart.service";
-import { rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_DbName, UrlAction } from "./constants";
-import { DownloadService } from "./download.service";
-import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
+import { rs_DbName, UrlAction } from "./constants";
 import { EventType } from "./models";
-import { PermitsDataService } from "./permits.data.service";
-import { ReportsDataService } from "./reports.data.service";
-import { RewardDataService } from "./reward.data.service";
-import { MyWatcherDataService } from "./mywatcher.data.service";
-async function createServices(eventSender, db) {
-    const chartService = new ChartService();
-    const rewardDataService = new RewardDataService(db, chartService, eventSender);
-    const permitsDataService = new PermitsDataService(db);
-    const reportsDataService = new ReportsDataService(db, eventSender);
-    const watcherDataService = new MyWatcherDataService(permitsDataService);
-    const chainPerformanceDataService = new ChainPerformanceDataService(db, eventSender);
-    const downloadStatusIndexedDbRewardDataService = new DownloadStatusIndexedDbService(rewardDataService, db);
-    const downloadStatusIndexedDbWatcherDataService = new DownloadStatusIndexedDbService(watcherDataService, db);
-    const downloadStatusIndexedDbPermitsDataService = new DownloadStatusIndexedDbService(permitsDataService, db);
-    const downloadStatusIndexedDbChainPerformanceDataService = new DownloadStatusIndexedDbService(chainPerformanceDataService, db);
-    const downloadService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, rewardDataService, eventSender, downloadStatusIndexedDbRewardDataService);
-    const downloadMyWatchersService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, watcherDataService, eventSender, downloadStatusIndexedDbWatcherDataService);
-    const downloadActivePermitsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, permitsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
-    const downloadReportsService = new DownloadService(rs_FullDownloadsBatchSize, rs_InitialNDownloads, reportsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
-    const downloadPerfService = new DownloadService(rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads, chainPerformanceDataService, eventSender, downloadStatusIndexedDbChainPerformanceDataService);
-    return {
-        dataService: rewardDataService,
-        chainPerformanceDataService,
-        watcherDataService,
-        downloadService,
-        chartService,
-        downloadPerfService,
-        downloadMyWatchersService,
-        downloadActivePermitsService,
-        permitsDataService,
-        reportsDataService,
-        downloadReportsService,
-    };
-}
+import { createServices } from "./service.factory";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ServiceWorkerEventSender {
     async sendEvent(event) {
@@ -57,27 +20,27 @@ export class ProcessEventService {
     }
     async processEvent(event) {
         try {
-            if (event.type === 'StatisticsScreenLoaded' ||
-                event.type === 'PerformanceScreenLoaded' ||
-                event.type === 'MyWatchersScreenLoaded' ||
-                event.type === 'RequestInputsDownload' ||
-                event.type === 'ReportsRequested') {
+            if (event.type === EventType.StatisticsScreenLoaded ||
+                event.type === EventType.PerformanceScreenLoaded ||
+                event.type === EventType.MyWatchersScreenLoaded ||
+                event.type === EventType.RequestInputsDownload ||
+                event.type === EventType.ReportsRequested) {
                 const db = await this.initIndexedDB();
                 const services = await createServices(this.eventSender, db);
                 switch (event.type) {
-                    case 'RequestInputsDownload':
+                    case EventType.RequestInputsDownload:
                         await this.processRequestInputsDownload(event, services);
                         break;
-                    case 'StatisticsScreenLoaded':
+                    case EventType.StatisticsScreenLoaded:
                         await this.processStatisticsScreenLoaded(services);
                         break;
-                    case 'MyWatchersScreenLoaded':
+                    case EventType.MyWatchersScreenLoaded:
                         await this.processMyWatchersScreenLoaded(event, services);
                         break;
-                    case 'PerformanceScreenLoaded':
+                    case EventType.PerformanceScreenLoaded:
                         await this.processPerformanceScreenLoaded(services);
                         break;
-                    case 'ReportsRequested':
+                    case EventType.ReportsRequested:
                         await this.processReportsRequested(event, services);
                         break;
                 }

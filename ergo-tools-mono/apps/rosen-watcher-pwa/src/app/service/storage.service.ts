@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Input, rs_ActivePermit_Key, rs_ActivePermitTxStoreName, rs_Address_Key, rs_AddressDataStoreName, rs_DbName, rs_DbVersion, rs_Download_Key, rs_DownloadStatusStoreName, rs_DownloadStoreName, rs_Input_Key, rs_InputsStoreName, rs_OpenBoxesStoreName, rs_PerfTx_Key, rs_PerfTxStoreName, rs_Permit_Key, rs_PermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName } from '@ergo-tools/service';
+import { Input, rs_ActivePermit_Key, rs_ActivePermitTxStoreName, rs_Address_Key, rs_AddressDataStoreName, rs_DbName, rs_DbVersion, rs_DownloadStatusStoreName, rs_DownloadStoreName, rs_Input_Key, rs_InputsStoreName, rs_OpenBoxesStoreName, rs_PerfTx_Key, rs_PerfTxStoreName, rs_Permit_Key, rs_PermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName } from '@ergo-tools/service';
 import { Address } from '@ergo-tools/service';
 
 @Injectable({
@@ -34,8 +34,7 @@ export class StorageService {
           );
           this.recreateObjectStore(
             db,
-            rs_DownloadStoreName,
-            rs_Download_Key,
+            rs_DownloadStoreName
           );
 
 
