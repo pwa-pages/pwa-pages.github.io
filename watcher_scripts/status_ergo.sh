@@ -1,5 +1,5 @@
 # Check Ergo node health with fail conditions
-ergo_result=$(curl -s --fail --max-time 10 "https://node-p2p.ergoplatform.com/info")
+ergo_result=$(curl -s --fail --max-time 10 "http://192.168.178.227:9053/info")
 
 # Exit immediately if curl failed (e.g., timeout, connection error, non-2xx)
 if [ $? -ne 0 ]; then
