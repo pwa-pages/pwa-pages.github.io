@@ -53,7 +53,11 @@ export class DownloadService {
             const storage = this.dbOrStorage instanceof IDBDatabase
                 ? new IDBDatabaseStorageService(this.dbOrStorage)
                 : this.dbOrStorage;
-            const cached = defer(() => from(storage.getDataById(rs_DownloadStoreName, [key]))).pipe(concatMap((entry) => entry === null ? EMPTY : of(entry)));
+            const cached = defer(() => from(storage.getDataById(rs_DownloadStoreName, key))).pipe(concatMap((entry) => {
+                if (entry === null)
+                    return EMPTY;
+                return of(entry);
+            }));
             const downloaded = defer(() => from(fetch(url, options))).pipe(concatMap(async (response) => {
                 if (!response.ok) {
                     throw new Error(`Server returned code: ${response.status}`);

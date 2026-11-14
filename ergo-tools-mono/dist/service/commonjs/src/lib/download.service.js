@@ -58,7 +58,11 @@ class DownloadService {
             const storage = this.dbOrStorage instanceof IDBDatabase
                 ? new _1.IDBDatabaseStorageService(this.dbOrStorage)
                 : this.dbOrStorage;
-            const cached = (0, rxjs_1.defer)(() => (0, rxjs_1.from)(storage.getDataById(_1.rs_DownloadStoreName, [key]))).pipe((0, operators_1.concatMap)((entry) => entry === null ? rxjs_1.EMPTY : (0, rxjs_1.of)(entry)));
+            const cached = (0, rxjs_1.defer)(() => (0, rxjs_1.from)(storage.getDataById(_1.rs_DownloadStoreName, key))).pipe((0, operators_1.concatMap)((entry) => {
+                if (entry === null)
+                    return rxjs_1.EMPTY;
+                return (0, rxjs_1.of)(entry);
+            }));
             const downloaded = (0, rxjs_1.defer)(() => (0, rxjs_1.from)(fetch(url, options))).pipe((0, operators_1.concatMap)(async (response) => {
                 if (!response.ok) {
                     throw new Error(`Server returned code: ${response.status}`);

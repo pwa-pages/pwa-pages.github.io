@@ -1759,8 +1759,11 @@ var init_download_service = __esm({
         return (0, import_rxjs.defer)(() => {
           this.initiateDownload();
           const storage = this.dbOrStorage instanceof IDBDatabase ? new IDBDatabaseStorageService(this.dbOrStorage) : this.dbOrStorage;
-          const cached = (0, import_rxjs.defer)(() => (0, import_rxjs.from)(storage.getDataById(rs_DownloadStoreName, [key]))).pipe(
-            (0, import_operators.concatMap)((entry) => entry === null ? import_rxjs.EMPTY : (0, import_rxjs.of)(entry))
+          const cached = (0, import_rxjs.defer)(() => (0, import_rxjs.from)(storage.getDataById(rs_DownloadStoreName, key))).pipe(
+            (0, import_operators.concatMap)((entry) => {
+              if (entry === null) return import_rxjs.EMPTY;
+              return (0, import_rxjs.of)(entry);
+            })
           );
           const downloaded = (0, import_rxjs.defer)(() => (0, import_rxjs.from)(fetch(url, options))).pipe(
             (0, import_operators.concatMap)(async (response) => {
