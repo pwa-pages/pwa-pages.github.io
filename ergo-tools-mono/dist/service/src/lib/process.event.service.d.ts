@@ -7,6 +7,7 @@ export declare class ProcessEventService {
     constructor(eventSender: EventSender);
     processEvent(event: EventPayload<object>): Promise<void>;
     private initIndexedDB;
+    private processWatchersScreenLoaded;
     private processReportsRequested;
     private processRequestInputsDownload;
     private processStatisticsScreenLoaded;

@@ -15,12 +15,12 @@ import {
   ChainChartPerformance,
   ChartPerformance,
   EventType,
+  WatchersStats,
 } from '@ergo-tools/service';
 import { StatisticsChartComponent } from './statistics.chart.component';
 
 import { PerformanceChartComponent } from './performance.chart.component';
 import { BaseEventAwareComponent } from '../baseeventawarecomponent';
-import { WatchersStats } from '../service/watchers.models';
 import { MyWatchersComponent } from '../statistics/mywatchers.component';
 import { MyWatchersStats } from '@ergo-tools/service';
 import { ChartPoint } from '@ergo-tools/service';

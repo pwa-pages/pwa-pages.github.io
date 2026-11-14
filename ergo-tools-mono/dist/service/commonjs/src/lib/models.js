@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ChainChartPerformance = exports.ChartPerformance = exports.ChartPoint = exports.ChainPerfChartDataSet = exports.ChartDataSet = exports.WatchersPerformanceStats = exports.WatcherPerformanceAddressStat = exports.MyWatchersStats = exports.WatcherInfo = exports.Token = exports.Input = exports.Asset = exports.Address = exports.EventType = void 0;
+exports.WatchersStats = exports.WatchersAmounts = exports.ChainChartPerformance = exports.ChartPerformance = exports.ChartPoint = exports.ChainPerfChartDataSet = exports.ChartDataSet = exports.WatchersPerformanceStats = exports.WatcherPerformanceAddressStat = exports.MyWatchersStats = exports.WatcherInfo = exports.Token = exports.Input = exports.Asset = exports.Address = exports.EventType = void 0;
+exports.createChainNumber = createChainNumber;
+const chain_service_1 = require("./chain.service");
+const constants_1 = require("./constants");
 var EventType;
 (function (EventType) {
     EventType["StartFullDownload"] = "StartFullDownload";
@@ -209,3 +212,38 @@ class ChainChartPerformance {
     }
 }
 exports.ChainChartPerformance = ChainChartPerformance;
+function createChainNumber() {
+    return Object.fromEntries((0, chain_service_1.getChainTypes)().map((key) => [key, undefined]));
+}
+class WatchersAmounts {
+    ergCollateral;
+    permitValue;
+    rsnCollateral;
+    totalLocked;
+    totalLockedERG;
+    totalLockedRSN;
+    watcherValue;
+}
+exports.WatchersAmounts = WatchersAmounts;
+class WatchersStats {
+    activePermitCount = createChainNumber();
+    bulkPermitCount = createChainNumber();
+    chainLockedERG = createChainNumber();
+    chainLockedRSN = createChainNumber();
+    chainPermitCount = createChainNumber();
+    chainWatcherCount = createChainNumber();
+    permitCost = constants_1.rs_PermitCost;
+    totalActivePermitCount;
+    totalLockedERG;
+    totalLockedRSN;
+    totalPermitCount;
+    totalWatcherCount;
+    triggerPermitCount = createChainNumber();
+    watcherCollateralERG = (0, constants_1.rs_WatcherCollateralERG)('Ergo');
+    watcherCollateralRSN = (0, constants_1.rs_WatcherCollateralRSN)('Ergo');
+    watchersAmountsPerCurrency = Object.fromEntries(Object.values(constants_1.Currency).map((currency) => [
+        currency,
+        new WatchersAmounts(),
+    ]));
+}
+exports.WatchersStats = WatchersStats;

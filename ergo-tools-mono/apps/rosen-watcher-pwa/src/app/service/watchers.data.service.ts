@@ -15,10 +15,10 @@ import {
   rs_WatcherCollateralERG,
   rs_WatcherCollateralRSN,
   WatcherInfo,
+  WatchersStats,
 } from '@ergo-tools/service';
 import { Token } from '@ergo-tools/service';
 import { PriceService } from './price.service';
-import { WatchersStats } from './watchers.models';
 
 @Injectable({
   providedIn: 'root',

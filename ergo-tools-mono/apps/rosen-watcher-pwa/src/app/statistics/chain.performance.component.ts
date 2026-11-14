@@ -12,7 +12,7 @@ import { EventData } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainChartService } from '../service/chain.chart.service';
 
-import { ChainPerfChartDataSet, EventType, getChainTypes } from '@ergo-tools/service';
+import { ChainPerfChartDataSet, createChainNumber, EventType, getChainTypes } from '@ergo-tools/service';
 import { ChainChartPerformance } from '@ergo-tools/service';
 import { Chart } from 'chart.js';
 import { NavigationService } from '../service/navigation.service';
@@ -21,7 +21,6 @@ import { map } from 'rxjs';
 import { Token } from '@ergo-tools/service';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { CommonModule } from '@angular/common';
-import { createChainNumber } from '../service/watchers.models';
 import { chainTypeWatcherIdentifier } from '@ergo-tools/service';
 
 @Component({

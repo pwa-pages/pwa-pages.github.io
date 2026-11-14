@@ -50,6 +50,7 @@ export class ServiceWorkerService {
       if (
         eventType == EventType.PerformanceScreenLoaded ||
         eventType == EventType.MyWatchersScreenLoaded ||
+        eventType == EventType.WatchersScreenLoaded ||
         eventType == EventType.StatisticsScreenLoaded ||
         eventType == EventType.RequestInputsDownload ||
         eventType == EventType.ReportsRequested

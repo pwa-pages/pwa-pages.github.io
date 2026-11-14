@@ -12,8 +12,8 @@ export enum ChainType {
   Doge = 'Doge',
   Runes = 'Runes',
   Firo = 'Firo',
-  Nervos = 'Nervos',
   Handshake = 'Handshake',
+  Nervos = 'Nervos',
   Base = 'Base',
   Monero = 'Monero',
   BitcoinCash = 'BitcoinCash',
@@ -83,6 +83,9 @@ export const rwtTokenIds: Record<string, ChainType> = {
     ChainType.Runes,
   '62a0b535eda42da5b003042c3cf587cf7cb5202959b7f00878183d2f676d3db5':
     ChainType.Firo,
+  'a17004994c2bd2d699410d12be260a9f42b0b3c352c791ed8d40472144a8ca60':
+    ChainType.Handshake,
+
 
 };
 
@@ -129,7 +132,7 @@ export const permitTriggerAddresses: Record<ChainType, string | null> = {
   [ChainType.Nervos]: null,
   [ChainType.Handshake]: null,
   [ChainType.Monero]: null,
-  [ChainType.Firo]: 
+  [ChainType.Firo]:
     '5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn',
   [ChainType.Base]: null,
   [ChainType.Zcash]: null,
@@ -154,7 +157,7 @@ export const permitBulkAddresses: Record<ChainType, string | null> = {
   [ChainType.Nervos]: null,
   [ChainType.Handshake]: null,
   [ChainType.Monero]: null,
-  [ChainType.Firo]: 
+  [ChainType.Firo]:
     'ZsPNMsGz8D8y11MAneZTVjJndCjgTUnUoCHtd2sBVHNWA2CZnTaDAnQ5yk4yws8txwETo9odSqXEDQfLDEb3htK6C7nsmMEjQzYuEMAW5R3ACcb7hbTjH3CvzFRbCxKdD18gpfM7D2fBAoNEYYYWiWFGVn9SqBu8MDnUctEHru88XWz3brkmYrjFaHwiy1N1fNhTJ1hFavTPmZYPgA9yJnnV8ZxuRhAZtbCwJEpGe6UTBUja2P2jX58unerXMatzoKSW6fKdj7QzgDzNnHTkWUCkpN4AiCiKAmVktA8JXUbFGW29tUx9aeFxP2K9aQiqdrxwme5QJRKm3HRoeXtFdavym77CKbMajMfiMTvPoTNFdCNfwga15jrqjSjNCXyYV5TrQhCSfoEBkdbjttDevzKvJuGGP67iwdRJeZ8NLxFy6noRdbCuSDfpvCiLDgLzpK4pq1KHyRkuW2AQ1s8sRJmAXDNaG5tz7wDVXRTpo1373ky6sAW81i5L7mZkf79a64h8Us',
   [ChainType.Base]: null,
   [ChainType.Zcash]: null,
@@ -179,7 +182,7 @@ export const rewardAddresses: Record<ChainType, string | null> = {
   [ChainType.Nervos]: null,
   [ChainType.Handshake]: null,
   [ChainType.Monero]: null,
-  [ChainType.Firo]: 
+  [ChainType.Firo]:
     '2Eit2LFRqu2Mo33z3pYTJRHNCPZXtS2f68LNW668eK4nJNwXQZMTEW23dCLCxfBX9CZfhHCCt1AbFaprUWX4wG2LfPVrXjGSpZCB5oX3FQ23WXoS58MGLwDDjrEEyoWCbvS1QN9mAgg44yqcgBQajZp1RRJohTZDfYZT58h7eXMZyWpSqw2TMAjrHSmPgKaHxM5yoGeWsRqTscGxrjvjts9dQWWgAZy7NuKC3zks5GW1dVXFYs9xa1V1JfefjCXW1RWJpWoVc8NqEXKFZF3xh8mgfwbWWmZoo6cJWRn8yMyAjheCCXprsr8uD8zLiJHh2inC34ymhopvGnVVU9wxK9exLNprv2Hgy1TCsxvKJxT1gPX4czEqvv3FfgnbhLF4mStnfUYzwZRCCn6dgjEKBmmQfXzFv88TQWW8AyeagY7Tj9oC3bNi63VutaA4MBCTHkg5xkkqbmmPnyvKrAsXy5SVUuAAzmVDkVrV8MAcjbeiS8SxVqtFKxGSLwEbMLyyDAM4FGmRz4XzhfaT9RHU93iaE54wkM7ApkTDgCpaSnM7hhQgqGRFseEoH5mDJFcNUVL21KJXJ7oufAp5jxAR6XphgaHvSFZqoZhb1mCZEa9ZzJthaKHhKUabcXUxkDs4Ev46VxkxxqhT79JXXmFLg5rNCJEdSwMm324feYFWJodEoEAt9QDd6Tk2itPoCmem7Du1dZ',
   [ChainType.Base]: null,
   [ChainType.Zcash]: null,

@@ -29,5 +29,7 @@ __exportStar(require("./mywatcher.data.service"), exports);
 __exportStar(require("./process.event.service"), exports);
 __exportStar(require("./reward.data.service"), exports);
 __exportStar(require("./service.factory"), exports);
+__exportStar(require("./download.service"), exports);
+__exportStar(require("./watchers.data.service"), exports);
 //export * from './rosen-db-worker';
 __exportStar(require("./rosen-download-worker"), exports);

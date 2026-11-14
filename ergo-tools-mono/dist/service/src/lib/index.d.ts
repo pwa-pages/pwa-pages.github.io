@@ -13,4 +13,6 @@ export * from './mywatcher.data.service';
 export * from './process.event.service';
 export * from './reward.data.service';
 export * from './service.factory';
+export * from './download.service';
+export * from './watchers.data.service';
 export * from './rosen-download-worker';

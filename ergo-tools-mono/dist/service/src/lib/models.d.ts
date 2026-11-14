@@ -191,3 +191,31 @@ export interface Output {
     assets: Asset[];
     address: string;
 }
+export declare function createChainNumber(): Record<string, number | undefined>;
+export declare class WatchersAmounts {
+    ergCollateral: number | undefined;
+    permitValue: number | undefined;
+    rsnCollateral: number | undefined;
+    totalLocked: number | undefined;
+    totalLockedERG: number | undefined;
+    totalLockedRSN: number | undefined;
+    watcherValue: number | undefined;
+}
+export declare class WatchersStats {
+    activePermitCount: Record<string, number | undefined>;
+    bulkPermitCount: Record<string, number | undefined>;
+    chainLockedERG: Record<string, number | undefined>;
+    chainLockedRSN: Record<string, number | undefined>;
+    chainPermitCount: Record<string, number | undefined>;
+    chainWatcherCount: Record<string, number | undefined>;
+    permitCost: number;
+    totalActivePermitCount: number | undefined;
+    totalLockedERG: number | undefined;
+    totalLockedRSN: number | undefined;
+    totalPermitCount: number | undefined;
+    totalWatcherCount: number | undefined;
+    triggerPermitCount: Record<string, number | undefined>;
+    watcherCollateralERG: number;
+    watcherCollateralRSN: number;
+    watchersAmountsPerCurrency: Record<string, WatchersAmounts>;
+}

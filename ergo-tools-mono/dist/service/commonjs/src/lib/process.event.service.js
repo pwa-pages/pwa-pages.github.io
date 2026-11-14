@@ -29,7 +29,8 @@ class ProcessEventService {
                 event.type === models_1.EventType.PerformanceScreenLoaded ||
                 event.type === models_1.EventType.MyWatchersScreenLoaded ||
                 event.type === models_1.EventType.RequestInputsDownload ||
-                event.type === models_1.EventType.ReportsRequested) {
+                event.type === models_1.EventType.ReportsRequested ||
+                event.type === models_1.EventType.WatchersScreenLoaded) {
                 const db = await this.initIndexedDB();
                 const services = await (0, service_factory_1.createServices)(this.eventSender, db);
                 switch (event.type) {
@@ -47,6 +48,9 @@ class ProcessEventService {
                         break;
                     case models_1.EventType.ReportsRequested:
                         await this.processReportsRequested(event, services);
+                        break;
+                    case models_1.EventType.WatchersScreenLoaded:
+                        await this.processWatchersScreenLoaded(services);
                         break;
                 }
             }
@@ -68,6 +72,10 @@ class ProcessEventService {
                 reject(event.target.error);
             };
         });
+    }
+    async processWatchersScreenLoaded(services) {
+        console.log('Rosen service worker received WatchersScreenLoaded initiating syncing of data by downloading from blockchain');
+        await services.watchersDataService.download();
     }
     async processReportsRequested(event, services) {
         console.log('Rosen service worker received ReportsRequested initiating syncing of data by downloading from blockchain, event.data: ' +
@@ -128,7 +136,7 @@ class ProcessEventService {
     async processMyWatchersScreenLoaded(event, services) {
         const { addresses } = event.data;
         console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
-        const permits = await services.watcherDataService.getAdressPermits(addresses);
+        const permits = await services.myWatcherDataService.getAdressPermits(addresses);
         const chainTypes = this.extractChainTypes(permits, addresses);
         await this.sendPermitsChangedEvent(permits);
         if (chainTypes.size === 0) {
@@ -141,7 +149,7 @@ class ProcessEventService {
         await this.processActivePermits(chainTypes, services, addresses);
         await this.downloadForChainPermitAddresses(addresses, services);
         await this.sendPermitChangedEvent(services, addresses);
-        const updatedPermits = await services.watcherDataService.getAdressPermits(addresses);
+        const updatedPermits = await services.myWatcherDataService.getAdressPermits(addresses);
         const updatedChainTypes = this.extractChainTypes(updatedPermits, addresses);
         const chainTypesChanged = updatedChainTypes.size !== chainTypes.size ||
             [...updatedChainTypes].some((chainType) => !chainTypes.has(chainType));
@@ -173,7 +181,7 @@ class ProcessEventService {
     }
     async downloadForChainPermitAddress(addresses, chainType, address, services) {
         await services.downloadMyWatchersService.downloadForAddress(address, constants_1.UrlAction.PermitTransactions);
-        const permits = await services.watcherDataService.getAdressPermits(addresses);
+        const permits = await services.myWatcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
             type: models_1.EventType.PermitsChanged,
             data: permits,
@@ -184,7 +192,7 @@ class ProcessEventService {
         });
     }
     async sendPermitChangedEvent(services, addresses) {
-        const permits = await services.watcherDataService.getAdressPermits(addresses);
+        const permits = await services.myWatcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
             type: models_1.EventType.PermitsChanged,
             data: permits,
@@ -210,7 +218,7 @@ class ProcessEventService {
         await services.downloadActivePermitsService.downloadForAddress(address, constants_1.UrlAction.PermitTriggerTransactions, () => this.sendPermitsChangedEventForAddresses(services, allAddresses));
     }
     async sendPermitsChangedEventForAddresses(services, addresses) {
-        const permits = await services.watcherDataService.getAdressPermits(addresses);
+        const permits = await services.myWatcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
             type: models_1.EventType.PermitsChanged,
             data: permits,

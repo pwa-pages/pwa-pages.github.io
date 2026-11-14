@@ -28,7 +28,8 @@ export class ProcessEventService {
         event.type === EventType.PerformanceScreenLoaded ||
         event.type === EventType.MyWatchersScreenLoaded ||
         event.type === EventType.RequestInputsDownload ||
-        event.type === EventType.ReportsRequested
+        event.type === EventType.ReportsRequested ||
+        event.type === EventType.WatchersScreenLoaded
       ) {
         const db = await this.initIndexedDB();
         const services = await createServices(this.eventSender, db);
@@ -48,6 +49,9 @@ export class ProcessEventService {
             break;
           case EventType.ReportsRequested:
             await this.processReportsRequested(event, services);
+            break;
+          case EventType.WatchersScreenLoaded:
+            await this.processWatchersScreenLoaded(services);
             break;
         }
       }
@@ -78,6 +82,14 @@ export class ProcessEventService {
         reject((event.target as IDBOpenDBRequest).error);
       };
     });
+  }
+
+  private async processWatchersScreenLoaded(services: Services) {
+    console.log(
+      'Rosen service worker received WatchersScreenLoaded initiating syncing of data by downloading from blockchain',
+    );
+
+    await services.watchersDataService.download();
   }
 
   private async processReportsRequested(
@@ -185,7 +197,7 @@ export class ProcessEventService {
       'Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain',
     );
 
-    const permits = await services.watcherDataService.getAdressPermits(addresses);
+    const permits = await services.myWatcherDataService.getAdressPermits(addresses);
     const chainTypes = this.extractChainTypes(permits, addresses);
     await this.sendPermitsChangedEvent(permits);
 
@@ -212,7 +224,7 @@ export class ProcessEventService {
     await this.sendPermitChangedEvent(services, addresses);
 
     const updatedPermits =
-      await services.watcherDataService.getAdressPermits(addresses);
+      await services.myWatcherDataService.getAdressPermits(addresses);
     const updatedChainTypes = this.extractChainTypes(
       updatedPermits,
       addresses,
@@ -293,7 +305,7 @@ export class ProcessEventService {
   ): Promise<void> {
     await services.downloadMyWatchersService.downloadForAddress(address, UrlAction.PermitTransactions);
 
-    const permits = await services.watcherDataService.getAdressPermits(addresses);
+    const permits = await services.myWatcherDataService.getAdressPermits(addresses);
 
     await this.eventSender?.sendEvent({
       type: EventType.PermitsChanged,
@@ -311,7 +323,7 @@ export class ProcessEventService {
     services: Services,
     addresses: string[],
   ) {
-    const permits = await services.watcherDataService.getAdressPermits(addresses);
+    const permits = await services.myWatcherDataService.getAdressPermits(addresses);
 
     await this.eventSender?.sendEvent({
       type: EventType.PermitsChanged,
@@ -364,7 +376,7 @@ export class ProcessEventService {
     services: Services,
     addresses: string[],
   ): Promise<void> {
-    const permits = await services.watcherDataService.getAdressPermits(addresses);
+    const permits = await services.myWatcherDataService.getAdressPermits(addresses);
     await this.eventSender?.sendEvent({
       type: EventType.PermitsChanged,
       data: permits,

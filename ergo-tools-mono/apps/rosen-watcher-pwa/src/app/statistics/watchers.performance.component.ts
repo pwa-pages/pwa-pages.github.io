@@ -12,14 +12,14 @@ import {
 import {
   EventType,
   getActiveChainTypes,
-  WatchersPerformanceStats
+  WatchersPerformanceStats,
+  WatchersStats
 } from '@ergo-tools/service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { NavigationService } from '../service/navigation.service';
-import { WatchersStats } from '../service/watchers.models';
 import { WatchersPerformanceDataService } from '../service/watchers.performance.data.service';
 
 export class Address {

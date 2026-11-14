@@ -1,3 +1,5 @@
+import { getChainTypes } from "./chain.service";
+import { rs_PermitCost, rs_WatcherCollateralERG, rs_WatcherCollateralRSN, Currency } from "./constants";
 export var EventType;
 (function (EventType) {
     EventType["StartFullDownload"] = "StartFullDownload";
@@ -131,6 +133,29 @@ export class ChainChartPerformance {
         this.chart = chart;
         this.chainType = chainType;
         this.color = color;
+    }
+}
+export function createChainNumber() {
+    return Object.fromEntries(getChainTypes().map((key) => [key, undefined]));
+}
+export class WatchersAmounts {
+}
+export class WatchersStats {
+    constructor() {
+        this.activePermitCount = createChainNumber();
+        this.bulkPermitCount = createChainNumber();
+        this.chainLockedERG = createChainNumber();
+        this.chainLockedRSN = createChainNumber();
+        this.chainPermitCount = createChainNumber();
+        this.chainWatcherCount = createChainNumber();
+        this.permitCost = rs_PermitCost;
+        this.triggerPermitCount = createChainNumber();
+        this.watcherCollateralERG = rs_WatcherCollateralERG('Ergo');
+        this.watcherCollateralRSN = rs_WatcherCollateralRSN('Ergo');
+        this.watchersAmountsPerCurrency = Object.fromEntries(Object.values(Currency).map((currency) => [
+            currency,
+            new WatchersAmounts(),
+        ]));
     }
 }
 //# sourceMappingURL=models.js.map

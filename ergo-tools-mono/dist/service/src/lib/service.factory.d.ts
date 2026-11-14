@@ -6,6 +6,7 @@ import { PermitsDataService } from "./permits.data.service";
 import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
 import { TransactionDownloadService } from "./transaction.download.service";
+import { WatchersDataService } from "./watchers.data.service";
 export declare const GetPermitTriggerAddresses: () => Record<import("./chain.service").ChainType, string | null>;
 export declare function CreatePermitsDownloadService(maxDownloadDateDifference: number): TransactionDownloadService<PermitTx>;
 export declare const CreateWatcherDownloadService: () => TransactionDownloadService<PermitTx>;
@@ -19,7 +20,8 @@ export interface EventSender {
 export interface Services {
     dataService: RewardDataService;
     chainPerformanceDataService: ChainPerformanceDataService;
-    watcherDataService: MyWatcherDataService;
+    myWatcherDataService: MyWatcherDataService;
+    watchersDataService: WatchersDataService;
     permitsDataService: PermitsDataService;
     downloadService: TransactionDownloadService<DbInput>;
     chartService: ChartService;

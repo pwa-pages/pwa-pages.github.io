@@ -2,14 +2,17 @@ import { ChainPerformanceDataService } from "./chain.performance.data.service";
 import { permitTriggerAddresses } from "./chain.service";
 import { ChartService } from "./chart.service";
 import { rs_ActivePermitTxStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads } from "./constants";
+import { DownloadService } from "./download.service";
 import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
 import { MemoryStorageService } from "./memory.storage.service";
-import { PermitTx, EventType, DbInput, PerfTx } from "./models";
+import { PermitTx, EventType, DbInput, PerfTx, WatcherInfo } from "./models";
 import { MyWatcherDataService } from "./mywatcher.data.service";
 import { PermitsDataService } from "./permits.data.service";
+import { CurrencyRates, PriceService } from "./price.service";
 import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
 import { TransactionDownloadService } from "./transaction.download.service";
+import { WatchersDataService } from "./watchers.data.service";
 
 export const GetPermitTriggerAddresses = () => {
   return permitTriggerAddresses;
@@ -33,7 +36,7 @@ export function CreatePermitsDownloadService(
 }
 
 export const CreateWatcherDownloadService = (
-  
+
 ): TransactionDownloadService<PermitTx> => {
 
 
@@ -69,7 +72,8 @@ export interface EventSender {
 export interface Services {
   dataService: RewardDataService;
   chainPerformanceDataService: ChainPerformanceDataService;
-  watcherDataService: MyWatcherDataService;
+  myWatcherDataService: MyWatcherDataService;
+  watchersDataService: WatchersDataService;
   permitsDataService: PermitsDataService;
   downloadService: TransactionDownloadService<DbInput>;
   chartService: ChartService;
@@ -95,8 +99,18 @@ export async function createServices(
     new PermitsDataService(db);
   const reportsDataService: ReportsDataService =
     new ReportsDataService(db, eventSender);
-  const watcherDataService: MyWatcherDataService = new MyWatcherDataService(
+  const myWatcherDataService: MyWatcherDataService = new MyWatcherDataService(
     permitsDataService,
+  );
+
+  const downloadServiceWatcherInfo = new DownloadService<WatcherInfo>(eventSender, db);
+  const downloadServciceCurrencyRates = new DownloadService<CurrencyRates>(eventSender, db);
+  const priceService: PriceService = new PriceService(
+    downloadServciceCurrencyRates,
+  );
+
+  const watchersDataService: WatchersDataService = new WatchersDataService(
+    downloadServiceWatcherInfo, priceService, eventSender
   );
 
   const chainPerformanceDataService: ChainPerformanceDataService =
@@ -105,13 +119,13 @@ export async function createServices(
   const downloadStatusIndexedDbRewardDataService =
     new DownloadStatusIndexedDbService<DbInput>(rewardDataService, db);
   const downloadStatusIndexedDbWatcherDataService =
-    new DownloadStatusIndexedDbService<PermitTx>(watcherDataService, db);
+    new DownloadStatusIndexedDbService<PermitTx>(myWatcherDataService, db);
   const downloadStatusIndexedDbPermitsDataService =
     new DownloadStatusIndexedDbService<PermitTx>(permitsDataService, db);
   const downloadStatusIndexedDbChainPerformanceDataService =
     new DownloadStatusIndexedDbService<PerfTx>(chainPerformanceDataService, db);
 
-  const downloadService: TransactionDownloadService<DbInput> =
+  const downloadRewardService: TransactionDownloadService<DbInput> =
     new TransactionDownloadService<DbInput>(
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
@@ -123,7 +137,7 @@ export async function createServices(
     new TransactionDownloadService<PermitTx>(
       rs_FullDownloadsBatchSize,
       rs_InitialNDownloads,
-      watcherDataService,
+      myWatcherDataService,
       eventSender,
       downloadStatusIndexedDbWatcherDataService,
     );
@@ -155,8 +169,9 @@ export async function createServices(
   return {
     dataService: rewardDataService,
     chainPerformanceDataService,
-    watcherDataService,
-    downloadService,
+    myWatcherDataService: myWatcherDataService,
+    watchersDataService: watchersDataService,
+    downloadService: downloadRewardService,
     chartService,
     downloadPerfService,
     downloadMyWatchersService,
