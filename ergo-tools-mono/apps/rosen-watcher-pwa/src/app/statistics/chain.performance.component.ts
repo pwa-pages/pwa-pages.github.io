@@ -21,6 +21,7 @@ import { map } from 'rxjs';
 import { Token } from '@ergo-tools/service';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { CommonModule } from '@angular/common';
+
 import { chainTypeWatcherIdentifier } from '@ergo-tools/service';
 
 @Component({

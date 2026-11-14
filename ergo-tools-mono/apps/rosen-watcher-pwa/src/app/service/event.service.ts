@@ -2,7 +2,7 @@ import {
   Injectable,
   NgZone,
 } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { EventType, Input } from '@ergo-tools/service';
 
 
@@ -80,6 +80,10 @@ export class EventService {
     );
   }
 
+  observeEvent<T>(eventType: EventType): Observable<T> {
+    return this.eventSubscriptions[eventType].asObservable() as Observable<T>;
+  }
+
   async subscribeToEvent<T>(
     eventType: EventType,
     callback: (...args: T[]) => void | Promise<void>,
@@ -126,6 +130,8 @@ export class EventService {
       subscription,
     );
   }
+
+  
 
   async subscribeToAllEvents(
     callback: (
