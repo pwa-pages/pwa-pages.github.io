@@ -116,14 +116,14 @@ export class MyWatchersComponent
         await this.chaindataService.getAddresses();
 
       this.eventService.sendEventWithData(
-        EventType.MyWatchersScreenLoaded,
+        EventType.MyWatcherStatsRequested,
         {
           addresses,
         },
       );
     } else {
       this.eventService.sendEventWithData(
-        EventType.MyWatchersScreenLoaded,
+        EventType.MyWatcherStatsRequested,
         {
           addresses: this.filledAddresses,
         },

@@ -7,12 +7,12 @@ export declare class ProcessEventService {
     constructor(eventSender: EventSender);
     processEvent(event: EventPayload<object>): Promise<void>;
     private initIndexedDB;
-    private processWatchersScreenLoaded;
+    private processWatcherStatsRequested;
     private processReportsRequested;
     private processRequestInputsDownload;
     private processStatisticsScreenLoaded;
     private processPerformanceScreenLoaded;
-    private processMyWatchersScreenLoaded;
+    private processMyWatcherStatsRequested;
     private extractChainTypes;
     private processActivePermits;
     downloadForChainPermitAddresses(addresses: string[], services: Services): Promise<void>;

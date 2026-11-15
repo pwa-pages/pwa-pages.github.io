@@ -12,17 +12,13 @@ import { EventData } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainChartService } from '../service/chain.chart.service';
 
-import { ChainPerfChartDataSet, createChainNumber, EventType, getChainTypes } from '@ergo-tools/service';
+import { ChainPerfChartDataSet, createChainNumber, EventType, WatchersStats } from '@ergo-tools/service';
 import { ChainChartPerformance } from '@ergo-tools/service';
 import { Chart } from 'chart.js';
 import { NavigationService } from '../service/navigation.service';
-import { WatchersDataService } from '../service/watchers.data.service';
-import { map } from 'rxjs';
-import { Token } from '@ergo-tools/service';
 import { IS_ELEMENTS_ACTIVE } from '../service/tokens';
 import { CommonModule } from '@angular/common';
 
-import { chainTypeWatcherIdentifier } from '@ergo-tools/service';
 
 @Component({
   selector: 'app-chain-performance',
@@ -63,8 +59,7 @@ export class ChainPerformanceComponent
     injector: Injector,
     @Inject(IS_ELEMENTS_ACTIVE) public isElementsActive: boolean,
     private chartService: ChainChartService,
-    private navigationService: NavigationService,
-    private watchersDataService: WatchersDataService,
+    private navigationService: NavigationService
   ) {
     super(injector);
   }
@@ -93,6 +88,7 @@ export class ChainPerformanceComponent
     await this.retrieveData();
     this.updateChart();
 
+    this.eventService.sendEvent(EventType.WatcherStatsRequested);
     this.eventService.sendEvent(EventType.PerformanceScreenLoaded);
 
     await this.subscribeToEvent(EventType.RefreshInputs, async () => {
@@ -102,22 +98,12 @@ export class ChainPerformanceComponent
   }
 
   private getWatchers() {
-    const watcherInfo$ = this.watchersDataService.getWatchersInfo();
-
-    watcherInfo$
-      .pipe(
-        map((watcherInfo) => {
-          getChainTypes().forEach((c) => {
-            const amount =
-              watcherInfo.tokens.find(
-                (token: Token) => token.name === chainTypeWatcherIdentifier[c],
-              )?.amount ?? 0;
-            this.chainWatcherCount[c] = amount;
-          });
-          this.updateChart();
-        }),
-      )
-      .subscribe();
+       this.subscribeToEvent(
+          EventType.WatchersStatsChanged,
+          (data: WatchersStats) => {
+            this.chainWatcherCount = data.chainWatcherCount;
+          },
+        );
   }
 
   private async getPerformanceChart(): Promise<ChainChartPerformance[]> {

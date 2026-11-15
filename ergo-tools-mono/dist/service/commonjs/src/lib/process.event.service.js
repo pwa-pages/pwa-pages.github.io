@@ -27,10 +27,10 @@ class ProcessEventService {
         try {
             if (event.type === models_1.EventType.StatisticsScreenLoaded ||
                 event.type === models_1.EventType.PerformanceScreenLoaded ||
-                event.type === models_1.EventType.MyWatchersScreenLoaded ||
+                event.type === models_1.EventType.MyWatcherStatsRequested ||
                 event.type === models_1.EventType.RequestInputsDownload ||
                 event.type === models_1.EventType.ReportsRequested ||
-                event.type === models_1.EventType.WatchersScreenLoaded) {
+                event.type === models_1.EventType.WatcherStatsRequested) {
                 const db = await this.initIndexedDB();
                 const services = await (0, service_factory_1.createServices)(this.eventSender, db);
                 switch (event.type) {
@@ -40,8 +40,8 @@ class ProcessEventService {
                     case models_1.EventType.StatisticsScreenLoaded:
                         await this.processStatisticsScreenLoaded(services);
                         break;
-                    case models_1.EventType.MyWatchersScreenLoaded:
-                        await this.processMyWatchersScreenLoaded(event, services);
+                    case models_1.EventType.MyWatcherStatsRequested:
+                        await this.processMyWatcherStatsRequested(event, services);
                         break;
                     case models_1.EventType.PerformanceScreenLoaded:
                         await this.processPerformanceScreenLoaded(services);
@@ -49,8 +49,8 @@ class ProcessEventService {
                     case models_1.EventType.ReportsRequested:
                         await this.processReportsRequested(event, services);
                         break;
-                    case models_1.EventType.WatchersScreenLoaded:
-                        await this.processWatchersScreenLoaded(services);
+                    case models_1.EventType.WatcherStatsRequested:
+                        await this.processWatcherStatsRequested(services);
                         break;
                 }
             }
@@ -73,8 +73,8 @@ class ProcessEventService {
             };
         });
     }
-    async processWatchersScreenLoaded(services) {
-        console.log('Rosen service worker received WatchersScreenLoaded initiating syncing of data by downloading from blockchain');
+    async processWatcherStatsRequested(services) {
+        console.log('Rosen service worker received WatcherStatsRequested initiating syncing of data by downloading from blockchain');
         await services.watchersDataService.download();
     }
     async processReportsRequested(event, services) {
@@ -133,9 +133,9 @@ class ProcessEventService {
         });
         await services.downloadPerfService.downloadForAddress(chain_service_1.hotWalletAddress, constants_1.UrlAction.StatisticsTransactions);
     }
-    async processMyWatchersScreenLoaded(event, services) {
+    async processMyWatcherStatsRequested(event, services) {
         const { addresses } = event.data;
-        console.log('Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain');
+        console.log('Rosen service worker received MyWatcherStatsRequested initiating syncing of data by downloading from blockchain');
         const permits = await services.myWatcherDataService.getAdressPermits(addresses);
         const chainTypes = this.extractChainTypes(permits, addresses);
         await this.sendPermitsChangedEvent(permits);

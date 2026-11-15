@@ -37,13 +37,13 @@ export class NavigationComponent implements OnInit {
       },
     );
     await this.eventService.subscribeToEvent(
-      EventType.MyWatchersScreenLoaded,
+      EventType.MyWatcherStatsRequested,
       () => {
         this.visible = true;
       },
     );
     await this.eventService.subscribeToEvent(
-      EventType.WatchersScreenLoaded,
+      EventType.WatcherStatsRequested,
       () => {
         this.visible = true;
       },

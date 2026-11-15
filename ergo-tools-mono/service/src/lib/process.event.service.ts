@@ -26,10 +26,10 @@ export class ProcessEventService {
       if (
         event.type === EventType.StatisticsScreenLoaded ||
         event.type === EventType.PerformanceScreenLoaded ||
-        event.type === EventType.MyWatchersScreenLoaded ||
+        event.type === EventType.MyWatcherStatsRequested ||
         event.type === EventType.RequestInputsDownload ||
         event.type === EventType.ReportsRequested ||
-        event.type === EventType.WatchersScreenLoaded
+        event.type === EventType.WatcherStatsRequested
       ) {
         const db = await this.initIndexedDB();
         const services = await createServices(this.eventSender, db);
@@ -41,8 +41,8 @@ export class ProcessEventService {
           case EventType.StatisticsScreenLoaded:
             await this.processStatisticsScreenLoaded(services);
             break;
-          case EventType.MyWatchersScreenLoaded:
-            await this.processMyWatchersScreenLoaded(event, services);
+          case EventType.MyWatcherStatsRequested:
+            await this.processMyWatcherStatsRequested(event, services);
             break;
           case EventType.PerformanceScreenLoaded:
             await this.processPerformanceScreenLoaded(services);
@@ -50,8 +50,8 @@ export class ProcessEventService {
           case EventType.ReportsRequested:
             await this.processReportsRequested(event, services);
             break;
-          case EventType.WatchersScreenLoaded:
-            await this.processWatchersScreenLoaded(services);
+          case EventType.WatcherStatsRequested:
+            await this.processWatcherStatsRequested(services);
             break;
         }
       }
@@ -84,9 +84,9 @@ export class ProcessEventService {
     });
   }
 
-  private async processWatchersScreenLoaded(services: Services) {
+  private async processWatcherStatsRequested(services: Services) {
     console.log(
-      'Rosen service worker received WatchersScreenLoaded initiating syncing of data by downloading from blockchain',
+      'Rosen service worker received WatcherStatsRequested initiating syncing of data by downloading from blockchain',
     );
 
     await services.watchersDataService.download();
@@ -188,13 +188,13 @@ export class ProcessEventService {
     await services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
   }
 
-  private async processMyWatchersScreenLoaded(
+  private async processMyWatcherStatsRequested(
     event: EventPayload<object>,
     services: Services,
   ) {
     const { addresses } = event.data as { addresses: string[] };
     console.log(
-      'Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain',
+      'Rosen service worker received MyWatcherStatsRequested initiating syncing of data by downloading from blockchain',
     );
 
     const permits = await services.myWatcherDataService.getAdressPermits(addresses);

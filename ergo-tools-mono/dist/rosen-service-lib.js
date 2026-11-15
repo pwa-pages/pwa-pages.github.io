@@ -389,10 +389,10 @@
         EventType2["SwipeDeActivated"] = "SwipeDeActivated";
         EventType2["SwipeVertical"] = "SwipeVertical";
         EventType2["StatisticsScreenLoaded"] = "StatisticsScreenLoaded";
-        EventType2["MyWatchersScreenLoaded"] = "MyWatchersScreenLoaded";
+        EventType2["MyWatcherStatsRequested"] = "MyWatcherStatsRequested";
         EventType2["ReportsRequested"] = "ReportsRequested";
         EventType2["RequestInputsDownload"] = "RequestInputsDownload";
-        EventType2["WatchersScreenLoaded"] = "WatchersScreenLoaded";
+        EventType2["WatcherStatsRequested"] = "WatcherStatsRequested";
         EventType2["SettingsScreenLoaded"] = "SettingsScreenLoaded";
         EventType2["PerformanceScreenLoaded"] = "PerformanceScreenLoaded";
         EventType2["AddressChartChanged"] = "AddressChartChanged";
@@ -27502,7 +27502,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
         }
         async processEvent(event) {
           try {
-            if (event.type === "StatisticsScreenLoaded" /* StatisticsScreenLoaded */ || event.type === "PerformanceScreenLoaded" /* PerformanceScreenLoaded */ || event.type === "MyWatchersScreenLoaded" /* MyWatchersScreenLoaded */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatchersScreenLoaded" /* WatchersScreenLoaded */) {
+            if (event.type === "StatisticsScreenLoaded" /* StatisticsScreenLoaded */ || event.type === "PerformanceScreenLoaded" /* PerformanceScreenLoaded */ || event.type === "MyWatcherStatsRequested" /* MyWatcherStatsRequested */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatcherStatsRequested" /* WatcherStatsRequested */) {
               const db = await this.initIndexedDB();
               const services = await createServices(this.eventSender, db);
               switch (event.type) {
@@ -27512,8 +27512,8 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
                 case "StatisticsScreenLoaded" /* StatisticsScreenLoaded */:
                   await this.processStatisticsScreenLoaded(services);
                   break;
-                case "MyWatchersScreenLoaded" /* MyWatchersScreenLoaded */:
-                  await this.processMyWatchersScreenLoaded(event, services);
+                case "MyWatcherStatsRequested" /* MyWatcherStatsRequested */:
+                  await this.processMyWatcherStatsRequested(event, services);
                   break;
                 case "PerformanceScreenLoaded" /* PerformanceScreenLoaded */:
                   await this.processPerformanceScreenLoaded(services);
@@ -27521,8 +27521,8 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
                 case "ReportsRequested" /* ReportsRequested */:
                   await this.processReportsRequested(event, services);
                   break;
-                case "WatchersScreenLoaded" /* WatchersScreenLoaded */:
-                  await this.processWatchersScreenLoaded(services);
+                case "WatcherStatsRequested" /* WatcherStatsRequested */:
+                  await this.processWatcherStatsRequested(services);
                   break;
               }
             }
@@ -27550,9 +27550,9 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
             };
           });
         }
-        async processWatchersScreenLoaded(services) {
+        async processWatcherStatsRequested(services) {
           console.log(
-            "Rosen service worker received WatchersScreenLoaded initiating syncing of data by downloading from blockchain"
+            "Rosen service worker received WatcherStatsRequested initiating syncing of data by downloading from blockchain"
           );
           await services.watchersDataService.download();
         }
@@ -27625,10 +27625,10 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
           });
           await services.downloadPerfService.downloadForAddress(hotWalletAddress, "statisticsTransactions" /* StatisticsTransactions */);
         }
-        async processMyWatchersScreenLoaded(event, services) {
+        async processMyWatcherStatsRequested(event, services) {
           const { addresses } = event.data;
           console.log(
-            "Rosen service worker received MyWatchersScreenLoaded initiating syncing of data by downloading from blockchain"
+            "Rosen service worker received MyWatcherStatsRequested initiating syncing of data by downloading from blockchain"
           );
           const permits = await services.myWatcherDataService.getAdressPermits(addresses);
           const chainTypes = this.extractChainTypes(permits, addresses);

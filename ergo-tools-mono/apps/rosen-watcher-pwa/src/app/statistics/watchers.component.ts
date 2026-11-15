@@ -87,7 +87,7 @@ export class WatchersComponent extends BaseWatcherComponent implements OnInit {
     this.selectedCurrency =
       this.selectedCurrency == null ? 'EUR' : this.selectedCurrency;
 
-    this.eventService.sendEvent(EventType.WatchersScreenLoaded);
+    this.eventService.sendEvent(EventType.WatcherStatsRequested);
 
     this.subscribeToEvent(
       EventType.WatchersStatsChanged,
