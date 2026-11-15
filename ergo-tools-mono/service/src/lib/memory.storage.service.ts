@@ -47,13 +47,17 @@ export class MemoryStorageService<T> {
     });
   }
 
-  async addData<S = T>(storeName: string, data: S[]): Promise<void> {
+  async addData<S = T>(
+    storeName: string,
+    data: S[],
+    key?: IDBValidKey,
+  ): Promise<void> {
     return new Promise((resolve) => {
       const store = this.getMemoryStore();
       data.forEach(item => {
-        const id = (item as any).id ?? Math.random().toString(36).slice(2); // fallback id if missing
-        const key = this.generateKey(storeName, id);
-        store[key] = item;
+        const id = key ?? (item as any).id ?? Math.random().toString(36).slice(2); // fallback id if missing
+        const storageKey = this.generateKey(storeName, id);
+        store[storageKey] = item;
       });
       resolve();
     });

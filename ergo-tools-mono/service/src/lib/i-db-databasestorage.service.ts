@@ -65,7 +65,7 @@ export class IDBDatabaseStorageService<T> implements IStorageService<T> {
 
       try {
         for (const item of data) {
-          if(key) {
+          if (key !== undefined && store.keyPath === null) {
             store.put(item, key);
           } else {
             store.put(item);
