@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 if (typeof self !== 'undefined') {
     self.addEventListener('message', async (event) => {
         const data = event.data;

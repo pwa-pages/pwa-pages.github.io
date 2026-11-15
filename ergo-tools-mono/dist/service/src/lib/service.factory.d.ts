@@ -7,6 +7,7 @@ import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
 import { TransactionDownloadService } from "./transaction.download.service";
 import { WatchersDataService } from "./watchers.data.service";
+export declare function initIndexedDB(): Promise<IDBDatabase>;
 export declare const GetPermitTriggerAddresses: () => Record<import("./chain.service").ChainType, string | null>;
 export declare function CreatePermitsDownloadService(maxDownloadDateDifference: number): TransactionDownloadService<PermitTx>;
 export declare const CreateWatcherDownloadService: () => TransactionDownloadService<PermitTx>;
@@ -31,4 +32,9 @@ export interface Services {
     reportsDataService: ReportsDataService;
     downloadReportsService: TransactionDownloadService<PermitTx>;
 }
-export declare function createServices(eventSender: EventSender, db: IDBDatabase): Promise<Services>;
+export declare enum StorageType {
+    Memory = 0,
+    IndexedDB = 1,
+    FileSystem = 2
+}
+export declare function createServices(eventSender: EventSender, storageType: StorageType): Promise<Services>;

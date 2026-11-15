@@ -42,6 +42,14 @@
     isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
     mod
   ));
+  var __decorateClass = (decorators, target, key, kind) => {
+    var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
+    for (var i = decorators.length - 1, decorator; i >= 0; i--)
+      if (decorator = decorators[i])
+        result = (kind ? decorator(target, key, result) : decorator(result)) || result;
+    if (kind && result) __defProp(target, key, result);
+    return result;
+  };
 
   // service/src/lib/chain.service.ts
   function getChainTypes() {
@@ -1333,7 +1341,6 @@
       ChainPerformanceDataService = class extends DataService {
         constructor(db, eventSender) {
           super(db);
-          this.db = db;
           this.eventSender = eventSender;
         }
         getData() {
@@ -1927,13 +1934,13 @@
       init_UnsubscriptionError();
       init_arrRemove();
       Subscription = (function() {
-        function Subscription2(initialTeardown) {
+        function Subscription3(initialTeardown) {
           this.initialTeardown = initialTeardown;
           this.closed = false;
           this._parentage = null;
           this._finalizers = null;
         }
-        Subscription2.prototype.unsubscribe = function() {
+        Subscription3.prototype.unsubscribe = function() {
           var e_1, _a, e_2, _b;
           var errors;
           if (!this.closed) {
@@ -2000,13 +2007,13 @@
             }
           }
         };
-        Subscription2.prototype.add = function(teardown) {
+        Subscription3.prototype.add = function(teardown) {
           var _a;
           if (teardown && teardown !== this) {
             if (this.closed) {
               execFinalizer(teardown);
             } else {
-              if (teardown instanceof Subscription2) {
+              if (teardown instanceof Subscription3) {
                 if (teardown.closed || teardown._hasParent(this)) {
                   return;
                 }
@@ -2016,15 +2023,15 @@
             }
           }
         };
-        Subscription2.prototype._hasParent = function(parent) {
+        Subscription3.prototype._hasParent = function(parent) {
           var _parentage = this._parentage;
           return _parentage === parent || Array.isArray(_parentage) && _parentage.includes(parent);
         };
-        Subscription2.prototype._addParent = function(parent) {
+        Subscription3.prototype._addParent = function(parent) {
           var _parentage = this._parentage;
           this._parentage = Array.isArray(_parentage) ? (_parentage.push(parent), _parentage) : _parentage ? [_parentage, parent] : parent;
         };
-        Subscription2.prototype._removeParent = function(parent) {
+        Subscription3.prototype._removeParent = function(parent) {
           var _parentage = this._parentage;
           if (_parentage === parent) {
             this._parentage = null;
@@ -2032,19 +2039,19 @@
             arrRemove(_parentage, parent);
           }
         };
-        Subscription2.prototype.remove = function(teardown) {
+        Subscription3.prototype.remove = function(teardown) {
           var _finalizers = this._finalizers;
           _finalizers && arrRemove(_finalizers, teardown);
-          if (teardown instanceof Subscription2) {
+          if (teardown instanceof Subscription3) {
             teardown._removeParent(this);
           }
         };
-        Subscription2.EMPTY = (function() {
-          var empty = new Subscription2();
+        Subscription3.EMPTY = (function() {
+          var empty = new Subscription3();
           empty.closed = true;
           return empty;
         })();
-        return Subscription2;
+        return Subscription3;
       })();
       EMPTY_SUBSCRIPTION = Subscription.EMPTY;
     }
@@ -2423,18 +2430,18 @@
       init_isFunction();
       init_errorContext();
       Observable = (function() {
-        function Observable4(subscribe) {
+        function Observable5(subscribe) {
           if (subscribe) {
             this._subscribe = subscribe;
           }
         }
-        Observable4.prototype.lift = function(operator) {
-          var observable2 = new Observable4();
+        Observable5.prototype.lift = function(operator) {
+          var observable2 = new Observable5();
           observable2.source = this;
           observable2.operator = operator;
           return observable2;
         };
-        Observable4.prototype.subscribe = function(observerOrNext, error, complete) {
+        Observable5.prototype.subscribe = function(observerOrNext, error, complete) {
           var _this = this;
           var subscriber = isSubscriber(observerOrNext) ? observerOrNext : new SafeSubscriber(observerOrNext, error, complete);
           errorContext(function() {
@@ -2443,14 +2450,14 @@
           });
           return subscriber;
         };
-        Observable4.prototype._trySubscribe = function(sink) {
+        Observable5.prototype._trySubscribe = function(sink) {
           try {
             return this._subscribe(sink);
           } catch (err) {
             sink.error(err);
           }
         };
-        Observable4.prototype.forEach = function(next, promiseCtor) {
+        Observable5.prototype.forEach = function(next, promiseCtor) {
           var _this = this;
           promiseCtor = getPromiseCtor(promiseCtor);
           return new promiseCtor(function(resolve, reject) {
@@ -2469,21 +2476,21 @@
             _this.subscribe(subscriber);
           });
         };
-        Observable4.prototype._subscribe = function(subscriber) {
+        Observable5.prototype._subscribe = function(subscriber) {
           var _a;
           return (_a = this.source) === null || _a === void 0 ? void 0 : _a.subscribe(subscriber);
         };
-        Observable4.prototype[observable] = function() {
+        Observable5.prototype[observable] = function() {
           return this;
         };
-        Observable4.prototype.pipe = function() {
+        Observable5.prototype.pipe = function() {
           var operations = [];
           for (var _i = 0; _i < arguments.length; _i++) {
             operations[_i] = arguments[_i];
           }
           return pipeFromArray(operations)(this);
         };
-        Observable4.prototype.toPromise = function(promiseCtor) {
+        Observable5.prototype.toPromise = function(promiseCtor) {
           var _this = this;
           promiseCtor = getPromiseCtor(promiseCtor);
           return new promiseCtor(function(resolve, reject) {
@@ -2497,10 +2504,10 @@
             });
           });
         };
-        Observable4.create = function(subscribe) {
-          return new Observable4(subscribe);
+        Observable5.create = function(subscribe) {
+          return new Observable5(subscribe);
         };
-        return Observable4;
+        return Observable5;
       })();
     }
   });
@@ -3897,7 +3904,6 @@
       RewardDataService = class extends DataService {
         constructor(db, chartService, eventSender) {
           super(db);
-          this.db = db;
           this.chartService = chartService;
           this.eventSender = eventSender;
         }
@@ -27352,6 +27358,23 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
   });
 
   // service/src/lib/service.factory.ts
+  async function initIndexedDB() {
+    return new Promise((resolve, reject) => {
+      let dbName = rs_DbName;
+      const request = indexedDB.open(dbName);
+      request.onsuccess = (event) => {
+        const db = event.target.result;
+        resolve(db);
+      };
+      request.onerror = (event) => {
+        console.error(
+          "Error opening IndexedDB:",
+          event.target.error
+        );
+        reject(event.target.error);
+      };
+    });
+  }
   function CreatePermitsDownloadService(maxDownloadDateDifference) {
     var storageService = new MemoryStorageService();
     const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
@@ -27363,7 +27386,11 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
       null
     );
   }
-  async function createServices(eventSender, db) {
+  async function createServices(eventSender, storageType) {
+    const db = await initIndexedDB();
+    if (storageType === 1 /* IndexedDB */) {
+      await initIndexedDB();
+    }
     const chartService = new ChartService();
     const rewardDataService = new RewardDataService(
       db,
@@ -27440,7 +27467,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
       downloadReportsService
     };
   }
-  var GetPermitTriggerAddresses, CreateWatcherDownloadService;
+  var GetPermitTriggerAddresses, CreateWatcherDownloadService, StorageType;
   var init_service_factory = __esm({
     "service/src/lib/service.factory.ts"() {
       "use strict";
@@ -27473,6 +27500,12 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
           null
         );
       };
+      StorageType = /* @__PURE__ */ ((StorageType2) => {
+        StorageType2[StorageType2["Memory"] = 0] = "Memory";
+        StorageType2[StorageType2["IndexedDB"] = 1] = "IndexedDB";
+        StorageType2[StorageType2["FileSystem"] = 2] = "FileSystem";
+        return StorageType2;
+      })(StorageType || {});
     }
   });
 
@@ -27497,14 +27530,14 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
         }
       };
       ProcessEventService = class {
-        constructor(eventSender) {
+        constructor(eventSender, storageType) {
           this.eventSender = eventSender;
+          this.storageType = storageType;
         }
         async processEvent(event) {
           try {
             if (event.type === "StatisticsScreenLoaded" /* StatisticsScreenLoaded */ || event.type === "PerformanceScreenLoaded" /* PerformanceScreenLoaded */ || event.type === "MyWatcherStatsRequested" /* MyWatcherStatsRequested */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatcherStatsRequested" /* WatcherStatsRequested */) {
-              const db = await this.initIndexedDB();
-              const services = await createServices(this.eventSender, db);
+              const services = await createServices(this.eventSender, this.storageType);
               switch (event.type) {
                 case "RequestInputsDownload" /* RequestInputsDownload */:
                   await this.processRequestInputsDownload(event, services);
@@ -27532,23 +27565,6 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
               error
             );
           }
-        }
-        async initIndexedDB() {
-          return new Promise((resolve, reject) => {
-            let dbName = rs_DbName;
-            const request = indexedDB.open(dbName);
-            request.onsuccess = (event) => {
-              const db = event.target.result;
-              resolve(db);
-            };
-            request.onerror = (event) => {
-              console.error(
-                "Error opening IndexedDB:",
-                event.target.error
-              );
-              reject(event.target.error);
-            };
-          });
         }
         async processWatcherStatsRequested(services) {
           console.log(
@@ -27765,8 +27781,135 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
         }
       };
       CreateProcessEventService = (eventSender) => {
-        return new ProcessEventService(eventSender);
+        return new ProcessEventService(eventSender, 1 /* IndexedDB */);
       };
+    }
+  });
+
+  // service/src/lib/event.service.ts
+  var EventService;
+  var init_event_service = __esm({
+    "service/src/lib/event.service.ts"() {
+      "use strict";
+      init_core();
+      init_esm5();
+      init_models();
+      EventService = class {
+        constructor(ngZone = null) {
+          this.ngZone = ngZone;
+          this.eventSubscriptions = this.resetSubscriptions();
+          this.eventSubscriptionsById = {};
+          console.log("EventService initialized");
+        }
+        resetSubscriptions() {
+          this.eventSubscriptions = {
+            ["StartFullDownload" /* StartFullDownload */]: new Subject(),
+            ["EndFullDownload" /* EndFullDownload */]: new Subject(),
+            ["RefreshInputs" /* RefreshInputs */]: new Subject(),
+            ["InputsChanged" /* InputsChanged */]: new Subject(),
+            ["PerfChartChanged" /* PerfChartChanged */]: new Subject(),
+            ["ReportsRequested" /* ReportsRequested */]: new Subject(),
+            ["SwipeActivated" /* SwipeActivated */]: new Subject(),
+            ["SwipeDeActivated" /* SwipeDeActivated */]: new Subject(),
+            ["SwipeVertical" /* SwipeVertical */]: new Subject(),
+            ["StatisticsScreenLoaded" /* StatisticsScreenLoaded */]: new Subject(),
+            ["MyWatcherStatsRequested" /* MyWatcherStatsRequested */]: new Subject(),
+            ["PermitsChanged" /* PermitsChanged */]: new Subject(),
+            ["PerformanceScreenLoaded" /* PerformanceScreenLoaded */]: new Subject(),
+            ["RequestInputsDownload" /* RequestInputsDownload */]: new Subject(),
+            ["AddressChartChanged" /* AddressChartChanged */]: new Subject(),
+            ["VersionUpdated" /* VersionUpdated */]: new Subject(),
+            ["WatcherStatsRequested" /* WatcherStatsRequested */]: new Subject(),
+            ["SettingsScreenLoaded" /* SettingsScreenLoaded */]: new Subject(),
+            ["WindowResized" /* WindowResized */]: new Subject(),
+            ["WatchersStatsChanged" /* WatchersStatsChanged */]: new Subject(),
+            ["PermitsStatsChanged" /* PermitsStatsChanged */]: new Subject(),
+            ["ReportsChanged" /* ReportsChanged */]: new Subject(),
+            ["ChainPerformanceChartsChanged" /* ChainPerformanceChartsChanged */]: new Subject(),
+            ["PerformanceChartsChanged" /* PerformanceChartsChanged */]: new Subject(),
+            ["StatisticsChartChanged" /* StatisticsChartChanged */]: new Subject(),
+            ["RefreshPermits" /* RefreshPermits */]: new Subject(),
+            ["AddressPermitsDownloaded" /* AddressPermitsDownloaded */]: new Subject()
+          };
+          return this.eventSubscriptions;
+        }
+        async sendEvent(eventType) {
+          console.log("Received event: " + eventType);
+          this.eventSubscriptions[eventType].next(
+            {}
+          );
+        }
+        async sendEventWithData(eventType, eventData) {
+          this.eventSubscriptions[eventType].next(
+            eventData
+          );
+        }
+        observeEvent(eventType) {
+          return this.eventSubscriptions[eventType].asObservable();
+        }
+        async subscribeToEvent(eventType, callback, id = -1) {
+          const eventCallback = callback;
+          this.subscribe(
+            eventType,
+            eventCallback,
+            id
+          );
+        }
+        subscribe(eventType, callback, id) {
+          console.log(
+            `Subscribing to event: ${eventType} with id: ${id}`
+          );
+          const subscription = this.eventSubscriptions[eventType].asObservable().subscribe(async (...eventData) => {
+            if (this.ngZone) {
+              await this.ngZone.run(
+                () => callback(...eventData)
+              );
+            } else {
+              await callback(...eventData);
+            }
+          });
+          if (!this.eventSubscriptionsById[id]) {
+            this.eventSubscriptionsById[id] = [];
+          }
+          this.eventSubscriptionsById[id].push(
+            subscription
+          );
+        }
+        async subscribeToAllEvents(callback, id = -1) {
+          Object.values(EventType).forEach(
+            (eventType) => {
+              this.subscribeToEvent(
+                eventType,
+                (...args) => callback(
+                  eventType,
+                  ...args
+                ),
+                id
+              );
+            }
+          );
+        }
+        async unSubscribe(id) {
+          if (this.eventSubscriptionsById[id]) {
+            this.eventSubscriptionsById[id].forEach(
+              (subscription) => subscription.unsubscribe()
+            );
+            delete this.eventSubscriptionsById[id];
+          }
+          Object.entries(
+            this.eventSubscriptionsById
+          ).forEach(([key, subs]) => {
+            console.log(
+              `eventSubscriptionsById[${key}] size: ${subs.length}`
+            );
+          });
+        }
+      };
+      EventService = __decorateClass([
+        Injectable({
+          providedIn: "root"
+        })
+      ], EventService);
     }
   });
 
@@ -27776,13 +27919,15 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
       "use strict";
       init_models();
       init_process_event_service();
+      init_service_factory();
       var processEventServiceSingleton = /* @__PURE__ */ (() => {
         let instance = null;
         return () => {
           if (!instance) {
             console.log("Creating new ProcessEventService instance");
             instance = new ProcessEventService(
-              new ServiceWorkerEventSender()
+              new ServiceWorkerEventSender(),
+              1 /* IndexedDB */
             );
           }
           return instance;
@@ -27834,6 +27979,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
     DataService: () => DataService,
     DownloadService: () => DownloadService,
     DownloadStatusIndexedDbService: () => DownloadStatusIndexedDbService,
+    EventService: () => EventService,
     EventType: () => EventType,
     GetPermitTriggerAddresses: () => GetPermitTriggerAddresses,
     GetWatcherDataService: () => GetWatcherDataService,
@@ -27848,6 +27994,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
     ReportsDataService: () => ReportsDataService,
     RewardDataService: () => RewardDataService,
     ServiceWorkerEventSender: () => ServiceWorkerEventSender,
+    StorageType: () => StorageType,
     Token: () => Token,
     UrlAction: () => UrlAction,
     WatcherInfo: () => WatcherInfo,
@@ -27867,6 +28014,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
     getChainTypes: () => getChainTypes,
     getUrlConfig: () => getUrlConfig,
     hotWalletAddress: () => hotWalletAddress,
+    initIndexedDB: () => initIndexedDB,
     permitAddresses: () => permitAddresses,
     permitBulkAddresses: () => permitBulkAddresses,
     permitTriggerAddresses: () => permitTriggerAddresses,
@@ -27927,6 +28075,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
       init_service_factory();
       init_download_service();
       init_watchers_data_service();
+      init_event_service();
       __reExport(index_exports, __toESM(require_rosen_download_worker()));
     }
   });

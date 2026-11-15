@@ -15,5 +15,6 @@ export * from './reward.data.service';
 export * from './service.factory';
 export * from './download.service';
 export * from './watchers.data.service';
+export * from './event.service';
 //export * from './rosen-db-worker';
 export * from './rosen-download-worker';

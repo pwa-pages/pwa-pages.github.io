@@ -9,7 +9,7 @@ export declare class WatchersDataService {
     private eventSender;
     isChainTypeActive(chainType: string): boolean;
     readonly rsnToken = "8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b";
-    readonly watchersStatsSignal: import("@angular/core").WritableSignal<WatchersStats>;
+    readonly watchersStatsSignal: import("@angular/core", { with: { "resolution-mode": "import" } }).WritableSignal<WatchersStats>;
     readonly watchersStats: WatchersStats;
     busyCounter: number;
     constructor(downloadService: DownloadService<WatcherInfo>, priceService: PriceService, eventSender: EventSender);

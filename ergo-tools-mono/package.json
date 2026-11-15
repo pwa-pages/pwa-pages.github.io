@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "22.1.6",
     "@angular/router": "22.1.6",
     "@angular/service-worker": "22.1.6",
+    "@ergo-tools/service": "file:service",
     "@fortawesome/angular-fontawesome": "^5.1.0",
     "@fortawesome/fontawesome-free": "^7.0.0",
     "@fortawesome/fontawesome-svg-core": "^7.0.0",

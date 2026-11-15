@@ -1,9 +1,12 @@
-import { permitTriggerAddresses, hotWalletAddress, permitAddresses } from "./chain.service";
-import { rs_DbName, UrlAction } from "./constants";
-import { EventType } from "./models";
-import { createServices } from "./service.factory";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CreateProcessEventService = exports.ProcessEventService = exports.ServiceWorkerEventSender = void 0;
+const chain_service_1 = require("./chain.service");
+const constants_1 = require("./constants");
+const models_1 = require("./models");
+const service_factory_1 = require("./service.factory");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class ServiceWorkerEventSender {
+class ServiceWorkerEventSender {
     async sendEvent(event) {
         const clientsList = await self.clients.matchAll({
             type: 'window',
@@ -14,37 +17,38 @@ export class ServiceWorkerEventSender {
         }
     }
 }
-export class ProcessEventService {
-    constructor(eventSender) {
+exports.ServiceWorkerEventSender = ServiceWorkerEventSender;
+class ProcessEventService {
+    constructor(eventSender, storageType) {
         this.eventSender = eventSender;
+        this.storageType = storageType;
     }
     async processEvent(event) {
         try {
-            if (event.type === EventType.StatisticsScreenLoaded ||
-                event.type === EventType.PerformanceScreenLoaded ||
-                event.type === EventType.MyWatcherStatsRequested ||
-                event.type === EventType.RequestInputsDownload ||
-                event.type === EventType.ReportsRequested ||
-                event.type === EventType.WatcherStatsRequested) {
-                const db = await this.initIndexedDB();
-                const services = await createServices(this.eventSender, db);
+            if (event.type === models_1.EventType.StatisticsScreenLoaded ||
+                event.type === models_1.EventType.PerformanceScreenLoaded ||
+                event.type === models_1.EventType.MyWatcherStatsRequested ||
+                event.type === models_1.EventType.RequestInputsDownload ||
+                event.type === models_1.EventType.ReportsRequested ||
+                event.type === models_1.EventType.WatcherStatsRequested) {
+                const services = await (0, service_factory_1.createServices)(this.eventSender, this.storageType);
                 switch (event.type) {
-                    case EventType.RequestInputsDownload:
+                    case models_1.EventType.RequestInputsDownload:
                         await this.processRequestInputsDownload(event, services);
                         break;
-                    case EventType.StatisticsScreenLoaded:
+                    case models_1.EventType.StatisticsScreenLoaded:
                         await this.processStatisticsScreenLoaded(services);
                         break;
-                    case EventType.MyWatcherStatsRequested:
+                    case models_1.EventType.MyWatcherStatsRequested:
                         await this.processMyWatcherStatsRequested(event, services);
                         break;
-                    case EventType.PerformanceScreenLoaded:
+                    case models_1.EventType.PerformanceScreenLoaded:
                         await this.processPerformanceScreenLoaded(services);
                         break;
-                    case EventType.ReportsRequested:
+                    case models_1.EventType.ReportsRequested:
                         await this.processReportsRequested(event, services);
                         break;
-                    case EventType.WatcherStatsRequested:
+                    case models_1.EventType.WatcherStatsRequested:
                         await this.processWatcherStatsRequested(services);
                         break;
                 }
@@ -53,20 +57,6 @@ export class ProcessEventService {
         catch (error) {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
         }
-    }
-    async initIndexedDB() {
-        return new Promise((resolve, reject) => {
-            let dbName = rs_DbName;
-            const request = indexedDB.open(dbName);
-            request.onsuccess = (event) => {
-                const db = event.target.result;
-                resolve(db);
-            };
-            request.onerror = (event) => {
-                console.error('Error opening IndexedDB:', event.target.error);
-                reject(event.target.error);
-            };
-        });
     }
     async processWatcherStatsRequested(services) {
         console.log('Rosen service worker received WatcherStatsRequested initiating syncing of data by downloading from blockchain');
@@ -77,17 +67,17 @@ export class ProcessEventService {
             event.data);
         if (event.data && typeof event.data === 'string') {
             var chainType = event.data;
-            for (const [addressChainType, address] of Object.entries(permitTriggerAddresses)) {
+            for (const [addressChainType, address] of Object.entries(chain_service_1.permitTriggerAddresses)) {
                 if (addressChainType === chainType && address != null) {
                     var performances = await services.reportsDataService.getWatcherPerformanceByChainType();
                     await this.eventSender?.sendEvent({
-                        type: EventType.ReportsChanged,
+                        type: models_1.EventType.ReportsChanged,
                         data: performances,
                     });
-                    await services.downloadReportsService.downloadForAddress(address, UrlAction.PermitTriggerTransactions);
+                    await services.downloadReportsService.downloadForAddress(address, constants_1.UrlAction.PermitTriggerTransactions);
                     performances = await services.reportsDataService.getWatcherPerformanceByChainType();
                     await this.eventSender?.sendEvent({
-                        type: EventType.ReportsChanged,
+                        type: models_1.EventType.ReportsChanged,
                         data: performances,
                     });
                 }
@@ -99,34 +89,34 @@ export class ProcessEventService {
             event.data);
         const addressCharts = await services.chartService.getAddressCharts(await services.dataService.getSortedInputs());
         await this.eventSender?.sendEvent({
-            type: EventType.AddressChartChanged,
+            type: models_1.EventType.AddressChartChanged,
             data: addressCharts,
         });
         if (event.data && typeof event.data === 'string') {
-            await services.downloadService.downloadForAddress(event.data, UrlAction.StatisticsTransactions);
+            await services.downloadService.downloadForAddress(event.data, constants_1.UrlAction.StatisticsTransactions);
         }
         else {
-            await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
+            await services.downloadService.downloadForAddresses(constants_1.UrlAction.StatisticsTransactions);
         }
     }
     async processStatisticsScreenLoaded(services) {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
         const inputs = await services.dataService.getSortedInputs();
         await this.eventSender?.sendEvent({
-            type: EventType.InputsChanged,
+            type: models_1.EventType.InputsChanged,
             data: inputs,
         });
-        await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
+        await services.downloadService.downloadForAddresses(constants_1.UrlAction.StatisticsTransactions);
     }
     async processPerformanceScreenLoaded(services) {
         console.log('Rosen service worker received PerformanceScreenLoaded');
         console.log('Downloading perftxs.');
         const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
         await this.eventSender?.sendEvent({
-            type: EventType.PerfChartChanged,
+            type: models_1.EventType.PerfChartChanged,
             data: perfTxs,
         });
-        await services.downloadPerfService.downloadForAddress(hotWalletAddress, UrlAction.StatisticsTransactions);
+        await services.downloadPerfService.downloadForAddress(chain_service_1.hotWalletAddress, constants_1.UrlAction.StatisticsTransactions);
     }
     async processMyWatcherStatsRequested(event, services) {
         const { addresses } = event.data;
@@ -171,38 +161,38 @@ export class ProcessEventService {
         }));
     }
     async downloadForChainPermitAddresses(addresses, services) {
-        const permitAddressEntries = Object.entries(permitAddresses).filter(([, address]) => address != null);
+        const permitAddressEntries = Object.entries(chain_service_1.permitAddresses).filter(([, address]) => address != null);
         await Promise.all(permitAddressEntries.map(([chainType, address]) => this.downloadForChainPermitAddress(addresses, chainType, address, services)));
     }
     async downloadForChainPermitAddress(addresses, chainType, address, services) {
-        await services.downloadMyWatchersService.downloadForAddress(address, UrlAction.PermitTransactions);
+        await services.downloadMyWatchersService.downloadForAddress(address, constants_1.UrlAction.PermitTransactions);
         const permits = await services.myWatcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
-            type: EventType.PermitsChanged,
+            type: models_1.EventType.PermitsChanged,
             data: permits,
         });
         await this.eventSender?.sendEvent({
-            type: EventType.AddressPermitsDownloaded,
+            type: models_1.EventType.AddressPermitsDownloaded,
             data: chainType,
         });
     }
     async sendPermitChangedEvent(services, addresses) {
         const permits = await services.myWatcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
-            type: EventType.PermitsChanged,
+            type: models_1.EventType.PermitsChanged,
             data: permits,
         });
         return permits;
     }
     async sendPermitsChangedEvent(permits) {
         await this.eventSender?.sendEvent({
-            type: EventType.PermitsChanged,
+            type: models_1.EventType.PermitsChanged,
             data: permits,
         });
     }
     async downloadForActivePermitAddresses(allAddresses, chainType, services) {
         const addresses = [];
-        for (const [addressChainType, address] of Object.entries(permitTriggerAddresses)) {
+        for (const [addressChainType, address] of Object.entries(chain_service_1.permitTriggerAddresses)) {
             if (addressChainType === chainType && address != null) {
                 addresses.push(address);
             }
@@ -210,17 +200,19 @@ export class ProcessEventService {
         await Promise.all(addresses.map((address) => this.downloadForActivePermitAddress(allAddresses, address, services)));
     }
     async downloadForActivePermitAddress(allAddresses, address, services) {
-        await services.downloadActivePermitsService.downloadForAddress(address, UrlAction.PermitTriggerTransactions, () => this.sendPermitsChangedEventForAddresses(services, allAddresses));
+        await services.downloadActivePermitsService.downloadForAddress(address, constants_1.UrlAction.PermitTriggerTransactions, () => this.sendPermitsChangedEventForAddresses(services, allAddresses));
     }
     async sendPermitsChangedEventForAddresses(services, addresses) {
         const permits = await services.myWatcherDataService.getAdressPermits(addresses);
         await this.eventSender?.sendEvent({
-            type: EventType.PermitsChanged,
+            type: models_1.EventType.PermitsChanged,
             data: permits,
         });
     }
 }
-export const CreateProcessEventService = (eventSender) => {
-    return new ProcessEventService(eventSender);
+exports.ProcessEventService = ProcessEventService;
+const CreateProcessEventService = (eventSender) => {
+    return new ProcessEventService(eventSender, service_factory_1.StorageType.IndexedDB);
 };
+exports.CreateProcessEventService = CreateProcessEventService;
 //# sourceMappingURL=process.event.service.js.map

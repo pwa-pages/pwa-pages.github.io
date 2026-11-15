@@ -1,4 +1,7 @@
-export class MemoryStorageService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MemoryStorageService = void 0;
+class MemoryStorageService {
     getMemoryStore() {
         const g = globalThis;
         if (!g.__storageServiceStore) {
@@ -60,4 +63,5 @@ export class MemoryStorageService {
         });
     }
 }
+exports.MemoryStorageService = MemoryStorageService;
 //# sourceMappingURL=memory.storage.service.js.map

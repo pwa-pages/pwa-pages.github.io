@@ -1,12 +1,12 @@
-import { EventPayload, EventSender, Services } from "./service.factory";
+import { EventPayload, EventSender, Services, StorageType } from "./service.factory";
 export declare class ServiceWorkerEventSender implements EventSender {
     sendEvent<T>(event: EventPayload<T>): Promise<void>;
 }
 export declare class ProcessEventService {
     private eventSender;
-    constructor(eventSender: EventSender);
+    private storageType;
+    constructor(eventSender: EventSender, storageType: StorageType);
     processEvent(event: EventPayload<object>): Promise<void>;
-    private initIndexedDB;
     private processWatcherStatsRequested;
     private processReportsRequested;
     private processRequestInputsDownload;

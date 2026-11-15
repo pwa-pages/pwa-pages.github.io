@@ -1,7 +1,7 @@
 
 import { getChainType, ChainType } from "./chain.service";
 import { ChartService } from "./chart.service";
-import { rs_InputsStoreName, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals } from "./constants";
+import { rs_InputsStoreName, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals, IStorageService } from "./constants";
 import { DataService } from "./data.service";
 import { DbInput, TransactionItem, Asset, Input, EventType } from "./models";
 import { EventSender } from "./process.event.service";
@@ -27,7 +27,7 @@ export class RewardDataService extends DataService<DbInput> {
     return null;
   }
   constructor(
-    public override db: IDBDatabase,
+    db: IDBDatabase | IStorageService<DbInput>,
     private chartService: ChartService,
     private eventSender: EventSender,
   ) {

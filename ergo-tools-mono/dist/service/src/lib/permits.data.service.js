@@ -1,9 +1,12 @@
-import { permitTriggerAddresses, permitBulkAddresses, rewardAddresses, rwtTokenIds, getChainTypeForPermitTriggerAddress, getChainTypeForPermitAddress } from "./chain.service";
-import { rs_ActivePermitTxStoreName, rs_OpenBoxesStoreName, rs_FullDownloadsBatchSize } from "./constants";
-import { DataService } from "./data.service";
-import { MyWatcherDataService } from "./mywatcher.data.service";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GetWatcherDataService = exports.PermitsDataService = void 0;
+const chain_service_1 = require("./chain.service");
+const constants_1 = require("./constants");
+const data_service_1 = require("./data.service");
+const mywatcher_data_service_1 = require("./mywatcher.data.service");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class PermitsDataService extends DataService {
+class PermitsDataService extends data_service_1.DataService {
     getData() {
         return this.storageService.getData(this.storeName);
     }
@@ -26,7 +29,7 @@ export class PermitsDataService extends DataService {
         }
         return null;
     }
-    constructor(db, storeName = rs_ActivePermitTxStoreName, maxDownloadDateDifference = 204800000) {
+    constructor(db, storeName = constants_1.rs_ActivePermitTxStoreName, maxDownloadDateDifference = 204800000) {
         super(db);
         this.storeName = storeName;
         this.maxDownloadDateDifference = maxDownloadDateDifference;
@@ -42,19 +45,19 @@ export class PermitsDataService extends DataService {
         return hash.toString();
     }
     createPermitTx(boxId, transactionId, transactionAddress, address, date, assets, chainType) {
-        for (const [key, triggerAddress] of Object.entries(permitTriggerAddresses)) {
+        for (const [key, triggerAddress] of Object.entries(chain_service_1.permitTriggerAddresses)) {
             if (triggerAddress === address) {
                 address = `trigger_address_${key}`;
                 break;
             }
         }
-        for (const [key, bulkAddress] of Object.entries(permitBulkAddresses)) {
+        for (const [key, bulkAddress] of Object.entries(chain_service_1.permitBulkAddresses)) {
             if (bulkAddress === address) {
                 address = `bulk_address_${key}`;
                 break;
             }
         }
-        for (const [key, rewardAddress] of Object.entries(rewardAddresses)) {
+        for (const [key, rewardAddress] of Object.entries(chain_service_1.rewardAddresses)) {
             if (rewardAddress === address) {
                 address = `reward_address_${key}`;
                 break;
@@ -84,7 +87,7 @@ export class PermitsDataService extends DataService {
             const permits = await permitsPromise;
             permits.forEach((permit) => {
                 permit.assets = permit.assets
-                    .filter((asset) => asset.tokenId != null && asset.tokenId in rwtTokenIds)
+                    .filter((asset) => asset.tokenId != null && asset.tokenId in chain_service_1.rwtTokenIds)
                     .map((asset_1) => {
                     return asset_1;
                 });
@@ -101,7 +104,7 @@ export class PermitsDataService extends DataService {
     }
     async downloadOpenBoxes(chainType) {
         let addresses = [];
-        Object.entries(permitBulkAddresses).forEach(([key, address]) => {
+        Object.entries(chain_service_1.permitBulkAddresses).forEach(([key, address]) => {
             if (key === chainType && address != null) {
                 addresses.push(address);
             }
@@ -121,12 +124,12 @@ export class PermitsDataService extends DataService {
             address: address,
             openBoxesJson: openBoxesJson,
         };
-        await this.storageService.addData(rs_OpenBoxesStoreName, [boxes]);
+        await this.storageService.addData(constants_1.rs_OpenBoxesStoreName, [boxes]);
     }
     async getOpenBoxesMap() {
         const openBoxesMap = {};
-        const boxes = this.storageService.getData(rs_OpenBoxesStoreName);
-        for (const [chainType, address] of Object.entries(permitBulkAddresses)) {
+        const boxes = this.storageService.getData(constants_1.rs_OpenBoxesStoreName);
+        for (const [chainType, address] of Object.entries(chain_service_1.permitBulkAddresses)) {
             if (address) {
                 var json = (await boxes).filter(ob => ob.address === address);
                 var key = "bulk_address_" + chainType;
@@ -141,11 +144,11 @@ export class PermitsDataService extends DataService {
         return openBoxesMap;
     }
     shouldAddInputToDb(address, assets, item) {
-        if (Object.values(permitTriggerAddresses).includes(address)) {
+        if (Object.values(chain_service_1.permitTriggerAddresses).includes(address)) {
             return true;
         }
         if (address != null && address.length <= 100 && assets.length > 0) {
-            if (item.outputs.some((output) => Object.values(permitBulkAddresses).includes(output.address))) {
+            if (item.outputs.some((output) => Object.values(chain_service_1.permitBulkAddresses).includes(output.address))) {
                 return false;
             }
             return true;
@@ -153,9 +156,9 @@ export class PermitsDataService extends DataService {
         return false;
     }
     shouldAddOutputToDb(address) {
-        return (Object.values(permitBulkAddresses).includes(address) ||
-            Object.values(permitTriggerAddresses).includes(address) ||
-            Object.values(rewardAddresses).includes(address));
+        return (Object.values(chain_service_1.permitBulkAddresses).includes(address) ||
+            Object.values(chain_service_1.permitTriggerAddresses).includes(address) ||
+            Object.values(chain_service_1.rewardAddresses).includes(address));
     }
     async getAdressPermits(activeOnly, frommonth, fromyear, tomonth, toyear, addresses = null) {
         const permits = await this.getWatcherPermits();
@@ -182,12 +185,12 @@ export class PermitsDataService extends DataService {
             }
             boxIdMap[permit.boxId].push(permit);
         }
-        var permitBulkAddressSet = new Set(Object.values(permitBulkAddresses));
+        var permitBulkAddressSet = new Set(Object.values(chain_service_1.permitBulkAddresses));
         for (const permit of addressPermits) {
             if (permit.address.startsWith("trigger_address")) {
                 continue;
             }
-            let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) => Object.values(permitTriggerAddresses).some((address) => address === o.address || o.address.startsWith("trigger_address")));
+            let outputs = (permitsByTxId[permit.transactionId] ?? []).filter((o) => Object.values(chain_service_1.permitTriggerAddresses).some((address) => address === o.address || o.address.startsWith("trigger_address")));
             let foundResolved = false;
             for (const output of outputs) {
                 let cnt = boxIdMap[output.boxId] ?? [];
@@ -250,8 +253,8 @@ export class PermitsDataService extends DataService {
                     return;
                 }
                 input.inputDate = new Date(item.timestamp);
-                input.assets = input.assets.filter((a) => a.tokenId != null && a.tokenId in rwtTokenIds);
-                const permitTx = this.createPermitTx(input.boxId, item.id, address, input.address, input.inputDate, input.assets, getChainTypeForPermitTriggerAddress(address));
+                input.assets = input.assets.filter((a) => a.tokenId != null && a.tokenId in chain_service_1.rwtTokenIds);
+                const permitTx = this.createPermitTx(input.boxId, item.id, address, input.address, input.inputDate, input.assets, (0, chain_service_1.getChainTypeForPermitTriggerAddress)(address));
                 if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {
                     tempData.push(permitTx);
                 }
@@ -261,11 +264,11 @@ export class PermitsDataService extends DataService {
                     return;
                 }
                 output.outputDate = new Date(item.timestamp);
-                output.assets = output.assets.filter((a) => a.tokenId != null && a.tokenId in rwtTokenIds);
+                output.assets = output.assets.filter((a) => a.tokenId != null && a.tokenId in chain_service_1.rwtTokenIds);
                 output.assets.forEach((a) => {
                     a.amount = -a.amount;
                 });
-                const permitTx = this.createPermitTx(output.boxId, item.id, address, output.address, output.outputDate, output.assets, getChainTypeForPermitAddress(address));
+                const permitTx = this.createPermitTx(output.boxId, item.id, address, output.address, output.outputDate, output.assets, (0, chain_service_1.getChainTypeForPermitAddress)(address));
                 if (permitTx != null && permitTx.date && now - new Date(permitTx.date).getTime() <= maxDiff * 2) {
                     tempData.push(permitTx);
                 }
@@ -277,8 +280,8 @@ export class PermitsDataService extends DataService {
         let permitTxs = await this.storageService.getData(this.storeName);
         permitTxs = (await permitTxs).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         let permitTx = null;
-        if (permitTxs.length >= rs_FullDownloadsBatchSize) {
-            permitTx = permitTxs[rs_FullDownloadsBatchSize - 1];
+        if (permitTxs.length >= constants_1.rs_FullDownloadsBatchSize) {
+            permitTx = permitTxs[constants_1.rs_FullDownloadsBatchSize - 1];
         }
         else {
             permitTx = permitTxs[permitTxs.length - 1];
@@ -313,7 +316,7 @@ export class PermitsDataService extends DataService {
                     boxId: permitTx.boxId,
                     transactionId: permitTx.transactionId,
                     chainType: permitTx.chainType ??
-                        getChainTypeForPermitAddress(permitTx.address),
+                        (0, chain_service_1.getChainTypeForPermitAddress)(permitTx.address),
                 });
             });
             console.log('done retrieving permits from database ' + permits.length + ' permits');
@@ -327,7 +330,9 @@ export class PermitsDataService extends DataService {
         }
     }
 }
-export const GetWatcherDataService = (permitsDataService) => {
-    return new MyWatcherDataService(permitsDataService);
+exports.PermitsDataService = PermitsDataService;
+const GetWatcherDataService = (permitsDataService) => {
+    return new mywatcher_data_service_1.MyWatcherDataService(permitsDataService);
 };
+exports.GetWatcherDataService = GetWatcherDataService;
 //# sourceMappingURL=permits.data.service.js.map

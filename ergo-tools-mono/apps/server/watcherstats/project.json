@@ -71,7 +71,8 @@
       "dependsOn": ["build"],
       "options": {
         "buildTarget": "watcherstats:build",
-        "runBuildTargetDependencies": false
+        "runBuildTargetDependencies": false,
+        "runtimeArgs": ["--enable-source-maps"]
       },
       "configurations": {
         "development": {

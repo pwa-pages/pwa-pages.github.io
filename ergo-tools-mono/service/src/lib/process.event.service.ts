@@ -1,7 +1,7 @@
 import { permitTriggerAddresses, hotWalletAddress, ChainType, permitAddresses } from "./chain.service";
-import { rs_DbName, UrlAction } from "./constants";
+import { UrlAction } from "./constants";
 import { PermitInfo, EventType } from "./models";
-import { createServices, EventPayload, EventSender, Services } from "./service.factory";
+import { createServices, EventPayload, EventSender, Services, StorageType } from "./service.factory";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ServiceWorkerEventSender implements EventSender {
@@ -19,7 +19,7 @@ export class ServiceWorkerEventSender implements EventSender {
 }
 
 export class ProcessEventService {
-  constructor(private eventSender: EventSender) { }
+  constructor(private eventSender: EventSender, private storageType: StorageType) { }
 
   public async processEvent(event: EventPayload<object>) {
     try {
@@ -31,8 +31,8 @@ export class ProcessEventService {
         event.type === EventType.ReportsRequested ||
         event.type === EventType.WatcherStatsRequested
       ) {
-        const db = await this.initIndexedDB();
-        const services = await createServices(this.eventSender, db);
+        
+        const services = await createServices(this.eventSender, this.storageType);
 
         switch (event.type) {
           case EventType.RequestInputsDownload:
@@ -63,26 +63,6 @@ export class ProcessEventService {
     }
   }
 
-  private async initIndexedDB(): Promise<IDBDatabase> {
-    return new Promise((resolve, reject) => {
-      let dbName = rs_DbName;
-
-      const request: IDBOpenDBRequest = indexedDB.open(dbName);
-
-      request.onsuccess = (event: Event) => {
-        const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
-        resolve(db);
-      };
-
-      request.onerror = (event: Event) => {
-        console.error(
-          'Error opening IndexedDB:',
-          (event.target as IDBOpenDBRequest).error,
-        );
-        reject((event.target as IDBOpenDBRequest).error);
-      };
-    });
-  }
 
   private async processWatcherStatsRequested(services: Services) {
     console.log(
@@ -387,7 +367,7 @@ export class ProcessEventService {
 export const CreateProcessEventService = (
   eventSender: EventSender,
 ): ProcessEventService => {
-  return new ProcessEventService(eventSender);
+  return new ProcessEventService(eventSender, StorageType.IndexedDB);
 }
 export { EventSender };
 

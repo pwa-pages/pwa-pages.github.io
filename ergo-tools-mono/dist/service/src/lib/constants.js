@@ -1,48 +1,53 @@
-import { ChainType } from "./chain.service";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Currency = exports.Period = exports.rs_RSNDecimals = exports.rs_TokenIdMap = exports.rs_eRSNTokenId = exports.rs_RSNTokenId = exports.getUrlConfig = exports.urlConfig = exports.UrlAction = exports.rs_ErgoNodeHost = exports.rs_ErgoExplorerHost = exports.rs_WatcherCollateralERG = exports.rs_WatcherCollateralRSN = exports.rs_PermitCost = exports.rs_Address_Key = exports.rs_PerfTx_Key = exports.rs_ActivePermit_Key = exports.rs_WatcherReports_Key = exports.rs_Permit_Key = exports.rs_Download_Key = exports.rs_Input_Key = exports.rs_StartFrom = exports.rs_PerfFullDownloadsBatchSize = exports.rs_PerfInitialNDownloads = exports.rs_FullDownloadsBatchSize = exports.rs_InitialNDownloads = exports.rs_AddressDataStoreName = exports.rs_OpenBoxesStoreName = exports.rs_DownloadStatusStoreName = exports.rs_WatcherReportsStoreName = exports.rs_ReportsStoreName = exports.rs_ActivePermitTxStoreName = exports.rs_PermitTxStoreName = exports.rs_PerfTxStoreName = exports.rs_InputsStoreName = exports.rs_DownloadStoreName = exports.rs_DbVersion = exports.rs_DbName = void 0;
+const chain_service_1 = require("./chain.service");
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const rs_DbName = 'rosenDatabase_1.1.5';
-export const rs_DbVersion = 54;
-export const rs_DownloadStoreName = 'downloads';
-export const rs_InputsStoreName = 'inputBoxes';
-export const rs_PerfTxStoreName = 'perfTxs';
-export const rs_PermitTxStoreName = 'permitTxs';
-export const rs_ActivePermitTxStoreName = 'activePermitTxs';
-export const rs_ReportsStoreName = 'reportsStore';
-export const rs_WatcherReportsStoreName = 'watcherReports';
-export const rs_DownloadStatusStoreName = 'downloadStatusStore';
-export const rs_OpenBoxesStoreName = 'openBoxesStore';
-export const rs_AddressDataStoreName = 'addressData';
-export const rs_InitialNDownloads = 30;
-export const rs_FullDownloadsBatchSize = 400;
-export const rs_PerfInitialNDownloads = 10;
-export const rs_PerfFullDownloadsBatchSize = 40;
-export const rs_StartFrom = new Date('2024-01-01');
-export const rs_Input_Key = ['boxId', 'outputAddress'];
-export const rs_Download_Key = 'url';
-export const rs_Permit_Key = 'id';
-export const rs_WatcherReports_Key = 'chainType';
-export const rs_ActivePermit_Key = 'id';
-export const rs_PerfTx_Key = 'id';
-export const rs_Address_Key = 'address';
-export const rs_PermitCost = 3000;
-export const rs_WatcherCollateralRSN = (chainType) => {
-    if (chainType === ChainType.Runes || chainType === ChainType.Firo) {
+exports.rs_DbName = 'rosenDatabase_1.1.5';
+exports.rs_DbVersion = 54;
+exports.rs_DownloadStoreName = 'downloads';
+exports.rs_InputsStoreName = 'inputBoxes';
+exports.rs_PerfTxStoreName = 'perfTxs';
+exports.rs_PermitTxStoreName = 'permitTxs';
+exports.rs_ActivePermitTxStoreName = 'activePermitTxs';
+exports.rs_ReportsStoreName = 'reportsStore';
+exports.rs_WatcherReportsStoreName = 'watcherReports';
+exports.rs_DownloadStatusStoreName = 'downloadStatusStore';
+exports.rs_OpenBoxesStoreName = 'openBoxesStore';
+exports.rs_AddressDataStoreName = 'addressData';
+exports.rs_InitialNDownloads = 30;
+exports.rs_FullDownloadsBatchSize = 400;
+exports.rs_PerfInitialNDownloads = 10;
+exports.rs_PerfFullDownloadsBatchSize = 40;
+exports.rs_StartFrom = new Date('2024-01-01');
+exports.rs_Input_Key = ['boxId', 'outputAddress'];
+exports.rs_Download_Key = 'url';
+exports.rs_Permit_Key = 'id';
+exports.rs_WatcherReports_Key = 'chainType';
+exports.rs_ActivePermit_Key = 'id';
+exports.rs_PerfTx_Key = 'id';
+exports.rs_Address_Key = 'address';
+exports.rs_PermitCost = 3000;
+const rs_WatcherCollateralRSN = (chainType) => {
+    if (chainType === chain_service_1.ChainType.Runes || chainType === chain_service_1.ChainType.Firo) {
         return 50000;
     }
     else {
         return 30000;
     }
 };
-export const rs_WatcherCollateralERG = (chainType) => {
-    if (chainType === ChainType.Runes || chainType === ChainType.Firo) {
+exports.rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
+const rs_WatcherCollateralERG = (chainType) => {
+    if (chainType === chain_service_1.ChainType.Runes || chainType === chain_service_1.ChainType.Firo) {
         return 10;
     }
     else {
         return 800;
     }
 };
-export const rs_ErgoExplorerHost = 'api.ergoplatform.com';
-export const rs_ErgoNodeHost = 'https://node-p2p.ergoplatform.com';
+exports.rs_WatcherCollateralERG = rs_WatcherCollateralERG;
+exports.rs_ErgoExplorerHost = 'api.ergoplatform.com';
+exports.rs_ErgoNodeHost = 'https://node-p2p.ergoplatform.com';
 //const rs_ErgoNodeHost = 'localhost:9053';
 //const rs_ErgoExplorerHost = 'node-p2p.ergoplatform.com';
 // https://node-p2p.ergoplatform.com/swagger
@@ -72,7 +77,7 @@ https://graphql.ergobackup.aap.cornell.edu/
 https://graphql.codeutxo.com/
 
 */
-export var UrlAction;
+var UrlAction;
 (function (UrlAction) {
     UrlAction["StatisticsTransactions"] = "statisticsTransactions";
     UrlAction["ChainPerformanceTransactions"] = "chainPerformanceTransactions";
@@ -80,8 +85,8 @@ export var UrlAction;
     UrlAction["PermitTransactions"] = "permitTransactions";
     UrlAction["PermitTriggerTransactions"] = "permitTriggerTransactions";
     UrlAction["PermitBulkTransactions"] = "permitBulkTransactions";
-})(UrlAction || (UrlAction = {}));
-export const urlConfig = {
+})(UrlAction || (exports.UrlAction = UrlAction = {}));
+exports.urlConfig = {
     [UrlAction.StatisticsTransactions]: [
         {
             isNode: false,
@@ -137,27 +142,28 @@ export const urlConfig = {
         },
     ]
 };
-export const getUrlConfig = (key) => urlConfig[key][0];
-export const rs_RSNTokenId = '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';
-export const rs_eRSNTokenId = 'dede2cf5c1a2966453ffec198a9b97b53d281e548903a905519b3525d59cdc3c';
-export const rs_TokenIdMap = {
-    [rs_RSNTokenId]: 'RSN',
-    [rs_eRSNTokenId]: 'eRSN',
+const getUrlConfig = (key) => exports.urlConfig[key][0];
+exports.getUrlConfig = getUrlConfig;
+exports.rs_RSNTokenId = '8b08cdd5449a9592a9e79711d7d79249d7a03c535d17efaee83e216e80a44c4b';
+exports.rs_eRSNTokenId = 'dede2cf5c1a2966453ffec198a9b97b53d281e548903a905519b3525d59cdc3c';
+exports.rs_TokenIdMap = {
+    [exports.rs_RSNTokenId]: 'RSN',
+    [exports.rs_eRSNTokenId]: 'eRSN',
 };
-export const rs_RSNDecimals = 3;
-export var Period;
+exports.rs_RSNDecimals = 3;
+var Period;
 (function (Period) {
     Period["Day"] = "Day";
     Period["Week"] = "Week";
     Period["Month"] = "Month";
     Period["Year"] = "year";
     Period["All"] = "All";
-})(Period || (Period = {}));
-export var Currency;
+})(Period || (exports.Period = Period = {}));
+var Currency;
 (function (Currency) {
     Currency["EUR"] = "EUR";
     Currency["USD"] = "USD";
     Currency["ERG"] = "ERG";
     Currency["RSN"] = "RSN";
-})(Currency || (Currency = {}));
+})(Currency || (exports.Currency = Currency = {}));
 //# sourceMappingURL=constants.js.map

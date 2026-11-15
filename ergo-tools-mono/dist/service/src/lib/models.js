@@ -1,6 +1,10 @@
-import { getChainTypes } from "./chain.service";
-import { rs_PermitCost, rs_WatcherCollateralERG, rs_WatcherCollateralRSN, Currency } from "./constants";
-export var EventType;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.WatchersStats = exports.WatchersAmounts = exports.ChainChartPerformance = exports.ChartPerformance = exports.ChartPoint = exports.ChainPerfChartDataSet = exports.ChartDataSet = exports.WatchersPerformanceStats = exports.WatcherPerformanceAddressStat = exports.MyWatchersStats = exports.WatcherInfo = exports.Token = exports.Input = exports.Asset = exports.Address = exports.EventType = void 0;
+exports.createChainNumber = createChainNumber;
+const chain_service_1 = require("./chain.service");
+const constants_1 = require("./constants");
+var EventType;
 (function (EventType) {
     EventType["StartFullDownload"] = "StartFullDownload";
     EventType["EndFullDownload"] = "EndFullDownload";
@@ -29,8 +33,8 @@ export var EventType;
     EventType["RefreshPermits"] = "RefreshPermits";
     EventType["AddressPermitsDownloaded"] = "AddressPermitsDownloaded";
     EventType["ReportsChanged"] = "ReportsChanged";
-})(EventType || (EventType = {}));
-export class Address {
+})(EventType || (exports.EventType = EventType = {}));
+class Address {
     constructor(address, chainType, active = true, ownAddress = false) {
         this.active = true;
         this.address = address;
@@ -45,7 +49,8 @@ export class Address {
         this.ownAddress = ownAddress;
     }
 }
-export class Asset {
+exports.Address = Address;
+class Asset {
     constructor(amount, name, decimals, type, tokenId) {
         this.amount = amount;
         this.name = name;
@@ -54,7 +59,8 @@ export class Asset {
         this.tokenId = tokenId;
     }
 }
-export class Input {
+exports.Asset = Asset;
+class Input {
     constructor(inputDate, address, outputCreatedAt, assets, outputAddress, boxId, accumulatedAmount, amount, chainType) {
         this.outputAddress = outputAddress;
         this.inputDate = inputDate;
@@ -67,7 +73,8 @@ export class Input {
         this.chainType = chainType;
     }
 }
-export class Token {
+exports.Input = Input;
+class Token {
     constructor(tokenId, amount, decimals, name, tokenType) {
         this.tokenId = tokenId;
         this.amount = amount;
@@ -76,20 +83,25 @@ export class Token {
         this.tokenType = tokenType;
     }
 }
-export class WatcherInfo {
+exports.Token = Token;
+class WatcherInfo {
     constructor(tokens) {
         this.tokens = tokens;
     }
 }
-export class MyWatchersStats {
+exports.WatcherInfo = WatcherInfo;
+class MyWatchersStats {
 }
+exports.MyWatchersStats = MyWatchersStats;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class WatcherPerformanceAddressStat {
+class WatcherPerformanceAddressStat {
 }
+exports.WatcherPerformanceAddressStat = WatcherPerformanceAddressStat;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class WatchersPerformanceStats {
+class WatchersPerformanceStats {
 }
-export class ChartDataSet {
+exports.WatchersPerformanceStats = WatchersPerformanceStats;
+class ChartDataSet {
     constructor(chartColor) {
         this.label = '';
         this.data = [];
@@ -100,7 +112,8 @@ export class ChartDataSet {
         this.borderSkipped = false;
     }
 }
-export class ChainPerfChartDataSet {
+exports.ChartDataSet = ChartDataSet;
+class ChainPerfChartDataSet {
     constructor(chartColor) {
         this.label = '';
         this.data = [];
@@ -111,13 +124,15 @@ export class ChainPerfChartDataSet {
         this.borderSkipped = false;
     }
 }
-export class ChartPoint {
+exports.ChainPerfChartDataSet = ChainPerfChartDataSet;
+class ChartPoint {
     constructor(x, y) {
         this.x = x;
         this.y = y;
     }
 }
-export class ChartPerformance {
+exports.ChartPoint = ChartPoint;
+class ChartPerformance {
     constructor(address, addressForDisplay, chart, color, chainType) {
         this.address = address;
         this.addressForDisplay = addressForDisplay;
@@ -126,7 +141,8 @@ export class ChartPerformance {
         this.color = color;
     }
 }
-export class ChainChartPerformance {
+exports.ChartPerformance = ChartPerformance;
+class ChainChartPerformance {
     constructor(address, addressForDisplay, chart, color, chainType) {
         this.address = address;
         this.addressForDisplay = addressForDisplay;
@@ -135,12 +151,14 @@ export class ChainChartPerformance {
         this.color = color;
     }
 }
-export function createChainNumber() {
-    return Object.fromEntries(getChainTypes().map((key) => [key, undefined]));
+exports.ChainChartPerformance = ChainChartPerformance;
+function createChainNumber() {
+    return Object.fromEntries((0, chain_service_1.getChainTypes)().map((key) => [key, undefined]));
 }
-export class WatchersAmounts {
+class WatchersAmounts {
 }
-export class WatchersStats {
+exports.WatchersAmounts = WatchersAmounts;
+class WatchersStats {
     constructor() {
         this.activePermitCount = createChainNumber();
         this.bulkPermitCount = createChainNumber();
@@ -148,14 +166,15 @@ export class WatchersStats {
         this.chainLockedRSN = createChainNumber();
         this.chainPermitCount = createChainNumber();
         this.chainWatcherCount = createChainNumber();
-        this.permitCost = rs_PermitCost;
+        this.permitCost = constants_1.rs_PermitCost;
         this.triggerPermitCount = createChainNumber();
-        this.watcherCollateralERG = rs_WatcherCollateralERG('Ergo');
-        this.watcherCollateralRSN = rs_WatcherCollateralRSN('Ergo');
-        this.watchersAmountsPerCurrency = Object.fromEntries(Object.values(Currency).map((currency) => [
+        this.watcherCollateralERG = (0, constants_1.rs_WatcherCollateralERG)('Ergo');
+        this.watcherCollateralRSN = (0, constants_1.rs_WatcherCollateralRSN)('Ergo');
+        this.watchersAmountsPerCurrency = Object.fromEntries(Object.values(constants_1.Currency).map((currency) => [
             currency,
             new WatchersAmounts(),
         ]));
     }
 }
+exports.WatchersStats = WatchersStats;
 //# sourceMappingURL=models.js.map

@@ -1,10 +1,13 @@
-import { ChainType, getChainTypeForPermitTriggerAddress, permitTriggerAddresses } from "./chain.service";
-import { rs_ReportsStoreName, rs_WatcherReportsStoreName } from "./constants";
-import { EventType } from "./models";
-import { PermitsDataService } from "./permits.data.service";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ReportsDataService = void 0;
+const chain_service_1 = require("./chain.service");
+const constants_1 = require("./constants");
+const models_1 = require("./models");
+const permits_data_service_1 = require("./permits.data.service");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class ReportsDataService extends PermitsDataService {
-    constructor(db, eventSender, storeName = rs_ReportsStoreName, maxDownloadDateDifference = 204800000) {
+class ReportsDataService extends permits_data_service_1.PermitsDataService {
+    constructor(db, eventSender, storeName = constants_1.rs_ReportsStoreName, maxDownloadDateDifference = 204800000) {
         super(db, storeName, maxDownloadDateDifference);
         this.eventSender = eventSender;
     }
@@ -50,10 +53,10 @@ export class ReportsDataService extends PermitsDataService {
         return watcherPerformanceStats;
     }
     async getWatcherPerformanceByChainType() {
-        const chainTypes = Object.values(ChainType);
+        const chainTypes = Object.values(chain_service_1.ChainType);
         const watcherPerformances = {};
         for (const chainType of chainTypes) {
-            const result = await this.storageService.getData(rs_WatcherReportsStoreName, chainType);
+            const result = await this.storageService.getData(constants_1.rs_WatcherReportsStoreName, chainType);
             const monthStats = (Array.isArray(result) ? result[0] : result);
             if (monthStats) {
                 watcherPerformances[chainType] = monthStats;
@@ -66,13 +69,13 @@ export class ReportsDataService extends PermitsDataService {
     }
     async getAdressPermitsByChainType(chainType, activeOnly, startMonth, startYear, endMonth, endYear) {
         var permits = await super.getAdressPermits(activeOnly, startMonth, startYear, endMonth, endYear);
-        permits = permits.filter((tx) => !Object.values(permitTriggerAddresses).includes(tx.address));
+        permits = permits.filter((tx) => !Object.values(chain_service_1.permitTriggerAddresses).includes(tx.address));
         permits = permits.filter((tx) => tx.chainType === chainType);
         return permits;
     }
     async addData(address, transactions) {
         await super.addData(address, transactions);
-        var chainType = getChainTypeForPermitTriggerAddress(address);
+        var chainType = (0, chain_service_1.getChainTypeForPermitTriggerAddress)(address);
         if (chainType === undefined || chainType === null) {
             return;
         }
@@ -80,10 +83,10 @@ export class ReportsDataService extends PermitsDataService {
         const watcherPerformances = performances.watcherPerformances ?? {};
         Object.keys(watcherPerformances).forEach((c) => {
             const monthStats = watcherPerformances[c];
-            this.storageService.addData(rs_WatcherReportsStoreName, [monthStats], c);
+            this.storageService.addData(constants_1.rs_WatcherReportsStoreName, [monthStats], c);
         });
         await this.eventSender?.sendEvent({
-            type: EventType.ReportsChanged,
+            type: models_1.EventType.ReportsChanged,
             data: performances,
         });
     }
@@ -93,4 +96,5 @@ export class ReportsDataService extends PermitsDataService {
         return now.getTime() - firstOfPreviousMonth.getTime() + 2 * 24 * 60 * 60 * 1000;
     }
 }
+exports.ReportsDataService = ReportsDataService;
 //# sourceMappingURL=reports.data.service.js.map

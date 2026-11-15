@@ -1399,10 +1399,8 @@ var init_chain_performance_data_service = __esm({
     ChainPerformanceDataService = class extends DataService {
       constructor(db, eventSender) {
         super(db);
-        this.db = db;
         this.eventSender = eventSender;
       }
-      db;
       eventSender;
       getData() {
         return this.storageService.getData(rs_PerfTxStoreName);
@@ -1846,11 +1844,9 @@ var init_reward_data_service = __esm({
     RewardDataService = class extends DataService {
       constructor(db, chartService, eventSender) {
         super(db);
-        this.db = db;
         this.chartService = chartService;
         this.eventSender = eventSender;
       }
-      db;
       chartService;
       eventSender;
       getData() {
@@ -2426,6 +2422,23 @@ var init_watchers_data_service = __esm({
 });
 
 // service/src/lib/service.factory.ts
+async function initIndexedDB() {
+  return new Promise((resolve, reject) => {
+    let dbName = rs_DbName;
+    const request = indexedDB.open(dbName);
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      resolve(db);
+    };
+    request.onerror = (event) => {
+      console.error(
+        "Error opening IndexedDB:",
+        event.target.error
+      );
+      reject(event.target.error);
+    };
+  });
+}
 function CreatePermitsDownloadService(maxDownloadDateDifference) {
   var storageService = new MemoryStorageService();
   const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
@@ -2437,7 +2450,11 @@ function CreatePermitsDownloadService(maxDownloadDateDifference) {
     null
   );
 }
-async function createServices(eventSender, db) {
+async function createServices(eventSender, storageType) {
+  const db = await initIndexedDB();
+  if (storageType === 1 /* IndexedDB */) {
+    await initIndexedDB();
+  }
   const chartService = new ChartService();
   const rewardDataService = new RewardDataService(
     db,
@@ -2514,7 +2531,7 @@ async function createServices(eventSender, db) {
     downloadReportsService
   };
 }
-var GetPermitTriggerAddresses, CreateWatcherDownloadService;
+var GetPermitTriggerAddresses, CreateWatcherDownloadService, StorageType;
 var init_service_factory = __esm({
   "service/src/lib/service.factory.ts"() {
     init_chain_performance_data_service();
@@ -2546,6 +2563,12 @@ var init_service_factory = __esm({
         null
       );
     };
+    StorageType = /* @__PURE__ */ ((StorageType2) => {
+      StorageType2[StorageType2["Memory"] = 0] = "Memory";
+      StorageType2[StorageType2["IndexedDB"] = 1] = "IndexedDB";
+      StorageType2[StorageType2["FileSystem"] = 2] = "FileSystem";
+      return StorageType2;
+    })(StorageType || {});
   }
 });
 
@@ -2569,15 +2592,16 @@ var init_process_event_service = __esm({
       }
     };
     ProcessEventService = class {
-      constructor(eventSender) {
+      constructor(eventSender, storageType) {
         this.eventSender = eventSender;
+        this.storageType = storageType;
       }
       eventSender;
+      storageType;
       async processEvent(event) {
         try {
           if (event.type === "StatisticsScreenLoaded" /* StatisticsScreenLoaded */ || event.type === "PerformanceScreenLoaded" /* PerformanceScreenLoaded */ || event.type === "MyWatcherStatsRequested" /* MyWatcherStatsRequested */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatcherStatsRequested" /* WatcherStatsRequested */) {
-            const db = await this.initIndexedDB();
-            const services = await createServices(this.eventSender, db);
+            const services = await createServices(this.eventSender, this.storageType);
             switch (event.type) {
               case "RequestInputsDownload" /* RequestInputsDownload */:
                 await this.processRequestInputsDownload(event, services);
@@ -2605,23 +2629,6 @@ var init_process_event_service = __esm({
             error
           );
         }
-      }
-      async initIndexedDB() {
-        return new Promise((resolve, reject) => {
-          let dbName = rs_DbName;
-          const request = indexedDB.open(dbName);
-          request.onsuccess = (event) => {
-            const db = event.target.result;
-            resolve(db);
-          };
-          request.onerror = (event) => {
-            console.error(
-              "Error opening IndexedDB:",
-              event.target.error
-            );
-            reject(event.target.error);
-          };
-        });
       }
       async processWatcherStatsRequested(services) {
         console.log(
@@ -2838,7 +2845,131 @@ var init_process_event_service = __esm({
       }
     };
     CreateProcessEventService = (eventSender) => {
-      return new ProcessEventService(eventSender);
+      return new ProcessEventService(eventSender, 1 /* IndexedDB */);
+    };
+  }
+});
+
+// service/src/lib/event.service.ts
+var import_core2, import_rxjs5, EventService;
+var init_event_service = __esm({
+  "service/src/lib/event.service.ts"() {
+    import_core2 = require("@angular/core");
+    import_rxjs5 = require("rxjs");
+    init_models();
+    EventService = @((0, import_core2.Injectable)({
+      providedIn: "root"
+    })) class {
+      constructor(ngZone = null) {
+        this.ngZone = ngZone;
+        console.log("EventService initialized");
+      }
+      ngZone;
+      eventSubscriptions = this.resetSubscriptions();
+      eventSubscriptionsById = {};
+      resetSubscriptions() {
+        this.eventSubscriptions = {
+          ["StartFullDownload" /* StartFullDownload */]: new import_rxjs5.Subject(),
+          ["EndFullDownload" /* EndFullDownload */]: new import_rxjs5.Subject(),
+          ["RefreshInputs" /* RefreshInputs */]: new import_rxjs5.Subject(),
+          ["InputsChanged" /* InputsChanged */]: new import_rxjs5.Subject(),
+          ["PerfChartChanged" /* PerfChartChanged */]: new import_rxjs5.Subject(),
+          ["ReportsRequested" /* ReportsRequested */]: new import_rxjs5.Subject(),
+          ["SwipeActivated" /* SwipeActivated */]: new import_rxjs5.Subject(),
+          ["SwipeDeActivated" /* SwipeDeActivated */]: new import_rxjs5.Subject(),
+          ["SwipeVertical" /* SwipeVertical */]: new import_rxjs5.Subject(),
+          ["StatisticsScreenLoaded" /* StatisticsScreenLoaded */]: new import_rxjs5.Subject(),
+          ["MyWatcherStatsRequested" /* MyWatcherStatsRequested */]: new import_rxjs5.Subject(),
+          ["PermitsChanged" /* PermitsChanged */]: new import_rxjs5.Subject(),
+          ["PerformanceScreenLoaded" /* PerformanceScreenLoaded */]: new import_rxjs5.Subject(),
+          ["RequestInputsDownload" /* RequestInputsDownload */]: new import_rxjs5.Subject(),
+          ["AddressChartChanged" /* AddressChartChanged */]: new import_rxjs5.Subject(),
+          ["VersionUpdated" /* VersionUpdated */]: new import_rxjs5.Subject(),
+          ["WatcherStatsRequested" /* WatcherStatsRequested */]: new import_rxjs5.Subject(),
+          ["SettingsScreenLoaded" /* SettingsScreenLoaded */]: new import_rxjs5.Subject(),
+          ["WindowResized" /* WindowResized */]: new import_rxjs5.Subject(),
+          ["WatchersStatsChanged" /* WatchersStatsChanged */]: new import_rxjs5.Subject(),
+          ["PermitsStatsChanged" /* PermitsStatsChanged */]: new import_rxjs5.Subject(),
+          ["ReportsChanged" /* ReportsChanged */]: new import_rxjs5.Subject(),
+          ["ChainPerformanceChartsChanged" /* ChainPerformanceChartsChanged */]: new import_rxjs5.Subject(),
+          ["PerformanceChartsChanged" /* PerformanceChartsChanged */]: new import_rxjs5.Subject(),
+          ["StatisticsChartChanged" /* StatisticsChartChanged */]: new import_rxjs5.Subject(),
+          ["RefreshPermits" /* RefreshPermits */]: new import_rxjs5.Subject(),
+          ["AddressPermitsDownloaded" /* AddressPermitsDownloaded */]: new import_rxjs5.Subject()
+        };
+        return this.eventSubscriptions;
+      }
+      async sendEvent(eventType) {
+        console.log("Received event: " + eventType);
+        this.eventSubscriptions[eventType].next(
+          {}
+        );
+      }
+      async sendEventWithData(eventType, eventData) {
+        this.eventSubscriptions[eventType].next(
+          eventData
+        );
+      }
+      observeEvent(eventType) {
+        return this.eventSubscriptions[eventType].asObservable();
+      }
+      async subscribeToEvent(eventType, callback, id = -1) {
+        const eventCallback = callback;
+        this.subscribe(
+          eventType,
+          eventCallback,
+          id
+        );
+      }
+      subscribe(eventType, callback, id) {
+        console.log(
+          `Subscribing to event: ${eventType} with id: ${id}`
+        );
+        const subscription = this.eventSubscriptions[eventType].asObservable().subscribe(async (...eventData) => {
+          if (this.ngZone) {
+            await this.ngZone.run(
+              () => callback(...eventData)
+            );
+          } else {
+            await callback(...eventData);
+          }
+        });
+        if (!this.eventSubscriptionsById[id]) {
+          this.eventSubscriptionsById[id] = [];
+        }
+        this.eventSubscriptionsById[id].push(
+          subscription
+        );
+      }
+      async subscribeToAllEvents(callback, id = -1) {
+        Object.values(EventType).forEach(
+          (eventType) => {
+            this.subscribeToEvent(
+              eventType,
+              (...args) => callback(
+                eventType,
+                ...args
+              ),
+              id
+            );
+          }
+        );
+      }
+      async unSubscribe(id) {
+        if (this.eventSubscriptionsById[id]) {
+          this.eventSubscriptionsById[id].forEach(
+            (subscription) => subscription.unsubscribe()
+          );
+          delete this.eventSubscriptionsById[id];
+        }
+        Object.entries(
+          this.eventSubscriptionsById
+        ).forEach(([key, subs]) => {
+          console.log(
+            `eventSubscriptionsById[${key}] size: ${subs.length}`
+          );
+        });
+      }
     };
   }
 });
@@ -2848,13 +2979,15 @@ var require_rosen_download_worker = __commonJS({
   "service/src/lib/rosen-download-worker.ts"() {
     init_models();
     init_process_event_service();
+    init_service_factory();
     var processEventServiceSingleton = /* @__PURE__ */ (() => {
       let instance = null;
       return () => {
         if (!instance) {
           console.log("Creating new ProcessEventService instance");
           instance = new ProcessEventService(
-            new ServiceWorkerEventSender()
+            new ServiceWorkerEventSender(),
+            1 /* IndexedDB */
           );
         }
         return instance;
@@ -2906,6 +3039,7 @@ __export(lib_exports, {
   DataService: () => DataService,
   DownloadService: () => DownloadService,
   DownloadStatusIndexedDbService: () => DownloadStatusIndexedDbService,
+  EventService: () => EventService,
   EventType: () => EventType,
   GetPermitTriggerAddresses: () => GetPermitTriggerAddresses,
   GetWatcherDataService: () => GetWatcherDataService,
@@ -2920,6 +3054,7 @@ __export(lib_exports, {
   ReportsDataService: () => ReportsDataService,
   RewardDataService: () => RewardDataService,
   ServiceWorkerEventSender: () => ServiceWorkerEventSender,
+  StorageType: () => StorageType,
   Token: () => Token,
   UrlAction: () => UrlAction,
   WatcherInfo: () => WatcherInfo,
@@ -2939,6 +3074,7 @@ __export(lib_exports, {
   getChainTypes: () => getChainTypes,
   getUrlConfig: () => getUrlConfig,
   hotWalletAddress: () => hotWalletAddress,
+  initIndexedDB: () => initIndexedDB,
   permitAddresses: () => permitAddresses,
   permitBulkAddresses: () => permitBulkAddresses,
   permitTriggerAddresses: () => permitTriggerAddresses,
@@ -2999,6 +3135,7 @@ var init_lib = __esm({
     init_service_factory();
     init_download_service();
     init_watchers_data_service();
+    init_event_service();
     __reExport(lib_exports, __toESM(require_rosen_download_worker()));
   }
 });
@@ -3053,3 +3190,4 @@ async function downloadActivePermits() {
     console.log("totalsPerAddress: ", totalsPerAddress);
   }
 }
+//# sourceMappingURL=main.js.map

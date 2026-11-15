@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  EventService,
   EventType,
   getActiveChainTypes,
   getChainTypes,
@@ -7,7 +8,6 @@ import {
   rs_PermitCost,
   rs_WatcherCollateralRSN,
 } from '@ergo-tools/service';
-import { EventService } from './event.service';
 import { Address } from '@ergo-tools/service';
 
 interface PermitInfo {

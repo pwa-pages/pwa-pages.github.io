@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { Readable } from 'node:stream';
-import { CreatePermitsDownloadService, CreateWatcherDownloadService, PermitsDataService, permitTriggerAddresses, UrlAction } from '@ergo-tools/service';
+import { CreateProcessEventService, EventPayload, EventSender, EventService, EventType, WatchersStats } from '@ergo-tools/service';
 
 import {
   McpServer,
@@ -9,7 +9,32 @@ import {
 
 import * as z from 'zod/v4';
 
-//const downloadService = CreateWatcherDownloadService();
+
+class DirectEventSender implements EventSender {
+  constructor(private eventService: EventService) { }
+
+  async sendEvent<T>(event: EventPayload<T>): Promise<void> {
+    this.eventService.sendEventWithData(
+      event.type as EventType,
+      event.data ?? '',
+    );
+  }
+}
+var eventService = new EventService();
+const processEventService = CreateProcessEventService(new DirectEventSender(eventService));
+
+var watchersStats: WatchersStats | null = null;
+eventService.subscribeToEvent(
+  EventType.WatchersStatsChanged,
+  (data: WatchersStats) => {
+    watchersStats = data;
+  },
+);
+
+processEventService.processEvent({
+  data: null,
+  type: EventType.WatcherStatsRequested,
+});
 
 
 const handler = createMcpHandler(() => {

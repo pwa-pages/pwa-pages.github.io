@@ -6,30 +6,23 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
+      "executor": "@nx/js:tsc",
+      "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/mcp/watcherstats_mcp",
-        "format": ["cjs"],
-        "bundle": true,
         "main": "apps/mcp/watcherstats_mcp/src/main.ts",
         "tsConfig": "apps/mcp/watcherstats_mcp/tsconfig.app.json",
         "assets": ["apps/mcp/watcherstats_mcp/src/assets"],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
+        "generatePackageJson": true
       },
       "configurations": {
         "development": {},
         "production": {
           "esbuildOptions": {
-            "sourcemap": false,
+            "sourcemap": true,
             "outExtension": {
               ".js": ".js"
             }
@@ -71,7 +64,8 @@
       "dependsOn": ["build"],
       "options": {
         "buildTarget": "watcherstats_mcp:build",
-        "runBuildTargetDependencies": false
+        "runBuildTargetDependencies": false,
+        "runtimeArgs": ["--enable-source-maps"]
       },
       "configurations": {
         "development": {

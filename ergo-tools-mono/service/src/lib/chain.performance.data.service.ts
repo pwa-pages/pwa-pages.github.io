@@ -1,5 +1,5 @@
 import { ChainType, rewardAddresses, rwtTokenIds } from "./chain.service";
-import { rs_PerfTxStoreName, rs_eRSNTokenId, rs_RSNDecimals } from "./constants";
+import { rs_PerfTxStoreName, rs_eRSNTokenId, rs_RSNDecimals, IStorageService } from "./constants";
 import { DataService } from "./data.service";
 import { EventType, PerfTx, TransactionItem } from "./models";
 import { EventSender } from "./process.event.service";
@@ -124,7 +124,7 @@ export class ChainPerformanceDataService extends DataService<PerfTx> {
   }
 
   constructor(
-    public override db: IDBDatabase,
+    db: IDBDatabase | IStorageService<PerfTx>,
     private eventSender: EventSender,
   ) {
     super(db);

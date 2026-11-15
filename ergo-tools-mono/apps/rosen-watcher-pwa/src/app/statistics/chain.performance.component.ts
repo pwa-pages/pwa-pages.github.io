@@ -8,11 +8,10 @@ import {
   ViewChild,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { EventData } from '../service/event.service';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainChartService } from '../service/chain.chart.service';
 
-import { ChainPerfChartDataSet, createChainNumber, EventType, WatchersStats } from '@ergo-tools/service';
+import { ChainPerfChartDataSet, createChainNumber, EventData, EventType, WatchersStats } from '@ergo-tools/service';
 import { ChainChartPerformance } from '@ergo-tools/service';
 import { Chart } from 'chart.js';
 import { NavigationService } from '../service/navigation.service';

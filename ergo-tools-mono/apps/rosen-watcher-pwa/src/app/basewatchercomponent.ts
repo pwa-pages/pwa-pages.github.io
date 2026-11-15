@@ -1,8 +1,7 @@
 import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { EventData } from './service/event.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ChainService } from './service/chain.service';
-import { Address, EventType } from '@ergo-tools/service';
+import { Address, EventData, EventType } from '@ergo-tools/service';
 import { StorageService } from './service/storage.service';
 import { ChainDataService } from './service/chain.data.service';
 import { BrowserService } from './service/browser.service';

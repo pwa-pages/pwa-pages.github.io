@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { of, Observable, throwError, concat, EMPTY, defer, from } from 'rxjs';
 import { catchError, concatMap, finalize, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { EventService } from './event.service';
-import { EventType, IDBDatabaseStorageService, rs_DownloadStoreName, rs_ErgoExplorerHost, rs_ErgoNodeHost, WatcherInfo } from '@ergo-tools/service';
+import { EventService, EventType, IDBDatabaseStorageService, rs_DownloadStoreName, rs_ErgoExplorerHost, rs_ErgoNodeHost, WatcherInfo } from '@ergo-tools/service';
 import { StorageService } from './storage.service';
 
 

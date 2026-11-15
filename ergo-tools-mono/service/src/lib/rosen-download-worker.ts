@@ -1,5 +1,6 @@
 import { MessageEventData, EventType } from "./models";
 import { ProcessEventService, ServiceWorkerEventSender } from "./process.event.service";
+import { StorageType } from "./service.factory";
 
 const processEventServiceSingleton = (() => {
 
@@ -9,7 +10,8 @@ const processEventServiceSingleton = (() => {
     if (!instance) {
       console.log('Creating new ProcessEventService instance');
       instance = new ProcessEventService(
-        new ServiceWorkerEventSender()
+        new ServiceWorkerEventSender(),
+        StorageType.IndexedDB
       );
     }
 

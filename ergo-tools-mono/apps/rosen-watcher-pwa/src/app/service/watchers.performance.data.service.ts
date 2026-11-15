@@ -1,12 +1,12 @@
 import { Injectable, signal } from '@angular/core';
 import {
   Address,
+  EventService,
   EventType,
   getActiveChainTypes,
   WatchersPerformanceStats
 } from '@ergo-tools/service';
 import { ChainDataService } from './chain.data.service';
-import { EventService } from './event.service';
 
 
 @Injectable({

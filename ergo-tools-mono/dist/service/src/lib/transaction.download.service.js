@@ -1,15 +1,18 @@
-import { getUrlConfig, rs_AddressDataStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_StartFrom } from "./constants";
-import { EventType } from "./models";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TransactionDownloadService = void 0;
+const constants_1 = require("./constants");
+const models_1 = require("./models");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class TransactionDownloadService {
+class TransactionDownloadService {
     //private static addressDownloadDateMap = new Map<string, Date>();
     constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusIndexedDbService) {
         this.dataService = dataService;
         this.eventSender = eventSender;
         this.downloadStatusIndexedDbService = downloadStatusIndexedDbService;
         this.busyCounter = 0;
-        this.downloadFullSize = rs_FullDownloadsBatchSize;
-        this.downloadInitialSize = rs_InitialNDownloads;
+        this.downloadFullSize = constants_1.rs_FullDownloadsBatchSize;
+        this.downloadInitialSize = constants_1.rs_InitialNDownloads;
         this.downloadFullSize = downloadFullSize;
         this.downloadInitialSize = downloadInitialSize;
     }
@@ -29,8 +32,8 @@ export class TransactionDownloadService {
         }
     }
     async downloadTransactions(address, offset = 0, limit = 500, urlAction) {
-        if (getUrlConfig(urlAction).isNode) {
-            const url = `${getUrlConfig(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
+        if ((0, constants_1.getUrlConfig)(urlAction).isNode) {
+            const url = `${(0, constants_1.getUrlConfig)(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
             const displayedUrl = `${url} (address: ${address.slice(0, 20)})`;
             console.log(`Downloading from: ${displayedUrl}`);
             const response = await fetch(url, {
@@ -50,14 +53,14 @@ export class TransactionDownloadService {
             };
             for (const item of data.items) {
                 const inputDate = new Date(item.timestamp);
-                if (inputDate < rs_StartFrom) {
+                if (inputDate < constants_1.rs_StartFrom) {
                     return result;
                 }
             }
             return result;
         }
         else {
-            const url = `https://${getUrlConfig(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
+            const url = `https://${(0, constants_1.getUrlConfig)(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
             const displayedUrl = url.replace(`/addresses/${address}/`, `/addresses/${address.slice(0, 20)}/`);
             console.log(`Downloading from: ${displayedUrl}`);
             const response = await this.fetchTransactions(url);
@@ -68,7 +71,7 @@ export class TransactionDownloadService {
             };
             for (const item of response.items) {
                 const inputDate = new Date(item.timestamp);
-                if (inputDate < rs_StartFrom) {
+                if (inputDate < constants_1.rs_StartFrom) {
                     return result;
                 }
             }
@@ -78,7 +81,7 @@ export class TransactionDownloadService {
     async downloadForAddresses(urlAction) {
         console.log('Start downloading for all addresses');
         try {
-            const addresses = await this.dataService.storageService.getData(rs_AddressDataStoreName);
+            const addresses = await this.dataService.storageService.getData(constants_1.rs_AddressDataStoreName);
             const downloadPromises = addresses.map(async (addressObj) => {
                 await this.downloadForAddress(addressObj.address, urlAction);
             });
@@ -95,7 +98,7 @@ export class TransactionDownloadService {
     increaseBusyCounter(address) {
         if (this.busyCounter === 0) {
             this.eventSender?.sendEvent({
-                type: EventType.StartFullDownload,
+                type: models_1.EventType.StartFullDownload,
                 data: address,
             });
         }
@@ -105,7 +108,7 @@ export class TransactionDownloadService {
         this.busyCounter--;
         if (this.busyCounter === 0) {
             this.eventSender?.sendEvent({
-                type: EventType.EndFullDownload,
+                type: models_1.EventType.EndFullDownload,
                 data: address,
             });
         }
@@ -192,6 +195,7 @@ export class TransactionDownloadService {
         return null;
     }
 }
+exports.TransactionDownloadService = TransactionDownloadService;
 if (typeof window !== 'undefined') {
     window.DownloadService = TransactionDownloadService;
 }

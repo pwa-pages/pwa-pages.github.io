@@ -1,4 +1,7 @@
-export class IDBDatabaseStorageService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IDBDatabaseStorageService = void 0;
+class IDBDatabaseStorageService {
     constructor(db) {
         this.db = db;
     }
@@ -82,4 +85,5 @@ export class IDBDatabaseStorageService {
         });
     }
 }
+exports.IDBDatabaseStorageService = IDBDatabaseStorageService;
 //# sourceMappingURL=i-db-databasestorage.service.js.map

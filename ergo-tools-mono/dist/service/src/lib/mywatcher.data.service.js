@@ -1,15 +1,18 @@
-import { getChainTypeForPermitAddress } from "./chain.service";
-import { rs_PermitTxStoreName, rs_RSNTokenId, rs_RSNDecimals, rs_PermitCost } from "./constants";
-import { DataService } from "./data.service";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MyWatcherDataService = void 0;
+const chain_service_1 = require("./chain.service");
+const constants_1 = require("./constants");
+const data_service_1 = require("./data.service");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class MyWatcherDataService extends DataService {
+class MyWatcherDataService extends data_service_1.DataService {
     getData() {
-        return this.storageService.getData(rs_PermitTxStoreName);
+        return this.storageService.getData(constants_1.rs_PermitTxStoreName);
     }
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
             if (input.boxId) {
-                const data = await this.storageService.getDataById(rs_PermitTxStoreName, this.createUniqueId(input.boxId, transaction.id, address));
+                const data = await this.storageService.getDataById(constants_1.rs_PermitTxStoreName, this.createUniqueId(input.boxId, transaction.id, address));
                 if (data) {
                     return data;
                 }
@@ -17,7 +20,7 @@ export class MyWatcherDataService extends DataService {
         }
         for (const output of transaction.outputs) {
             if (output.boxId) {
-                const data = await this.storageService.getDataById(rs_PermitTxStoreName, this.createUniqueId(output.boxId, transaction.id, address));
+                const data = await this.storageService.getDataById(constants_1.rs_PermitTxStoreName, this.createUniqueId(output.boxId, transaction.id, address));
                 if (data) {
                     return data;
                 }
@@ -43,13 +46,13 @@ export class MyWatcherDataService extends DataService {
         return 'permit';
     }
     async getWatcherPermits() {
-        const permitsPromise = this.storageService.getData(rs_PermitTxStoreName);
+        const permitsPromise = this.storageService.getData(constants_1.rs_PermitTxStoreName);
         console.log('Retrieving watcher permits and such');
         try {
             const permits = await permitsPromise;
             permits.forEach((permit) => {
                 permit.assets = permit.assets
-                    .filter((asset) => asset.tokenId == rs_RSNTokenId)
+                    .filter((asset) => asset.tokenId == constants_1.rs_RSNTokenId)
                     .map((asset_1) => {
                     return asset_1;
                 });
@@ -68,7 +71,7 @@ export class MyWatcherDataService extends DataService {
         return (address != null &&
             address.length > 0 &&
             address.length <= 100 &&
-            assets.some((asset) => asset.tokenId == rs_RSNTokenId));
+            assets.some((asset) => asset.tokenId == constants_1.rs_RSNTokenId));
     }
     async getAdressPermits(addresses) {
         const permits = await this.getWatcherPermits();
@@ -76,8 +79,8 @@ export class MyWatcherDataService extends DataService {
         const permitInfo = [];
         for (const permit of permits) {
             const sum = permit.assets.reduce((acc, asset) => {
-                if (asset.tokenId == rs_RSNTokenId) {
-                    return acc + asset.amount / Math.pow(10, rs_RSNDecimals);
+                if (asset.tokenId == constants_1.rs_RSNTokenId) {
+                    return acc + asset.amount / Math.pow(10, constants_1.rs_RSNDecimals);
                 }
                 return acc;
             }, 0);
@@ -103,7 +106,7 @@ export class MyWatcherDataService extends DataService {
         for (const activePermit of addressActivePermits) {
             const info = permitInfo.find((p) => p.address === activePermit.address);
             if (info) {
-                info.activeLockedRSN += rs_PermitCost;
+                info.activeLockedRSN += constants_1.rs_PermitCost;
             }
         }
         return permitInfo;
@@ -125,7 +128,7 @@ export class MyWatcherDataService extends DataService {
                     return;
                 }
                 input.inputDate = new Date(item.timestamp);
-                input.assets = input.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.amount == 2 || a.amount == 3);
+                input.assets = input.assets.filter((a) => a.tokenId == constants_1.rs_RSNTokenId || a.amount == 2 || a.amount == 3);
                 let wid;
                 for (wid of allWids) {
                     const PermitTx = {
@@ -135,7 +138,7 @@ export class MyWatcherDataService extends DataService {
                         boxId: input.boxId,
                         assets: input.assets || [],
                         wid: wid ?? '',
-                        chainType: getChainTypeForPermitAddress(address),
+                        chainType: (0, chain_service_1.getChainTypeForPermitAddress)(address),
                         transactionId: item.id,
                     };
                     if (PermitTx.assets.length > 0) {
@@ -148,7 +151,7 @@ export class MyWatcherDataService extends DataService {
                     return;
                 }
                 output.outputDate = new Date(item.timestamp);
-                output.assets = output.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.amount == 2 || a.amount == 3);
+                output.assets = output.assets.filter((a) => a.tokenId == constants_1.rs_RSNTokenId || a.amount == 2 || a.amount == 3);
                 output.assets.forEach((a) => {
                     a.amount = -a.amount;
                 });
@@ -161,7 +164,7 @@ export class MyWatcherDataService extends DataService {
                         boxId: output.boxId,
                         assets: output.assets || [],
                         wid: wid ?? '',
-                        chainType: getChainTypeForPermitAddress(address),
+                        chainType: (0, chain_service_1.getChainTypeForPermitAddress)(address),
                         transactionId: item.id,
                     };
                     if (PermitTx.assets.length > 0) {
@@ -170,7 +173,7 @@ export class MyWatcherDataService extends DataService {
                 }
             });
         });
-        await this.storageService.addData(rs_PermitTxStoreName, tempData);
+        await this.storageService.addData(constants_1.rs_PermitTxStoreName, tempData);
     }
     async getSortedPermits() {
         const permitsPromise = await this.getWatcherPermits();
@@ -187,7 +190,7 @@ export class MyWatcherDataService extends DataService {
                     wid: permitTx.wid,
                     boxId: permitTx.boxId,
                     chainType: permitTx.chainType ??
-                        getChainTypeForPermitAddress(permitTx.address),
+                        (0, chain_service_1.getChainTypeForPermitAddress)(permitTx.address),
                     transactionId: permitTx.transactionId,
                 });
             });
@@ -202,4 +205,5 @@ export class MyWatcherDataService extends DataService {
         }
     }
 }
+exports.MyWatcherDataService = MyWatcherDataService;
 //# sourceMappingURL=mywatcher.data.service.js.map

@@ -1,9 +1,9 @@
 import { ChainType } from "./chain.service";
+import { IStorageService } from "./constants";
 import { DataService } from "./data.service";
 import { PerfTx, TransactionItem } from "./models";
 import { EventSender } from "./process.event.service";
 export declare class ChainPerformanceDataService extends DataService<PerfTx> {
-    db: IDBDatabase;
     private eventSender;
     getData(): Promise<PerfTx[] | null>;
     getExistingData(transaction: TransactionItem): Promise<PerfTx | null>;
@@ -11,7 +11,7 @@ export declare class ChainPerformanceDataService extends DataService<PerfTx> {
     getPerfTxs(): Promise<Record<ChainType, {
         chart: number;
     }>>;
-    constructor(db: IDBDatabase, eventSender: EventSender);
+    constructor(db: IDBDatabase | IStorageService<PerfTx>, eventSender: EventSender);
     getMaxDownloadDateDifference(): number;
     getDataType(): string;
 }

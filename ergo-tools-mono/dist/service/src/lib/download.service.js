@@ -1,8 +1,11 @@
-import { of, throwError, concat, EMPTY, defer, from } from 'rxjs';
-import { catchError, concatMap, finalize, map } from 'rxjs/operators';
-import { firstValueFrom } from 'rxjs';
-import { EventType, IDBDatabaseStorageService, rs_DownloadStoreName, rs_ErgoExplorerHost, rs_ErgoNodeHost } from '.';
-export class DownloadService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DownloadService = void 0;
+const rxjs_1 = require("rxjs");
+const operators_1 = require("rxjs/operators");
+const rxjs_2 = require("rxjs");
+const _1 = require(".");
+class DownloadService {
     constructor(eventSender, dbOrStorage) {
         this.eventSender = eventSender;
         this.dbOrStorage = dbOrStorage;
@@ -14,27 +17,27 @@ export class DownloadService {
     }
     async download(url) {
         console.log('Downloading from:', url);
-        return firstValueFrom(this.downloadStream(url));
+        return (0, rxjs_2.firstValueFrom)(this.downloadStream(url));
     }
     initiateDownload() {
         if (this.activeDownloads++ === 0) {
-            this.eventSender.sendEvent({ type: EventType.StartFullDownload });
+            this.eventSender.sendEvent({ type: _1.EventType.StartFullDownload });
         }
     }
     endDownload() {
         if (--this.activeDownloads === 0) {
-            this.eventSender.sendEvent({ type: EventType.EndFullDownload });
+            this.eventSender.sendEvent({ type: _1.EventType.EndFullDownload });
         }
     }
     downloadBalance(address) {
         if (!this.useNode) {
-            const url = `https://${rs_ErgoExplorerHost}/api/v1/addresses/${address}/balance/confirmed`;
+            const url = `https://${_1.rs_ErgoExplorerHost}/api/v1/addresses/${address}/balance/confirmed`;
             return this.downloadStream(url);
         }
         else {
-            const url = `https://${rs_ErgoNodeHost}/blockchain/balance`;
+            const url = `https://${_1.rs_ErgoNodeHost}/blockchain/balance`;
             let result = this.downloadPostStream(url, address);
-            return result.pipe(map((data) => data.confirmed));
+            return result.pipe((0, operators_1.map)((data) => data.confirmed));
         }
     }
     downloadStream(url) {
@@ -48,27 +51,28 @@ export class DownloadService {
         });
     }
     downloadWithCache(key, url, options) {
-        return defer(() => {
+        return (0, rxjs_1.defer)(() => {
             this.initiateDownload();
             const storage = this.dbOrStorage instanceof IDBDatabase
-                ? new IDBDatabaseStorageService(this.dbOrStorage)
+                ? new _1.IDBDatabaseStorageService(this.dbOrStorage)
                 : this.dbOrStorage;
-            const cached = defer(() => from(storage.getDataById(rs_DownloadStoreName, key))).pipe(concatMap((entry) => {
+            const cached = (0, rxjs_1.defer)(() => (0, rxjs_1.from)(storage.getDataById(_1.rs_DownloadStoreName, key))).pipe((0, operators_1.concatMap)((entry) => {
                 if (entry === null)
-                    return EMPTY;
-                return of(entry);
+                    return rxjs_1.EMPTY;
+                return (0, rxjs_1.of)(entry);
             }));
-            const downloaded = defer(() => from(fetch(url, options))).pipe(concatMap(async (response) => {
+            const downloaded = (0, rxjs_1.defer)(() => (0, rxjs_1.from)(fetch(url, options))).pipe((0, operators_1.concatMap)(async (response) => {
                 if (!response.ok) {
                     throw new Error(`Server returned code: ${response.status}`);
                 }
                 return (await response.json());
-            }), concatMap((data) => from(storage.addData(rs_DownloadStoreName, [data], key)).pipe(map(() => data))));
-            return concat(cached, downloaded).pipe(catchError((error) => {
+            }), (0, operators_1.concatMap)((data) => (0, rxjs_1.from)(storage.addData(_1.rs_DownloadStoreName, [data], key)).pipe((0, operators_1.map)(() => data))));
+            return (0, rxjs_1.concat)(cached, downloaded).pipe((0, operators_1.catchError)((error) => {
                 console.error('Download or cache failed:', url, error);
-                return throwError(() => error);
-            }), finalize(() => this.endDownload()));
+                return (0, rxjs_1.throwError)(() => error);
+            }), (0, operators_1.finalize)(() => this.endDownload()));
         });
     }
 }
+exports.DownloadService = DownloadService;
 //# sourceMappingURL=download.service.js.map

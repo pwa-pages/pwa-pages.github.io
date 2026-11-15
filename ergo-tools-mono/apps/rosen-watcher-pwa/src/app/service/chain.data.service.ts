@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 
-import { EventType, getActiveChainTypes, getChainTypes, Input } from '@ergo-tools/service';
+import { EventService, EventType, getActiveChainTypes, getChainTypes, Input } from '@ergo-tools/service';
 import { Address } from '@ergo-tools/service';
-import { EventService } from './event.service';
 import { DateUtils } from '../statistics/date.utils';
 
 export function initializeDataService(dataService: ChainDataService) {

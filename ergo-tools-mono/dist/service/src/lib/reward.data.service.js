@@ -1,15 +1,18 @@
-import { getChainType } from "./chain.service";
-import { rs_InputsStoreName, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals } from "./constants";
-import { DataService } from "./data.service";
-import { EventType } from "./models";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RewardDataService = void 0;
+const chain_service_1 = require("./chain.service");
+const constants_1 = require("./constants");
+const data_service_1 = require("./data.service");
+const models_1 = require("./models");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class RewardDataService extends DataService {
+class RewardDataService extends data_service_1.DataService {
     getData() {
-        return this.storageService.getData(rs_InputsStoreName);
+        return this.storageService.getData(constants_1.rs_InputsStoreName);
     }
     async getExistingData(transaction, address) {
         for (const input of transaction.inputs) {
-            if (input.boxId && getChainType(input.address)) {
+            if (input.boxId && (0, chain_service_1.getChainType)(input.address)) {
                 const data = await this.getDataByBoxId(input.boxId, address);
                 if (data) {
                     return data;
@@ -20,7 +23,6 @@ export class RewardDataService extends DataService {
     }
     constructor(db, chartService, eventSender) {
         super(db);
-        this.db = db;
         this.chartService = chartService;
         this.eventSender = eventSender;
     }
@@ -28,14 +30,14 @@ export class RewardDataService extends DataService {
         return 'reward';
     }
     async getWatcherInputs() {
-        const inputsPromise = this.storageService.getData(rs_InputsStoreName);
+        const inputsPromise = this.storageService.getData(constants_1.rs_InputsStoreName);
         console.log('Retrieving watcher inputs and such');
         try {
             const inputs = await inputsPromise;
-            const filteredInputs = inputs.filter((i) => i.chainType != null || getChainType(i.address) != null);
+            const filteredInputs = inputs.filter((i) => i.chainType != null || (0, chain_service_1.getChainType)(i.address) != null);
             filteredInputs.forEach((input) => {
                 input.assets = input.assets
-                    .filter((asset) => asset.amount < 5000000 && (asset.tokenId == rs_RSNTokenId || asset.tokenId == rs_eRSNTokenId))
+                    .filter((asset) => asset.amount < 5000000 && (asset.tokenId == constants_1.rs_RSNTokenId || asset.tokenId == constants_1.rs_eRSNTokenId))
                     .map((asset_1) => {
                     return asset_1;
                 });
@@ -57,11 +59,11 @@ export class RewardDataService extends DataService {
             item.inputs.forEach((input) => {
                 input.outputAddress = address;
                 input.inputDate = new Date(item.timestamp);
-                input.assets = input.assets.filter((a) => a.tokenId == rs_RSNTokenId || a.tokenId == rs_eRSNTokenId);
+                input.assets = input.assets.filter((a) => a.tokenId == constants_1.rs_RSNTokenId || a.tokenId == constants_1.rs_eRSNTokenId);
                 input.assets.forEach((asset) => {
-                    if (asset.tokenId && rs_TokenIdMap[asset.tokenId]) {
-                        asset.name = rs_TokenIdMap[asset.tokenId];
-                        asset.decimals = rs_RSNDecimals;
+                    if (asset.tokenId && constants_1.rs_TokenIdMap[asset.tokenId]) {
+                        asset.name = constants_1.rs_TokenIdMap[asset.tokenId];
+                        asset.decimals = constants_1.rs_RSNDecimals;
                     }
                 });
                 const dbInput = {
@@ -69,27 +71,27 @@ export class RewardDataService extends DataService {
                     inputDate: input.inputDate,
                     boxId: input.boxId,
                     assets: input.assets || [],
-                    chainType: getChainType(input.address),
+                    chainType: (0, chain_service_1.getChainType)(input.address),
                 };
                 if (dbInput.chainType && dbInput.assets.length > 0) {
                     tempData.push(dbInput);
                 }
             });
         });
-        await this.storageService.addData(rs_InputsStoreName, tempData);
+        await this.storageService.addData(constants_1.rs_InputsStoreName, tempData);
         const inputs = await this.getSortedInputs();
         this.eventSender?.sendEvent({
-            type: EventType.InputsChanged,
+            type: models_1.EventType.InputsChanged,
             data: inputs,
         });
         this.eventSender?.sendEvent({
-            type: EventType.AddressChartChanged,
+            type: models_1.EventType.AddressChartChanged,
             data: await this.chartService.getAddressCharts(inputs),
         });
     }
     // Get Data by BoxId from IndexedDB
     async getDataByBoxId(boxId, addressId) {
-        return await this.storageService.getDataById(rs_InputsStoreName, [
+        return await this.storageService.getDataById(constants_1.rs_InputsStoreName, [
             boxId,
             addressId,
         ]);
@@ -112,7 +114,7 @@ export class RewardDataService extends DataService {
                         boxId: input.boxId,
                         accumulatedAmount: amount,
                         amount: asset.amount / Math.pow(10, asset.decimals),
-                        chainType: input.chainType ?? getChainType(input.address),
+                        chainType: input.chainType ?? (0, chain_service_1.getChainType)(input.address),
                         outputCreatedAt: 0
                     });
                 });
@@ -128,4 +130,5 @@ export class RewardDataService extends DataService {
         }
     }
 }
+exports.RewardDataService = RewardDataService;
 //# sourceMappingURL=reward.data.service.js.map

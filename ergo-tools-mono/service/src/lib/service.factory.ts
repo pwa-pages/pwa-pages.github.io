@@ -1,7 +1,7 @@
 import { ChainPerformanceDataService } from "./chain.performance.data.service";
 import { permitTriggerAddresses } from "./chain.service";
 import { ChartService } from "./chart.service";
-import { rs_ActivePermitTxStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads } from "./constants";
+import { rs_ActivePermitTxStoreName, rs_DbName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads } from "./constants";
 import { DownloadService } from "./download.service";
 import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
 import { MemoryStorageService } from "./memory.storage.service";
@@ -13,6 +13,28 @@ import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
 import { TransactionDownloadService } from "./transaction.download.service";
 import { WatchersDataService } from "./watchers.data.service";
+
+export async function initIndexedDB(): Promise<IDBDatabase> {
+    return new Promise((resolve, reject) => {
+      let dbName = rs_DbName;
+
+      const request: IDBOpenDBRequest = indexedDB.open(dbName);
+
+      request.onsuccess = (event: Event) => {
+        const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
+        resolve(db);
+      };
+
+      request.onerror = (event: Event) => {
+        console.error(
+          'Error opening IndexedDB:',
+          (event.target as IDBOpenDBRequest).error,
+        );
+        reject((event.target as IDBOpenDBRequest).error);
+      };
+    });
+  }
+
 
 export const GetPermitTriggerAddresses = () => {
   return permitTriggerAddresses;
@@ -84,10 +106,22 @@ export interface Services {
   downloadReportsService: TransactionDownloadService<PermitTx>;
 }
 
+export enum StorageType {
+  Memory,
+  IndexedDB,
+  FileSystem
+}
+
 export async function createServices(
   eventSender: EventSender,
-  db: IDBDatabase,
+  storageType: StorageType
 ): Promise<Services> {
+
+  const db = await initIndexedDB();
+  if(storageType === StorageType.IndexedDB){
+    await initIndexedDB();
+  }
+    
   const chartService: ChartService = new ChartService();
   const rewardDataService: RewardDataService = new RewardDataService(
     db,
