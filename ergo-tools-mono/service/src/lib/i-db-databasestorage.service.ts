@@ -1,9 +1,9 @@
 import { IStorageService } from "./constants";
 
-export class IDBDatabaseStorageService<T> implements IStorageService<T> {
+export class IDBDatabaseStorageService implements IStorageService {
   constructor(public db: IDBDatabase) { }
 
-  async getData<S>(storeName: string, key?: IDBValidKey): Promise<T[] | S[]> {
+  async getData<S>(storeName: string, key?: IDBValidKey): Promise<S[]> {
     return new Promise((resolve, reject) => {
       const start = performance.now();
       const label = `StorageService:getData(${storeName})`;
@@ -13,7 +13,7 @@ export class IDBDatabaseStorageService<T> implements IStorageService<T> {
       const request = store.getAll(key);
 
       request.onsuccess = () => {
-        const result = request.result as T[];
+        const result = request.result as S[];
 
         const duration = Math.round(performance.now() - start);
 
@@ -21,7 +21,7 @@ export class IDBDatabaseStorageService<T> implements IStorageService<T> {
           `${label} - loaded ${result.length} items in ${duration}ms`
         );
 
-        resolve(result as T[] | S[]);
+        resolve(result as S[]);
       };
 
       request.onerror = () => reject(request.error);
@@ -30,17 +30,17 @@ export class IDBDatabaseStorageService<T> implements IStorageService<T> {
     });
   }
 
-  async getDataById(
+  async getDataById<S>(
     storeName: string,
     id: IDBValidKey
-  ): Promise<T | null> {
+  ): Promise<S | null> {
     return new Promise((resolve, reject) => {
       const tx = this.db.transaction([storeName], 'readonly');
       const store = tx.objectStore(storeName);
       const request = store.get(id);
 
       request.onsuccess = () => {
-        resolve((request.result as T | undefined) ?? null);
+        resolve((request.result as S | undefined) ?? null);
       };
 
       request.onerror = () => reject(request.error);
@@ -49,7 +49,7 @@ export class IDBDatabaseStorageService<T> implements IStorageService<T> {
     });
   }
 
-  async addData<S = T>(
+  async addData<S>(
     storeName: string,
     data: S[],
     key?: IDBValidKey

@@ -60,7 +60,6 @@ export class ChainPerformanceDataService extends DataService<PerfTx> {
       )?.[1];
 
       
-      console.log("amount of eRSN in transaction: " + eRSNTotal + " item id: " + item.id + " chain type: " + chainType);
 
       const dbPerfTx: PerfTx = {
         id: item.id,
@@ -85,7 +84,6 @@ export class ChainPerformanceDataService extends DataService<PerfTx> {
   public async getPerfTxs(): Promise<Record<ChainType, { chart: number }>> {
     const perfTxsPromise = this.storageService.getData<PerfTx>(rs_PerfTxStoreName);
 
-    console.log('Retrieving PerfTxs');
 
     try {
       let perfTxs = await perfTxsPromise;
@@ -124,7 +122,7 @@ export class ChainPerformanceDataService extends DataService<PerfTx> {
   }
 
   constructor(
-    db: IDBDatabase | IStorageService<PerfTx>,
+    db: IStorageService,
     private eventSender: EventSender,
   ) {
     super(db);

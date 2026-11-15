@@ -1,14 +1,16 @@
 import { Observable } from 'rxjs';
 import { EventSender } from '.';
 import { IStorageService, WatcherInfo } from '.';
-export declare class DownloadService<T> {
+export declare class DownloadService {
     private eventSender;
-    private dbOrStorage;
+    private storageService;
+    private static readonly maxLoggedUrlLength;
     private activeDownloads;
     private useNode;
-    constructor(eventSender: EventSender, dbOrStorage: IDBDatabase | IStorageService<T>);
+    constructor(eventSender: EventSender, storageService: IStorageService);
     downloadPermitInfo<T>(watcherUrl: string): Promise<T>;
     download<T>(url: string): Promise<T>;
+    private formatUrlForLog;
     private initiateDownload;
     private endDownload;
     downloadBalance(address: string): Observable<WatcherInfo>;

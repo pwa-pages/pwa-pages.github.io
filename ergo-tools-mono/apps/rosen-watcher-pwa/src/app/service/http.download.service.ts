@@ -72,13 +72,13 @@ export class HttpDownloadService {
     return defer(() => {
       this.initiateDownload();
       const storage = from(this.storageService.getDB()).pipe(
-        map((db) => new IDBDatabaseStorageService<T>(db)),
+        map((db) => new IDBDatabaseStorageService(db)),
       );
-      const cached = storage.pipe(
+      const cached: Observable<T> = storage.pipe(
         concatMap((store) => from(store.getDataById(rs_DownloadStoreName, [key]))),
-        concatMap((entry) => entry === null ? EMPTY : of(entry)),
+        concatMap((entry) => entry == null ? EMPTY : of(entry as T)),
       );
-      const downloaded = defer(() => from(fetch(url, options))).pipe(
+      const downloaded: Observable<T> = defer(() => from(fetch(url, options))).pipe(
         concatMap(async (response) => {
           if (!response.ok) {
             throw new Error(`Server returned code: ${response.status}`);

@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
+import { StorageType } from '@ergo-tools/service';  
 
 import { HttpClient } from '@angular/common/http';
 import { IS_ELEMENTS_ACTIVE } from './tokens';
@@ -64,7 +65,7 @@ export class ServiceWorkerService {
               'to angular worker',
           );
           
-          const processEventService = CreateProcessEventService(new DirectEventSender(this.eventService));
+          const processEventService = CreateProcessEventService(new DirectEventSender(this.eventService), StorageType.IndexedDB);
           
 
           processEventService.processEvent({

@@ -8,7 +8,7 @@ export declare class RewardDataService extends DataService<DbInput> {
     private eventSender;
     getData(): Promise<DbInput[] | null>;
     getExistingData(transaction: TransactionItem, address: string): Promise<DbInput | null>;
-    constructor(db: IDBDatabase | IStorageService<DbInput>, chartService: ChartService, eventSender: EventSender);
+    constructor(db: IStorageService, chartService: ChartService, eventSender: EventSender);
     getDataType(): string;
     private getWatcherInputs;
     addData(address: string, transactions: TransactionItem[]): Promise<void>;

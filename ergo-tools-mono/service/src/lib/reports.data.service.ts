@@ -6,7 +6,7 @@ import { EventSender } from "./process.event.service";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ReportsDataService extends PermitsDataService {
-  constructor(db: IDBDatabase | IStorageService<PermitTx>, private eventSender: EventSender, storeName = rs_ReportsStoreName, maxDownloadDateDifference: number = 204800000) {
+  constructor(db: IStorageService, private eventSender: EventSender, storeName = rs_ReportsStoreName, maxDownloadDateDifference: number = 204800000) {
     super(db, storeName, maxDownloadDateDifference);
   }
 

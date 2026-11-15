@@ -22,7 +22,7 @@ export class WatchersDataService {
   busyCounter = 0;
 
   constructor(
-    private downloadService: DownloadService<WatcherInfo>,
+    private downloadService: DownloadService,
     private priceService: PriceService,
     private eventSender: EventSender
   ) {
@@ -192,7 +192,6 @@ export class WatchersDataService {
 
     const newStats = JSON.stringify(this.watchersStats);
     if (JSON.stringify(this.watchersStatsSignal()) !== newStats) {
-      console.log('Settings watchers stats signal');
       this.watchersStatsSignal.set(JSON.parse(newStats));
           await this.eventSender?.sendEvent({
             type: EventType.WatchersStatsChanged,

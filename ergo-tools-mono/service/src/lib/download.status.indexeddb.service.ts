@@ -1,8 +1,9 @@
 import { rs_DownloadStatusStoreName } from "./constants";
 import { DataService } from "./data.service";
+import { DownloadStatusService } from "./download.status.service";
 import { DownloadStatus } from "./models";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export class DownloadStatusIndexedDbService<T> {
+export class DownloadStatusIndexedDbService<T> implements DownloadStatusService {
 
   //private static addressDownloadDateMap = new Map<string, Date>();
 

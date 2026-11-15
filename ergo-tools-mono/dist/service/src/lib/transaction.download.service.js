@@ -32,10 +32,10 @@ class TransactionDownloadService {
         }
     }
     async downloadTransactions(address, offset = 0, limit = 500, urlAction) {
+        var a = new models_1.Address(address, null);
         if ((0, constants_1.getUrlConfig)(urlAction).isNode) {
             const url = `${(0, constants_1.getUrlConfig)(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
-            const displayedUrl = `${url} (address: ${address.slice(0, 20)})`;
-            console.log(`Downloading from: ${displayedUrl}`);
+            console.log(`Downloading for address: ${a.largeAddressForDisplay}, offset: ${offset}, size: ${limit}`);
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -57,12 +57,12 @@ class TransactionDownloadService {
                     return result;
                 }
             }
+            console.log('done');
             return result;
         }
         else {
             const url = `https://${(0, constants_1.getUrlConfig)(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
-            const displayedUrl = url.replace(`/addresses/${address}/`, `/addresses/${address.slice(0, 20)}/`);
-            console.log(`Downloading from: ${displayedUrl}`);
+            console.log(`Downloading for address: ${a.largeAddressForDisplay}, offset: ${offset}, size: ${limit}`);
             const response = await this.fetchTransactions(url);
             const result = {
                 transactions: response.items,
@@ -75,6 +75,7 @@ class TransactionDownloadService {
                     return result;
                 }
             }
+            console.log('done');
             return result;
         }
     }
@@ -116,17 +117,12 @@ class TransactionDownloadService {
     // Download All for Address (recursive)
     async downloadAllForAddress(address, offset, urlAction, callback) {
         this.increaseBusyCounter(address);
-        console.log(this.busyCounter);
         try {
             const result = await this.downloadTransactions(address, offset, this.downloadFullSize + 10, urlAction);
-            console.log(`Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`);
-            //const t = this.processItems(result.transactions);
-            //console.log('permit amount ' + t);
             if (!result.transactions ||
                 result.transactions.length === 0 ||
                 offset > 100000) {
                 await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
-                console.log(this.busyCounter);
                 return;
             }
             await this.dataService.addData(address, result.transactions);
@@ -148,15 +144,12 @@ class TransactionDownloadService {
         }
         finally {
             this.decreaseBusyCounter(address);
-            console.log(this.busyCounter);
         }
     }
     async downloadForAddress(address, urlAction, callback) {
         this.increaseBusyCounter(address);
-        console.log(this.busyCounter);
         try {
             const result = await this.downloadTransactions(address, 0, this.downloadInitialSize, urlAction);
-            console.log(`Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`);
             const itemsz = result.transactions.length;
             let existingData = null;
             if (itemsz > this.downloadInitialSize / 4) {
@@ -168,7 +161,6 @@ class TransactionDownloadService {
                     }
                 }
             }
-            console.log('Add bunch of data');
             await this.dataService.addData(address, result.transactions);
             if (callback) {
                 await callback?.();
@@ -179,7 +171,8 @@ class TransactionDownloadService {
             }
             else if (itemsz >= this.downloadInitialSize) {
                 await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'false');
-                console.log(`Downloading all tx's for : ${address}`);
+                var a = new models_1.Address(address, null);
+                console.log(`Downloading all tx's for : ${a.largeAddressForDisplay}`);
                 await this.downloadAllForAddress(address, 0, urlAction, callback);
                 return this.dataService.getData();
             }
@@ -190,7 +183,6 @@ class TransactionDownloadService {
         finally {
             this.decreaseBusyCounter(address);
             this.dataService.purgeData();
-            console.log(this.busyCounter);
         }
         return null;
     }

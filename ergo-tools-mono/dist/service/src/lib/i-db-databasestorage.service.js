@@ -42,7 +42,7 @@ class IDBDatabaseStorageService {
             tx.onabort = () => reject(tx.error ?? new Error('Write transaction aborted'));
             try {
                 for (const item of data) {
-                    if (key) {
+                    if (key !== undefined && store.keyPath === null) {
                         store.put(item, key);
                     }
                     else {

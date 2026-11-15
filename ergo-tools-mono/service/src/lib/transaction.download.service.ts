@@ -1,6 +1,6 @@
 import { getUrlConfig, rs_AddressDataStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_StartFrom, UrlAction } from "./constants";
 import { DataService } from "./data.service";
-import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
+import { DownloadStatusService } from "./download.status.service";
 import { FetchTransactionsResponse, Address, TransactionItem, EventType } from "./models";
 import { EventSender } from "./process.event.service";
 
@@ -17,7 +17,7 @@ export class TransactionDownloadService<T> {
     downloadInitialSize: number,
     private dataService: DataService<T>,
     private eventSender: EventSender,
-    private downloadStatusIndexedDbService: DownloadStatusIndexedDbService<T> | null,
+    private downloadStatusIndexedDbService: DownloadStatusService | null,
   ) {
     this.downloadFullSize = downloadFullSize;
     this.downloadInitialSize = downloadInitialSize;
@@ -46,11 +46,11 @@ export class TransactionDownloadService<T> {
     urlAction: UrlAction
   ): Promise<FetchTransactionsResponse> {
     
-    
+    var a = new Address(address, null);
+
     if (getUrlConfig(urlAction).isNode) {
       const url = `${getUrlConfig(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
-      const displayedUrl = `${url} (address: ${address.slice(0, 20)})`;
-      console.log(`Downloading from: ${displayedUrl}`);
+      console.log(`Downloading for address: ${a.largeAddressForDisplay}, offset: ${offset}, size: ${limit}`);
 
       const response: Response = await fetch(url, {
         method: 'POST',
@@ -76,11 +76,11 @@ export class TransactionDownloadService<T> {
         }
       }
 
+      console.log('done');
       return result;
     } else {
       const url = `https://${getUrlConfig(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
-      const displayedUrl = url.replace(`/addresses/${address}/`, `/addresses/${address.slice(0, 20)}/`);
-      console.log(`Downloading from: ${displayedUrl}`);
+      console.log(`Downloading for address: ${a.largeAddressForDisplay}, offset: ${offset}, size: ${limit}`);
 
       const response: FetchTransactionsResponse =
         await this.fetchTransactions(url);
@@ -97,6 +97,7 @@ export class TransactionDownloadService<T> {
         }
       }
 
+      console.log('done');
       return result;
     }
   }
@@ -153,7 +154,6 @@ export class TransactionDownloadService<T> {
     callback?: () => Promise<void>,
   ): Promise<void> {
     this.increaseBusyCounter(address);
-    console.log(this.busyCounter);
 
     try {
       const result: FetchTransactionsResponse = await this.downloadTransactions(
@@ -162,12 +162,7 @@ export class TransactionDownloadService<T> {
         this.downloadFullSize + 10,
         urlAction,
       );
-      console.log(
-        `Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`,
-      );
 
-      //const t = this.processItems(result.transactions);
-      //console.log('permit amount ' + t);
 
       if (
         !result.transactions ||
@@ -175,7 +170,6 @@ export class TransactionDownloadService<T> {
         offset > 100000
       ) {
         await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
-        console.log(this.busyCounter);
         return;
       }
 
@@ -206,7 +200,6 @@ export class TransactionDownloadService<T> {
     } finally {
       this.decreaseBusyCounter(address);
 
-      console.log(this.busyCounter);
     }
   }
 
@@ -216,7 +209,6 @@ export class TransactionDownloadService<T> {
     callback?: () => Promise<void>,
   ): Promise<T[] | null> {
     this.increaseBusyCounter(address);
-    console.log(this.busyCounter);
 
     try {
       const result: FetchTransactionsResponse = await this.downloadTransactions(
@@ -225,10 +217,7 @@ export class TransactionDownloadService<T> {
         this.downloadInitialSize,
         urlAction,
       );
-      console.log(
-        `Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`,
-      );
-
+      
       const itemsz: number = result.transactions.length;
 
       let existingData: T | null = null;
@@ -248,7 +237,7 @@ export class TransactionDownloadService<T> {
         }
       }
 
-      console.log('Add bunch of data');
+      
       await this.dataService.addData(address, result.transactions);
 
       if (callback) {
@@ -263,7 +252,8 @@ export class TransactionDownloadService<T> {
         );
       } else if (itemsz >= this.downloadInitialSize) {
         await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'false');
-        console.log(`Downloading all tx's for : ${address}`);
+        var a = new Address(address, null);
+        console.log(`Downloading all tx's for : ${a.largeAddressForDisplay}`);
         await this.downloadAllForAddress(
           address,
           0,
@@ -277,7 +267,6 @@ export class TransactionDownloadService<T> {
     } finally {
       this.decreaseBusyCounter(address);
       this.dataService.purgeData();
-      console.log(this.busyCounter);
     }
     return null;
   }

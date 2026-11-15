@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@ergo-tools/service": [
+        "/home/pebblerye/pwa/pwa-pages.github.io/ergo-tools-mono/apps/mcp/watcherstats_mcp/dist/service"
+      ]
+    }
+  },
+  "extends": "../../../../../apps/mcp/watcherstats_mcp/tsconfig.app.json"
+}

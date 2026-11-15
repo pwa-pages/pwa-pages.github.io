@@ -211,8 +211,8 @@ class ProcessEventService {
     }
 }
 exports.ProcessEventService = ProcessEventService;
-const CreateProcessEventService = (eventSender) => {
-    return new ProcessEventService(eventSender, service_factory_1.StorageType.IndexedDB);
+const CreateProcessEventService = (eventSender, storageType) => {
+    return new ProcessEventService(eventSender, storageType);
 };
 exports.CreateProcessEventService = CreateProcessEventService;
 //# sourceMappingURL=process.event.service.js.map

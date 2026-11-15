@@ -177,10 +177,10 @@ export interface DateNumberPoint {
   y: number;
 }
 
-export interface IStorageService<T> {
-  getData<S = T>(storeName: string, key?: IDBValidKey): Promise<T[] | S[]>;
-  getDataById(storeName: string, id: IDBValidKey): Promise<T | null>;
-  addData<S = T>(storeName: string, data: S[], key?: IDBValidKey): Promise<void>;
+export interface IStorageService {
+  getData<S>(storeName: string, key?: IDBValidKey): Promise<S[]>;
+  getDataById<S>(storeName: string, id: IDBValidKey): Promise<S | null>;
+  addData<S>(storeName: string, data: S[], key?: IDBValidKey): Promise<void>;
   deleteData(storeName: string, keys: IDBValidKey | IDBValidKey[]): Promise<void>;
 }
 

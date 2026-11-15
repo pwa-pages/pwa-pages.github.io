@@ -1,14 +1,18 @@
 import { ChainPerformanceDataService } from "./chain.performance.data.service";
 import { permitTriggerAddresses } from "./chain.service";
 import { ChartService } from "./chart.service";
-import { rs_ActivePermitTxStoreName, rs_DbName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads } from "./constants";
+import { IStorageService, rs_ActivePermitTxStoreName, rs_DbName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads } from "./constants";
+import { DataService } from "./data.service";
 import { DownloadService } from "./download.service";
 import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
+import { DownloadStatusMemoryService } from "./download.status.memory.service";
+import { DownloadStatusService } from "./download.status.service";
+import { IDBDatabaseStorageService } from "./i-db-databasestorage.service";
 import { MemoryStorageService } from "./memory.storage.service";
-import { PermitTx, EventType, DbInput, PerfTx, WatcherInfo } from "./models";
+import { PermitTx, EventType, DbInput, PerfTx } from "./models";
 import { MyWatcherDataService } from "./mywatcher.data.service";
 import { PermitsDataService } from "./permits.data.service";
-import { CurrencyRates, PriceService } from "./price.service";
+import { PriceService } from "./price.service";
 import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
 import { TransactionDownloadService } from "./transaction.download.service";
@@ -117,28 +121,48 @@ export async function createServices(
   storageType: StorageType
 ): Promise<Services> {
 
-  const db = await initIndexedDB();
-  if(storageType === StorageType.IndexedDB){
-    await initIndexedDB();
+  let storageService: IStorageService;
+  let db: IDBDatabase | undefined;
+
+  if (storageType === StorageType.IndexedDB) {
+    db = await initIndexedDB();
+    storageService = new IDBDatabaseStorageService(db);
+  } else if (storageType === StorageType.Memory) {
+    storageService = new MemoryStorageService();
+  } else {
+    throw new Error("Unsupported storage type");
   }
-    
+
+  const createDownloadStatusService = <T>(
+    dataService: DataService<T>,
+  ): DownloadStatusService => {
+    if (storageType === StorageType.IndexedDB) {
+      if (!db) {
+        throw new Error("IndexedDB is not initialized");
+      }
+      return new DownloadStatusIndexedDbService(dataService, db);
+    }
+
+    return new DownloadStatusMemoryService(dataService, storageService);
+  };
+
   const chartService: ChartService = new ChartService();
   const rewardDataService: RewardDataService = new RewardDataService(
-    db,
+    storageService,
     chartService,
     eventSender,
   );
 
   const permitsDataService: PermitsDataService =
-    new PermitsDataService(db);
+    new PermitsDataService(storageService);
   const reportsDataService: ReportsDataService =
-    new ReportsDataService(db, eventSender);
+    new ReportsDataService(storageService, eventSender);
   const myWatcherDataService: MyWatcherDataService = new MyWatcherDataService(
     permitsDataService,
   );
 
-  const downloadServiceWatcherInfo = new DownloadService<WatcherInfo>(eventSender, db);
-  const downloadServciceCurrencyRates = new DownloadService<CurrencyRates>(eventSender, db);
+  const downloadServiceWatcherInfo = new DownloadService(eventSender, storageService);
+  const downloadServciceCurrencyRates = new DownloadService(eventSender, storageService);
   const priceService: PriceService = new PriceService(
     downloadServciceCurrencyRates,
   );
@@ -148,16 +172,18 @@ export async function createServices(
   );
 
   const chainPerformanceDataService: ChainPerformanceDataService =
-    new ChainPerformanceDataService(db, eventSender);
+    new ChainPerformanceDataService(storageService, eventSender);
 
-  const downloadStatusIndexedDbRewardDataService =
-    new DownloadStatusIndexedDbService<DbInput>(rewardDataService, db);
-  const downloadStatusIndexedDbWatcherDataService =
-    new DownloadStatusIndexedDbService<PermitTx>(myWatcherDataService, db);
-  const downloadStatusIndexedDbPermitsDataService =
-    new DownloadStatusIndexedDbService<PermitTx>(permitsDataService, db);
-  const downloadStatusIndexedDbChainPerformanceDataService =
-    new DownloadStatusIndexedDbService<PerfTx>(chainPerformanceDataService, db);
+  const downloadStatusRewardDataService =
+    createDownloadStatusService(rewardDataService);
+  const downloadStatusWatcherDataService =
+    createDownloadStatusService(myWatcherDataService);
+  const downloadStatusPermitsDataService =
+    createDownloadStatusService(permitsDataService);
+  const downloadStatusReportsDataService =
+    createDownloadStatusService(reportsDataService);
+  const downloadStatusChainPerformanceDataService =
+    createDownloadStatusService(chainPerformanceDataService);
 
   const downloadRewardService: TransactionDownloadService<DbInput> =
     new TransactionDownloadService<DbInput>(
@@ -165,7 +191,7 @@ export async function createServices(
       rs_InitialNDownloads,
       rewardDataService,
       eventSender,
-      downloadStatusIndexedDbRewardDataService,
+      downloadStatusRewardDataService,
     );
   const downloadMyWatchersService: TransactionDownloadService<PermitTx> =
     new TransactionDownloadService<PermitTx>(
@@ -173,7 +199,7 @@ export async function createServices(
       rs_InitialNDownloads,
       myWatcherDataService,
       eventSender,
-      downloadStatusIndexedDbWatcherDataService,
+      downloadStatusWatcherDataService,
     );
   const downloadActivePermitsService: TransactionDownloadService<PermitTx> =
     new TransactionDownloadService<PermitTx>(
@@ -181,7 +207,7 @@ export async function createServices(
       rs_InitialNDownloads,
       permitsDataService,
       eventSender,
-      downloadStatusIndexedDbPermitsDataService,
+      downloadStatusPermitsDataService,
     );
   const downloadReportsService: TransactionDownloadService<PermitTx> =
     new TransactionDownloadService<PermitTx>(
@@ -189,7 +215,7 @@ export async function createServices(
       rs_InitialNDownloads,
       reportsDataService,
       eventSender,
-      downloadStatusIndexedDbPermitsDataService,
+      downloadStatusReportsDataService,
     );
   const downloadPerfService: TransactionDownloadService<PerfTx> =
     new TransactionDownloadService<PerfTx>(
@@ -197,7 +223,7 @@ export async function createServices(
       rs_PerfInitialNDownloads,
       chainPerformanceDataService,
       eventSender,
-      downloadStatusIndexedDbChainPerformanceDataService,
+      downloadStatusChainPerformanceDataService,
     );
 
   return {

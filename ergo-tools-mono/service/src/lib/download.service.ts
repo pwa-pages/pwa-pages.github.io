@@ -2,13 +2,14 @@ import { of, Observable, throwError, concat, EMPTY, defer, from } from 'rxjs';
 import { catchError, concatMap, finalize, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { EventSender } from '.';
-import { EventType, IDBDatabaseStorageService, IStorageService, rs_DownloadStoreName, rs_ErgoExplorerHost, rs_ErgoNodeHost, WatcherInfo } from '.';
-export class DownloadService<T> {
+import { EventType, IStorageService, rs_DownloadStoreName, rs_ErgoExplorerHost, rs_ErgoNodeHost, WatcherInfo } from '.';
+export class DownloadService {
+  private static readonly maxLoggedUrlLength = 200;
   private activeDownloads = 0;
   private useNode = false;
   constructor(
     private eventSender: EventSender,
-    private dbOrStorage: IDBDatabase | IStorageService<T>
+    private storageService: IStorageService
   ) {}
 
   downloadPermitInfo<T>(watcherUrl: string): Promise<T> {
@@ -16,8 +17,13 @@ export class DownloadService<T> {
   }
 
   async download<T>(url: string): Promise<T> {
-    console.log('Downloading from:', url);
+    console.log('Downloading from:', this.formatUrlForLog(url));
     return firstValueFrom(this.downloadStream(url));
+  }
+
+  private formatUrlForLog(url: string): string {
+    if (url.length <= DownloadService.maxLoggedUrlLength) return url;
+    return `${url.slice(0, DownloadService.maxLoggedUrlLength)}... (truncated; ${url.length} characters)`;
   }
 
   private initiateDownload() {
@@ -63,15 +69,14 @@ export class DownloadService<T> {
   }
 
   private downloadWithCache<T>(key: string, url: string, options?: RequestInit): Observable<T> {
+    console.log('Downloading from:', this.formatUrlForLog(url));
     return defer(() => {
       this.initiateDownload();
-      const storage: IStorageService<T> = this.dbOrStorage instanceof IDBDatabase
-        ? new IDBDatabaseStorageService<T>(this.dbOrStorage)
-        : this.dbOrStorage as unknown as IStorageService<T>;
-      const cached = defer(() => from(storage.getDataById(rs_DownloadStoreName, key))).pipe(
+      
+      const cached: Observable<T> = defer(() => from(this.storageService.getDataById(rs_DownloadStoreName, key))).pipe(
         concatMap((entry) => {
-          if (entry === null) return EMPTY;
-          return of(entry);
+          if (entry == null) return EMPTY;
+          return of(entry as T);
         }),
       );
 
@@ -83,14 +88,14 @@ export class DownloadService<T> {
           }
           return (await response.json()) as T;
         }),
-        concatMap((data) => from(storage.addData(rs_DownloadStoreName, [data], key)).pipe(
+        concatMap((data) => from(this.storageService.addData(rs_DownloadStoreName, [data], key)).pipe(
           map(() => data),
         )),
       );
 
       return concat(cached, downloaded).pipe(
         catchError((error) => {
-          console.error('Download or cache failed:', url, error);
+          console.error('Download or cache failed:', this.formatUrlForLog(url), error);
           return throwError(() => error);
         }),
         finalize(() => this.endDownload()),

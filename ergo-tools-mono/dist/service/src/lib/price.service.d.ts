@@ -12,7 +12,7 @@ export interface CurrencyRates {
 }
 export declare class PriceService {
     private downloadService;
-    constructor(downloadService: DownloadService<CurrencyRates>);
+    constructor(downloadService: DownloadService);
     private currencyRates;
     convert(amount: number, from: string, to: string): Observable<number>;
     private getPrices;

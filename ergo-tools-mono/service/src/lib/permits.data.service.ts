@@ -17,7 +17,7 @@ export class PermitsDataService extends DataService<PermitTx> {
 
     for (const input of transaction.inputs) {
       if (input.boxId) {
-        const data = await this.storageService.getDataById(
+        const data = await this.storageService.getDataById<PermitTx>(
           this.storeName, this.createUniqueId(input.boxId, transaction.id, address)
         );
         if (data) {
@@ -28,7 +28,7 @@ export class PermitsDataService extends DataService<PermitTx> {
 
     for (const output of transaction.outputs) {
       if (output.boxId) {
-        const data = await this.storageService.getDataById(
+        const data = await this.storageService.getDataById<PermitTx>(
           this.storeName, this.createUniqueId(output.boxId, transaction.id, address)
         );
         if (data) {
@@ -39,7 +39,7 @@ export class PermitsDataService extends DataService<PermitTx> {
 
     return null;
   }
-  constructor(db: IDBDatabase | IStorageService<PermitTx>, private storeName = rs_ActivePermitTxStoreName, private maxDownloadDateDifference: number = 204800000) {
+  constructor(db: IStorageService, private storeName = rs_ActivePermitTxStoreName, private maxDownloadDateDifference: number = 204800000) {
     super(db);
   }
   createUniqueId(

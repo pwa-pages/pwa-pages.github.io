@@ -23,5 +23,5 @@ export declare class ProcessEventService {
     private downloadForActivePermitAddress;
     private sendPermitsChangedEventForAddresses;
 }
-export declare const CreateProcessEventService: (eventSender: EventSender) => ProcessEventService;
+export declare const CreateProcessEventService: (eventSender: EventSender, storageType: StorageType) => ProcessEventService;
 export { EventSender };

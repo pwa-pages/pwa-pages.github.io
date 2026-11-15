@@ -27,7 +27,7 @@ export class RewardDataService extends DataService<DbInput> {
     return null;
   }
   constructor(
-    db: IDBDatabase | IStorageService<DbInput>,
+    db: IStorageService,
     private chartService: ChartService,
     private eventSender: EventSender,
   ) {

@@ -11,7 +11,7 @@ export declare class ChainPerformanceDataService extends DataService<PerfTx> {
     getPerfTxs(): Promise<Record<ChainType, {
         chart: number;
     }>>;
-    constructor(db: IDBDatabase | IStorageService<PerfTx>, eventSender: EventSender);
+    constructor(db: IStorageService, eventSender: EventSender);
     getMaxDownloadDateDifference(): number;
     getDataType(): string;
 }

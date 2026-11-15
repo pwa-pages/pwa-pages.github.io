@@ -1,21 +1,15 @@
 import { IStorageService } from "./constants";
-import { IDBDatabaseStorageService } from "./i-db-databasestorage.service";
 import { TransactionItem } from "./models";
 
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export abstract class DataService<T> {
-  public storageService: IStorageService<T>;
+  public storageService: IStorageService;
   public db?: IDBDatabase;
-  constructor(dbOrStorage: IDBDatabase | IStorageService<T>) {
-    
-    if ((dbOrStorage as IDBDatabase)?.transaction !== undefined) {
-      this.db = dbOrStorage as IDBDatabase;
-      this.storageService = new IDBDatabaseStorageService<T>(this.db);
-    } else {
-      this.storageService = dbOrStorage as IStorageService<T>;
-    }
+  constructor(storageService: IStorageService) {
+
+    this.storageService = storageService;
   }
 
   abstract addData(

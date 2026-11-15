@@ -10,6 +10,8 @@ const chart_service_1 = require("./chart.service");
 const constants_1 = require("./constants");
 const download_service_1 = require("./download.service");
 const download_status_indexeddb_service_1 = require("./download.status.indexeddb.service");
+const download_status_memory_service_1 = require("./download.status.memory.service");
+const i_db_databasestorage_service_1 = require("./i-db-databasestorage.service");
 const memory_storage_service_1 = require("./memory.storage.service");
 const mywatcher_data_service_1 = require("./mywatcher.data.service");
 const permits_data_service_1 = require("./permits.data.service");
@@ -55,29 +57,47 @@ var StorageType;
     StorageType[StorageType["FileSystem"] = 2] = "FileSystem";
 })(StorageType || (exports.StorageType = StorageType = {}));
 async function createServices(eventSender, storageType) {
-    const db = await initIndexedDB();
+    let storageService;
+    let db;
     if (storageType === StorageType.IndexedDB) {
-        await initIndexedDB();
+        db = await initIndexedDB();
+        storageService = new i_db_databasestorage_service_1.IDBDatabaseStorageService(db);
     }
+    else if (storageType === StorageType.Memory) {
+        storageService = new memory_storage_service_1.MemoryStorageService();
+    }
+    else {
+        throw new Error("Unsupported storage type");
+    }
+    const createDownloadStatusService = (dataService) => {
+        if (storageType === StorageType.IndexedDB) {
+            if (!db) {
+                throw new Error("IndexedDB is not initialized");
+            }
+            return new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(dataService, db);
+        }
+        return new download_status_memory_service_1.DownloadStatusMemoryService(dataService, storageService);
+    };
     const chartService = new chart_service_1.ChartService();
-    const rewardDataService = new reward_data_service_1.RewardDataService(db, chartService, eventSender);
-    const permitsDataService = new permits_data_service_1.PermitsDataService(db);
-    const reportsDataService = new reports_data_service_1.ReportsDataService(db, eventSender);
+    const rewardDataService = new reward_data_service_1.RewardDataService(storageService, chartService, eventSender);
+    const permitsDataService = new permits_data_service_1.PermitsDataService(storageService);
+    const reportsDataService = new reports_data_service_1.ReportsDataService(storageService, eventSender);
     const myWatcherDataService = new mywatcher_data_service_1.MyWatcherDataService(permitsDataService);
-    const downloadServiceWatcherInfo = new download_service_1.DownloadService(eventSender, db);
-    const downloadServciceCurrencyRates = new download_service_1.DownloadService(eventSender, db);
+    const downloadServiceWatcherInfo = new download_service_1.DownloadService(eventSender, storageService);
+    const downloadServciceCurrencyRates = new download_service_1.DownloadService(eventSender, storageService);
     const priceService = new price_service_1.PriceService(downloadServciceCurrencyRates);
     const watchersDataService = new watchers_data_service_1.WatchersDataService(downloadServiceWatcherInfo, priceService, eventSender);
-    const chainPerformanceDataService = new chain_performance_data_service_1.ChainPerformanceDataService(db, eventSender);
-    const downloadStatusIndexedDbRewardDataService = new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(rewardDataService, db);
-    const downloadStatusIndexedDbWatcherDataService = new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(myWatcherDataService, db);
-    const downloadStatusIndexedDbPermitsDataService = new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(permitsDataService, db);
-    const downloadStatusIndexedDbChainPerformanceDataService = new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(chainPerformanceDataService, db);
-    const downloadRewardService = new transaction_download_service_1.TransactionDownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, rewardDataService, eventSender, downloadStatusIndexedDbRewardDataService);
-    const downloadMyWatchersService = new transaction_download_service_1.TransactionDownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, myWatcherDataService, eventSender, downloadStatusIndexedDbWatcherDataService);
-    const downloadActivePermitsService = new transaction_download_service_1.TransactionDownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, permitsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
-    const downloadReportsService = new transaction_download_service_1.TransactionDownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, reportsDataService, eventSender, downloadStatusIndexedDbPermitsDataService);
-    const downloadPerfService = new transaction_download_service_1.TransactionDownloadService(constants_1.rs_PerfFullDownloadsBatchSize, constants_1.rs_PerfInitialNDownloads, chainPerformanceDataService, eventSender, downloadStatusIndexedDbChainPerformanceDataService);
+    const chainPerformanceDataService = new chain_performance_data_service_1.ChainPerformanceDataService(storageService, eventSender);
+    const downloadStatusRewardDataService = createDownloadStatusService(rewardDataService);
+    const downloadStatusWatcherDataService = createDownloadStatusService(myWatcherDataService);
+    const downloadStatusPermitsDataService = createDownloadStatusService(permitsDataService);
+    const downloadStatusReportsDataService = createDownloadStatusService(reportsDataService);
+    const downloadStatusChainPerformanceDataService = createDownloadStatusService(chainPerformanceDataService);
+    const downloadRewardService = new transaction_download_service_1.TransactionDownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, rewardDataService, eventSender, downloadStatusRewardDataService);
+    const downloadMyWatchersService = new transaction_download_service_1.TransactionDownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, myWatcherDataService, eventSender, downloadStatusWatcherDataService);
+    const downloadActivePermitsService = new transaction_download_service_1.TransactionDownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, permitsDataService, eventSender, downloadStatusPermitsDataService);
+    const downloadReportsService = new transaction_download_service_1.TransactionDownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, reportsDataService, eventSender, downloadStatusReportsDataService);
+    const downloadPerfService = new transaction_download_service_1.TransactionDownloadService(constants_1.rs_PerfFullDownloadsBatchSize, constants_1.rs_PerfInitialNDownloads, chainPerformanceDataService, eventSender, downloadStatusChainPerformanceDataService);
     return {
         dataService: rewardDataService,
         chainPerformanceDataService,

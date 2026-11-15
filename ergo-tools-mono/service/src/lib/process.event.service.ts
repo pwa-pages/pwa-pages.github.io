@@ -366,8 +366,9 @@ export class ProcessEventService {
 
 export const CreateProcessEventService = (
   eventSender: EventSender,
+  storageType: StorageType,
 ): ProcessEventService => {
-  return new ProcessEventService(eventSender, StorageType.IndexedDB);
+  return new ProcessEventService(eventSender, storageType);
 }
 export { EventSender };
 

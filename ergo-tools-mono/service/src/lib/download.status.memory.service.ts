@@ -1,13 +1,14 @@
 import { IStorageService, rs_DownloadStatusStoreName } from "./constants";
 import { DataService } from "./data.service";
+import { DownloadStatusService } from "./download.status.service";
 import { DownloadStatus } from "./models";
-export class DownloadStatusMemoryService<T> {
+export class DownloadStatusMemoryService<T> implements DownloadStatusService {
 
   //private static addressDownloadDateMap = new Map<string, Date>();
 
   constructor(
     private dataService: DataService<T>,
-    private db: IStorageService<T>,
+    private db: IStorageService,
   ) {
   }
 

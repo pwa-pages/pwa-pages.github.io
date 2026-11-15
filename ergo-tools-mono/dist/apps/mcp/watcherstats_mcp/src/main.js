@@ -48,14 +48,19 @@ class DirectEventSender {
     }
 }
 var eventService = new service_1.EventService();
-const processEventService = (0, service_1.CreateProcessEventService)(new DirectEventSender(eventService));
+const processEventService = (0, service_1.CreateProcessEventService)(new DirectEventSender(eventService), service_1.StorageType.Memory);
 var watchersStats = null;
 eventService.subscribeToEvent(service_1.EventType.WatchersStatsChanged, (data) => {
     watchersStats = data;
 });
+/*processEventService.processEvent({
+  data: null,
+  type: EventType.WatcherStatsRequested,
+});
+*/
 processEventService.processEvent({
     data: null,
-    type: service_1.EventType.WatcherStatsRequested,
+    type: service_1.EventType.PerformanceScreenLoaded,
 });
 const handler = (0, server_1.createMcpHandler)(() => {
     const server = new server_1.McpServer({

@@ -122,7 +122,6 @@ class WatchersDataService {
         });
         const newStats = JSON.stringify(this.watchersStats);
         if (JSON.stringify(this.watchersStatsSignal()) !== newStats) {
-            console.log('Settings watchers stats signal');
             this.watchersStatsSignal.set(JSON.parse(newStats));
             await this.eventSender?.sendEvent({
                 type: models_1.EventType.WatchersStatsChanged,

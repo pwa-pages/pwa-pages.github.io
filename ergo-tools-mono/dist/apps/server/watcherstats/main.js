@@ -599,108 +599,15 @@ var init_models = __esm({
   }
 });
 
-// service/src/lib/i-db-databasestorage.service.ts
-var IDBDatabaseStorageService;
-var init_i_db_databasestorage_service = __esm({
-  "service/src/lib/i-db-databasestorage.service.ts"() {
-    IDBDatabaseStorageService = class {
-      constructor(db) {
-        this.db = db;
-      }
-      db;
-      async getData(storeName, key) {
-        return new Promise((resolve, reject) => {
-          const start = performance.now();
-          const label = `StorageService:getData(${storeName})`;
-          const tx = this.db.transaction([storeName], "readonly");
-          const store = tx.objectStore(storeName);
-          const request = store.getAll(key);
-          request.onsuccess = () => {
-            const result = request.result;
-            const duration = Math.round(performance.now() - start);
-            console.log(
-              `${label} - loaded ${result.length} items in ${duration}ms`
-            );
-            resolve(result);
-          };
-          request.onerror = () => reject(request.error);
-          tx.onabort = () => reject(tx.error ?? new Error("Read transaction aborted"));
-        });
-      }
-      async getDataById(storeName, id) {
-        return new Promise((resolve, reject) => {
-          const tx = this.db.transaction([storeName], "readonly");
-          const store = tx.objectStore(storeName);
-          const request = store.get(id);
-          request.onsuccess = () => {
-            resolve(request.result ?? null);
-          };
-          request.onerror = () => reject(request.error);
-          tx.onabort = () => reject(tx.error ?? new Error("Read transaction aborted"));
-        });
-      }
-      async addData(storeName, data, key) {
-        return new Promise((resolve, reject) => {
-          const tx = this.db.transaction([storeName], "readwrite");
-          const store = tx.objectStore(storeName);
-          tx.oncomplete = () => resolve();
-          tx.onabort = () => reject(tx.error ?? new Error("Write transaction aborted"));
-          try {
-            for (const item of data) {
-              if (key) {
-                store.put(item, key);
-              } else {
-                store.put(item);
-              }
-            }
-          } catch (error) {
-            try {
-              tx.abort();
-            } catch {
-            }
-            reject(error);
-          }
-        });
-      }
-      async deleteData(storeName, keys) {
-        const arr = Array.isArray(keys) ? keys : [keys];
-        return new Promise((resolve, reject) => {
-          const tx = this.db.transaction([storeName], "readwrite");
-          const store = tx.objectStore(storeName);
-          tx.oncomplete = () => resolve();
-          tx.onabort = () => reject(tx.error ?? new Error("Delete transaction aborted"));
-          try {
-            for (const key of arr) {
-              store.delete(key);
-            }
-          } catch (error) {
-            try {
-              tx.abort();
-            } catch {
-            }
-            reject(error);
-          }
-        });
-      }
-    };
-  }
-});
-
 // service/src/lib/data.service.ts
 var DataService;
 var init_data_service = __esm({
   "service/src/lib/data.service.ts"() {
-    init_i_db_databasestorage_service();
     DataService = class {
       storageService;
       db;
-      constructor(dbOrStorage) {
-        if (dbOrStorage?.transaction !== void 0) {
-          this.db = dbOrStorage;
-          this.storageService = new IDBDatabaseStorageService(this.db);
-        } else {
-          this.storageService = dbOrStorage;
-        }
+      constructor(storageService) {
+        this.storageService = storageService;
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       async purgeData() {
@@ -1437,7 +1344,6 @@ var init_chain_performance_data_service = __esm({
           const chainType = Object.entries(rwtTokenIds).find(
             ([key]) => key === maxKey
           )?.[1];
-          console.log("amount of eRSN in transaction: " + eRSNTotal + " item id: " + item.id + " chain type: " + chainType);
           const dbPerfTx = {
             id: item.id,
             timestamp: item.timestamp,
@@ -1455,7 +1361,6 @@ var init_chain_performance_data_service = __esm({
       }
       async getPerfTxs() {
         const perfTxsPromise = this.storageService.getData(rs_PerfTxStoreName);
-        console.log("Retrieving PerfTxs");
         try {
           let perfTxs = await perfTxsPromise;
           perfTxs = perfTxs.filter(
@@ -1562,6 +1467,99 @@ var init_download_status_indexeddb_service = __esm({
   }
 });
 
+// service/src/lib/download.status.service.ts
+var init_download_status_service = __esm({
+  "service/src/lib/download.status.service.ts"() {
+  }
+});
+
+// service/src/lib/i-db-databasestorage.service.ts
+var IDBDatabaseStorageService;
+var init_i_db_databasestorage_service = __esm({
+  "service/src/lib/i-db-databasestorage.service.ts"() {
+    IDBDatabaseStorageService = class {
+      constructor(db) {
+        this.db = db;
+      }
+      db;
+      async getData(storeName, key) {
+        return new Promise((resolve, reject) => {
+          const start = performance.now();
+          const label = `StorageService:getData(${storeName})`;
+          const tx = this.db.transaction([storeName], "readonly");
+          const store = tx.objectStore(storeName);
+          const request = store.getAll(key);
+          request.onsuccess = () => {
+            const result = request.result;
+            const duration = Math.round(performance.now() - start);
+            console.log(
+              `${label} - loaded ${result.length} items in ${duration}ms`
+            );
+            resolve(result);
+          };
+          request.onerror = () => reject(request.error);
+          tx.onabort = () => reject(tx.error ?? new Error("Read transaction aborted"));
+        });
+      }
+      async getDataById(storeName, id) {
+        return new Promise((resolve, reject) => {
+          const tx = this.db.transaction([storeName], "readonly");
+          const store = tx.objectStore(storeName);
+          const request = store.get(id);
+          request.onsuccess = () => {
+            resolve(request.result ?? null);
+          };
+          request.onerror = () => reject(request.error);
+          tx.onabort = () => reject(tx.error ?? new Error("Read transaction aborted"));
+        });
+      }
+      async addData(storeName, data, key) {
+        return new Promise((resolve, reject) => {
+          const tx = this.db.transaction([storeName], "readwrite");
+          const store = tx.objectStore(storeName);
+          tx.oncomplete = () => resolve();
+          tx.onabort = () => reject(tx.error ?? new Error("Write transaction aborted"));
+          try {
+            for (const item of data) {
+              if (key !== void 0 && store.keyPath === null) {
+                store.put(item, key);
+              } else {
+                store.put(item);
+              }
+            }
+          } catch (error) {
+            try {
+              tx.abort();
+            } catch {
+            }
+            reject(error);
+          }
+        });
+      }
+      async deleteData(storeName, keys) {
+        const arr = Array.isArray(keys) ? keys : [keys];
+        return new Promise((resolve, reject) => {
+          const tx = this.db.transaction([storeName], "readwrite");
+          const store = tx.objectStore(storeName);
+          tx.oncomplete = () => resolve();
+          tx.onabort = () => reject(tx.error ?? new Error("Delete transaction aborted"));
+          try {
+            for (const key of arr) {
+              store.delete(key);
+            }
+          } catch (error) {
+            try {
+              tx.abort();
+            } catch {
+            }
+            reject(error);
+          }
+        });
+      }
+    };
+  }
+});
+
 // service/src/lib/memory.storage.service.ts
 var MemoryStorageService;
 var init_memory_storage_service = __esm({
@@ -1582,13 +1580,9 @@ var init_memory_storage_service = __esm({
       }
       async getData(storeName) {
         return new Promise((resolve) => {
-          const start = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
           const store = this.getMemoryStore();
           const prefix = storeName + ":";
           const result = Object.keys(store).filter((key) => key.startsWith(prefix)).map((key) => store[key]);
-          const end = typeof performance !== "undefined" && performance.now ? performance.now() : Date.now();
-          const duration = Math.round(end - start);
-          console.log(`StorageService:getData(${storeName}) - loaded ${result.length} items in ${duration}ms`);
           resolve(result);
         });
       }
@@ -1599,13 +1593,13 @@ var init_memory_storage_service = __esm({
           resolve(store[key] ?? null);
         });
       }
-      async addData(storeName, data) {
+      async addData(storeName, data, key) {
         return new Promise((resolve) => {
           const store = this.getMemoryStore();
           data.forEach((item) => {
-            const id = item.id ?? Math.random().toString(36).slice(2);
-            const key = this.generateKey(storeName, id);
-            store[key] = item;
+            const id = key ?? item.id ?? Math.random().toString(36).slice(2);
+            const storageKey = this.generateKey(storeName, id);
+            store[storageKey] = item;
           });
           resolve();
         });
@@ -1700,21 +1694,26 @@ var init_download_service = __esm({
     import_operators = require("rxjs/operators");
     import_rxjs2 = require("rxjs");
     init_lib();
-    DownloadService = class {
-      constructor(eventSender, dbOrStorage) {
+    DownloadService = class _DownloadService {
+      constructor(eventSender, storageService) {
         this.eventSender = eventSender;
-        this.dbOrStorage = dbOrStorage;
+        this.storageService = storageService;
       }
       eventSender;
-      dbOrStorage;
+      storageService;
+      static maxLoggedUrlLength = 200;
       activeDownloads = 0;
       useNode = false;
       downloadPermitInfo(watcherUrl) {
         return this.download(watcherUrl + "/api/info");
       }
       async download(url) {
-        console.log("Downloading from:", url);
+        console.log("Downloading from:", this.formatUrlForLog(url));
         return (0, import_rxjs2.firstValueFrom)(this.downloadStream(url));
+      }
+      formatUrlForLog(url) {
+        if (url.length <= _DownloadService.maxLoggedUrlLength) return url;
+        return `${url.slice(0, _DownloadService.maxLoggedUrlLength)}... (truncated; ${url.length} characters)`;
       }
       initiateDownload() {
         if (this.activeDownloads++ === 0) {
@@ -1754,12 +1753,12 @@ var init_download_service = __esm({
         });
       }
       downloadWithCache(key, url, options) {
+        console.log("Downloading from:", this.formatUrlForLog(url));
         return (0, import_rxjs.defer)(() => {
           this.initiateDownload();
-          const storage = this.dbOrStorage instanceof IDBDatabase ? new IDBDatabaseStorageService(this.dbOrStorage) : this.dbOrStorage;
-          const cached = (0, import_rxjs.defer)(() => (0, import_rxjs.from)(storage.getDataById(rs_DownloadStoreName, key))).pipe(
+          const cached = (0, import_rxjs.defer)(() => (0, import_rxjs.from)(this.storageService.getDataById(rs_DownloadStoreName, key))).pipe(
             (0, import_operators.concatMap)((entry) => {
-              if (entry === null) return import_rxjs.EMPTY;
+              if (entry == null) return import_rxjs.EMPTY;
               return (0, import_rxjs.of)(entry);
             })
           );
@@ -1770,18 +1769,69 @@ var init_download_service = __esm({
               }
               return await response.json();
             }),
-            (0, import_operators.concatMap)((data) => (0, import_rxjs.from)(storage.addData(rs_DownloadStoreName, [data], key)).pipe(
+            (0, import_operators.concatMap)((data) => (0, import_rxjs.from)(this.storageService.addData(rs_DownloadStoreName, [data], key)).pipe(
               (0, import_operators.map)(() => data)
             ))
           );
           return (0, import_rxjs.concat)(cached, downloaded).pipe(
             (0, import_operators.catchError)((error) => {
-              console.error("Download or cache failed:", url, error);
+              console.error("Download or cache failed:", this.formatUrlForLog(url), error);
               return (0, import_rxjs.throwError)(() => error);
             }),
             (0, import_operators.finalize)(() => this.endDownload())
           );
         });
+      }
+    };
+  }
+});
+
+// service/src/lib/download.status.memory.service.ts
+var DownloadStatusMemoryService;
+var init_download_status_memory_service = __esm({
+  "service/src/lib/download.status.memory.service.ts"() {
+    init_constants();
+    DownloadStatusMemoryService = class {
+      //private static addressDownloadDateMap = new Map<string, Date>();
+      constructor(dataService, db) {
+        this.dataService = dataService;
+        this.db = db;
+      }
+      dataService;
+      db;
+      // Get Download Status for Address from IndexedDB
+      async getDownloadStatus(address) {
+        const status = await this.db.getDataById(
+          rs_DownloadStatusStoreName,
+          address + "_" + this.dataService.getDataType()
+        );
+        return status;
+      }
+      // Set Download Status for Address in IndexedDB
+      async setDownloadStatus(address, status) {
+        let dbStatus = await this.getDownloadStatus(
+          address
+        );
+        if (!dbStatus) {
+          dbStatus = {
+            address: address + "_" + this.dataService.getDataType(),
+            Address: address,
+            status,
+            lastDownloadDate: void 0
+          };
+        } else {
+          dbStatus.status = status;
+          dbStatus.address = address + "_" + this.dataService.getDataType();
+          dbStatus.Address = address;
+        }
+        await this.saveDownloadStatus(dbStatus);
+      }
+      async saveDownloadStatus(downloadStatus) {
+        await this.db.addData(
+          rs_DownloadStatusStoreName,
+          [downloadStatus],
+          downloadStatus.address
+        );
       }
     };
   }
@@ -2017,10 +2067,10 @@ var init_transaction_download_service = __esm({
         }
       }
       async downloadTransactions(address, offset = 0, limit = 500, urlAction) {
+        var a = new Address(address, null);
         if (getUrlConfig(urlAction).isNode) {
           const url = `${getUrlConfig(urlAction).url}/blockchain/transaction/byAddress?offset=${offset}&limit=${limit}`;
-          const displayedUrl = `${url} (address: ${address.slice(0, 20)})`;
-          console.log(`Downloading from: ${displayedUrl}`);
+          console.log(`Downloading for address: ${a.largeAddressForDisplay}, offset: ${offset}, size: ${limit}`);
           const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -2042,11 +2092,11 @@ var init_transaction_download_service = __esm({
               return result;
             }
           }
+          console.log("done");
           return result;
         } else {
           const url = `https://${getUrlConfig(urlAction).url}/api/v1/addresses/${address}/transactions?offset=${offset}&limit=${limit}`;
-          const displayedUrl = url.replace(`/addresses/${address}/`, `/addresses/${address.slice(0, 20)}/`);
-          console.log(`Downloading from: ${displayedUrl}`);
+          console.log(`Downloading for address: ${a.largeAddressForDisplay}, offset: ${offset}, size: ${limit}`);
           const response = await this.fetchTransactions(url);
           const result = {
             transactions: response.items,
@@ -2059,6 +2109,7 @@ var init_transaction_download_service = __esm({
               return result;
             }
           }
+          console.log("done");
           return result;
         }
       }
@@ -2100,7 +2151,6 @@ var init_transaction_download_service = __esm({
       // Download All for Address (recursive)
       async downloadAllForAddress(address, offset, urlAction, callback) {
         this.increaseBusyCounter(address);
-        console.log(this.busyCounter);
         try {
           const result = await this.downloadTransactions(
             address,
@@ -2108,12 +2158,8 @@ var init_transaction_download_service = __esm({
             this.downloadFullSize + 10,
             urlAction
           );
-          console.log(
-            `Processing full download(offset = ${offset}, size = ${this.downloadFullSize}) for: ${address}`
-          );
           if (!result.transactions || result.transactions.length === 0 || offset > 1e5) {
             await this.downloadStatusIndexedDbService?.setDownloadStatus(address, "true");
-            console.log(this.busyCounter);
             return;
           }
           await this.dataService.addData(address, result.transactions);
@@ -2135,21 +2181,16 @@ var init_transaction_download_service = __esm({
           throw e;
         } finally {
           this.decreaseBusyCounter(address);
-          console.log(this.busyCounter);
         }
       }
       async downloadForAddress(address, urlAction, callback) {
         this.increaseBusyCounter(address);
-        console.log(this.busyCounter);
         try {
           const result = await this.downloadTransactions(
             address,
             0,
             this.downloadInitialSize,
             urlAction
-          );
-          console.log(
-            `Processing initial download(size = ${this.downloadInitialSize}) for: ${address}`
           );
           const itemsz = result.transactions.length;
           let existingData = null;
@@ -2162,7 +2203,6 @@ var init_transaction_download_service = __esm({
               }
             }
           }
-          console.log("Add bunch of data");
           await this.dataService.addData(address, result.transactions);
           if (callback) {
             await callback?.();
@@ -2174,7 +2214,8 @@ var init_transaction_download_service = __esm({
             );
           } else if (itemsz >= this.downloadInitialSize) {
             await this.downloadStatusIndexedDbService?.setDownloadStatus(address, "false");
-            console.log(`Downloading all tx's for : ${address}`);
+            var a = new Address(address, null);
+            console.log(`Downloading all tx's for : ${a.largeAddressForDisplay}`);
             await this.downloadAllForAddress(
               address,
               0,
@@ -2188,7 +2229,6 @@ var init_transaction_download_service = __esm({
         } finally {
           this.decreaseBusyCounter(address);
           this.dataService.purgeData();
-          console.log(this.busyCounter);
         }
         return null;
       }
@@ -2336,7 +2376,6 @@ var init_watchers_data_service = __esm({
         });
         const newStats = JSON.stringify(this.watchersStats);
         if (JSON.stringify(this.watchersStatsSignal()) !== newStats) {
-          console.log("Settings watchers stats signal");
           this.watchersStatsSignal.set(JSON.parse(newStats));
           await this.eventSender?.sendEvent({
             type: "WatchersStatsChanged" /* WatchersStatsChanged */,
@@ -2451,23 +2490,38 @@ function CreatePermitsDownloadService(maxDownloadDateDifference) {
   );
 }
 async function createServices(eventSender, storageType) {
-  const db = await initIndexedDB();
+  let storageService;
+  let db;
   if (storageType === 1 /* IndexedDB */) {
-    await initIndexedDB();
+    db = await initIndexedDB();
+    storageService = new IDBDatabaseStorageService(db);
+  } else if (storageType === 0 /* Memory */) {
+    storageService = new MemoryStorageService();
+  } else {
+    throw new Error("Unsupported storage type");
   }
+  const createDownloadStatusService = (dataService) => {
+    if (storageType === 1 /* IndexedDB */) {
+      if (!db) {
+        throw new Error("IndexedDB is not initialized");
+      }
+      return new DownloadStatusIndexedDbService(dataService, db);
+    }
+    return new DownloadStatusMemoryService(dataService, storageService);
+  };
   const chartService = new ChartService();
   const rewardDataService = new RewardDataService(
-    db,
+    storageService,
     chartService,
     eventSender
   );
-  const permitsDataService = new PermitsDataService(db);
-  const reportsDataService = new ReportsDataService(db, eventSender);
+  const permitsDataService = new PermitsDataService(storageService);
+  const reportsDataService = new ReportsDataService(storageService, eventSender);
   const myWatcherDataService = new MyWatcherDataService(
     permitsDataService
   );
-  const downloadServiceWatcherInfo = new DownloadService(eventSender, db);
-  const downloadServciceCurrencyRates = new DownloadService(eventSender, db);
+  const downloadServiceWatcherInfo = new DownloadService(eventSender, storageService);
+  const downloadServciceCurrencyRates = new DownloadService(eventSender, storageService);
   const priceService = new PriceService(
     downloadServciceCurrencyRates
   );
@@ -2476,45 +2530,46 @@ async function createServices(eventSender, storageType) {
     priceService,
     eventSender
   );
-  const chainPerformanceDataService = new ChainPerformanceDataService(db, eventSender);
-  const downloadStatusIndexedDbRewardDataService = new DownloadStatusIndexedDbService(rewardDataService, db);
-  const downloadStatusIndexedDbWatcherDataService = new DownloadStatusIndexedDbService(myWatcherDataService, db);
-  const downloadStatusIndexedDbPermitsDataService = new DownloadStatusIndexedDbService(permitsDataService, db);
-  const downloadStatusIndexedDbChainPerformanceDataService = new DownloadStatusIndexedDbService(chainPerformanceDataService, db);
+  const chainPerformanceDataService = new ChainPerformanceDataService(storageService, eventSender);
+  const downloadStatusRewardDataService = createDownloadStatusService(rewardDataService);
+  const downloadStatusWatcherDataService = createDownloadStatusService(myWatcherDataService);
+  const downloadStatusPermitsDataService = createDownloadStatusService(permitsDataService);
+  const downloadStatusReportsDataService = createDownloadStatusService(reportsDataService);
+  const downloadStatusChainPerformanceDataService = createDownloadStatusService(chainPerformanceDataService);
   const downloadRewardService = new TransactionDownloadService(
     rs_FullDownloadsBatchSize,
     rs_InitialNDownloads,
     rewardDataService,
     eventSender,
-    downloadStatusIndexedDbRewardDataService
+    downloadStatusRewardDataService
   );
   const downloadMyWatchersService = new TransactionDownloadService(
     rs_FullDownloadsBatchSize,
     rs_InitialNDownloads,
     myWatcherDataService,
     eventSender,
-    downloadStatusIndexedDbWatcherDataService
+    downloadStatusWatcherDataService
   );
   const downloadActivePermitsService = new TransactionDownloadService(
     rs_FullDownloadsBatchSize,
     rs_InitialNDownloads,
     permitsDataService,
     eventSender,
-    downloadStatusIndexedDbPermitsDataService
+    downloadStatusPermitsDataService
   );
   const downloadReportsService = new TransactionDownloadService(
     rs_FullDownloadsBatchSize,
     rs_InitialNDownloads,
     reportsDataService,
     eventSender,
-    downloadStatusIndexedDbPermitsDataService
+    downloadStatusReportsDataService
   );
   const downloadPerfService = new TransactionDownloadService(
     rs_PerfFullDownloadsBatchSize,
     rs_PerfInitialNDownloads,
     chainPerformanceDataService,
     eventSender,
-    downloadStatusIndexedDbChainPerformanceDataService
+    downloadStatusChainPerformanceDataService
   );
   return {
     dataService: rewardDataService,
@@ -2540,6 +2595,8 @@ var init_service_factory = __esm({
     init_constants();
     init_download_service();
     init_download_status_indexeddb_service();
+    init_download_status_memory_service();
+    init_i_db_databasestorage_service();
     init_memory_storage_service();
     init_mywatcher_data_service();
     init_permits_data_service();
@@ -2563,11 +2620,11 @@ var init_service_factory = __esm({
         null
       );
     };
-    StorageType = /* @__PURE__ */ ((StorageType2) => {
-      StorageType2[StorageType2["Memory"] = 0] = "Memory";
-      StorageType2[StorageType2["IndexedDB"] = 1] = "IndexedDB";
-      StorageType2[StorageType2["FileSystem"] = 2] = "FileSystem";
-      return StorageType2;
+    StorageType = /* @__PURE__ */ ((StorageType3) => {
+      StorageType3[StorageType3["Memory"] = 0] = "Memory";
+      StorageType3[StorageType3["IndexedDB"] = 1] = "IndexedDB";
+      StorageType3[StorageType3["FileSystem"] = 2] = "FileSystem";
+      return StorageType3;
     })(StorageType || {});
   }
 });
@@ -2844,8 +2901,8 @@ var init_process_event_service = __esm({
         });
       }
     };
-    CreateProcessEventService = (eventSender) => {
-      return new ProcessEventService(eventSender, 1 /* IndexedDB */);
+    CreateProcessEventService = (eventSender, storageType) => {
+      return new ProcessEventService(eventSender, storageType);
     };
   }
 });
@@ -3127,6 +3184,7 @@ var init_lib = __esm({
     init_constants();
     init_data_service();
     init_download_status_indexeddb_service();
+    init_download_status_service();
     init_i_db_databasestorage_service();
     init_memory_storage_service();
     init_mywatcher_data_service();
@@ -3190,3 +3248,4 @@ async function downloadActivePermits() {
     console.log("totalsPerAddress: ", totalsPerAddress);
   }
 }
+//# sourceMappingURL=main.js.map

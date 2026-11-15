@@ -1,4 +1,6 @@
-export class MemoryStorageService<T> {
+import { IStorageService } from "./constants";
+
+export class MemoryStorageService<T> implements IStorageService{
   private getMemoryStore(): Record<string, any> {
     const g = globalThis as any;
     if (!g.__storageServiceStore) {
@@ -14,12 +16,8 @@ export class MemoryStorageService<T> {
     return storeName + ':' + String(key);
   }
 
-  async getData<S>(storeName: string): Promise<T[] | S[]> {
+  async getData<S>(storeName: string): Promise<S[]> {
     return new Promise((resolve) => {
-      const start =
-        typeof performance !== 'undefined' && performance.now
-          ? performance.now()
-          : Date.now();
 
       const store = this.getMemoryStore();
       const prefix = storeName + ':';
@@ -27,19 +25,12 @@ export class MemoryStorageService<T> {
         .filter(key => key.startsWith(prefix))
         .map(key => store[key]);
 
-      const end =
-        typeof performance !== 'undefined' && performance.now
-          ? performance.now()
-          : Date.now();
-      const duration = Math.round(end - start);
 
-      console.log(`StorageService:getData(${storeName}) - loaded ${result.length} items in ${duration}ms`);
-
-      resolve(result as T[] | S[]);
+      resolve(result as S[]);
     });
   }
 
-  async getDataById(storeName: string, id: unknown): Promise<T | null> {
+  async getDataById<S>(storeName: string, id: unknown): Promise<S | null> {
     return new Promise((resolve) => {
       const key = this.generateKey(storeName, id);
       const store = this.getMemoryStore();
@@ -47,7 +38,7 @@ export class MemoryStorageService<T> {
     });
   }
 
-  async addData<S = T>(
+  async addData<S>(
     storeName: string,
     data: S[],
     key?: IDBValidKey,

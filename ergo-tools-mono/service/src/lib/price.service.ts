@@ -14,7 +14,7 @@ export interface CurrencyRates {
 }
 
 export class PriceService {
-  constructor(private downloadService: DownloadService<CurrencyRates>) { }
+  constructor(private downloadService: DownloadService) { }
   private currencyRates: Record<string, Record<string, number>> = {};
 
   public convert(amount: number, from: string, to: string): Observable<number> {

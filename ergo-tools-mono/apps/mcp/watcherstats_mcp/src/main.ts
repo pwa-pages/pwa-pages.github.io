@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { Readable } from 'node:stream';
-import { CreateProcessEventService, EventPayload, EventSender, EventService, EventType, WatchersStats } from '@ergo-tools/service';
+import { CreateProcessEventService, EventPayload, EventSender, EventService, EventType, WatchersStats, StorageType } from '@ergo-tools/service';
 
 import {
   McpServer,
@@ -21,7 +21,8 @@ class DirectEventSender implements EventSender {
   }
 }
 var eventService = new EventService();
-const processEventService = CreateProcessEventService(new DirectEventSender(eventService));
+const processEventService = CreateProcessEventService(new DirectEventSender(eventService), StorageType.Memory
+);
 
 var watchersStats: WatchersStats | null = null;
 eventService.subscribeToEvent(
@@ -31,10 +32,17 @@ eventService.subscribeToEvent(
   },
 );
 
-processEventService.processEvent({
+
+/*processEventService.processEvent({
   data: null,
   type: EventType.WatcherStatsRequested,
 });
+*/
+processEventService.processEvent({
+  data: null,
+  type: EventType.PerformanceScreenLoaded,
+});
+
 
 
 const handler = createMcpHandler(() => {

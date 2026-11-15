@@ -35,7 +35,6 @@ class ChainPerformanceDataService extends data_service_1.DataService {
             }, 0);
             const maxKey = Object.entries(chainTokensCount).reduce((max, [key, value]) => (value > chainTokensCount[max] ? key : max), Object.keys(chainTokensCount)[0]);
             const chainType = Object.entries(chain_service_1.rwtTokenIds).find(([key]) => key === maxKey)?.[1];
-            console.log("amount of eRSN in transaction: " + eRSNTotal + " item id: " + item.id + " chain type: " + chainType);
             const dbPerfTx = {
                 id: item.id,
                 timestamp: item.timestamp,
@@ -53,7 +52,6 @@ class ChainPerformanceDataService extends data_service_1.DataService {
     }
     async getPerfTxs() {
         const perfTxsPromise = this.storageService.getData(constants_1.rs_PerfTxStoreName);
-        console.log('Retrieving PerfTxs');
         try {
             let perfTxs = await perfTxsPromise;
             perfTxs = perfTxs.filter((p) => this.getMaxDownloadDateDifference() >

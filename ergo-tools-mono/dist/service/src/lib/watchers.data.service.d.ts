@@ -12,7 +12,7 @@ export declare class WatchersDataService {
     readonly watchersStatsSignal: import("@angular/core", { with: { "resolution-mode": "import" } }).WritableSignal<WatchersStats>;
     readonly watchersStats: WatchersStats;
     busyCounter: number;
-    constructor(downloadService: DownloadService<WatcherInfo>, priceService: PriceService, eventSender: EventSender);
+    constructor(downloadService: DownloadService, priceService: PriceService, eventSender: EventSender);
     getWatcherStats(): Signal<WatchersStats>;
     getWatchersInfo(): Observable<WatcherInfo>;
     getPermitsInfo(chainType: string): Observable<Token | undefined>;

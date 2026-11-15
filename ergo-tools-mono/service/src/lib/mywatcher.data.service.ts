@@ -16,7 +16,7 @@ export class MyWatcherDataService extends DataService<PermitTx> {
 
     for (const input of transaction.inputs) {
       if (input.boxId) {
-        const data = await this.storageService.getDataById(rs_PermitTxStoreName,
+        const data = await this.storageService.getDataById<PermitTx>(rs_PermitTxStoreName,
           this.createUniqueId(input.boxId, transaction.id, address)
         );
         if (data) {
@@ -27,7 +27,7 @@ export class MyWatcherDataService extends DataService<PermitTx> {
 
     for (const output of transaction.outputs) {
       if (output.boxId) {
-        const data = await this.storageService.getDataById(rs_PermitTxStoreName,
+        const data = await this.storageService.getDataById<PermitTx>(rs_PermitTxStoreName,
           this.createUniqueId(output.boxId, transaction.id, address)
         );
         if (data) {
