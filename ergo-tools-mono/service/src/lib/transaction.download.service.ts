@@ -1,6 +1,6 @@
 import { getUrlConfig, rs_AddressDataStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_StartFrom, UrlAction } from "./constants";
 import { DataService } from "./data.service";
-import { DownloadStatusService } from "./download.status.service";
+import { DownloadStatusServiceContract } from "./download.status.service";
 import { FetchTransactionsResponse, Address, TransactionItem, EventType } from "./models";
 import { EventSender } from "./process.event.service";
 
@@ -17,7 +17,7 @@ export class TransactionDownloadService<T> {
     downloadInitialSize: number,
     private dataService: DataService<T>,
     private eventSender: EventSender,
-    private downloadStatusIndexedDbService: DownloadStatusService | null,
+    private downloadStatusIndexedDbService: DownloadStatusServiceContract | null,
   ) {
     this.downloadFullSize = downloadFullSize;
     this.downloadInitialSize = downloadInitialSize;

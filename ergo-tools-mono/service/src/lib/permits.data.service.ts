@@ -114,9 +114,7 @@ export class PermitsDataService extends DataService<PermitTx> {
 
   private async getWatcherPermits(): Promise<PermitTx[]> {
     const permitsPromise = this.storageService.getData<PermitTx>(this.storeName);
-
-    console.log('Retrieving watcher active permits');
-
+    
     try {
       const permits = await permitsPromise;
 

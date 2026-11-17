@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug watcherstats_mcp",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "nx",
+        "serve",
+        "watcherstats_mcp"
+      ],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NODE_OPTIONS": "--enable-source-maps --inspect=9229"
+      },
+      "console": "externalTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "autoAttachChildProcesses": true,
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    }
+  ]
+}

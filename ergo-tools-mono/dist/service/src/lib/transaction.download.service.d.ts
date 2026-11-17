@@ -1,6 +1,6 @@
 import { UrlAction } from "./constants";
 import { DataService } from "./data.service";
-import { DownloadStatusService } from "./download.status.service";
+import { DownloadStatusServiceContract } from "./download.status.service";
 import { FetchTransactionsResponse } from "./models";
 import { EventSender } from "./process.event.service";
 export declare class TransactionDownloadService<T> {
@@ -10,7 +10,7 @@ export declare class TransactionDownloadService<T> {
     private busyCounter;
     private downloadFullSize;
     private downloadInitialSize;
-    constructor(downloadFullSize: number, downloadInitialSize: number, dataService: DataService<T>, eventSender: EventSender, downloadStatusIndexedDbService: DownloadStatusService | null);
+    constructor(downloadFullSize: number, downloadInitialSize: number, dataService: DataService<T>, eventSender: EventSender, downloadStatusIndexedDbService: DownloadStatusServiceContract | null);
     getDataService(): DataService<T>;
     fetchTransactions(url: string): Promise<FetchTransactionsResponse>;
     downloadTransactions(address: string, offset: number | undefined, limit: number | undefined, urlAction: UrlAction): Promise<FetchTransactionsResponse>;

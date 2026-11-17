@@ -57,7 +57,6 @@ class DownloadService {
         });
     }
     downloadWithCache(key, url, options) {
-        console.log('Downloading from:', this.formatUrlForLog(url));
         return (0, rxjs_1.defer)(() => {
             this.initiateDownload();
             const cached = (0, rxjs_1.defer)(() => (0, rxjs_1.from)(this.storageService.getDataById(_1.rs_DownloadStoreName, key))).pipe((0, operators_1.concatMap)((entry) => {

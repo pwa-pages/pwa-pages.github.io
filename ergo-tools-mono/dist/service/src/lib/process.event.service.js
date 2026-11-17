@@ -63,8 +63,6 @@ class ProcessEventService {
         await services.watchersDataService.download();
     }
     async processReportsRequested(event, services) {
-        console.log('Rosen service worker received ReportsRequested initiating syncing of data by downloading from blockchain, event.data: ' +
-            event.data);
         if (event.data && typeof event.data === 'string') {
             var chainType = event.data;
             for (const [addressChainType, address] of Object.entries(chain_service_1.permitTriggerAddresses)) {

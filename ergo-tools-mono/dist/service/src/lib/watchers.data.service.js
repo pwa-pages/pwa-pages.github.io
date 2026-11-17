@@ -130,6 +130,8 @@ class WatchersDataService {
         }
     }
     downloadPermitInfo(address, tokenId, tokenName) {
+        var a = new models_1.Address(address, null);
+        console.log(`Downloading balance for address: ${a.largeAddressForDisplay}`);
         return this.downloadService
             .downloadBalance(address)
             .pipe((0, operators_1.map)((data) => {

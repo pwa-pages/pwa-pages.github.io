@@ -53,11 +53,16 @@ var watchersStats = null;
 eventService.subscribeToEvent(service_1.EventType.WatchersStatsChanged, (data) => {
     watchersStats = data;
 });
-/*processEventService.processEvent({
-  data: null,
-  type: EventType.WatcherStatsRequested,
+for (const c of (0, service_1.getActiveChainTypes)()) {
+    processEventService.processEvent({
+        data: c,
+        type: service_1.EventType.ReportsRequested,
+    });
+}
+processEventService.processEvent({
+    data: null,
+    type: service_1.EventType.WatcherStatsRequested,
 });
-*/
 processEventService.processEvent({
     data: null,
     type: service_1.EventType.PerformanceScreenLoaded,

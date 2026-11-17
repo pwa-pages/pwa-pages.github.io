@@ -4,9 +4,7 @@ import { ChartService } from "./chart.service";
 import { IStorageService, rs_ActivePermitTxStoreName, rs_DbName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads } from "./constants";
 import { DataService } from "./data.service";
 import { DownloadService } from "./download.service";
-import { DownloadStatusIndexedDbService } from "./download.status.indexeddb.service";
-import { DownloadStatusMemoryService } from "./download.status.memory.service";
-import { DownloadStatusService } from "./download.status.service";
+import { DownloadStatusService, DownloadStatusServiceContract } from "./download.status.service";
 import { IDBDatabaseStorageService } from "./i-db-databasestorage.service";
 import { MemoryStorageService } from "./memory.storage.service";
 import { PermitTx, EventType, DbInput, PerfTx } from "./models";
@@ -135,15 +133,8 @@ export async function createServices(
 
   const createDownloadStatusService = <T>(
     dataService: DataService<T>,
-  ): DownloadStatusService => {
-    if (storageType === StorageType.IndexedDB) {
-      if (!db) {
-        throw new Error("IndexedDB is not initialized");
-      }
-      return new DownloadStatusIndexedDbService(dataService, db);
-    }
-
-    return new DownloadStatusMemoryService(dataService, storageService);
+  ): DownloadStatusServiceContract => {
+    return new DownloadStatusService(dataService, storageService);
   };
 
   const chartService: ChartService = new ChartService();

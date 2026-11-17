@@ -69,7 +69,6 @@ export class DownloadService {
   }
 
   private downloadWithCache<T>(key: string, url: string, options?: RequestInit): Observable<T> {
-    console.log('Downloading from:', this.formatUrlForLog(url));
     return defer(() => {
       this.initiateDownload();
       

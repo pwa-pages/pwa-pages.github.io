@@ -9,7 +9,6 @@ tslib_1.__exportStar(require("./chain.performance.data.service"), exports);
 tslib_1.__exportStar(require("./chain.service"), exports);
 tslib_1.__exportStar(require("./constants"), exports);
 tslib_1.__exportStar(require("./data.service"), exports);
-tslib_1.__exportStar(require("./download.status.indexeddb.service"), exports);
 tslib_1.__exportStar(require("./download.status.service"), exports);
 tslib_1.__exportStar(require("./i-db-databasestorage.service"), exports);
 tslib_1.__exportStar(require("./memory.storage.service"), exports);

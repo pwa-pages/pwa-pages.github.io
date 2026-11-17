@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { Readable } from 'node:stream';
-import { CreateProcessEventService, EventPayload, EventSender, EventService, EventType, WatchersStats, StorageType } from '@ergo-tools/service';
+import { CreateProcessEventService, EventPayload, EventSender, EventService, EventType, WatchersStats, StorageType, getActiveChainTypes } from '@ergo-tools/service';
 
 import {
   McpServer,
@@ -32,12 +32,18 @@ eventService.subscribeToEvent(
   },
 );
 
+for (const c of getActiveChainTypes()) {
+  processEventService.processEvent({
+  data: c as unknown as object,
+  type: EventType.ReportsRequested,
+});
+}
 
-/*processEventService.processEvent({
+
+processEventService.processEvent({
   data: null,
   type: EventType.WatcherStatsRequested,
 });
-*/
 processEventService.processEvent({
   data: null,
   type: EventType.PerformanceScreenLoaded,

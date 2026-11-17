@@ -6,7 +6,6 @@ export * from './chain.performance.data.service';
 export * from './chain.service';
 export * from './constants';
 export * from './data.service';
-export * from './download.status.indexeddb.service';
 export * from './download.status.service';
 export * from './i-db-databasestorage.service';
 export * from './memory.storage.service';

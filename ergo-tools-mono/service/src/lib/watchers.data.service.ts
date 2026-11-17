@@ -5,7 +5,7 @@ import { PriceService } from './price.service';
 import { DownloadService, EventSender } from '.';
 import { getActiveChainTypes, permitAddresses, getChainTypes, permitTriggerAddresses, chainTypeTokens, permitBulkAddresses, chainTypeWatcherIdentifier } from './chain.service';
 import { Currency, rs_WatcherCollateralRSN, rs_WatcherCollateralERG, rs_PermitCost } from './constants';
-import { WatchersStats, WatcherInfo, Token, EventType } from './models';
+import { WatchersStats, WatcherInfo, Token, EventType, Address } from './models';
 
 
 export class WatchersDataService {
@@ -206,6 +206,10 @@ export class WatchersDataService {
     tokenId: string | null,
     tokenName: string | null,
   ) {
+    var a = new Address(address, null);
+
+    console.log(`Downloading balance for address: ${a.largeAddressForDisplay}`);
+
     return this.downloadService
       .downloadBalance(address)
       .pipe(

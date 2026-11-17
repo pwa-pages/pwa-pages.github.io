@@ -919,7 +919,6 @@ var init_permits_data_service = __esm({
       }
       async getWatcherPermits() {
         const permitsPromise = this.storageService.getData(this.storeName);
-        console.log("Retrieving watcher active permits");
         try {
           const permits = await permitsPromise;
           permits.forEach((permit) => {
@@ -1400,76 +1399,46 @@ var init_chain_performance_data_service = __esm({
   }
 });
 
-// service/src/lib/download.status.indexeddb.service.ts
-var DownloadStatusIndexedDbService;
-var init_download_status_indexeddb_service = __esm({
-  "service/src/lib/download.status.indexeddb.service.ts"() {
+// service/src/lib/download.status.service.ts
+var DownloadStatusService;
+var init_download_status_service = __esm({
+  "service/src/lib/download.status.service.ts"() {
     init_constants();
-    DownloadStatusIndexedDbService = class {
-      //private static addressDownloadDateMap = new Map<string, Date>();
+    DownloadStatusService = class {
       constructor(dataService, db) {
         this.dataService = dataService;
         this.db = db;
       }
       dataService;
       db;
-      // Get Download Status for Address from IndexedDB
       async getDownloadStatus(address) {
-        return new Promise((resolve, reject) => {
-          const transaction = this.db.transaction(
-            [rs_DownloadStatusStoreName],
-            "readonly"
-          );
-          const objectStore = transaction.objectStore(
-            rs_DownloadStatusStoreName
-          );
-          const request = objectStore.get(
-            address + "_" + this.dataService.getDataType()
-          );
-          request.onsuccess = () => resolve(request.result);
-          request.onerror = (event) => reject(event.target.error);
-        });
-      }
-      // Set Download Status for Address in IndexedDB
-      async setDownloadStatus(address, status) {
-        let dbStatus = await this.getDownloadStatus(
-          address
+        const status = await this.db.getDataById(
+          rs_DownloadStatusStoreName,
+          `${address}_${this.dataService.getDataType()}`
         );
-        if (!dbStatus) {
-          dbStatus = {
-            address: address + "_" + this.dataService.getDataType(),
-            Address: address,
-            status,
-            lastDownloadDate: void 0
-          };
-        } else {
-          dbStatus.status = status;
-          dbStatus.address = address + "_" + this.dataService.getDataType();
-          dbStatus.Address = address;
-        }
+        return status;
+      }
+      async setDownloadStatus(address, status) {
+        const key = `${address}_${this.dataService.getDataType()}`;
+        const dbStatus = await this.getDownloadStatus(address) ?? {
+          address: key,
+          Address: address,
+          status,
+          lastDownloadDate: void 0
+        };
+        dbStatus.address = key;
+        dbStatus.Address = address;
+        dbStatus.status = status;
         await this.saveDownloadStatus(dbStatus);
       }
       async saveDownloadStatus(downloadStatus) {
-        return new Promise((resolve, reject) => {
-          const transaction = this.db.transaction(
-            [rs_DownloadStatusStoreName],
-            "readwrite"
-          );
-          const objectStore = transaction.objectStore(
-            rs_DownloadStatusStoreName
-          );
-          const request = objectStore.put(downloadStatus);
-          request.onsuccess = () => resolve();
-          request.onerror = (event) => reject(event.target.error);
-        });
+        await this.db.addData(
+          rs_DownloadStatusStoreName,
+          [downloadStatus],
+          downloadStatus.address
+        );
       }
     };
-  }
-});
-
-// service/src/lib/download.status.service.ts
-var init_download_status_service = __esm({
-  "service/src/lib/download.status.service.ts"() {
   }
 });
 
@@ -1753,7 +1722,6 @@ var init_download_service = __esm({
         });
       }
       downloadWithCache(key, url, options) {
-        console.log("Downloading from:", this.formatUrlForLog(url));
         return (0, import_rxjs.defer)(() => {
           this.initiateDownload();
           const cached = (0, import_rxjs.defer)(() => (0, import_rxjs.from)(this.storageService.getDataById(rs_DownloadStoreName, key))).pipe(
@@ -1781,57 +1749,6 @@ var init_download_service = __esm({
             (0, import_operators.finalize)(() => this.endDownload())
           );
         });
-      }
-    };
-  }
-});
-
-// service/src/lib/download.status.memory.service.ts
-var DownloadStatusMemoryService;
-var init_download_status_memory_service = __esm({
-  "service/src/lib/download.status.memory.service.ts"() {
-    init_constants();
-    DownloadStatusMemoryService = class {
-      //private static addressDownloadDateMap = new Map<string, Date>();
-      constructor(dataService, db) {
-        this.dataService = dataService;
-        this.db = db;
-      }
-      dataService;
-      db;
-      // Get Download Status for Address from IndexedDB
-      async getDownloadStatus(address) {
-        const status = await this.db.getDataById(
-          rs_DownloadStatusStoreName,
-          address + "_" + this.dataService.getDataType()
-        );
-        return status;
-      }
-      // Set Download Status for Address in IndexedDB
-      async setDownloadStatus(address, status) {
-        let dbStatus = await this.getDownloadStatus(
-          address
-        );
-        if (!dbStatus) {
-          dbStatus = {
-            address: address + "_" + this.dataService.getDataType(),
-            Address: address,
-            status,
-            lastDownloadDate: void 0
-          };
-        } else {
-          dbStatus.status = status;
-          dbStatus.address = address + "_" + this.dataService.getDataType();
-          dbStatus.Address = address;
-        }
-        await this.saveDownloadStatus(dbStatus);
-      }
-      async saveDownloadStatus(downloadStatus) {
-        await this.db.addData(
-          rs_DownloadStatusStoreName,
-          [downloadStatus],
-          downloadStatus.address
-        );
       }
     };
   }
@@ -2384,6 +2301,8 @@ var init_watchers_data_service = __esm({
         }
       }
       downloadPermitInfo(address, tokenId, tokenName) {
+        var a = new Address(address, null);
+        console.log(`Downloading balance for address: ${a.largeAddressForDisplay}`);
         return this.downloadService.downloadBalance(address).pipe(
           (0, import_operators3.map)((data) => {
             if (data.tokens) {
@@ -2501,13 +2420,7 @@ async function createServices(eventSender, storageType) {
     throw new Error("Unsupported storage type");
   }
   const createDownloadStatusService = (dataService) => {
-    if (storageType === 1 /* IndexedDB */) {
-      if (!db) {
-        throw new Error("IndexedDB is not initialized");
-      }
-      return new DownloadStatusIndexedDbService(dataService, db);
-    }
-    return new DownloadStatusMemoryService(dataService, storageService);
+    return new DownloadStatusService(dataService, storageService);
   };
   const chartService = new ChartService();
   const rewardDataService = new RewardDataService(
@@ -2594,8 +2507,7 @@ var init_service_factory = __esm({
     init_chart_service();
     init_constants();
     init_download_service();
-    init_download_status_indexeddb_service();
-    init_download_status_memory_service();
+    init_download_status_service();
     init_i_db_databasestorage_service();
     init_memory_storage_service();
     init_mywatcher_data_service();
@@ -2694,9 +2606,6 @@ var init_process_event_service = __esm({
         await services.watchersDataService.download();
       }
       async processReportsRequested(event, services) {
-        console.log(
-          "Rosen service worker received ReportsRequested initiating syncing of data by downloading from blockchain, event.data: " + event.data
-        );
         if (event.data && typeof event.data === "string") {
           var chainType = event.data;
           for (const [addressChainType, address] of Object.entries(
@@ -3095,7 +3004,7 @@ __export(lib_exports, {
   Currency: () => Currency,
   DataService: () => DataService,
   DownloadService: () => DownloadService,
-  DownloadStatusIndexedDbService: () => DownloadStatusIndexedDbService,
+  DownloadStatusService: () => DownloadStatusService,
   EventService: () => EventService,
   EventType: () => EventType,
   GetPermitTriggerAddresses: () => GetPermitTriggerAddresses,
@@ -3183,7 +3092,6 @@ var init_lib = __esm({
     init_chain_service();
     init_constants();
     init_data_service();
-    init_download_status_indexeddb_service();
     init_download_status_service();
     init_i_db_databasestorage_service();
     init_memory_storage_service();
@@ -3248,3 +3156,4 @@ async function downloadActivePermits() {
     console.log("totalsPerAddress: ", totalsPerAddress);
   }
 }
+//# sourceMappingURL=main.js.map

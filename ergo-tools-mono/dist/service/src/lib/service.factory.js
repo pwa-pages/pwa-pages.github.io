@@ -9,8 +9,7 @@ const chain_service_1 = require("./chain.service");
 const chart_service_1 = require("./chart.service");
 const constants_1 = require("./constants");
 const download_service_1 = require("./download.service");
-const download_status_indexeddb_service_1 = require("./download.status.indexeddb.service");
-const download_status_memory_service_1 = require("./download.status.memory.service");
+const download_status_service_1 = require("./download.status.service");
 const i_db_databasestorage_service_1 = require("./i-db-databasestorage.service");
 const memory_storage_service_1 = require("./memory.storage.service");
 const mywatcher_data_service_1 = require("./mywatcher.data.service");
@@ -70,13 +69,7 @@ async function createServices(eventSender, storageType) {
         throw new Error("Unsupported storage type");
     }
     const createDownloadStatusService = (dataService) => {
-        if (storageType === StorageType.IndexedDB) {
-            if (!db) {
-                throw new Error("IndexedDB is not initialized");
-            }
-            return new download_status_indexeddb_service_1.DownloadStatusIndexedDbService(dataService, db);
-        }
-        return new download_status_memory_service_1.DownloadStatusMemoryService(dataService, storageService);
+        return new download_status_service_1.DownloadStatusService(dataService, storageService);
     };
     const chartService = new chart_service_1.ChartService();
     const rewardDataService = new reward_data_service_1.RewardDataService(storageService, chartService, eventSender);
