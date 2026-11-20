@@ -1,5 +1,6 @@
 import { ChainPerformanceDataService } from "./chain.performance.data.service";
 import { ChartService } from "./chart.service";
+import { IStorageService } from "./constants";
 import { PermitTx, EventType, DbInput, PerfTx } from "./models";
 import { MyWatcherDataService } from "./mywatcher.data.service";
 import { PermitsDataService } from "./permits.data.service";
@@ -7,7 +8,6 @@ import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
 import { TransactionDownloadService } from "./transaction.download.service";
 import { WatchersDataService } from "./watchers.data.service";
-export declare function initIndexedDB(): Promise<IDBDatabase>;
 export declare const GetPermitTriggerAddresses: () => Record<import("./chain.service").ChainType, string | null>;
 export declare function CreatePermitsDownloadService(maxDownloadDateDifference: number): TransactionDownloadService<PermitTx>;
 export declare const CreateWatcherDownloadService: () => TransactionDownloadService<PermitTx>;
@@ -37,4 +37,4 @@ export declare enum StorageType {
     IndexedDB = 1,
     FileSystem = 2
 }
-export declare function createServices(eventSender: EventSender, storageType: StorageType): Promise<Services>;
+export declare function createServices(eventSender: EventSender, storageService: IStorageService): Promise<Services>;

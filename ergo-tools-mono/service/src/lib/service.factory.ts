@@ -1,11 +1,10 @@
 import { ChainPerformanceDataService } from "./chain.performance.data.service";
 import { permitTriggerAddresses } from "./chain.service";
 import { ChartService } from "./chart.service";
-import { IStorageService, rs_ActivePermitTxStoreName, rs_DbName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads } from "./constants";
+import { IStorageService, rs_ActivePermitTxStoreName, rs_FullDownloadsBatchSize, rs_InitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_PerfInitialNDownloads } from "./constants";
 import { DataService } from "./data.service";
 import { DownloadService } from "./download.service";
 import { DownloadStatusService, DownloadStatusServiceContract } from "./download.status.service";
-import { IDBDatabaseStorageService } from "./i-db-databasestorage.service";
 import { MemoryStorageService } from "./memory.storage.service";
 import { PermitTx, EventType, DbInput, PerfTx } from "./models";
 import { MyWatcherDataService } from "./mywatcher.data.service";
@@ -16,26 +15,6 @@ import { RewardDataService } from "./reward.data.service";
 import { TransactionDownloadService } from "./transaction.download.service";
 import { WatchersDataService } from "./watchers.data.service";
 
-export async function initIndexedDB(): Promise<IDBDatabase> {
-    return new Promise((resolve, reject) => {
-      let dbName = rs_DbName;
-
-      const request: IDBOpenDBRequest = indexedDB.open(dbName);
-
-      request.onsuccess = (event: Event) => {
-        const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
-        resolve(db);
-      };
-
-      request.onerror = (event: Event) => {
-        console.error(
-          'Error opening IndexedDB:',
-          (event.target as IDBOpenDBRequest).error,
-        );
-        reject((event.target as IDBOpenDBRequest).error);
-      };
-    });
-  }
 
 
 export const GetPermitTriggerAddresses = () => {
@@ -116,20 +95,8 @@ export enum StorageType {
 
 export async function createServices(
   eventSender: EventSender,
-  storageType: StorageType
+  storageService: IStorageService,
 ): Promise<Services> {
-
-  let storageService: IStorageService;
-  let db: IDBDatabase | undefined;
-
-  if (storageType === StorageType.IndexedDB) {
-    db = await initIndexedDB();
-    storageService = new IDBDatabaseStorageService(db);
-  } else if (storageType === StorageType.Memory) {
-    storageService = new MemoryStorageService();
-  } else {
-    throw new Error("Unsupported storage type");
-  }
 
   const createDownloadStatusService = <T>(
     dataService: DataService<T>,

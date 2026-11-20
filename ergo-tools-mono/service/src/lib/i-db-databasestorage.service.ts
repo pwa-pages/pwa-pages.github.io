@@ -1,14 +1,42 @@
-import { IStorageService } from "./constants";
+import { IStorageService, rs_DbName } from "./constants";
 
 export class IDBDatabaseStorageService implements IStorageService {
-  constructor(public db: IDBDatabase) { }
+  private db: Promise<IDBDatabase>;
+
+  constructor() {
+    this.db = this.initIndexedDB();
+  }
+
+async initIndexedDB(): Promise<IDBDatabase> {
+  return new Promise((resolve, reject) => {
+    let dbName = rs_DbName;
+
+    const request: IDBOpenDBRequest = indexedDB.open(dbName);
+
+    request.onsuccess = (event: Event) => {
+      const db: IDBDatabase = (event.target as IDBOpenDBRequest).result;
+      resolve(db);
+    };
+
+    request.onerror = (event: Event) => {
+      console.error(
+        'Error opening IndexedDB:',
+        (event.target as IDBOpenDBRequest).error,
+      );
+      reject((event.target as IDBOpenDBRequest).error);
+    };
+  });
+}
+
+  
 
   async getData<S>(storeName: string, key?: IDBValidKey): Promise<S[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const start = performance.now();
       const label = `StorageService:getData(${storeName})`;
 
-      const tx = this.db.transaction([storeName], 'readonly');
+      const db = await this.db;
+      const tx = db.transaction([storeName], 'readonly');
       const store = tx.objectStore(storeName);
       const request = store.getAll(key);
 
@@ -34,8 +62,9 @@ export class IDBDatabaseStorageService implements IStorageService {
     storeName: string,
     id: IDBValidKey
   ): Promise<S | null> {
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction([storeName], 'readonly');
+    return new Promise(async (resolve, reject) => {
+      const db = await this.db;
+      const tx = db.transaction([storeName], 'readonly');
       const store = tx.objectStore(storeName);
       const request = store.get(id);
 
@@ -54,8 +83,9 @@ export class IDBDatabaseStorageService implements IStorageService {
     data: S[],
     key?: IDBValidKey
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction([storeName], 'readwrite');
+    return new Promise(async (resolve, reject) => {
+      const db = await this.db;
+      const tx = db.transaction([storeName], 'readwrite');
       const store = tx.objectStore(storeName);
 
       tx.oncomplete = () => resolve();
@@ -88,8 +118,9 @@ export class IDBDatabaseStorageService implements IStorageService {
   ): Promise<void> {
     const arr = Array.isArray(keys) ? keys : [keys];
 
-    return new Promise((resolve, reject) => {
-      const tx = this.db.transaction([storeName], 'readwrite');
+    return new Promise(async (resolve, reject) => {
+      const db = await this.db;
+      const tx = db.transaction([storeName], 'readwrite');
       const store = tx.objectStore(storeName);
 
       tx.oncomplete = () => resolve();

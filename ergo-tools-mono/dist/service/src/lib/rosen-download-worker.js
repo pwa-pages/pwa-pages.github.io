@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const i_db_databasestorage_service_1 = require("./i-db-databasestorage.service");
 const models_1 = require("./models");
 const process_event_service_1 = require("./process.event.service");
-const service_factory_1 = require("./service.factory");
 const processEventServiceSingleton = (() => {
     let instance = null;
     return () => {
         if (!instance) {
             console.log('Creating new ProcessEventService instance');
-            instance = new process_event_service_1.ProcessEventService(new process_event_service_1.ServiceWorkerEventSender(), service_factory_1.StorageType.IndexedDB);
+            instance = new process_event_service_1.ProcessEventService(new process_event_service_1.ServiceWorkerEventSender(), new i_db_databasestorage_service_1.IDBDatabaseStorageService());
         }
         return instance;
     };

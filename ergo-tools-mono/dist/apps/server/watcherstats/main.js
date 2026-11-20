@@ -1446,16 +1446,35 @@ var init_download_status_service = __esm({
 var IDBDatabaseStorageService;
 var init_i_db_databasestorage_service = __esm({
   "service/src/lib/i-db-databasestorage.service.ts"() {
+    init_constants();
     IDBDatabaseStorageService = class {
-      constructor(db) {
-        this.db = db;
-      }
       db;
-      async getData(storeName, key) {
+      constructor() {
+        this.db = this.initIndexedDB();
+      }
+      async initIndexedDB() {
         return new Promise((resolve, reject) => {
+          let dbName = rs_DbName;
+          const request = indexedDB.open(dbName);
+          request.onsuccess = (event) => {
+            const db = event.target.result;
+            resolve(db);
+          };
+          request.onerror = (event) => {
+            console.error(
+              "Error opening IndexedDB:",
+              event.target.error
+            );
+            reject(event.target.error);
+          };
+        });
+      }
+      async getData(storeName, key) {
+        return new Promise(async (resolve, reject) => {
           const start = performance.now();
           const label = `StorageService:getData(${storeName})`;
-          const tx = this.db.transaction([storeName], "readonly");
+          const db = await this.db;
+          const tx = db.transaction([storeName], "readonly");
           const store = tx.objectStore(storeName);
           const request = store.getAll(key);
           request.onsuccess = () => {
@@ -1471,8 +1490,9 @@ var init_i_db_databasestorage_service = __esm({
         });
       }
       async getDataById(storeName, id) {
-        return new Promise((resolve, reject) => {
-          const tx = this.db.transaction([storeName], "readonly");
+        return new Promise(async (resolve, reject) => {
+          const db = await this.db;
+          const tx = db.transaction([storeName], "readonly");
           const store = tx.objectStore(storeName);
           const request = store.get(id);
           request.onsuccess = () => {
@@ -1483,8 +1503,9 @@ var init_i_db_databasestorage_service = __esm({
         });
       }
       async addData(storeName, data, key) {
-        return new Promise((resolve, reject) => {
-          const tx = this.db.transaction([storeName], "readwrite");
+        return new Promise(async (resolve, reject) => {
+          const db = await this.db;
+          const tx = db.transaction([storeName], "readwrite");
           const store = tx.objectStore(storeName);
           tx.oncomplete = () => resolve();
           tx.onabort = () => reject(tx.error ?? new Error("Write transaction aborted"));
@@ -1507,8 +1528,9 @@ var init_i_db_databasestorage_service = __esm({
       }
       async deleteData(storeName, keys) {
         const arr = Array.isArray(keys) ? keys : [keys];
-        return new Promise((resolve, reject) => {
-          const tx = this.db.transaction([storeName], "readwrite");
+        return new Promise(async (resolve, reject) => {
+          const db = await this.db;
+          const tx = db.transaction([storeName], "readwrite");
           const store = tx.objectStore(storeName);
           tx.oncomplete = () => resolve();
           tx.onabort = () => reject(tx.error ?? new Error("Delete transaction aborted"));
@@ -2380,23 +2402,6 @@ var init_watchers_data_service = __esm({
 });
 
 // service/src/lib/service.factory.ts
-async function initIndexedDB() {
-  return new Promise((resolve, reject) => {
-    let dbName = rs_DbName;
-    const request = indexedDB.open(dbName);
-    request.onsuccess = (event) => {
-      const db = event.target.result;
-      resolve(db);
-    };
-    request.onerror = (event) => {
-      console.error(
-        "Error opening IndexedDB:",
-        event.target.error
-      );
-      reject(event.target.error);
-    };
-  });
-}
 function CreatePermitsDownloadService(maxDownloadDateDifference) {
   var storageService = new MemoryStorageService();
   const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
@@ -2408,17 +2413,7 @@ function CreatePermitsDownloadService(maxDownloadDateDifference) {
     null
   );
 }
-async function createServices(eventSender, storageType) {
-  let storageService;
-  let db;
-  if (storageType === 1 /* IndexedDB */) {
-    db = await initIndexedDB();
-    storageService = new IDBDatabaseStorageService(db);
-  } else if (storageType === 0 /* Memory */) {
-    storageService = new MemoryStorageService();
-  } else {
-    throw new Error("Unsupported storage type");
-  }
+async function createServices(eventSender, storageService) {
   const createDownloadStatusService = (dataService) => {
     return new DownloadStatusService(dataService, storageService);
   };
@@ -2508,7 +2503,6 @@ var init_service_factory = __esm({
     init_constants();
     init_download_service();
     init_download_status_service();
-    init_i_db_databasestorage_service();
     init_memory_storage_service();
     init_mywatcher_data_service();
     init_permits_data_service();
@@ -2532,11 +2526,11 @@ var init_service_factory = __esm({
         null
       );
     };
-    StorageType = /* @__PURE__ */ ((StorageType3) => {
-      StorageType3[StorageType3["Memory"] = 0] = "Memory";
-      StorageType3[StorageType3["IndexedDB"] = 1] = "IndexedDB";
-      StorageType3[StorageType3["FileSystem"] = 2] = "FileSystem";
-      return StorageType3;
+    StorageType = /* @__PURE__ */ ((StorageType2) => {
+      StorageType2[StorageType2["Memory"] = 0] = "Memory";
+      StorageType2[StorageType2["IndexedDB"] = 1] = "IndexedDB";
+      StorageType2[StorageType2["FileSystem"] = 2] = "FileSystem";
+      return StorageType2;
     })(StorageType || {});
   }
 });
@@ -2561,16 +2555,16 @@ var init_process_event_service = __esm({
       }
     };
     ProcessEventService = class {
-      constructor(eventSender, storageType) {
+      constructor(eventSender, storageService) {
         this.eventSender = eventSender;
-        this.storageType = storageType;
+        this.storageService = storageService;
       }
       eventSender;
-      storageType;
+      storageService;
       async processEvent(event) {
         try {
           if (event.type === "StatisticsScreenLoaded" /* StatisticsScreenLoaded */ || event.type === "PerformanceScreenLoaded" /* PerformanceScreenLoaded */ || event.type === "MyWatcherStatsRequested" /* MyWatcherStatsRequested */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatcherStatsRequested" /* WatcherStatsRequested */) {
-            const services = await createServices(this.eventSender, this.storageType);
+            const services = await createServices(this.eventSender, this.storageService);
             switch (event.type) {
               case "RequestInputsDownload" /* RequestInputsDownload */:
                 await this.processRequestInputsDownload(event, services);
@@ -2810,8 +2804,8 @@ var init_process_event_service = __esm({
         });
       }
     };
-    CreateProcessEventService = (eventSender, storageType) => {
-      return new ProcessEventService(eventSender, storageType);
+    CreateProcessEventService = (eventSender, storageService) => {
+      return new ProcessEventService(eventSender, storageService);
     };
   }
 });
@@ -2943,9 +2937,9 @@ var init_event_service = __esm({
 // service/src/lib/rosen-download-worker.ts
 var require_rosen_download_worker = __commonJS({
   "service/src/lib/rosen-download-worker.ts"() {
+    init_i_db_databasestorage_service();
     init_models();
     init_process_event_service();
-    init_service_factory();
     var processEventServiceSingleton = /* @__PURE__ */ (() => {
       let instance = null;
       return () => {
@@ -2953,7 +2947,7 @@ var require_rosen_download_worker = __commonJS({
           console.log("Creating new ProcessEventService instance");
           instance = new ProcessEventService(
             new ServiceWorkerEventSender(),
-            1 /* IndexedDB */
+            new IDBDatabaseStorageService()
           );
         }
         return instance;
@@ -3040,7 +3034,6 @@ __export(lib_exports, {
   getChainTypes: () => getChainTypes,
   getUrlConfig: () => getUrlConfig,
   hotWalletAddress: () => hotWalletAddress,
-  initIndexedDB: () => initIndexedDB,
   permitAddresses: () => permitAddresses,
   permitBulkAddresses: () => permitBulkAddresses,
   permitTriggerAddresses: () => permitTriggerAddresses,

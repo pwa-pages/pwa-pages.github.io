@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StorageType = exports.CreateWatcherDownloadService = exports.GetPermitTriggerAddresses = void 0;
-exports.initIndexedDB = initIndexedDB;
 exports.CreatePermitsDownloadService = CreatePermitsDownloadService;
 exports.createServices = createServices;
 const chain_performance_data_service_1 = require("./chain.performance.data.service");
@@ -10,7 +9,6 @@ const chart_service_1 = require("./chart.service");
 const constants_1 = require("./constants");
 const download_service_1 = require("./download.service");
 const download_status_service_1 = require("./download.status.service");
-const i_db_databasestorage_service_1 = require("./i-db-databasestorage.service");
 const memory_storage_service_1 = require("./memory.storage.service");
 const mywatcher_data_service_1 = require("./mywatcher.data.service");
 const permits_data_service_1 = require("./permits.data.service");
@@ -19,20 +17,6 @@ const reports_data_service_1 = require("./reports.data.service");
 const reward_data_service_1 = require("./reward.data.service");
 const transaction_download_service_1 = require("./transaction.download.service");
 const watchers_data_service_1 = require("./watchers.data.service");
-async function initIndexedDB() {
-    return new Promise((resolve, reject) => {
-        let dbName = constants_1.rs_DbName;
-        const request = indexedDB.open(dbName);
-        request.onsuccess = (event) => {
-            const db = event.target.result;
-            resolve(db);
-        };
-        request.onerror = (event) => {
-            console.error('Error opening IndexedDB:', event.target.error);
-            reject(event.target.error);
-        };
-    });
-}
 const GetPermitTriggerAddresses = () => {
     return chain_service_1.permitTriggerAddresses;
 };
@@ -55,19 +39,7 @@ var StorageType;
     StorageType[StorageType["IndexedDB"] = 1] = "IndexedDB";
     StorageType[StorageType["FileSystem"] = 2] = "FileSystem";
 })(StorageType || (exports.StorageType = StorageType = {}));
-async function createServices(eventSender, storageType) {
-    let storageService;
-    let db;
-    if (storageType === StorageType.IndexedDB) {
-        db = await initIndexedDB();
-        storageService = new i_db_databasestorage_service_1.IDBDatabaseStorageService(db);
-    }
-    else if (storageType === StorageType.Memory) {
-        storageService = new memory_storage_service_1.MemoryStorageService();
-    }
-    else {
-        throw new Error("Unsupported storage type");
-    }
+async function createServices(eventSender, storageService) {
     const createDownloadStatusService = (dataService) => {
         return new download_status_service_1.DownloadStatusService(dataService, storageService);
     };

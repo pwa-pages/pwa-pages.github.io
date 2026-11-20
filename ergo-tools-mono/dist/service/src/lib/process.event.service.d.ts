@@ -1,11 +1,12 @@
-import { EventPayload, EventSender, Services, StorageType } from "./service.factory";
+import { IStorageService } from "./constants";
+import { EventPayload, EventSender, Services } from "./service.factory";
 export declare class ServiceWorkerEventSender implements EventSender {
     sendEvent<T>(event: EventPayload<T>): Promise<void>;
 }
 export declare class ProcessEventService {
     private eventSender;
-    private storageType;
-    constructor(eventSender: EventSender, storageType: StorageType);
+    private storageService;
+    constructor(eventSender: EventSender, storageService: IStorageService);
     processEvent(event: EventPayload<object>): Promise<void>;
     private processWatcherStatsRequested;
     private processReportsRequested;
@@ -23,5 +24,5 @@ export declare class ProcessEventService {
     private downloadForActivePermitAddress;
     private sendPermitsChangedEventForAddresses;
 }
-export declare const CreateProcessEventService: (eventSender: EventSender, storageType: StorageType) => ProcessEventService;
+export declare const CreateProcessEventService: (eventSender: EventSender, storageService: IStorageService) => ProcessEventService;
 export { EventSender };

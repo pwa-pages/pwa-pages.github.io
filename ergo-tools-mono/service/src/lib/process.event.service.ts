@@ -1,7 +1,7 @@
 import { permitTriggerAddresses, hotWalletAddress, ChainType, permitAddresses } from "./chain.service";
-import { UrlAction } from "./constants";
+import { IStorageService, UrlAction } from "./constants";
 import { PermitInfo, EventType } from "./models";
-import { createServices, EventPayload, EventSender, Services, StorageType } from "./service.factory";
+import { createServices, EventPayload, EventSender, Services } from "./service.factory";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ServiceWorkerEventSender implements EventSender {
@@ -19,7 +19,7 @@ export class ServiceWorkerEventSender implements EventSender {
 }
 
 export class ProcessEventService {
-  constructor(private eventSender: EventSender, private storageType: StorageType) { }
+  constructor(private eventSender: EventSender, private storageService: IStorageService) { }
 
   public async processEvent(event: EventPayload<object>) {
     try {
@@ -32,7 +32,7 @@ export class ProcessEventService {
         event.type === EventType.WatcherStatsRequested
       ) {
         
-        const services = await createServices(this.eventSender, this.storageType);
+        const services = await createServices(this.eventSender, this.storageService);
 
         switch (event.type) {
           case EventType.RequestInputsDownload:
@@ -362,9 +362,9 @@ export class ProcessEventService {
 
 export const CreateProcessEventService = (
   eventSender: EventSender,
-  storageType: StorageType,
+  storageService: IStorageService,
 ): ProcessEventService => {
-  return new ProcessEventService(eventSender, storageType);
+  return new ProcessEventService(eventSender, storageService);
 }
 export { EventSender };
 

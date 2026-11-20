@@ -72,7 +72,7 @@ export class HttpDownloadService {
     return defer(() => {
       this.initiateDownload();
       const storage = from(this.storageService.getDB()).pipe(
-        map((db) => new IDBDatabaseStorageService(db)),
+        map(() => new IDBDatabaseStorageService()),
       );
       const cached: Observable<T> = storage.pipe(
         concatMap((store) => from(store.getDataById(rs_DownloadStoreName, [key]))),

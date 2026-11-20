@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { Readable } from 'node:stream';
-import { CreateProcessEventService, EventPayload, EventSender, EventService, EventType, WatchersStats, StorageType, getActiveChainTypes } from '@ergo-tools/service';
+import { CreateProcessEventService, EventPayload, EventSender, EventService, EventType, WatchersStats, StorageType, getActiveChainTypes, MemoryStorageService } from '@ergo-tools/service';
 
 import {
   McpServer,
@@ -21,7 +21,7 @@ class DirectEventSender implements EventSender {
   }
 }
 var eventService = new EventService();
-const processEventService = CreateProcessEventService(new DirectEventSender(eventService), StorageType.Memory
+const processEventService = CreateProcessEventService(new DirectEventSender(eventService), new MemoryStorageService
 );
 
 var watchersStats: WatchersStats | null = null;

@@ -1,15 +1,31 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IDBDatabaseStorageService = void 0;
+const constants_1 = require("./constants");
 class IDBDatabaseStorageService {
-    constructor(db) {
-        this.db = db;
+    constructor() {
+        this.db = this.initIndexedDB();
+    }
+    async initIndexedDB() {
+        return new Promise((resolve, reject) => {
+            let dbName = constants_1.rs_DbName;
+            const request = indexedDB.open(dbName);
+            request.onsuccess = (event) => {
+                const db = event.target.result;
+                resolve(db);
+            };
+            request.onerror = (event) => {
+                console.error('Error opening IndexedDB:', event.target.error);
+                reject(event.target.error);
+            };
+        });
     }
     async getData(storeName, key) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             const start = performance.now();
             const label = `StorageService:getData(${storeName})`;
-            const tx = this.db.transaction([storeName], 'readonly');
+            const db = await this.db;
+            const tx = db.transaction([storeName], 'readonly');
             const store = tx.objectStore(storeName);
             const request = store.getAll(key);
             request.onsuccess = () => {
@@ -23,8 +39,9 @@ class IDBDatabaseStorageService {
         });
     }
     async getDataById(storeName, id) {
-        return new Promise((resolve, reject) => {
-            const tx = this.db.transaction([storeName], 'readonly');
+        return new Promise(async (resolve, reject) => {
+            const db = await this.db;
+            const tx = db.transaction([storeName], 'readonly');
             const store = tx.objectStore(storeName);
             const request = store.get(id);
             request.onsuccess = () => {
@@ -35,8 +52,9 @@ class IDBDatabaseStorageService {
         });
     }
     async addData(storeName, data, key) {
-        return new Promise((resolve, reject) => {
-            const tx = this.db.transaction([storeName], 'readwrite');
+        return new Promise(async (resolve, reject) => {
+            const db = await this.db;
+            const tx = db.transaction([storeName], 'readwrite');
             const store = tx.objectStore(storeName);
             tx.oncomplete = () => resolve();
             tx.onabort = () => reject(tx.error ?? new Error('Write transaction aborted'));
@@ -63,8 +81,9 @@ class IDBDatabaseStorageService {
     }
     async deleteData(storeName, keys) {
         const arr = Array.isArray(keys) ? keys : [keys];
-        return new Promise((resolve, reject) => {
-            const tx = this.db.transaction([storeName], 'readwrite');
+        return new Promise(async (resolve, reject) => {
+            const db = await this.db;
+            const tx = db.transaction([storeName], 'readwrite');
             const store = tx.objectStore(storeName);
             tx.oncomplete = () => resolve();
             tx.onabort = () => reject(tx.error ?? new Error('Delete transaction aborted'));

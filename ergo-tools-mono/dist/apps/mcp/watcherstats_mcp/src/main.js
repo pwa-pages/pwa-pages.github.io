@@ -48,7 +48,7 @@ class DirectEventSender {
     }
 }
 var eventService = new service_1.EventService();
-const processEventService = (0, service_1.CreateProcessEventService)(new DirectEventSender(eventService), service_1.StorageType.Memory);
+const processEventService = (0, service_1.CreateProcessEventService)(new DirectEventSender(eventService), new service_1.MemoryStorageService);
 var watchersStats = null;
 eventService.subscribeToEvent(service_1.EventType.WatchersStatsChanged, (data) => {
     watchersStats = data;

@@ -19,9 +19,9 @@ class ServiceWorkerEventSender {
 }
 exports.ServiceWorkerEventSender = ServiceWorkerEventSender;
 class ProcessEventService {
-    constructor(eventSender, storageType) {
+    constructor(eventSender, storageService) {
         this.eventSender = eventSender;
-        this.storageType = storageType;
+        this.storageService = storageService;
     }
     async processEvent(event) {
         try {
@@ -31,7 +31,7 @@ class ProcessEventService {
                 event.type === models_1.EventType.RequestInputsDownload ||
                 event.type === models_1.EventType.ReportsRequested ||
                 event.type === models_1.EventType.WatcherStatsRequested) {
-                const services = await (0, service_factory_1.createServices)(this.eventSender, this.storageType);
+                const services = await (0, service_factory_1.createServices)(this.eventSender, this.storageService);
                 switch (event.type) {
                     case models_1.EventType.RequestInputsDownload:
                         await this.processRequestInputsDownload(event, services);
@@ -209,8 +209,8 @@ class ProcessEventService {
     }
 }
 exports.ProcessEventService = ProcessEventService;
-const CreateProcessEventService = (eventSender, storageType) => {
-    return new ProcessEventService(eventSender, storageType);
+const CreateProcessEventService = (eventSender, storageService) => {
+    return new ProcessEventService(eventSender, storageService);
 };
 exports.CreateProcessEventService = CreateProcessEventService;
 //# sourceMappingURL=process.event.service.js.map
