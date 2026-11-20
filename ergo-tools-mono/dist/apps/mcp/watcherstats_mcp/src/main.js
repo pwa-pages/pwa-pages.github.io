@@ -1,43 +1,11 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_http_1 = require("node:http");
 const node_stream_1 = require("node:stream");
 const service_1 = require("@ergo-tools/service");
+const file_storage_service_js_1 = require("./file.storage.service.js");
+const get_watchers_stats_tool_js_1 = require("./get-watchers-stats.tool.js");
 const server_1 = require("@modelcontextprotocol/server");
-const z = __importStar(require("zod/v4"));
 class DirectEventSender {
     eventService;
     constructor(eventService) {
@@ -48,7 +16,16 @@ class DirectEventSender {
     }
 }
 var eventService = new service_1.EventService();
-const processEventService = (0, service_1.CreateProcessEventService)(new DirectEventSender(eventService), new service_1.MemoryStorageService);
+const processEventService = (0, service_1.CreateProcessEventService)(new DirectEventSender(eventService), new file_storage_service_js_1.FileStorageService());
+var getWatchersStatsTool = new get_watchers_stats_tool_js_1.GetWatchersStatsTool(eventService);
+const handler = (0, server_1.createMcpHandler)(() => {
+    const server = new server_1.McpServer({
+        name: 'my-nx-mcp',
+        version: '1.0.0'
+    });
+    getWatchersStatsTool.register(server);
+    return server;
+});
 var watchersStats = null;
 eventService.subscribeToEvent(service_1.EventType.WatchersStatsChanged, (data) => {
     watchersStats = data;
@@ -66,30 +43,6 @@ processEventService.processEvent({
 processEventService.processEvent({
     data: null,
     type: service_1.EventType.PerformanceScreenLoaded,
-});
-const handler = (0, server_1.createMcpHandler)(() => {
-    const server = new server_1.McpServer({
-        name: 'my-nx-mcp',
-        version: '1.0.0'
-    });
-    server.registerTool('get_customer', {
-        description: 'Get a customer by ID',
-        inputSchema: z.object({
-            id: z.string()
-        })
-    }, async ({ id }) => {
-        const customer = { id };
-        return {
-            content: [
-                {
-                    type: 'text',
-                    text: JSON.stringify(customer)
-                }
-            ],
-            structuredContent: customer
-        };
-    });
-    return server;
 });
 (0, node_http_1.createServer)(async (req, res) => {
     if (req.url?.split('?')[0] !== '/mcp') {

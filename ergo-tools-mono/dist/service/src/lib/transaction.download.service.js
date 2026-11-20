@@ -165,13 +165,13 @@ class TransactionDownloadService {
             if (callback) {
                 await callback?.();
             }
+            var a = new models_1.Address(address, null);
             const downloadStatus = (await this.downloadStatusIndexedDbService?.getDownloadStatus(address))?.status || 'false';
             if (existingData && downloadStatus === 'true') {
-                console.log(`Found existing boxId in db for ${address}, no need to download more.`);
+                console.log(`Found existing boxId in db for ${a.largeAddressForDisplay}, no need to download more.`);
             }
             else if (itemsz >= this.downloadInitialSize) {
                 await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'false');
-                var a = new models_1.Address(address, null);
                 console.log(`Downloading all tx's for : ${a.largeAddressForDisplay}`);
                 await this.downloadAllForAddress(address, 0, urlAction, callback);
                 return this.dataService.getData();

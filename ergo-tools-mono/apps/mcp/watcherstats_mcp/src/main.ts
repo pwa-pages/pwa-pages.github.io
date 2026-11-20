@@ -1,13 +1,13 @@
 import { createServer } from 'node:http';
 import { Readable } from 'node:stream';
-import { CreateProcessEventService, EventPayload, EventSender, EventService, EventType, WatchersStats, StorageType, getActiveChainTypes, MemoryStorageService } from '@ergo-tools/service';
+import { CreateProcessEventService, EventPayload, EventSender, EventService, EventType, WatchersStats, getActiveChainTypes } from '@ergo-tools/service';
+import { FileStorageService } from './file.storage.service.js';
+import { GetWatchersStatsTool } from './get-watchers-stats.tool.js';
 
 import {
   McpServer,
   createMcpHandler
 } from '@modelcontextprotocol/server';
-
-import * as z from 'zod/v4';
 
 
 class DirectEventSender implements EventSender {
@@ -20,9 +20,28 @@ class DirectEventSender implements EventSender {
     );
   }
 }
+
+
+
 var eventService = new EventService();
-const processEventService = CreateProcessEventService(new DirectEventSender(eventService), new MemoryStorageService
+const processEventService = CreateProcessEventService(
+  new DirectEventSender(eventService),
+  new FileStorageService(),
 );
+
+
+var getWatchersStatsTool = new GetWatchersStatsTool(eventService);
+
+const handler = createMcpHandler(() => {
+  const server = new McpServer({
+    name: 'my-nx-mcp',
+    version: '1.0.0'
+  });
+
+  getWatchersStatsTool.register(server);
+
+  return server;
+});
 
 var watchersStats: WatchersStats | null = null;
 eventService.subscribeToEvent(
@@ -51,37 +70,6 @@ processEventService.processEvent({
 
 
 
-const handler = createMcpHandler(() => {
-  const server = new McpServer({
-    name: 'my-nx-mcp',
-    version: '1.0.0'
-  });
-
-  server.registerTool(
-    'get_customer',
-    {
-      description: 'Get a customer by ID',
-      inputSchema: z.object({
-        id: z.string()
-      })
-    },
-    async ({ id }) => {
-      const customer = { id };
-
-      return {
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify(customer)
-          }
-        ],
-        structuredContent: customer
-      };
-    }
-  );
-
-  return server;
-});
 
 createServer(async (req, res) => {
   if (req.url?.split('?')[0] !== '/mcp') {
