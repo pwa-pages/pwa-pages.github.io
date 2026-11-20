@@ -1,7 +1,13 @@
-import { randomUUID } from 'node:crypto';
-import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
+import { createHash, randomUUID } from 'node:crypto';
+import {
+  mkdir,
+  readFile,
+  rename,
+  rm,
+  stat,
+  writeFile,
+} from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { deserialize, serialize } from 'node:v8';
 import { IStorageService } from '@ergo-tools/service';
 import envPaths from 'env-paths';
 
@@ -10,7 +16,26 @@ interface StoredEntry {
   value: unknown;
 }
 
+const serializedDateKey = '__ergo_tools_storage_date__';
+
+function isSerializedDate(
+  value: unknown,
+): value is { [serializedDateKey]: number | null } {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) {
+    return false;
+  }
+
+  const record = value as Record<string, unknown>;
+  const timestamp = record[serializedDateKey];
+  return Object.keys(record).length === 1 &&
+    Object.hasOwn(record, serializedDateKey) &&
+    (timestamp === null ||
+      (typeof timestamp === 'number' && Number.isFinite(timestamp)));
+}
+
 export class FileStorageService implements IStorageService {
+  private static readonly lockTimeoutMs = 10_000;
+  private static readonly lockStaleMs = 30_000;
   private static readonly pendingOperations = new Map<string, Promise<unknown>>();
   private readonly directory: string;
 
@@ -126,8 +151,18 @@ export class FileStorageService implements IStorageService {
   }
 
   private getFilePath(storeName: string): string {
-    const fileName = `${Buffer.from(storeName, 'utf8').toString('base64url')}.bin`;
-    return resolve(this.directory, fileName);
+    const sanitized = storeName
+      .toLowerCase()
+      .replace(/[^a-z0-9._-]/g, '_')
+      .replace(/^\.+/, '_')
+      .slice(0, 64);
+    const isReserved = /^(con|prn|aux|nul|com\d|lpt\d)(\..*)?$/.test(sanitized);
+    // Add a hash whenever the name was altered so distinct stores never collide.
+    const baseName =
+      sanitized === storeName && !isReserved
+        ? sanitized
+        : `${sanitized}-${createHash('sha256').update(storeName).digest('hex').slice(0, 8)}`;
+    return resolve(this.directory, `${baseName}.json`);
   }
 
   private async withStore<T>(
@@ -143,7 +178,7 @@ export class FileStorageService implements IStorageService {
       FileStorageService.pendingOperations.get(filePath) ?? Promise.resolve();
     const currentOperation = previousOperation
       .catch(() => undefined)
-      .then(() => operation(filePath));
+      .then(() => this.withFileLock(filePath, () => operation(filePath)));
 
     FileStorageService.pendingOperations.set(filePath, currentOperation);
 
@@ -156,10 +191,50 @@ export class FileStorageService implements IStorageService {
     }
   }
 
-  private async readStore(filePath: string): Promise<StoredEntry[]> {
-    let contents: Buffer;
+  // Cross-process lock so multiple server instances sharing a directory don't clobber each other.
+  private async withFileLock<T>(
+    filePath: string,
+    operation: () => Promise<T>,
+  ): Promise<T> {
+    await mkdir(this.directory, { recursive: true });
+    const lockPath = `${filePath}.lock`;
+    const deadline = Date.now() + FileStorageService.lockTimeoutMs;
+
+    for (;;) {
+      try {
+        await writeFile(lockPath, String(process.pid), { flag: 'wx' });
+        break;
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== 'EEXIST') {
+          throw error;
+        }
+        try {
+          const { mtimeMs } = await stat(lockPath);
+          if (Date.now() - mtimeMs > FileStorageService.lockStaleMs) {
+            await rm(lockPath, { force: true });
+            continue;
+          }
+        } catch {
+          continue;
+        }
+        if (Date.now() > deadline) {
+          throw new Error(`Timed out waiting for storage lock: ${lockPath}`);
+        }
+        await new Promise((r) => setTimeout(r, 25));
+      }
+    }
+
     try {
-      contents = await readFile(filePath);
+      return await operation();
+    } finally {
+      await rm(lockPath, { force: true });
+    }
+  }
+
+  private async readStore(filePath: string): Promise<StoredEntry[]> {
+    let contents: string;
+    try {
+      contents = await readFile(filePath, 'utf8');
     } catch (error) {
       if (
         error instanceof Error &&
@@ -171,7 +246,16 @@ export class FileStorageService implements IStorageService {
       throw error;
     }
 
-    const storedValue: unknown = deserialize(contents);
+    let storedValue: unknown;
+    try {
+      storedValue = JSON.parse(contents, (_key, value: unknown) =>
+        isSerializedDate(value)
+          ? new Date(value[serializedDateKey] ?? Number.NaN)
+          : value,
+      );
+    } catch {
+      throw new Error(`Invalid storage file: ${filePath}`);
+    }
     if (
       !Array.isArray(storedValue) ||
       storedValue.some(
@@ -195,7 +279,30 @@ export class FileStorageService implements IStorageService {
     await mkdir(this.directory, { recursive: true });
 
     const temporaryPath = `${filePath}.${randomUUID()}.tmp`;
-    await writeFile(temporaryPath, serialize(entries), { flag: 'wx' });
-    await rename(temporaryPath, filePath);
+    try {
+      const contents = JSON.stringify(
+        entries,
+        function (this: Record<string, unknown>, key, value: unknown) {
+          const originalValue = this[key];
+          if (originalValue instanceof Date) {
+            const timestamp = originalValue.getTime();
+            return {
+              [serializedDateKey]: Number.isFinite(timestamp)
+                ? timestamp
+                : null,
+            };
+          }
+          return value;
+        },
+        2,
+      );
+      await writeFile(temporaryPath, contents, {
+        flag: 'wx',
+      });
+      await rename(temporaryPath, filePath);
+    } catch (error) {
+      await rm(temporaryPath, { force: true });
+      throw error;
+    }
   }
 }

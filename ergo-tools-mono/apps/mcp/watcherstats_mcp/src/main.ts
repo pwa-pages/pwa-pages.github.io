@@ -77,24 +77,30 @@ function createRosenMcpServer(): McpServer {
   return server;
 }
 
-// Initialize watcher data
+
 async function initializeServices(): Promise<void> {
+
+
+
+
   for (const c of getActiveChainTypes()) {
-    await processEventService.processEvent({
+    processEventService.processEvent({
       data: c as unknown as object,
       type: EventType.ReportsRequested
     });
   }
 
-  await processEventService.processEvent({
+  processEventService.processEvent({
+    data: null,
+    type: EventType.PerformanceScreenLoaded
+  });
+
+  processEventService.processEvent({
     data: null,
     type: EventType.WatcherStatsRequested
   });
 
-  await processEventService.processEvent({
-    data: null,
-    type: EventType.PerformanceScreenLoaded
-  });
+
 }
 
 // STDIO
