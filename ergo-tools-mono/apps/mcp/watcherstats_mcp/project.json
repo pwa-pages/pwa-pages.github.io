@@ -15,7 +15,13 @@
         "outputPath": "dist/apps/mcp/watcherstats_mcp",
         "main": "apps/mcp/watcherstats_mcp/src/main.ts",
         "tsConfig": "apps/mcp/watcherstats_mcp/tsconfig.app.json",
-        "assets": ["apps/mcp/watcherstats_mcp/src/assets"],
+        "assets": [
+          {
+            "input": "apps/mcp/watcherstats_mcp/src/assets",
+            "glob": "**/*",
+            "output": "assets"
+          }
+        ],
         "generatePackageJson": true,
         "bundle": true,
         "thirdParty": false
