@@ -2972,10 +2972,6 @@ var require_rosen_download_worker = __commonJS({
           })
         );
       });
-    } else {
-      console.log(
-        "[Rosen Download] Running outside Service Worker (Angular/main thread or another context)"
-      );
     }
   }
 });

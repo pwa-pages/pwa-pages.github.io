@@ -53,8 +53,4 @@ if (isServiceWorker) {
       })
     );
   });
-} else {
-  console.log(
-    '[Rosen Download] Running outside Service Worker (Angular/main thread or another context)'
-  );
-}
+} 

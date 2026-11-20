@@ -27914,10 +27914,6 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
             })
           );
         });
-      } else {
-        console.log(
-          "[Rosen Download] Running outside Service Worker (Angular/main thread or another context)"
-        );
       }
     }
   });

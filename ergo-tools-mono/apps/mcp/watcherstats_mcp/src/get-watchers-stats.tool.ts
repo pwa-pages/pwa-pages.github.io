@@ -25,7 +25,7 @@ export class GetWatchersStatsTool {
         inputSchema: z.object({})
       },
       async () => {
-        const watchersStats = this.watchersStats;
+        const watchersStats = JSON.parse(JSON.stringify(this.watchersStats));;
         if (watchersStats === null) {
           return {
             content: [

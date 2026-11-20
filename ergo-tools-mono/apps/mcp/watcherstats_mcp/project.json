@@ -6,7 +6,7 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@nx/esbuild:esbuild",
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
@@ -16,7 +16,9 @@
         "main": "apps/mcp/watcherstats_mcp/src/main.ts",
         "tsConfig": "apps/mcp/watcherstats_mcp/tsconfig.app.json",
         "assets": ["apps/mcp/watcherstats_mcp/src/assets"],
-        "generatePackageJson": true
+        "generatePackageJson": true,
+        "bundle": true,
+        "thirdParty": false
       },
       "configurations": {
         "development": {},

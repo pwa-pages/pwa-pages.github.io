@@ -30,7 +30,4 @@ if (isServiceWorker) {
         }));
     });
 }
-else {
-    console.log('[Rosen Download] Running outside Service Worker (Angular/main thread or another context)');
-}
 //# sourceMappingURL=rosen-download-worker.js.map
