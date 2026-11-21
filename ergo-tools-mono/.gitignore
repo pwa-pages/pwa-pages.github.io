@@ -7,3 +7,4 @@
 .claude/settings.local.json
 node_modules
 dist
+apps/mcp/telegram_pi/.env 
