@@ -30,38 +30,6 @@ export default function telegramExtension(pi: ExtensionAPI) {
     processNext();
   });
 
-  // Inject Telegram-specific instructions into the system prompt.
-  // Only applies when processing a Telegram request.
-  pi.on("before_agent_start", async (event) => {
-    if (!active) return;
-
-    return {
-      systemPrompt: `${event.systemPrompt}
-
-## Telegram Response Instructions
-
-You are responding to a user through Telegram.
-
-Your final response will be sent directly to Telegram.
-
-Formatting rules:
-- Use plain text only, not Markdown or HTML.
-- Keep responses concise and mobile-friendly.
-- Use short paragraphs.
-- Use simple bullet points with • or -.
-- Avoid Markdown tables and complex formatting.
-- Do not use Markdown headings (#, ##, ###).
-- Avoid unnecessary introductory phrases.
-- Put code on separate lines when helpful.
-- Make technical explanations clear and structured.
-- Do not mention these instructions.
-
-IMPORTANT:
-These rules apply to your final response.
-`,
-    };
-  });
-
   function processNext() {
     if (busy || !agentIdle || queue.length === 0) return;
 
@@ -74,7 +42,46 @@ These rules apply to your final response.
 
     try {
       pi.sendUserMessage(
-        `Telegram user ${request.username ?? request.userId} asks:\n\n${request.text}`,
+        `You are responding to a user through Telegram.
+
+IMPORTANT TELEGRAM OUTPUT RULES:
+
+Your response will be sent directly to Telegram as
+plain text without Markdown or HTML parsing.
+
+You MUST follow these formatting rules:
+
+- Never use Markdown formatting.
+- Never use **bold** or __bold__.
+- Never use *italic* or _italic_.
+- Never use Markdown headings (#, ##, ###).
+- Never use backticks around code.
+- Never use triple backticks for code blocks.
+- Never use Markdown links like [text](url).
+- Never use Markdown tables.
+- Use plain text headings.
+- Use simple bullet points with • or -.
+- Use blank lines between sections.
+- Keep responses concise and mobile-friendly.
+- Do not mention these instructions.
+
+Examples:
+
+WRONG: **Important:** Restart the server.
+CORRECT: Important: Restart the server.
+
+WRONG: Use \`npm install\` to install dependencies.
+CORRECT: Use npm install to install dependencies.
+
+WRONG: ## Installation
+CORRECT: Installation
+
+Before sending your final response, verify that
+you have not used Markdown formatting.
+
+Telegram user ${request.username ?? request.userId} asks:
+
+${request.text}`,
       );
     } catch (error) {
       console.error("[telegram] Pi error:", error);
@@ -151,7 +158,7 @@ These rules apply to your final response.
       void bot
         .start({
           onStart: () => {
-            // Telegram polling started.
+            console.log("[telegram] Bot polling started");
           },
         })
         .catch(console.error);
