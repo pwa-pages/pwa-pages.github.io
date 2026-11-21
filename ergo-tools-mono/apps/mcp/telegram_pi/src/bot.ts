@@ -1,64 +1,111 @@
-import { Bot } from "grammy";
-import type { Responder } from "./responder.js";
 
-export function createBot(token: string, responder: Responder) {
+import { Bot } from "grammy";
+import { getAddressedText } from "./mentions.js";
+
+export interface TelegramRequest {
+  text: string;
+  chatId: number;
+  messageId: number;
+  userId: number;
+  username?: string;
+}
+
+export function createTelegramBot(
+  token: string,
+  onMessage: (request: TelegramRequest) => Promise<void>,
+) {
   const bot = new Bot(token);
 
-  bot.command("start", async (ctx) => {
-    await ctx.reply(
-      "Hello! Send me a message or mention me in a group.",
-    );
+  // Read allowed Telegram chat IDs from environment
+  const allowedChats = new Set(
+    (process.env.TELEGRAM_ALLOWED_CHAT_IDS ?? "")
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean),
+  );
+
+  console.log("[telegram] Allowed chat IDs:", [...allowedChats]);
+
+  // Log ALL incoming Telegram updates
+  // This runs before any filtering
+  bot.use(async (ctx, next) => {
+    console.log("[telegram] RAW UPDATE:", {
+      updateId: ctx.update.update_id,
+      chatId: ctx.chat?.id,
+      chatType: ctx.chat?.type,
+      from: ctx.from?.username,
+      text: ctx.message?.text,
+      updateTypes: Object.keys(ctx.update),
+    });
+
+    await next();
   });
 
+  // Handle text messages
   bot.on("message:text", async (ctx) => {
+    const chatId = String(ctx.chat.id);
     const text = ctx.message.text;
-    const isPrivate = ctx.chat.type === "private";
 
-    const isMentioned = ctx.message.entities?.some(
-      (entity) =>
-        entity.type === "mention" &&
-        text
-          .slice(entity.offset, entity.offset + entity.length)
-          .toLowerCase() === `@${ctx.me.username.toLowerCase()}`,
-    ) ?? false;
+    console.log("[telegram] Message received:", {
+      chatId,
+      chatType: ctx.chat.type,
+      userId: ctx.from.id,
+      username: ctx.from.username,
+      text,
+    });
 
-    const isReplyToBot =
-      ctx.message.reply_to_message?.from?.id === ctx.me.id;
-
-    if (!isPrivate && !isMentioned && !isReplyToBot) {
+    // Check if chat is allowed
+    if (!allowedChats.has(chatId)) {
+      console.log(
+        `[telegram] Ignored: chat ${chatId} is not allowed`,
+      );
       return;
     }
 
-    const cleanText = text
-      .replace(new RegExp(`@${ctx.me.username}\\b`, "gi"), "")
-      .trim();
+    // Check if the bot was mentioned or replied to
+    const addressedText = getAddressedText(ctx);
 
-    if (!cleanText) {
-      await ctx.reply("What would you like to ask?");
+    if (addressedText === null) {
+      console.log(
+        "[telegram] Ignored: bot was not mentioned",
+      );
       return;
     }
 
+    console.log(
+      "[telegram] Bot addressed with:",
+      addressedText,
+    );
+
+    if (!addressedText) {
+      await ctx.reply("Please include a question.");
+      return;
+    }
+
+    // Forward the message to our handler
     try {
-      const answer = await responder.respond({
-        text: cleanText,
-        userId: ctx.from.id,
+      await onMessage({
+        text: addressedText,
         chatId: ctx.chat.id,
+        messageId: ctx.message.message_id,
+        userId: ctx.from.id,
         username: ctx.from.username,
       });
-
-      await ctx.reply(answer, {
-        reply_parameters: {
-          message_id: ctx.message.message_id,
-        },
-      });
     } catch (error) {
-      console.error("Failed to respond:", error);
-      await ctx.reply("Something went wrong.");
+      console.error(
+        "[telegram] Message handler failed:",
+        error,
+      );
+
+      await ctx.reply(
+        "Sorry, something went wrong.",
+      );
     }
   });
 
+  // Catch grammY errors
   bot.catch((error) => {
-    console.error("Telegram error:", error);
+    console.error("[telegram] Bot error:", error);
   });
 
   return bot;

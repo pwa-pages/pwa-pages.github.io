@@ -30,6 +30,7 @@
     "@fortawesome/fontawesome-free": "^7.0.0",
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
+    "@mariozechner/pi-coding-agent": "^0.73.1",
     "@modelcontextprotocol/server": "^2.4.0",
     "angularx-qrcode": "^22.0.0",
     "chart.js": "^4.5.0",

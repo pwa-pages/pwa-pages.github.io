@@ -1,5 +1,4 @@
-
-import { Bot } from "grammy";
+import { createTelegramBot } from "./bot.js";
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -7,40 +6,23 @@ if (!token) {
   throw new Error("TELEGRAM_BOT_TOKEN is missing");
 }
 
-const bot = new Bot(token);
+const bot = createTelegramBot(token, async (request) => {
+  console.log("Received Telegram message:", request);
 
-// Handle /start command
-bot.command("start", async (ctx) => {
-  console.log("Received /start from:", ctx.from?.username);
-
-  await ctx.reply("Hello from Rosen bot!");
+  await bot.api.sendMessage(
+    request.chatId,
+    `Echo: ${request.text}`,
+    {
+      reply_parameters: {
+        message_id: request.messageId,
+      },
+    },
+  );
 });
-
-// Handle text messages
-bot.on("message:text", async (ctx) => {
-  console.log("Received message:", ctx.message.text);
-
-  await ctx.reply(`You said: ${ctx.message.text}`);
-});
-
-// Handle errors
-bot.catch((error) => {
-  console.error("Telegram error:", error);
-});
-
-// Connect to Telegram
-console.log("Connecting to Telegram...");
 
 await bot.init();
 
 console.log(`Connected as @${bot.botInfo.username}`);
-console.log(`Bot link: https://t.me/${bot.botInfo.username}`);
+console.log("Starting standalone Telegram bot...");
 
-// Start listening for messages
-console.log("Starting polling...");
-
-await bot.start({
-  onStart: (info) => {
-    console.log(`Polling started for @${info.username}`);
-  },
-});
+await bot.start();
