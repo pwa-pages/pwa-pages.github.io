@@ -1,50 +1,12 @@
-Retrieve the latest Rosen Bridge chain performance statistics across supported blockchains.
+Retrieve the latest Rosen Bridge watcher performance totals, grouped by blockchain.
 
-This tool provides a comparison of watcher reward performance across different blockchain networks in the Rosen Bridge ecosystem.
+The tool returns the total eRSN reward amount attributed to each supported chain from performance transactions recorded during the last seven days. Amounts are summed from eRSN outputs sent to configured reward addresses and are normalized using the eRSN decimal precision. A chain is attributed to each transaction based on the RWT token types in its outputs.
 
-The statistics represent the amount of rewards earned by a watcher on each supported blockchain during the last week, expressed in RSN (Rosen Token).
+Response shape:
+- An object keyed by supported blockchain names.
+- Each chain maps to an object with a `chart` number: the aggregated eRSN reward amount for that chain during the reporting period.
+- Chains with no matching rewards are included with `chart: 0`.
 
-Returned statistics include:
-- Weekly watcher rewards for each supported blockchain.
-- Chain-specific performance values expressed in RSN.
-- Performance comparisons between supported blockchains.
+These values are reward amounts, not transaction counts, watcher counts, or currency valuations. No input parameters are required.
 
-Response structure:
-The response is a JSON object mapping blockchain names to their performance data.
-
-Each blockchain contains:
-- chart: Number representing the amount of rewards earned by a watcher on that blockchain during the last week, expressed in RSN.
-
-Example response:
-{
-  "Bitcoin": { "chart": 0 },
-  "Cardano": { "chart": 2160.976 },
-  "Ergo": { "chart": 6442.441 },
-  "Ethereum": { "chart": 0 },
-  "Binance": { "chart": 0 },
-  "Doge": { "chart": 0 }
-}
-
-Field explanations:
-- Blockchain name: Identifies the blockchain network.
-- chart: Weekly watcher rewards in RSN for the corresponding blockchain.
-- A chart value of 0 indicates that no rewards are represented for that blockchain in the returned data.
-- Additional blockchain networks may be included in future versions.
-
-Use this tool when users ask about:
-- Rosen Bridge chain performance.
-- Weekly watcher rewards across supported blockchains.
-- How much RSN a watcher earns on a specific blockchain.
-- Comparing watcher reward performance between blockchains.
-- Which blockchain has the highest or lowest weekly watcher rewards.
-- Watcher reward statistics over the last week.
-
-No input parameters are required.
-
-The server maintains a cached snapshot of chain performance statistics, automatically updated through PerfChartChanged events.
-
-The tool returns the latest available statistics as both structured JSON and serialized JSON text.
-
-The tool does not initiate a new data fetch when called. It returns the most recently received statistics.
-
-If chain performance statistics have not yet been received, the tool returns an error indicating that data is unavailable.
+The server returns the latest available performance snapshot as structured JSON and serialized JSON text. The snapshot is updated as performance transaction data is processed. If no snapshot has been received yet, the tool returns an error indicating that chain performance statistics are unavailable.

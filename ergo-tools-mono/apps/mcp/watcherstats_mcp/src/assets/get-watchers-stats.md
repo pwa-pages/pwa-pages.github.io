@@ -1,62 +1,14 @@
-Retrieve the latest Rosen Bridge watcher statistics across supported blockchains.
+Retrieve the latest Rosen Bridge watcher and permit statistics across all supported blockchains.
 
-This tool provides detailed information about watcher activity, permit distribution, collateral requirements, and locked assets across the Rosen Bridge network.
+The tool returns the current network-wide `WatchersStats` snapshot. The required `address` input is accepted for compatibility but is not used to filter the results; the response is not specific to that address.
 
-Returned statistics include:
-- Watcher counts and permit counts per blockchain.
-- Active, bulk, and trigger permit counts per blockchain.
-- Total ERG and RSN locked per blockchain.
-- Permit cost in RSN and watcher collateral requirements in ERG and RSN.
-- Watcher and permit valuations in EUR, USD, ERG, and RSN.
-- Aggregated network-wide watcher statistics.
+Response shape:
+- `chainWatcherCount`, `chainPermitCount`, `bulkPermitCount`, `triggerPermitCount`, and `activePermitCount`: counts grouped by chain. Active permits are the sum of bulk and trigger permits.
+- `totalWatcherCount`, `totalPermitCount`, and `totalActivePermitCount`: totals across chains.
+- `chainLockedRSN` and `chainLockedERG`: estimated RSN and ERG collateral locked by watchers and permits, grouped by chain. `totalLockedRSN` and `totalLockedERG` provide the corresponding totals.
+- `watcherCollateralRSN`, `watcherCollateralERG`, and `permitCost`: configured collateral and permit-cost amounts.
+- `watchersAmountsPerCurrency`: collateral and total locked-value figures converted into each supported currency. Each currency entry may include `rsnCollateral`, `ergCollateral`, `permitValue`, `watcherValue`, `totalLockedRSN`, `totalLockedERG`, and `totalLocked`.
 
-Response fields:
+Counts are counts, while collateral and value fields are token amounts or currency-converted values as indicated by their names. Currency-converted values depend on available price data. Chain fields are populated as chain statistics are downloaded and processed, so values may be incomplete while an update is in progress. The snapshot contains no update timestamp.
 
-Chain statistics:
-- activePermitCount: Object mapping blockchain names to active permit counts.
-- bulkPermitCount: Object mapping blockchain names to bulk permit counts.
-- chainLockedERG: Object mapping blockchain names to total ERG locked.
-- chainLockedRSN: Object mapping blockchain names to total RSN locked.
-- chainPermitCount: Object mapping blockchain names to total permit counts.
-- chainWatcherCount: Object mapping blockchain names to watcher counts.
-- triggerPermitCount: Object mapping blockchain names to trigger permit counts.
-
-Permit and collateral:
-- permitCost: Cost of one permit in RSN.
-- watcherCollateralERG: Required ERG collateral per watcher.
-- watcherCollateralRSN: Required RSN collateral per watcher.
-
-Currency valuations:
-- watchersAmountsPerCurrency: Object containing watcher-related valuations in EUR, USD, ERG, and RSN.
-
-Each currency contains:
-- watcherValue: Total value associated with one watcher in the specified currency.
-- permitValue: Value of one permit in the specified currency.
-- rsnCollateral: RSN collateral value per watcher in the specified currency.
-- ergCollateral: ERG collateral value per watcher in the specified currency.
-- totalLockedERG: Total ERG locked, expressed in the specified currency.
-- totalLockedRSN: Total RSN locked, expressed in the specified currency.
-- totalLocked: Combined value of locked ERG and RSN in the specified currency.
-
-Aggregated network statistics:
-- totalWatcherCount: Total watchers across all chains.
-- totalPermitCount: Total permits across all chains.
-- totalActivePermitCount: Total active permits across all chains.
-- totalLockedRSN: Total RSN locked across all chains.
-- totalLockedERG: Total ERG locked across all chains.
-
-Use this tool when users ask about:
-- Rosen Bridge watcher statistics or network participation.
-- Watcher counts on specific blockchains.
-- Permit distribution, active permits, or permit costs.
-- ERG and RSN collateral requirements.
-- Total value locked in Rosen Bridge watchers.
-- Monetary valuations of watcher-related assets.
-
-No input parameters are required.
-
-The server maintains a cached snapshot of watcher statistics, automatically updated through WatchersStatsChanged events.
-
-The tool returns the latest available statistics as both structured JSON and serialized JSON text.
-
-If statistics have not yet been received, the tool returns an error indicating that watcher statistics are unavailable.
+The MCP response includes the snapshot as both structured JSON and serialized JSON text. If no snapshot has been received yet, the tool returns an error stating that watcher statistics are not available.

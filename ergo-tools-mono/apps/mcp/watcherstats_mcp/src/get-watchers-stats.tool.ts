@@ -40,9 +40,13 @@ export class GetWatchersStatsTool {
         description: loadToolDescription(
           'get-watchers-stats.md'
         ),
-        inputSchema: z.object({})
+        inputSchema: z.object({
+          address: z.string().describe(
+            'Address associated with the request. Statistics remain network-wide.'
+          )
+        })
       },
-      async () => {
+      async (_input) => {
         const watchersStats = this.watchersStats;
 
         if (watchersStats === null) {

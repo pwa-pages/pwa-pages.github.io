@@ -34,7 +34,7 @@ function isSerializedDate(
 }
 
 export class FileStorageService implements IStorageService {
-  private static readonly lockTimeoutMs = 10_000;
+  private static readonly lockTimeoutMs = 120_000;
   private static readonly lockStaleMs = 30_000;
   private static readonly pendingOperations = new Map<string, Promise<unknown>>();
   private readonly directory: string;
@@ -74,16 +74,21 @@ export class FileStorageService implements IStorageService {
   ): Promise<void> {
     await this.withStore(storeName, async (filePath) => {
       const entries = await this.readStore(filePath);
+      const indexes = new Map<string, number>();
+      entries.forEach((entry, index) => {
+        if (!indexes.has(entry.key)) {
+          indexes.set(entry.key, index);
+        }
+      });
 
       for (const item of data) {
         const itemId = key ?? this.getItemId(item) ?? randomUUID();
         const serializedKey = this.serializeKey(itemId);
-        const existingIndex = entries.findIndex(
-          (entry) => entry.key === serializedKey,
-        );
+        const existingIndex = indexes.get(serializedKey);
         const entry = { key: serializedKey, value: item };
 
-        if (existingIndex === -1) {
+        if (existingIndex === undefined) {
+          indexes.set(serializedKey, entries.length);
           entries.push(entry);
         } else {
           entries[existingIndex] = entry;
@@ -208,16 +213,8 @@ export class FileStorageService implements IStorageService {
         if ((error as NodeJS.ErrnoException).code !== 'EEXIST') {
           throw error;
         }
-        try {
-          const { mtimeMs } = await stat(lockPath);
-          if (Date.now() - mtimeMs > FileStorageService.lockStaleMs) {
-            await rm(lockPath, { force: true });
-            continue;
-          }
-        } catch {
-          continue;
-        }
-        if (Date.now() > deadline) {
+        await this.removeAbandonedLock(lockPath);
+        if (Date.now() >= deadline) {
           throw new Error(`Timed out waiting for storage lock: ${lockPath}`);
         }
         await new Promise((r) => setTimeout(r, 25));
@@ -228,6 +225,66 @@ export class FileStorageService implements IStorageService {
       return await operation();
     } finally {
       await rm(lockPath, { force: true });
+    }
+  }
+
+  private async removeAbandonedLock(lockPath: string): Promise<void> {
+    try {
+      const { mtimeMs } = await stat(lockPath);
+      if (Date.now() - mtimeMs <= FileStorageService.lockStaleMs) {
+        return;
+      }
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+        return;
+      }
+      throw error;
+    }
+
+    // Serialize stale-lock recovery so one waiter cannot delete another's lock.
+    const recoveryPath = `${lockPath}.recovery`;
+    try {
+      await writeFile(recoveryPath, String(process.pid), { flag: 'wx' });
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'EEXIST') {
+        return;
+      }
+      throw error;
+    }
+
+    try {
+      let owner: string;
+      try {
+        const { mtimeMs } = await stat(lockPath);
+        if (Date.now() - mtimeMs <= FileStorageService.lockStaleMs) {
+          return;
+        }
+        owner = await readFile(lockPath, 'utf8');
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+          return;
+        }
+        throw error;
+      }
+
+      const pid = Number(owner);
+      if (Number.isSafeInteger(pid) && pid > 0) {
+        try {
+          process.kill(pid, 0);
+          return;
+        } catch (error) {
+          const code = (error as NodeJS.ErrnoException).code;
+          if (code === 'EPERM') {
+            return;
+          }
+          if (code !== 'ESRCH') {
+            throw error;
+          }
+        }
+      }
+      await rm(lockPath, { force: true });
+    } finally {
+      await rm(recoveryPath, { force: true });
     }
   }
 

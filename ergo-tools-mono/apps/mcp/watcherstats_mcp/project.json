@@ -27,7 +27,11 @@
         "thirdParty": false
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "esbuildOptions": {
+            "sourcemap": true
+          }
+        },
         "production": {
           "esbuildOptions": {
             "sourcemap": true,
