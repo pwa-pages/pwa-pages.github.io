@@ -7,7 +7,7 @@ if (!token) {
 }
 
 const bot = createTelegramBot(token, async (request) => {
-  console.log("Received Telegram message:", request);
+  // console.log("Received Telegram message:", request);
 
   await bot.api.sendMessage(
     request.chatId,
@@ -22,7 +22,7 @@ const bot = createTelegramBot(token, async (request) => {
 
 await bot.init();
 
-console.log(`Connected as @${bot.botInfo.username}`);
-console.log("Starting standalone Telegram bot...");
+// console.log(`Connected as @${bot.botInfo.username}`);
+// console.log("Starting standalone Telegram bot...");
 
 await bot.start();

@@ -24,11 +24,12 @@ export function createTelegramBot(
       .filter(Boolean),
   );
 
-  console.log("[telegram] Allowed chat IDs:", [...allowedChats]);
+  // console.log("[telegram] Allowed chat IDs:", [...allowedChats]);
 
   // Log ALL incoming Telegram updates
   // This runs before any filtering
   bot.use(async (ctx, next) => {
+    /*
     console.log("[telegram] RAW UPDATE:", {
       updateId: ctx.update.update_id,
       chatId: ctx.chat?.id,
@@ -37,6 +38,7 @@ export function createTelegramBot(
       text: ctx.message?.text,
       updateTypes: Object.keys(ctx.update),
     });
+    */
 
     await next();
   });
@@ -46,6 +48,7 @@ export function createTelegramBot(
     const chatId = String(ctx.chat.id);
     const text = ctx.message.text;
 
+    /*
     console.log("[telegram] Message received:", {
       chatId,
       chatType: ctx.chat.type,
@@ -53,12 +56,15 @@ export function createTelegramBot(
       username: ctx.from.username,
       text,
     });
+    */
 
     // Check if chat is allowed
     if (!allowedChats.has(chatId)) {
+      /*
       console.log(
         `[telegram] Ignored: chat ${chatId} is not allowed`,
       );
+      */
       return;
     }
 
@@ -66,16 +72,20 @@ export function createTelegramBot(
     const addressedText = getAddressedText(ctx);
 
     if (addressedText === null) {
+      /*
       console.log(
         "[telegram] Ignored: bot was not mentioned",
       );
+      */
       return;
     }
 
+    /*
     console.log(
       "[telegram] Bot addressed with:",
       addressedText,
     );
+    */
 
     if (!addressedText) {
       await ctx.reply("Please include a question.");

@@ -40,7 +40,7 @@ export default function telegramExtension(pi: ExtensionAPI) {
     busy = true;
     agentIdle = false;
 
-    console.log("[telegram] Sending to Pi:", request.text);
+    // console.log("[telegram] Sending to Pi:", request.text);
 
     try {
       pi.sendUserMessage(
@@ -112,11 +112,11 @@ export default function telegramExtension(pi: ExtensionAPI) {
   pi.on("session_start", async () => {
     try {
       await bot.init();
-      console.log(`[telegram] Connected as @${bot.botInfo.username}`);
+      // console.log(`[telegram] Connected as @${bot.botInfo.username}`);
 
       void bot.start({
         onStart: () => {
-          console.log("[telegram] Polling started");
+          // console.log("[telegram] Polling started");
         },
       }).catch(console.error);
     } catch (error) {
