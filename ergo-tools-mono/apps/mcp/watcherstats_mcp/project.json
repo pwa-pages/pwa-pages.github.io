@@ -5,6 +5,12 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node --import tsx --test apps/mcp/watcherstats_mcp/tests/file.storage.service.test.ts"
+      }
+    },
     "build": {
       "executor": "@nx/esbuild:esbuild",
       "dependsOn": ["^build"],

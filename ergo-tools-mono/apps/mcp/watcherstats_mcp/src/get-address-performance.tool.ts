@@ -74,7 +74,7 @@ export class GetAddressPerformanceTool {
 
         try {
           // Serialize to JSON.
-          const serialized = JSON.stringify(addressCharts);
+          const serialized = JSON.stringify(addressCharts[address]);
 
           if (serialized === undefined) {
             throw new Error(

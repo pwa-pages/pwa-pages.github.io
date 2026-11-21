@@ -7,7 +7,7 @@
     "build": "nx build rosen-watcher-pwa",
     "prep_web_component": "bash prep_web_component.sh",
     "watch": "nx build --watch --configuration development",
-    "test": "nx test",
+    "test": "nx run-many -t test",
     "format": "prettier --write 'apps/rosen-watcher-pwa/src/**/*.{ts,css,html}'",
     "ts:custom": "tsc -p tsconfig.service.json"
   },
