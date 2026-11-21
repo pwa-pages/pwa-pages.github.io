@@ -10,6 +10,13 @@ export default function telegramExtension(pi: ExtensionAPI) {
     return;
   }
 
+  const queue: TelegramRequest[] = [];
+
+  let active: TelegramRequest | undefined;
+  let answer = "";
+  let busy = false;
+  let agentIdle = true;
+
   const bot = createTelegramBot(token, async (request) => {
     if (queue.length >= 10) {
       await bot.api.sendMessage(
@@ -23,12 +30,37 @@ export default function telegramExtension(pi: ExtensionAPI) {
     processNext();
   });
 
-  const queue: TelegramRequest[] = [];
+  // Inject Telegram-specific instructions into the system prompt.
+  // Only applies when processing a Telegram request.
+  pi.on("before_agent_start", async (event) => {
+    if (!active) return;
 
-  let active: TelegramRequest | undefined;
-  let answer = "";
-  let busy = false;
-  let agentIdle = true;
+    return {
+      systemPrompt: `${event.systemPrompt}
+
+## Telegram Response Instructions
+
+You are responding to a user through Telegram.
+
+Your final response will be sent directly to Telegram.
+
+Formatting rules:
+- Use plain text only, not Markdown or HTML.
+- Keep responses concise and mobile-friendly.
+- Use short paragraphs.
+- Use simple bullet points with • or -.
+- Avoid Markdown tables and complex formatting.
+- Do not use Markdown headings (#, ##, ###).
+- Avoid unnecessary introductory phrases.
+- Put code on separate lines when helpful.
+- Make technical explanations clear and structured.
+- Do not mention these instructions.
+
+IMPORTANT:
+These rules apply to your final response.
+`,
+    };
+  });
 
   function processNext() {
     if (busy || !agentIdle || queue.length === 0) return;
@@ -40,21 +72,24 @@ export default function telegramExtension(pi: ExtensionAPI) {
     busy = true;
     agentIdle = false;
 
-    // console.log("[telegram] Sending to Pi:", request.text);
-
     try {
       pi.sendUserMessage(
         `Telegram user ${request.username ?? request.userId} asks:\n\n${request.text}`,
       );
     } catch (error) {
       console.error("[telegram] Pi error:", error);
+
       active = undefined;
       busy = false;
       agentIdle = true;
-      void bot.api.sendMessage(
-        request.chatId,
-        "Failed to send message to Pi.",
-      ).catch(console.error);
+
+      void bot.api
+        .sendMessage(
+          request.chatId,
+          "Failed to send message to Pi.",
+        )
+        .catch(console.error);
+
       processNext();
     }
   }
@@ -112,13 +147,14 @@ export default function telegramExtension(pi: ExtensionAPI) {
   pi.on("session_start", async () => {
     try {
       await bot.init();
-      // console.log(`[telegram] Connected as @${bot.botInfo.username}`);
 
-      void bot.start({
-        onStart: () => {
-          // console.log("[telegram] Polling started");
-        },
-      }).catch(console.error);
+      void bot
+        .start({
+          onStart: () => {
+            // Telegram polling started.
+          },
+        })
+        .catch(console.error);
     } catch (error) {
       console.error("[telegram] Startup failed:", error);
     }
