@@ -1,6 +1,6 @@
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-import { createTelegramBot, type TelegramRequest } from "./telegram/bot.js";
+import { createTelegramBot, type TelegramRequest } from "./bot.js";
 
 export default function telegramExtension(pi: ExtensionAPI) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
