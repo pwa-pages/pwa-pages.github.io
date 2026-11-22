@@ -69,7 +69,7 @@ test('address statistics returns normalized amounts and dates as text and struct
   const expected = [
     { inputDate: '2025-10-19T22:00:50.657Z', amount: 4.252 },
   ];
-  assert.deepEqual(result.structuredContent, { inputs: expected });
+  assert.deepEqual(result.structuredContent, { rewards: expected });
   assert.deepEqual(result.content, [{ type: 'text', text: JSON.stringify(expected) }]);
   assert.notEqual(result.isError, true);
 
@@ -77,19 +77,19 @@ test('address statistics returns normalized amounts and dates as text and struct
     name: 'get_address_statistics',
     arguments: { address: 'watcher', startDate: '2025-10-19', endDate: '2025-10-19' },
   });
-  assert.deepEqual(dateRange.structuredContent, { inputs: [expected[0]] });
+  assert.deepEqual(dateRange.structuredContent, { rewards: [expected[0]] });
 
   const startOnly = await client.callTool({
     name: 'get_address_statistics',
     arguments: { address: 'watcher', startDate: '2025-10-20' },
   });
-  assert.deepEqual(startOnly.structuredContent, { inputs: [] });
+  assert.deepEqual(startOnly.structuredContent, { rewards: [] });
 
   const endOnly = await client.callTool({
     name: 'get_address_statistics',
     arguments: { address: 'watcher', endDate: '2025-10-19' },
   });
-  assert.deepEqual(endOnly.structuredContent, { inputs: [expected[0]] });
+  assert.deepEqual(endOnly.structuredContent, { rewards: [expected[0]] });
 
   const invalidRange = await client.callTool({
     name: 'get_address_statistics',
@@ -115,12 +115,12 @@ test('address statistics returns normalized amounts and dates as text and struct
   await events.sendEventWithData(EventType.InputsChanged, [input]);
   const zero = await client.callTool(request);
   assert.deepEqual(zero.structuredContent, {
-    inputs: [{ inputDate: '2025-10-19T22:00:50.657Z', amount: 0 }],
+    rewards: [{ inputDate: '2025-10-19T22:00:50.657Z', amount: 0 }],
   });
 
   await events.sendEventWithData(EventType.InputsChanged, []);
   const empty = await client.callTool(request);
-  assert.deepEqual(empty.structuredContent, { inputs: [] });
+  assert.deepEqual(empty.structuredContent, { rewards: [] });
   assert.deepEqual(empty.content, [{ type: 'text', text: '[]' }]);
 
   await nextImmediate();

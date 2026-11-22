@@ -54,7 +54,7 @@ class ChainPerformanceDataService extends data_service_1.DataService {
         const perfTxsPromise = this.storageService.getData(constants_1.rs_PerfTxStoreName);
         try {
             let perfTxs = await perfTxsPromise;
-            perfTxs = perfTxs.filter((p) => this.getMaxDownloadDateDifference() >
+            perfTxs = perfTxs.filter((p) => 604800000 >
                 new Date().getTime() - new Date(p.timestamp).getTime());
             const result = perfTxs.reduce((acc, tx) => {
                 if (tx.chainType !== undefined && tx.chainType !== null) {
@@ -81,7 +81,7 @@ class ChainPerformanceDataService extends data_service_1.DataService {
         this.eventSender = eventSender;
     }
     getMaxDownloadDateDifference() {
-        return 604800000;
+        return 15768000000;
     }
     getDataType() {
         return 'performance_chart';

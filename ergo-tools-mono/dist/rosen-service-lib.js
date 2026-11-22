@@ -1304,7 +1304,7 @@
           try {
             let perfTxs = await perfTxsPromise;
             perfTxs = perfTxs.filter(
-              (p) => this.getMaxDownloadDateDifference() > (/* @__PURE__ */ new Date()).getTime() - new Date(p.timestamp).getTime()
+              (p) => 6048e5 > (/* @__PURE__ */ new Date()).getTime() - new Date(p.timestamp).getTime()
             );
             const result = perfTxs.reduce(
               (acc, tx) => {
@@ -1331,7 +1331,7 @@
           }
         }
         getMaxDownloadDateDifference() {
-          return 6048e5;
+          return 15768e6;
         }
         getDataType() {
           return "performance_chart";

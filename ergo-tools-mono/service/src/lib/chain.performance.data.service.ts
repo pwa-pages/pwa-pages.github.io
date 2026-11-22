@@ -89,7 +89,7 @@ export class ChainPerformanceDataService extends DataService<PerfTx> {
       let perfTxs = await perfTxsPromise;
       perfTxs = perfTxs.filter(
         (p) =>
-          this.getMaxDownloadDateDifference() >
+          604800000 >
           new Date().getTime() - new Date(p.timestamp).getTime(),
       );
 
@@ -129,7 +129,7 @@ export class ChainPerformanceDataService extends DataService<PerfTx> {
   }
 
   override getMaxDownloadDateDifference(): number {
-    return 604800000;
+    return 15768000000;
   }
 
   getDataType(): string {

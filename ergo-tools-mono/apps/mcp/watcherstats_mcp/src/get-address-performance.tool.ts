@@ -34,10 +34,10 @@ export class GetAddressStatisticsTool {
         inputSchema: z.object({
           address: z.string().describe('Watcher address'),
           startDate: z.iso.date().optional().describe(
-            'Include inputs on or after this UTC date (YYYY-MM-DD)'
+            'Include rewards on or after this UTC date (YYYY-MM-DD)'
           ),
           endDate: z.iso.date().optional().describe(
-            'Include inputs on or before this UTC date (YYYY-MM-DD)'
+            'Include rewards on or before this UTC date (YYYY-MM-DD)'
           )
         })
       },
@@ -89,7 +89,7 @@ export class GetAddressStatisticsTool {
           const endTimestampExclusive = endDate
             ? Date.parse(`${endDate}T00:00:00.000Z`) + 24 * 60 * 60 * 1000
             : Number.POSITIVE_INFINITY;
-          const inputs = this.inputs
+          const rewards = this.inputs
             .filter((input) => input.outputAddress === address)
             .map((input, index) => {
               if (typeof input.amount !== 'number' || !Number.isFinite(input.amount)) {
@@ -108,8 +108,8 @@ export class GetAddressStatisticsTool {
               const timestamp = Date.parse(inputDate);
               return timestamp >= startTimestamp && timestamp < endTimestampExclusive;
             });
-          const serialized = JSON.stringify(inputs);
-          const structuredAddressStatistics = { inputs };
+          const serialized = JSON.stringify(rewards);
+          const structuredAddressStatistics = { rewards };
 
           console.log(
             '[GetAddressStatisticsTool] Returning statistics:',
