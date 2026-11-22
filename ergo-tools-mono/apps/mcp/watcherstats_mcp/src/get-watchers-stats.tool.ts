@@ -41,12 +41,9 @@ export class GetWatchersStatsTool {
           'get-watchers-stats.md'
         ),
         inputSchema: z.object({
-          address: z.string().describe(
-            'Address associated with the request. Statistics remain network-wide.'
-          )
         })
       },
-      async (_input) => {
+      async () => {
         const watchersStats = this.watchersStats;
 
         if (watchersStats === null) {
