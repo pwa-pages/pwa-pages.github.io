@@ -1,5 +1,5 @@
 import { ChainType, getChainTypes } from "./chain.service";
-import { rs_PermitCost, rs_WatcherCollateralERG, rs_WatcherCollateralRSN, Currency } from "./constants";
+import { rs_WatcherCollateralERG, rs_WatcherCollateralRSN, Currency } from "./constants";
 
 export enum EventType {
   StartFullDownload = 'StartFullDownload',
@@ -349,7 +349,6 @@ export class WatchersStats {
   chainLockedRSN = createChainNumber();
   chainPermitCount = createChainNumber();
   chainWatcherCount = createChainNumber();
-  permitCost = rs_PermitCost;
   totalActivePermitCount: number | undefined;
   totalLockedERG: number | undefined;
   totalLockedRSN: number | undefined;

@@ -25,15 +25,24 @@ export const rs_WatcherReports_Key = 'chainType';
 export const rs_ActivePermit_Key = 'id';
 export const rs_PerfTx_Key = 'id';
 export const rs_Address_Key = 'address';
-export const rs_PermitCost = 3000;
 
-
+export const getPermitCost = (chainType: ChainType): number => {
+  if(chainType === ChainType.Handshake) {
+    return 5000;
+  }
+  else{
+    return 3000;
+  }
+};
 
 
 export const rs_WatcherCollateralRSN = (
   chainType: string
 ): number => {
 
+  if (chainType === ChainType.Handshake) {
+    return 100000;
+  }
   if (chainType === ChainType.Runes || chainType === ChainType.Firo) {
     return 50000;
   }
@@ -46,7 +55,7 @@ export const rs_WatcherCollateralRSN = (
 export const rs_WatcherCollateralERG = (
   chainType: string
 ): number => {
-  if (chainType === ChainType.Runes || chainType === ChainType.Firo) {
+  if (chainType == ChainType.Handshake || chainType === ChainType.Runes || chainType === ChainType.Firo) {
     return 10;
   }
   else {

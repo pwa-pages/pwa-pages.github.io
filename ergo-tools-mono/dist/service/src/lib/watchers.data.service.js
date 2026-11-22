@@ -35,12 +35,12 @@ class WatchersDataService {
                 subscriber.complete();
             });
         }
-        return this.downloadPermitInfo(address, this.rsnToken, null);
+        return this.downloadPermitInfo(address, this.rsnToken, null, chainType);
     }
     updateTotal(map) {
         return Object.values(map).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
     }
-    convertCurrencies() {
+    convertCurrencies(chainType) {
         Object.values(constants_1.Currency).forEach((currency) => {
             const conversions = [
                 {
@@ -54,7 +54,7 @@ class WatchersDataService {
                     callback: (c) => (this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral = c),
                 },
                 {
-                    amount: constants_1.rs_PermitCost,
+                    amount: (0, constants_1.getPermitCost)(chainType),
                     from: 'RSN',
                     callback: (c) => (this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = c),
                 },
@@ -65,7 +65,7 @@ class WatchersDataService {
                 },
                 {
                     amount: (this.watchersStats.totalLockedRSN ?? 0) +
-                        constants_1.rs_PermitCost * (this.watchersStats.totalPermitCount ?? 0),
+                        (0, constants_1.getPermitCost)(chainType) * (this.watchersStats.totalPermitCount ?? 0),
                     from: 'RSN',
                     callback: (l) => (this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedRSN = l),
                 },
@@ -91,7 +91,7 @@ class WatchersDataService {
     }
     async setLockedAmounts(chainType) {
         this.watchersStats.chainLockedRSN[chainType] =
-            this.getValue(this.watchersStats.chainPermitCount, chainType, constants_1.rs_PermitCost) +
+            this.getValue(this.watchersStats.chainPermitCount, chainType, (0, constants_1.getPermitCost)(chainType)) +
                 this.getValue(this.watchersStats.chainWatcherCount, chainType, (0, constants_1.rs_WatcherCollateralRSN)(chainType));
         this.watchersStats.chainLockedERG[chainType] = this.getValue(this.watchersStats.chainWatcherCount, chainType, (0, constants_1.rs_WatcherCollateralERG)(chainType));
         (0, chain_service_1.getChainTypes)().forEach((c) => {
@@ -104,14 +104,14 @@ class WatchersDataService {
         this.watchersStats.totalActivePermitCount = this.updateTotal(this.watchersStats.activePermitCount);
         this.watchersStats.totalLockedRSN = this.updateTotal(this.watchersStats.chainLockedRSN);
         this.watchersStats.totalLockedERG = this.updateTotal(this.watchersStats.chainLockedERG);
-        await this.currencyUpdate();
+        await this.currencyUpdate(chainType);
     }
-    async currencyUpdate() {
+    async currencyUpdate(chainType) {
         Object.values(constants_1.Currency).forEach((currency) => {
             this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = 0;
             this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = 0;
         });
-        this.convertCurrencies();
+        this.convertCurrencies(chainType);
         this.updateTotalLocked();
         Object.values(constants_1.Currency).forEach((currency) => {
             this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue =
@@ -129,7 +129,7 @@ class WatchersDataService {
             });
         }
     }
-    downloadPermitInfo(address, tokenId, tokenName) {
+    downloadPermitInfo(address, tokenId, tokenName, chainType) {
         var a = new models_1.Address(address, null);
         console.log(`Downloading balance for address: ${a.largeAddressForDisplay}`);
         return this.downloadService
@@ -140,7 +140,7 @@ class WatchersDataService {
                     (tokenName && token.name === tokenName));
                 if (tokenData) {
                     tokenData.amount /=
-                        constants_1.rs_PermitCost * Math.pow(10, tokenData.decimals);
+                        (0, constants_1.getPermitCost)(chainType) * Math.pow(10, tokenData.decimals);
                     tokenData.amount = Math.floor(tokenData.amount);
                 }
             }
@@ -159,7 +159,7 @@ class WatchersDataService {
                 subscriber.complete();
             });
         }
-        return this.downloadPermitInfo(address, null, chain_service_1.chainTypeTokens[chainType]);
+        return this.downloadPermitInfo(address, null, chain_service_1.chainTypeTokens[chainType], chainType);
     }
     getBulkPermitsInfo(chainType) {
         const address = chain_service_1.permitBulkAddresses[chainType];
@@ -169,7 +169,7 @@ class WatchersDataService {
                 subscriber.complete();
             });
         }
-        return this.downloadPermitInfo(address, null, chain_service_1.chainTypeTokens[chainType]);
+        return this.downloadPermitInfo(address, null, chain_service_1.chainTypeTokens[chainType], chainType);
     }
     async download() {
         (0, chain_service_1.getChainTypes)().forEach((c) => {

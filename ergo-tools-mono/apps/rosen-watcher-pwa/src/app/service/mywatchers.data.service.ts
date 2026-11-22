@@ -5,8 +5,9 @@ import {
   getActiveChainTypes,
   getChainTypes,
   MyWatchersStats,
-  rs_PermitCost,
   rs_WatcherCollateralRSN,
+  getPermitCost,
+  ChainType,
 } from '@ergo-tools/service';
 import { Address } from '@ergo-tools/service';
 
@@ -43,10 +44,10 @@ export class MyWatchersDataService {
         let myWatcherStats: MyWatchersStats[] = [];
         permits.forEach((permit: PermitInfo) => {
           let permitCount = Math.floor(
-            (permit.lockedRSN - rs_WatcherCollateralRSN(permit.chainType)) / rs_PermitCost,
+            (permit.lockedRSN - rs_WatcherCollateralRSN(permit.chainType)) / getPermitCost(permit.chainType as ChainType),
           );
           let activepermitCount = Math.floor(
-            permit.activeLockedRSN / rs_PermitCost,
+            permit.activeLockedRSN / getPermitCost(permit.chainType as ChainType),
           );
 
           if (permitCount < 0) {

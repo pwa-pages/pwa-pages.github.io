@@ -166,7 +166,6 @@ class WatchersStats {
         this.chainLockedRSN = createChainNumber();
         this.chainPermitCount = createChainNumber();
         this.chainWatcherCount = createChainNumber();
-        this.permitCost = constants_1.rs_PermitCost;
         this.triggerPermitCount = createChainNumber();
         this.watcherCollateralERG = (0, constants_1.rs_WatcherCollateralERG)('Ergo');
         this.watcherCollateralRSN = (0, constants_1.rs_WatcherCollateralRSN)('Ergo');

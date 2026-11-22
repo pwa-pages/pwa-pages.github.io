@@ -1,3 +1,4 @@
+import { ChainType } from "./chain.service";
 export declare const rs_DbName = "rosenDatabase_1.1.5";
 export declare const rs_DbVersion = 54;
 export declare const rs_DownloadStoreName = "downloads";
@@ -22,7 +23,7 @@ export declare const rs_WatcherReports_Key = "chainType";
 export declare const rs_ActivePermit_Key = "id";
 export declare const rs_PerfTx_Key = "id";
 export declare const rs_Address_Key = "address";
-export declare const rs_PermitCost = 3000;
+export declare const getPermitCost: (chainType: ChainType) => number;
 export declare const rs_WatcherCollateralRSN: (chainType: string) => number;
 export declare const rs_WatcherCollateralERG: (chainType: string) => number;
 export declare const rs_ErgoExplorerHost = "api.ergoplatform.com";

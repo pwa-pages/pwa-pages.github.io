@@ -208,7 +208,6 @@ export declare class WatchersStats {
     chainLockedRSN: Record<string, number | undefined>;
     chainPermitCount: Record<string, number | undefined>;
     chainWatcherCount: Record<string, number | undefined>;
-    permitCost: number;
     totalActivePermitCount: number | undefined;
     totalLockedERG: number | undefined;
     totalLockedRSN: number | undefined;

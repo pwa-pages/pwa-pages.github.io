@@ -98,22 +98,22 @@ function getChainTypeForPermitTriggerAddress(address) {
 var ChainType, chainTypeTokens, chainTypeWatcherIdentifier, rwtTokenIds, permitAddresses, permitTriggerAddresses, permitBulkAddresses, rewardAddresses, rewardAddressesV2, hotWalletAddress;
 var init_chain_service = __esm({
   "service/src/lib/chain.service.ts"() {
-    ChainType = /* @__PURE__ */ ((ChainType8) => {
-      ChainType8["Ergo"] = "Ergo";
-      ChainType8["Cardano"] = "Cardano";
-      ChainType8["Bitcoin"] = "Bitcoin";
-      ChainType8["Ethereum"] = "Ethereum";
-      ChainType8["Binance"] = "Binance";
-      ChainType8["Doge"] = "Doge";
-      ChainType8["Runes"] = "Runes";
-      ChainType8["Firo"] = "Firo";
-      ChainType8["Handshake"] = "Handshake";
-      ChainType8["Nervos"] = "Nervos";
-      ChainType8["Base"] = "Base";
-      ChainType8["Monero"] = "Monero";
-      ChainType8["BitcoinCash"] = "BitcoinCash";
-      ChainType8["Zcash"] = "Zcash";
-      return ChainType8;
+    ChainType = /* @__PURE__ */ ((ChainType9) => {
+      ChainType9["Ergo"] = "Ergo";
+      ChainType9["Cardano"] = "Cardano";
+      ChainType9["Bitcoin"] = "Bitcoin";
+      ChainType9["Ethereum"] = "Ethereum";
+      ChainType9["Binance"] = "Binance";
+      ChainType9["Doge"] = "Doge";
+      ChainType9["Runes"] = "Runes";
+      ChainType9["Firo"] = "Firo";
+      ChainType9["Handshake"] = "Handshake";
+      ChainType9["Nervos"] = "Nervos";
+      ChainType9["Base"] = "Base";
+      ChainType9["Monero"] = "Monero";
+      ChainType9["BitcoinCash"] = "BitcoinCash";
+      ChainType9["Zcash"] = "Zcash";
+      return ChainType9;
     })(ChainType || {});
     chainTypeTokens = Object.fromEntries(
       Object.values(ChainType).map(
@@ -221,7 +221,7 @@ var init_chain_service = __esm({
 });
 
 // service/src/lib/constants.ts
-var rs_DbName, rs_DbVersion, rs_DownloadStoreName, rs_InputsStoreName, rs_PerfTxStoreName, rs_PermitTxStoreName, rs_ActivePermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName, rs_DownloadStatusStoreName, rs_OpenBoxesStoreName, rs_AddressDataStoreName, rs_InitialNDownloads, rs_FullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_StartFrom, rs_Input_Key, rs_Download_Key, rs_Permit_Key, rs_WatcherReports_Key, rs_ActivePermit_Key, rs_PerfTx_Key, rs_Address_Key, rs_PermitCost, rs_WatcherCollateralRSN, rs_WatcherCollateralERG, rs_ErgoExplorerHost, rs_ErgoNodeHost, UrlAction, urlConfig, getUrlConfig, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals, Period, Currency;
+var rs_DbName, rs_DbVersion, rs_DownloadStoreName, rs_InputsStoreName, rs_PerfTxStoreName, rs_PermitTxStoreName, rs_ActivePermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName, rs_DownloadStatusStoreName, rs_OpenBoxesStoreName, rs_AddressDataStoreName, rs_InitialNDownloads, rs_FullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_StartFrom, rs_Input_Key, rs_Download_Key, rs_Permit_Key, rs_WatcherReports_Key, rs_ActivePermit_Key, rs_PerfTx_Key, rs_Address_Key, getPermitCost, rs_WatcherCollateralRSN, rs_WatcherCollateralERG, rs_ErgoExplorerHost, rs_ErgoNodeHost, UrlAction, urlConfig, getUrlConfig, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals, Period, Currency;
 var init_constants = __esm({
   "service/src/lib/constants.ts"() {
     init_chain_service();
@@ -249,8 +249,17 @@ var init_constants = __esm({
     rs_ActivePermit_Key = "id";
     rs_PerfTx_Key = "id";
     rs_Address_Key = "address";
-    rs_PermitCost = 3e3;
+    getPermitCost = (chainType) => {
+      if (chainType === "Handshake" /* Handshake */) {
+        return 5e3;
+      } else {
+        return 3e3;
+      }
+    };
     rs_WatcherCollateralRSN = (chainType) => {
+      if (chainType === "Handshake" /* Handshake */) {
+        return 1e5;
+      }
       if (chainType === "Runes" /* Runes */ || chainType === "Firo" /* Firo */) {
         return 5e4;
       } else {
@@ -258,7 +267,7 @@ var init_constants = __esm({
       }
     };
     rs_WatcherCollateralERG = (chainType) => {
-      if (chainType === "Runes" /* Runes */ || chainType === "Firo" /* Firo */) {
+      if (chainType == "Handshake" /* Handshake */ || chainType === "Runes" /* Runes */ || chainType === "Firo" /* Firo */) {
         return 10;
       } else {
         return 800;
@@ -580,7 +589,6 @@ var init_models = __esm({
       chainLockedRSN = createChainNumber();
       chainPermitCount = createChainNumber();
       chainWatcherCount = createChainNumber();
-      permitCost = rs_PermitCost;
       totalActivePermitCount;
       totalLockedERG;
       totalLockedRSN;
@@ -727,7 +735,7 @@ var init_mywatcher_data_service = __esm({
         for (const activePermit of addressActivePermits) {
           const info = permitInfo.find((p) => p.address === activePermit.address);
           if (info) {
-            info.activeLockedRSN += rs_PermitCost;
+            info.activeLockedRSN += getPermitCost(activePermit.chainType);
           }
         }
         return permitInfo;
@@ -2221,12 +2229,12 @@ var init_watchers_data_service = __esm({
             subscriber.complete();
           });
         }
-        return this.downloadPermitInfo(address, this.rsnToken, null);
+        return this.downloadPermitInfo(address, this.rsnToken, null, chainType);
       }
       updateTotal(map4) {
         return Object.values(map4).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
       }
-      convertCurrencies() {
+      convertCurrencies(chainType) {
         Object.values(Currency).forEach((currency) => {
           const conversions = [
             {
@@ -2240,7 +2248,7 @@ var init_watchers_data_service = __esm({
               callback: (c) => this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral = c
             },
             {
-              amount: rs_PermitCost,
+              amount: getPermitCost(chainType),
               from: "RSN",
               callback: (c) => this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = c
             },
@@ -2250,7 +2258,7 @@ var init_watchers_data_service = __esm({
               callback: (l) => this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedERG = l
             },
             {
-              amount: (this.watchersStats.totalLockedRSN ?? 0) + rs_PermitCost * (this.watchersStats.totalPermitCount ?? 0),
+              amount: (this.watchersStats.totalLockedRSN ?? 0) + getPermitCost(chainType) * (this.watchersStats.totalPermitCount ?? 0),
               from: "RSN",
               callback: (l) => this.watchersStats.watchersAmountsPerCurrency[currency].totalLockedRSN = l
             }
@@ -2272,7 +2280,7 @@ var init_watchers_data_service = __esm({
         this.watchersStats.chainLockedRSN[chainType] = this.getValue(
           this.watchersStats.chainPermitCount,
           chainType,
-          rs_PermitCost
+          getPermitCost(chainType)
         ) + this.getValue(
           this.watchersStats.chainWatcherCount,
           chainType,
@@ -2301,14 +2309,14 @@ var init_watchers_data_service = __esm({
         this.watchersStats.totalLockedERG = this.updateTotal(
           this.watchersStats.chainLockedERG
         );
-        await this.currencyUpdate();
+        await this.currencyUpdate(chainType);
       }
-      async currencyUpdate() {
+      async currencyUpdate(chainType) {
         Object.values(Currency).forEach((currency) => {
           this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = 0;
           this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = 0;
         });
-        this.convertCurrencies();
+        this.convertCurrencies(chainType);
         this.updateTotalLocked();
         Object.values(Currency).forEach((currency) => {
           this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = (this.watchersStats.watchersAmountsPerCurrency[currency].rsnCollateral ?? 0) + (this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral ?? 0);
@@ -2322,7 +2330,7 @@ var init_watchers_data_service = __esm({
           });
         }
       }
-      downloadPermitInfo(address, tokenId, tokenName) {
+      downloadPermitInfo(address, tokenId, tokenName, chainType) {
         var a = new Address(address, null);
         console.log(`Downloading balance for address: ${a.largeAddressForDisplay}`);
         return this.downloadService.downloadBalance(address).pipe(
@@ -2332,7 +2340,7 @@ var init_watchers_data_service = __esm({
                 (token) => tokenId && token.tokenId === tokenId || tokenName && token.name === tokenName
               );
               if (tokenData) {
-                tokenData.amount /= rs_PermitCost * Math.pow(10, tokenData.decimals);
+                tokenData.amount /= getPermitCost(chainType) * Math.pow(10, tokenData.decimals);
                 tokenData.amount = Math.floor(tokenData.amount);
               }
             }
@@ -2354,7 +2362,7 @@ var init_watchers_data_service = __esm({
             subscriber.complete();
           });
         }
-        return this.downloadPermitInfo(address, null, chainTypeTokens[chainType]);
+        return this.downloadPermitInfo(address, null, chainTypeTokens[chainType], chainType);
       }
       getBulkPermitsInfo(chainType) {
         const address = permitBulkAddresses[chainType];
@@ -2364,7 +2372,7 @@ var init_watchers_data_service = __esm({
             subscriber.complete();
           });
         }
-        return this.downloadPermitInfo(address, null, chainTypeTokens[chainType]);
+        return this.downloadPermitInfo(address, null, chainTypeTokens[chainType], chainType);
       }
       async download() {
         getChainTypes().forEach((c) => {
@@ -3033,6 +3041,7 @@ __export(lib_exports, {
   getChainTypeForPermitAddress: () => getChainTypeForPermitAddress,
   getChainTypeForPermitTriggerAddress: () => getChainTypeForPermitTriggerAddress,
   getChainTypes: () => getChainTypes,
+  getPermitCost: () => getPermitCost,
   getUrlConfig: () => getUrlConfig,
   hotWalletAddress: () => hotWalletAddress,
   permitAddresses: () => permitAddresses,
@@ -3060,7 +3069,6 @@ __export(lib_exports, {
   rs_PerfInitialNDownloads: () => rs_PerfInitialNDownloads,
   rs_PerfTxStoreName: () => rs_PerfTxStoreName,
   rs_PerfTx_Key: () => rs_PerfTx_Key,
-  rs_PermitCost: () => rs_PermitCost,
   rs_PermitTxStoreName: () => rs_PermitTxStoreName,
   rs_Permit_Key: () => rs_Permit_Key,
   rs_RSNDecimals: () => rs_RSNDecimals,
@@ -3150,3 +3158,4 @@ async function downloadActivePermits() {
     console.log("totalsPerAddress: ", totalsPerAddress);
   }
 }
+//# sourceMappingURL=main.js.map

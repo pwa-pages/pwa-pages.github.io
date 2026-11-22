@@ -2,6 +2,7 @@ import { Signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PriceService } from './price.service';
 import { DownloadService, EventSender } from '.';
+import { ChainType } from './chain.service';
 import { WatchersStats, WatcherInfo, Token } from './models';
 export declare class WatchersDataService {
     private downloadService;
@@ -20,8 +21,8 @@ export declare class WatchersDataService {
     private convertCurrencies;
     private updateTotalLocked;
     private getValue;
-    setLockedAmounts(chainType: string): Promise<void>;
-    currencyUpdate(): Promise<void>;
+    setLockedAmounts(chainType: ChainType): Promise<void>;
+    currencyUpdate(chainType: ChainType): Promise<void>;
     private downloadPermitInfo;
     getTriggerPermitsInfo(chainType: string): Observable<Token | undefined>;
     getBulkPermitsInfo(chainType: string): Observable<Token | undefined>;

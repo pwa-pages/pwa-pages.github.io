@@ -106,7 +106,7 @@ class MyWatcherDataService extends data_service_1.DataService {
         for (const activePermit of addressActivePermits) {
             const info = permitInfo.find((p) => p.address === activePermit.address);
             if (info) {
-                info.activeLockedRSN += constants_1.rs_PermitCost;
+                info.activeLockedRSN += (0, constants_1.getPermitCost)(activePermit.chainType);
             }
         }
         return permitInfo;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Currency = exports.Period = exports.rs_RSNDecimals = exports.rs_TokenIdMap = exports.rs_eRSNTokenId = exports.rs_RSNTokenId = exports.getUrlConfig = exports.urlConfig = exports.UrlAction = exports.rs_ErgoNodeHost = exports.rs_ErgoExplorerHost = exports.rs_WatcherCollateralERG = exports.rs_WatcherCollateralRSN = exports.rs_PermitCost = exports.rs_Address_Key = exports.rs_PerfTx_Key = exports.rs_ActivePermit_Key = exports.rs_WatcherReports_Key = exports.rs_Permit_Key = exports.rs_Download_Key = exports.rs_Input_Key = exports.rs_StartFrom = exports.rs_PerfFullDownloadsBatchSize = exports.rs_PerfInitialNDownloads = exports.rs_FullDownloadsBatchSize = exports.rs_InitialNDownloads = exports.rs_AddressDataStoreName = exports.rs_OpenBoxesStoreName = exports.rs_DownloadStatusStoreName = exports.rs_WatcherReportsStoreName = exports.rs_ReportsStoreName = exports.rs_ActivePermitTxStoreName = exports.rs_PermitTxStoreName = exports.rs_PerfTxStoreName = exports.rs_InputsStoreName = exports.rs_DownloadStoreName = exports.rs_DbVersion = exports.rs_DbName = void 0;
+exports.Currency = exports.Period = exports.rs_RSNDecimals = exports.rs_TokenIdMap = exports.rs_eRSNTokenId = exports.rs_RSNTokenId = exports.getUrlConfig = exports.urlConfig = exports.UrlAction = exports.rs_ErgoNodeHost = exports.rs_ErgoExplorerHost = exports.rs_WatcherCollateralERG = exports.rs_WatcherCollateralRSN = exports.getPermitCost = exports.rs_Address_Key = exports.rs_PerfTx_Key = exports.rs_ActivePermit_Key = exports.rs_WatcherReports_Key = exports.rs_Permit_Key = exports.rs_Download_Key = exports.rs_Input_Key = exports.rs_StartFrom = exports.rs_PerfFullDownloadsBatchSize = exports.rs_PerfInitialNDownloads = exports.rs_FullDownloadsBatchSize = exports.rs_InitialNDownloads = exports.rs_AddressDataStoreName = exports.rs_OpenBoxesStoreName = exports.rs_DownloadStatusStoreName = exports.rs_WatcherReportsStoreName = exports.rs_ReportsStoreName = exports.rs_ActivePermitTxStoreName = exports.rs_PermitTxStoreName = exports.rs_PerfTxStoreName = exports.rs_InputsStoreName = exports.rs_DownloadStoreName = exports.rs_DbVersion = exports.rs_DbName = void 0;
 const chain_service_1 = require("./chain.service");
 /* eslint-disable @typescript-eslint/no-explicit-any */
 exports.rs_DbName = 'rosenDatabase_1.1.5';
@@ -27,8 +27,19 @@ exports.rs_WatcherReports_Key = 'chainType';
 exports.rs_ActivePermit_Key = 'id';
 exports.rs_PerfTx_Key = 'id';
 exports.rs_Address_Key = 'address';
-exports.rs_PermitCost = 3000;
+const getPermitCost = (chainType) => {
+    if (chainType === chain_service_1.ChainType.Handshake) {
+        return 5000;
+    }
+    else {
+        return 3000;
+    }
+};
+exports.getPermitCost = getPermitCost;
 const rs_WatcherCollateralRSN = (chainType) => {
+    if (chainType === chain_service_1.ChainType.Handshake) {
+        return 100000;
+    }
     if (chainType === chain_service_1.ChainType.Runes || chainType === chain_service_1.ChainType.Firo) {
         return 50000;
     }
@@ -38,7 +49,7 @@ const rs_WatcherCollateralRSN = (chainType) => {
 };
 exports.rs_WatcherCollateralRSN = rs_WatcherCollateralRSN;
 const rs_WatcherCollateralERG = (chainType) => {
-    if (chainType === chain_service_1.ChainType.Runes || chainType === chain_service_1.ChainType.Firo) {
+    if (chainType == chain_service_1.ChainType.Handshake || chainType === chain_service_1.ChainType.Runes || chainType === chain_service_1.ChainType.Firo) {
         return 10;
     }
     else {

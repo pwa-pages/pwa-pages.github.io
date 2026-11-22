@@ -1,5 +1,5 @@
 import { ChainType, getChainTypeForPermitAddress } from "./chain.service";
-import { rs_PermitTxStoreName, rs_RSNTokenId, rs_RSNDecimals, rs_PermitCost } from "./constants";
+import { rs_PermitTxStoreName, rs_RSNTokenId, rs_RSNDecimals, getPermitCost } from "./constants";
 import {  DataService } from "./data.service";
 import { PermitTx, TransactionItem, Asset, PermitInfo, Input, Output } from "./models";
 
@@ -139,7 +139,7 @@ export class MyWatcherDataService extends DataService<PermitTx> {
     for (const activePermit of addressActivePermits) {
       const info = permitInfo.find((p) => p.address === activePermit.address);
       if (info) {
-        info.activeLockedRSN += rs_PermitCost;
+        info.activeLockedRSN += getPermitCost(activePermit.chainType as ChainType);
       }
     }
 
