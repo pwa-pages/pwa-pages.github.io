@@ -2628,12 +2628,17 @@ var init_process_event_service = __esm({
         console.log(
           "Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: " + event.data
         );
+        var inputs = await services.dataService.getSortedInputs();
         const addressCharts = await services.chartService.getAddressCharts(
-          await services.dataService.getSortedInputs()
+          inputs
         );
         await this.eventSender?.sendEvent({
           type: "AddressChartChanged" /* AddressChartChanged */,
           data: addressCharts
+        });
+        this.eventSender?.sendEvent({
+          type: "InputsChanged" /* InputsChanged */,
+          data: inputs
         });
         if (event.data && typeof event.data === "string") {
           await services.downloadService.downloadForAddress(
@@ -3145,3 +3150,4 @@ async function downloadActivePermits() {
     console.log("totalsPerAddress: ", totalsPerAddress);
   }
 }
+//# sourceMappingURL=main.js.map

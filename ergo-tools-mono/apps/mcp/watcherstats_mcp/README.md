@@ -78,7 +78,7 @@ lock; the last renamed JSON file remains authoritative.
 ## Tests
 
 ```sh
-node --import tsx --test apps/mcp/watcherstats_mcp/tests/file.storage.service.test.ts
+node --import tsx --test apps/mcp/watcherstats_mcp/tests/*.test.ts
 ./node_modules/.bin/tsc -p apps/mcp/watcherstats_mcp/tests/tsconfig.json
 ```
 

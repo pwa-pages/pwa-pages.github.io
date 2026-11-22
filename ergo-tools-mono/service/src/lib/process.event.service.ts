@@ -115,13 +115,20 @@ export class ProcessEventService {
       event.data,
     );
 
+    var inputs = await services.dataService.getSortedInputs();
     const addressCharts = await services.chartService.getAddressCharts(
-      await services.dataService.getSortedInputs(),
+      inputs
     );
 
     await this.eventSender?.sendEvent({
       type: EventType.AddressChartChanged,
       data: addressCharts,
+    });
+
+
+    this.eventSender?.sendEvent({
+      type: EventType.InputsChanged,
+      data: inputs,
     });
 
     if (event.data && typeof event.data === 'string') {

@@ -85,10 +85,15 @@ class ProcessEventService {
     async processRequestInputsDownload(event, services) {
         console.log('Rosen service worker received RequestInputsDownload initiating syncing of data by downloading from blockchain, event.data: ' +
             event.data);
-        const addressCharts = await services.chartService.getAddressCharts(await services.dataService.getSortedInputs());
+        var inputs = await services.dataService.getSortedInputs();
+        const addressCharts = await services.chartService.getAddressCharts(inputs);
         await this.eventSender?.sendEvent({
             type: models_1.EventType.AddressChartChanged,
             data: addressCharts,
+        });
+        this.eventSender?.sendEvent({
+            type: models_1.EventType.InputsChanged,
+            data: inputs,
         });
         if (event.data && typeof event.data === 'string') {
             await services.downloadService.downloadForAddress(event.data, constants_1.UrlAction.StatisticsTransactions);
