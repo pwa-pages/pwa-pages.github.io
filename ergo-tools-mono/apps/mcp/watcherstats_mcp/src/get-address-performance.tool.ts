@@ -8,34 +8,23 @@ import { McpServer } from '@modelcontextprotocol/server';
 import * as z from 'zod/v4';
 import { loadToolDescription } from './tool-description.js';
 
+type AddressPerformance = {
+  chainType: string | null;
+  charts: Record<number, number>;
+};
+
 export class GetAddressPerformanceTool {
-  addressCharts: Record<string, { chainType: string | null; charts: Record<number, number>; }>;
+  addressCharts: Record<string, AddressPerformance> = {};
 
   constructor(
     private eventService: EventService,
     private processEventService: ProcessEventService
   ) {
-
     this.eventService.subscribeToEvent(
       EventType.AddressChartChanged,
-      async (
-        a: Record<
-          string,
-          { chainType: string | null; charts: Record<number, number> }
-        >,
-      ) => {
-        this.addressCharts = Object.keys(a).reduce(
-          (acc, key) => {
-            acc[key] = a[key];
-            return acc;
-          },
-          {} as Record<
-            string,
-            { chainType: string | null; charts: Record<number, number> }
-          >,
-        );
-
-      },
+      async (data: Record<string, AddressPerformance>) => {
+        this.addressCharts = { ...data };
+      }
     );
   }
 
@@ -51,16 +40,25 @@ export class GetAddressPerformanceTool {
         })
       },
       async ({ address }) => {
+        // Schedule event processing without waiting for it.
+        setImmediate(() => {
+          void this.processEventService
+            .processEvent({
+              data: address as unknown as object,
+              type: EventType.RequestInputsDownload
+            })
+            .catch((error) => {
+              console.error(
+                '[GetAddressPerformanceTool] Background event failed:',
+                error
+              );
+            });
+        });
 
-        this.processEventService.processEvent({
-          data: address as unknown as object,
-          type: EventType.RequestInputsDownload
-        }
-        );
+        // Read currently cached performance data.
+        const performance = this.addressCharts[address];
 
-        const addressCharts = this.addressCharts;
-
-        if (addressCharts === null || addressCharts === undefined) {
+        if (!performance) {
           return {
             content: [
               {
@@ -73,8 +71,7 @@ export class GetAddressPerformanceTool {
         }
 
         try {
-          // Serialize to JSON.
-          const serialized = JSON.stringify(addressCharts[address]);
+          const serialized = JSON.stringify(performance);
 
           if (serialized === undefined) {
             throw new Error(
@@ -82,10 +79,8 @@ export class GetAddressPerformanceTool {
             );
           }
 
-          // Convert into a plain JavaScript value.
           const parsed: unknown = JSON.parse(serialized);
 
-          // MCP structuredContent must be a JSON object.
           if (
             parsed === null ||
             typeof parsed !== 'object' ||
