@@ -90,6 +90,7 @@ export class GetAddressStatisticsTool {
             ? Date.parse(`${endDate}T00:00:00.000Z`) + 24 * 60 * 60 * 1000
             : Number.POSITIVE_INFINITY;
           const inputs = this.inputs
+            .filter((input) => input.outputAddress === address)
             .map((input, index) => {
               if (typeof input.amount !== 'number' || !Number.isFinite(input.amount)) {
                 throw new Error(`Input ${index} has an invalid amount`);

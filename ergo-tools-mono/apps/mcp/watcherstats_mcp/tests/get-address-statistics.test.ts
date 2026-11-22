@@ -68,7 +68,6 @@ test('address statistics returns normalized amounts and dates as text and struct
   const result = await client.callTool(request);
   const expected = [
     { inputDate: '2025-10-19T22:00:50.657Z', amount: 4.252 },
-    { inputDate: '2025-10-20T00:00:00.000Z', amount: 0.000001 },
   ];
   assert.deepEqual(result.structuredContent, { inputs: expected });
   assert.deepEqual(result.content, [{ type: 'text', text: JSON.stringify(expected) }]);
@@ -84,7 +83,7 @@ test('address statistics returns normalized amounts and dates as text and struct
     name: 'get_address_statistics',
     arguments: { address: 'watcher', startDate: '2025-10-20' },
   });
-  assert.deepEqual(startOnly.structuredContent, { inputs: [expected[1]] });
+  assert.deepEqual(startOnly.structuredContent, { inputs: [] });
 
   const endOnly = await client.callTool({
     name: 'get_address_statistics',
