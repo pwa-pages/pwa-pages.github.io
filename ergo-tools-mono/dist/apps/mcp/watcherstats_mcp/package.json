@@ -6,6 +6,7 @@
     "@angular/core": "22.1.6",
     "@modelcontextprotocol/sdk": "1.30.0",
     "@modelcontextprotocol/server": "2.4.0",
+    "better-sqlite3": "13.2.0",
     "env-paths": "2.2.1",
     "rxjs": "7.8.2",
     "tslib": "2.8.1",

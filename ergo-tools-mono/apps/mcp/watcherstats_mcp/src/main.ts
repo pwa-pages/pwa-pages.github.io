@@ -58,10 +58,12 @@ if (process.env.MCP_TRANSPORT === 'stdio') {
 
 // Shared services
 const eventService = new EventService();
+const storageService = new FileStorageService();
+process.once('exit', () => storageService.close());
 
 const processEventService = CreateProcessEventService(
   new DirectEventSender(eventService),
-  new FileStorageService()
+  storageService
 );
 
 const getWatchersStatsTool =
