@@ -41,7 +41,7 @@ export class GetAddressStatisticsTool {
           )
         })
       },
-      async ({ address, startDate, endDate }) => {
+      async ({ address, startDate, endDate, }) => {
         if (startDate && endDate && startDate > endDate) {
           return {
             content: [

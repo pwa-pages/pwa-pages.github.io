@@ -17,17 +17,6 @@ export class GetWatchersStatsTool {
     this.eventService.subscribeToEvent(
       EventType.WatchersStatsChanged,
       (data: WatchersStats) => {
-        console.log('[WatchersStats] Event received');
-        console.log('[WatchersStats] Type:', typeof data);
-        console.log(
-          '[WatchersStats] Constructor:',
-          data?.constructor?.name
-        );
-        console.log(
-          '[WatchersStats] JSON:',
-          JSON.stringify(data)
-        );
-
         this.watchersStats = data;
       }
     );
