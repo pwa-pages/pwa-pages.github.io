@@ -7,10 +7,8 @@ const rxjs_2 = require("rxjs");
 const _1 = require(".");
 class DownloadService {
     static { this.maxLoggedUrlLength = 200; }
-    constructor(eventSender, storageService) {
-        this.eventSender = eventSender;
+    constructor(storageService) {
         this.storageService = storageService;
-        this.activeDownloads = 0;
         this.useNode = false;
     }
     downloadPermitInfo(watcherUrl) {
@@ -24,16 +22,6 @@ class DownloadService {
         if (url.length <= DownloadService.maxLoggedUrlLength)
             return url;
         return `${url.slice(0, DownloadService.maxLoggedUrlLength)}... (truncated; ${url.length} characters)`;
-    }
-    initiateDownload() {
-        if (this.activeDownloads++ === 0) {
-            this.eventSender.sendEvent({ type: _1.EventType.StartFullDownload });
-        }
-    }
-    endDownload() {
-        if (--this.activeDownloads === 0) {
-            this.eventSender.sendEvent({ type: _1.EventType.EndFullDownload });
-        }
     }
     downloadBalance(address) {
         if (!this.useNode) {
@@ -58,7 +46,6 @@ class DownloadService {
     }
     downloadWithCache(key, url, options) {
         return (0, rxjs_1.defer)(() => {
-            this.initiateDownload();
             const cached = (0, rxjs_1.defer)(() => (0, rxjs_1.from)(this.storageService.getDataById(_1.rs_DownloadStoreName, key))).pipe((0, operators_1.concatMap)((entry) => {
                 if (entry == null)
                     return rxjs_1.EMPTY;
@@ -73,7 +60,7 @@ class DownloadService {
             return (0, rxjs_1.concat)(cached, downloaded).pipe((0, operators_1.catchError)((error) => {
                 console.error('Download or cache failed:', this.formatUrlForLog(url), error);
                 return (0, rxjs_1.throwError)(() => error);
-            }), (0, operators_1.finalize)(() => this.endDownload()));
+            }));
         });
     }
 }

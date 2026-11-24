@@ -2812,6 +2812,90 @@
     }
   });
 
+  // node_modules/rxjs/dist/esm5/internal/scheduler/dateTimestampProvider.js
+  var dateTimestampProvider;
+  var init_dateTimestampProvider = __esm({
+    "node_modules/rxjs/dist/esm5/internal/scheduler/dateTimestampProvider.js"() {
+      "use strict";
+      dateTimestampProvider = {
+        now: function() {
+          return (dateTimestampProvider.delegate || Date).now();
+        },
+        delegate: void 0
+      };
+    }
+  });
+
+  // node_modules/rxjs/dist/esm5/internal/ReplaySubject.js
+  var ReplaySubject;
+  var init_ReplaySubject = __esm({
+    "node_modules/rxjs/dist/esm5/internal/ReplaySubject.js"() {
+      "use strict";
+      init_tslib_es6();
+      init_Subject();
+      init_dateTimestampProvider();
+      ReplaySubject = (function(_super) {
+        __extends(ReplaySubject2, _super);
+        function ReplaySubject2(_bufferSize, _windowTime, _timestampProvider) {
+          if (_bufferSize === void 0) {
+            _bufferSize = Infinity;
+          }
+          if (_windowTime === void 0) {
+            _windowTime = Infinity;
+          }
+          if (_timestampProvider === void 0) {
+            _timestampProvider = dateTimestampProvider;
+          }
+          var _this = _super.call(this) || this;
+          _this._bufferSize = _bufferSize;
+          _this._windowTime = _windowTime;
+          _this._timestampProvider = _timestampProvider;
+          _this._buffer = [];
+          _this._infiniteTimeWindow = true;
+          _this._infiniteTimeWindow = _windowTime === Infinity;
+          _this._bufferSize = Math.max(1, _bufferSize);
+          _this._windowTime = Math.max(1, _windowTime);
+          return _this;
+        }
+        ReplaySubject2.prototype.next = function(value) {
+          var _a = this, isStopped = _a.isStopped, _buffer = _a._buffer, _infiniteTimeWindow = _a._infiniteTimeWindow, _timestampProvider = _a._timestampProvider, _windowTime = _a._windowTime;
+          if (!isStopped) {
+            _buffer.push(value);
+            !_infiniteTimeWindow && _buffer.push(_timestampProvider.now() + _windowTime);
+          }
+          this._trimBuffer();
+          _super.prototype.next.call(this, value);
+        };
+        ReplaySubject2.prototype._subscribe = function(subscriber) {
+          this._throwIfClosed();
+          this._trimBuffer();
+          var subscription = this._innerSubscribe(subscriber);
+          var _a = this, _infiniteTimeWindow = _a._infiniteTimeWindow, _buffer = _a._buffer;
+          var copy = _buffer.slice();
+          for (var i = 0; i < copy.length && !subscriber.closed; i += _infiniteTimeWindow ? 1 : 2) {
+            subscriber.next(copy[i]);
+          }
+          this._checkFinalizedStatuses(subscriber);
+          return subscription;
+        };
+        ReplaySubject2.prototype._trimBuffer = function() {
+          var _a = this, _bufferSize = _a._bufferSize, _timestampProvider = _a._timestampProvider, _buffer = _a._buffer, _infiniteTimeWindow = _a._infiniteTimeWindow;
+          var adjustedBufferSize = (_infiniteTimeWindow ? 1 : 2) * _bufferSize;
+          _bufferSize < Infinity && adjustedBufferSize < _buffer.length && _buffer.splice(0, _buffer.length - adjustedBufferSize);
+          if (!_infiniteTimeWindow) {
+            var now = _timestampProvider.now();
+            var last2 = 0;
+            for (var i = 1; i < _buffer.length && _buffer[i] <= now; i += 2) {
+              last2 = i;
+            }
+            last2 && _buffer.splice(0, last2 + 1);
+          }
+        };
+        return ReplaySubject2;
+      })(Subject);
+    }
+  });
+
   // node_modules/rxjs/dist/esm5/internal/observable/empty.js
   var EMPTY;
   var init_empty = __esm({
@@ -3716,6 +3800,169 @@
     }
   });
 
+  // node_modules/rxjs/dist/esm5/internal/operators/share.js
+  function share(options) {
+    if (options === void 0) {
+      options = {};
+    }
+    var _a = options.connector, connector = _a === void 0 ? function() {
+      return new Subject();
+    } : _a, _b = options.resetOnError, resetOnError = _b === void 0 ? true : _b, _c = options.resetOnComplete, resetOnComplete = _c === void 0 ? true : _c, _d = options.resetOnRefCountZero, resetOnRefCountZero = _d === void 0 ? true : _d;
+    return function(wrapperSource) {
+      var connection;
+      var resetConnection;
+      var subject;
+      var refCount = 0;
+      var hasCompleted = false;
+      var hasErrored = false;
+      var cancelReset = function() {
+        resetConnection === null || resetConnection === void 0 ? void 0 : resetConnection.unsubscribe();
+        resetConnection = void 0;
+      };
+      var reset = function() {
+        cancelReset();
+        connection = subject = void 0;
+        hasCompleted = hasErrored = false;
+      };
+      var resetAndUnsubscribe = function() {
+        var conn = connection;
+        reset();
+        conn === null || conn === void 0 ? void 0 : conn.unsubscribe();
+      };
+      return operate(function(source, subscriber) {
+        refCount++;
+        if (!hasErrored && !hasCompleted) {
+          cancelReset();
+        }
+        var dest = subject = subject !== null && subject !== void 0 ? subject : connector();
+        subscriber.add(function() {
+          refCount--;
+          if (refCount === 0 && !hasErrored && !hasCompleted) {
+            resetConnection = handleReset(resetAndUnsubscribe, resetOnRefCountZero);
+          }
+        });
+        dest.subscribe(subscriber);
+        if (!connection && refCount > 0) {
+          connection = new SafeSubscriber({
+            next: function(value) {
+              return dest.next(value);
+            },
+            error: function(err) {
+              hasErrored = true;
+              cancelReset();
+              resetConnection = handleReset(reset, resetOnError, err);
+              dest.error(err);
+            },
+            complete: function() {
+              hasCompleted = true;
+              cancelReset();
+              resetConnection = handleReset(reset, resetOnComplete);
+              dest.complete();
+            }
+          });
+          innerFrom(source).subscribe(connection);
+        }
+      })(wrapperSource);
+    };
+  }
+  function handleReset(reset, on) {
+    var args = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+      args[_i - 2] = arguments[_i];
+    }
+    if (on === true) {
+      reset();
+      return;
+    }
+    if (on === false) {
+      return;
+    }
+    var onSubscriber = new SafeSubscriber({
+      next: function() {
+        onSubscriber.unsubscribe();
+        reset();
+      }
+    });
+    return innerFrom(on.apply(void 0, __spreadArray([], __read(args)))).subscribe(onSubscriber);
+  }
+  var init_share = __esm({
+    "node_modules/rxjs/dist/esm5/internal/operators/share.js"() {
+      "use strict";
+      init_tslib_es6();
+      init_innerFrom();
+      init_Subject();
+      init_Subscriber();
+      init_lift();
+    }
+  });
+
+  // node_modules/rxjs/dist/esm5/internal/operators/shareReplay.js
+  function shareReplay(configOrBufferSize, windowTime, scheduler) {
+    var _a, _b, _c;
+    var bufferSize;
+    var refCount = false;
+    if (configOrBufferSize && typeof configOrBufferSize === "object") {
+      _a = configOrBufferSize.bufferSize, bufferSize = _a === void 0 ? Infinity : _a, _b = configOrBufferSize.windowTime, windowTime = _b === void 0 ? Infinity : _b, _c = configOrBufferSize.refCount, refCount = _c === void 0 ? false : _c, scheduler = configOrBufferSize.scheduler;
+    } else {
+      bufferSize = configOrBufferSize !== null && configOrBufferSize !== void 0 ? configOrBufferSize : Infinity;
+    }
+    return share({
+      connector: function() {
+        return new ReplaySubject(bufferSize, windowTime, scheduler);
+      },
+      resetOnError: true,
+      resetOnComplete: false,
+      resetOnRefCountZero: refCount
+    });
+  }
+  var init_shareReplay = __esm({
+    "node_modules/rxjs/dist/esm5/internal/operators/shareReplay.js"() {
+      "use strict";
+      init_ReplaySubject();
+      init_share();
+    }
+  });
+
+  // node_modules/rxjs/dist/esm5/internal/operators/tap.js
+  function tap(observerOrNext, error, complete) {
+    var tapObserver = isFunction(observerOrNext) || error || complete ? { next: observerOrNext, error, complete } : observerOrNext;
+    return tapObserver ? operate(function(source, subscriber) {
+      var _a;
+      (_a = tapObserver.subscribe) === null || _a === void 0 ? void 0 : _a.call(tapObserver);
+      var isUnsub = true;
+      source.subscribe(createOperatorSubscriber(subscriber, function(value) {
+        var _a2;
+        (_a2 = tapObserver.next) === null || _a2 === void 0 ? void 0 : _a2.call(tapObserver, value);
+        subscriber.next(value);
+      }, function() {
+        var _a2;
+        isUnsub = false;
+        (_a2 = tapObserver.complete) === null || _a2 === void 0 ? void 0 : _a2.call(tapObserver);
+        subscriber.complete();
+      }, function(err) {
+        var _a2;
+        isUnsub = false;
+        (_a2 = tapObserver.error) === null || _a2 === void 0 ? void 0 : _a2.call(tapObserver, err);
+        subscriber.error(err);
+      }, function() {
+        var _a2, _b;
+        if (isUnsub) {
+          (_a2 = tapObserver.unsubscribe) === null || _a2 === void 0 ? void 0 : _a2.call(tapObserver);
+        }
+        (_b = tapObserver.finalize) === null || _b === void 0 ? void 0 : _b.call(tapObserver);
+      }));
+    }) : identity;
+  }
+  var init_tap = __esm({
+    "node_modules/rxjs/dist/esm5/internal/operators/tap.js"() {
+      "use strict";
+      init_isFunction();
+      init_lift();
+      init_OperatorSubscriber();
+      init_identity();
+    }
+  });
+
   // node_modules/rxjs/dist/esm5/index.js
   var init_esm5 = __esm({
     "node_modules/rxjs/dist/esm5/index.js"() {
@@ -3743,6 +3990,8 @@
       init_concatMap();
       init_finalize();
       init_map();
+      init_shareReplay();
+      init_tap();
     }
   });
 
@@ -3756,10 +4005,8 @@
       init_esm5();
       init_index();
       DownloadService = class _DownloadService {
-        constructor(eventSender, storageService) {
-          this.eventSender = eventSender;
+        constructor(storageService) {
           this.storageService = storageService;
-          this.activeDownloads = 0;
           this.useNode = false;
         }
         static {
@@ -3775,16 +4022,6 @@
         formatUrlForLog(url) {
           if (url.length <= _DownloadService.maxLoggedUrlLength) return url;
           return `${url.slice(0, _DownloadService.maxLoggedUrlLength)}... (truncated; ${url.length} characters)`;
-        }
-        initiateDownload() {
-          if (this.activeDownloads++ === 0) {
-            this.eventSender.sendEvent({ type: "StartFullDownload" /* StartFullDownload */ });
-          }
-        }
-        endDownload() {
-          if (--this.activeDownloads === 0) {
-            this.eventSender.sendEvent({ type: "EndFullDownload" /* EndFullDownload */ });
-          }
         }
         downloadBalance(address) {
           if (!this.useNode) {
@@ -3815,7 +4052,6 @@
         }
         downloadWithCache(key, url, options) {
           return defer(() => {
-            this.initiateDownload();
             const cached = defer(() => from(this.storageService.getDataById(rs_DownloadStoreName, key))).pipe(
               concatMap((entry) => {
                 if (entry == null) return EMPTY;
@@ -3837,8 +4073,7 @@
               catchError((error) => {
                 console.error("Download or cache failed:", this.formatUrlForLog(url), error);
                 return throwError(() => error);
-              }),
-              finalize(() => this.endDownload())
+              })
             );
           });
         }
@@ -3853,10 +4088,12 @@
       "use strict";
       init_operators();
       init_esm5();
-      PriceService = class {
+      PriceService = class _PriceService {
         constructor(downloadService) {
           this.downloadService = downloadService;
-          this.currencyRates = {};
+        }
+        static {
+          this.refreshIntervalMs = 6e4;
         }
         convert(amount, from2, to) {
           return this.getPrices().pipe(
@@ -3870,23 +4107,38 @@
           );
         }
         getPrices() {
-          const pricesUrl = `https://api.coingecko.com/api/v3/simple/price?ids=rosen-bridge,ergo&vs_currencies=eur,usd`;
-          if (this.currencyRates["ERG"]) {
-            return of(this.currencyRates);
-          }
-          this.currencyRates = {
-            ERG: { EUR: 0, USD: 0 },
-            RSN: { EUR: 0, USD: 0 }
-          };
-          return this.downloadService.downloadStream(pricesUrl).pipe(
-            map((data) => {
-              this.currencyRates["ERG"]["EUR"] = data.ergo.eur;
-              this.currencyRates["ERG"]["USD"] = data.ergo.usd;
-              this.currencyRates["RSN"]["EUR"] = data["rosen-bridge"].eur;
-              this.currencyRates["RSN"]["USD"] = data["rosen-bridge"].usd;
-              return this.currencyRates;
-            })
-          );
+          return defer(() => {
+            if (_PriceService.pricesInFlight) {
+              return _PriceService.pricesInFlight;
+            }
+            if (_PriceService.currencyRates && _PriceService.lastRefreshTime !== void 0 && Date.now() - _PriceService.lastRefreshTime < _PriceService.refreshIntervalMs) {
+              return of(_PriceService.currencyRates);
+            }
+            const pricesUrl = `https://api.coingecko.com/api/v3/simple/price?ids=rosen-bridge,ergo&vs_currencies=eur,usd`;
+            let receivedPrices = false;
+            _PriceService.pricesInFlight = this.downloadService.downloadStream(pricesUrl).pipe(
+              map((data) => {
+                _PriceService.currencyRates = {
+                  ERG: { EUR: data.ergo.eur, USD: data.ergo.usd },
+                  RSN: { EUR: data["rosen-bridge"].eur, USD: data["rosen-bridge"].usd }
+                };
+                receivedPrices = true;
+                return _PriceService.currencyRates;
+              }),
+              tap({
+                complete: () => {
+                  if (receivedPrices) {
+                    _PriceService.lastRefreshTime = Date.now();
+                  }
+                }
+              }),
+              finalize(() => {
+                _PriceService.pricesInFlight = void 0;
+              }),
+              shareReplay({ bufferSize: 1, refCount: false })
+            );
+            return _PriceService.pricesInFlight;
+          });
         }
       };
     }
@@ -27173,7 +27425,14 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
         updateTotal(map2) {
           return Object.values(map2).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
         }
-        convertCurrencies(chainType) {
+        trackCompletion(source, completions) {
+          let complete;
+          completions.push(new Promise((resolve) => {
+            complete = resolve;
+          }));
+          return source.pipe(finalize(() => complete()));
+        }
+        convertCurrencies(chainType, completions) {
           Object.values(Currency).forEach((currency) => {
             const conversions = [
               {
@@ -27203,7 +27462,8 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
               }
             ];
             conversions.forEach(({ amount, from: from2, callback }) => {
-              this.priceService.convert(amount, from2, currency ?? "").subscribe(callback);
+              const conversion = this.priceService.convert(amount, from2, currency ?? "");
+              (completions ? this.trackCompletion(conversion, completions) : conversion).subscribe(callback);
             });
           });
         }
@@ -27215,7 +27475,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
         getValue(map2, chainType, multiplier) {
           return (map2[chainType] ?? 0) * multiplier;
         }
-        async setLockedAmounts(chainType) {
+        async setLockedAmounts(chainType, completions) {
           this.watchersStats.chainLockedRSN[chainType] = this.getValue(
             this.watchersStats.chainPermitCount,
             chainType,
@@ -27248,14 +27508,14 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
           this.watchersStats.totalLockedERG = this.updateTotal(
             this.watchersStats.chainLockedERG
           );
-          await this.currencyUpdate(chainType);
+          await this.currencyUpdate(chainType, completions);
         }
-        async currencyUpdate(chainType) {
+        async currencyUpdate(chainType, completions) {
           Object.values(Currency).forEach((currency) => {
             this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = 0;
             this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = 0;
           });
-          this.convertCurrencies(chainType);
+          this.convertCurrencies(chainType, completions);
           this.updateTotalLocked();
           Object.values(Currency).forEach((currency) => {
             this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = (this.watchersStats.watchersAmountsPerCurrency[currency].rsnCollateral ?? 0) + (this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral ?? 0);
@@ -27314,17 +27574,20 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
           return this.downloadPermitInfo(address, null, chainTypeTokens[chainType], chainType);
         }
         async download() {
+          this.eventSender.sendEvent({ type: "StartFullDownload" /* StartFullDownload */, data: watcherStatsEventIdentifier });
+          const balanceCompletions = [];
+          const conversionCompletions = [];
           getChainTypes().forEach((c) => {
-            this.getTriggerPermitsInfo(c).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
+            this.trackCompletion(this.getTriggerPermitsInfo(c), balanceCompletions).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
               this.watchersStats.triggerPermitCount[c] = amount;
-              await this.setLockedAmounts(c);
+              await this.setLockedAmounts(c, conversionCompletions);
             });
-            this.getBulkPermitsInfo(c).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
+            this.trackCompletion(this.getBulkPermitsInfo(c), balanceCompletions).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
               this.watchersStats.bulkPermitCount[c] = amount;
-              await this.setLockedAmounts(c);
+              await this.setLockedAmounts(c, conversionCompletions);
             });
           });
-          const watcherInfo$ = this.getWatchersInfo();
+          const watcherInfo$ = this.trackCompletion(this.getWatchersInfo(), balanceCompletions);
           watcherInfo$.pipe(
             map((watcherInfo) => {
               getChainTypes().forEach(async (c) => {
@@ -27332,16 +27595,17 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
                   (token) => token.name === chainTypeWatcherIdentifier[c]
                 )?.amount ?? 0;
                 this.watchersStats.chainWatcherCount[c] = amount;
-                await this.setLockedAmounts(c);
+                await this.setLockedAmounts(c, conversionCompletions);
               });
             })
           ).subscribe();
           getChainTypes().forEach((c) => {
-            this.getPermitsInfo(c).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
+            this.trackCompletion(this.getPermitsInfo(c), balanceCompletions).pipe(map((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
               this.watchersStats.chainPermitCount[c] = amount;
-              await this.setLockedAmounts(c);
+              await this.setLockedAmounts(c, conversionCompletions);
             });
           });
+          void Promise.all(balanceCompletions).then(() => Promise.all(conversionCompletions)).then(() => this.eventSender.sendEvent({ type: "EndFullDownload" /* EndFullDownload */, data: watcherStatsEventIdentifier }));
           return this.watchersStatsSignal;
         }
       };
@@ -27375,8 +27639,8 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
     const myWatcherDataService = new MyWatcherDataService(
       permitsDataService
     );
-    const downloadServiceWatcherInfo = new DownloadService(eventSender, storageService);
-    const downloadServciceCurrencyRates = new DownloadService(eventSender, storageService);
+    const downloadServiceWatcherInfo = new DownloadService(storageService);
+    const downloadServciceCurrencyRates = new DownloadService(storageService);
     const priceService = new PriceService(
       downloadServciceCurrencyRates
     );

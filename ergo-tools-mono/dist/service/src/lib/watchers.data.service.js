@@ -40,7 +40,14 @@ class WatchersDataService {
     updateTotal(map) {
         return Object.values(map).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
     }
-    convertCurrencies(chainType) {
+    trackCompletion(source, completions) {
+        let complete;
+        completions.push(new Promise((resolve) => {
+            complete = resolve;
+        }));
+        return source.pipe((0, operators_1.finalize)(() => complete()));
+    }
+    convertCurrencies(chainType, completions) {
         Object.values(constants_1.Currency).forEach((currency) => {
             const conversions = [
                 {
@@ -71,8 +78,8 @@ class WatchersDataService {
                 },
             ];
             conversions.forEach(({ amount, from, callback }) => {
-                this.priceService
-                    .convert(amount, from, currency ?? '')
+                const conversion = this.priceService.convert(amount, from, currency ?? '');
+                (completions ? this.trackCompletion(conversion, completions) : conversion)
                     .subscribe(callback);
             });
         });
@@ -89,7 +96,7 @@ class WatchersDataService {
     getValue(map, chainType, multiplier) {
         return (map[chainType] ?? 0) * multiplier;
     }
-    async setLockedAmounts(chainType) {
+    async setLockedAmounts(chainType, completions) {
         this.watchersStats.chainLockedRSN[chainType] =
             this.getValue(this.watchersStats.chainPermitCount, chainType, (0, constants_1.getPermitCost)(chainType)) +
                 this.getValue(this.watchersStats.chainWatcherCount, chainType, (0, constants_1.rs_WatcherCollateralRSN)(chainType));
@@ -104,14 +111,14 @@ class WatchersDataService {
         this.watchersStats.totalActivePermitCount = this.updateTotal(this.watchersStats.activePermitCount);
         this.watchersStats.totalLockedRSN = this.updateTotal(this.watchersStats.chainLockedRSN);
         this.watchersStats.totalLockedERG = this.updateTotal(this.watchersStats.chainLockedERG);
-        await this.currencyUpdate(chainType);
+        await this.currencyUpdate(chainType, completions);
     }
-    async currencyUpdate(chainType) {
+    async currencyUpdate(chainType, completions) {
         Object.values(constants_1.Currency).forEach((currency) => {
             this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = 0;
             this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = 0;
         });
-        this.convertCurrencies(chainType);
+        this.convertCurrencies(chainType, completions);
         this.updateTotalLocked();
         Object.values(constants_1.Currency).forEach((currency) => {
             this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue =
@@ -172,38 +179,45 @@ class WatchersDataService {
         return this.downloadPermitInfo(address, null, chain_service_1.chainTypeTokens[chainType], chainType);
     }
     async download() {
+        this.eventSender.sendEvent({ type: models_1.EventType.StartFullDownload, data: constants_1.watcherStatsEventIdentifier });
+        const balanceCompletions = [];
+        const conversionCompletions = [];
         (0, chain_service_1.getChainTypes)().forEach((c) => {
-            this.getTriggerPermitsInfo(c)
+            this.trackCompletion(this.getTriggerPermitsInfo(c), balanceCompletions)
                 .pipe((0, operators_1.map)((permitsInfo) => permitsInfo?.amount))
                 .subscribe(async (amount) => {
                 this.watchersStats.triggerPermitCount[c] = amount;
-                await this.setLockedAmounts(c);
+                await this.setLockedAmounts(c, conversionCompletions);
             });
-            this.getBulkPermitsInfo(c)
+            this.trackCompletion(this.getBulkPermitsInfo(c), balanceCompletions)
                 .pipe((0, operators_1.map)((permitsInfo) => permitsInfo?.amount))
                 .subscribe(async (amount) => {
                 this.watchersStats.bulkPermitCount[c] = amount;
-                await this.setLockedAmounts(c);
+                await this.setLockedAmounts(c, conversionCompletions);
             });
         });
-        const watcherInfo$ = this.getWatchersInfo();
+        const watcherInfo$ = this.trackCompletion(this.getWatchersInfo(), balanceCompletions);
         watcherInfo$
             .pipe((0, operators_1.map)((watcherInfo) => {
             (0, chain_service_1.getChainTypes)().forEach(async (c) => {
                 const amount = watcherInfo.tokens.find((token) => token.name === chain_service_1.chainTypeWatcherIdentifier[c])?.amount ?? 0;
                 this.watchersStats.chainWatcherCount[c] = amount;
-                await this.setLockedAmounts(c);
+                await this.setLockedAmounts(c, conversionCompletions);
             });
         }))
             .subscribe();
         (0, chain_service_1.getChainTypes)().forEach((c) => {
-            this.getPermitsInfo(c)
+            this.trackCompletion(this.getPermitsInfo(c), balanceCompletions)
                 .pipe((0, operators_1.map)((permitsInfo) => permitsInfo?.amount))
                 .subscribe(async (amount) => {
                 this.watchersStats.chainPermitCount[c] = amount;
-                await this.setLockedAmounts(c);
+                await this.setLockedAmounts(c, conversionCompletions);
             });
         });
+        // Balance emissions can start more conversion requests, so collect those first.
+        void Promise.all(balanceCompletions)
+            .then(() => Promise.all(conversionCompletions))
+            .then(() => this.eventSender.sendEvent({ type: models_1.EventType.EndFullDownload, data: constants_1.watcherStatsEventIdentifier }));
         return this.watchersStatsSignal;
     }
 }

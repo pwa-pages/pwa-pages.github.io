@@ -1,14 +1,11 @@
 import { of, Observable, throwError, concat, EMPTY, defer, from } from 'rxjs';
-import { catchError, concatMap, finalize, map } from 'rxjs/operators';
+import { catchError, concatMap, map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { EventSender } from '.';
-import { EventType, IStorageService, rs_DownloadStoreName, rs_ErgoExplorerHost, rs_ErgoNodeHost, WatcherInfo } from '.';
+import { IStorageService, rs_DownloadStoreName, rs_ErgoExplorerHost, rs_ErgoNodeHost, WatcherInfo } from '.';
 export class DownloadService {
   private static readonly maxLoggedUrlLength = 200;
-  private activeDownloads = 0;
   private useNode = false;
   constructor(
-    private eventSender: EventSender,
     private storageService: IStorageService
   ) {}
 
@@ -24,18 +21,6 @@ export class DownloadService {
   private formatUrlForLog(url: string): string {
     if (url.length <= DownloadService.maxLoggedUrlLength) return url;
     return `${url.slice(0, DownloadService.maxLoggedUrlLength)}... (truncated; ${url.length} characters)`;
-  }
-
-  private initiateDownload() {
-    if (this.activeDownloads++ === 0) {
-      this.eventSender.sendEvent({ type: EventType.StartFullDownload });
-    }
-  }
-
-  private endDownload() {
-    if (--this.activeDownloads === 0) {
-      this.eventSender.sendEvent({ type: EventType.EndFullDownload });
-    }
   }
 
   downloadBalance(address: string): Observable<WatcherInfo> {
@@ -70,7 +55,6 @@ export class DownloadService {
 
   private downloadWithCache<T>(key: string, url: string, options?: RequestInit): Observable<T> {
     return defer(() => {
-      this.initiateDownload();
       
       const cached: Observable<T> = defer(() => from(this.storageService.getDataById(rs_DownloadStoreName, key))).pipe(
         concatMap((entry) => {
@@ -96,8 +80,7 @@ export class DownloadService {
         catchError((error) => {
           console.error('Download or cache failed:', this.formatUrlForLog(url), error);
           return throwError(() => error);
-        }),
-        finalize(() => this.endDownload()),
+        })
       );
     });
   }

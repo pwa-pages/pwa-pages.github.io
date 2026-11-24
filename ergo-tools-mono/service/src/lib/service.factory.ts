@@ -119,8 +119,8 @@ export async function createServices(
     permitsDataService,
   );
 
-  const downloadServiceWatcherInfo = new DownloadService(eventSender, storageService);
-  const downloadServciceCurrencyRates = new DownloadService(eventSender, storageService);
+  const downloadServiceWatcherInfo = new DownloadService(storageService);
+  const downloadServciceCurrencyRates = new DownloadService(storageService);
   const priceService: PriceService = new PriceService(
     downloadServciceCurrencyRates,
   );

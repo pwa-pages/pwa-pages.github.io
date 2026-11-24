@@ -48,8 +48,8 @@ async function createServices(eventSender, storageService) {
     const permitsDataService = new permits_data_service_1.PermitsDataService(storageService);
     const reportsDataService = new reports_data_service_1.ReportsDataService(storageService, eventSender);
     const myWatcherDataService = new mywatcher_data_service_1.MyWatcherDataService(permitsDataService);
-    const downloadServiceWatcherInfo = new download_service_1.DownloadService(eventSender, storageService);
-    const downloadServciceCurrencyRates = new download_service_1.DownloadService(eventSender, storageService);
+    const downloadServiceWatcherInfo = new download_service_1.DownloadService(storageService);
+    const downloadServciceCurrencyRates = new download_service_1.DownloadService(storageService);
     const priceService = new price_service_1.PriceService(downloadServciceCurrencyRates);
     const watchersDataService = new watchers_data_service_1.WatchersDataService(downloadServiceWatcherInfo, priceService, eventSender);
     const chainPerformanceDataService = new chain_performance_data_service_1.ChainPerformanceDataService(storageService, eventSender);

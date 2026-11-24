@@ -67,7 +67,7 @@ const processEventService = CreateProcessEventService(
 );
 
 const getWatchersStatsTool =
-  new GetWatchersStatsTool(eventService);
+  new GetWatchersStatsTool(eventService, processEventService);
 
 const getChainPerfTool =
   new ChainPerfStatsTool(eventService);

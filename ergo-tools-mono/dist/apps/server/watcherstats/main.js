@@ -1695,14 +1695,11 @@ var init_download_service = __esm({
     import_rxjs2 = require("rxjs");
     init_lib();
     DownloadService = class _DownloadService {
-      constructor(eventSender, storageService) {
-        this.eventSender = eventSender;
+      constructor(storageService) {
         this.storageService = storageService;
       }
-      eventSender;
       storageService;
       static maxLoggedUrlLength = 200;
-      activeDownloads = 0;
       useNode = false;
       downloadPermitInfo(watcherUrl) {
         return this.download(watcherUrl + "/api/info");
@@ -1714,16 +1711,6 @@ var init_download_service = __esm({
       formatUrlForLog(url) {
         if (url.length <= _DownloadService.maxLoggedUrlLength) return url;
         return `${url.slice(0, _DownloadService.maxLoggedUrlLength)}... (truncated; ${url.length} characters)`;
-      }
-      initiateDownload() {
-        if (this.activeDownloads++ === 0) {
-          this.eventSender.sendEvent({ type: "StartFullDownload" /* StartFullDownload */ });
-        }
-      }
-      endDownload() {
-        if (--this.activeDownloads === 0) {
-          this.eventSender.sendEvent({ type: "EndFullDownload" /* EndFullDownload */ });
-        }
       }
       downloadBalance(address) {
         if (!this.useNode) {
@@ -1754,7 +1741,6 @@ var init_download_service = __esm({
       }
       downloadWithCache(key, url, options) {
         return (0, import_rxjs.defer)(() => {
-          this.initiateDownload();
           const cached = (0, import_rxjs.defer)(() => (0, import_rxjs.from)(this.storageService.getDataById(rs_DownloadStoreName, key))).pipe(
             (0, import_operators.concatMap)((entry) => {
               if (entry == null) return import_rxjs.EMPTY;
@@ -1776,8 +1762,7 @@ var init_download_service = __esm({
             (0, import_operators.catchError)((error) => {
               console.error("Download or cache failed:", this.formatUrlForLog(url), error);
               return (0, import_rxjs.throwError)(() => error);
-            }),
-            (0, import_operators.finalize)(() => this.endDownload())
+            })
           );
         });
       }
@@ -1791,12 +1776,15 @@ var init_price_service = __esm({
   "service/src/lib/price.service.ts"() {
     import_operators2 = require("rxjs/operators");
     import_rxjs3 = require("rxjs");
-    PriceService = class {
+    PriceService = class _PriceService {
       constructor(downloadService) {
         this.downloadService = downloadService;
       }
       downloadService;
-      currencyRates = {};
+      static refreshIntervalMs = 6e4;
+      static currencyRates;
+      static lastRefreshTime;
+      static pricesInFlight;
       convert(amount, from2, to) {
         return this.getPrices().pipe(
           (0, import_operators2.map)((rates) => {
@@ -1809,23 +1797,38 @@ var init_price_service = __esm({
         );
       }
       getPrices() {
-        const pricesUrl = `https://api.coingecko.com/api/v3/simple/price?ids=rosen-bridge,ergo&vs_currencies=eur,usd`;
-        if (this.currencyRates["ERG"]) {
-          return (0, import_rxjs3.of)(this.currencyRates);
-        }
-        this.currencyRates = {
-          ERG: { EUR: 0, USD: 0 },
-          RSN: { EUR: 0, USD: 0 }
-        };
-        return this.downloadService.downloadStream(pricesUrl).pipe(
-          (0, import_operators2.map)((data) => {
-            this.currencyRates["ERG"]["EUR"] = data.ergo.eur;
-            this.currencyRates["ERG"]["USD"] = data.ergo.usd;
-            this.currencyRates["RSN"]["EUR"] = data["rosen-bridge"].eur;
-            this.currencyRates["RSN"]["USD"] = data["rosen-bridge"].usd;
-            return this.currencyRates;
-          })
-        );
+        return (0, import_rxjs3.defer)(() => {
+          if (_PriceService.pricesInFlight) {
+            return _PriceService.pricesInFlight;
+          }
+          if (_PriceService.currencyRates && _PriceService.lastRefreshTime !== void 0 && Date.now() - _PriceService.lastRefreshTime < _PriceService.refreshIntervalMs) {
+            return (0, import_rxjs3.of)(_PriceService.currencyRates);
+          }
+          const pricesUrl = `https://api.coingecko.com/api/v3/simple/price?ids=rosen-bridge,ergo&vs_currencies=eur,usd`;
+          let receivedPrices = false;
+          _PriceService.pricesInFlight = this.downloadService.downloadStream(pricesUrl).pipe(
+            (0, import_operators2.map)((data) => {
+              _PriceService.currencyRates = {
+                ERG: { EUR: data.ergo.eur, USD: data.ergo.usd },
+                RSN: { EUR: data["rosen-bridge"].eur, USD: data["rosen-bridge"].usd }
+              };
+              receivedPrices = true;
+              return _PriceService.currencyRates;
+            }),
+            (0, import_operators2.tap)({
+              complete: () => {
+                if (receivedPrices) {
+                  _PriceService.lastRefreshTime = Date.now();
+                }
+              }
+            }),
+            (0, import_operators2.finalize)(() => {
+              _PriceService.pricesInFlight = void 0;
+            }),
+            (0, import_operators2.shareReplay)({ bufferSize: 1, refCount: false })
+          );
+          return _PriceService.pricesInFlight;
+        });
       }
     };
   }
@@ -2235,7 +2238,14 @@ var init_watchers_data_service = __esm({
       updateTotal(map4) {
         return Object.values(map4).reduce((acc, val) => (acc ?? 0) + (val ?? 0), 0);
       }
-      convertCurrencies(chainType) {
+      trackCompletion(source, completions) {
+        let complete;
+        completions.push(new Promise((resolve) => {
+          complete = resolve;
+        }));
+        return source.pipe((0, import_operators3.finalize)(() => complete()));
+      }
+      convertCurrencies(chainType, completions) {
         Object.values(Currency).forEach((currency) => {
           const conversions = [
             {
@@ -2265,7 +2275,8 @@ var init_watchers_data_service = __esm({
             }
           ];
           conversions.forEach(({ amount, from: from2, callback }) => {
-            this.priceService.convert(amount, from2, currency ?? "").subscribe(callback);
+            const conversion = this.priceService.convert(amount, from2, currency ?? "");
+            (completions ? this.trackCompletion(conversion, completions) : conversion).subscribe(callback);
           });
         });
       }
@@ -2277,7 +2288,7 @@ var init_watchers_data_service = __esm({
       getValue(map4, chainType, multiplier) {
         return (map4[chainType] ?? 0) * multiplier;
       }
-      async setLockedAmounts(chainType) {
+      async setLockedAmounts(chainType, completions) {
         this.watchersStats.chainLockedRSN[chainType] = this.getValue(
           this.watchersStats.chainPermitCount,
           chainType,
@@ -2310,14 +2321,14 @@ var init_watchers_data_service = __esm({
         this.watchersStats.totalLockedERG = this.updateTotal(
           this.watchersStats.chainLockedERG
         );
-        await this.currencyUpdate(chainType);
+        await this.currencyUpdate(chainType, completions);
       }
-      async currencyUpdate(chainType) {
+      async currencyUpdate(chainType, completions) {
         Object.values(Currency).forEach((currency) => {
           this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = 0;
           this.watchersStats.watchersAmountsPerCurrency[currency].permitValue = 0;
         });
-        this.convertCurrencies(chainType);
+        this.convertCurrencies(chainType, completions);
         this.updateTotalLocked();
         Object.values(Currency).forEach((currency) => {
           this.watchersStats.watchersAmountsPerCurrency[currency].watcherValue = (this.watchersStats.watchersAmountsPerCurrency[currency].rsnCollateral ?? 0) + (this.watchersStats.watchersAmountsPerCurrency[currency].ergCollateral ?? 0);
@@ -2376,17 +2387,20 @@ var init_watchers_data_service = __esm({
         return this.downloadPermitInfo(address, null, chainTypeTokens[chainType], chainType);
       }
       async download() {
+        this.eventSender.sendEvent({ type: "StartFullDownload" /* StartFullDownload */, data: watcherStatsEventIdentifier });
+        const balanceCompletions = [];
+        const conversionCompletions = [];
         getChainTypes().forEach((c) => {
-          this.getTriggerPermitsInfo(c).pipe((0, import_operators3.map)((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
+          this.trackCompletion(this.getTriggerPermitsInfo(c), balanceCompletions).pipe((0, import_operators3.map)((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
             this.watchersStats.triggerPermitCount[c] = amount;
-            await this.setLockedAmounts(c);
+            await this.setLockedAmounts(c, conversionCompletions);
           });
-          this.getBulkPermitsInfo(c).pipe((0, import_operators3.map)((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
+          this.trackCompletion(this.getBulkPermitsInfo(c), balanceCompletions).pipe((0, import_operators3.map)((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
             this.watchersStats.bulkPermitCount[c] = amount;
-            await this.setLockedAmounts(c);
+            await this.setLockedAmounts(c, conversionCompletions);
           });
         });
-        const watcherInfo$ = this.getWatchersInfo();
+        const watcherInfo$ = this.trackCompletion(this.getWatchersInfo(), balanceCompletions);
         watcherInfo$.pipe(
           (0, import_operators3.map)((watcherInfo) => {
             getChainTypes().forEach(async (c) => {
@@ -2394,16 +2408,17 @@ var init_watchers_data_service = __esm({
                 (token) => token.name === chainTypeWatcherIdentifier[c]
               )?.amount ?? 0;
               this.watchersStats.chainWatcherCount[c] = amount;
-              await this.setLockedAmounts(c);
+              await this.setLockedAmounts(c, conversionCompletions);
             });
           })
         ).subscribe();
         getChainTypes().forEach((c) => {
-          this.getPermitsInfo(c).pipe((0, import_operators3.map)((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
+          this.trackCompletion(this.getPermitsInfo(c), balanceCompletions).pipe((0, import_operators3.map)((permitsInfo) => permitsInfo?.amount)).subscribe(async (amount) => {
             this.watchersStats.chainPermitCount[c] = amount;
-            await this.setLockedAmounts(c);
+            await this.setLockedAmounts(c, conversionCompletions);
           });
         });
+        void Promise.all(balanceCompletions).then(() => Promise.all(conversionCompletions)).then(() => this.eventSender.sendEvent({ type: "EndFullDownload" /* EndFullDownload */, data: watcherStatsEventIdentifier }));
         return this.watchersStatsSignal;
       }
     };
@@ -2437,8 +2452,8 @@ async function createServices(eventSender, storageService) {
   const myWatcherDataService = new MyWatcherDataService(
     permitsDataService
   );
-  const downloadServiceWatcherInfo = new DownloadService(eventSender, storageService);
-  const downloadServciceCurrencyRates = new DownloadService(eventSender, storageService);
+  const downloadServiceWatcherInfo = new DownloadService(storageService);
+  const downloadServciceCurrencyRates = new DownloadService(storageService);
   const priceService = new PriceService(
     downloadServciceCurrencyRates
   );

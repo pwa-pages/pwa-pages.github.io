@@ -18,11 +18,12 @@ export declare class WatchersDataService {
     getWatchersInfo(): Observable<WatcherInfo>;
     getPermitsInfo(chainType: string): Observable<Token | undefined>;
     private updateTotal;
+    private trackCompletion;
     private convertCurrencies;
     private updateTotalLocked;
     private getValue;
-    setLockedAmounts(chainType: ChainType): Promise<void>;
-    currencyUpdate(chainType: ChainType): Promise<void>;
+    setLockedAmounts(chainType: ChainType, completions?: Promise<void>[]): Promise<void>;
+    currencyUpdate(chainType: ChainType, completions?: Promise<void>[]): Promise<void>;
     private downloadPermitInfo;
     getTriggerPermitsInfo(chainType: string): Observable<Token | undefined>;
     getBulkPermitsInfo(chainType: string): Observable<Token | undefined>;

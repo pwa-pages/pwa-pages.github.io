@@ -2,7 +2,9 @@
 import {
   EventService,
   EventType,
-  WatchersStats
+  ProcessEventService,
+  WatchersStats,
+  watcherStatsEventIdentifier
 } from '@ergo-tools/service';
 import { McpServer } from '@modelcontextprotocol/server';
 import * as z from 'zod/v4';
@@ -10,14 +12,25 @@ import { loadToolDescription } from './tool-description.js';
 
 export class GetWatchersStatsTool {
   private watchersStats: WatchersStats | null = null;
+  private ready = false;
 
   constructor(
-    private eventService: EventService
+    private eventService: EventService,
+    private processEventService: ProcessEventService
   ) {
     this.eventService.subscribeToEvent(
       EventType.WatchersStatsChanged,
       (data: WatchersStats) => {
         this.watchersStats = data;
+      }
+    );
+
+    this.eventService.subscribeToEvent(
+      EventType.EndFullDownload,
+      async (data: string) => {
+        if (data === watcherStatsEventIdentifier) {
+          this.ready = true;
+        }
       }
     );
   }
@@ -33,6 +46,41 @@ export class GetWatchersStatsTool {
         })
       },
       async () => {
+
+        this.ready = false;
+
+        setImmediate(() => {
+          void this.processEventService
+            .processEvent({
+              data: null,
+              type: EventType.WatcherStatsRequested
+            })
+            .catch((error) => {
+              console.error(
+                '[GetWatchersStatsTool] Background event failed:',
+                error
+              );
+            });
+        });
+
+        const deadline = Date.now() + 10_000;
+        while (!this.ready && Date.now() < deadline) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+
+        if (!this.ready) {
+          return {
+            content: [
+              {
+                type: 'text' as const,
+                text: 'Watcher stats were not available after 10 seconds.'
+              }
+            ],
+            isError: true
+          };
+        }
+
+
         const watchersStats = this.watchersStats;
 
         if (watchersStats === null) {

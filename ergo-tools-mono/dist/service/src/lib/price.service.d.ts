@@ -12,8 +12,11 @@ export interface CurrencyRates {
 }
 export declare class PriceService {
     private downloadService;
+    private static readonly refreshIntervalMs;
     constructor(downloadService: DownloadService);
-    private currencyRates;
+    private static currencyRates?;
+    private static lastRefreshTime?;
+    private static pricesInFlight?;
     convert(amount: number, from: string, to: string): Observable<number>;
     private getPrices;
 }
