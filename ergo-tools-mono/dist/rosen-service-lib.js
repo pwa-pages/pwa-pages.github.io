@@ -232,7 +232,7 @@
   });
 
   // service/src/lib/constants.ts
-  var rs_DbName, rs_DbVersion, rs_DownloadStoreName, rs_InputsStoreName, rs_PerfTxStoreName, rs_PermitTxStoreName, rs_ActivePermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName, rs_DownloadStatusStoreName, rs_OpenBoxesStoreName, rs_AddressDataStoreName, rs_InitialNDownloads, rs_FullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_StartFrom, rs_Input_Key, rs_Download_Key, rs_Permit_Key, rs_WatcherReports_Key, rs_ActivePermit_Key, rs_PerfTx_Key, rs_Address_Key, getPermitCost, rs_WatcherCollateralRSN, rs_WatcherCollateralERG, rs_ErgoExplorerHost, rs_ErgoNodeHost, UrlAction, urlConfig, getUrlConfig, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals, Period, Currency;
+  var rs_DbName, rs_DbVersion, rs_DownloadStoreName, rs_InputsStoreName, rs_PerfTxStoreName, rs_PermitTxStoreName, rs_ActivePermitTxStoreName, rs_ReportsStoreName, rs_WatcherReportsStoreName, rs_DownloadStatusStoreName, rs_OpenBoxesStoreName, rs_AddressDataStoreName, rs_InitialNDownloads, rs_FullDownloadsBatchSize, rs_PerfInitialNDownloads, rs_PerfFullDownloadsBatchSize, rs_StartFrom, rs_Input_Key, rs_Download_Key, rs_Permit_Key, rs_WatcherReports_Key, rs_ActivePermit_Key, rs_PerfTx_Key, rs_Address_Key, getPermitCost, rs_WatcherCollateralRSN, rs_WatcherCollateralERG, rs_ErgoExplorerHost, rs_ErgoNodeHost, UrlAction, urlConfig, getUrlConfig, rs_RSNTokenId, rs_eRSNTokenId, rs_TokenIdMap, rs_RSNDecimals, Period, Currency, watcherStatsEventIdentifier;
   var init_constants = __esm({
     "service/src/lib/constants.ts"() {
       "use strict";
@@ -381,6 +381,7 @@
         Currency2["RSN"] = "RSN";
         return Currency2;
       })(Currency || {});
+      watcherStatsEventIdentifier = "watcher-stats";
     }
   });
 
@@ -28024,7 +28025,8 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
     rs_WatcherReports_Key: () => rs_WatcherReports_Key,
     rs_eRSNTokenId: () => rs_eRSNTokenId,
     rwtTokenIds: () => rwtTokenIds,
-    urlConfig: () => urlConfig
+    urlConfig: () => urlConfig,
+    watcherStatsEventIdentifier: () => watcherStatsEventIdentifier
   });
   var init_index = __esm({
     "service/src/lib/index.ts"() {

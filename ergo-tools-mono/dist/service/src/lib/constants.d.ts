@@ -71,3 +71,4 @@ export declare enum Currency {
     ERG = "ERG",
     RSN = "RSN"
 }
+export declare const watcherStatsEventIdentifier = "watcher-stats";

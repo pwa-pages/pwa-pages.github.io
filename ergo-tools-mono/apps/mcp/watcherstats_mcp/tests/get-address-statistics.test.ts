@@ -30,7 +30,8 @@ test('address statistics returns normalized amounts and dates as text and struct
   const events = new EventService();
   const processor = new TestProcessEventService();
   const server = new McpServer({ name: 'test', version: '1.0.0' });
-  new GetAddressStatisticsTool(events, processor).register(server);
+  const tool = new GetAddressStatisticsTool(events, processor);
+  tool.register(server);
   const client = new Client({ name: 'test', version: '1.0.0' });
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
   await server.connect(serverTransport);
@@ -65,6 +66,13 @@ test('address statistics returns normalized amounts and dates as text and struct
     0.000001,
   );
   await events.sendEventWithData(EventType.InputsChanged, [input, secondInput]);
+  assert.equal(tool.isReady('watcher'), false);
+  await events.sendEventWithData(EventType.EndFullDownload, 'another-watcher');
+  assert.equal(tool.isReady('another-watcher'), true);
+  assert.equal(tool.isReady('watcher'), false);
+  await events.sendEventWithData(EventType.EndFullDownload, 'watcher');
+  assert.equal(tool.isReady('watcher'), true);
+
   const result = await client.callTool(request);
   const expected = [
     { inputDate: '2025-10-19T22:00:50.657Z', amount: 4.252 },

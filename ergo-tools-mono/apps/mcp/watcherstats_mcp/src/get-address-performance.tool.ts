@@ -11,17 +11,30 @@ import { loadToolDescription } from './tool-description.js';
 
 export class GetAddressStatisticsTool {
   inputs: Input[] | undefined;
+  private readonly readyAddresses = new Set<string>();
 
   constructor(
     private eventService: EventService,
     private processEventService: ProcessEventService
   ) {
+
     this.eventService.subscribeToEvent(
       EventType.InputsChanged,
       async (data: Input[]) => {
         this.inputs = data;
       }
     );
+
+    this.eventService.subscribeToEvent(
+      EventType.EndFullDownload,
+      async (data: string) => {
+        this.readyAddresses.add(data);
+      }
+    );
+  }
+
+  isReady(address: string): boolean {
+    return this.inputs !== undefined && this.readyAddresses.has(address);
   }
 
   register(server: McpServer): void {
@@ -56,6 +69,7 @@ export class GetAddressStatisticsTool {
 
         // Schedule event processing without waiting for it.
         setImmediate(() => {
+          this.readyAddresses.delete(address);
           void this.processEventService
             .processEvent({
               data: address as unknown as object,
@@ -69,13 +83,17 @@ export class GetAddressStatisticsTool {
             });
         });
 
+        const deadline = Date.now() + 10_000;
+        while (!this.isReady(address) && Date.now() < deadline) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
 
-        if (!this.inputs) {
+        if (!this.isReady(address)) {
           return {
             content: [
               {
                 type: 'text' as const,
-                text: 'Address statistics not available yet.'
+                text: 'Address statistics were not available after 10 seconds.'
               }
             ],
             isError: true

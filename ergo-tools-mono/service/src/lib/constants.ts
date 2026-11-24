@@ -209,4 +209,4 @@ export enum Currency {
   RSN = 'RSN',
 }
 
-  
+export const watcherStatsEventIdentifier = 'watcher-stats';

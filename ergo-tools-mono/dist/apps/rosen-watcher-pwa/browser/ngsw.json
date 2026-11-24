@@ -1,8 +1,8 @@
 {
   "configVersion": 1,
-  "timestamp": 1795443336304,
+  "timestamp": 1795460716242,
   "appData": {
-    "version": "5.7.4"
+    "version": "5.7.6"
   },
   "index": "./index.html",
   "assetGroups": [
@@ -109,7 +109,7 @@
     "./assets/test.html": "7be1e51ec537c8242b37e42fdc4fa46c88a77508",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
     "./index.html": "d231bd5c9de2c6bc33c92b3c540f00c0053186d3",
-    "./main.js": "a6caecbfa2e537c2fae84402fb2f7142e9d2e07b",
+    "./main.js": "0a0420b7b1ba9b8d2ab59ffac2d75066ffe8f7ff",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/base.png": "83424fb0277a8df26a85a0af9bcdeec47051f248",
     "./media/binance.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
@@ -131,7 +131,7 @@
     "./media/zcash.png": "a645a5027336e32ae87864cc682174ab1b413550",
     "./polyfills.js": "8a2fdd8e29c35d3dbd1bacbcbc69af64ae22b58e",
     "./rosen.html": "d7161a40ae648d11c75098244147e693537693b8",
-    "./scripts.js": "b5f3afba5460f6d6c376a25fa95ddf7c0d8cdbed",
+    "./scripts.js": "d7f19531ee3d9889d5956072e56f68b2c99c70c1",
     "./styles.css": "f0a19feb92ff6985d74be4840ef5b6619bdc7380"
   },
   "navigationUrls": [
