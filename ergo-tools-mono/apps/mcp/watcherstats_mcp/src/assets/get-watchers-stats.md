@@ -2,9 +2,8 @@
 
 Retrieve the latest Rosen Bridge watcher and permit statistics across all
 supported blockchains. The tool returns the current network-wide
-`WatchersStats` snapshot. The required `address` input is accepted for
-compatibility but is not used to filter the results; the response is not
-specific to that address.
+`WatchersStats` snapshot. No input parameters are required, and the response is
+not specific to an address.
 
 ## Response structure
 
@@ -22,6 +21,18 @@ specific to that address.
   converted into each supported currency. Each currency entry may include
   `rsnCollateral`, `ergCollateral`, `permitValue`, `watcherValue`,
   `totalLockedRSN`, `totalLockedERG`, and `totalLocked`.
+
+## Estimated reward per watcher
+
+Combine this tool with `get_chain_perf` to estimate the eRSN reward for a single
+watcher on a chain over the last seven days:
+
+`get_chain_perf[chain].chart / get_watchers_stats.chainWatcherCount[chain]`
+
+Use the same chain in both responses. The watcher count must be greater than
+zero; otherwise the per-watcher reward cannot be calculated. This is an
+average estimate, not the actual reward received by a particular watcher:
+the count is a current snapshot and may have changed during the seven days.
 
 ## Data limitations
 

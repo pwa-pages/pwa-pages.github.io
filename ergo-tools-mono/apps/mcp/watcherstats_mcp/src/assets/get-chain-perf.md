@@ -14,6 +14,18 @@ each transaction based on the RWT token types in its outputs.
   reward amount for that chain during the reporting period.
 - Chains with no matching rewards are included with `chart: 0`.
 
+## Estimated reward per watcher
+
+Combine this tool with `get_watchers_stats` to estimate the eRSN reward for a
+single watcher on a chain over the last seven days:
+
+`get_chain_perf[chain].chart / get_watchers_stats.chainWatcherCount[chain]`
+
+Use the same chain in both responses. The watcher count must be greater than
+zero; otherwise the per-watcher reward cannot be calculated. This is an
+average estimate, not the actual reward received by a particular watcher:
+the count is a current snapshot and may have changed during the seven days.
+
 ## Data limitations
 
 - These values are reward amounts, not transaction counts, watcher counts, or

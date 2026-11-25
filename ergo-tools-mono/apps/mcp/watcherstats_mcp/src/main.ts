@@ -70,7 +70,7 @@ const getWatchersStatsTool =
   new GetWatchersStatsTool(eventService, processEventService);
 
 const getChainPerfTool =
-  new ChainPerfStatsTool(eventService);
+  new ChainPerfStatsTool(eventService, processEventService);
 
   const getAddressPerformanceTool =
     new GetAddressStatisticsTool(eventService, processEventService);
