@@ -389,17 +389,17 @@ var init_models = __esm({
       EventType2["EndFullDownload"] = "EndFullDownload";
       EventType2["RefreshInputs"] = "RefreshInputs";
       EventType2["InputsChanged"] = "InputsChanged";
-      EventType2["PerfChartChanged"] = "PerfChartChanged";
+      EventType2["ChainPerfChartChanged"] = "PerfChartChanged";
       EventType2["SwipeActivated"] = "SwipeActivated";
       EventType2["SwipeDeActivated"] = "SwipeDeActivated";
       EventType2["SwipeVertical"] = "SwipeVertical";
-      EventType2["StatisticsScreenLoaded"] = "StatisticsScreenLoaded";
+      EventType2["StatisticsRequested"] = "StatisticsRequested";
       EventType2["MyWatcherStatsRequested"] = "MyWatcherStatsRequested";
       EventType2["ReportsRequested"] = "ReportsRequested";
       EventType2["RequestInputsDownload"] = "RequestInputsDownload";
       EventType2["WatcherStatsRequested"] = "WatcherStatsRequested";
       EventType2["SettingsScreenLoaded"] = "SettingsScreenLoaded";
-      EventType2["PerformanceScreenLoaded"] = "PerformanceScreenLoaded";
+      EventType2["ChainPerformanceRequested"] = "ChainPerformanceRequested";
       EventType2["AddressChartChanged"] = "AddressChartChanged";
       EventType2["WindowResized"] = "WindowResized";
       EventType2["VersionUpdated"] = "VersionUpdated";
@@ -1363,7 +1363,7 @@ var init_chain_performance_data_service = __esm({
         await this.storageService.addData(rs_PerfTxStoreName, tempData);
         const perfTxs = await this.getPerfTxs();
         this.eventSender?.sendEvent({
-          type: "PerfChartChanged" /* PerfChartChanged */,
+          type: "PerfChartChanged" /* ChainPerfChartChanged */,
           data: perfTxs
         });
       }
@@ -2585,28 +2585,31 @@ var init_process_event_service = __esm({
       }
       eventSender;
       storageService;
+      services = null;
       async processEvent(event) {
         try {
-          if (event.type === "StatisticsScreenLoaded" /* StatisticsScreenLoaded */ || event.type === "PerformanceScreenLoaded" /* PerformanceScreenLoaded */ || event.type === "MyWatcherStatsRequested" /* MyWatcherStatsRequested */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatcherStatsRequested" /* WatcherStatsRequested */) {
-            const services = await createServices(this.eventSender, this.storageService);
+          if (event.type === "StatisticsRequested" /* StatisticsRequested */ || event.type === "ChainPerformanceRequested" /* ChainPerformanceRequested */ || event.type === "MyWatcherStatsRequested" /* MyWatcherStatsRequested */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatcherStatsRequested" /* WatcherStatsRequested */) {
+            if (!this.services) {
+              this.services = await createServices(this.eventSender, this.storageService);
+            }
             switch (event.type) {
               case "RequestInputsDownload" /* RequestInputsDownload */:
-                await this.processRequestInputsDownload(event, services);
+                await this.processRequestInputsDownload(event, this.services);
                 break;
-              case "StatisticsScreenLoaded" /* StatisticsScreenLoaded */:
-                await this.processStatisticsScreenLoaded(services);
+              case "StatisticsRequested" /* StatisticsRequested */:
+                await this.processStatisticsRequested(this.services);
                 break;
               case "MyWatcherStatsRequested" /* MyWatcherStatsRequested */:
-                await this.processMyWatcherStatsRequested(event, services);
+                await this.processMyWatcherStatsRequested(event, this.services);
                 break;
-              case "PerformanceScreenLoaded" /* PerformanceScreenLoaded */:
-                await this.processPerformanceScreenLoaded(services);
+              case "ChainPerformanceRequested" /* ChainPerformanceRequested */:
+                await this.processChainPerformanceRequested(this.services);
                 break;
               case "ReportsRequested" /* ReportsRequested */:
-                await this.processReportsRequested(event, services);
+                await this.processReportsRequested(event, this.services);
                 break;
               case "WatcherStatsRequested" /* WatcherStatsRequested */:
-                await this.processWatcherStatsRequested(services);
+                await this.processWatcherStatsRequested(this.services);
                 break;
             }
           }
@@ -2673,7 +2676,7 @@ var init_process_event_service = __esm({
           await services.downloadService.downloadForAddresses("statisticsTransactions" /* StatisticsTransactions */);
         }
       }
-      async processStatisticsScreenLoaded(services) {
+      async processStatisticsRequested(services) {
         console.log(
           "Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain"
         );
@@ -2684,12 +2687,12 @@ var init_process_event_service = __esm({
         });
         await services.downloadService.downloadForAddresses("statisticsTransactions" /* StatisticsTransactions */);
       }
-      async processPerformanceScreenLoaded(services) {
+      async processChainPerformanceRequested(services) {
         console.log("Rosen service worker received PerformanceScreenLoaded");
         console.log("Downloading perftxs.");
         const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
         await this.eventSender?.sendEvent({
-          type: "PerfChartChanged" /* PerfChartChanged */,
+          type: "PerfChartChanged" /* ChainPerfChartChanged */,
           data: perfTxs
         });
         await services.downloadPerfService.downloadForAddress(hotWalletAddress, "statisticsTransactions" /* StatisticsTransactions */);
@@ -2862,15 +2865,15 @@ var init_event_service = __esm({
           ["EndFullDownload" /* EndFullDownload */]: new import_rxjs5.Subject(),
           ["RefreshInputs" /* RefreshInputs */]: new import_rxjs5.Subject(),
           ["InputsChanged" /* InputsChanged */]: new import_rxjs5.Subject(),
-          ["PerfChartChanged" /* PerfChartChanged */]: new import_rxjs5.Subject(),
+          ["PerfChartChanged" /* ChainPerfChartChanged */]: new import_rxjs5.Subject(),
           ["ReportsRequested" /* ReportsRequested */]: new import_rxjs5.Subject(),
           ["SwipeActivated" /* SwipeActivated */]: new import_rxjs5.Subject(),
           ["SwipeDeActivated" /* SwipeDeActivated */]: new import_rxjs5.Subject(),
           ["SwipeVertical" /* SwipeVertical */]: new import_rxjs5.Subject(),
-          ["StatisticsScreenLoaded" /* StatisticsScreenLoaded */]: new import_rxjs5.Subject(),
+          ["StatisticsRequested" /* StatisticsRequested */]: new import_rxjs5.Subject(),
           ["MyWatcherStatsRequested" /* MyWatcherStatsRequested */]: new import_rxjs5.Subject(),
           ["PermitsChanged" /* PermitsChanged */]: new import_rxjs5.Subject(),
-          ["PerformanceScreenLoaded" /* PerformanceScreenLoaded */]: new import_rxjs5.Subject(),
+          ["ChainPerformanceRequested" /* ChainPerformanceRequested */]: new import_rxjs5.Subject(),
           ["RequestInputsDownload" /* RequestInputsDownload */]: new import_rxjs5.Subject(),
           ["AddressChartChanged" /* AddressChartChanged */]: new import_rxjs5.Subject(),
           ["VersionUpdated" /* VersionUpdated */]: new import_rxjs5.Subject(),

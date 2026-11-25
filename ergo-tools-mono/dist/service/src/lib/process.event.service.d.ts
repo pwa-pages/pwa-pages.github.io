@@ -6,13 +6,14 @@ export declare class ServiceWorkerEventSender implements EventSender {
 export declare class ProcessEventService {
     private eventSender;
     private storageService;
+    services: Services | null;
     constructor(eventSender: EventSender, storageService: IStorageService);
     processEvent(event: EventPayload<object>): Promise<void>;
     private processWatcherStatsRequested;
     private processReportsRequested;
     private processRequestInputsDownload;
-    private processStatisticsScreenLoaded;
-    private processPerformanceScreenLoaded;
+    private processStatisticsRequested;
+    private processChainPerformanceRequested;
     private processMyWatcherStatsRequested;
     private extractChainTypes;
     private processActivePermits;

@@ -22,34 +22,37 @@ class ProcessEventService {
     constructor(eventSender, storageService) {
         this.eventSender = eventSender;
         this.storageService = storageService;
+        this.services = null;
     }
     async processEvent(event) {
         try {
-            if (event.type === models_1.EventType.StatisticsScreenLoaded ||
-                event.type === models_1.EventType.PerformanceScreenLoaded ||
+            if (event.type === models_1.EventType.StatisticsRequested ||
+                event.type === models_1.EventType.ChainPerformanceRequested ||
                 event.type === models_1.EventType.MyWatcherStatsRequested ||
                 event.type === models_1.EventType.RequestInputsDownload ||
                 event.type === models_1.EventType.ReportsRequested ||
                 event.type === models_1.EventType.WatcherStatsRequested) {
-                const services = await (0, service_factory_1.createServices)(this.eventSender, this.storageService);
+                if (!this.services) {
+                    this.services = await (0, service_factory_1.createServices)(this.eventSender, this.storageService);
+                }
                 switch (event.type) {
                     case models_1.EventType.RequestInputsDownload:
-                        await this.processRequestInputsDownload(event, services);
+                        await this.processRequestInputsDownload(event, this.services);
                         break;
-                    case models_1.EventType.StatisticsScreenLoaded:
-                        await this.processStatisticsScreenLoaded(services);
+                    case models_1.EventType.StatisticsRequested:
+                        await this.processStatisticsRequested(this.services);
                         break;
                     case models_1.EventType.MyWatcherStatsRequested:
-                        await this.processMyWatcherStatsRequested(event, services);
+                        await this.processMyWatcherStatsRequested(event, this.services);
                         break;
-                    case models_1.EventType.PerformanceScreenLoaded:
-                        await this.processPerformanceScreenLoaded(services);
+                    case models_1.EventType.ChainPerformanceRequested:
+                        await this.processChainPerformanceRequested(this.services);
                         break;
                     case models_1.EventType.ReportsRequested:
-                        await this.processReportsRequested(event, services);
+                        await this.processReportsRequested(event, this.services);
                         break;
                     case models_1.EventType.WatcherStatsRequested:
-                        await this.processWatcherStatsRequested(services);
+                        await this.processWatcherStatsRequested(this.services);
                         break;
                 }
             }
@@ -102,7 +105,7 @@ class ProcessEventService {
             await services.downloadService.downloadForAddresses(constants_1.UrlAction.StatisticsTransactions);
         }
     }
-    async processStatisticsScreenLoaded(services) {
+    async processStatisticsRequested(services) {
         console.log('Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain');
         const inputs = await services.dataService.getSortedInputs();
         await this.eventSender?.sendEvent({
@@ -111,12 +114,12 @@ class ProcessEventService {
         });
         await services.downloadService.downloadForAddresses(constants_1.UrlAction.StatisticsTransactions);
     }
-    async processPerformanceScreenLoaded(services) {
+    async processChainPerformanceRequested(services) {
         console.log('Rosen service worker received PerformanceScreenLoaded');
         console.log('Downloading perftxs.');
         const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
         await this.eventSender?.sendEvent({
-            type: models_1.EventType.PerfChartChanged,
+            type: models_1.EventType.ChainPerfChartChanged,
             data: perfTxs,
         });
         await services.downloadPerfService.downloadForAddress(chain_service_1.hotWalletAddress, constants_1.UrlAction.StatisticsTransactions);

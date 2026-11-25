@@ -19,6 +19,7 @@ export class ServiceWorkerEventSender implements EventSender {
 }
 
 export class ProcessEventService {
+  services: Services | null = null;
   constructor(private eventSender: EventSender, private storageService: IStorageService) { }
 
   public async processEvent(event: EventPayload<object>) {
@@ -31,27 +32,29 @@ export class ProcessEventService {
         event.type === EventType.ReportsRequested ||
         event.type === EventType.WatcherStatsRequested
       ) {
-        
-        const services = await createServices(this.eventSender, this.storageService);
+
+        if (!this.services) {
+          this.services = await createServices(this.eventSender, this.storageService);
+        }
 
         switch (event.type) {
           case EventType.RequestInputsDownload:
-            await this.processRequestInputsDownload(event, services);
+            await this.processRequestInputsDownload(event, this.services);
             break;
           case EventType.StatisticsRequested:
-            await this.processStatisticsRequested(services);
+            await this.processStatisticsRequested(this.services);
             break;
           case EventType.MyWatcherStatsRequested:
-            await this.processMyWatcherStatsRequested(event, services);
+            await this.processMyWatcherStatsRequested(event, this.services);
             break;
           case EventType.ChainPerformanceRequested:
-            await this.processChainPerformanceRequested(services);
+            await this.processChainPerformanceRequested(this.services);
             break;
           case EventType.ReportsRequested:
-            await this.processReportsRequested(event, services);
+            await this.processReportsRequested(event, this.services);
             break;
           case EventType.WatcherStatsRequested:
-            await this.processWatcherStatsRequested(services);
+            await this.processWatcherStatsRequested(this.services);
             break;
         }
       }
@@ -365,6 +368,7 @@ export class ProcessEventService {
       data: permits,
     });
   }
+
 }
 
 export const CreateProcessEventService = (

@@ -402,17 +402,17 @@
         EventType2["EndFullDownload"] = "EndFullDownload";
         EventType2["RefreshInputs"] = "RefreshInputs";
         EventType2["InputsChanged"] = "InputsChanged";
-        EventType2["PerfChartChanged"] = "PerfChartChanged";
+        EventType2["ChainPerfChartChanged"] = "PerfChartChanged";
         EventType2["SwipeActivated"] = "SwipeActivated";
         EventType2["SwipeDeActivated"] = "SwipeDeActivated";
         EventType2["SwipeVertical"] = "SwipeVertical";
-        EventType2["StatisticsScreenLoaded"] = "StatisticsScreenLoaded";
+        EventType2["StatisticsRequested"] = "StatisticsRequested";
         EventType2["MyWatcherStatsRequested"] = "MyWatcherStatsRequested";
         EventType2["ReportsRequested"] = "ReportsRequested";
         EventType2["RequestInputsDownload"] = "RequestInputsDownload";
         EventType2["WatcherStatsRequested"] = "WatcherStatsRequested";
         EventType2["SettingsScreenLoaded"] = "SettingsScreenLoaded";
-        EventType2["PerformanceScreenLoaded"] = "PerformanceScreenLoaded";
+        EventType2["ChainPerformanceRequested"] = "ChainPerformanceRequested";
         EventType2["AddressChartChanged"] = "AddressChartChanged";
         EventType2["WindowResized"] = "WindowResized";
         EventType2["VersionUpdated"] = "VersionUpdated";
@@ -1304,7 +1304,7 @@
           await this.storageService.addData(rs_PerfTxStoreName, tempData);
           const perfTxs = await this.getPerfTxs();
           this.eventSender?.sendEvent({
-            type: "PerfChartChanged" /* PerfChartChanged */,
+            type: "PerfChartChanged" /* ChainPerfChartChanged */,
             data: perfTxs
           });
         }
@@ -27771,29 +27771,32 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
         constructor(eventSender, storageService) {
           this.eventSender = eventSender;
           this.storageService = storageService;
+          this.services = null;
         }
         async processEvent(event) {
           try {
-            if (event.type === "StatisticsScreenLoaded" /* StatisticsScreenLoaded */ || event.type === "PerformanceScreenLoaded" /* PerformanceScreenLoaded */ || event.type === "MyWatcherStatsRequested" /* MyWatcherStatsRequested */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatcherStatsRequested" /* WatcherStatsRequested */) {
-              const services = await createServices(this.eventSender, this.storageService);
+            if (event.type === "StatisticsRequested" /* StatisticsRequested */ || event.type === "ChainPerformanceRequested" /* ChainPerformanceRequested */ || event.type === "MyWatcherStatsRequested" /* MyWatcherStatsRequested */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatcherStatsRequested" /* WatcherStatsRequested */) {
+              if (!this.services) {
+                this.services = await createServices(this.eventSender, this.storageService);
+              }
               switch (event.type) {
                 case "RequestInputsDownload" /* RequestInputsDownload */:
-                  await this.processRequestInputsDownload(event, services);
+                  await this.processRequestInputsDownload(event, this.services);
                   break;
-                case "StatisticsScreenLoaded" /* StatisticsScreenLoaded */:
-                  await this.processStatisticsScreenLoaded(services);
+                case "StatisticsRequested" /* StatisticsRequested */:
+                  await this.processStatisticsRequested(this.services);
                   break;
                 case "MyWatcherStatsRequested" /* MyWatcherStatsRequested */:
-                  await this.processMyWatcherStatsRequested(event, services);
+                  await this.processMyWatcherStatsRequested(event, this.services);
                   break;
-                case "PerformanceScreenLoaded" /* PerformanceScreenLoaded */:
-                  await this.processPerformanceScreenLoaded(services);
+                case "ChainPerformanceRequested" /* ChainPerformanceRequested */:
+                  await this.processChainPerformanceRequested(this.services);
                   break;
                 case "ReportsRequested" /* ReportsRequested */:
-                  await this.processReportsRequested(event, services);
+                  await this.processReportsRequested(event, this.services);
                   break;
                 case "WatcherStatsRequested" /* WatcherStatsRequested */:
-                  await this.processWatcherStatsRequested(services);
+                  await this.processWatcherStatsRequested(this.services);
                   break;
               }
             }
@@ -27860,7 +27863,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
             await services.downloadService.downloadForAddresses("statisticsTransactions" /* StatisticsTransactions */);
           }
         }
-        async processStatisticsScreenLoaded(services) {
+        async processStatisticsRequested(services) {
           console.log(
             "Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain"
           );
@@ -27871,12 +27874,12 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
           });
           await services.downloadService.downloadForAddresses("statisticsTransactions" /* StatisticsTransactions */);
         }
-        async processPerformanceScreenLoaded(services) {
+        async processChainPerformanceRequested(services) {
           console.log("Rosen service worker received PerformanceScreenLoaded");
           console.log("Downloading perftxs.");
           const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
           await this.eventSender?.sendEvent({
-            type: "PerfChartChanged" /* PerfChartChanged */,
+            type: "PerfChartChanged" /* ChainPerfChartChanged */,
             data: perfTxs
           });
           await services.downloadPerfService.downloadForAddress(hotWalletAddress, "statisticsTransactions" /* StatisticsTransactions */);
@@ -28047,15 +28050,15 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
             ["EndFullDownload" /* EndFullDownload */]: new Subject(),
             ["RefreshInputs" /* RefreshInputs */]: new Subject(),
             ["InputsChanged" /* InputsChanged */]: new Subject(),
-            ["PerfChartChanged" /* PerfChartChanged */]: new Subject(),
+            ["PerfChartChanged" /* ChainPerfChartChanged */]: new Subject(),
             ["ReportsRequested" /* ReportsRequested */]: new Subject(),
             ["SwipeActivated" /* SwipeActivated */]: new Subject(),
             ["SwipeDeActivated" /* SwipeDeActivated */]: new Subject(),
             ["SwipeVertical" /* SwipeVertical */]: new Subject(),
-            ["StatisticsScreenLoaded" /* StatisticsScreenLoaded */]: new Subject(),
+            ["StatisticsRequested" /* StatisticsRequested */]: new Subject(),
             ["MyWatcherStatsRequested" /* MyWatcherStatsRequested */]: new Subject(),
             ["PermitsChanged" /* PermitsChanged */]: new Subject(),
-            ["PerformanceScreenLoaded" /* PerformanceScreenLoaded */]: new Subject(),
+            ["ChainPerformanceRequested" /* ChainPerformanceRequested */]: new Subject(),
             ["RequestInputsDownload" /* RequestInputsDownload */]: new Subject(),
             ["AddressChartChanged" /* AddressChartChanged */]: new Subject(),
             ["VersionUpdated" /* VersionUpdated */]: new Subject(),
