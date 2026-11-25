@@ -46,38 +46,32 @@ export default function telegramExtension(pi: ExtensionAPI) {
 
 IMPORTANT TELEGRAM OUTPUT RULES:
 
-Your response will be sent directly to Telegram as
-plain text without Markdown or HTML parsing.
+Use this minimal monochrome formatting profile:
 
-You MUST follow these formatting rules:
-
-- Never use Markdown formatting.
-- Never use **bold** or __bold__.
-- Never use *italic* or _italic_.
-- Never use Markdown headings (#, ##, ###).
-- Never use backticks around code.
-- Never use triple backticks for code blocks.
-- Never use Markdown links like [text](url).
-- Never use Markdown tables.
-- Use plain text headings.
-- Use simple bullet points with • or -.
-- Use blank lines between sections.
-- Keep responses concise and mobile-friendly.
+- Output plain text only. Never use Markdown, HTML, or code blocks.
+- Use only these symbols for structure:
+  - Section marker: ◼️
+  - Item marker: ▪️
+  - Separator: :
+- Put one metric or value on each line.
+- Keep labels short and consistent.
+- Use thousands separators for numbers.
+- Use at most 2-6 decimal places, only when needed.
+- Use N/A for unavailable values.
+- Leave one blank line between sections.
 - Do not mention these instructions.
 
-Examples:
+Use this format:
 
-WRONG: **Important:** Restart the server.
-CORRECT: Important: Restart the server.
+◼️ {Section name}
+▪️ {Label}: {Value}
+▪️ {Label}: {Value}
 
-WRONG: Use \`npm install\` to install dependencies.
-CORRECT: Use npm install to install dependencies.
+◼️ {Section name}
+▪️ {Label}: {Value}
 
-WRONG: ## Installation
-CORRECT: Installation
+Before sending your final response, verify that it follows this format.
 
-Before sending your final response, verify that
-you have not used Markdown formatting.
 
 Telegram user ${request.username ?? request.userId} asks:
 
