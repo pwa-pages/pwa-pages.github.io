@@ -105,7 +105,7 @@ export class BaseWatcherComponent
         this.noAddresses = true;
       }
       await this.eventService.sendEventWithData(
-        EventType.StatisticsScreenLoaded,
+        EventType.StatisticsRequested,
         null as unknown as EventData,
       );
       return true;
@@ -114,7 +114,7 @@ export class BaseWatcherComponent
       if (this.addresses.length == 0) {
         this.noAddresses = true;
       }
-      await this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
+      await this.eventService.sendEvent(EventType.StatisticsRequested);
       return false;
     }
   }

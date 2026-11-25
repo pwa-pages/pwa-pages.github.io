@@ -110,7 +110,7 @@ export class StatisticsChartComponent
       await this.retrieveData();
     });
 
-    await this.eventService.sendEvent(EventType.StatisticsScreenLoaded);
+    await this.eventService.sendEvent(EventType.StatisticsRequested);
 
     for (const address of this.filledAddresses) {
       await this.eventService.sendEventWithData(

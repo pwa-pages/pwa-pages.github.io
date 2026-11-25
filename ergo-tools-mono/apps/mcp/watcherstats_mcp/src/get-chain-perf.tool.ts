@@ -15,7 +15,7 @@ export class ChainPerfStatsTool {
     private eventService: EventService
   ) {
     this.eventService.subscribeToEvent(
-      EventType.PerfChartChanged,
+      EventType.ChainPerfChartChanged,
       (data: Record<ChainType, { chart: number }>) => {
         this.chainPerf = data;
       },

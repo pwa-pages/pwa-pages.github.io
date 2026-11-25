@@ -3175,4 +3175,3 @@ async function downloadActivePermits() {
     console.log("totalsPerAddress: ", totalsPerAddress);
   }
 }
-//# sourceMappingURL=main.js.map

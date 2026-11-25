@@ -104,7 +104,7 @@ async function initializeServices(): Promise<void> {
 
   processEventService.processEvent({
     data: null,
-    type: EventType.PerformanceScreenLoaded
+    type: EventType.ChainPerformanceRequested
   });
 
   processEventService.processEvent({

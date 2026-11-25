@@ -30,7 +30,7 @@ export class NavigationComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.eventService.subscribeToEvent(
-      EventType.StatisticsScreenLoaded,
+      EventType.StatisticsRequested,
       () => {
         this.visible = true;
       },
@@ -48,7 +48,7 @@ export class NavigationComponent implements OnInit {
       },
     );
     await this.eventService.subscribeToEvent(
-      EventType.PerformanceScreenLoaded,
+      EventType.ChainPerformanceRequested,
       () => {
         this.visible = true;
       },

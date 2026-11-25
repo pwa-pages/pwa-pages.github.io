@@ -49,10 +49,10 @@ export class ServiceWorkerService {
   public async initialize() {
     this.eventService.subscribeToAllEvents((eventType, eventData) => {
       if (
-        eventType == EventType.PerformanceScreenLoaded ||
+        eventType == EventType.ChainPerformanceRequested ||
         eventType == EventType.MyWatcherStatsRequested ||
         eventType == EventType.WatcherStatsRequested ||
-        eventType == EventType.StatisticsScreenLoaded ||
+        eventType == EventType.StatisticsRequested ||
         eventType == EventType.RequestInputsDownload ||
         eventType == EventType.ReportsRequested
       ) {

@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { BaseWatcherComponent } from '../basewatchercomponent';
 import { ChainChartService } from '../service/chain.chart.service';
-
 import { ChainPerfChartDataSet, createChainNumber, EventData, EventType, WatchersStats } from '@ergo-tools/service';
 import { ChainChartPerformance } from '@ergo-tools/service';
 import { Chart } from 'chart.js';
@@ -88,7 +87,7 @@ export class ChainPerformanceComponent
     this.updateChart();
 
     this.eventService.sendEvent(EventType.WatcherStatsRequested);
-    this.eventService.sendEvent(EventType.PerformanceScreenLoaded);
+    this.eventService.sendEvent(EventType.ChainPerformanceRequested);
 
     await this.subscribeToEvent(EventType.RefreshInputs, async () => {
       await this.retrieveData();

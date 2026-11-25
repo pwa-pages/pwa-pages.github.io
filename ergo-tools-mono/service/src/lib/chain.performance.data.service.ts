@@ -75,7 +75,7 @@ export class ChainPerformanceDataService extends DataService<PerfTx> {
 
     const perfTxs = await this.getPerfTxs();
     this.eventSender?.sendEvent({
-      type: EventType.PerfChartChanged,
+      type: EventType.ChainPerfChartChanged,
       data: perfTxs,
     });
 

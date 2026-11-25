@@ -46,7 +46,7 @@ export class ChainDataService {
     );
 
     this.eventService.subscribeToEvent(
-      EventType.PerfChartChanged,
+      EventType.ChainPerfChartChanged,
       async (
         a: Record<string, { chainType: string | null; chart: number }>,
       ) => {

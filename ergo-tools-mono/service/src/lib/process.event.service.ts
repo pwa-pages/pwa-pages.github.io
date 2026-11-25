@@ -24,8 +24,8 @@ export class ProcessEventService {
   public async processEvent(event: EventPayload<object>) {
     try {
       if (
-        event.type === EventType.StatisticsScreenLoaded ||
-        event.type === EventType.PerformanceScreenLoaded ||
+        event.type === EventType.StatisticsRequested ||
+        event.type === EventType.ChainPerformanceRequested ||
         event.type === EventType.MyWatcherStatsRequested ||
         event.type === EventType.RequestInputsDownload ||
         event.type === EventType.ReportsRequested ||
@@ -38,14 +38,14 @@ export class ProcessEventService {
           case EventType.RequestInputsDownload:
             await this.processRequestInputsDownload(event, services);
             break;
-          case EventType.StatisticsScreenLoaded:
-            await this.processStatisticsScreenLoaded(services);
+          case EventType.StatisticsRequested:
+            await this.processStatisticsRequested(services);
             break;
           case EventType.MyWatcherStatsRequested:
             await this.processMyWatcherStatsRequested(event, services);
             break;
-          case EventType.PerformanceScreenLoaded:
-            await this.processPerformanceScreenLoaded(services);
+          case EventType.ChainPerformanceRequested:
+            await this.processChainPerformanceRequested(services);
             break;
           case EventType.ReportsRequested:
             await this.processReportsRequested(event, services);
@@ -141,7 +141,7 @@ export class ProcessEventService {
     }
   }
 
-  private async processStatisticsScreenLoaded(services: Services) {
+  private async processStatisticsRequested(services: Services) {
     console.log(
       'Rosen service worker received StatisticsScreenLoaded initiating syncing of data by downloading from blockchain',
     );
@@ -155,7 +155,7 @@ export class ProcessEventService {
     await services.downloadService.downloadForAddresses(UrlAction.StatisticsTransactions);
   }
 
-  private async processPerformanceScreenLoaded(
+  private async processChainPerformanceRequested(
     services: Services,
   ) {
     console.log('Rosen service worker received PerformanceScreenLoaded');
@@ -164,7 +164,7 @@ export class ProcessEventService {
     const perfTxs = await services.chainPerformanceDataService.getPerfTxs();
 
     await this.eventSender?.sendEvent({
-      type: EventType.PerfChartChanged,
+      type: EventType.ChainPerfChartChanged,
       data: perfTxs,
     });
 
