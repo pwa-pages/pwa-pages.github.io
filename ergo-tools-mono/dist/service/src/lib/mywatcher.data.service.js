@@ -96,9 +96,11 @@ class MyWatcherDataService extends data_service_1.DataService {
                 permitInfo.push({
                     address: permit.address,
                     wid: permit.wid,
-                    lockedRSN: widSums[permit.wid] || 0,
+                    lockedRSN: widSums[permit.wid],
                     activeLockedRSN: 0,
                     chainType: permit.chainType,
+                    permitCount: Math.floor((widSums[permit.wid] - (0, constants_1.rs_WatcherCollateralRSN)(permit.chainType)) / (0, constants_1.getPermitCost)(permit.chainType)) || 0,
+                    activePermitCount: 0,
                 });
             }
         }
@@ -108,6 +110,9 @@ class MyWatcherDataService extends data_service_1.DataService {
             if (info) {
                 info.activeLockedRSN += (0, constants_1.getPermitCost)(activePermit.chainType);
             }
+        }
+        for (const permit of permitInfo) {
+            permit.activePermitCount = Math.floor(permit.activeLockedRSN / (0, constants_1.getPermitCost)(permit.chainType));
         }
         return permitInfo;
     }

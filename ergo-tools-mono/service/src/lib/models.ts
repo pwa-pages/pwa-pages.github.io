@@ -307,6 +307,8 @@ export interface PermitInfo {
   address: string;
   wid: string;
   chainType: ChainType;
+  permitCount: number;
+  activePermitCount: number;
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface DbInput {

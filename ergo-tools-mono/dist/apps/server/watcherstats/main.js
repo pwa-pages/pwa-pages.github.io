@@ -726,9 +726,11 @@ var init_mywatcher_data_service = __esm({
             permitInfo.push({
               address: permit.address,
               wid: permit.wid,
-              lockedRSN: widSums[permit.wid] || 0,
+              lockedRSN: widSums[permit.wid],
               activeLockedRSN: 0,
-              chainType: permit.chainType
+              chainType: permit.chainType,
+              permitCount: Math.floor((widSums[permit.wid] - rs_WatcherCollateralRSN(permit.chainType)) / getPermitCost(permit.chainType)) || 0,
+              activePermitCount: 0
             });
           }
         }
@@ -738,6 +740,9 @@ var init_mywatcher_data_service = __esm({
           if (info) {
             info.activeLockedRSN += getPermitCost(activePermit.chainType);
           }
+        }
+        for (const permit of permitInfo) {
+          permit.activePermitCount = Math.floor(permit.activeLockedRSN / getPermitCost(permit.chainType));
         }
         return permitInfo;
       }

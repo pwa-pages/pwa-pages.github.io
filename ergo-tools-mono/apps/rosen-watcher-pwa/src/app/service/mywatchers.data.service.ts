@@ -4,20 +4,11 @@ import {
   EventType,
   getActiveChainTypes,
   getChainTypes,
-  MyWatchersStats,
-  rs_WatcherCollateralRSN,
-  getPermitCost,
-  ChainType,
+  MyWatchersStats
 } from '@ergo-tools/service';
 import { Address } from '@ergo-tools/service';
 
-interface PermitInfo {
-  lockedRSN: number;
-  activeLockedRSN: number;
-  address: string;
-  wid: string;
-  chainType: string;
-}
+import type { PermitInfo } from '@ergo-tools/service';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +34,7 @@ export class MyWatchersDataService {
 
         let myWatcherStats: MyWatchersStats[] = [];
         permits.forEach((permit: PermitInfo) => {
+         /*
           let permitCount = Math.floor(
             (permit.lockedRSN - rs_WatcherCollateralRSN(permit.chainType)) / getPermitCost(permit.chainType as ChainType),
           );
@@ -53,11 +45,12 @@ export class MyWatchersDataService {
           if (permitCount < 0) {
             permitCount = 0;
           }
+            */
 
           if (permit.address) {
             myWatcherStats.push({
-              activePermitCount: activepermitCount,
-              permitCount: permitCount,
+              activePermitCount: permit.activePermitCount,
+              permitCount: permit.permitCount,
               wid: permit.wid,
               chainType: permit.chainType,
               address: new Address(permit.address, permit.chainType),

@@ -176,6 +176,8 @@ export interface PermitInfo {
     address: string;
     wid: string;
     chainType: ChainType;
+    permitCount: number;
+    activePermitCount: number;
 }
 export interface DbInput {
     outputAddress: string;

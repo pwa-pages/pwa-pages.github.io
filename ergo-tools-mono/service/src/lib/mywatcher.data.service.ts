@@ -1,5 +1,5 @@
 import { ChainType, getChainTypeForPermitAddress } from "./chain.service";
-import { rs_PermitTxStoreName, rs_RSNTokenId, rs_RSNDecimals, getPermitCost } from "./constants";
+import { rs_PermitTxStoreName, rs_RSNTokenId, rs_RSNDecimals, getPermitCost, rs_WatcherCollateralRSN } from "./constants";
 import {  DataService } from "./data.service";
 import { PermitTx, TransactionItem, Asset, PermitInfo, Input, Output } from "./models";
 
@@ -126,9 +126,11 @@ export class MyWatcherDataService extends DataService<PermitTx> {
         permitInfo.push({
           address: permit.address,
           wid: permit.wid,
-          lockedRSN: widSums[permit.wid] || 0,
+          lockedRSN: widSums[permit.wid],
           activeLockedRSN: 0,
           chainType: permit.chainType as ChainType,
+          permitCount: Math.floor((widSums[permit.wid] - rs_WatcherCollateralRSN(permit.chainType!)) / getPermitCost(permit.chainType as ChainType)) || 0,
+          activePermitCount: 0,
         });
       }
     }
@@ -141,6 +143,10 @@ export class MyWatcherDataService extends DataService<PermitTx> {
       if (info) {
         info.activeLockedRSN += getPermitCost(activePermit.chainType as ChainType);
       }
+    }
+
+    for(const permit of permitInfo) {
+      permit.activePermitCount = Math.floor(permit.activeLockedRSN / getPermitCost(permit.chainType as ChainType));
     }
 
     return permitInfo;
