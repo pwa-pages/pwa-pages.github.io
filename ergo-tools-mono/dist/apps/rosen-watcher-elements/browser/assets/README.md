@@ -160,13 +160,58 @@ and act accordingly.
     "Ethereum": 21,
     "Doge": 21
   },
-  "permitCost": 3000,
+  "permitCost": {
+    "Ergo": 3000,
+    "Cardano": 3000,
+    "Bitcoin": 3000,
+    "Ethereum": 3000,
+    "Binance": 3000,
+    "Doge": 3000,
+    "Runes": 3000,
+    "Firo": 3000,
+    "Handshake": 5000,
+    "Nervos": 3000,
+    "Base": 3000,
+    "Monero": 3000,
+    "BitcoinCash": 3000,
+    "Zcash": 3000
+  },
   "triggerPermitCount": {
     "Cardano": 3,
     "Ergo": 5
   },
-  "watcherCollateralERG": 800,
-  "watcherCollateralRSN": 30000,
+  "watcherCollateralERG": {
+    "Ergo": 800,
+    "Cardano": 800,
+    "Bitcoin": 800,
+    "Ethereum": 800,
+    "Binance": 800,
+    "Doge": 800,
+    "Runes": 10,
+    "Firo": 10,
+    "Handshake": 10,
+    "Nervos": 800,
+    "Base": 800,
+    "Monero": 800,
+    "BitcoinCash": 800,
+    "Zcash": 800
+  },
+  "watcherCollateralRSN": {
+    "Ergo": 30000,
+    "Cardano": 30000,
+    "Bitcoin": 30000,
+    "Ethereum": 30000,
+    "Binance": 30000,
+    "Doge": 30000,
+    "Runes": 50000,
+    "Firo": 50000,
+    "Handshake": 100000,
+    "Nervos": 30000,
+    "Base": 30000,
+    "Monero": 30000,
+    "BitcoinCash": 30000,
+    "Zcash": 30000
+  },
   "watchersAmountsPerCurrency": {
     "EUR": {
       "watcherValue": 1832.759,
@@ -257,8 +302,8 @@ and act accordingly.
     </tr>
     <tr>
       <td><code>permitCost</code></td>
-      <td>number</td>
-      <td>Cost of a permit (in RSN).</td>
+      <td>object</td>
+      <td>Cost of a permit in RSN, grouped by chain.</td>
     </tr>
     <tr>
       <td><code>triggerPermitCount</code></td>
@@ -267,13 +312,13 @@ and act accordingly.
     </tr>
     <tr>
       <td><code>watcherCollateralERG</code></td>
-      <td>number</td>
-      <td>Collateral required per watcher in ERG.</td>
+      <td>object</td>
+      <td>Collateral required per watcher in ERG, grouped by chain.</td>
     </tr>
     <tr>
       <td><code>watcherCollateralRSN</code></td>
-      <td>number</td>
-      <td>Collateral required per watcher in RSN.</td>
+      <td>object</td>
+      <td>Collateral required per watcher in RSN, grouped by chain.</td>
     </tr>
     <tr>
       <td><code>watchersAmountsPerCurrency</code></td>

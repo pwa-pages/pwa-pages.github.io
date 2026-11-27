@@ -1,5 +1,5 @@
 import { ChainType, getChainTypes } from "./chain.service";
-import { rs_WatcherCollateralERG, rs_WatcherCollateralRSN, Currency } from "./constants";
+import { getPermitCost, rs_WatcherCollateralERG, rs_WatcherCollateralRSN, Currency } from "./constants";
 
 export enum EventType {
   StartFullDownload = 'StartFullDownload',
@@ -335,6 +335,14 @@ export function createChainNumber(): Record<string, number | undefined> {
   ) as Record<string, number | undefined>;
 }
 
+function createChainNumberMap(
+  getValue: (chainType: string) => number,
+): Record<string, number> {
+  return Object.fromEntries(
+    getChainTypes().map((chainType) => [chainType, getValue(chainType)]),
+  ) as Record<string, number>;
+}
+
 export class WatchersAmounts {
   ergCollateral: number | undefined;
   permitValue: number | undefined;
@@ -352,14 +360,16 @@ export class WatchersStats {
   chainLockedRSN = createChainNumber();
   chainPermitCount = createChainNumber();
   chainWatcherCount = createChainNumber();
+  permitCost = createChainNumberMap((chainType) => getPermitCost(chainType as ChainType));
   totalActivePermitCount: number | undefined;
   totalLockedERG: number | undefined;
   totalLockedRSN: number | undefined;
   totalPermitCount: number | undefined;
   totalWatcherCount: number | undefined;
   triggerPermitCount = createChainNumber();
-  watcherCollateralERG = rs_WatcherCollateralERG('Ergo');
-  watcherCollateralRSN = rs_WatcherCollateralRSN('Ergo');
+  watcherCollateralERG = createChainNumberMap(rs_WatcherCollateralERG);
+  watcherCollateralRSN = createChainNumberMap(rs_WatcherCollateralRSN);
+  
 
   watchersAmountsPerCurrency: Record<string, WatchersAmounts> =
     Object.fromEntries(

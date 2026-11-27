@@ -156,6 +156,9 @@ exports.ChainChartPerformance = ChainChartPerformance;
 function createChainNumber() {
     return Object.fromEntries((0, chain_service_1.getChainTypes)().map((key) => [key, undefined]));
 }
+function createChainNumberMap(getValue) {
+    return Object.fromEntries((0, chain_service_1.getChainTypes)().map((chainType) => [chainType, getValue(chainType)]));
+}
 class WatchersAmounts {
 }
 exports.WatchersAmounts = WatchersAmounts;
@@ -167,9 +170,10 @@ class WatchersStats {
         this.chainLockedRSN = createChainNumber();
         this.chainPermitCount = createChainNumber();
         this.chainWatcherCount = createChainNumber();
+        this.permitCost = createChainNumberMap((chainType) => (0, constants_1.getPermitCost)(chainType));
         this.triggerPermitCount = createChainNumber();
-        this.watcherCollateralERG = (0, constants_1.rs_WatcherCollateralERG)('Ergo');
-        this.watcherCollateralRSN = (0, constants_1.rs_WatcherCollateralRSN)('Ergo');
+        this.watcherCollateralERG = createChainNumberMap(constants_1.rs_WatcherCollateralERG);
+        this.watcherCollateralRSN = createChainNumberMap(constants_1.rs_WatcherCollateralRSN);
         this.watchersAmountsPerCurrency = Object.fromEntries(Object.values(constants_1.Currency).map((currency) => [
             currency,
             new WatchersAmounts(),

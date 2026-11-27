@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1795784003270,
+  "timestamp": 1795796629773,
   "appData": {
     "version": "5.8.7"
   },
@@ -16,11 +16,11 @@
       "urls": [
         "./favicon.ico",
         "./index.html",
-        "./main-FJCN7FZ3.js",
+        "./main-77S7GABH.js",
         "./manifest.webmanifest",
         "./polyfills-LVNOU2XZ.js",
         "./rosen.html",
-        "./scripts-C45QYM3T.js",
+        "./scripts-Y7Q2LCZ3.js",
         "./styles-NF7LPAEE.css"
       ],
       "patterns": []
@@ -82,7 +82,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "./assets/README.md": "62ed3650bead164c839266bd88c83f81a0c80147",
+    "./assets/README.md": "2176c450eb83e645bd6858b5d95d20a8e7769a0e",
     "./assets/icons/icon-512x512.png": "70bcb04083de346145fa5a506812f23b0ed80772",
     "./assets/icons/icon-512x512_bk.png": "b6635ceb35e9287ee36d937b3cf491593ae6afd1",
     "./assets/icons/icon-512x512_bk2.png": "bc9f886184d64802571f0d7878d64e7b15f9f1ea",
@@ -108,8 +108,8 @@
     "./assets/rosen-watchers.html": "61235d2d68e1a1bb8f19fa33390f9f320436be24",
     "./assets/test.html": "7be1e51ec537c8242b37e42fdc4fa46c88a77508",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
-    "./index.html": "6736ea1b5ef9cddf959f63ff74d853bf07b35223",
-    "./main-FJCN7FZ3.js": "cb997e8c046bfb929a2e95fce8957483cfbecd3d",
+    "./index.html": "1e73c0a2c0046286b76b344b350275e8a23f7513",
+    "./main-77S7GABH.js": "d1e86749d92cd85f3cff35403441be8ea91afe6f",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/base-C3MBVN5M.png": "83424fb0277a8df26a85a0af9bcdeec47051f248",
     "./media/binance-WGS5R7MY.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
@@ -131,7 +131,7 @@
     "./media/zcash-U4MESJC3.png": "a645a5027336e32ae87864cc682174ab1b413550",
     "./polyfills-LVNOU2XZ.js": "2f9a12d1b36d16ea2c21645c118124acea70f07e",
     "./rosen.html": "d7161a40ae648d11c75098244147e693537693b8",
-    "./scripts-C45QYM3T.js": "7f04cca18599ea1239555cd367c2d7dda9f1b133",
+    "./scripts-Y7Q2LCZ3.js": "b1f222c3dfebbfc7d79c1fc05325792c77b0d3e2",
     "./styles-NF7LPAEE.css": "4740ff8e99431e23dbc9ec5a758f8862abd819a5"
   },
   "navigationUrls": [

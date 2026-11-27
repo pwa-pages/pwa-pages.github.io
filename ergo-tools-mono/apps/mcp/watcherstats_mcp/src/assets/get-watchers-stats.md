@@ -16,7 +16,7 @@ not specific to an address.
   locked by watchers and permits, grouped by chain. `totalLockedRSN` and
   `totalLockedERG` provide the corresponding totals.
 - `watcherCollateralRSN`, `watcherCollateralERG`, and `permitCost`: configured
-  collateral and permit-cost amounts.
+  collateral and permit-cost amounts grouped by chain.
 - `watchersAmountsPerCurrency`: collateral and total locked-value figures
   converted into each supported currency. Each currency entry may include
   `rsnCollateral`, `ergCollateral`, `permitValue`, `watcherValue`,

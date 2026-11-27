@@ -391,6 +391,11 @@
       getChainTypes().map((key) => [key, void 0])
     );
   }
+  function createChainNumberMap(getValue) {
+    return Object.fromEntries(
+      getChainTypes().map((chainType) => [chainType, getValue(chainType)])
+    );
+  }
   var EventType, Address, Asset, Input, Token, WatcherInfo, MyWatchersStats, WatcherPerformanceAddressStat, WatchersPerformanceStats, ChartDataSet, ChainPerfChartDataSet, ChartPoint, ChartPerformance, ChainChartPerformance, WatchersAmounts, WatchersStats;
   var init_models = __esm({
     "service/src/lib/models.ts"() {
@@ -538,9 +543,10 @@
           this.chainLockedRSN = createChainNumber();
           this.chainPermitCount = createChainNumber();
           this.chainWatcherCount = createChainNumber();
+          this.permitCost = createChainNumberMap((chainType) => getPermitCost(chainType));
           this.triggerPermitCount = createChainNumber();
-          this.watcherCollateralERG = rs_WatcherCollateralERG("Ergo");
-          this.watcherCollateralRSN = rs_WatcherCollateralRSN("Ergo");
+          this.watcherCollateralERG = createChainNumberMap(rs_WatcherCollateralERG);
+          this.watcherCollateralRSN = createChainNumberMap(rs_WatcherCollateralRSN);
           this.watchersAmountsPerCurrency = Object.fromEntries(
             Object.values(Currency).map((currency) => [
               currency,

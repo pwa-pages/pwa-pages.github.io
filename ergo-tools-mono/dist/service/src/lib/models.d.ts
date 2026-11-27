@@ -211,13 +211,14 @@ export declare class WatchersStats {
     chainLockedRSN: Record<string, number | undefined>;
     chainPermitCount: Record<string, number | undefined>;
     chainWatcherCount: Record<string, number | undefined>;
+    permitCost: Record<string, number>;
     totalActivePermitCount: number | undefined;
     totalLockedERG: number | undefined;
     totalLockedRSN: number | undefined;
     totalPermitCount: number | undefined;
     totalWatcherCount: number | undefined;
     triggerPermitCount: Record<string, number | undefined>;
-    watcherCollateralERG: number;
-    watcherCollateralRSN: number;
+    watcherCollateralERG: Record<string, number>;
+    watcherCollateralRSN: Record<string, number>;
     watchersAmountsPerCurrency: Record<string, WatchersAmounts>;
 }
