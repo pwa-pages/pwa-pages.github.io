@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1795719280412,
+  "timestamp": 1795739236841,
   "appData": {
     "version": "5.8.7"
   },
@@ -109,7 +109,7 @@
     "./assets/test.html": "7be1e51ec537c8242b37e42fdc4fa46c88a77508",
     "./favicon.ico": "34d5aea93e610d04d7d7f8ac4c140d49f5281d76",
     "./index.html": "d231bd5c9de2c6bc33c92b3c540f00c0053186d3",
-    "./main.js": "0ac08d6b0a24f577ce370959720dbf6b5969bfcb",
+    "./main.js": "8781f399f3dbb7261ca7dbe2eb1f6860ebc2f7da",
     "./manifest.webmanifest": "3f49bd3a71c9324555def72b7f7d116eca7cdf5c",
     "./media/base.png": "83424fb0277a8df26a85a0af9bcdeec47051f248",
     "./media/binance.png": "2086f028bb7feab3aff57e4808952054e53dc0ef",
@@ -131,7 +131,7 @@
     "./media/zcash.png": "a645a5027336e32ae87864cc682174ab1b413550",
     "./polyfills.js": "8a2fdd8e29c35d3dbd1bacbcbc69af64ae22b58e",
     "./rosen.html": "d7161a40ae648d11c75098244147e693537693b8",
-    "./scripts.js": "08307924549a1a0a209f857a8e86adebf002d835",
+    "./scripts.js": "b68b0b9277bac714f2942ac309b240a5502cd78a",
     "./styles.css": "f0a19feb92ff6985d74be4840ef5b6619bdc7380"
   },
   "navigationUrls": [

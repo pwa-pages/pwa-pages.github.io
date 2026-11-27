@@ -24,7 +24,7 @@ class ProcessEventService {
         this.storageService = storageService;
         this.services = null;
     }
-    async processEvent(event) {
+    async processEvent(event, options) {
         try {
             if (event.type === models_1.EventType.StatisticsRequested ||
                 event.type === models_1.EventType.ChainPerformanceRequested ||
@@ -59,6 +59,9 @@ class ProcessEventService {
         }
         catch (error) {
             console.error('Error initializing IndexedDB or downloading addresses:', error);
+            if (options?.throwOnError) {
+                throw error;
+            }
         }
     }
     async processWatcherStatsRequested(services) {

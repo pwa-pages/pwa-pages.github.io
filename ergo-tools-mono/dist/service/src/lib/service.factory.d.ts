@@ -9,7 +9,6 @@ import { RewardDataService } from "./reward.data.service";
 import { TransactionDownloadService } from "./transaction.download.service";
 import { WatchersDataService } from "./watchers.data.service";
 export declare const GetPermitTriggerAddresses: () => Record<import("./chain.service").ChainType, string | null>;
-export declare function CreatePermitsDownloadService(maxDownloadDateDifference: number): TransactionDownloadService<PermitTx>;
 export declare const CreateWatcherDownloadService: () => TransactionDownloadService<PermitTx>;
 export interface EventPayload<T> {
     type: EventType;

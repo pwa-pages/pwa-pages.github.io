@@ -8,7 +8,9 @@ export declare class ProcessEventService {
     private storageService;
     services: Services | null;
     constructor(eventSender: EventSender, storageService: IStorageService);
-    processEvent(event: EventPayload<object>): Promise<void>;
+    processEvent(event: EventPayload<object>, options?: {
+        throwOnError?: boolean;
+    }): Promise<void>;
     private processWatcherStatsRequested;
     private processReportsRequested;
     private processRequestInputsDownload;

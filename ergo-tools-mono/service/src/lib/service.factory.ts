@@ -20,7 +20,7 @@ import { WatchersDataService } from "./watchers.data.service";
 export const GetPermitTriggerAddresses = () => {
   return permitTriggerAddresses;
 };
-
+/*
 export function CreatePermitsDownloadService(
   maxDownloadDateDifference: number
 ): TransactionDownloadService<PermitTx> {
@@ -37,6 +37,7 @@ export function CreatePermitsDownloadService(
     null,
   );
 }
+  */
 
 export const CreateWatcherDownloadService = (
 

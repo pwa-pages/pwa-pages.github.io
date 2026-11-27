@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StorageType = exports.CreateWatcherDownloadService = exports.GetPermitTriggerAddresses = void 0;
-exports.CreatePermitsDownloadService = CreatePermitsDownloadService;
 exports.createServices = createServices;
 const chain_performance_data_service_1 = require("./chain.performance.data.service");
 const chain_service_1 = require("./chain.service");
@@ -21,11 +20,24 @@ const GetPermitTriggerAddresses = () => {
     return chain_service_1.permitTriggerAddresses;
 };
 exports.GetPermitTriggerAddresses = GetPermitTriggerAddresses;
-function CreatePermitsDownloadService(maxDownloadDateDifference) {
-    var storageService = new memory_storage_service_1.MemoryStorageService();
-    const permitsDataService = new permits_data_service_1.PermitsDataService(storageService, constants_1.rs_ActivePermitTxStoreName, maxDownloadDateDifference);
-    return new transaction_download_service_1.TransactionDownloadService(constants_1.rs_FullDownloadsBatchSize, constants_1.rs_InitialNDownloads, permitsDataService, null, null);
+/*
+export function CreatePermitsDownloadService(
+  maxDownloadDateDifference: number
+): TransactionDownloadService<PermitTx> {
+
+  var storageService = new MemoryStorageService<PermitTx>();
+  const permitsDataService: PermitsDataService =
+    new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
+
+  return new TransactionDownloadService<PermitTx>(
+    rs_FullDownloadsBatchSize,
+    rs_InitialNDownloads,
+    permitsDataService,
+    null as unknown as EventSender,
+    null,
+  );
 }
+  */
 const CreateWatcherDownloadService = () => {
     var storageService = new memory_storage_service_1.MemoryStorageService();
     const permitsDataService = new permits_data_service_1.PermitsDataService(storageService, constants_1.rs_ActivePermitTxStoreName);

@@ -27618,17 +27618,6 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
   });
 
   // service/src/lib/service.factory.ts
-  function CreatePermitsDownloadService(maxDownloadDateDifference) {
-    var storageService = new MemoryStorageService();
-    const permitsDataService = new PermitsDataService(storageService, rs_ActivePermitTxStoreName, maxDownloadDateDifference);
-    return new TransactionDownloadService(
-      rs_FullDownloadsBatchSize,
-      rs_InitialNDownloads,
-      permitsDataService,
-      null,
-      null
-    );
-  }
   async function createServices(eventSender, storageService) {
     const createDownloadStatusService = (dataService) => {
       return new DownloadStatusService(dataService, storageService);
@@ -27778,7 +27767,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
           this.storageService = storageService;
           this.services = null;
         }
-        async processEvent(event) {
+        async processEvent(event, options) {
           try {
             if (event.type === "StatisticsRequested" /* StatisticsRequested */ || event.type === "ChainPerformanceRequested" /* ChainPerformanceRequested */ || event.type === "MyWatcherStatsRequested" /* MyWatcherStatsRequested */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatcherStatsRequested" /* WatcherStatsRequested */) {
               if (!this.services) {
@@ -27810,6 +27799,9 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
               "Error initializing IndexedDB or downloading addresses:",
               error
             );
+            if (options?.throwOnError) {
+              throw error;
+            }
           }
         }
         async processWatcherStatsRequested(services) {
@@ -28216,7 +28208,6 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
     ChartDataSet: () => ChartDataSet,
     ChartPerformance: () => ChartPerformance,
     ChartPoint: () => ChartPoint,
-    CreatePermitsDownloadService: () => CreatePermitsDownloadService,
     CreateProcessEventService: () => CreateProcessEventService,
     CreateWatcherDownloadService: () => CreateWatcherDownloadService,
     Currency: () => Currency,

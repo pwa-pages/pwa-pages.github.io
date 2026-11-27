@@ -22,7 +22,10 @@ export class ProcessEventService {
   services: Services | null = null;
   constructor(private eventSender: EventSender, private storageService: IStorageService) { }
 
-  public async processEvent(event: EventPayload<object>) {
+  public async processEvent(
+    event: EventPayload<object>,
+    options?: { throwOnError?: boolean },
+  ) {
     try {
       if (
         event.type === EventType.StatisticsRequested ||
@@ -63,6 +66,9 @@ export class ProcessEventService {
         'Error initializing IndexedDB or downloading addresses:',
         error,
       );
+      if (options?.throwOnError) {
+        throw error;
+      }
     }
   }
 
@@ -378,4 +384,3 @@ export const CreateProcessEventService = (
   return new ProcessEventService(eventSender, storageService);
 }
 export { EventSender };
-

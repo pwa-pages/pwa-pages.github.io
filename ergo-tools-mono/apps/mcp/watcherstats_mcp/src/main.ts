@@ -23,7 +23,8 @@ import { StdioServerTransport } from
 import { FileStorageService } from './file.storage.service.js';
 import { GetWatchersStatsTool } from './get-watchers-stats.tool.js';
 import { ChainPerfStatsTool } from './get-chain-perf.tool.js';
-import { GetAddressStatisticsTool } from './get-address-performance.tool.js';
+import { GetAddressStatisticsTool } from './get-address-statistics.tool.js';
+import { GetMyWatcherStatsTool } from './get-my-watcher-stats.tool.js';
 
 // Redirect console logs to stderr in stdio mode
 function redirectLogsToStderr(): void {
@@ -75,6 +76,9 @@ const getChainPerfTool =
   const getAddressPerformanceTool =
     new GetAddressStatisticsTool(eventService, processEventService);
 
+const getMyWatcherStatsTool =
+  new GetMyWatcherStatsTool(eventService, processEventService);
+
 function createRosenMcpServer(): McpServer {
   const server = new McpServer({
     name: 'rosen-mcp',
@@ -84,6 +88,7 @@ function createRosenMcpServer(): McpServer {
   getWatchersStatsTool.register(server);
   getChainPerfTool.register(server);
   getAddressPerformanceTool.register(server);
+  getMyWatcherStatsTool.register(server);
 
 
   return server;
