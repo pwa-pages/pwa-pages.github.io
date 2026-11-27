@@ -6,6 +6,10 @@ class DataService {
     constructor(storageService) {
         this.storageService = storageService;
     }
+    dataComplete() {
+        // Empty implementation
+        return Promise.resolve();
+    }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async purgeData() {
         // Empty implementation

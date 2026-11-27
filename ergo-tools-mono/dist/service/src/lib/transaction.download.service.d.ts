@@ -6,11 +6,11 @@ import { EventSender } from "./process.event.service";
 export declare class TransactionDownloadService<T> {
     private dataService;
     private eventSender;
-    private downloadStatusIndexedDbService;
+    private downloadStatusServiceContract;
     private busyCounter;
     private downloadFullSize;
     private downloadInitialSize;
-    constructor(downloadFullSize: number, downloadInitialSize: number, dataService: DataService<T>, eventSender: EventSender, downloadStatusIndexedDbService: DownloadStatusServiceContract | null);
+    constructor(downloadFullSize: number, downloadInitialSize: number, dataService: DataService<T>, eventSender: EventSender, downloadStatusServiceContract: DownloadStatusServiceContract | null);
     getDataService(): DataService<T>;
     fetchTransactions(url: string): Promise<FetchTransactionsResponse>;
     downloadTransactions(address: string, offset: number | undefined, limit: number | undefined, urlAction: UrlAction): Promise<FetchTransactionsResponse>;

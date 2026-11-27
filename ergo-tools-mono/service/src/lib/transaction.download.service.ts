@@ -17,7 +17,7 @@ export class TransactionDownloadService<T> {
     downloadInitialSize: number,
     private dataService: DataService<T>,
     private eventSender: EventSender,
-    private downloadStatusIndexedDbService: DownloadStatusServiceContract | null,
+    private downloadStatusServiceContract: DownloadStatusServiceContract | null,
   ) {
     this.downloadFullSize = downloadFullSize;
     this.downloadInitialSize = downloadInitialSize;
@@ -169,8 +169,17 @@ export class TransactionDownloadService<T> {
         result.transactions.length === 0 ||
         offset > 100000
       ) {
-        await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
+        await this.downloadStatusServiceContract?.setDownloadStatus(address, 'true');
         return;
+      }
+
+      var downloadStatus: string = (await this.downloadStatusServiceContract?.getDownloadStatus(address))?.status || 'false';
+      if(downloadStatus === 'true') {
+        var existingData = await this.dataService.getExistingData(result.transactions[result.transactions.length - 1], address);
+
+        if(existingData) {
+          await this.dataService.dataComplete();
+        }
       }
 
       await this.dataService.addData(address, result.transactions);
@@ -193,7 +202,7 @@ export class TransactionDownloadService<T> {
           urlAction,
         );
       } else {
-        await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
+        await this.downloadStatusServiceContract?.setDownloadStatus(address, 'true');
       }
     } catch (e) {
       throw e;
@@ -246,13 +255,13 @@ export class TransactionDownloadService<T> {
 
       var a = new Address(address, null);
       const downloadStatus: string =
-        (await this.downloadStatusIndexedDbService?.getDownloadStatus(address))?.status || 'false';
+        (await this.downloadStatusServiceContract?.getDownloadStatus(address))?.status || 'false';
       if (existingData && downloadStatus === 'true') {
         console.log( 
           `Found existing boxId in db for ${a.largeAddressForDisplay}, no need to download more.`,
         );
       } else if (itemsz >= this.downloadInitialSize) {
-        await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'false');
+        await this.downloadStatusServiceContract?.setDownloadStatus(address, 'false');
         
         console.log(`Downloading all tx's for : ${a.largeAddressForDisplay}`);
         await this.downloadAllForAddress(

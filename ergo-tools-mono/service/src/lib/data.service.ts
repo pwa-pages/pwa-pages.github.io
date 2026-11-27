@@ -12,6 +12,11 @@ export abstract class DataService<T> {
     this.storageService = storageService;
   }
 
+  dataComplete(): Promise<void>{
+    // Empty implementation
+    return Promise.resolve();
+  }
+
   abstract addData(
     address: string,
     transactions: TransactionItem[]

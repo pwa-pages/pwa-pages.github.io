@@ -6,10 +6,10 @@ const models_1 = require("./models");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class TransactionDownloadService {
     //private static addressDownloadDateMap = new Map<string, Date>();
-    constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusIndexedDbService) {
+    constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusServiceContract) {
         this.dataService = dataService;
         this.eventSender = eventSender;
-        this.downloadStatusIndexedDbService = downloadStatusIndexedDbService;
+        this.downloadStatusServiceContract = downloadStatusServiceContract;
         this.busyCounter = 0;
         this.downloadFullSize = constants_1.rs_FullDownloadsBatchSize;
         this.downloadInitialSize = constants_1.rs_InitialNDownloads;
@@ -122,8 +122,15 @@ class TransactionDownloadService {
             if (!result.transactions ||
                 result.transactions.length === 0 ||
                 offset > 100000) {
-                await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
+                await this.downloadStatusServiceContract?.setDownloadStatus(address, 'true');
                 return;
+            }
+            var downloadStatus = (await this.downloadStatusServiceContract?.getDownloadStatus(address))?.status || 'false';
+            if (downloadStatus === 'true') {
+                var existingData = await this.dataService.getExistingData(result.transactions[result.transactions.length - 1], address);
+                if (existingData) {
+                    await this.dataService.dataComplete();
+                }
             }
             await this.dataService.addData(address, result.transactions);
             if (callback) {
@@ -136,7 +143,7 @@ class TransactionDownloadService {
                 await this.downloadAllForAddress(address, offset + this.downloadFullSize, urlAction);
             }
             else {
-                await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'true');
+                await this.downloadStatusServiceContract?.setDownloadStatus(address, 'true');
             }
         }
         catch (e) {
@@ -166,12 +173,12 @@ class TransactionDownloadService {
                 await callback?.();
             }
             var a = new models_1.Address(address, null);
-            const downloadStatus = (await this.downloadStatusIndexedDbService?.getDownloadStatus(address))?.status || 'false';
+            const downloadStatus = (await this.downloadStatusServiceContract?.getDownloadStatus(address))?.status || 'false';
             if (existingData && downloadStatus === 'true') {
                 console.log(`Found existing boxId in db for ${a.largeAddressForDisplay}, no need to download more.`);
             }
             else if (itemsz >= this.downloadInitialSize) {
-                await this.downloadStatusIndexedDbService?.setDownloadStatus(address, 'false');
+                await this.downloadStatusServiceContract?.setDownloadStatus(address, 'false');
                 console.log(`Downloading all tx's for : ${a.largeAddressForDisplay}`);
                 await this.downloadAllForAddress(address, 0, urlAction, callback);
                 return this.dataService.getData();

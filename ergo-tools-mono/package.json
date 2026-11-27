@@ -26,6 +26,7 @@
     "@angular/router": "22.1.6",
     "@angular/service-worker": "22.1.6",
     "@ergo-tools/service": "file:service",
+    "@fleet-sdk/serializer": "^0.11.0",
     "@fortawesome/angular-fontawesome": "^5.1.0",
     "@fortawesome/fontawesome-free": "^7.0.0",
     "@fortawesome/fontawesome-svg-core": "^7.0.0",

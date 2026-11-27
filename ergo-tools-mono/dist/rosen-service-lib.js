@@ -567,6 +567,9 @@
         constructor(storageService) {
           this.storageService = storageService;
         }
+        dataComplete() {
+          return Promise.resolve();
+        }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         async purgeData() {
         }
@@ -4312,10 +4315,10 @@
       init_models();
       TransactionDownloadService = class {
         //private static addressDownloadDateMap = new Map<string, Date>();
-        constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusIndexedDbService) {
+        constructor(downloadFullSize, downloadInitialSize, dataService, eventSender, downloadStatusServiceContract) {
           this.dataService = dataService;
           this.eventSender = eventSender;
-          this.downloadStatusIndexedDbService = downloadStatusIndexedDbService;
+          this.downloadStatusServiceContract = downloadStatusServiceContract;
           this.busyCounter = 0;
           this.downloadFullSize = rs_FullDownloadsBatchSize;
           this.downloadInitialSize = rs_InitialNDownloads;
@@ -4429,8 +4432,15 @@
               urlAction
             );
             if (!result.transactions || result.transactions.length === 0 || offset > 1e5) {
-              await this.downloadStatusIndexedDbService?.setDownloadStatus(address, "true");
+              await this.downloadStatusServiceContract?.setDownloadStatus(address, "true");
               return;
+            }
+            var downloadStatus = (await this.downloadStatusServiceContract?.getDownloadStatus(address))?.status || "false";
+            if (downloadStatus === "true") {
+              var existingData = await this.dataService.getExistingData(result.transactions[result.transactions.length - 1], address);
+              if (existingData) {
+                await this.dataService.dataComplete();
+              }
             }
             await this.dataService.addData(address, result.transactions);
             if (callback) {
@@ -4445,7 +4455,7 @@
                 urlAction
               );
             } else {
-              await this.downloadStatusIndexedDbService?.setDownloadStatus(address, "true");
+              await this.downloadStatusServiceContract?.setDownloadStatus(address, "true");
             }
           } catch (e) {
             throw e;
@@ -4478,13 +4488,13 @@
               await callback?.();
             }
             var a = new Address(address, null);
-            const downloadStatus = (await this.downloadStatusIndexedDbService?.getDownloadStatus(address))?.status || "false";
+            const downloadStatus = (await this.downloadStatusServiceContract?.getDownloadStatus(address))?.status || "false";
             if (existingData && downloadStatus === "true") {
               console.log(
                 `Found existing boxId in db for ${a.largeAddressForDisplay}, no need to download more.`
               );
             } else if (itemsz >= this.downloadInitialSize) {
-              await this.downloadStatusIndexedDbService?.setDownloadStatus(address, "false");
+              await this.downloadStatusServiceContract?.setDownloadStatus(address, "false");
               console.log(`Downloading all tx's for : ${a.largeAddressForDisplay}`);
               await this.downloadAllForAddress(
                 address,
