@@ -46,12 +46,18 @@ export class GetMyWatcherStatsTool {
             if (!Array.isArray(permits)) {
               throw new Error('No valid permit snapshot was received.');
             }
-            const selected = permits.filter((permit) => permit.address === address);
+            const selected = permits
+              .filter((permit) => permit.address === address)
+              .map(({ address, chainType, permitCount, activePermitCount }) => ({
+                address,
+                chainType,
+                permitCount,
+                activePermitCount,
+              }));
             const serialized = JSON.stringify(selected);
-            const parsed: PermitInfo[] = JSON.parse(serialized);
             return {
               content: [{ type: 'text' as const, text: serialized }],
-              structuredContent: { permits: parsed },
+              structuredContent: { permits: selected },
             };
           } finally {
             subscription.unsubscribe();

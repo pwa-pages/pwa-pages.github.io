@@ -6,9 +6,8 @@ Retrieve permit statistics for one watcher address. Supply a non-empty
 The tool requests a refresh and returns the latest `PermitsChanged` snapshot
 after processing completes, filtered to the requested address. The response
 contains a `permits` array in structured content and the same array as JSON
-text. Each entry contains `address`, `wid`, `chainType`, `lockedRSN`,
-`activeLockedRSN`, `permitCount`, and `activePermitCount`. An empty array
-means no permits were found for that address.
+text. Each entry contains only `address`, `chainType`, `permitCount`, and
+`activePermitCount`. An empty array means no permits were found for that address.
 
 Requests are serialized because permit events do not identify their originating
 request. If processing fails, no snapshot is received, or the request does not

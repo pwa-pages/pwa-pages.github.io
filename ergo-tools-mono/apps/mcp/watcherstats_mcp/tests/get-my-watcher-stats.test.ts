@@ -48,6 +48,10 @@ const permit = (address: string, count: number) => ({
   permitCount: count, activePermitCount: 1,
 });
 
+const expectedPermit = (address: string, count: number) => ({
+  address, chainType: 'Ergo', permitCount: count, activePermitCount: 1,
+});
+
 test('refreshes permits, returns the latest snapshot filtered by address, and validates input', async (t) => {
   const { events, processor, client } = await setup(t);
   processor.run = async () => {
@@ -57,15 +61,15 @@ test('refreshes permits, returns the latest snapshot filtered by address, and va
   const result = await client.callTool({
     name: 'get_my_watcher_stats', arguments: { address: 'a' },
   });
-  assert.deepEqual(result.structuredContent, { permits: [permit('a', 2)] });
-  assert.deepEqual(result.content, [{ type: 'text', text: JSON.stringify([permit('a', 2)]) }]);
+  assert.deepEqual(result.structuredContent, { permits: [expectedPermit('a', 2)] });
+  assert.deepEqual(result.content, [{ type: 'text', text: JSON.stringify([expectedPermit('a', 2)]) }]);
   assert.deepEqual(processor.events, [{
     type: EventType.MyWatcherStatsRequested, data: { addresses: ['a'] },
   }]);
 
   assert.deepEqual((await client.callTool({
     name: 'get_my_watcher_stats', arguments: { address: 'b' },
-  })).structuredContent, { permits: [permit('b', 3)] });
+  })).structuredContent, { permits: [expectedPermit('b', 3)] });
 
   processor.run = async () => {
     await events.sendEventWithData(EventType.PermitsChanged, []);
@@ -129,8 +133,8 @@ test('serializes concurrent requests and uses each request’s own events', asyn
   await new Promise((resolve) => setTimeout(resolve, 20));
   assert.equal(processor.events.length, 1);
   releaseFirst();
-  assert.deepEqual((await first).structuredContent, { permits: [permit('a', 1)] });
-  assert.deepEqual((await second).structuredContent, { permits: [permit('b', 1)] });
+  assert.deepEqual((await first).structuredContent, { permits: [expectedPermit('a', 1)] });
+  assert.deepEqual((await second).structuredContent, { permits: [expectedPermit('b', 1)] });
 });
 
 test('timed-out queued requests do not start later', async (t) => {

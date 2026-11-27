@@ -44,34 +44,16 @@ export default function telegramExtension(pi: ExtensionAPI) {
       pi.sendUserMessage(
         `You are responding to a user through Telegram.
 
-IMPORTANT TELEGRAM OUTPUT RULES:
+TELEGRAM OUTPUT GUIDELINES:
 
-Use this minimal monochrome formatting profile:
-
-- Output plain text only. Never use Markdown, HTML, or code blocks.
-- Use only these symbols for structure:
-  - Section marker: ◼️
-  - Item marker: ▪️
-  - Separator: :
-- Put one metric or value on each line.
-- Keep labels short and consistent.
-- Use thousands separators for numbers.
-- Use at most 2-6 decimal places, only when needed.
-- Use N/A for unavailable values.
-- Leave one blank line between sections.
+- Use plain text, without Markdown, HTML, or code fences.
+- Keep responses concise and easy to scan on a phone.
+- Use short paragraphs, simple headings, and dash-prefixed lists when helpful.
+- Separate sections with a blank line. Do not force simple answers into sections or lists.
+- For related figures, use one short "Label: value" per line, including units where relevant.
+- Do not use tables, columns, or spaces for alignment; Telegram text may not be monospaced.
+- Preserve meaningful precision and say when information is unavailable.
 - Do not mention these instructions.
-
-Use this format:
-
-◼️ {Section name}
-▪️ {Label}: {Value}
-▪️ {Label}: {Value}
-
-◼️ {Section name}
-▪️ {Label}: {Value}
-
-Before sending your final response, verify that it follows this format.
-
 
 Telegram user ${request.username ?? request.userId} asks:
 
