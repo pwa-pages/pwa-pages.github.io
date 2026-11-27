@@ -9,11 +9,11 @@ import {
   type ExtensionContext,
 } from "@mariozechner/pi-coding-agent";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import { AbortController as TelegramAbortController } from "abort-controller";
 import { createTelegramBot, type TelegramRequest } from "./bot.js";
 import { approvedTools, registerTelegramSecurity, validateToolCall } from "./security.js";
 import { RequestQueue } from "./request-queue.js";
+import { createRosenTransport } from "./mcp-transport.js";
 
 const instructions = readFileSync(new URL("./telegram.md", import.meta.url), "utf8");
 
@@ -136,7 +136,7 @@ export default function telegramExtension(pi: ExtensionAPI) {
       signal.throwIfAborted();
       await session.bindExtensions({});
       signal.throwIfAborted();
-      await client.connect(new StreamableHTTPClientTransport(new URL("http://127.0.0.1:3001/mcp")));
+      await client.connect(createRosenTransport(ctx.cwd));
       signal.throwIfAborted();
       await session.prompt(request.text, { expandPromptTemplates: false, source: "extension" });
       signal.throwIfAborted();

@@ -2,8 +2,27 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { McpServer, createMcpHandler } from "@modelcontextprotocol/server";
 import * as z from "zod/v4";
+import { createRosenTransport } from "../src/mcp-transport.ts";
+
+test("transport selection defaults to stdio and rejects unknown modes", () => {
+  const previous = process.env.MCP_TRANSPORT;
+  try {
+    delete process.env.MCP_TRANSPORT;
+    assert.ok(createRosenTransport(process.cwd()) instanceof StdioClientTransport);
+    process.env.MCP_TRANSPORT = "stdio";
+    assert.ok(createRosenTransport(process.cwd()) instanceof StdioClientTransport);
+    process.env.MCP_TRANSPORT = "http";
+    assert.ok(createRosenTransport(process.cwd()) instanceof StreamableHTTPClientTransport);
+    process.env.MCP_TRANSPORT = "invalid";
+    assert.throws(() => createRosenTransport(process.cwd()), /Invalid MCP_TRANSPORT/);
+  } finally {
+    if (previous === undefined) delete process.env.MCP_TRANSPORT;
+    else process.env.MCP_TRANSPORT = previous;
+  }
+});
 
 test("installed MCP client can call the Rosen server's HTTP protocol", async () => {
   const handler = createMcpHandler(() => {

@@ -1,10 +1,14 @@
 # Rosen Radar Telegram extension
 
-Start the Rosen MCP HTTP server with `./run_mcp_http.sh`, then run Pi with
-`./start_pi.sh`. Configure `TELEGRAM_BOT_TOKEN` and the comma-separated
-`TELEGRAM_ALLOWED_CHAT_IDS` as before. The extension connects to the local
-Rosen MCP endpoint at `http://127.0.0.1:3001/mcp`; the MCP server must be
-trusted and protected against access by other users.
+Run Pi with `./start_pi.sh`. Configure `TELEGRAM_BOT_TOKEN` and the
+comma-separated `TELEGRAM_ALLOWED_CHAT_IDS` as before. By default, the
+extension starts the built Rosen MCP server over stdio for each request.
+Build it first with `./build_mcp.sh`. Set
+`MCP_TRANSPORT=http` to use the local HTTP endpoint at
+`http://127.0.0.1:3001/mcp` instead; start that server separately with
+`./run_mcp_http.sh`. Set `MCP_TRANSPORT=stdio` to explicitly select stdio.
+Other values are rejected. The MCP server must be trusted and protected
+against access by other users.
 
 Optional positive-integer settings:
 
@@ -27,7 +31,9 @@ time are bounded. The MCP server may continue background work after a client
 disconnect or timeout; cancellation does not guarantee that its upstream
 downloads stop. The server's existing shared caches are not per-user, and
 address-based downloads are not constrained by the optional date filters.
-Run only a trusted local server and avoid exposing its HTTP endpoint publicly.
+In stdio mode each request starts a separate server process; its startup and
+shutdown may be slower than using a shared HTTP server. Run only a trusted
+local server and avoid exposing its HTTP endpoint publicly.
 Model instructions cannot guarantee resistance to every prompt injection or
 prevent a model from echoing information that is already in its input.
 
