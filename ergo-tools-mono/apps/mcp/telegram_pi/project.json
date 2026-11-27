@@ -6,6 +6,12 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node --import tsx --test apps/mcp/telegram_pi/tests/*.test.mjs"
+      }
+    },
     "build": {
       "executor": "@nx/esbuild:esbuild",
       "dependsOn": ["^build"],
