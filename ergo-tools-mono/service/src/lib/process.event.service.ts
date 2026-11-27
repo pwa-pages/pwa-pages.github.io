@@ -208,6 +208,12 @@ export class ProcessEventService {
         services,
         addresses,
       );
+
+      await this.eventSender?.sendEvent({
+        type: EventType.MyWatcherStatsRequestFinished,
+        data: addresses,
+      });
+
       return;
     }
 
@@ -233,6 +239,11 @@ export class ProcessEventService {
         addresses,
       );
     }
+
+    await this.eventSender?.sendEvent({
+      type: EventType.MyWatcherStatsRequestFinished,
+      data: addresses,
+    });
   }
 
   private extractChainTypes(permits: PermitInfo[], addresses: string[]) {
@@ -267,6 +278,8 @@ export class ProcessEventService {
         );
       }),
     );
+
+    await this.sendPermitChangedEvent(services, addresses);
   }
 
   async downloadForChainPermitAddresses(

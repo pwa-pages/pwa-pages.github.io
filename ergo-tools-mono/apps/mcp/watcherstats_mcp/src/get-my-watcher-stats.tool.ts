@@ -8,14 +8,37 @@ import { McpServer } from '@modelcontextprotocol/server';
 import * as z from 'zod/v4';
 import { loadToolDescription } from './tool-description.js';
 
+type ActiveRequest = {
+  requestedSet: Set<string>;
+  resolve: (permits: PermitInfo[]) => void;
+};
+
 export class GetMyWatcherStatsTool {
-  private queue: Promise<void> = Promise.resolve();
+  private readonly activeRequests = new Set<ActiveRequest>();
 
   constructor(
     private eventService: EventService,
     private processEventService: ProcessEventService,
     private readonly timeoutMs = 60_000,
-  ) {}
+  ) {
+    this.eventService.subscribeToEvent<PermitInfo[]>(
+      EventType.PermitsChanged,
+      (data) => {
+        if (!Array.isArray(data)) return;
+
+        for (const request of this.activeRequests) {
+          const permits = data.filter((permit) =>
+            request.requestedSet.has(permit.address),
+          );
+
+          if (permits.length > 0) {
+            this.activeRequests.delete(request);
+            request.resolve(permits);
+          }
+        }
+      },
+    );
+  }
 
   register(server: McpServer): void {
     server.registerTool(
@@ -23,76 +46,84 @@ export class GetMyWatcherStatsTool {
       {
         description: loadToolDescription('get-my-watcher-stats.md'),
         inputSchema: z.object({
-          address: z.string().trim().min(1)
-            .describe('Watcher address to retrieve permits for'),
+          addresses: z.array(z.string().trim().min(1)).min(1)
+            .describe('Watcher addresses to retrieve permits for'),
         }),
       },
-      async ({ address }) => {
-        let expired = false;
-        const operation = this.queue.then(async () => {
-          if (expired) return null;
+      async ({ addresses }) => {
+        const requestedAddresses = addresses;
 
-          let permits: PermitInfo[] | undefined;
-          const subscription = this.eventService
-            .observeEvent<PermitInfo[]>(EventType.PermitsChanged)
-            .subscribe((data) => { permits = data; });
-
-          try {
-            await this.processEventService.processEvent({
-              type: EventType.MyWatcherStatsRequested,
-              data: { addresses: [address] },
-            }, { throwOnError: true });
-
-            if (!Array.isArray(permits)) {
-              throw new Error('No valid permit snapshot was received.');
-            }
-            const selected = permits
-              .filter((permit) => permit.address === address)
-              .map(({ address, chainType, permitCount, activePermitCount }) => ({
-                address,
-                chainType,
-                permitCount,
-                activePermitCount,
-              }));
-            const serialized = JSON.stringify(selected);
-            return {
-              content: [{ type: 'text' as const, text: serialized }],
-              structuredContent: { permits: selected },
-            };
-          } finally {
-            subscription.unsubscribe();
-          }
-        });
-
-        // Keep later requests queued even if this caller times out.
-        this.queue = operation.then(() => undefined, () => undefined);
+        let request: ActiveRequest | undefined;
         let timer: ReturnType<typeof setTimeout> | undefined;
+
         try {
-          const result = await Promise.race([
+          const operation = new Promise<PermitInfo[]>(
+            (resolve, reject) => {
+              request = {
+                requestedSet: new Set(requestedAddresses),
+                resolve,
+              };
+
+              this.activeRequests.add(request);
+
+              setImmediate(() => {
+                void this.processEventService.processEvent({
+                  type: EventType.MyWatcherStatsRequested,
+                  data: { addresses: requestedAddresses },
+                }, { throwOnError: true }).catch(reject);
+              });
+            },
+          );
+
+          const permits = await Promise.race([
             operation,
-            new Promise<null>((resolve) => {
+            new Promise<never>((_, reject) => {
               timer = setTimeout(() => {
-                expired = true;
-                resolve(null);
+                reject(new Error(
+                  'Watcher permits were not available before the request timed out.',
+                ));
               }, this.timeoutMs);
             }),
           ]);
-          if (result === null) {
-            return {
-              content: [{ type: 'text' as const, text: 'Watcher permits were not available before the request timed out.' }],
-              isError: true,
-            };
-          }
-          return result;
+
+          const selected = permits.map(
+            ({ address, chainType, permitCount, activePermitCount }) => ({
+              address,
+              chainType,
+              permitCount,
+              activePermitCount,
+            }),
+          );
+
+          return {
+            content: [{
+              type: 'text' as const,
+              text: JSON.stringify(selected),
+            }],
+            structuredContent: { permits: selected },
+          };
         } catch (error) {
           console.error('[GetMyWatcherStatsTool] Error:', error);
-          const message = error instanceof Error ? error.message : String(error);
+
+          const message = error instanceof Error
+            ? error.message
+            : String(error);
+
           return {
-            content: [{ type: 'text' as const, text: `Failed to retrieve watcher permits: ${message}` }],
+            content: [{
+              type: 'text' as const,
+              text: `Failed to retrieve watcher permits: ${message}`,
+            }],
             isError: true,
           };
         } finally {
-          if (timer !== undefined) clearTimeout(timer);
+          if (request) {
+            this.activeRequests.delete(request);
+          }
+
+          if (timer !== undefined) {
+            clearTimeout(timer);
+          }
         }
       },
     );

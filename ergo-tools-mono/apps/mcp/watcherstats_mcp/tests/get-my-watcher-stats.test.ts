@@ -3,6 +3,8 @@ import { test } from 'node:test';
 import {
   EventService,
   EventType,
+  ChainType,
+  createServices,
   MemoryStorageService,
   ProcessEventService,
   type EventPayload,
@@ -43,7 +45,7 @@ async function setup(t: import('node:test').TestContext, timeoutMs = 1000) {
 }
 
 const permit = (address: string, count: number) => ({
-  address, wid: `wid-${address}`, chainType: 'Ergo',
+  address, wid: `wid-${address}`, chainType: ChainType.Ergo,
   lockedRSN: 100, activeLockedRSN: 20,
   permitCount: count, activePermitCount: 1,
 });
@@ -52,32 +54,41 @@ const expectedPermit = (address: string, count: number) => ({
   address, chainType: 'Ergo', permitCount: count, activePermitCount: 1,
 });
 
-test('refreshes permits, returns the latest snapshot filtered by address, and validates input', async (t) => {
+test('refreshes permits for multiple addresses and validates input', async (t) => {
   const { events, processor, client } = await setup(t);
   processor.run = async () => {
     await events.sendEventWithData(EventType.PermitsChanged, [permit('a', 1)]);
-    await events.sendEventWithData(EventType.PermitsChanged, [permit('a', 2), permit('b', 3)]);
+    await events.sendEventWithData(EventType.PermitsChanged, [permit('a', 2), permit('b', 3), permit('c', 4)]);
+    await events.sendEventWithData(EventType.MyWatcherStatsRequestFinished, ['b', 'a']);
+    await events.sendEventWithData(EventType.PermitsChanged, [permit('a', 99)]);
   };
   const result = await client.callTool({
-    name: 'get_my_watcher_stats', arguments: { address: 'a' },
+    name: 'get_my_watcher_stats', arguments: { addresses: [' a ', 'b'] },
   });
-  assert.deepEqual(result.structuredContent, { permits: [expectedPermit('a', 2)] });
-  assert.deepEqual(result.content, [{ type: 'text', text: JSON.stringify([expectedPermit('a', 2)]) }]);
+  const expected = [expectedPermit('a', 2), expectedPermit('b', 3)];
+  assert.deepEqual(result.structuredContent, { permits: expected });
+  assert.deepEqual(result.content, [{ type: 'text', text: JSON.stringify(expected) }]);
   assert.deepEqual(processor.events, [{
-    type: EventType.MyWatcherStatsRequested, data: { addresses: ['a'] },
+    type: EventType.MyWatcherStatsRequested, data: { addresses: ['a', 'b'] },
   }]);
 
+  processor.run = async () => {
+    await events.sendEventWithData(EventType.PermitsChanged, [permit('b', 3)]);
+    await events.sendEventWithData(EventType.MyWatcherStatsRequestFinished, ['b']);
+  };
   assert.deepEqual((await client.callTool({
     name: 'get_my_watcher_stats', arguments: { address: 'b' },
   })).structuredContent, { permits: [expectedPermit('b', 3)] });
 
   processor.run = async () => {
     await events.sendEventWithData(EventType.PermitsChanged, []);
+    await events.sendEventWithData(EventType.MyWatcherStatsRequestFinished, ['a']);
   };
   assert.deepEqual((await client.callTool({
-    name: 'get_my_watcher_stats', arguments: { address: 'a' },
+    name: 'get_my_watcher_stats', arguments: { addresses: ['a'] },
   })).structuredContent, { permits: [] });
-  for (const input of [{ address: '' }, { address: '  ' }, { addresses: ['a'] }]) {
+  for (const input of [{}, { address: '' }, { address: '  ' }, { addresses: [] },
+    { addresses: ['a', '  '] }, { address: 'a', addresses: ['a'] }]) {
     assert.equal((await client.callTool({
       name: 'get_my_watcher_stats', arguments: input,
     })).isError, true);
@@ -102,7 +113,18 @@ test('reports missing snapshots and processing errors instead of returning cache
   });
   const missing = await call();
   assert.equal(missing.isError, true);
-  assert.match(JSON.stringify(missing.content), /No valid permit snapshot/);
+  assert.match(JSON.stringify(missing.content), /No matching watcher stats completion/);
+
+  processor.run = async () => {
+    await events.sendEventWithData(EventType.PermitsChanged, [permit('a', 1)]);
+    await events.sendEventWithData(EventType.MyWatcherStatsRequestFinished, ['b']);
+  };
+  assert.match(JSON.stringify((await call()).content), /No matching watcher stats completion/);
+
+  processor.run = async () => {
+    await events.sendEventWithData(EventType.MyWatcherStatsRequestFinished, ['a']);
+  };
+  assert.match(JSON.stringify((await call()).content), /No valid permit snapshot/);
 
   processor.run = async () => {
     await events.sendEventWithData(EventType.PermitsChanged, [permit('a', 1)]);
@@ -126,6 +148,7 @@ test('serializes concurrent requests and uses each request’s own events', asyn
       await gate;
     }
     await events.sendEventWithData(EventType.PermitsChanged, [permit(addresses[0], 1)]);
+    await events.sendEventWithData(EventType.MyWatcherStatsRequestFinished, addresses);
   };
   const first = client.callTool({ name: 'get_my_watcher_stats', arguments: { address: 'a' } });
   await started;
@@ -135,6 +158,43 @@ test('serializes concurrent requests and uses each request’s own events', asyn
   releaseFirst();
   assert.deepEqual((await first).structuredContent, { permits: [expectedPermit('a', 1)] });
   assert.deepEqual((await second).structuredContent, { permits: [expectedPermit('b', 1)] });
+});
+
+test('processor emits completion after the final snapshot in all refresh paths', async () => {
+  for (const scenario of ['no permits', 'unchanged chains', 'changed chains'] as const) {
+    const sent: EventPayload<unknown>[] = [];
+    const sender = { sendEvent: async <T>(event: EventPayload<T>) => { sent.push(event); } };
+    const storage = new MemoryStorageService();
+    const processor = new ProcessEventService(sender, storage);
+    const services = await createServices(sender, storage);
+    processor.services = services;
+    let reads = 0;
+    const finalPermits = [permit('a', 1), permit('b', 2)];
+    services.myWatcherDataService.getAdressPermits = async () => {
+      reads++;
+      if (reads === 1 && scenario === 'no permits') return [];
+      if (reads <= 3 && scenario === 'changed chains') {
+        return [{ ...permit('a', 1), chainType: ChainType.Cardano }];
+      }
+      return finalPermits;
+    };
+    const downloadedChains: ChainType[] = [];
+    services.permitsDataService.downloadOpenBoxes = async (chain) => { downloadedChains.push(chain); };
+    processor.downloadForChainPermitAddresses = async () => {};
+    processor.downloadForActivePermitAddresses = async () => {};
+    await processor.processEvent({
+      type: EventType.MyWatcherStatsRequested,
+      data: { addresses: ['a', 'b'] },
+    }, { throwOnError: true });
+    assert.deepEqual(sent.at(-1), {
+      type: EventType.MyWatcherStatsRequestFinished, data: ['a', 'b'],
+    });
+    assert.equal(sent.at(-2)?.type, EventType.PermitsChanged);
+    assert.deepEqual(sent.at(-2)?.data, finalPermits);
+    assert.deepEqual(downloadedChains, scenario === 'changed chains'
+      ? [ChainType.Cardano, ChainType.Ergo]
+      : [ChainType.Ergo]);
+  }
 });
 
 test('timed-out queued requests do not start later', async (t) => {

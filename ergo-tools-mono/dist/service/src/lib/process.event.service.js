@@ -138,6 +138,10 @@ class ProcessEventService {
             const updatedPermits = await this.sendPermitChangedEvent(services, addresses);
             const updatedChainTypes = this.extractChainTypes(updatedPermits, addresses);
             await this.processActivePermits(updatedChainTypes, services, addresses);
+            await this.eventSender?.sendEvent({
+                type: models_1.EventType.MyWatcherStatsRequestFinished,
+                data: addresses,
+            });
             return;
         }
         await this.processActivePermits(chainTypes, services, addresses);
@@ -150,6 +154,10 @@ class ProcessEventService {
         if (chainTypesChanged) {
             await this.processActivePermits(updatedChainTypes, services, addresses);
         }
+        await this.eventSender?.sendEvent({
+            type: models_1.EventType.MyWatcherStatsRequestFinished,
+            data: addresses,
+        });
     }
     extractChainTypes(permits, addresses) {
         const chainTypes = new Set();
@@ -168,6 +176,7 @@ class ProcessEventService {
         await Promise.all(Array.from(chainTypes).map(async (chainType) => {
             await this.downloadForActivePermitAddresses(addresses, chainType, services);
         }));
+        await this.sendPermitChangedEvent(services, addresses);
     }
     async downloadForChainPermitAddresses(addresses, services) {
         const permitAddressEntries = Object.entries(chain_service_1.permitAddresses).filter(([, address]) => address != null);

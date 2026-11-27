@@ -425,6 +425,7 @@
         EventType2["RefreshPermits"] = "RefreshPermits";
         EventType2["AddressPermitsDownloaded"] = "AddressPermitsDownloaded";
         EventType2["ReportsChanged"] = "ReportsChanged";
+        EventType2["MyWatcherStatsRequestFinished"] = "MyWatcherStatsRequestFinished";
         return EventType2;
       })(EventType || {});
       Address = class {
@@ -27904,6 +27905,10 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
               services,
               addresses
             );
+            await this.eventSender?.sendEvent({
+              type: "MyWatcherStatsRequestFinished" /* MyWatcherStatsRequestFinished */,
+              data: addresses
+            });
             return;
           }
           await this.processActivePermits(chainTypes, services, addresses);
@@ -27922,6 +27927,10 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
               addresses
             );
           }
+          await this.eventSender?.sendEvent({
+            type: "MyWatcherStatsRequestFinished" /* MyWatcherStatsRequestFinished */,
+            data: addresses
+          });
         }
         extractChainTypes(permits, addresses) {
           const chainTypes = /* @__PURE__ */ new Set();
@@ -27948,6 +27957,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
               );
             })
           );
+          await this.sendPermitChangedEvent(services, addresses);
         }
         async downloadForChainPermitAddresses(addresses, services) {
           const permitAddressEntries = Object.entries(permitAddresses).filter(
@@ -28069,7 +28079,8 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
             ["PerformanceChartsChanged" /* PerformanceChartsChanged */]: new Subject(),
             ["StatisticsChartChanged" /* StatisticsChartChanged */]: new Subject(),
             ["RefreshPermits" /* RefreshPermits */]: new Subject(),
-            ["AddressPermitsDownloaded" /* AddressPermitsDownloaded */]: new Subject()
+            ["AddressPermitsDownloaded" /* AddressPermitsDownloaded */]: new Subject(),
+            ["MyWatcherStatsRequestFinished" /* MyWatcherStatsRequestFinished */]: new Subject()
           };
           return this.eventSubscriptions;
         }

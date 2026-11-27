@@ -26,7 +26,8 @@ export declare enum EventType {
     PermitsChanged = "PermitsChanged",
     RefreshPermits = "RefreshPermits",
     AddressPermitsDownloaded = "AddressPermitsDownloaded",
-    ReportsChanged = "ReportsChanged"
+    ReportsChanged = "ReportsChanged",
+    MyWatcherStatsRequestFinished = "MyWatcherStatsRequestFinished"
 }
 export declare class Address {
     address: string;

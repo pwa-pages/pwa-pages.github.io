@@ -31,7 +31,7 @@ export class EventService {
       [EventType.RefreshInputs]: new Subject<EventData>(),
       [EventType.InputsChanged]: new Subject<EventData>(),
       [EventType.ChainPerfChartChanged]: new Subject<EventData>(),
-      [EventType.ReportsRequested]: new Subject<EventData>(), 
+      [EventType.ReportsRequested]: new Subject<EventData>(),
       [EventType.SwipeActivated]: new Subject<EventData>(),
       [EventType.SwipeDeActivated]: new Subject<EventData>(),
       [EventType.SwipeVertical]: new Subject<EventData>(),
@@ -57,6 +57,7 @@ export class EventService {
       [EventType.RefreshPermits]: new Subject<EventData>(),
       [EventType.AddressPermitsDownloaded]:
         new Subject<EventData>(),
+      [EventType.MyWatcherStatsRequestFinished]: new Subject<EventData>()
     };
 
     return this.eventSubscriptions;
@@ -114,7 +115,7 @@ export class EventService {
       this.eventSubscriptions[eventType]
         .asObservable()
         .subscribe(async (...eventData) => {
-          if(this.ngZone) {
+          if (this.ngZone) {
             await this.ngZone.run(() =>
               callback(...eventData),
             );
@@ -134,7 +135,7 @@ export class EventService {
     );
   }
 
-  
+
 
   async subscribeToAllEvents(
     callback: (
