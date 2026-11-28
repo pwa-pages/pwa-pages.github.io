@@ -1,6 +1,7 @@
 
 import { Bot } from "grammy";
 import { getAddressedText } from "./mentions.js";
+import { logError } from "./safe-log.js";
 
 export interface TelegramRequest {
   text: string;
@@ -102,10 +103,7 @@ export function createTelegramBot(
         username: ctx.from.username,
       });
     } catch (error) {
-      console.error(
-        "[telegram] Message handler failed:",
-        error,
-      );
+      logError("Message handler failed", error);
 
       await ctx.reply(
         "Sorry, something went wrong.",
@@ -115,7 +113,7 @@ export function createTelegramBot(
 
   // Catch grammY errors
   bot.catch((error) => {
-    console.error("[telegram] Bot error:", error);
+    logError("Bot error", error.error);
   });
 
   return bot;

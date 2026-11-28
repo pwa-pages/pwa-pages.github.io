@@ -1,4 +1,5 @@
 import type { TelegramRequest } from "./bot.js";
+import { logError } from "./safe-log.js";
 
 export class RequestQueue {
   private readonly queue: TelegramRequest[] = [];
@@ -33,6 +34,10 @@ export class RequestQueue {
     void this.processNext();
   }
 
+  resume(): void {
+    this.stopped = false;
+  }
+
   shutdown(): void {
     this.stopped = true;
     this.queue.length = 0;
@@ -59,7 +64,7 @@ export class RequestQueue {
             ? "The request timed out. Please try again later."
             : "Sorry, the request could not be completed.");
         } catch (replyError) {
-          console.error("[telegram] Reply failed:", replyError);
+          logError("Reply failed", replyError);
         }
       }
     } finally {
