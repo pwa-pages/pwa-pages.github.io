@@ -12,10 +12,11 @@ import {
 } from "@mariozechner/pi-coding-agent";
 import { Type } from "typebox";
 import { approvedTools, createToolGuard, registerTelegramSecurity, validateToolCall } from "../src/security.ts";
+import { formatWatcherPerformance } from "../src/run-request.ts";
 
 test("allowlist and input bounds deny unknown tools, credentials and expensive requests", () => {
   assert.deepEqual(approvedTools.map((tool) => tool.name), [
-    "get_watchers_stats", "get_chain_perf", "get_address_statistics", "get_my_watcher_stats",
+    "get_watchers_stats", "get_chain_perf", "get_address_statistics", "get_my_watcher_stats", "get_watcher_performance",
   ]);
   for (const name of ["bash", "read", "write", "edit", "env", "unknown"]) {
     assert.equal(validateToolCall(name, { command: "printenv" }), false);
@@ -31,12 +32,25 @@ test("allowlist and input bounds deny unknown tools, credentials and expensive r
     { address: "9abc", extra: true },
   ]) assert.equal(validateToolCall("get_address_statistics", args), false);
   assert.equal(validateToolCall("get_my_watcher_stats", { addresses: ["9abc"] }), true);
+  assert.equal(validateToolCall("get_watcher_performance", { chainType: "Handshake" }), true);
+  assert.equal(validateToolCall("get_watcher_performance", { ChainType: "Handshake" }), false);
   assert.equal(validateToolCall("get_my_watcher_stats", { addresses: Array(11).fill("9abc") }), false);
   const guard = createToolGuard(2);
   assert.equal(guard("get_chain_perf", {}), undefined);
   assert.equal(guard("bash", {}).block, true);
   assert.equal(guard("get_chain_perf", {}).block, true);
   assert.equal(createToolGuard(2)("get_chain_perf", {}), undefined);
+});
+
+test("watcher performance formatter handles nested addresses and malformed rows", () => {
+  const text = formatWatcherPerformance("Handshake", JSON.stringify({
+    watcherPerformances: { Handshake: { November: [
+      { address: { address: "9abc", chainType: "Handshake" }, reports: 1 },
+      { address: null, reports: 20 },
+    ], December: [] } },
+  }));
+  assert.equal(text, "Handshake watcher performance\nNovember:\n- 9abc: 1 report\nTotal: 1 report across 1 watcher.");
+  assert.equal(formatWatcherPerformance("Handshake", '{"watcherPerformances":{"Handshake":{}}}'), "No watcher performance data is available for Handshake.");
 });
 
 test("Pi applies system instructions and blocks tools in independent in-memory sessions", async () => {

@@ -25,6 +25,11 @@ export const approvedTools = [
     description: "Retrieve permit statistics for watcher addresses.",
     parameters: Type.Object({ addresses: Type.Array(address, { minItems: 1, maxItems: 10 }) }, { additionalProperties: false }),
   },
+  {
+    name: "get_watcher_performance",
+    description: "Retrieve monthly watcher report counts for a chain type.",
+    parameters: Type.Object({ chainType: Type.String({ minLength: 1, maxLength: 64 }) }, { additionalProperties: false }),
+  },
 ];
 
 function validAddress(value: unknown): value is string {
@@ -50,6 +55,12 @@ export function validateToolCall(name: string, input: unknown): input is Record<
       return keys.length === 1 && Array.isArray(args.addresses)
         && args.addresses.length >= 1 && args.addresses.length <= 10
         && args.addresses.every(validAddress);
+    case "get_watcher_performance":
+      return keys.length === 1
+        && typeof args.chainType === "string"
+        && args.chainType.length >= 1
+        && args.chainType.length <= 64
+        && /^[A-Za-z][A-Za-z0-9_-]*$/.test(args.chainType);
     case "get_address_statistics":
       return keys.every((key) => ["address", "startDate", "endDate"].includes(key))
         && validAddress(args.address)

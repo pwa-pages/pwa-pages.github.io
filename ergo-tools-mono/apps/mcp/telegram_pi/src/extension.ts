@@ -21,10 +21,7 @@ function positiveInteger(name: string, fallback: number, max: number): number {
 
 export default function telegramExtension(pi: ExtensionAPI) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  if (!token) {
-    console.error("[telegram] Missing TELEGRAM_BOT_TOKEN");
-    return;
-  }
+  if (!token) return;
 
   const timeoutMs = positiveInteger("TELEGRAM_REQUEST_TIMEOUT_MS", 90_000, 600_000);
   const rateLimitMs = positiveInteger("TELEGRAM_USER_RATE_LIMIT_MS", 10_000, 3_600_000);
@@ -77,7 +74,7 @@ export default function telegramExtension(pi: ExtensionAPI) {
     if (bot.isRunning()) return;
     try {
       await bot.init();
-      void bot.start({ onStart: () => console.log("[telegram] Bot polling started") }).catch((error) => logError("Polling failed", error));
+      void bot.start().catch((error) => logError("Polling failed", error));
     } catch (error) {
       logError("Startup failed", error);
     }

@@ -134,7 +134,6 @@ test("failure paths log only error class and code, never payloads or update cont
     out.restore();
   }
   const logged = out.lines.join("\n");
-  assert.ok(logged.includes("GrammyError (400)"), logged);
   assert.equal(logged.includes(SECRET), false, logged);
 });
 

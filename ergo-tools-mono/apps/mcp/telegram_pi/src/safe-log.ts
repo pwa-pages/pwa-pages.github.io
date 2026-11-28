@@ -6,6 +6,6 @@ export function describeError(error: unknown): string {
   return typeof code === "number" ? `${error.name} (${code})` : error.name;
 }
 
-export function logError(label: string, error: unknown): void {
-  console.error(`[telegram] ${label}: ${describeError(error)}`);
+export function logError(_label: string, _error: unknown): void {
+  // Errors are intentionally not printed to stdout or stderr.
 }

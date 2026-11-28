@@ -6,6 +6,7 @@ import {
   type AgentSession,
 } from "@mariozechner/pi-coding-agent";
 import { approvedTools, registerTelegramSecurity, validateToolCall } from "./security.js";
+import { createRequestId, debugLog } from "./debug-log.js";
 
 export interface McpConnection {
   connect(): Promise<void>;
@@ -37,6 +38,66 @@ function extractText(result: unknown): string {
   return text;
 }
 
+export function formatWatcherPerformance(chainType: string, responseText: string): string {
+  let parsed: unknown;
+  try {
+    const start = responseText.indexOf("{");
+    const end = responseText.lastIndexOf("}");
+    parsed = start >= 0 && end > start
+      ? JSON.parse(responseText.slice(start, end + 1))
+      : undefined;
+  } catch {
+    parsed = undefined;
+  }
+
+  const root = typeof parsed === "object" && parsed !== null
+    ? parsed as { watcherPerformances?: unknown }
+    : undefined;
+  const performances = typeof root?.watcherPerformances === "object" && root.watcherPerformances !== null
+    ? root.watcherPerformances as Record<string, unknown>
+    : undefined;
+  const months = performances && typeof performances[chainType] === "object" && performances[chainType] !== null
+    ? performances[chainType] as Record<string, unknown>
+    : undefined;
+
+  if (!months) return `No watcher performance data is available for ${chainType}.`;
+
+  const lines = [`${chainType} watcher performance`];
+  let watcherCount = 0;
+  let reportCount = 0;
+  let monthCount = 0;
+
+  for (const [month, entries] of Object.entries(months)) {
+    if (!Array.isArray(entries)) continue;
+    const validRows = entries.flatMap((entry) => {
+      if (typeof entry !== "object" || entry === null) return [];
+      const row = entry as { address?: unknown; reports?: unknown };
+      const nestedAddress = typeof row.address === "object" && row.address !== null
+        ? (row.address as { address?: unknown }).address
+        : row.address;
+      const address = typeof nestedAddress === "string" && nestedAddress.trim()
+        ? nestedAddress.trim()
+        : undefined;
+      const reports = typeof row.reports === "number" && Number.isFinite(row.reports) && row.reports >= 0
+        ? row.reports
+        : undefined;
+      return address !== undefined && reports !== undefined ? [{ address, reports }] : [];
+    });
+    if (validRows.length === 0) continue;
+    monthCount++;
+    lines.push(`${month}:`);
+    for (const row of validRows) {
+      lines.push(`- ${row.address}: ${row.reports} report${row.reports === 1 ? "" : "s"}`);
+      watcherCount++;
+      reportCount += row.reports;
+    }
+  }
+
+  if (monthCount === 0) return `No watcher performance data is available for ${chainType}.`;
+  lines.push(`Total: ${reportCount} report${reportCount === 1 ? "" : "s"} across ${watcherCount} watcher${watcherCount === 1 ? "" : "s"}.`);
+  return lines.join("\n");
+}
+
 // Allowlist: only text parts of the final assistant message, and only when
 // that message completed normally. Tool calls, thinking, tool results, user
 // messages and earlier turns are never read.
@@ -58,6 +119,8 @@ export function finalAssistantText(messages: readonly unknown[]): string {
 
 export async function runIsolatedRequest(options: RunOptions): Promise<string> {
   const { mcp, signal, maxToolCalls } = options;
+  const requestId = createRequestId();
+  await debugLog(requestId, "watcher-performance", "incoming", { text: options.text });
   let session: AgentSession | undefined;
   let security: ReturnType<typeof registerTelegramSecurity> | undefined;
   let unsubscribe: (() => void) | undefined;
@@ -86,6 +149,27 @@ export async function runIsolatedRequest(options: RunOptions): Promise<string> {
             label: tool.name,
             execute: async (_id, params, toolSignal) => {
               if (!validateToolCall(tool.name, params)) throw new Error("Invalid tool parameters");
+              if (tool.name === "get_watcher_performance") {
+                const chainType = (params as { chainType: string }).chainType.trim();
+                await debugLog(requestId, "watcher-performance", "parsed-args", { chainType });
+                await debugLog(requestId, "watcher-performance", "tool-call", { name: tool.name, arguments: { chainType } });
+                try {
+                  const raw = await mcp.callTool(tool.name, { chainType }, toolSignal);
+                  await debugLog(requestId, "watcher-performance", "tool-response", raw);
+                  const rawText = extractText(raw);
+                  const text = formatWatcherPerformance(chainType, rawText);
+                  await debugLog(requestId, "watcher-performance", "format-output", { text });
+                  return { content: [{ type: "text", text }], details: {} };
+                } catch (error) {
+                  const text = "Watcher performance statistics are temporarily unavailable.";
+                  await debugLog(requestId, "watcher-performance", "error", {
+                    error: error instanceof Error ? error.name : "unknown",
+                    normalizedResponse: text,
+                  });
+                  await debugLog(requestId, "watcher-performance", "format-output", { text });
+                  return { content: [{ type: "text", text }], details: {} };
+                }
+              }
               try {
                 const text = extractText(await mcp.callTool(tool.name, params, toolSignal));
                 return { content: [{ type: "text", text }], details: {} };
@@ -124,7 +208,14 @@ export async function runIsolatedRequest(options: RunOptions): Promise<string> {
     await session.prompt(options.text, { expandPromptTemplates: false, source: "extension" });
     signal.throwIfAborted();
     if (requestSecurity.exceeded) throw new Error("Tool call limit exceeded");
-    return finalAssistantText(session.messages);
+    const finalText = finalAssistantText(session.messages);
+    await debugLog(requestId, "watcher-performance", "format-output", { text: finalText });
+    return finalText;
+  } catch (error) {
+    await debugLog(requestId, "watcher-performance", "error", {
+      error: error instanceof Error ? error.name : "unknown",
+    });
+    throw error;
   } finally {
     signal.removeEventListener("abort", abort);
     unsubscribe?.();
