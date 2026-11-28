@@ -12,6 +12,7 @@ const memory_storage_service_1 = require("./memory.storage.service");
 const mywatcher_data_service_1 = require("./mywatcher.data.service");
 const permits_data_service_1 = require("./permits.data.service");
 const price_service_1 = require("./price.service");
+const process_event_service_1 = require("./process.event.service");
 const reports_data_service_1 = require("./reports.data.service");
 const reward_data_service_1 = require("./reward.data.service");
 const transaction_download_service_1 = require("./transaction.download.service");
@@ -51,14 +52,18 @@ var StorageType;
     StorageType[StorageType["IndexedDB"] = 1] = "IndexedDB";
     StorageType[StorageType["FileSystem"] = 2] = "FileSystem";
 })(StorageType || (exports.StorageType = StorageType = {}));
-async function createServices(eventSender, storageService) {
+async function createServices(eventSender, storageService, serviceProfile) {
     const createDownloadStatusService = (dataService) => {
         return new download_status_service_1.DownloadStatusService(dataService, storageService);
     };
     const chartService = new chart_service_1.ChartService();
     const rewardDataService = new reward_data_service_1.RewardDataService(storageService, chartService, eventSender);
     const permitsDataService = new permits_data_service_1.PermitsDataService(storageService);
-    const reportsDataService = new reports_data_service_1.ReportsDataService(storageService, eventSender);
+    var reportsMonthsDownload = 2;
+    if (serviceProfile == process_event_service_1.ServiceProfile.MCP) {
+        reportsMonthsDownload = 6;
+    }
+    const reportsDataService = new reports_data_service_1.ReportsDataService(storageService, eventSender, reportsMonthsDownload);
     const myWatcherDataService = new mywatcher_data_service_1.MyWatcherDataService(permitsDataService);
     const downloadServiceWatcherInfo = new download_service_1.DownloadService(storageService);
     const downloadServciceCurrencyRates = new download_service_1.DownloadService(storageService);

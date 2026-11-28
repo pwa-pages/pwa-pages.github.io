@@ -57,7 +57,8 @@ export class EventService {
       [EventType.RefreshPermits]: new Subject<EventData>(),
       [EventType.AddressPermitsDownloaded]:
         new Subject<EventData>(),
-      [EventType.MyWatcherStatsRequestFinished]: new Subject<EventData>()
+      [EventType.MyWatcherStatsRequestFinished]: new Subject<EventData>(),
+      [EventType.ALLReportsDataAvailable]: new Subject<EventData>()
     };
 
     return this.eventSubscriptions;

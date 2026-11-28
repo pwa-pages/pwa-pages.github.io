@@ -172,7 +172,7 @@
         ["Doge" /* Doge */]: "5ivrmzxYa3qBuYZ3teFTEJP1ziojbVZAYdZF528CNfT5tiycZoiqXfZEqgud81sBrXGyGoanY95RS1xwRSzc4nSGhvhg9Awr23q8vde4k7PWrErq42DeCwborsxAwKm1YrWJEwD8KZiKmSMR9jCD3pTxfsvoq4yMJeh4bscJKRj9iuy79tzWT3NU4L1vrVNjQd9ksz8V2mUeU7EXouDTHxAM5Vci3HgeC2CBqY23J3mpXryfb3UPha7a4zf2eF7Tv5viA7ayrGgu582W2ZttnLFHQTRn3gnTU715qzjk7NMer98y528FxXNZsjSFs72tZm4kL6zMthigXX1yNBtr5vXmYKcHUyAeRWuX2CK8jAFWYF4cJeceCN5E2KjoTK47Ge7q8B9MNZBVU83HPGzjVkqjvFDQsDZyt7hyCRhguwKibwyw1Y76ceNXrhzwPgukP6PsCWyipqSMVTAxB3QNR46mGi1v2S3MNKR9bThJU98yQntABweyLuqHVmALaU5s971p9SPi25gVnLsFD2FQnczLpHR2g8iJ2PcUZageyVyCxKbX3EvUoyQTymeaQuSwNgySKAs67YgUPFGcmXD33Fbs7vQvkrDbqUVprE2igGNZvCmStypiqZA6ijDzbaTX1XwFAehFT39WyGQ9NXzCtYn35fj95NLkDWugvEmqL5to8JFbCcHbV13WCJaVgvcerLKU922nuM54QXYNoSQHYdCypp3PXwaWBbsemt1cbH9mGM5JnYuhAm2gKctu7rUwCQ9P6qx7k4nC6ycUWLPsYeaYt23RXxF9cx31A9nUqSW4n4j46j3fVTkBX47C7X2TFF2VgHFJky4d3etKp5EQodYs2caNLgmmACErMCtJ1GuamHCfSEg3iLyLaPAmtRM9HFUVCsMEL3GwLzqEasH3fy9dpUrAh8FqAHPT16gAx7ePEPU8k9obwUyYqkxMBuyaMonoy37GejLXzpzM9DTacEuNCBKw9hVHnDCB5Zxkhuj5kkaH3794qur5GCF3XKFnWNuKf35DBwVeEq3SMMsWmcBB6ZqfJJxa4vCLS6aEhtDxnSxw1TS8T9bvu91dXLH6HoAfK5vnoGHKP387yTuJmcbacFtvBoT6EWDS6DvXQx9FptRgojeF9T1ZjCChE6igPL9WhWPvvCEm6BMR2Jtsxw16JJzqMW33W5CBJstoi8oSKE2yrw7i2hxsyY6UPDWZUe4Cex2tSfWSzSS3tXo5ahVMfoVHxUmmKJoE6St16U58ETVipwqU6WLJT6BGYboueetYfbzL37FPgQEruWWNT",
         ["Runes" /* Runes */]: "5ivrmzxYZwTAiTX9sPndhvFogPtijgcySCRKTQBJwcgHkKVsM9Chqog7YhdVDbf7AH9Z2PgYmjMrWbPgDDCHLDANY9RyY22DvgyS3P4XmuD1YptEBLveRbcQGJjeLmxF5HzmQePE9MtFC2foD2e7gWBqqSuhcSQMWtWZXrsWzEgbtvvQP1UYsW3DHaXa89oQzxiLq7bGPrVqvxEK3fHS7onA6MZo7bf2UxJE7zqnbvq91CLZCAcp33VM48vTmwq5X27URUV81iJdpqES3JSVdAdDqrMXGiqCh8rB8mJsVqfmUy66nYmK5QVSu11N23pELKWotBnoN5WxZuHugeytjkFRtFMpwuowE2tmrkJ6NXF4BBe3hAh162o6b4zVUpbkhsjg59HkaSeFAhQScYYQdcJf6uZoA8cF7JHya1QEuVzeG5esubZjDx7MSPrEL42Gehvbt6QZ6R1QYK6gZSFB7twXHWWgcX2VzjofWtbAJkN69JbaWh2W54PQ4x8JZdUTWQcUQUTbPd6T8Wj8xuuXWfGLsadY8CJ9y1Nojctupz9MxzkZZQZnqtuwnNU6w15CP5MGskSbpF4U6Ha6mSnjQzWRGTjZTS73nof3Rr3QcJzpMbT18GQCoZnkUXJ19ch5Ub62pBhSc7gUaed1vxMfyfHBpnviCMwyTA91MWCjajbMzZyEzbrGz47xFW3VuPkTqtyNTFbue8pgouvoDC7vu7haTQWyjQXQ4UmVN6cWNzxKW81JhUSUWPXy9spJcH1ESXwtgJPGPfGwdmCPkJogdrZvPZcrPpDEE3U2UWVKHwHPVgGj1iDdXDxCaht4AdHus2sJhtC2P3N4gsP2RFbkecSMZii6ZB5R3n58qzq3xnCeHbvCu22Xdkao7jFPkEjDqdsbLVkwK85dTVHcybB1xV2Cgvv4YDjaHemfAwUrWEfELi2MgJeRxrA3bPPT8PsAh1uSMMEL598EijK2Psn8YwmwZFTMoigWEAfr1PzvisDZjYAH6ofrt95jFHuT1XKFy3wT5uhveGWjqFjhJpV4XvvRf9qLBiv6XRTqimK3AQUR1URog9fkfVd6u9spDUTkX1tWMTXRTPnrCPkWmkjY9K8PdSsY9YsbTv6YQ8HzeeiHTa18uPhy99bd4k3bubL1zuAmPMoNDUKm2m9d3xmMB6soNS849xt1LS7EeXRzvkqEY2kU75QSDSrqhaMPr4iGYkd2JBjyQohbCMsWNdsjWqxQjgCc7cyTWQngrtLaFRXdLbVNKCzHvTzCnWqpa8xNZB9ecsrcbno13jrAKzHhx",
         ["Nervos" /* Nervos */]: null,
-        ["Handshake" /* Handshake */]: null,
+        ["Handshake" /* Handshake */]: "5ivrmzxYZgQQbsEH5CoJmmpHzdg1Lss5C9xDHBBF4dg44nZv58VikdRdoXFAmrvt3aBTcps2cSeFRH3u3zAtEwBmLYDuzjfKhbprTbFFP2q8NHgrqfF3KHUDVAYfweGKYNvHEg6qw233zw9A67L1b4zoCJ3YzuZvDPDrNnUafwMz2J1sv5JvCmbtYmgpyjyXcGKdNoepnq3sEGJ1dSghohK4qD1ZJgNaZDptJjxVDdsVav3eGtJdnQmvTqznp8wEUCRC8G5F3PB9fz3hEfgm8zpGovB4CYh99fYSVA2BhEGzGR65PRDcDa1om6mHDYKx23ZVJ8zFpzJB22spERN79u3R347LtPEFpvo5UhyWDRzTSHPiDr94EGh6rxWxvaSCxroDjPtcANhXU8CGNTiSzNsx7p7K21ccDsG9eCyrBXZ7XCvqNSn1ALrS5TZgbjjACRem1TLyTn8tb8VPFMeQhoTrRFdk1r3uSkBt1t9vQXEx4fheFKqXGyDrnqY4GankCFXBtSvn8TQNVSNYd869x81H5Xh5XwyzDkdCkxQSjxF1itg5ancdvbYoUCM98HfxEybrVnWvgRNHngNzM7kBQtFD26crEJUEM6Y9PZK1W5QxVjkFHXukvn5GWrPj4ALWwe8eztD8KiXALsxgcdYUDyCq1jvqKScAU2N1GZYTtDgeReEJzX1dHoatZrayiSYqyLXgb4gP7zDF9VLSX3dLd9dC3YzW8XfqtJny7RHPZTZj32NyLRGrKNDbsurKNLtBUtLu8Lvt9bLh6bryjAUC3rR5qkj9nQRTWfLG4fUk8JHsNsgHMWaWL41CFqLR6bRsbnDH654UQ9xv5JCEH1VnpVXajUromfzB14j7zAvSvjwZXvts5kJWintPZ7zhEqEasyHjn7aC5Yhu9VkSUDzLoMRpdrCyxMpDUEhWUPVDCF41i2FGEv8CcgmgoFJHybWEeFp5Kvpc2gQ4Te8J76b2PNPxTGKJJjmfKjwy5VwgUQpeat5iQ83hC6y2ER3WqadwUc8uNeRCLK4f5dx7fiA1EGgDHiiMnF9Bf5bGedW992NAH6LuNrg5R26JorqmYRhr42xe7fYunT2x5bcCR43bTPA6RsWyQySzPCu8XAT4FyZpSaXwka7vXp3ovCZkYoZasCahUw5YdzibkmWpPSDMo83m5UHS2AZcJWdA9fNWsvKCJAmnrD85cAmJ2tmR4PrqTEYwuqnWhDR87x6Fhdzv7GhQeNd6RYkCxriSaKkVfqCFtQkYLiKFPVXq6RTXS8HVhdQeYqiLsmDTMF2exLMaD",
         ["Monero" /* Monero */]: null,
         ["Firo" /* Firo */]: "5ivrmzxYZoM5sxBJU4VXQVMgqg6VeSxmYBL8PUPN2YxjtUm4sBj1EMfVLURafE9UEU3aw6E7mgBgPMRKTWYWCSFZL6kH9jWbgjHeBsKLikGkKPvDitXGZFMf4JYdDZaXJPfjS6nPJxZw6Qb7JyvQtMb9LGfRsDaDGJoXwgTZTXUcmHRK1vVSHEWw24s8E49VyXFWmNyRGq674suSBGdHWPpBBYZt7eJQoXbZmXhZaPrWiADA7196Uw8qnkS3SykBLatBGsHRaruq6YBEEjfRFob59Hor35TsgyyY667VC1357wmpCu31SsKy44M2R58Q2ep7WZrizgpyU5vDpP9UNGMf5WNp9k6M9rKXG9YPdk45isAHwAyBi8Y46PwWpBsTzodzDxi5Y7SPAPHp1BDL5SyYKZsHxu5RgdJD1e8ewg8SxyJ1ZGdqmAM3bGp7Y58ucmViKAkBbNEbk7qw1rqDgeYg6tYsb5NNpsuPWrG5CoJBQtL1WRW8uX2gGjhywYHd1KWh32drTDZsEFB7dqDpTZGQuz1qaFgKeM1h43FYwdNzgUmVteDRRq21CAVaoUqrgvEkm2AZ3f72KjRWnc1T5qDEs84zd3Z8EzCi4ovWJavUWJXEB1Pcapak8BNkfexiGWoYoEjJyVGEbSDNmfoVrCRvDeL62yw4KpqoenWwUV845XSi4u7f9Dd3We5zPFrbpwgQLPFAYuBhQiHqkMwopLfVLuL2AsEGswdNaYk8VVX8bPbP1aLCowoye3LwTc12dhNeynFv5PJz33zET42LHihxmi4YMF7KQkESRC1fg6pveXrmWzuRKQpeSaU2Z1SpdXEM5uxuTNnZSEmofdmarDyoiuKTTo67cBBbyRL1WDamfRBKMHv2rWDj5qk1zKFxr5PwCvmRsyq5ASQ5fkzRDY3QFRNMMLyzNJnDncfRcXePpddcK4ctnejsAp4iHMRA4PhgPDmALEcB8X6JLozwoMeWzCGgW2tYEHYFYED1NuBLmLP6aTVa8fMvewCZezyZxm5nrdpQV5rq6dAncMTzrBichRUzZUAFCfyTxJ5F5Nd7aDARbp4mQ5RUfUPrLCCvsGVY1WS2Cnt82aw3mmTbXmLZMkm5AWuZwM3wAYdDkVMoWsL6enpKhkhkmqmtxusLTssbFqaFoHt8qR1AQQVwm3gGoAMtHZ4qdVkwiGnZDsU7c1SW45BKLKk1npDdj9eYq48sQjXiwuhmFUHXWqVCriQeKy3SvmCjJrWoLpbzQbQ7vJthLtJ8N91WrniRZM3UWbXDKm3DFtDKkgyypJPvn",
         ["Base" /* Base */]: null,
@@ -188,7 +188,7 @@
         ["Doge" /* Doge */]: "ZsPNMsGz8D8y11MAneZTVjJndCjgTUn38JxZpW4EiZgEoHt1Juw2od5nVwwx23kjav2ZzWjZAYrjAQnGwskZjCxmVagr3o3d8AfdQZySQigfqzTFjekNSHeQBuQPQ1y3ry6fN4w5ECxn9jrmho9pZFkBddZ2QLbAhvZVt8WrpduXniFkG27KsYo6ikCtgRsJyvzjE7kubBpsYfRf7tV8ZT2RyZaSGJp8Lo6SbrAMdDA1mke93sDDkP6B1cXi1UdSSg8nAi68b2HLJEdnw52KES4Xnh3Dg3s3n9Ur1mGf6WJ44oVVxwsBHoXWLhoAXJ6v6XSnX1rxBcqT344WHLrezqdGwzYAbKYqGtUiEZq6fcHVhL3Wu3pxkv2WbupVFpVAeFPxYzcwwf7vtibL7KG5RDuZ3rziqCgLC5jL9ckTS4KkZXH6YEJktNnUmULpcBdpGUHWzeea2SLMeiNYw1aoZ1k9QfmVK7TjxKJ5g8gSrSTwmfZHMPD5v6EBYyu4gBe31WXWVz",
         ["Runes" /* Runes */]: "ZsPNMsGz8D8y11MAneZTVjJndCjgTUm8aRdfPdTL96n8TUczBDtarP8o5pFfx1VTt8SLmb8khLsa8Jg34fMWSUnTroano5tp9vHvj3M1sPbbr3gw3jZGae5LUk1gAj1G7ytudoGXtvoDjNtrpfhwQBVat6xHLuyE8vHQ7CaaToTn5MTFdeYg5u8P5XSMHtb37j4ZjfVu7H5SrMDMaGkNUqRiwvU4ABYUQEc6qNqE3XqhVY32EerjQwB4vGQwPyy71CerANA8TVcj2sqERsXdVwvR2zdWoL9cv3vc1MwVnMMpeAw6Tuh9NcwmYHPcgrxPvZGwn7Xcd8BMFfSDwDGxKjEctFfH816Ba5sZKV32wwLHbACLniA5MhojHNzjAWuPjHCGeR3VF4iqW54kDwuk3vqbHqM28j9JeSwGjYaYYz87tnfhFchAAgYqmoCFZQvAUJo8SZThNTmTrDZvWeS5BPSYNQiLTMgqAnFpVmsMN8EqEnQ1ggHdLqWQT8bmMWd3UTTwqs",
         ["Nervos" /* Nervos */]: null,
-        ["Handshake" /* Handshake */]: null,
+        ["Handshake" /* Handshake */]: "ZsPNMsGz8D8y11MAneZTVjJndCjgTUostAd6zjwcFPVeVGytsZUBvu8F8UrKVsPfy5mnZygdvZ3Sfckrk2eLBpjp8fvW4tWsjof27rjBqGxnrCHsXZw2zb716h78uqWsUY1rU2bExoY21NHsCLBPcu919yJwRdquaX1bSYgXbPjFDgKX85pwuJSfhMnnrsLngXdLDmnDeXiwwZFwV7Cz9EEHDHzzAQbi9HCysBNkPVsmD7TrJBf2awmnwXrKgEeJ8FgRw5oD22NDZRqyXBPHJbCnDE9WhyM6RZmTSbvSV9mudEg3EznXTSszEV7PXUXy5NLKATEWM1UHHgs2q9JYKAbrvf1nqAUmGWcNmNTjBdPZeGwLpisrYBjbMN9qUBsKMA5Ago1xVZDmM5WNYinEPwHCJCpQVVG2PvZhbqtLP5ttHB9SJGoAZmZBGHDRq9mipotjXTMfFz9FTZkHt1E1Z1TDuRA6BHFtp2obtBDWaprGi4Q8YEMmpZSvkfCYFtzeU4ZAD8",
         ["Monero" /* Monero */]: null,
         ["Firo" /* Firo */]: "ZsPNMsGz8D8y11MAneZTVjJndCjgTUnUoCHtd2sBVHNWA2CZnTaDAnQ5yk4yws8txwETo9odSqXEDQfLDEb3htK6C7nsmMEjQzYuEMAW5R3ACcb7hbTjH3CvzFRbCxKdD18gpfM7D2fBAoNEYYYWiWFGVn9SqBu8MDnUctEHru88XWz3brkmYrjFaHwiy1N1fNhTJ1hFavTPmZYPgA9yJnnV8ZxuRhAZtbCwJEpGe6UTBUja2P2jX58unerXMatzoKSW6fKdj7QzgDzNnHTkWUCkpN4AiCiKAmVktA8JXUbFGW29tUx9aeFxP2K9aQiqdrxwme5QJRKm3HRoeXtFdavym77CKbMajMfiMTvPoTNFdCNfwga15jrqjSjNCXyYV5TrQhCSfoEBkdbjttDevzKvJuGGP67iwdRJeZ8NLxFy6noRdbCuSDfpvCiLDgLzpK4pq1KHyRkuW2AQ1s8sRJmAXDNaG5tz7wDVXRTpo1373ky6sAW81i5L7mZkf79a64h8Us",
         ["Base" /* Base */]: null,
@@ -430,6 +430,7 @@
         EventType2["RefreshPermits"] = "RefreshPermits";
         EventType2["AddressPermitsDownloaded"] = "AddressPermitsDownloaded";
         EventType2["ReportsChanged"] = "ReportsChanged";
+        EventType2["ALLReportsDataAvailable"] = "ALLReportsDataAvailable";
         EventType2["MyWatcherStatsRequestFinished"] = "MyWatcherStatsRequestFinished";
         return EventType2;
       })(EventType || {});
@@ -567,7 +568,7 @@
         constructor(storageService) {
           this.storageService = storageService;
         }
-        dataComplete() {
+        allDataAvailable(_) {
           return Promise.resolve();
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -1167,9 +1168,16 @@
       init_models();
       init_permits_data_service();
       ReportsDataService = class extends PermitsDataService {
-        constructor(db, eventSender, storeName = rs_ReportsStoreName, maxDownloadDateDifference = 2048e5) {
+        constructor(db, eventSender, reportsMonthsDownload, storeName = rs_ReportsStoreName, maxDownloadDateDifference = 2048e5) {
           super(db, storeName, maxDownloadDateDifference);
           this.eventSender = eventSender;
+          this.reportsMonthsDownload = reportsMonthsDownload;
+        }
+        async allDataAvailable(address) {
+          await this.eventSender?.sendEvent({
+            type: "ALLReportsDataAvailable" /* ALLReportsDataAvailable */,
+            data: address
+          });
         }
         getDataType() {
           return "report";
@@ -1252,7 +1260,7 @@
         }
         getMaxDownloadDateDifference() {
           const now = /* @__PURE__ */ new Date();
-          const firstOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+          const firstOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - this.reportsMonthsDownload + 1, 1);
           return now.getTime() - firstOfPreviousMonth.getTime() + 2 * 24 * 60 * 60 * 1e3;
         }
       };
@@ -4439,7 +4447,7 @@
             if (downloadStatus === "true") {
               var existingData = await this.dataService.getExistingData(result.transactions[result.transactions.length - 1], address);
               if (existingData) {
-                await this.dataService.dataComplete();
+                await this.dataService.allDataAvailable(address);
               }
             }
             await this.dataService.addData(address, result.transactions);
@@ -4493,6 +4501,7 @@
               console.log(
                 `Found existing boxId in db for ${a.largeAddressForDisplay}, no need to download more.`
               );
+              await this.dataService.allDataAvailable(address);
             } else if (itemsz >= this.downloadInitialSize) {
               await this.downloadStatusServiceContract?.setDownloadStatus(address, "false");
               console.log(`Downloading all tx's for : ${a.largeAddressForDisplay}`);
@@ -4503,6 +4512,8 @@
                 callback
               );
               return this.dataService.getData();
+            } else {
+              await this.dataService.allDataAvailable(address);
             }
           } catch (e) {
             console.error(e);
@@ -27635,7 +27646,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
   });
 
   // service/src/lib/service.factory.ts
-  async function createServices(eventSender, storageService) {
+  async function createServices(eventSender, storageService, serviceProfile) {
     const createDownloadStatusService = (dataService) => {
       return new DownloadStatusService(dataService, storageService);
     };
@@ -27646,7 +27657,11 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
       eventSender
     );
     const permitsDataService = new PermitsDataService(storageService);
-    const reportsDataService = new ReportsDataService(storageService, eventSender);
+    var reportsMonthsDownload = 2;
+    if (serviceProfile == 0 /* MCP */) {
+      reportsMonthsDownload = 6;
+    }
+    const reportsDataService = new ReportsDataService(storageService, eventSender, reportsMonthsDownload);
     const myWatcherDataService = new MyWatcherDataService(
       permitsDataService
     );
@@ -27730,6 +27745,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
       init_mywatcher_data_service();
       init_permits_data_service();
       init_price_service();
+      init_process_event_service();
       init_reports_data_service();
       init_reward_data_service();
       init_transaction_download_service();
@@ -27759,7 +27775,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
   });
 
   // service/src/lib/process.event.service.ts
-  var ServiceWorkerEventSender, ProcessEventService, CreateProcessEventService;
+  var ServiceWorkerEventSender, ServiceProfile, ProcessEventService, CreateProcessEventService;
   var init_process_event_service = __esm({
     "service/src/lib/process.event.service.ts"() {
       "use strict";
@@ -27778,17 +27794,25 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
           }
         }
       };
+      ServiceProfile = /* @__PURE__ */ ((ServiceProfile2) => {
+        ServiceProfile2[ServiceProfile2["MCP"] = 0] = "MCP";
+        ServiceProfile2[ServiceProfile2["ANGULAR"] = 1] = "ANGULAR";
+        ServiceProfile2[ServiceProfile2["ANGULAR_ELEMENTS"] = 2] = "ANGULAR_ELEMENTS";
+        ServiceProfile2[ServiceProfile2["SERVICE_WORKER"] = 3] = "SERVICE_WORKER";
+        return ServiceProfile2;
+      })(ServiceProfile || {});
       ProcessEventService = class {
-        constructor(eventSender, storageService) {
+        constructor(eventSender, storageService, serviceProfile) {
           this.eventSender = eventSender;
           this.storageService = storageService;
+          this.serviceProfile = serviceProfile;
           this.services = null;
         }
         async processEvent(event, options) {
           try {
             if (event.type === "StatisticsRequested" /* StatisticsRequested */ || event.type === "ChainPerformanceRequested" /* ChainPerformanceRequested */ || event.type === "MyWatcherStatsRequested" /* MyWatcherStatsRequested */ || event.type === "RequestInputsDownload" /* RequestInputsDownload */ || event.type === "ReportsRequested" /* ReportsRequested */ || event.type === "WatcherStatsRequested" /* WatcherStatsRequested */) {
               if (!this.services) {
-                this.services = await createServices(this.eventSender, this.storageService);
+                this.services = await createServices(this.eventSender, this.storageService, this.serviceProfile);
               }
               switch (event.type) {
                 case "RequestInputsDownload" /* RequestInputsDownload */:
@@ -28046,8 +28070,8 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
           });
         }
       };
-      CreateProcessEventService = (eventSender, storageService) => {
-        return new ProcessEventService(eventSender, storageService);
+      CreateProcessEventService = (eventSender, storageService, serviceProfile) => {
+        return new ProcessEventService(eventSender, storageService, serviceProfile);
       };
     }
   });
@@ -28096,7 +28120,8 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
             ["StatisticsChartChanged" /* StatisticsChartChanged */]: new Subject(),
             ["RefreshPermits" /* RefreshPermits */]: new Subject(),
             ["AddressPermitsDownloaded" /* AddressPermitsDownloaded */]: new Subject(),
-            ["MyWatcherStatsRequestFinished" /* MyWatcherStatsRequestFinished */]: new Subject()
+            ["MyWatcherStatsRequestFinished" /* MyWatcherStatsRequestFinished */]: new Subject(),
+            ["ALLReportsDataAvailable" /* ALLReportsDataAvailable */]: new Subject()
           };
           return this.eventSubscriptions;
         }
@@ -28194,7 +28219,8 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
             console.log("Creating new ProcessEventService instance");
             instance = new ProcessEventService(
               new ServiceWorkerEventSender(),
-              new IDBDatabaseStorageService()
+              new IDBDatabaseStorageService(),
+              3 /* SERVICE_WORKER */
             );
           }
           return instance;
@@ -28255,6 +28281,7 @@ Example: An edge with \`{consumer: 2, producer: 0}\` means that \`nodes[2]\` (e.
     ProcessEventService: () => ProcessEventService,
     ReportsDataService: () => ReportsDataService,
     RewardDataService: () => RewardDataService,
+    ServiceProfile: () => ServiceProfile,
     ServiceWorkerEventSender: () => ServiceWorkerEventSender,
     StorageType: () => StorageType,
     Token: () => Token,

@@ -33,6 +33,7 @@ var EventType;
     EventType["RefreshPermits"] = "RefreshPermits";
     EventType["AddressPermitsDownloaded"] = "AddressPermitsDownloaded";
     EventType["ReportsChanged"] = "ReportsChanged";
+    EventType["ALLReportsDataAvailable"] = "ALLReportsDataAvailable";
     EventType["MyWatcherStatsRequestFinished"] = "MyWatcherStatsRequestFinished";
 })(EventType || (exports.EventType = EventType = {}));
 class Address {

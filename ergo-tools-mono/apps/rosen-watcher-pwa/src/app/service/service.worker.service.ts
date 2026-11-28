@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { IDBDatabaseStorageService } from '@ergo-tools/service';  
+import { IDBDatabaseStorageService, ServiceProfile } from '@ergo-tools/service';  
 
 import { HttpClient } from '@angular/common/http';
 import { IS_ELEMENTS_ACTIVE } from './tokens';
@@ -65,7 +65,7 @@ export class ServiceWorkerService {
               'to angular worker',
           );
           
-          const processEventService = CreateProcessEventService(new DirectEventSender(this.eventService), new IDBDatabaseStorageService());
+          const processEventService = CreateProcessEventService(new DirectEventSender(this.eventService), new IDBDatabaseStorageService(), ServiceProfile.ANGULAR);
           
 
           processEventService.processEvent({

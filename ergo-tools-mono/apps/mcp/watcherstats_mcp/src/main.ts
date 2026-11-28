@@ -1,6 +1,7 @@
 
 import { createServer } from 'node:http';
 import { Readable } from 'node:stream';
+import { ServiceProfile } from '@ergo-tools/service';
 
 import {
   CreateProcessEventService,
@@ -25,6 +26,7 @@ import { GetWatchersStatsTool } from './get-watchers-stats.tool.js';
 import { ChainPerfStatsTool } from './get-chain-perf.tool.js';
 import { GetAddressStatisticsTool } from './get-address-statistics.tool.js';
 import { GetMyWatcherStatsTool } from './get-my-watcher-stats.tool.js';
+import { GetWatcherPerformanceTool } from './get-watcher-performance.tool.js';
 
 // Redirect console logs to stderr in stdio mode
 function redirectLogsToStderr(): void {
@@ -64,7 +66,8 @@ process.once('exit', () => storageService.close());
 
 const processEventService = CreateProcessEventService(
   new DirectEventSender(eventService),
-  storageService
+  storageService,
+  ServiceProfile.MCP
 );
 
 const getWatchersStatsTool =
@@ -79,6 +82,9 @@ const getChainPerfTool =
 const getMyWatcherStatsTool =
   new GetMyWatcherStatsTool(eventService, processEventService);
 
+const getWatcherPerformanceTool =
+  new GetWatcherPerformanceTool(eventService, processEventService);
+
 function createRosenMcpServer(): McpServer {
   const server = new McpServer({
     name: 'rosen-mcp',
@@ -89,6 +95,7 @@ function createRosenMcpServer(): McpServer {
   getChainPerfTool.register(server);
   getAddressPerformanceTool.register(server);
   getMyWatcherStatsTool.register(server);
+  getWatcherPerformanceTool.register(server);
 
 
   return server;

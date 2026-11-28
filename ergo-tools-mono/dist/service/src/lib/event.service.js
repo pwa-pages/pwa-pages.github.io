@@ -41,7 +41,8 @@ let EventService = class EventService {
             [models_1.EventType.StatisticsChartChanged]: new rxjs_1.Subject(),
             [models_1.EventType.RefreshPermits]: new rxjs_1.Subject(),
             [models_1.EventType.AddressPermitsDownloaded]: new rxjs_1.Subject(),
-            [models_1.EventType.MyWatcherStatsRequestFinished]: new rxjs_1.Subject()
+            [models_1.EventType.MyWatcherStatsRequestFinished]: new rxjs_1.Subject(),
+            [models_1.EventType.ALLReportsDataAvailable]: new rxjs_1.Subject()
         };
         return this.eventSubscriptions;
     }

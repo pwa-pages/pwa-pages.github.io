@@ -6,7 +6,7 @@ class DataService {
     constructor(storageService) {
         this.storageService = storageService;
     }
-    dataComplete() {
+    allDataAvailable(_) {
         // Empty implementation
         return Promise.resolve();
     }

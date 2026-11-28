@@ -4,6 +4,7 @@ import { IStorageService } from "./constants";
 import { PermitTx, EventType, DbInput, PerfTx } from "./models";
 import { MyWatcherDataService } from "./mywatcher.data.service";
 import { PermitsDataService } from "./permits.data.service";
+import { ServiceProfile } from "./process.event.service";
 import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
 import { TransactionDownloadService } from "./transaction.download.service";
@@ -36,4 +37,4 @@ export declare enum StorageType {
     IndexedDB = 1,
     FileSystem = 2
 }
-export declare function createServices(eventSender: EventSender, storageService: IStorageService): Promise<Services>;
+export declare function createServices(eventSender: EventSender, storageService: IStorageService, serviceProfile: ServiceProfile): Promise<Services>;

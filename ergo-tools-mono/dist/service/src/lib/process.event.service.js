@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateProcessEventService = exports.ProcessEventService = exports.ServiceWorkerEventSender = void 0;
+exports.CreateProcessEventService = exports.ProcessEventService = exports.ServiceProfile = exports.ServiceWorkerEventSender = void 0;
 const chain_service_1 = require("./chain.service");
 const constants_1 = require("./constants");
 const models_1 = require("./models");
@@ -18,10 +18,18 @@ class ServiceWorkerEventSender {
     }
 }
 exports.ServiceWorkerEventSender = ServiceWorkerEventSender;
+var ServiceProfile;
+(function (ServiceProfile) {
+    ServiceProfile[ServiceProfile["MCP"] = 0] = "MCP";
+    ServiceProfile[ServiceProfile["ANGULAR"] = 1] = "ANGULAR";
+    ServiceProfile[ServiceProfile["ANGULAR_ELEMENTS"] = 2] = "ANGULAR_ELEMENTS";
+    ServiceProfile[ServiceProfile["SERVICE_WORKER"] = 3] = "SERVICE_WORKER";
+})(ServiceProfile || (exports.ServiceProfile = ServiceProfile = {}));
 class ProcessEventService {
-    constructor(eventSender, storageService) {
+    constructor(eventSender, storageService, serviceProfile) {
         this.eventSender = eventSender;
         this.storageService = storageService;
+        this.serviceProfile = serviceProfile;
         this.services = null;
     }
     async processEvent(event, options) {
@@ -33,7 +41,7 @@ class ProcessEventService {
                 event.type === models_1.EventType.ReportsRequested ||
                 event.type === models_1.EventType.WatcherStatsRequested) {
                 if (!this.services) {
-                    this.services = await (0, service_factory_1.createServices)(this.eventSender, this.storageService);
+                    this.services = await (0, service_factory_1.createServices)(this.eventSender, this.storageService, this.serviceProfile);
                 }
                 switch (event.type) {
                     case models_1.EventType.RequestInputsDownload:
@@ -229,8 +237,8 @@ class ProcessEventService {
     }
 }
 exports.ProcessEventService = ProcessEventService;
-const CreateProcessEventService = (eventSender, storageService) => {
-    return new ProcessEventService(eventSender, storageService);
+const CreateProcessEventService = (eventSender, storageService, serviceProfile) => {
+    return new ProcessEventService(eventSender, storageService, serviceProfile);
 };
 exports.CreateProcessEventService = CreateProcessEventService;
 //# sourceMappingURL=process.event.service.js.map

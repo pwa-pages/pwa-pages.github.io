@@ -7,9 +7,16 @@ const models_1 = require("./models");
 const permits_data_service_1 = require("./permits.data.service");
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ReportsDataService extends permits_data_service_1.PermitsDataService {
-    constructor(db, eventSender, storeName = constants_1.rs_ReportsStoreName, maxDownloadDateDifference = 204800000) {
+    async allDataAvailable(address) {
+        await this.eventSender?.sendEvent({
+            type: models_1.EventType.ALLReportsDataAvailable,
+            data: address,
+        });
+    }
+    constructor(db, eventSender, reportsMonthsDownload, storeName = constants_1.rs_ReportsStoreName, maxDownloadDateDifference = 204800000) {
         super(db, storeName, maxDownloadDateDifference);
         this.eventSender = eventSender;
+        this.reportsMonthsDownload = reportsMonthsDownload;
     }
     getDataType() {
         return 'report';
@@ -92,7 +99,7 @@ class ReportsDataService extends permits_data_service_1.PermitsDataService {
     }
     getMaxDownloadDateDifference() {
         const now = new Date();
-        const firstOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        const firstOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - this.reportsMonthsDownload + 1, 1);
         return now.getTime() - firstOfPreviousMonth.getTime() + 2 * 24 * 60 * 60 * 1000;
     }
 }

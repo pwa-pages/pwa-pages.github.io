@@ -8,7 +8,7 @@ const processEventServiceSingleton = (() => {
     return () => {
         if (!instance) {
             console.log('Creating new ProcessEventService instance');
-            instance = new process_event_service_1.ProcessEventService(new process_event_service_1.ServiceWorkerEventSender(), new i_db_databasestorage_service_1.IDBDatabaseStorageService());
+            instance = new process_event_service_1.ProcessEventService(new process_event_service_1.ServiceWorkerEventSender(), new i_db_databasestorage_service_1.IDBDatabaseStorageService(), process_event_service_1.ServiceProfile.SERVICE_WORKER);
         }
         return instance;
     };

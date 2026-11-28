@@ -6,9 +6,14 @@ import { EventSender } from "./process.event.service";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class ReportsDataService extends PermitsDataService {
+  override async allDataAvailable(address: string): Promise<void> {
+    await this.eventSender?.sendEvent({
+      type: EventType.ALLReportsDataAvailable,
+      data: address,
+    });
+  }
 
-
-  constructor(db: IStorageService, private eventSender: EventSender, storeName = rs_ReportsStoreName, maxDownloadDateDifference: number = 204800000) {
+  constructor(db: IStorageService, private eventSender: EventSender, private reportsMonthsDownload: number, storeName = rs_ReportsStoreName, maxDownloadDateDifference: number = 204800000) {
     super(db, storeName, maxDownloadDateDifference);
   }
 
@@ -78,7 +83,7 @@ export class ReportsDataService extends PermitsDataService {
     for (const chainType of chainTypes) {
       const result = await this.storageService.getData<Record<string, WatcherPerformanceAddressStat[]>>(
         rs_WatcherReportsStoreName, chainType
-      ) ;
+      );
 
       const monthStats = (Array.isArray(result) ? result[0] : result) as unknown as Record<string, WatcherPerformanceAddressStat[]> | undefined;
       if (monthStats) {
@@ -108,7 +113,7 @@ export class ReportsDataService extends PermitsDataService {
     return permits;
   }
 
-  
+
 
   override async addData(
     address: string,
@@ -139,7 +144,7 @@ export class ReportsDataService extends PermitsDataService {
 
   override getMaxDownloadDateDifference(): number {
     const now = new Date();
-    const firstOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const firstOfPreviousMonth = new Date(now.getFullYear(), now.getMonth() - this.reportsMonthsDownload + 1, 1);
     return now.getTime() - firstOfPreviousMonth.getTime() + 2 * 24 * 60 * 60 * 1000;
   }
 

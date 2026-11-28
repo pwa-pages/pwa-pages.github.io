@@ -10,6 +10,7 @@ import { PermitTx, EventType, DbInput, PerfTx } from "./models";
 import { MyWatcherDataService } from "./mywatcher.data.service";
 import { PermitsDataService } from "./permits.data.service";
 import { PriceService } from "./price.service";
+import { ServiceProfile } from "./process.event.service";
 import { ReportsDataService } from "./reports.data.service";
 import { RewardDataService } from "./reward.data.service";
 import { TransactionDownloadService } from "./transaction.download.service";
@@ -97,6 +98,7 @@ export enum StorageType {
 export async function createServices(
   eventSender: EventSender,
   storageService: IStorageService,
+  serviceProfile: ServiceProfile
 ): Promise<Services> {
 
   const createDownloadStatusService = <T>(
@@ -114,8 +116,14 @@ export async function createServices(
 
   const permitsDataService: PermitsDataService =
     new PermitsDataService(storageService);
+
+    var reportsMonthsDownload = 2;
+    if(serviceProfile == ServiceProfile.MCP) {
+      reportsMonthsDownload = 6;
+    }
+
   const reportsDataService: ReportsDataService =
-    new ReportsDataService(storageService, eventSender);
+    new ReportsDataService(storageService, eventSender, reportsMonthsDownload);
   const myWatcherDataService: MyWatcherDataService = new MyWatcherDataService(
     permitsDataService,
   );

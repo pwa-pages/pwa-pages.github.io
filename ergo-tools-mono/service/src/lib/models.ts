@@ -29,6 +29,7 @@ export enum EventType {
   RefreshPermits = 'RefreshPermits',
   AddressPermitsDownloaded = 'AddressPermitsDownloaded',
   ReportsChanged = 'ReportsChanged',
+  ALLReportsDataAvailable = 'ALLReportsDataAvailable',
   MyWatcherStatsRequestFinished = "MyWatcherStatsRequestFinished"
 }
 

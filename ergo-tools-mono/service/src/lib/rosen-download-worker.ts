@@ -1,6 +1,6 @@
 import { IDBDatabaseStorageService } from "./i-db-databasestorage.service";
 import { MessageEventData, EventType } from "./models";
-import { ProcessEventService, ServiceWorkerEventSender } from "./process.event.service";
+import { ProcessEventService, ServiceProfile, ServiceWorkerEventSender } from "./process.event.service";
 
 const processEventServiceSingleton = (() => {
 
@@ -11,7 +11,8 @@ const processEventServiceSingleton = (() => {
       console.log('Creating new ProcessEventService instance');
       instance = new ProcessEventService(
         new ServiceWorkerEventSender(),
-        new IDBDatabaseStorageService()
+        new IDBDatabaseStorageService(),
+        ServiceProfile.SERVICE_WORKER
       );
     }
 

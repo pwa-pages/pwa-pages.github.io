@@ -12,7 +12,7 @@ export abstract class DataService<T> {
     this.storageService = storageService;
   }
 
-  dataComplete(): Promise<void>{
+  allDataAvailable(_: string): Promise<void>{
     // Empty implementation
     return Promise.resolve();
   }

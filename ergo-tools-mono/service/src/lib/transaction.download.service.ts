@@ -178,7 +178,7 @@ export class TransactionDownloadService<T> {
         var existingData = await this.dataService.getExistingData(result.transactions[result.transactions.length - 1], address);
 
         if(existingData) {
-          await this.dataService.dataComplete();
+          await this.dataService.allDataAvailable(address);
         }
       }
 
@@ -260,6 +260,7 @@ export class TransactionDownloadService<T> {
         console.log( 
           `Found existing boxId in db for ${a.largeAddressForDisplay}, no need to download more.`,
         );
+        await this.dataService.allDataAvailable(address);
       } else if (itemsz >= this.downloadInitialSize) {
         await this.downloadStatusServiceContract?.setDownloadStatus(address, 'false');
         
@@ -271,6 +272,9 @@ export class TransactionDownloadService<T> {
           callback,
         );
         return this.dataService.getData();
+      }
+      else{
+        await this.dataService.allDataAvailable(address);
       }
     } catch (e) {
       console.error(e);

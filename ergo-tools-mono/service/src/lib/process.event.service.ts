@@ -18,9 +18,16 @@ export class ServiceWorkerEventSender implements EventSender {
   }
 }
 
+export enum ServiceProfile {
+  MCP,
+  ANGULAR,
+  ANGULAR_ELEMENTS,
+  SERVICE_WORKER
+}
+
 export class ProcessEventService {
   services: Services | null = null;
-  constructor(private eventSender: EventSender, private storageService: IStorageService) { }
+  constructor(private eventSender: EventSender, private storageService: IStorageService, private serviceProfile: ServiceProfile) { }
 
   public async processEvent(
     event: EventPayload<object>,
@@ -37,7 +44,7 @@ export class ProcessEventService {
       ) {
 
         if (!this.services) {
-          this.services = await createServices(this.eventSender, this.storageService);
+          this.services = await createServices(this.eventSender, this.storageService, this.serviceProfile);
         }
 
         switch (event.type) {
@@ -393,7 +400,8 @@ export class ProcessEventService {
 export const CreateProcessEventService = (
   eventSender: EventSender,
   storageService: IStorageService,
+  serviceProfile: ServiceProfile
 ): ProcessEventService => {
-  return new ProcessEventService(eventSender, storageService);
+  return new ProcessEventService(eventSender, storageService, serviceProfile);
 }
 export { EventSender };

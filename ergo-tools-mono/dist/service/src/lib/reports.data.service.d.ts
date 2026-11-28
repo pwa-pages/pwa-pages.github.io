@@ -4,7 +4,9 @@ import { PermitsDataService } from "./permits.data.service";
 import { EventSender } from "./process.event.service";
 export declare class ReportsDataService extends PermitsDataService {
     private eventSender;
-    constructor(db: IStorageService, eventSender: EventSender, storeName?: string, maxDownloadDateDifference?: number);
+    private reportsMonthsDownload;
+    allDataAvailable(address: string): Promise<void>;
+    constructor(db: IStorageService, eventSender: EventSender, reportsMonthsDownload: number, storeName?: string, maxDownloadDateDifference?: number);
     getDataType(): string;
     purgeData(): Promise<void>;
     getWatcherPerformanceByChainTypeFromReports(): Promise<WatchersPerformanceStats>;
