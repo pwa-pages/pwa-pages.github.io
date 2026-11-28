@@ -52,8 +52,7 @@ export class RequestQueue {
       });
       const response = await Promise.race([this.run(request, controller.signal), timedOut]);
       if (!this.stopped) await this.reply(request, response);
-    } catch (error) {
-      console.error("[telegram] Request failed:", error);
+    } catch {
       if (!this.stopped) {
         try {
           await this.reply(request, controller.signal.aborted

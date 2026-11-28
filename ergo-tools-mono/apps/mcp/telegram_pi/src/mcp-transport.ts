@@ -23,5 +23,6 @@ export function createRosenTransport(cwd: string) {
     ],
     cwd,
     env,
+    stderr: "ignore",
   });
 }

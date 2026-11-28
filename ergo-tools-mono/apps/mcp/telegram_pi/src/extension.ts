@@ -65,8 +65,8 @@ export default function telegramExtension(pi: ExtensionAPI) {
     let session: AgentSession | undefined;
     let security: ReturnType<typeof registerTelegramSecurity> | undefined;
     const abort = () => {
-      if (session) void session.abort().catch((error) => console.error("[telegram] Abort failed:", error));
-      void client.close().catch((error) => console.error("[telegram] MCP close failed:", error));
+      if (session) void session.abort().catch(() => {});
+      void client.close().catch(() => {});
     };
     signal.addEventListener("abort", abort, { once: true });
 
@@ -105,8 +105,7 @@ export default function telegramExtension(pi: ExtensionAPI) {
                     .join("\n");
                   if (!text || text.length > 100_000) throw new Error("Invalid MCP response");
                   return { content: [{ type: "text", text }], details: {} };
-                } catch (error) {
-                  console.error("[telegram] MCP tool failed:", error);
+                } catch {
                   return { content: [{ type: "text", text: "Statistics are temporarily unavailable." }], details: {} };
                 }
               },
@@ -149,7 +148,7 @@ export default function telegramExtension(pi: ExtensionAPI) {
     } finally {
       signal.removeEventListener("abort", abort);
       session?.dispose();
-      await client.close().catch((error) => console.error("[telegram] MCP close failed:", error));
+      await client.close().catch(() => {});
     }
   }
 

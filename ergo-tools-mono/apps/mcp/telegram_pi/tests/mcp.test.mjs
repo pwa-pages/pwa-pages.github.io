@@ -11,9 +11,13 @@ test("transport selection defaults to stdio and rejects unknown modes", () => {
   const previous = process.env.MCP_TRANSPORT;
   try {
     delete process.env.MCP_TRANSPORT;
-    assert.ok(createRosenTransport(process.cwd()) instanceof StdioClientTransport);
+    const defaultTransport = createRosenTransport(process.cwd());
+    assert.ok(defaultTransport instanceof StdioClientTransport);
+    assert.equal(defaultTransport._serverParams.stderr, "ignore");
     process.env.MCP_TRANSPORT = "stdio";
-    assert.ok(createRosenTransport(process.cwd()) instanceof StdioClientTransport);
+    const stdioTransport = createRosenTransport(process.cwd());
+    assert.ok(stdioTransport instanceof StdioClientTransport);
+    assert.equal(stdioTransport._serverParams.stderr, "ignore");
     process.env.MCP_TRANSPORT = "http";
     assert.ok(createRosenTransport(process.cwd()) instanceof StreamableHTTPClientTransport);
     process.env.MCP_TRANSPORT = "invalid";
