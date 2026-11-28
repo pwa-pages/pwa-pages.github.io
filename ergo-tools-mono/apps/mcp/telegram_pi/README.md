@@ -1,41 +1,21 @@
 # Rosen Radar Telegram extension
 
 Run Pi with `./start_pi.sh`. Configure `TELEGRAM_BOT_TOKEN` and the
-comma-separated `TELEGRAM_ALLOWED_CHAT_IDS` as before. By default, the
-extension starts the built Rosen MCP server over stdio for each request.
-Build it first with `./build_mcp.sh`. Set
-`MCP_TRANSPORT=http` to use the local HTTP endpoint at
-`http://127.0.0.1:3001/mcp` instead; start that server separately with
+comma-separated `TELEGRAM_ALLOWED_CHAT_IDS`.
+
+Telegram requests are sent directly to the running Pi session. This reuses its
+conversation, model, and tools, and avoids creating a Pi session or MCP server
+process for each message. The Rosen statistics tools connect once when the Pi
+session starts. By default, the extension starts the built MCP server over
+stdio; build it first with `./build_mcp.sh`. Set `MCP_TRANSPORT=http` to use
+`http://127.0.0.1:3001/mcp` instead, and start that server separately with
 `./run_mcp_http.sh`. Set `MCP_TRANSPORT=stdio` to explicitly select stdio.
-Other values are rejected. The MCP server must be trusted and protected
-against access by other users.
+Other values are rejected.
 
-Optional positive-integer settings:
-
-- `TELEGRAM_USER_RATE_LIMIT_MS`: minimum time between accepted requests per user
-  (default 10000, maximum 3600000).
-- `TELEGRAM_REQUEST_TIMEOUT_MS`: request deadline (default 90000, maximum 600000).
-- `TELEGRAM_MAX_TOOL_CALLS`: maximum attempted tool calls per request
-  (default 6, maximum 30).
-
-Each request uses a fresh, non-persistent Pi SDK session with only the four
-Rosen statistics tools. It does not load the interactive session's history,
-extensions, project context, or system prompt, which could contain private
-configuration. The Telegram instructions are appended to a separate safe base
-system prompt. The selected interactive model and model registry are reused.
-This means custom model providers must be registered in that registry. Prompt
-and response content is still sent to the configured model provider.
-
-Tool parameters, address count, response size, tool calls, rate, and elapsed
-time are bounded. The MCP server may continue background work after a client
-disconnect or timeout; cancellation does not guarantee that its upstream
-downloads stop. The server's existing shared caches are not per-user, and
-address-based downloads are not constrained by the optional date filters.
-In stdio mode each request starts a separate server process; its startup and
-shutdown may be slower than using a shared HTTP server. Run only a trusted
-local server and avoid exposing its HTTP endpoint publicly.
-Model instructions cannot guarantee resistance to every prompt injection or
-prevent a model from echoing information that is already in its input.
+Because Telegram uses the interactive Pi session, its messages and replies
+appear in that conversation and can use the tools available to Pi. Only send
+messages from trusted, allowed chats. Requests are declined while Pi is busy,
+and replies longer than 4000 characters are truncated.
 
 Run focused tests with:
 

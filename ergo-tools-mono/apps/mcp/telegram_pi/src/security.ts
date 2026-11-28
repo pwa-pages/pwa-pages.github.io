@@ -1,5 +1,4 @@
 import { Type } from "typebox";
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 
 const address = Type.String({ minLength: 1, maxLength: 256 });
 const date = Type.String({ pattern: "^\\d{4}-\\d{2}-\\d{2}$" });
@@ -70,36 +69,4 @@ export function validateToolCall(name: string, input: unknown): input is Record<
     default:
       return false;
   }
-}
-
-export function createToolGuard(maxCalls: number) {
-  let calls = 0;
-  return (name: string, input: unknown) => {
-    calls++;
-    if (calls > maxCalls || !validateToolCall(name, input)) {
-      return { block: true, reason: "Tool call not permitted." };
-    }
-
-    return undefined;
-  };
-}
-
-export function registerTelegramSecurity(pi: ExtensionAPI, instructions: string, maxCalls: number) {
-  const guard = createToolGuard(maxCalls);
-  let attempts = 0;
-  pi.on("before_agent_start", (event) => ({
-    systemPrompt: `${event.systemPrompt}\n\n${instructions}`,
-  }));
-  pi.on("tool_call", (event) => attempts > maxCalls
-    ? { block: true, reason: "Tool call not permitted." }
-    : guard(event.toolName, event.input));
-  return {
-    observeAttempt() {
-      attempts++;
-      return attempts > maxCalls;
-    },
-    get exceeded() {
-      return attempts > maxCalls;
-    },
-  };
 }
